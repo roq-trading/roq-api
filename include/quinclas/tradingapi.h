@@ -338,6 +338,13 @@ class Gateway {
             const double limit_price,
             const double stop_price) = 0;
     /**
+     * Order modification request.
+     *
+     * @param opaque is...
+     * @param order_id is...
+     */
+    virtual void modify_order(const int opaque, const int order_id) = 0;
+    /**
      * Order cancellation request.
      *
      * @param opaque is...

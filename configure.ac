@@ -1,4 +1,4 @@
-AC_INIT([tradingqpi], [0.1], [thraneh@gmail.com])
+AC_INIT([tradingapi], [0.1], [thraneh@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
 AC_CONFIG_FILES([

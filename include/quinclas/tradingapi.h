@@ -142,9 +142,25 @@ struct MarketStatus {
 };
 
 /**
- * Response to order action.
+ * Response to create order
  */
-struct OrderActionAck {
+struct CreateOrderAck {
+    int opaque;            ///< User provided opaque value (from the original order insert)
+    const char *order_id;  ///< Order identifier
+};
+
+/**
+ * Response to modify order
+ */
+struct ModifyOrderAck {
+    int opaque;            ///< User provided opaque value (from the original order insert)
+    const char *order_id;  ///< Order identifier
+};
+
+/**
+ * Response to cancel order
+ */
+struct CancelOrderAck {
     int opaque;            ///< User provided opaque value (from the original order insert)
     const char *order_id;  ///< Order identifier
 };
@@ -237,11 +253,27 @@ struct DailyStatisticsEvent {
 };
 
 /**
- * Order action ack event.
+ * Create order ack event.
  */
-struct OrderActionAckEvent {
+struct CreateOrderAckEvent {
     const char *gateway;                     ///< Gateway name
-    const OrderActionAck& order_action_ack;  ///< Order action ack
+    const CreateOrderAck& create_order_ack;  ///< Create order ack
+};
+
+/**
+ * Modify order ack event.
+ */
+struct ModifyOrderAckEvent {
+    const char *gateway;                     ///< Gateway name
+    const ModifyOrderAck& modify_order_ack;  ///< Modify order ack
+};
+
+/**
+ * Cancel order ack event.
+ */
+struct CancelOrderAckEvent {
+    const char *gateway;                     ///< Gateway name
+    const CancelOrderAck& cancel_order_ack;  ///< Cancel order ack
 };
 
 /**
@@ -261,6 +293,37 @@ struct TradeUpdateEvent {
 };
 
 /**
+ * Create order request.
+ */
+struct CreateOrder {
+    const char *gateway;              ///< Gateway name
+    const char *exchange;             ///< Exchange name
+    const char *order_template_name;  ///< Order template name
+    const char *instrument;           ///< Instrument name
+    const TradeDirection direction;   ///< Trade direction
+    const double quantity;            ///< Desired quantity
+    const double limit_price;         ///< Limit price
+    const double stop_price;          ///< Stop price
+    const int opaque;                 ///< Opaque pass-through value
+};
+
+/**
+ * Modify order request.
+ */
+struct ModifyOrder {
+    const int order_id;  ///< Order id
+    const int opaque;    ///< Opaque pass-through value
+};
+
+/**
+ * Cancel order request.
+ */
+struct CancelOrder {
+    const int order_id;  ///< Order id
+    const int opaque;    ///< Opaque pass-through value
+};
+
+/**
  * Gateway interface.
  */
 class Gateway {
@@ -277,39 +340,31 @@ class Gateway {
         virtual void on(const MarketByPriceEvent&) = 0;      ///< Market-by-price update for an instrument.
         virtual void on(const SessionStatisticsEvent&) = 0;  ///< Session statistics update for an instrument.
         virtual void on(const DailyStatisticsEvent&) = 0;    ///< Daily statistics update for an instrument.
-        virtual void on(const OrderActionAckEvent&) = 0;     ///< Response to a create-, modify- or cancel order request.
+        virtual void on(const CreateOrderAckEvent&) = 0;     ///< Response to a create order request.
+        virtual void on(const ModifyOrderAckEvent&) = 0;     ///< Response to a modify order request.
+        virtual void on(const CancelOrderAckEvent&) = 0;     ///< Response to a cancel order request.
         virtual void on(const OrderUpdateEvent&) = 0;        ///< New order, or order details have been updated.
         virtual void on(const TradeUpdateEvent&) = 0;        ///< New trade, or trade details have been updated.
     };
     virtual ~Gateway() = default;
     /**
-     * Order creation request.
+     * Request to create an order.
      *
-     * @param opaque is...
-     * @param exchange is...
-     * @param order_template_name is...
-     * @param instrument is...
-     * @param direction is...
-     * @param quantity is...
-     * @param limit_price is...
-     * @param stop_price is...
+     * @param create_order has the order creation details.
      */
-    virtual void create_order(
-            const int opaque,
-            const char *exchange,
-            const char *order_template_name,
-            const char *instrument,
-            const TradeDirection direction,
-            const double quantity,
-            const double limit_price,
-            const double stop_price) = 0;
+    virtual void request(const CreateOrder& create_order) = 0;
     /**
-     * Order cancellation request.
+     * Request to modify an order.
      *
-     * @param opaque is...
-     * @param order_id is...
+     * @param modify_order has the order modification details.
      */
-    virtual void cancel_order(const int opaque, const int order_id) = 0;
+    virtual void request(const ModifyOrder& modify_order) = 0;
+    /**
+     * Request to cancel an order.
+     *
+     * @param cancel_order has the order cancellation details.
+     */
+    virtual void request(const CancelOrder& cancel_order) = 0;
 };
 
 /**
@@ -323,39 +378,23 @@ class Strategy {
     class Dispatcher {
      public:
         /**
-         * Order creation request.
+         * Request to create an order.
          *
-         * @param opaque is...
-         * @param gateway is...
-         * @param exchange is...
-         * @param order_template_name is...
-         * @param instrument is...
-         * @param direction is...
-         * @param quantity is...
-         * @param limit_price is...
-         * @param stop_price is...
+         * @param create_order has the order creation details.
          */
-        virtual void create_order(
-                const int opaque,
-                const char *gateway,
-                const char *exchange,
-                const char *order_template_name,
-                const char *instrument,
-                const TradeDirection direction,
-                const double quantity,
-                const double limit_price,
-                const double stop_price) = 0;
+        virtual void request(const CreateOrder& create_order) = 0;
         /**
-         * Order cancellation request.
+         * Request to modify an order.
          *
-         * @param opaque is...
-         * @param gateway is...
-         * @param order_id is...
+         * @param modify_order has the order modification details.
          */
-        virtual void cancel_order(
-                const int opaque,
-                const char *gateway,
-                const int order_id) = 0;
+        virtual void request(const ModifyOrder& modify_order) = 0;
+        /**
+         * Request to cancel an order.
+         *
+         * @param cancel_order has the order cancellation details.
+         */
+        virtual void request(const CancelOrder& cancel_order) = 0;
     };
     virtual ~Strategy() = default;
     virtual void on(const GatewayStatusEvent&) = 0;      ///< Connection or login status has changed for a gateway.
@@ -364,7 +403,9 @@ class Strategy {
     virtual void on(const MarketByPriceEvent&) = 0;      ///< Market-by-price update for an instrument.
     virtual void on(const SessionStatisticsEvent&) = 0;  ///< Session statistics update for an instrument.
     virtual void on(const DailyStatisticsEvent&) = 0;    ///< Daily statistics update for an instrument.
-    virtual void on(const OrderActionAckEvent&) = 0;     ///< Response to a create-, modify- or cancel order request.
+    virtual void on(const CreateOrderAckEvent&) = 0;     ///< Response to a create order request.
+    virtual void on(const ModifyOrderAckEvent&) = 0;     ///< Response to a modify order request.
+    virtual void on(const CancelOrderAckEvent&) = 0;     ///< Response to a cancel order request.
     virtual void on(const OrderUpdateEvent&) = 0;        ///< New order, or order details have been updated.
     virtual void on(const TradeUpdateEvent&) = 0;        ///< New trade, or trade details have been updated.
 };
@@ -432,7 +473,7 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ga
         "order_management_connection_status=" << value.order_management_connection_status << ", "
         "order_management_login_status=" << value.order_management_login_status <<
         "}";
-};
+}
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ReferenceData& value) {
     return stream << "{"

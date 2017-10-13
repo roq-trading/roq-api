@@ -432,7 +432,7 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ga
         "order_management_connection_status=" << value.order_management_connection_status << ", "
         "order_management_login_status=" << value.order_management_login_status <<
         "}";
-};
+}
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ReferenceData& value) {
     return stream << "{"

@@ -142,9 +142,25 @@ struct MarketStatus {
 };
 
 /**
- * Response to order action.
+ * Response to create order
  */
-struct OrderActionAck {
+struct CreateOrderAck {
+    int opaque;            ///< User provided opaque value (from the original order insert)
+    const char *order_id;  ///< Order identifier
+};
+
+/**
+ * Response to modify order
+ */
+struct ModifyOrderAck {
+    int opaque;            ///< User provided opaque value (from the original order insert)
+    const char *order_id;  ///< Order identifier
+};
+
+/**
+ * Response to cancel order
+ */
+struct CancelOrderAck {
     int opaque;            ///< User provided opaque value (from the original order insert)
     const char *order_id;  ///< Order identifier
 };
@@ -237,11 +253,27 @@ struct DailyStatisticsEvent {
 };
 
 /**
- * Order action ack event.
+ * Create order ack event.
  */
-struct OrderActionAckEvent {
+struct CreateOrderAckEvent {
     const char *gateway;                     ///< Gateway name
-    const OrderActionAck& order_action_ack;  ///< Order action ack
+    const CreateOrderAck& create_order_ack;  ///< Create order ack
+};
+
+/**
+ * Modify order ack event.
+ */
+struct ModifyOrderAckEvent {
+    const char *gateway;                     ///< Gateway name
+    const ModifyOrderAck& modify_order_ack;  ///< Modify order ack
+};
+
+/**
+ * Cancel order ack event.
+ */
+struct CancelOrderAckEvent {
+    const char *gateway;                     ///< Gateway name
+    const CancelOrderAck& cancel_order_ack;  ///< Cancel order ack
 };
 
 /**
@@ -277,7 +309,9 @@ class Gateway {
         virtual void on(const MarketByPriceEvent&) = 0;      ///< Market-by-price update for an instrument.
         virtual void on(const SessionStatisticsEvent&) = 0;  ///< Session statistics update for an instrument.
         virtual void on(const DailyStatisticsEvent&) = 0;    ///< Daily statistics update for an instrument.
-        virtual void on(const OrderActionAckEvent&) = 0;     ///< Response to a create-, modify- or cancel order request.
+        virtual void on(const CreateOrderAckEvent&) = 0;     ///< Response to a create order request.
+        virtual void on(const ModifyOrderAckEvent&) = 0;     ///< Response to a modify order request.
+        virtual void on(const CancelOrderAckEvent&) = 0;     ///< Response to a cancel order request.
         virtual void on(const OrderUpdateEvent&) = 0;        ///< New order, or order details have been updated.
         virtual void on(const TradeUpdateEvent&) = 0;        ///< New trade, or trade details have been updated.
     };
@@ -364,7 +398,9 @@ class Strategy {
     virtual void on(const MarketByPriceEvent&) = 0;      ///< Market-by-price update for an instrument.
     virtual void on(const SessionStatisticsEvent&) = 0;  ///< Session statistics update for an instrument.
     virtual void on(const DailyStatisticsEvent&) = 0;    ///< Daily statistics update for an instrument.
-    virtual void on(const OrderActionAckEvent&) = 0;     ///< Response to a create-, modify- or cancel order request.
+    virtual void on(const CreateOrderAckEvent&) = 0;     ///< Response to a create order request.
+    virtual void on(const ModifyOrderAckEvent&) = 0;     ///< Response to a modify order request.
+    virtual void on(const CancelOrderAckEvent&) = 0;     ///< Response to a cancel order request.
     virtual void on(const OrderUpdateEvent&) = 0;        ///< New order, or order details have been updated.
     virtual void on(const TradeUpdateEvent&) = 0;        ///< New trade, or trade details have been updated.
 };

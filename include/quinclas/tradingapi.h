@@ -293,6 +293,37 @@ struct TradeUpdateEvent {
 };
 
 /**
+ * Create order request.
+ */
+struct CreateOrder {
+    const char *gateway,              ///< Gateway name
+    const char *exchange,             ///< Exchange name
+    const char *order_template_name,  ///< Order template name
+    const char *instrument,           ///< Instrument name
+    const TradeDirection direction,   ///< Trade direction
+    const double quantity,            ///< Desired quantity
+    const double limit_price,         ///< Limit price
+    const double stop_price,          ///< Stop price
+    const int opaque                  ///< Opaque pass-through value
+};
+
+/**
+ * Modify order request.
+ */
+struct ModifyOrder {
+    const int order_id,  ///< Order id
+    const int opaque     ///< Opaque pass-through value
+};
+
+/**
+ * Cancel order request.
+ */
+struct CancelyOrder {
+    const int order_id,  ///< Order id
+    const int opaque     ///< Opaque pass-through value
+};
+
+/**
  * Gateway interface.
  */
 class Gateway {
@@ -317,40 +348,23 @@ class Gateway {
     };
     virtual ~Gateway() = default;
     /**
-     * Order creation request.
+     * Request to create an order.
      *
-     * @param opaque is...
-     * @param exchange is...
-     * @param order_template_name is...
-     * @param instrument is...
-     * @param direction is...
-     * @param quantity is...
-     * @param limit_price is...
-     * @param stop_price is...
+     * @param create_order has the order creation details.
      */
-    virtual void create_order(
-            const int opaque,
-            const char *exchange,
-            const char *order_template_name,
-            const char *instrument,
-            const TradeDirection direction,
-            const double quantity,
-            const double limit_price,
-            const double stop_price) = 0;
+    virtual void request(const CreateOrder& create_order) = 0;
     /**
-     * Order modification request.
+     * Request to modify an order.
      *
-     * @param opaque is...
-     * @param order_id is...
+     * @param modify_order has the order modification details.
      */
-    virtual void modify_order(const int opaque, const int order_id) = 0;
+    virtual void request(const ModifyOrder& modify_order) = 0;
     /**
-     * Order cancellation request.
+     * Request to cancel an order.
      *
-     * @param opaque is...
-     * @param order_id is...
+     * @param cancel_order has the order cancellation details.
      */
-    virtual void cancel_order(const int opaque, const int order_id) = 0;
+    virtual void request(const CancelOrder& cancel_order) = 0;
 };
 
 /**
@@ -364,50 +378,23 @@ class Strategy {
     class Dispatcher {
      public:
         /**
-         * Order creation request.
+         * Request to create an order.
          *
-         * @param opaque is...
-         * @param gateway is...
-         * @param exchange is...
-         * @param order_template_name is...
-         * @param instrument is...
-         * @param direction is...
-         * @param quantity is...
-         * @param limit_price is...
-         * @param stop_price is...
+         * @param create_order has the order creation details.
          */
-        virtual void create_order(
-                const int opaque,
-                const char *gateway,
-                const char *exchange,
-                const char *order_template_name,
-                const char *instrument,
-                const TradeDirection direction,
-                const double quantity,
-                const double limit_price,
-                const double stop_price) = 0;
+        virtual void request(const CreateOrder& create_order) = 0;
         /**
-         * Order modification request.
+         * Request to modify an order.
          *
-         * @param opaque is...
-         * @param gateway is...
-         * @param order_id is...
+         * @param modify_order has the order modification details.
          */
-        virtual void modify_order(
-                const int opaque,
-                const char *gateway,
-                const int order_id) = 0;
+        virtual void request(const ModifyOrder& modify_order) = 0;
         /**
-         * Order cancellation request.
+         * Request to cancel an order.
          *
-         * @param opaque is...
-         * @param gateway is...
-         * @param order_id is...
+         * @param cancel_order has the order cancellation details.
          */
-        virtual void cancel_order(
-                const int opaque,
-                const char *gateway,
-                const int order_id) = 0;
+        virtual void request(const CancelOrder& cancel_order) = 0;
     };
     virtual ~Strategy() = default;
     virtual void on(const GatewayStatusEvent&) = 0;      ///< Connection or login status has changed for a gateway.

@@ -296,31 +296,31 @@ struct TradeUpdateEvent {
  * Create order request.
  */
 struct CreateOrder {
-    const char *gateway,              ///< Gateway name
-    const char *exchange,             ///< Exchange name
-    const char *order_template_name,  ///< Order template name
-    const char *instrument,           ///< Instrument name
-    const TradeDirection direction,   ///< Trade direction
-    const double quantity,            ///< Desired quantity
-    const double limit_price,         ///< Limit price
-    const double stop_price,          ///< Stop price
-    const int opaque                  ///< Opaque pass-through value
+    const char *gateway;              ///< Gateway name
+    const char *exchange;             ///< Exchange name
+    const char *order_template_name;  ///< Order template name
+    const char *instrument;           ///< Instrument name
+    const TradeDirection direction;   ///< Trade direction
+    const double quantity;            ///< Desired quantity
+    const double limit_price;         ///< Limit price
+    const double stop_price;          ///< Stop price
+    const int opaque;                 ///< Opaque pass-through value
 };
 
 /**
  * Modify order request.
  */
 struct ModifyOrder {
-    const int order_id,  ///< Order id
-    const int opaque     ///< Opaque pass-through value
+    const int order_id;  ///< Order id
+    const int opaque;    ///< Opaque pass-through value
 };
 
 /**
  * Cancel order request.
  */
 struct CancelyOrder {
-    const int order_id,  ///< Order id
-    const int opaque     ///< Opaque pass-through value
+    const int order_id;  ///< Order id
+    const int opaque;    ///< Opaque pass-through value
 };
 
 /**

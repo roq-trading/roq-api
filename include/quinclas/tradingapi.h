@@ -318,7 +318,7 @@ struct ModifyOrder {
 /**
  * Cancel order request.
  */
-struct CancelyOrder {
+struct CancelOrder {
     const int order_id;  ///< Order id
     const int opaque;    ///< Opaque pass-through value
 };

@@ -4,9 +4,11 @@ Copyright (c) 2017, Hans Erik Thrane
 
 ## Overview
 
-Documentation [here](https://quinclas.github.io/tradingapi/index.html).
+This repository contains public interfaces.
 
 ![overview](https://github.com/quinclas/tradingapi/blob/gh-pages/_images/design.png)
+
+Detailed documentation available [here](https://quinclas.github.io/tradingapi/index.html).
 
 ## Usage
 

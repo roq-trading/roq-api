@@ -1,4 +1,7 @@
-# Quinclas --- programmatic access to broker API's.
+# Quinclas - programmatic access to broker API's.
+=================================================
+
+Copyright (c) 2017, Hans Erik Thrane
 
 ## Overview
 

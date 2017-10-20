@@ -462,7 +462,7 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::La
         "bid_price=" << value.bid_price << ", " <<
         "bid_quantity=" << value.bid_quantity << ", " <<
         "ask_price=" << value.ask_price << ", " <<
-        "ask_quantity=" << value.ask_quantity << ", " <<
+        "ask_quantity=" << value.ask_quantity <<
         "}";
 }
 
@@ -499,7 +499,7 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ma
     stream << "[";
     for (size_t index = 0; index < length; ++index) {
         if (index > 0)
-            stream << " ";
+            stream << ", ";
         stream << value.depth[index];
     }
     return stream << "]";

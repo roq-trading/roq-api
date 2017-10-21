@@ -34,7 +34,6 @@ enum class ConnectionStatus : char {
 /**
  * Login status.
  */
-
 enum class LoginStatus : char {
     OFF,  ///< Not logged in
     ON    ///< Logged in
@@ -196,7 +195,6 @@ struct TradeUpdate {
     int opaque;                      ///< User provided opaque value (from the original order insert)
 };
 
-
 /**
  * Termination event. EXPERIMENTAL
  */
@@ -205,18 +203,26 @@ struct TerminationEvent {
 };
 
 /**
+ * EventInfo.
+ */
+struct EventInfo {
+    const char *origin;  ///< Origin name, typically a gateway
+    bool idle;           ///< Is this the last message from the queue?
+};
+
+/**
  * Gateway status update event.
  */
 struct GatewayStatusEvent {
-    const char *gateway;                  ///< Gateway name
-    struct GatewayStatus gateway_status;  ///< Gateway status update
+    const EventInfo& event_info;          ///< Event info.
+    const GatewayStatus& gateway_status;  ///< Gateway status update
 };
 
 /**
  * Reference data update event.
  */
 struct ReferenceDataEvent {
-    const char *gateway;                  ///< Gateway name
+    const EventInfo& event_info;          ///< Event info.
     const ReferenceData& reference_data;  ///< Reference data update
 };
 
@@ -224,7 +230,7 @@ struct ReferenceDataEvent {
  * Market status update event.
  */
 struct MarketStatusEvent {
-    const char *gateway;                ///< Gateway name
+    const EventInfo& event_info;        ///< Event info.
     const MarketStatus& market_status;  ///< Market status update
 };
 
@@ -232,7 +238,7 @@ struct MarketStatusEvent {
  * Market depth update event.
  */
 struct MarketByPriceEvent {
-    const char *gateway;                   ///< Gateway name
+    const EventInfo& event_info;           ///< Event info.
     const MarketByPrice& market_by_price;  ///< Market-by-price update
 };
 
@@ -240,7 +246,7 @@ struct MarketByPriceEvent {
  * Session statistics update event.
  */
 struct SessionStatisticsEvent {
-    const char *gateway;                          ///< Gateway name
+    const EventInfo& event_info;                  ///< Event info.
     const SessionStatistics& session_statistics;  ///< Session statistics update
 };
 
@@ -248,7 +254,7 @@ struct SessionStatisticsEvent {
  * Daily statistics update event.
  */
 struct DailyStatisticsEvent {
-    const char *gateway;                      ///< Gateway name
+    const EventInfo& event_info;              ///< Event info.
     const DailyStatistics& daily_statistics;  ///< Daily statistics update
 };
 
@@ -256,7 +262,7 @@ struct DailyStatisticsEvent {
  * Create order ack event.
  */
 struct CreateOrderAckEvent {
-    const char *gateway;                     ///< Gateway name
+    const EventInfo& event_info;             ///< Event info.
     const CreateOrderAck& create_order_ack;  ///< Create order ack
 };
 
@@ -264,7 +270,7 @@ struct CreateOrderAckEvent {
  * Modify order ack event.
  */
 struct ModifyOrderAckEvent {
-    const char *gateway;                     ///< Gateway name
+    const EventInfo& event_info;             ///< Event info.
     const ModifyOrderAck& modify_order_ack;  ///< Modify order ack
 };
 
@@ -272,7 +278,7 @@ struct ModifyOrderAckEvent {
  * Cancel order ack event.
  */
 struct CancelOrderAckEvent {
-    const char *gateway;                     ///< Gateway name
+    const EventInfo& event_info;             ///< Event info.
     const CancelOrderAck& cancel_order_ack;  ///< Cancel order ack
 };
 
@@ -280,7 +286,7 @@ struct CancelOrderAckEvent {
  * Order update event.
  */
 struct OrderUpdateEvent {
-    const char *gateway;              ///< Gateway name
+    const EventInfo& event_info;      ///< Event info.
     const OrderUpdate& order_update;  ///< Order update
 };
 
@@ -288,7 +294,7 @@ struct OrderUpdateEvent {
  * Trade update event.
  */
 struct TradeUpdateEvent {
-    const char *gateway;              ///< Gateway name
+    const EventInfo& event_info;      ///< Event info.
     const TradeUpdate& trade_update;  ///< Trade update
 };
 

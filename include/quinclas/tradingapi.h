@@ -658,7 +658,7 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Cr
         "exchange=\"" << value.exchange << "\", " <<
         "order_template_name=\"" << value.order_template_name << "\", " <<
         "instrument=\"" << value.instrument << "\", " <<
-        "trade_direction=" << value.trade_direction << ", "
+        "direction=" << value.direction << ", "
         "quantity=" << value.quantity << ", "
         "limit_price=" << value.limit_price << ", "
         "stop_price=" << value.stop_price << ", "
@@ -680,6 +680,11 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ca
         "}";
 }
 
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::RequestInfo& value) {
+    return stream << "{"
+        "destination=\"" << value.destination <<
+        "}";
+}
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CreateOrderRequest& value) {
     return stream << "{"
         "request_info=" << value.request_info << ", "

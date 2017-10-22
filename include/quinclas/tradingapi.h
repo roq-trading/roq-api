@@ -299,10 +299,9 @@ struct TradeUpdateEvent {
 };
 
 /**
- * Create order request.
+ * Create order.
  */
 struct CreateOrder {
-    const char *gateway;              ///< Gateway name
     const char *exchange;             ///< Exchange name
     const char *order_template_name;  ///< Order template name
     const char *instrument;           ///< Instrument name
@@ -314,7 +313,7 @@ struct CreateOrder {
 };
 
 /**
- * Modify order request.
+ * Modify order.
  */
 struct ModifyOrder {
     const int order_id;  ///< Order id
@@ -322,11 +321,45 @@ struct ModifyOrder {
 };
 
 /**
- * Cancel order request.
+ * Cancel order.
  */
 struct CancelOrder {
     const int order_id;  ///< Order id
     const int opaque;    ///< Opaque pass-through value
+};
+
+/**
+ * RequestInfo.
+ */
+struct RequestInfo {
+    const char *destination;  ///< Destination name, typically a gateway
+};
+
+/*
+ * Create order request.
+ */
+
+struct CreateOrderRequest {
+    const RequestInfo& request_info;  ///< Routing information
+    const CreateOrder& create_order;  ///< Create order details.
+};
+
+/*
+ * Modify order request.
+ */
+
+struct ModifyOrderRequest {
+    const RequestInfo& request_info;  ///< Routing information
+    const ModifyOrder& modify_order;  ///< Modify order details.
+};
+
+/*
+ * Cancel order request.
+ */
+
+struct CancelOrderRequest {
+    const RequestInfo& request_info;  ///< Routing information
+    const CancelOrder& cancel_order;  ///< Cancel order details.
 };
 
 /**
@@ -356,21 +389,21 @@ class Gateway {
     /**
      * Request to create an order.
      *
-     * @param create_order has the order creation details.
+     * @param create_order_request has the order creation request details.
      */
-    virtual void request(const CreateOrder& create_order) = 0;
+    virtual void request(const CreateOrderRequest& create_order_request) = 0;
     /**
      * Request to modify an order.
      *
-     * @param modify_order has the order modification details.
+     * @param modify_order_request has the order modification request details.
      */
-    virtual void request(const ModifyOrder& modify_order) = 0;
+    virtual void request(const ModifyOrderRequest& modify_order_request) = 0;
     /**
      * Request to cancel an order.
      *
-     * @param cancel_order has the order cancellation details.
+     * @param cancel_order_request has the order cancellation request details.
      */
-    virtual void request(const CancelOrder& cancel_order) = 0;
+    virtual void request(const CancelOrderRequest& cancel_order_request) = 0;
 };
 
 /**
@@ -386,21 +419,21 @@ class Strategy {
         /**
          * Request to create an order.
          *
-         * @param create_order has the order creation details.
+         * @param create_order_request has the order creation request details.
          */
-        virtual void request(const CreateOrder& create_order) = 0;
+        virtual void request(const CreateOrderRequest& create_order_request) = 0;
         /**
          * Request to modify an order.
          *
-         * @param modify_order has the order modification details.
+         * @param modify_order_request has the order modification request details.
          */
-        virtual void request(const ModifyOrder& modify_order) = 0;
+        virtual void request(const ModifyOrderRequest& modify_order_request) = 0;
         /**
          * Request to cancel an order.
          *
-         * @param cancel_order has the order cancellation details.
+         * @param cancel_order_request has the order cancellation request details.
          */
-        virtual void request(const CancelOrder& cancel_order) = 0;
+        virtual void request(const CancelOrderRequest& cancel_order_request) = 0;
     };
     virtual ~Strategy() = default;
     virtual void on(const GatewayStatusEvent&) = 0;      ///< Connection or login status has changed for a gateway.
@@ -617,5 +650,53 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Tr
     return stream << "{"
         "event_info=\"" << value.event_info << "\", "
         "trade_update=" << value.trade_update <<
+        "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CreateOrder& value) {
+    return stream << "{"
+        "exchange=\"" << value.exchange << "\", " <<
+        "order_template_name=\"" << value.order_template_name << "\", " <<
+        "instrument=\"" << value.instrument << "\", " <<
+        "trade_direction=" << value.trade_direction << ", "
+        "quantity=" << value.quantity << ", "
+        "limit_price=" << value.limit_price << ", "
+        "stop_price=" << value.stop_price << ", "
+        "opaque=" << value.opaque <<
+        "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ModifyOrder& value) {
+    return stream << "{"
+        "order_id=\"" << value.order_id << "\", " <<
+        "opaque=" << value.opaque <<
+        "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CancelOrder& value) {
+    return stream << "{"
+        "order_id=\"" << value.order_id << "\", " <<
+        "opaque=" << value.opaque <<
+        "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CreateOrderRequest& value) {
+    return stream << "{"
+        "request_info=" << value.request_info << ", "
+        "create_order=" << value.create_order <<
+        "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ModifyOrderRequest& value) {
+    return stream << "{"
+        "request_info=" << value.request_info << ", "
+        "modify_order=" << value.modify_order <<
+        "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CancelOrderRequest& value) {
+    return stream << "{"
+        "request_info=" << value.request_info << ", "
+        "cancel_order=" << value.cancel_order <<
         "}";
 }

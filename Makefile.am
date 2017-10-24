@@ -20,3 +20,19 @@ deb: all
 	rm -rf $(DEB_PKG_FILE); \
 	echo "$(DEB_PKG_FILE).deb" > $(abs_builddir)/_packaging
 endif
+
+if HAVE_RPM
+rpm: all
+	@cd $(abs_builddir) && \
+	rm -rf $(PACKAGE_NAME)-$(PACKAGE_VERSION) && \
+	mkdir $(PACKAGE_NAME)-$(PACKAGE_VERSION) && \
+	$(MAKE) $(AM_MAKEFLAGS) install DESTDIR=$(abs_builddir)/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/ && \
+	cd $(abs_builddir)/packaging/rpm && \
+	mkdir -p RPMS SRPMS BUILD SOURCES SPECS tmp && \
+	cd $(abs_builddir)/packaging/rpm/SOURCES && \
+	tar -zcv -C ../../../ -f $(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz $(PACKAGE_NAME)-$(PACKAGE_VERSION)/ && \
+	cd $(abs_builddir)/packaging/rpm && \
+	rpmbuild -ba --define "_prefix /usr/local" --define "_topdir $(abs_builddir)/packaging/rpm" --define "_tmpdir $(abs_builddir)/packaging/rpm/tmp" SPECS/@PACKAGE_NAME@.spec && \
+	cp $(abs_builddir)/packaging/rpm/RPMS/$(RPM_ARCH)/$(RPM_PKG_FILE) $(abs_builddir) && \
+	echo "$(RPM_PKG_FILE)" > $(abs_builddir)/_packaging
+endif

@@ -27,6 +27,22 @@ AS_IF([test x$HAVE_DEB != xno], [
     packaging/debian/prerm
   ])
 ])
+# are we on rpm?
+AC_CHECK_TOOL([RPM], [rpm])
+AC_CHECK_TOOL([RPMBUILD], [rpmbuild])
+AM_CONDITIONAL([HAVE_RPM], [test x$RPM != x -a x$RPMBUILD != x])
+AS_IF([test x$HAVE_RPM != xno], [
+  AC_MSG_RESULT([yes])
+  RPM_ARCH=`${RPM} --eval '%{_arch}' 2>/dev/null`
+  AC_SUBST(RPM_ARCH)
+  RPM_PKG_FILE=${PACKAGE_NAME}-${PACKAGE_VERSION}-1.${RPM_ARCH}.rpm
+  AC_SUBST(RPM_PKG_FILE)
+  AC_CONFIG_FILES([
+    packaging/rpm/SPECS/tradingapi.spec
+  ])
+], [
+  AC_MSG_RESULT([no])
+])
 AC_CONFIG_FILES([
  Makefile
  include/Makefile

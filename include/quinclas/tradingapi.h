@@ -602,10 +602,10 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Tr
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MessageInfo& value) {
     return stream << "{"
         "gateway=\"" << value.gateway << "\", " <<
-        "message_id=\"" << value.message_id << "\", " <<
-        "exchange_time=\"" << value.exchange_time << "\", " <<
-        "receive_time=\"" << value.receive_time << "\", " <<
-        "enqueue_time=\"" << value.enqueue_time << "\", " <<
+        "message_id=" << value.message_id << ", " <<
+        "exchange_time=" << value.exchange_time << ", " <<
+        "receive_time=" << value.receive_time << ", " <<
+        "enqueue_time=" << value.enqueue_time <<
         "}";
 }
 

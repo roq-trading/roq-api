@@ -4,6 +4,6 @@ Section: non-free/devel
 Priority: optional
 Architecture: @DEB_BUILD_ARCH@
 Depends: zlib1g (>= 1), openssl (>= 1)
-Homepage: https://tickcapture.com
+Homepage: https://github.com/quinclas/tradingapi
 Maintainer: Your Name <@DEB_PKG_EMAIL@>
 Description: Quinclas - programmatic access to broker API's.

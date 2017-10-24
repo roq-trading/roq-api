@@ -203,18 +203,26 @@ struct TerminationEvent {
 };
 
 /**
- * EventInfo.
+ * MessageInfo.
  */
-struct EventInfo {
-    const char *origin;  ///< Origin name, typically a gateway
-    bool idle;           ///< Is this the last message from the queue?
+struct MessageInfo {
+    const char *gateway;       ///< Gateway name
+    uint64_t message_id;       ///< Message identifier
+    datetime_t exchange_time;  ///< Exchange timestamp
+    datetime_t receive_time;   ///< Receive timestamp
+    datetime_t enqueue_time;   ///< Enqueue timestamp
 };
+
+/**
+ * Idle event.
+ */
+struct IdleEvent {};
 
 /**
  * Gateway status update event.
  */
 struct GatewayStatusEvent {
-    const EventInfo& event_info;          ///< Event info.
+    const MessageInfo& message_info;      ///< Message info.
     const GatewayStatus& gateway_status;  ///< Gateway status update
 };
 
@@ -222,7 +230,7 @@ struct GatewayStatusEvent {
  * Reference data update event.
  */
 struct ReferenceDataEvent {
-    const EventInfo& event_info;          ///< Event info.
+    const MessageInfo& message_info;      ///< Message info.
     const ReferenceData& reference_data;  ///< Reference data update
 };
 
@@ -230,7 +238,7 @@ struct ReferenceDataEvent {
  * Market status update event.
  */
 struct MarketStatusEvent {
-    const EventInfo& event_info;        ///< Event info.
+    const MessageInfo& message_info;    ///< Message info.
     const MarketStatus& market_status;  ///< Market status update
 };
 
@@ -238,7 +246,7 @@ struct MarketStatusEvent {
  * Market depth update event.
  */
 struct MarketByPriceEvent {
-    const EventInfo& event_info;           ///< Event info.
+    const MessageInfo& message_info;       ///< Message info.
     const MarketByPrice& market_by_price;  ///< Market-by-price update
 };
 
@@ -246,7 +254,7 @@ struct MarketByPriceEvent {
  * Session statistics update event.
  */
 struct SessionStatisticsEvent {
-    const EventInfo& event_info;                  ///< Event info.
+    const MessageInfo& message_info;              ///< Message info.
     const SessionStatistics& session_statistics;  ///< Session statistics update
 };
 
@@ -254,7 +262,7 @@ struct SessionStatisticsEvent {
  * Daily statistics update event.
  */
 struct DailyStatisticsEvent {
-    const EventInfo& event_info;              ///< Event info.
+    const MessageInfo& message_info;          ///< Message info.
     const DailyStatistics& daily_statistics;  ///< Daily statistics update
 };
 
@@ -262,7 +270,7 @@ struct DailyStatisticsEvent {
  * Create order ack event.
  */
 struct CreateOrderAckEvent {
-    const EventInfo& event_info;             ///< Event info.
+    const MessageInfo& message_info;         ///< Message info.
     const CreateOrderAck& create_order_ack;  ///< Create order ack
 };
 
@@ -270,7 +278,7 @@ struct CreateOrderAckEvent {
  * Modify order ack event.
  */
 struct ModifyOrderAckEvent {
-    const EventInfo& event_info;             ///< Event info.
+    const MessageInfo& message_info;         ///< Message info.
     const ModifyOrderAck& modify_order_ack;  ///< Modify order ack
 };
 
@@ -278,7 +286,7 @@ struct ModifyOrderAckEvent {
  * Cancel order ack event.
  */
 struct CancelOrderAckEvent {
-    const EventInfo& event_info;             ///< Event info.
+    const MessageInfo& message_info;         ///< Message info.
     const CancelOrderAck& cancel_order_ack;  ///< Cancel order ack
 };
 
@@ -286,7 +294,7 @@ struct CancelOrderAckEvent {
  * Order update event.
  */
 struct OrderUpdateEvent {
-    const EventInfo& event_info;      ///< Event info.
+    const MessageInfo& message_info;  ///< Message info.
     const OrderUpdate& order_update;  ///< Order update
 };
 
@@ -294,7 +302,7 @@ struct OrderUpdateEvent {
  * Trade update event.
  */
 struct TradeUpdateEvent {
-    const EventInfo& event_info;      ///< Event info.
+    const MessageInfo& message_info;  ///< Message info.
     const TradeUpdate& trade_update;  ///< Trade update
 };
 
@@ -436,6 +444,7 @@ class Strategy {
         virtual void request(const CancelOrderRequest& cancel_order_request) = 0;
     };
     virtual ~Strategy() = default;
+    virtual void on(const IdleEvent&) = 0;               ///< Idle.
     virtual void on(const GatewayStatusEvent&) = 0;      ///< Connection or login status has changed for a gateway.
     virtual void on(const ReferenceDataEvent&) = 0;      ///< Reference data update for an instrument.
     virtual void on(const MarketStatusEvent&) = 0;       ///< Market status update for an instrument.
@@ -590,65 +599,68 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Tr
         "}";
 }
 
-inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::EventInfo& value) {
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MessageInfo& value) {
     return stream << "{"
-        "origin=\"" << value.origin << "\", " <<
-        "idle=" << (value.idle ? "true" : "false") <<
+        "gateway=\"" << value.gateway << "\", " <<
+        "message_id=\"" << value.message_id << "\", " <<
+        "exchange_time=\"" << value.exchange_time << "\", " <<
+        "receive_time=\"" << value.receive_time << "\", " <<
+        "enqueue_time=\"" << value.enqueue_time << "\", " <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::GatewayStatusEvent& value) {
     return stream << "{"
-        "event_info=\"" << value.event_info << "\", "
+        "message_info=\"" << value.message_info << "\", "
         "gateway_status=" << value.gateway_status <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ReferenceDataEvent& value) {
     return stream << "{"
-        "event_info=\"" << value.event_info << "\", "
+        "message_info=\"" << value.message_info << "\", "
         "reference_data=" << value.reference_data <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MarketStatusEvent& value) {
     return stream << "{"
-        "event_info=\"" << value.event_info << "\", "
+        "message_info=\"" << value.message_info << "\", "
         "market_status=" << value.market_status <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MarketByPriceEvent& value) {
     return stream << "{"
-        "event_info=\"" << value.event_info << "\", "
+        "message_info=\"" << value.message_info << "\", "
         "market_by_price=" << value.market_by_price <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::SessionStatisticsEvent& value) {
     return stream << "{"
-        "event_info=\"" << value.event_info << "\", "
+        "message_info=\"" << value.message_info << "\", "
         "session_statistics=" << value.session_statistics <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::DailyStatisticsEvent& value) {
     return stream << "{"
-        "event_info=\"" << value.event_info << "\", "
+        "message_info=\"" << value.message_info << "\", "
         "daily_statistics=" << value.daily_statistics <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::OrderUpdateEvent& value) {
     return stream << "{"
-        "event_info=\"" << value.event_info << "\", "
+        "message_info=\"" << value.message_info << "\", "
         "order_update=" << value.order_update <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::TradeUpdateEvent& value) {
     return stream << "{"
-        "event_info=\"" << value.event_info << "\", "
+        "message_info=\"" << value.message_info << "\", "
         "trade_update=" << value.trade_update <<
         "}";
 }

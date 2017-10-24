@@ -4,11 +4,7 @@
 
 #include <iostream>
 
-// TODO(thraneh): is_last
-
-#define QUINCLAS_VER "0.1"                                   ///< Release version
-#define QUINCLAS_VER_MAJOR 0                                 ///< Release version, major number
-#define QUINCLAS_VER_MINOR 1                                 ///< Release version, minor number
+#define QUINCLAS_VERSION "0.1"                               ///< Version
 
 namespace quinclas {
 namespace common {

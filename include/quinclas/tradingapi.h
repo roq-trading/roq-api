@@ -391,23 +391,23 @@ class Gateway {
     };
     virtual ~Gateway() = default;
     /**
-     * Request to create an order.
+     * Send a CreateOrder request.
      *
      * @param create_order_request has the order creation request details.
      */
-    virtual void request(const CreateOrderRequest& create_order_request) = 0;
+    virtual void send(const CreateOrderRequest& create_order_request) = 0;
     /**
-     * Request to modify an order.
+     * Send a ModifyOrder request.
      *
      * @param modify_order_request has the order modification request details.
      */
-    virtual void request(const ModifyOrderRequest& modify_order_request) = 0;
+    virtual void send(const ModifyOrderRequest& modify_order_request) = 0;
     /**
-     * Request to cancel an order.
+     * Send a CancelOrder request.
      *
      * @param cancel_order_request has the order cancellation request details.
      */
-    virtual void request(const CancelOrderRequest& cancel_order_request) = 0;
+    virtual void send(const CancelOrderRequest& cancel_order_request) = 0;
 };
 
 /**
@@ -421,23 +421,23 @@ class Strategy {
     class Dispatcher {
      public:
         /**
-         * Request to create an order.
+         * Send CreateOrder request.
          *
          * @param create_order_request has the order creation request details.
          */
-        virtual void request(const CreateOrderRequest& create_order_request) = 0;
+        virtual void send(const CreateOrderRequest& create_order_request) = 0;
         /**
-         * Request to modify an order.
+         * Send ModifyOrder request.
          *
          * @param modify_order_request has the order modification request details.
          */
-        virtual void request(const ModifyOrderRequest& modify_order_request) = 0;
+        virtual void send(const ModifyOrderRequest& modify_order_request) = 0;
         /**
-         * Request to cancel an order.
+         * Send CancelOrder request.
          *
          * @param cancel_order_request has the order cancellation request details.
          */
-        virtual void request(const CancelOrderRequest& cancel_order_request) = 0;
+        virtual void send(const CancelOrderRequest& cancel_order_request) = 0;
     };
     virtual ~Strategy() = default;
     virtual void on(const IdleEvent&) = 0;                   ///< Idle

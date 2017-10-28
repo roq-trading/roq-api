@@ -21,5 +21,5 @@ Detailed documentation available [here](https://quinclas.github.io/tradingapi/in
 
     ./autogen.sh
     ./configure
-    make [--prefix=<...>]
+    make
     make install

@@ -22,9 +22,9 @@ AS_IF([test x$HAVE_DEB != xno], [
   DEB_PKG_EMAIL=${PACKAGE_BUGREPORT}
   AC_SUBST([DEB_PKG_EMAIL])
   AC_CONFIG_FILES([
-    packaging/debian/control
-    packaging/debian/postinst
-    packaging/debian/prerm
+    packaging/deb/control
+    packaging/deb/postinst
+    packaging/deb/prerm
   ])
 ])
 # are we on rpm?

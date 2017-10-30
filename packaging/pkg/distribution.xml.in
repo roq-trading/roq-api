@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<installer-gui-script minSpecVersion="1">
+	<title>@PACKAGE_NAME@</title>
+	<organization>@PKG_IDENT@</organization>
+	<domains enable_localSystem="true"/>
+	<options customize="never" require-scripts="true" rootVolumeOnly="true" />
+	<welcome    file="welcome.html"    mime-type="text/html" />
+	<license    file="license.html"    mime-type="text/html" />
+	<conclusion file="conclusion.html" mime-type="text/html" />
+	<pkg-ref id="@PKG_IDENT@"
+		version="0"
+		auth="root">@PKG_COMP@</pkg-ref>
+	<choices-outline>
+		<line choice="@PKG_IDENT@"/>
+	</choices-outline>
+	<choice
+		id="@PKG_IDENT@"
+		visible="false"
+		title="@PACKAGE_NAME@"
+		description="quinclas"
+		start_selected="true">
+		<pkg-ref id="@PKG_IDENT@"/>
+	</choice>
+</installer-gui-script>

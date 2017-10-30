@@ -36,3 +36,15 @@ rpm: all
 	cp $(abs_builddir)/packaging/rpm/RPMS/$(RPM_ARCH)/$(RPM_PKG_FILE) $(abs_builddir) && \
 	echo "$(RPM_PKG_FILE)" > $(abs_builddir)/_packaging
 endif
+
+if HAVE_PKG
+pkg: all
+	@cd $(abs_builddir) && \
+	mkdir -p $(abs_builddir)/_pkg && \
+	$(MAKE) $(AM_MAKEFLAGS) DESTDIR=$(abs_builddir)/_pkg install && \
+	echo "building component package" && \
+	$(PKGBUILD) --root $(abs_builddir)/_pkg --identifier $(PKG_IDENT) $(PKG_COMP) --install-location / && \
+	echo "building distribution package" && \
+	productbuild --distribution $(abs_builddir)/packaging/pkg/distribution.xml --resources $(abs_builddir)/packaging/pkg $(PKG_FILE) && \
+	echo "$(PKG_FILE)" > $(abs_builddir)/_package
+endif

@@ -1,0 +1,5 @@
+<html>
+	<body>
+		Hey, I'm @PACKAGE_NAME@ at version @PACKAGE_VERSION@
+	</body>
+</html>

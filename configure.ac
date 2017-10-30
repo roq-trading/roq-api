@@ -1,7 +1,8 @@
 AC_INIT([tradingapi], [0.1], [thraneh@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
-# are we on debian?
+AC_CANONICAL_TARGET
+# debian, ubuntu
 AC_CHECK_TOOL([DPKG_DEB], [dpkg-deb])
 AC_CHECK_TOOL([DPKG_ARCHITECTURE], [dpkg-architecture])
 AC_CHECK_TOOL([FAKEROOT], [fakeroot])
@@ -27,7 +28,7 @@ AS_IF([test x$HAVE_DEB != xno], [
     packaging/deb/prerm
   ])
 ])
-# are we on rpm?
+# rhel, centos, fedora
 AC_CHECK_TOOL([RPM], [rpm])
 AC_CHECK_TOOL([RPMBUILD], [rpmbuild])
 AM_CONDITIONAL([HAVE_RPM], [test x$RPM != x -a x$RPMBUILD != x])
@@ -43,6 +44,30 @@ AS_IF([test x$HAVE_RPM != xno], [
 ], [
   AC_MSG_RESULT([no])
 ])
+# darwin
+AC_CHECK_TOOL([PKGBUILD], [pkgbuild])
+AC_CHECK_TOOL([PRODUCTBUILD], [productbuild])
+AM_CONDITIONAL([HAVE_PKG], [test x$PKGBUILD != x -a x$PRODUCTBUILD != x])
+AS_IF([test x$HAVE_PKG != xno], [
+  AC_MSG_RESULT([yes])
+  PKG_ARCH=`uname -p 2>/dev/null`
+  AC_SUBST(PKG_ARCH)
+  PKG_COMP=osx.pkg
+  PKG_FILE=${PACKAGE_NAME}-${PACKAGE_VERSION}-${target_cpu}.pkg
+  PKG_IDENT=com.tickcapture
+  AC_SUBST(PKG_COMP)
+  AC_SUBST(PKG_FILE)
+  AC_SUBST(PKG_IDENT)
+  AC_CONFIG_FILES([
+    packaging/pkg/conclusion.html
+    packaging/pkg/distribution.xml
+    packaging/pkg/license.html
+    packaging/pkg/welcome.html
+  ])
+], [
+  AC_MSG_RESULT([no])
+])
+
 AC_CONFIG_FILES([
  Makefile
  include/Makefile

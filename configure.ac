@@ -1,7 +1,7 @@
-AC_INIT([tradingapi], [0.1], [thraneh@gmail.com])
+AC_INIT([tradingapi], m4_esyscmd_s([cat include/quinclas/tradingapi.h | grep '#define QUINCLAS_VERSION' | cut -d'"' -f2]), [thraneh@gmail.com])
+AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
-AC_CANONICAL_TARGET
 # debian, ubuntu
 AC_CHECK_TOOL([DPKG_DEB], [dpkg-deb])
 AC_CHECK_TOOL([DPKG_ARCHITECTURE], [dpkg-architecture])

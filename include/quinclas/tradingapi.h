@@ -607,56 +607,56 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Me
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::GatewayStatusEvent& value) {
     return stream << "{"
-        "message_info=\"" << value.message_info << "\", "
+        "message_info=" << value.message_info << ", "
         "gateway_status=" << value.gateway_status <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ReferenceDataEvent& value) {
     return stream << "{"
-        "message_info=\"" << value.message_info << "\", "
+        "message_info=" << value.message_info << ", "
         "reference_data=" << value.reference_data <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MarketStatusEvent& value) {
     return stream << "{"
-        "message_info=\"" << value.message_info << "\", "
+        "message_info=" << value.message_info << ", "
         "market_status=" << value.market_status <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MarketByPriceEvent& value) {
     return stream << "{"
-        "message_info=\"" << value.message_info << "\", "
+        "message_info=" << value.message_info << ", "
         "market_by_price=" << value.market_by_price <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::SessionStatisticsEvent& value) {
     return stream << "{"
-        "message_info=\"" << value.message_info << "\", "
+        "message_info=" << value.message_info << ", "
         "session_statistics=" << value.session_statistics <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::DailyStatisticsEvent& value) {
     return stream << "{"
-        "message_info=\"" << value.message_info << "\", "
+        "message_info=" << value.message_info << ", "
         "daily_statistics=" << value.daily_statistics <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::OrderUpdateEvent& value) {
     return stream << "{"
-        "message_info=\"" << value.message_info << "\", "
+        "message_info=" << value.message_info << ", "
         "order_update=" << value.order_update <<
         "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::TradeUpdateEvent& value) {
     return stream << "{"
-        "message_info=\"" << value.message_info << "\", "
+        "message_info=" << value.message_info << ", "
         "trade_update=" << value.trade_update <<
         "}";
 }

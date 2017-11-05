@@ -391,6 +391,10 @@ class Gateway {
     };
     virtual ~Gateway() = default;
     /**
+     * Start the event loop.
+     */
+    virtual void start() = 0;
+    /**
      * Send a CreateOrder request.
      *
      * @param create_order_request has the order creation request details.

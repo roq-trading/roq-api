@@ -7,5 +7,4 @@ datadir=@datarootdir@
 Name: @PACKAGE@
 Description: Quinclas/TradingAPI.
 Version: @VERSION@
-Libs: -L${libdir} -l@PACKAGE@
 Cflags: @CPPFLAGS@ -I${includedir}

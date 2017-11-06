@@ -6,7 +6,7 @@ pkgconfig_DATA = quinclas_@PACKAGE@.pc
 .PHONY: lint
 
 lint:
-	cpplint --linelength=120 --root=subdir=src/ --recursive include/
+	cpplint --linelength=120 --recursive include/quinclas
 
 if HAVE_DEB
 deb: all

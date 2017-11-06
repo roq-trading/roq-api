@@ -461,6 +461,12 @@ class Strategy {
 }  // namespace common
 }  // namespace quinclas
 
+extern "C" {
+typedef const char *(*GetVersion)();
+typedef quinclas::common::Gateway *(*Create)(quinclas::common::Gateway::Handler& handler, const char *config_file);
+typedef void (*Destroy)(quinclas::common::Gateway *gateway);
+}
+
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ConnectionStatus value) {
     switch (value) {
         case quinclas::common::ConnectionStatus::CONNECTED: return stream << "CONNECTED";

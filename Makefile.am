@@ -1,7 +1,7 @@
 SUBDIRS=include
 
 pkgconfigdir = @libdir@/pkgconfig
-pkgconfig_DATA = quinclas-@PACKAGE@.pc
+pkgconfig_DATA = @PACKAGE@.pc
 
 .PHONY: lint
 

@@ -72,6 +72,6 @@ AC_CONFIG_FILES([
  Makefile
  include/Makefile
  include/quinclas/Makefile
- quinclas_tradingapi.pc
+ quinclas-tradingapi.pc
 ])
 AC_OUTPUT

@@ -1,7 +1,31 @@
-AC_INIT([quinclas-tradingapi], m4_esyscmd_s([cat include/quinclas/tradingapi.h | grep '#define QUINCLAS_VERSION' | cut -d'"' -f2]), [thraneh@gmail.com])
+AC_INIT([quinclas-tradingapi], [m4_esyscmd_s([cat include/quinclas/tradingapi.h | grep '#define QUINCLAS_VERSION' | cut -d'"' -f2])], [thraneh@gmail.com])
+AC_CONFIG_AUX_DIR([.])
+AC_CONFIG_MACRO_DIRS([m4])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
-AC_PROG_CC
+AM_PROG_AR
+LT_INIT
+AC_PROG_CXX
+m4_include([m4/ax_cxx_compile_stdcxx.m4])  # https://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx.html
+AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
+PKG_CHECK_MODULES([GTEST], [gtest])
+PKG_CHECK_MODULES([FLATBUFFERS], [flatbuffers], [], [
+  AC_LANG_PUSH([C++])
+  SAVE_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS -I$prefix/include"
+  AC_CHECK_HEADER(
+    [flatbuffers/flatbuffers.h],
+    [AC_SUBST([FLATBUFFERS_CFLAGS])],
+    [AC_MSG_ERROR([unable to find flatbuffers header files])]
+  )
+  CPPFLAGS="$SAVE_CPPFLAGS"
+  AC_LANG_POP([C++])
+  # if we get to here, simply assume the library exists (it seems very complex to test for the existence)
+  AC_SUBST([FLATBUFFERS_LIBS], [-lflatbuffers])
+])
+AC_CHECK_PROGS(FLATC, flatc, "")
+
+
 # debian, ubuntu
 AC_CHECK_TOOL([DPKG_DEB], [dpkg-deb])
 AC_CHECK_TOOL([DPKG_ARCHITECTURE], [dpkg-architecture])

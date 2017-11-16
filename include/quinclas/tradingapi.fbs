@@ -1,0 +1,234 @@
+include "common.fbs";
+
+namespace quinclas.schema;
+
+enum LoginStatus:byte {
+  Off = 0,
+  On = 1
+}
+
+enum TradeDirection:byte {
+  Undefined = 0,
+  Buy = 1,
+  Sell = 2
+}
+
+enum TradingStatus:byte {
+  Undefined = 0,
+  Closed = 1,
+  Open = 2
+}
+
+enum OrderStatus:byte {
+  Undefined = 0,
+  Sent = 1,
+  Failed = 2,
+  Accepted = 3,
+  Cancelled = 4,
+  Filled = 5
+}
+
+/// Order book layer (positional by-price aggregated view of an order book).
+table Layer {
+  /// Bid price
+  bid_price:double;
+  /// Aggregated bid quantity
+  bid_quantity:double;
+  /// Ask price
+  ask_price:double;
+  /// Aggregated ask quantity
+  ask_quantity:double;
+}
+
+table GatewayStatus {
+    market_data_connection_status:common.ConnectionStatus;
+    market_data_login_status:LoginStatus;
+    order_management_connection_status:common.ConnectionStatus;
+    order_management_login_status:LoginStatus;
+}
+
+table MarketByPrice {
+    exchange:string;
+    instrument:string;
+    depth:[Layer];
+}
+
+table SessionStatistics {
+    exchange:string;
+    instrument:string;
+    open:double;
+    high:double;
+    low:double;
+}
+
+table DailyStatistics {
+    exchange:string;
+    instrument:string;
+    settlement:double;
+    open_interest:double;
+    volume:double;
+}
+
+table ReferenceData {
+    exchange:string;
+    instrument:string;
+    tick_size:double;
+    limit_up:double;
+    limit_down:double;
+}
+
+table MarketStatus {
+    exchange:string;
+    instrument:string;
+    trading_status:TradingStatus;
+}
+
+table CreateOrderAck {
+    opaque:int;
+    order_id:string;
+}
+
+table ModifyOrderAck {
+    opaque:int;
+    order_id:string;
+}
+
+table CancelOrderAck {
+    opaque:int;
+    order_id:string;
+}
+
+table OrderUpdate {
+    exchange:string;
+    instrument:string;
+    order_id:string;
+    status:OrderStatus;
+    trade_direction:TradeDirection;
+    remaining_quantity:double;
+    traded_quantity:double;
+    insert_time:ulong;
+    cancel_time:ulong;
+    order_template:string;
+    opaque:int;
+}
+
+table TradeUpdate {
+    exchange:string;
+    instrument:string;
+    order_id:string;
+    trade_id:string;
+    trade_direction:TradeDirection;
+    quantity:double;
+    price:double;
+    opaque:int;
+}
+
+table TerminationEvent {
+    gateway:string;
+}
+
+table MessageInfo {
+    gateway:string;
+    message_id:ulong;
+    exchange_time:ulong;
+    receive_time:ulong;
+    enqueue_time:ulong;
+}
+
+table IdleEvent {}
+
+
+table GatewayStatusEvent {
+    message_info:MessageInfo;
+    gateway_status:GatewayStatus;
+}
+
+table ReferenceDataEvent {
+    message_info:MessageInfo;
+    reference_data:ReferenceData;
+}
+
+table MarketStatusEvent {
+    message_info:MessageInfo;
+    market_status:MarketStatus;
+}
+
+table MarketByPriceEvent {
+    message_info:MessageInfo;
+    market_by_price:MarketByPrice;
+}
+
+table SessionStatisticsEvent {
+    message_info:MessageInfo;
+    session_statistics:SessionStatistics;
+}
+
+table DailyStatisticsEvent {
+    message_info:MessageInfo;
+    daily_statistics:DailyStatistics;
+}
+
+table CreateOrderAckEvent {
+    message_info:MessageInfo;
+    create_order_ack:CreateOrderAck;
+}
+
+table ModifyOrderAckEvent {
+    message_info:MessageInfo;
+    modify_order_ack:ModifyOrderAck;
+}
+
+table CancelOrderAckEvent {
+    message_info:MessageInfo;
+    cancel_order_ack:CancelOrderAck;
+}
+
+table OrderUpdateEvent {
+    message_info:MessageInfo;
+    order_update:OrderUpdate;
+}
+
+table TradeUpdateEvent {
+    message_info:MessageInfo;
+    trade_update:TradeUpdate;
+}
+
+table CreateOrder {
+    exchange:string;
+    order_template_name:string;
+    instrument:string;
+    direction:TradeDirection;
+    quantity:double;
+    limit_price:double;
+    stop_price:double;
+    opaque:int;
+}
+
+table ModifyOrder {
+    order_id:int;
+    opaque:int;
+}
+
+table CancelOrder {
+    order_id:int;
+    opaque:int;
+}
+
+table RequestInfo {
+  destination:string;
+}
+
+table CreateOrderRequest {
+  request_info:RequestInfo;
+  create_order:CreateOrder;
+}
+
+table ModifyOrderRequest {
+  request_info:RequestInfo;
+  modify_order:ModifyOrder;
+}
+
+table CancelOrderRequest {
+  request_info:RequestInfo;
+  cancel_order:CancelOrder;
+}

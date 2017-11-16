@@ -2,6 +2,8 @@
 
 #pragma once
 
+// TODO(thraneh): share enum class definitions (drop here)
+#include "tradingapi_generated.h"
 #include <iostream>
 
 #define QUINCLAS_VERSION "0.1"                               ///< Version

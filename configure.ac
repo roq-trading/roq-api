@@ -8,7 +8,15 @@ LT_INIT
 AC_PROG_CXX
 m4_include([m4/ax_cxx_compile_stdcxx.m4])  # https://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx.html
 AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
-PKG_CHECK_MODULES([GTEST], [gtest])
+PKG_CHECK_MODULES([GTEST], [gtest], [], [
+  AC_CHECK_HEADER(
+    [gtest/gtest.h],
+    [AC_SUBST([GTEST_CFLAGS])],
+    [AC_MSG_WARN([unable to find gtest header files])]
+  )
+  # if we get to here, simply assume the library exists (it seems very complex to test for the existence)
+  AC_SUBST([GTEST_LIBS], [-lgtest])
+])
 PKG_CHECK_MODULES([FLATBUFFERS], [flatbuffers], [], [
   AC_LANG_PUSH([C++])
   SAVE_CPPFLAGS="$CPPFLAGS"

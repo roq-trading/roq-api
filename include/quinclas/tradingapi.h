@@ -24,10 +24,12 @@ typedef uint64_t datetime_t;                                 // Date time
 /**
  * Connection status.
  */
+/*
 enum class ConnectionStatus : char {
     DISCONNECTED,                                            ///< Not connected
     CONNECTED                                                ///< Connected
 };
+*/
 
 /**
  * Login status.
@@ -470,11 +472,7 @@ typedef void (*Destroy)(quinclas::common::Gateway *gateway);
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ConnectionStatus value) {
-    switch (value) {
-        case quinclas::common::ConnectionStatus::CONNECTED: return stream << "CONNECTED";
-        case quinclas::common::ConnectionStatus::DISCONNECTED: return stream << "DISCONNECTED";
-        default: return stream << "UNKNOWN:" << static_cast<int>(value);
-    }
+    return stream << quinclas::common::EnumNameConnectionStatus(value);
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::LoginStatus value) {

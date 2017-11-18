@@ -6,7 +6,8 @@
 #include "tradingapi_generated.h"
 #include <iostream>
 
-#define QUINCLAS_VERSION "0.1"                               ///< Version
+// Version
+#define QUINCLAS_VERSION "@PACKAGE_VERSION@"
 
 namespace quinclas {
 namespace common {

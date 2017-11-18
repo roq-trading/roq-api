@@ -32,10 +32,7 @@ m4/
 *.pc
 *.tar.*
 
-_packaging
-
-*.deb
-*.pkg
-*.rpm
-
 *_generated.h
+
+*.log
+*.trs

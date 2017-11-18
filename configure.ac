@@ -1,6 +1,7 @@
-AC_INIT([quinclas-tradingapi], [m4_esyscmd_s([cat include/quinclas/tradingapi.h | grep '#define QUINCLAS_VERSION' | cut -d'"' -f2])], [thraneh@gmail.com])
+AC_INIT([quinclas-tradingapi], m4_esyscmd([tr -d '\n' < VERSION]), [thraneh@gmail.com])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_MACRO_DIRS([m4])
+AC_DISABLE_STATIC
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AM_PROG_AR
@@ -8,15 +9,6 @@ LT_INIT
 AC_PROG_CXX
 m4_include([m4/ax_cxx_compile_stdcxx.m4])  # https://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx.html
 AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
-PKG_CHECK_MODULES([GTEST], [gtest], [], [
-  AC_CHECK_HEADER(
-    [gtest/gtest.h],
-    [AC_SUBST([GTEST_CFLAGS])],
-    [AC_MSG_WARN([unable to find gtest header files])]
-  )
-  # if we get to here, simply assume the library exists (it seems very complex to test for the existence)
-  AC_SUBST([GTEST_LIBS], [-lgtest])
-])
 PKG_CHECK_MODULES([FLATBUFFERS], [flatbuffers], [], [
   AC_LANG_PUSH([C++])
   SAVE_CPPFLAGS="$CPPFLAGS"
@@ -32,78 +24,17 @@ PKG_CHECK_MODULES([FLATBUFFERS], [flatbuffers], [], [
   AC_SUBST([FLATBUFFERS_LIBS], [-lflatbuffers])
 ])
 AC_CHECK_PROGS(FLATC, flatc, "")
-
-
-# debian, ubuntu
-AC_CHECK_TOOL([DPKG_DEB], [dpkg-deb])
-AC_CHECK_TOOL([DPKG_ARCHITECTURE], [dpkg-architecture])
-AC_CHECK_TOOL([FAKEROOT], [fakeroot])
-AM_CONDITIONAL([HAVE_DEB], [test x$DPKG_DEB != x -a x$DPKG_ARCHITECTURE != x -a x$FAKEROOT != x])
-AS_IF([test x$HAVE_DEB != xno], [
-  DEB_BUILD_ARCH=`${DPKG_ARCHITECTURE} -qDEB_BUILD_ARCH 2>/dev/null`
-  AC_SUBST([DEB_BUILD_ARCH])
-  DEB_BUILD_MULTIARCH=`${DPKG_ARCHITECTURE} -qDEB_BUILD_MULTIARCH 2>/dev/null`
-  AC_SUBST([DEB_BUILD_MULTIARCH])
-  DEB_PKG_NAME=${PACKAGE_NAME}
-  AC_SUBST([DEB_PKG_NAME])
-  DEB_PKG_VERSION=${PACKAGE_VERSION}
-  AC_SUBST([DEB_PKG_VERSION])
-  DEB_PKG_REVISION=1
-  AC_SUBST([DEB_PKG_REVISION])
-  DEB_PKG_FILE=${PACKAGE_NAME}_${DEB_PKG_VERSION}-${DEB_PKG_REVISION}_${DEB_BUILD_ARCH}
-  AC_SUBST([DEB_PKG_FILE])
-  DEB_PKG_EMAIL=${PACKAGE_BUGREPORT}
-  AC_SUBST([DEB_PKG_EMAIL])
-  AC_CONFIG_FILES([
-    packaging/deb/control
-    packaging/deb/postinst
-    packaging/deb/prerm
-  ])
-])
-# rhel, centos, fedora
-AC_CHECK_TOOL([RPM], [rpm])
-AC_CHECK_TOOL([RPMBUILD], [rpmbuild])
-AM_CONDITIONAL([HAVE_RPM], [test x$RPM != x -a x$RPMBUILD != x])
-AS_IF([test x$HAVE_RPM != xno], [
-  AC_MSG_RESULT([yes])
-  RPM_ARCH=`${RPM} --eval '%{_arch}' 2>/dev/null`
-  AC_SUBST(RPM_ARCH)
-  RPM_PKG_FILE=${PACKAGE_NAME}-${PACKAGE_VERSION}-1.${RPM_ARCH}.rpm
-  AC_SUBST(RPM_PKG_FILE)
-  AC_CONFIG_FILES([
-    packaging/rpm/SPECS/tradingapi.spec
-  ])
-], [
-  AC_MSG_RESULT([no])
-])
-# darwin
-AC_CHECK_TOOL([PKGBUILD], [pkgbuild])
-AC_CHECK_TOOL([PRODUCTBUILD], [productbuild])
-AM_CONDITIONAL([HAVE_PKG], [test x$PKGBUILD != x -a x$PRODUCTBUILD != x])
-AS_IF([test x$HAVE_PKG != xno], [
-  AC_MSG_RESULT([yes])
-  PKG_ARCH=`uname -p 2>/dev/null`
-  AC_SUBST(PKG_ARCH)
-  PKG_COMP=osx.pkg
-  PKG_FILE=${PACKAGE_NAME}-${PACKAGE_VERSION}-${target_cpu}.pkg
-  PKG_IDENT=com.tickcapture
-  AC_SUBST(PKG_COMP)
-  AC_SUBST(PKG_FILE)
-  AC_SUBST(PKG_IDENT)
-  AC_CONFIG_FILES([
-    packaging/pkg/conclusion.html
-    packaging/pkg/distribution.xml
-    packaging/pkg/license.html
-    packaging/pkg/welcome.html
-  ])
-], [
-  AC_MSG_RESULT([no])
-])
-
 AC_CONFIG_FILES([
  Makefile
  include/Makefile
  include/quinclas/Makefile
+ include/quinclas/tradingapi.h
  quinclas-tradingapi.pc
 ])
+AC_CONFIG_SUBDIRS([
+  googletest/googletest
+])
+AC_SUBST([GTEST_DIR], ['${top_builddir}/googletest/googletest'])
+AC_SUBST([GTEST_CFLAGS], ['-I${GTEST_DIR}/include'])
+AC_SUBST([GTEST_LIBS], ['${GTEST_DIR}/lib/libgtest.la ${GTEST_DIR}/lib/libgtest_main.la'])
 AC_OUTPUT

@@ -1,9 +1,0 @@
-Package: @DEB_PKG_NAME@
-Version: @DEB_PKG_VERSION@
-Section: non-free/devel
-Priority: optional
-Architecture: @DEB_BUILD_ARCH@
-Depends: libstdc++6 (>= 5.4)
-Homepage: https://github.com/quinclas/tradingapi
-Maintainer: Hans Erik Thrane <@DEB_PKG_EMAIL@>
-Description: Quinclas - programmatic access to broker API's.

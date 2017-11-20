@@ -23,7 +23,11 @@ PKG_CHECK_MODULES([FLATBUFFERS], [flatbuffers], [], [
   # if we get to here, simply assume the library exists (it seems very complex to test for the existence)
   AC_SUBST([FLATBUFFERS_LIBS], [-lflatbuffers])
 ])
-AC_CHECK_PROGS(FLATC, flatc, "")
+SAVE_PATH="$PATH"
+PATH="$PATH:$prefix/bin:$prefix/usr/local/bin"
+AC_PATH_PROGS([FLATC], [flatc], [])
+PATH="$SAVE_PATH"
+
 AC_CONFIG_FILES([
  Makefile
  include/Makefile

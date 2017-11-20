@@ -27,7 +27,6 @@ SAVE_PATH="$PATH"
 PATH="$PATH:$prefix/bin:$prefix/usr/local/bin"
 AC_PATH_PROGS([FLATC], [flatc], [])
 PATH="$SAVE_PATH"
-
 AC_CONFIG_FILES([
  Makefile
  include/Makefile

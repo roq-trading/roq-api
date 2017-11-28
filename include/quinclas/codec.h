@@ -40,7 +40,7 @@ class Envelope {
     size_t _length;
 };
 
-// decode
+// decode (events / low level)
 
 inline common::MessageInfo convert(const schema::MessageInfo *value) {
     return common::MessageInfo{
@@ -171,6 +171,8 @@ inline common::TradeUpdate convert(const schema::TradeUpdate *value) {
     };
 }
 
+// decode (events)
+
 inline common::GatewayStatusEvent convert(const schema::GatewayStatusEvent *value) {
     auto message_info = convert(value->message_info());
     auto gateway_status = convert(value->gateway_status());
@@ -259,6 +261,8 @@ inline common::TradeUpdateEvent convert(const schema::TradeUpdateEvent *value) {
         .trade_update = trade_update};
 }
 
+// decode (requests / low level)
+
 inline common::RequestInfo convert(const schema::RequestInfo *value) {
     return common::RequestInfo{
         .destination = value->destination()->c_str(),
@@ -292,6 +296,8 @@ inline common::CancelOrder convert(const schema::CancelOrder *value) {
     };
 }
 
+// decode (requests)
+
 inline common::CreateOrderRequest convert(const schema::CreateOrderRequest *value) {
     auto request_info = convert(value->request_info());
     auto create_order = convert(value->create_order());
@@ -316,7 +322,7 @@ inline common::CancelOrderRequest convert(const schema::CancelOrderRequest *valu
         .cancel_order = cancel_order};
 }
 
-// encode
+// encode (events / low level)
 
 inline flatbuffers::Offset<schema::MessageInfo>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::MessageInfo& value) {
@@ -339,7 +345,122 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatus& value)
         value.order_management_login_status);
 }
 
-// >----<
+inline flatbuffers::Offset<schema::MarketByPrice>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPrice& value) {
+    std::vector<flatbuffers::Offset<schema::Layer> > depth(MAX_DEPTH);
+    for (auto i = 0; i < MAX_DEPTH; ++i)
+        depth[i] = 
+        schema::CreateLayer(
+            fbb, 
+            value.depth[i].bid_price,
+            value.depth[i].bid_quantity,
+            value.depth[i].ask_price,
+            value.depth[i].ask_quantity);
+    return schema::CreateMarketByPrice(
+        fbb,
+        fbb.CreateString(value.exchange),
+        fbb.CreateString(value.instrument),
+        fbb.CreateVector(std::move(depth)));
+}
+
+inline flatbuffers::Offset<schema::SessionStatistics>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::SessionStatistics& value) {
+    return schema::CreateSessionStatistics(
+        fbb,
+        fbb.CreateString(value.exchange),
+        fbb.CreateString(value.instrument),
+        value.open,
+        value.high,
+        value.low);
+}
+
+inline flatbuffers::Offset<schema::DailyStatistics>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::DailyStatistics& value) {
+    return schema::CreateDailyStatistics(
+        fbb,
+        fbb.CreateString(value.exchange),
+        fbb.CreateString(value.instrument),
+        value.settlement,
+        value.open_interest,
+        value.volume);
+}
+
+inline flatbuffers::Offset<schema::ReferenceData>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::ReferenceData& value) {
+    return schema::CreateReferenceData(
+        fbb,
+        fbb.CreateString(value.exchange),
+        fbb.CreateString(value.instrument),
+        value.tick_size,
+        value.limit_up,
+        value.limit_down);
+}
+
+inline flatbuffers::Offset<schema::MarketStatus>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketStatus& value) {
+    return schema::CreateMarketStatus(
+        fbb,
+        fbb.CreateString(value.exchange),
+        fbb.CreateString(value.instrument),
+        value.trading_status);
+}
+
+inline flatbuffers::Offset<schema::CreateOrderAck>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrderAck& value) {
+    return schema::CreateCreateOrderAck(
+        fbb,
+        value.opaque,
+        fbb.CreateString(value.order_id));
+}
+
+inline flatbuffers::Offset<schema::ModifyOrderAck>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrderAck& value) {
+    return schema::CreateModifyOrderAck(
+        fbb,
+        value.opaque,
+        fbb.CreateString(value.order_id));
+}
+
+inline flatbuffers::Offset<schema::CancelOrderAck>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderAck& value) {
+    return schema::CreateCancelOrderAck(
+        fbb,
+        value.opaque,
+        fbb.CreateString(value.order_id));
+}
+
+inline flatbuffers::Offset<schema::OrderUpdate>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::OrderUpdate& value) {
+    return schema::CreateOrderUpdate(
+        fbb,
+        fbb.CreateString(value.exchange),
+        fbb.CreateString(value.instrument),
+        fbb.CreateString(value.order_id),
+        value.status,
+        value.trade_direction,
+        value.remaining_quantity,
+        value.traded_quantity,
+        value.insert_time,
+        value.cancel_time,
+        fbb.CreateString(value.order_template),
+        value.opaque);
+}
+
+inline flatbuffers::Offset<schema::TradeUpdate>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdate& value) {
+    return schema::CreateTradeUpdate(
+        fbb,
+        fbb.CreateString(value.exchange),
+        fbb.CreateString(value.instrument),
+        fbb.CreateString(value.order_id),
+        fbb.CreateString(value.trade_id),
+        value.trade_direction,
+        value.quantity,
+        value.price,
+        value.opaque);
+}
+
+// encode (events)
 
 inline flatbuffers::Offset<schema::GatewayStatusEvent>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatusEvent& value) {
@@ -348,7 +469,77 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatusEvent& v
     return schema::CreateGatewayStatusEvent(fbb, message_info, gateway_status);
 }
 
-// >----<
+inline flatbuffers::Offset<schema::ReferenceDataEvent>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::ReferenceDataEvent& value) {
+    auto message_info = convert(fbb, value.message_info);
+    auto reference_data = convert(fbb, value.reference_data);
+    return schema::CreateReferenceDataEvent(fbb, message_info, reference_data);
+}
+
+inline flatbuffers::Offset<schema::MarketStatusEvent>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketStatusEvent& value) {
+    auto message_info = convert(fbb, value.message_info);
+    auto market_status = convert(fbb, value.market_status);
+    return schema::CreateMarketStatusEvent(fbb, message_info, market_status);
+}
+
+inline flatbuffers::Offset<schema::MarketByPriceEvent>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPriceEvent& value) {
+    auto message_info = convert(fbb, value.message_info);
+    auto market_by_price = convert(fbb, value.market_by_price);
+    return schema::CreateMarketByPriceEvent(fbb, message_info, market_by_price);
+}
+
+inline flatbuffers::Offset<schema::SessionStatisticsEvent>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::SessionStatisticsEvent& value) {
+    auto message_info = convert(fbb, value.message_info);
+    auto session_statistics = convert(fbb, value.session_statistics);
+    return schema::CreateSessionStatisticsEvent(fbb, message_info, session_statistics);
+}
+
+inline flatbuffers::Offset<schema::DailyStatisticsEvent>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::DailyStatisticsEvent& value) {
+    auto message_info = convert(fbb, value.message_info);
+    auto daily_statistics = convert(fbb, value.daily_statistics);
+    return schema::CreateDailyStatisticsEvent(fbb, message_info, daily_statistics);
+}
+
+inline flatbuffers::Offset<schema::CreateOrderAckEvent>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrderAckEvent& value) {
+    auto message_info = convert(fbb, value.message_info);
+    auto create_order_ack = convert(fbb, value.create_order_ack);
+    return schema::CreateCreateOrderAckEvent(fbb, message_info, create_order_ack);
+}
+
+inline flatbuffers::Offset<schema::ModifyOrderAckEvent>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrderAckEvent& value) {
+    auto message_info = convert(fbb, value.message_info);
+    auto modify_order_ack = convert(fbb, value.modify_order_ack);
+    return schema::CreateModifyOrderAckEvent(fbb, message_info, modify_order_ack);
+}
+
+inline flatbuffers::Offset<schema::CancelOrderAckEvent>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderAckEvent& value) {
+    auto message_info = convert(fbb, value.message_info);
+    auto cancel_order_ack = convert(fbb, value.cancel_order_ack);
+    return schema::CreateCancelOrderAckEvent(fbb, message_info, cancel_order_ack);
+}
+
+inline flatbuffers::Offset<schema::OrderUpdateEvent>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::OrderUpdateEvent& value) {
+    auto message_info = convert(fbb, value.message_info);
+    auto order_update = convert(fbb, value.order_update);
+    return schema::CreateOrderUpdateEvent(fbb, message_info, order_update);
+}
+
+inline flatbuffers::Offset<schema::TradeUpdateEvent>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdateEvent& value) {
+    auto message_info = convert(fbb, value.message_info);
+    auto trade_update = convert(fbb, value.trade_update);
+    return schema::CreateTradeUpdateEvent(fbb, message_info, trade_update);
+}
+
+// encode (requests / low level)
 
 inline flatbuffers::Offset<schema::RequestInfo>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::RequestInfo& value) {
@@ -378,6 +569,8 @@ inline flatbuffers::Offset<schema::CancelOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrder& value) {
     return schema::CreateCancelOrder(fbb, value.order_id, value.opaque);
 }
+
+// encode (requests)
 
 inline flatbuffers::Offset<schema::CreateOrderRequest>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrderRequest& value) {

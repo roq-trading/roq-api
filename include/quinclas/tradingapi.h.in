@@ -135,7 +135,7 @@ struct OrderUpdate {
 };
 
 /**
- * Trade.
+ * Trade update.
  */
 struct TradeUpdate {
     const char *exchange;                                    ///< Exchange name

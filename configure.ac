@@ -9,6 +9,10 @@ LT_INIT
 AC_PROG_CXX
 m4_include([m4/ax_cxx_compile_stdcxx.m4])  # https://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx.html
 AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
+PKG_CHECK_MODULES([LIBGLOG], [libglog])
+PKG_CHECK_MODULES([LIBCONFIG], [libconfig++])
+PKG_CHECK_MODULES([GFLAGS], [gflags])
+PKG_CHECK_MODULES([LIBEVENT], [libevent])
 PKG_CHECK_MODULES([FLATBUFFERS], [flatbuffers], [], [
   AC_LANG_PUSH([C++])
   SAVE_CPPFLAGS="$CPPFLAGS"
@@ -32,6 +36,8 @@ AC_CONFIG_FILES([
  include/Makefile
  include/quinclas/Makefile
  include/quinclas/tradingapi.h
+ src/Makefile
+ src/execution_engine/Makefile
  quinclas-tradingapi.pc
 ])
 AC_CONFIG_SUBDIRS([

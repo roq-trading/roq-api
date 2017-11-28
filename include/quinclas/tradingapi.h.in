@@ -15,60 +15,12 @@ namespace common {
 /**
  * Constants.
  */
-#define MAX_DEPTH 10                                         ///< Maximum market-by-price depth
+const size_t MAX_DEPTH = 10;                                 ///< Maximum market-by-price depth
 
 /**
  * Typedefs.
  */
 typedef uint64_t datetime_t;                                 // Date time
-
-/**
- * Connection status.
- */
-/*
-enum class ConnectionStatus : char {
-    DISCONNECTED,                                            ///< Not connected
-    CONNECTED                                                ///< Connected
-};
-*/
-
-/**
- * Login status.
- */
-enum class LoginStatus : char {
-    OFF,                                                     ///< Not logged in
-    ON                                                       ///< Logged in
-};
-
-/**
- * Trade direction.
- */
-enum class TradeDirection : uint8_t {
-    UNDEFINED,                                               ///< Undefined
-    BUY,                                                     ///< Buy
-    SELL                                                     ///< Sell
-};
-
-/**
- * Trading status.
- */
-enum class TradingStatus : uint8_t {
-    UNDEFINED,                                               ///< Undefined
-    CLOSED,                                                  ///< Market is not open for trading
-    OPEN                                                     ///< Market is open for trading
-};
-
-/**
- * Order status
- */
-enum class OrderStatus : uint8_t {
-    UNDEFINED,
-    SENT,                                                    ///< Order was sent, but no ack has been received yet
-    FAILED,                                                  ///< Order was not accepted
-    ACCEPTED,                                                ///< Order has been accepted by the exchange
-    CANCELLED,                                               ///< Order has been cancelled
-    FILLED                                                   ///< Order has been completed
-};
 
 /**
  * Order book layer (positional by-price aggregated view of an order book).
@@ -477,39 +429,19 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Co
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::LoginStatus value) {
-    switch (value) {
-        case quinclas::common::LoginStatus::OFF: return stream << "OFF";
-        case quinclas::common::LoginStatus::ON: return stream << "ON";
-        default: return stream << "UNKNOWN:" << static_cast<int>(value);
-    }
+    return stream << quinclas::common::EnumNameLoginStatus(value);
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::TradeDirection value) {
-    switch (value) {
-        case quinclas::common::TradeDirection::BUY: return stream << "BUY";
-        case quinclas::common::TradeDirection::SELL: return stream << "SELL";
-        default: return stream << "UNKNOWN:" << static_cast<int>(value);
-    }
+    return stream << quinclas::common::EnumNameTradeDirection(value);
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::TradingStatus value) {
-    switch (value) {
-        case quinclas::common::TradingStatus::OPEN: return stream << "OPEN";
-        case quinclas::common::TradingStatus::CLOSED: return stream << "CLOSED";
-        default: return stream << "UNKNOWN:" << static_cast<int>(value);
-    }
+    return stream << quinclas::common::EnumNameTradingStatus(value);
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::OrderStatus value) {
-    switch (value) {
-        case quinclas::common::OrderStatus::UNDEFINED: return stream << "UNDEFINED";
-        case quinclas::common::OrderStatus::SENT: return stream << "SENT";
-        case quinclas::common::OrderStatus::FAILED: return stream << "FAILED";
-        case quinclas::common::OrderStatus::ACCEPTED: return stream << "ACCEPTED";
-        case quinclas::common::OrderStatus::CANCELLED: return stream << "CANCELLED";
-        case quinclas::common::OrderStatus::FILLED: return stream << "FILLED";
-        default: return stream << "UNKNOWN:" << static_cast<int>(value);
-    }
+    return stream << quinclas::common::EnumNameOrderStatus(value);
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Layer& value) {

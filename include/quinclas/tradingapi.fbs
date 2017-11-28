@@ -2,23 +2,7 @@ include "common.fbs";
 
 namespace quinclas.schema;
 
-enum LoginStatus:byte {
-  Off = 0,
-  On = 1
-}
-
-enum TradeDirection:byte {
-  Undefined = 0,
-  Buy = 1,
-  Sell = 2
-}
-
-enum TradingStatus:byte {
-  Undefined = 0,
-  Closed = 1,
-  Open = 2
-}
-
+/*
 enum OrderStatus:byte {
   Undefined = 0,
   Sent = 1,
@@ -27,6 +11,7 @@ enum OrderStatus:byte {
   Cancelled = 4,
   Filled = 5
 }
+*/
 
 /// Order book layer (positional by-price aggregated view of an order book).
 table Layer {
@@ -42,9 +27,9 @@ table Layer {
 
 table GatewayStatus {
     market_data_connection_status:common.ConnectionStatus;
-    market_data_login_status:LoginStatus;
+    market_data_login_status:common.LoginStatus;
     order_management_connection_status:common.ConnectionStatus;
-    order_management_login_status:LoginStatus;
+    order_management_login_status:common.LoginStatus;
 }
 
 table MarketByPrice {
@@ -80,7 +65,7 @@ table ReferenceData {
 table MarketStatus {
     exchange:string;
     instrument:string;
-    trading_status:TradingStatus;
+    trading_status:common.TradingStatus;
 }
 
 table CreateOrderAck {
@@ -102,8 +87,8 @@ table OrderUpdate {
     exchange:string;
     instrument:string;
     order_id:string;
-    status:OrderStatus;
-    trade_direction:TradeDirection;
+    status:common.OrderStatus;
+    trade_direction:common.TradeDirection;
     remaining_quantity:double;
     traded_quantity:double;
     insert_time:ulong;
@@ -117,7 +102,7 @@ table TradeUpdate {
     instrument:string;
     order_id:string;
     trade_id:string;
-    trade_direction:TradeDirection;
+    trade_direction:common.TradeDirection;
     quantity:double;
     price:double;
     opaque:int;
@@ -197,7 +182,7 @@ table CreateOrder {
     exchange:string;
     order_template_name:string;
     instrument:string;
-    direction:TradeDirection;
+    direction:common.TradeDirection;
     quantity:double;
     limit_price:double;
     stop_price:double;

@@ -1,5 +1,5 @@
 pkgincludedir=$(includedir)/quinclas
-pkginclude_HEADERS=tradingapi.h tradingapi_generated.h common_generated.h
+pkginclude_HEADERS=tradingapi.h tradingapi_generated.h common_generated.h codec.h
 
 EXTRA_DIST = \
 	tradingapi.fbs \

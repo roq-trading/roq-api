@@ -8,3 +8,46 @@ enum ConnectionStatus:byte {
   Connected = 1
 }
 
+/// Login status.
+enum LoginStatus:byte {
+  ///< Not logged in
+  Off = 0,
+  ///< Logged in
+  On = 1
+}
+
+/// Trade direction.
+enum TradeDirection:byte {
+  ///< Undefined
+  Undefined = 0,
+  ///< Buy
+  Buy = 1,
+  ///< Sell
+  Sell = 2
+}
+
+/// Trading status.
+enum TradingStatus:byte {
+  ///< Undefined
+  Undefined = 0,
+  ///< Market is not open for trading
+  Closed = 1,
+  ///< Market is open for trading
+  Open = 2
+}
+
+/// Order status.
+enum OrderStatus:byte {
+  Undefined = 0,
+  ///< Order was sent, but no ack has been received yet
+  Sent = 1,
+  ///< Order was not accepted
+  Failed = 2,
+  ///< Order has been accepted by the exchange
+  Accepted = 3,
+  ///< Order has been cancelled
+  Cancelled = 4,
+  ///< Order has been completed
+  Filled = 5
+}
+

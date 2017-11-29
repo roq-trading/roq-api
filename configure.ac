@@ -36,8 +36,10 @@ AC_CONFIG_FILES([
  include/Makefile
  include/quinclas/Makefile
  include/quinclas/tradingapi.h
+ include/quinclas/tests/Makefile
  src/Makefile
  src/execution_engine/Makefile
+ src/execution_engine/tests/Makefile
  quinclas-tradingapi.pc
 ])
 AC_CONFIG_SUBDIRS([

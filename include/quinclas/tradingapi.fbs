@@ -122,7 +122,6 @@ table MessageInfo {
 
 table IdleEvent {}
 
-
 table GatewayStatusEvent {
     message_info:MessageInfo;
     gateway_status:GatewayStatus;
@@ -176,6 +175,10 @@ table OrderUpdateEvent {
 table TradeUpdateEvent {
     message_info:MessageInfo;
     trade_update:TradeUpdate;
+}
+
+union Event {
+    GatewayStatusEvent, ReferenceDataEvent
 }
 
 table CreateOrder {

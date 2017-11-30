@@ -173,6 +173,7 @@ inline common::TradeUpdate convert(const schema::TradeUpdate *value) {
 
 // decode (events)
 
+/* TODO: DROP
 inline common::GatewayStatusEvent convert(const schema::GatewayStatusEvent *value) {
     auto message_info = convert(value->message_info());
     auto gateway_status = convert(value->gateway_status());
@@ -260,6 +261,7 @@ inline common::TradeUpdateEvent convert(const schema::TradeUpdateEvent *value) {
         .message_info = message_info,
         .trade_update = trade_update};
 }
+*/
 
 // decode (requests / low level)
 

@@ -22,15 +22,19 @@ TEST(flatbuffers, gateway_status) {
             .order_management_login_status = common::LoginStatus::On,
         }
     };
-    FlatBufferBuilder fbb(1024);
+    FlatBufferBuilder fbb;
     ASSERT_EQ(fbb.GetSize(), 0);
     fbb.Finish(common::convert(fbb, source));
     ASSERT_GT(fbb.GetSize(), 0);
     std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
 
     // FIXME: can't we specify max length?
-    auto target = common::convert(GetRoot<schema::GatewayStatusEvent>(fbb.GetBufferPointer()));
-    //auto target = common::convert(GetRoot<schema::GatewayStatusEvent>(&buffer[0]));
+    auto root = GetRoot<schema::GatewayStatusEvent>(&buffer[0]);
+    auto message_info = common::convert(root->message_info());
+    auto gateway_status = common::convert(root->gateway_status());
+    auto target = common::GatewayStatusEvent{
+        .message_info = message_info,
+        .gateway_status = gateway_status};
     ASSERT_EQ(target.gateway_status.market_data_connection_status, source.gateway_status.market_data_connection_status);
 }
 

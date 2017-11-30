@@ -97,7 +97,7 @@ struct MarketStatus {
  * Response to create order
  */
 struct CreateOrderAck {
-    int opaque;                                              ///< User provided opaque value
+    int32_t opaque;                                          ///< User provided opaque value
     const char *order_id;                                    ///< Order identifier
 };
 
@@ -105,7 +105,7 @@ struct CreateOrderAck {
  * Response to modify order
  */
 struct ModifyOrderAck {
-    int opaque;                                              ///< User provided opaque value
+    int32_t opaque;                                          ///< User provided opaque value
     const char *order_id;                                    ///< Order identifier
 };
 
@@ -113,7 +113,7 @@ struct ModifyOrderAck {
  * Response to cancel order
  */
 struct CancelOrderAck {
-    int opaque;                                              ///< User provided opaque value
+    int32_t opaque;                                          ///< User provided opaque value
     const char *order_id;                                    ///< Order identifier
 };
 
@@ -131,7 +131,7 @@ struct OrderUpdate {
     datetime_t insert_time;                                  ///< Order insertion time
     datetime_t cancel_time;                                  ///< Order cancellation time
     const char *order_template;                              ///< Order template
-    int opaque;                                              ///< User provided opaque value
+    int32_t opaque;                                          ///< User provided opaque value
 };
 
 /**
@@ -145,7 +145,7 @@ struct TradeUpdate {
     TradeDirection trade_direction;                          ///< Trade direction
     double quantity;                                         ///< Trade quantity
     double price;                                            ///< Trade price
-    int opaque;                                              ///< User provided opaque value
+    int32_t opaque;                                          ///< User provided opaque value
 };
 
 /**
@@ -270,7 +270,7 @@ struct CreateOrder {
     const double quantity;                                   ///< Desired quantity
     const double limit_price;                                ///< Limit price
     const double stop_price;                                 ///< Stop price
-    const int opaque;                                        ///< Opaque pass-through value
+    const int32_t opaque;                                    ///< Opaque pass-through value
 };
 
 /**
@@ -278,7 +278,7 @@ struct CreateOrder {
  */
 struct ModifyOrder {
     const int order_id;                                      ///< Order id
-    const int opaque;                                        ///< Opaque pass-through value
+    const int32_t opaque;                                    ///< Opaque pass-through value
 };
 
 /**
@@ -286,7 +286,7 @@ struct ModifyOrder {
  */
 struct CancelOrder {
     const int order_id;                                      ///< Order id
-    const int opaque;                                        ///< Opaque pass-through value
+    const int32_t opaque;                                    ///< Opaque pass-through value
 };
 
 /**

@@ -50,4 +50,3 @@ enum OrderStatus:byte {
   ///< Order has been completed
   Filled = 5
 }
-

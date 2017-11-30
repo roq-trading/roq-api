@@ -2,26 +2,10 @@ include "common.fbs";
 
 namespace quinclas.schema;
 
-/*
-enum OrderStatus:byte {
-  Undefined = 0,
-  Sent = 1,
-  Failed = 2,
-  Accepted = 3,
-  Cancelled = 4,
-  Filled = 5
-}
-*/
-
-/// Order book layer (positional by-price aggregated view of an order book).
-table Layer {
-  /// Bid price
+struct Layer {
   bid_price:double;
-  /// Aggregated bid quantity
   bid_quantity:double;
-  /// Ask price
   ask_price:double;
-  /// Aggregated ask quantity
   ask_quantity:double;
 }
 
@@ -108,79 +92,6 @@ table TradeUpdate {
     opaque:int;
 }
 
-table TerminationEvent {
-    gateway:string;
-}
-
-table MessageInfo {
-    gateway:string;
-    message_id:ulong;
-    exchange_time:ulong;
-    receive_time:ulong;
-    enqueue_time:ulong;
-}
-
-table IdleEvent {}
-
-table GatewayStatusEvent {
-    message_info:MessageInfo;
-    gateway_status:GatewayStatus;
-}
-
-table ReferenceDataEvent {
-    message_info:MessageInfo;
-    reference_data:ReferenceData;
-}
-
-table MarketStatusEvent {
-    message_info:MessageInfo;
-    market_status:MarketStatus;
-}
-
-table MarketByPriceEvent {
-    message_info:MessageInfo;
-    market_by_price:MarketByPrice;
-}
-
-table SessionStatisticsEvent {
-    message_info:MessageInfo;
-    session_statistics:SessionStatistics;
-}
-
-table DailyStatisticsEvent {
-    message_info:MessageInfo;
-    daily_statistics:DailyStatistics;
-}
-
-table CreateOrderAckEvent {
-    message_info:MessageInfo;
-    create_order_ack:CreateOrderAck;
-}
-
-table ModifyOrderAckEvent {
-    message_info:MessageInfo;
-    modify_order_ack:ModifyOrderAck;
-}
-
-table CancelOrderAckEvent {
-    message_info:MessageInfo;
-    cancel_order_ack:CancelOrderAck;
-}
-
-table OrderUpdateEvent {
-    message_info:MessageInfo;
-    order_update:OrderUpdate;
-}
-
-table TradeUpdateEvent {
-    message_info:MessageInfo;
-    trade_update:TradeUpdate;
-}
-
-union Event {
-    GatewayStatusEvent, ReferenceDataEvent
-}
-
 table CreateOrder {
     exchange:string;
     order_template_name:string;
@@ -202,21 +113,52 @@ table CancelOrder {
     opaque:int;
 }
 
+// events
+
+table TerminationEvent {
+    gateway:string;
+}
+
+table MessageInfo {
+    gateway:string;
+    message_id:ulong;
+    exchange_time:ulong;
+    receive_time:ulong;
+    enqueue_time:ulong;
+}
+
+union EventData {
+    GatewayStatus,
+    ReferenceData,
+    MarketStatus,
+    MarketByPrice,
+    SessionStatistics,
+    DailyStatistics,
+    CreateOrderAck,
+    ModifyOrderAck,
+    CancelOrderAck,
+    OrderUpdate,
+    TradeUpdate,
+}
+
+table Event {
+    message_info:MessageInfo;
+    event_data:EventData;
+}
+
+// requests
+
 table RequestInfo {
   destination:string;
 }
 
-table CreateOrderRequest {
-  request_info:RequestInfo;
-  create_order:CreateOrder;
+union RequestData {
+    CreateOrder,
+    ModifyOrder,
+    CancelOrder,
 }
 
-table ModifyOrderRequest {
-  request_info:RequestInfo;
-  modify_order:ModifyOrder;
-}
-
-table CancelOrderRequest {
-  request_info:RequestInfo;
-  cancel_order:CancelOrder;
+table Request {
+    request_info:RequestInfo;
+    request_data:RequestData;
 }

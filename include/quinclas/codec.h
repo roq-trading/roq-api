@@ -93,7 +93,7 @@ inline common::MarketByPrice convert(const schema::MarketByPrice *value) {
         .exchange = value->exchange()->c_str(),
         .instrument = value->instrument()->c_str(),
     };
-    const flatbuffers::Vector<flatbuffers::Offset<schema::Layer> > *depth = value->depth();
+    const flatbuffers::Vector<const schema::Layer *> *depth = value->depth();
     assert(depth->Length() == common::MAX_DEPTH);
     for (auto i = 0; i < common::MAX_DEPTH; ++i) {
         res.depth[i] = convert((*depth)[i]);
@@ -171,98 +171,6 @@ inline common::TradeUpdate convert(const schema::TradeUpdate *value) {
     };
 }
 
-// decode (events)
-
-/* TODO: DROP
-inline common::GatewayStatusEvent convert(const schema::GatewayStatusEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto gateway_status = convert(value->gateway_status());
-    return common::GatewayStatusEvent{
-        .message_info = message_info,
-        .gateway_status = gateway_status};
-}
-
-inline common::ReferenceDataEvent convert(const schema::ReferenceDataEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto reference_data = convert(value->reference_data());
-    return common::ReferenceDataEvent{
-        .message_info = message_info,
-        .reference_data = reference_data};
-}
-
-inline common::MarketStatusEvent convert(const schema::MarketStatusEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto market_status = convert(value->market_status());
-    return common::MarketStatusEvent{
-        .message_info = message_info,
-        .market_status = market_status};
-}
-
-inline common::MarketByPriceEvent const convert(const schema::MarketByPriceEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto market_by_price = convert(value->market_by_price());
-    return common::MarketByPriceEvent{
-        .message_info = message_info,
-        .market_by_price = market_by_price};
-}
-
-inline common::SessionStatisticsEvent convert(const schema::SessionStatisticsEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto session_statistics = convert(value->session_statistics());
-    return common::SessionStatisticsEvent{
-        .message_info = message_info,
-        .session_statistics = session_statistics};
-}
-
-inline common::DailyStatisticsEvent convert(const schema::DailyStatisticsEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto daily_statistics = convert(value->daily_statistics());
-    return common::DailyStatisticsEvent{
-        .message_info = message_info,
-        .daily_statistics = daily_statistics};
-}
-
-inline common::CreateOrderAckEvent convert(const schema::CreateOrderAckEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto create_order_ack = convert(value->create_order_ack());
-    return common::CreateOrderAckEvent{
-        .message_info = message_info,
-        .create_order_ack = create_order_ack};
-}
-
-inline common::ModifyOrderAckEvent convert(const schema::ModifyOrderAckEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto modify_order_ack = convert(value->modify_order_ack());
-    return common::ModifyOrderAckEvent{
-        .message_info = message_info,
-        .modify_order_ack = modify_order_ack};
-}
-
-inline common::CancelOrderAckEvent convert(const schema::CancelOrderAckEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto cancel_order_ack = convert(value->cancel_order_ack());
-    return common::CancelOrderAckEvent{
-        .message_info = message_info,
-        .cancel_order_ack = cancel_order_ack};
-}
-
-inline common::OrderUpdateEvent convert(const schema::OrderUpdateEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto order_update = convert(value->order_update());
-    return common::OrderUpdateEvent{
-        .message_info = message_info,
-        .order_update = order_update};
-}
-
-inline common::TradeUpdateEvent convert(const schema::TradeUpdateEvent *value) {
-    auto message_info = convert(value->message_info());
-    auto trade_update = convert(value->trade_update());
-    return common::TradeUpdateEvent{
-        .message_info = message_info,
-        .trade_update = trade_update};
-}
-*/
-
 // decode (requests / low level)
 
 inline common::RequestInfo convert(const schema::RequestInfo *value) {
@@ -298,32 +206,6 @@ inline common::CancelOrder convert(const schema::CancelOrder *value) {
     };
 }
 
-// decode (requests)
-
-inline common::CreateOrderRequest convert(const schema::CreateOrderRequest *value) {
-    auto request_info = convert(value->request_info());
-    auto create_order = convert(value->create_order());
-    return common::CreateOrderRequest{
-        .request_info = request_info,
-        .create_order = create_order};
-}
-
-inline common::ModifyOrderRequest convert(const schema::ModifyOrderRequest *value) {
-    auto request_info = convert(value->request_info());
-    auto modify_order = convert(value->modify_order());
-    return common::ModifyOrderRequest{
-        .request_info = request_info,
-        .modify_order = modify_order};
-}
-
-inline common::CancelOrderRequest convert(const schema::CancelOrderRequest *value) {
-    auto request_info = convert(value->request_info());
-    auto cancel_order = convert(value->cancel_order());
-    return common::CancelOrderRequest{
-        .request_info = request_info,
-        .cancel_order = cancel_order};
-}
-
 // encode (events / low level)
 
 inline flatbuffers::Offset<schema::MessageInfo>
@@ -349,11 +231,9 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatus& value)
 
 inline flatbuffers::Offset<schema::MarketByPrice>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPrice& value) {
-    std::vector<flatbuffers::Offset<schema::Layer> > depth(MAX_DEPTH);
+    std::vector<schema::Layer> depth(MAX_DEPTH);
     for (auto i = 0; i < MAX_DEPTH; ++i)
-        depth[i] = 
-        schema::CreateLayer(
-            fbb, 
+        depth[i] = schema::Layer(
             value.depth[i].bid_price,
             value.depth[i].bid_quantity,
             value.depth[i].ask_price,
@@ -362,7 +242,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPrice& value)
         fbb,
         fbb.CreateString(value.exchange),
         fbb.CreateString(value.instrument),
-        fbb.CreateVector(std::move(depth)));
+        fbb.CreateVectorOfStructs(&depth[0], depth.size()));
 }
 
 inline flatbuffers::Offset<schema::SessionStatistics>
@@ -464,81 +344,81 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdate& value) {
 
 // encode (events)
 
-inline flatbuffers::Offset<schema::GatewayStatusEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatusEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto gateway_status = convert(fbb, value.gateway_status);
-    return schema::CreateGatewayStatusEvent(fbb, message_info, gateway_status);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::GatewayStatus, gateway_status.Union());
 }
 
-inline flatbuffers::Offset<schema::ReferenceDataEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::ReferenceDataEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto reference_data = convert(fbb, value.reference_data);
-    return schema::CreateReferenceDataEvent(fbb, message_info, reference_data);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::ReferenceData, reference_data.Union());
 }
 
-inline flatbuffers::Offset<schema::MarketStatusEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketStatusEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto market_status = convert(fbb, value.market_status);
-    return schema::CreateMarketStatusEvent(fbb, message_info, market_status);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::MarketStatus, market_status.Union());
 }
 
-inline flatbuffers::Offset<schema::MarketByPriceEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPriceEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto market_by_price = convert(fbb, value.market_by_price);
-    return schema::CreateMarketByPriceEvent(fbb, message_info, market_by_price);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::MarketByPrice, market_by_price.Union());
 }
 
-inline flatbuffers::Offset<schema::SessionStatisticsEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::SessionStatisticsEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto session_statistics = convert(fbb, value.session_statistics);
-    return schema::CreateSessionStatisticsEvent(fbb, message_info, session_statistics);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::SessionStatistics, session_statistics.Union());
 }
 
-inline flatbuffers::Offset<schema::DailyStatisticsEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::DailyStatisticsEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto daily_statistics = convert(fbb, value.daily_statistics);
-    return schema::CreateDailyStatisticsEvent(fbb, message_info, daily_statistics);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::DailyStatistics, daily_statistics.Union());
 }
 
-inline flatbuffers::Offset<schema::CreateOrderAckEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrderAckEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto create_order_ack = convert(fbb, value.create_order_ack);
-    return schema::CreateCreateOrderAckEvent(fbb, message_info, create_order_ack);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::CreateOrderAck, create_order_ack.Union());
 }
 
-inline flatbuffers::Offset<schema::ModifyOrderAckEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrderAckEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto modify_order_ack = convert(fbb, value.modify_order_ack);
-    return schema::CreateModifyOrderAckEvent(fbb, message_info, modify_order_ack);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::ModifyOrderAck, modify_order_ack.Union());
 }
 
-inline flatbuffers::Offset<schema::CancelOrderAckEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderAckEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto cancel_order_ack = convert(fbb, value.cancel_order_ack);
-    return schema::CreateCancelOrderAckEvent(fbb, message_info, cancel_order_ack);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::CancelOrderAck, cancel_order_ack.Union());
 }
 
-inline flatbuffers::Offset<schema::OrderUpdateEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::OrderUpdateEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto order_update = convert(fbb, value.order_update);
-    return schema::CreateOrderUpdateEvent(fbb, message_info, order_update);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::OrderUpdate, order_update.Union());
 }
 
-inline flatbuffers::Offset<schema::TradeUpdateEvent>
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdateEvent& value) {
     auto message_info = convert(fbb, value.message_info);
     auto trade_update = convert(fbb, value.trade_update);
-    return schema::CreateTradeUpdateEvent(fbb, message_info, trade_update);
+    return schema::CreateEvent(fbb, message_info, schema::EventData::TradeUpdate, trade_update.Union());
 }
 
 // encode (requests / low level)
@@ -574,25 +454,25 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrder& value) {
 
 // encode (requests)
 
-inline flatbuffers::Offset<schema::CreateOrderRequest>
+inline flatbuffers::Offset<schema::Request>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrderRequest& value) {
     auto request_info = convert(fbb, value.request_info);
     auto create_order = convert(fbb, value.create_order);
-    return schema::CreateCreateOrderRequest(fbb, request_info, create_order);
+    return schema::CreateRequest(fbb, request_info, schema::RequestData::CreateOrder, create_order.Union());
 }
 
-inline flatbuffers::Offset<schema::ModifyOrderRequest>
+inline flatbuffers::Offset<schema::Request>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrderRequest& value) {
     auto request_info = convert(fbb, value.request_info);
     auto modify_order = convert(fbb, value.modify_order);
-    return schema::CreateModifyOrderRequest(fbb, request_info, modify_order);
+    return schema::CreateRequest(fbb, request_info, schema::RequestData::ModifyOrder, modify_order.Union());
 }
 
-inline flatbuffers::Offset<schema::CancelOrderRequest>
+inline flatbuffers::Offset<schema::Request>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderRequest& value) {
     auto request_info = convert(fbb, value.request_info);
     auto cancel_order = convert(fbb, value.cancel_order);
-    return schema::CreateCancelOrderRequest(fbb, request_info, cancel_order);
+    return schema::CreateRequest(fbb, request_info, schema::RequestData::CancelOrder, cancel_order.Union());
 }
 
 }  // namespace execution_engine

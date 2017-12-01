@@ -9,35 +9,15 @@
 namespace quinclas {
 namespace common {
 
-enum class MessageType : uint8_t {
-    GatewayStatusEvent = 1,
-    ReferenceDataEvent = 2,
-    MarketStatusEvent = 3,
-    MarketByPriceEvent = 4,
-    SessionStatisticsEvent = 5,
-    DailyStatisticsEvent = 6,
-    CreateOrderAckEvent = 7,
-    ModifyOrderAckEvent = 8,
-    CancelOrderAckEvent = 9,
-    OrderUpdateEvent = 10,
-    TradeUpdateEvent = 11,
-    CreateOrderRequest = 129,
-    ModifyOrderRequest = 130,
-    CancelOrderRequest = 131,
-};
-
 // envelope
 
 class Envelope {
  public:
     static const size_t LENGTH = 4;
     explicit Envelope(const unsigned char *data) :
-        _type(static_cast<MessageType>(data[1])),
         _length((static_cast<int>(data[2]) << 8) + static_cast<int>(data[3])) {}
-    MessageType type() { return _type; }
     size_t length() { return _length; }
  private:
-    MessageType _type;
     size_t _length;
 };
 

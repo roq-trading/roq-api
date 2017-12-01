@@ -146,9 +146,11 @@ void Controller::on_read() {
                         break;
                     default:
                         if (schema::EventData::MAX < type)
-                            LOG(WARNING) << "Unknown message type: " << static_cast<uint8_t>(type);
+                            LOG(WARNING) << "Unknown message type: " <<
+                                static_cast<uint8_t>(type);
                         else
-                            LOG(WARNING) << "Unknown message type: " << schema::EnumNamesEventData()[static_cast<uint8_t>(type)];
+                            LOG(WARNING) << "Unknown message type: " <<
+                                schema::EnumNamesEventData()[static_cast<uint8_t>(type)];
                 }
             }
             catch (...) {

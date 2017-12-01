@@ -1,5 +1,7 @@
 /* Copyright (c) 2017, Hans Erik Thrane */
 
+#pragma once
+
 #include <quinclas/tradingapi.h>
 
 namespace quinclas {
@@ -7,7 +9,7 @@ namespace execution_engine {
 
 class Strategy : public common::Strategy {
  public:
-    Strategy(common::Strategy::Dispatcher& dispatcher);
+    explicit Strategy(common::Strategy::Dispatcher& dispatcher);
  protected:
     void on(const common::IdleEvent&) override;
     void on(const common::GatewayStatusEvent&) override;

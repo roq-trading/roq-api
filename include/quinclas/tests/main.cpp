@@ -10,9 +10,6 @@ using namespace quinclas;
 
 const int MAX_ITERATIONS = 1000;
 
-
-// TODO: randomized enums
-
 namespace {
 static std::random_device random_device;
 static std::mt19937_64 random_engine(random_device());
@@ -24,7 +21,7 @@ static std::uniform_int_distribution<uint64_t> random_generator_uint64;
 static uint32_t rand_uint64() {
     return random_generator_uint64(random_engine);
 }
-static std::uniform_int_distribution<double> random_generator_double;
+static std::uniform_real_distribution<double> random_generator_double;
 static double rand_double() {
     return random_generator_double(random_engine);
 }
@@ -40,6 +37,24 @@ static const size_t NAME_LENGTH = sizeof(NAME) / sizeof(NAME[0]);
 }  // namespace
 
 namespace {
+static common::ConnectionStatus rand_connection_status() {
+    return static_cast<common::ConnectionStatus>(rand_uint32() % static_cast<uint32_t>(common::ConnectionStatus::MAX));
+}
+static common::LoginStatus rand_login_status() {
+    return static_cast<common::LoginStatus>(rand_uint32() % static_cast<uint32_t>(common::LoginStatus::MAX));
+}
+static common::TradeDirection rand_trade_direction() {
+    return static_cast<common::TradeDirection>(rand_uint32() % static_cast<uint32_t>(common::TradeDirection::MAX));
+}
+static common::TradingStatus rand_trading_status() {
+    return static_cast<common::TradingStatus>(rand_uint32() % static_cast<uint32_t>(common::TradingStatus::MAX));
+}
+static common::OrderStatus rand_order_status() {
+    return static_cast<common::OrderStatus>(rand_uint32() % static_cast<uint32_t>(common::OrderStatus::MAX));
+}
+}
+
+namespace {
 inline common::MessageInfo CreateRandomMessageInfo() {
     return common::MessageInfo{
         .gateway = NAME[rand_uint32() % NAME_LENGTH],
@@ -49,12 +64,17 @@ inline common::MessageInfo CreateRandomMessageInfo() {
         .enqueue_time = rand_uint64(),
     };
 }
+inline common::RequestInfo CreateRandomRequestInfo() {
+    return common::RequestInfo{
+        .destination = NAME[rand_uint32() % NAME_LENGTH],
+    };
+}
 inline common::GatewayStatus CreateRandomGatewayStatus() {
     return common::GatewayStatus{
-        .market_data_connection_status = common::ConnectionStatus::Connected,
-        .market_data_login_status = common::LoginStatus::On,
-        .order_management_connection_status = common::ConnectionStatus::Connected,
-        .order_management_login_status = common::LoginStatus::On,
+        .market_data_connection_status = rand_connection_status(),
+        .market_data_login_status = rand_login_status(),
+        .order_management_connection_status = rand_connection_status(),
+        .order_management_login_status = rand_login_status(),
     };
 }
 inline common::MarketByPrice CreateRandomMarketByPrice() {
@@ -101,13 +121,76 @@ inline common::MarketStatus CreateRandomMarketStatus() {
     return common::MarketStatus{
         .exchange = NAME[rand_uint32() % NAME_LENGTH],
         .instrument = NAME[rand_uint32() % NAME_LENGTH],
-        .trading_status = common::TradingStatus::Open,
+        .trading_status = rand_trading_status(),
     };
 }
 inline common::CreateOrderAck CreateRandomCreateOrderAck() {
     return common::CreateOrderAck{
         .opaque = rand_int32(),
         .order_id = NAME[rand_uint32() % NAME_LENGTH],
+    };
+}
+inline common::ModifyOrderAck CreateRandomModifyOrderAck() {
+    return common::ModifyOrderAck{
+        .opaque = rand_int32(),
+        .order_id = NAME[rand_uint32() % NAME_LENGTH],
+    };
+}
+inline common::CancelOrderAck CreateRandomCancelOrderAck() {
+    return common::CancelOrderAck{
+        .opaque = rand_int32(),
+        .order_id = NAME[rand_uint32() % NAME_LENGTH],
+    };
+}
+inline common::OrderUpdate CreateRandomOrderUpdate() {
+    return common::OrderUpdate{
+        .exchange = NAME[rand_uint32() % NAME_LENGTH],
+        .instrument = NAME[rand_uint32() % NAME_LENGTH],
+        .order_id = NAME[rand_uint32() % NAME_LENGTH],
+        .status = rand_order_status(),
+        .trade_direction = rand_trade_direction(),
+        .remaining_quantity = rand_double(),
+        .traded_quantity = rand_double(),
+        .insert_time = rand_uint64(),
+        .cancel_time = rand_uint64(),
+        .order_template = NAME[rand_uint32() % NAME_LENGTH],
+        .opaque = rand_int32(),
+    };
+}
+inline common::TradeUpdate CreateRandomTradeUpdate() {
+    return common::TradeUpdate{
+        .exchange = NAME[rand_uint32() % NAME_LENGTH],
+        .instrument = NAME[rand_uint32() % NAME_LENGTH],
+        .order_id = NAME[rand_uint32() % NAME_LENGTH],
+        .trade_id = NAME[rand_uint32() % NAME_LENGTH],
+        .trade_direction = rand_trade_direction(),
+        .quantity = rand_double(),
+        .price = rand_double(),
+        .opaque = rand_int32(),
+    };
+}
+inline common::CreateOrder CreateRandomCreateOrder() {
+    return common::CreateOrder{
+        .exchange = NAME[rand_uint32() % NAME_LENGTH],
+        .order_template_name = NAME[rand_uint32() % NAME_LENGTH],
+        .instrument = NAME[rand_uint32() % NAME_LENGTH],
+        .direction = rand_trade_direction(),
+        .quantity = rand_double(),
+        .limit_price = rand_double(),
+        .stop_price = rand_double(),
+        .opaque = rand_int32(),
+    };
+}
+inline common::ModifyOrder CreateRandomModifyOrder() {
+    return common::ModifyOrder{
+        .order_id = rand_int32(),
+        .opaque = rand_int32(),
+    };
+}
+inline common::CancelOrder CreateRandomCancelOrder() {
+    return common::CancelOrder{
+        .order_id = rand_int32(),
+        .opaque = rand_int32(),
     };
 }
 }  // namespace
@@ -119,6 +202,9 @@ void compare(const common::MessageInfo& lhs, const common::MessageInfo& rhs) {
     ASSERT_EQ(lhs.exchange_time, rhs.exchange_time);
     ASSERT_EQ(lhs.receive_time, rhs.receive_time);
     ASSERT_EQ(lhs.enqueue_time, rhs.enqueue_time);
+}
+void compare(const common::RequestInfo& lhs, const common::RequestInfo& rhs) {
+    ASSERT_STREQ(lhs.destination, rhs.destination);
 }
 void compare(const common::GatewayStatus& lhs, const common::GatewayStatus& rhs) {
     ASSERT_EQ(lhs.market_data_connection_status, rhs.market_data_connection_status);
@@ -165,6 +251,55 @@ void compare(const common::MarketStatus& lhs, const common::MarketStatus& rhs) {
 void compare(const common::CreateOrderAck& lhs, const common::CreateOrderAck& rhs) {
     ASSERT_EQ(lhs.opaque, rhs.opaque);
     ASSERT_STREQ(lhs.order_id, rhs.order_id);
+}
+void compare(const common::ModifyOrderAck& lhs, const common::ModifyOrderAck& rhs) {
+    ASSERT_EQ(lhs.opaque, rhs.opaque);
+    ASSERT_STREQ(lhs.order_id, rhs.order_id);
+}
+void compare(const common::CancelOrderAck& lhs, const common::CancelOrderAck& rhs) {
+    ASSERT_EQ(lhs.opaque, rhs.opaque);
+    ASSERT_STREQ(lhs.order_id, rhs.order_id);
+}
+void compare(const common::OrderUpdate& lhs, const common::OrderUpdate& rhs) {
+    ASSERT_STREQ(lhs.exchange, rhs.exchange);
+    ASSERT_STREQ(lhs.instrument, rhs.instrument);
+    ASSERT_STREQ(lhs.order_id, rhs.order_id);
+    ASSERT_EQ(lhs.status, rhs.status);
+    ASSERT_EQ(lhs.trade_direction, rhs.trade_direction);
+    ASSERT_EQ(lhs.remaining_quantity, rhs.remaining_quantity);
+    ASSERT_EQ(lhs.traded_quantity, rhs.traded_quantity);
+    ASSERT_EQ(lhs.insert_time, rhs.insert_time);
+    ASSERT_EQ(lhs.cancel_time, rhs.cancel_time);
+    ASSERT_STREQ(lhs.order_template, rhs.order_template);
+    ASSERT_EQ(lhs.opaque, rhs.opaque);
+}
+void compare(const common::TradeUpdate& lhs, const common::TradeUpdate& rhs) {
+    ASSERT_STREQ(lhs.exchange, rhs.exchange);
+    ASSERT_STREQ(lhs.instrument, rhs.instrument);
+    ASSERT_STREQ(lhs.order_id, rhs.order_id);
+    ASSERT_STREQ(lhs.trade_id, rhs.trade_id);
+    ASSERT_EQ(lhs.trade_direction, rhs.trade_direction);
+    ASSERT_EQ(lhs.quantity, rhs.quantity);
+    ASSERT_EQ(lhs.price, rhs.price);
+    ASSERT_EQ(lhs.opaque, rhs.opaque);
+}
+void compare(const common::CreateOrder& lhs, const common::CreateOrder& rhs) {
+    ASSERT_STREQ(lhs.exchange, rhs.exchange);
+    ASSERT_STREQ(lhs.order_template_name, rhs.order_template_name);
+    ASSERT_STREQ(lhs.instrument, rhs.instrument);
+    ASSERT_EQ(lhs.direction, rhs.direction);
+    ASSERT_EQ(lhs.quantity, rhs.quantity);
+    ASSERT_EQ(lhs.limit_price, rhs.limit_price);
+    ASSERT_EQ(lhs.stop_price, rhs.stop_price);
+    ASSERT_EQ(lhs.opaque, rhs.opaque);
+}
+void compare(const common::ModifyOrder& lhs, const common::ModifyOrder& rhs) {
+    ASSERT_EQ(lhs.order_id, rhs.order_id);
+    ASSERT_EQ(lhs.opaque, rhs.opaque);
+}
+void compare(const common::CancelOrder& lhs, const common::CancelOrder& rhs) {
+    ASSERT_EQ(lhs.order_id, rhs.order_id);
+    ASSERT_EQ(lhs.opaque, rhs.opaque);
 }
 }  // namespace
 
@@ -389,6 +524,230 @@ TEST(flatbuffers, create_order_ack_event) {
         // validate
         compare(target.message_info, source.message_info);
         compare(target.create_order_ack, source.create_order_ack);
+    }
+}
+
+TEST(flatbuffers, modify_order_ack_event) {
+    FlatBufferBuilder fbb;
+    for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+        // reset
+        fbb.Clear();  // doesn't de-allocate
+        ASSERT_EQ(fbb.GetSize(), 0);
+        // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_modify_order_ack = CreateRandomModifyOrderAck();
+        const auto source = common::ModifyOrderAckEvent{
+            .message_info = source_message_info,
+            .modify_order_ack = source_modify_order_ack};
+        // serialize using flatbuffers
+        fbb.Finish(common::convert(fbb, source));
+        ASSERT_GT(fbb.GetSize(), 0);
+        // copy of the buffer (just making sure...)
+        const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+        // deserialize using flatbuffers
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
+        ASSERT_EQ(root->event_data_type(), schema::EventData::ModifyOrderAck);
+        const auto target_modify_order_ack = common::convert(root->event_data_as_ModifyOrderAck());
+        // event (target)
+        const auto target = common::ModifyOrderAckEvent{
+            .message_info = target_message_info,
+            .modify_order_ack = target_modify_order_ack};
+        // validate
+        compare(target.message_info, source.message_info);
+        compare(target.modify_order_ack, source.modify_order_ack);
+    }
+}
+
+TEST(flatbuffers, cancel_order_ack_event) {
+    FlatBufferBuilder fbb;
+    for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+        // reset
+        fbb.Clear();  // doesn't de-allocate
+        ASSERT_EQ(fbb.GetSize(), 0);
+        // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_cancel_order_ack = CreateRandomCancelOrderAck();
+        const auto source = common::CancelOrderAckEvent{
+            .message_info = source_message_info,
+            .cancel_order_ack = source_cancel_order_ack};
+        // serialize using flatbuffers
+        fbb.Finish(common::convert(fbb, source));
+        ASSERT_GT(fbb.GetSize(), 0);
+        // copy of the buffer (just making sure...)
+        const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+        // deserialize using flatbuffers
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
+        ASSERT_EQ(root->event_data_type(), schema::EventData::CancelOrderAck);
+        const auto target_cancel_order_ack = common::convert(root->event_data_as_CancelOrderAck());
+        // event (target)
+        const auto target = common::CancelOrderAckEvent{
+            .message_info = target_message_info,
+            .cancel_order_ack = target_cancel_order_ack};
+        // validate
+        compare(target.message_info, source.message_info);
+        compare(target.cancel_order_ack, source.cancel_order_ack);
+    }
+}
+
+TEST(flatbuffers, order_update_event) {
+    FlatBufferBuilder fbb;
+    for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+        // reset
+        fbb.Clear();  // doesn't de-allocate
+        ASSERT_EQ(fbb.GetSize(), 0);
+        // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_order_update = CreateRandomOrderUpdate();
+        const auto source = common::OrderUpdateEvent{
+            .message_info = source_message_info,
+            .order_update = source_order_update};
+        // serialize using flatbuffers
+        fbb.Finish(common::convert(fbb, source));
+        ASSERT_GT(fbb.GetSize(), 0);
+        // copy of the buffer (just making sure...)
+        const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+        // deserialize using flatbuffers
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
+        ASSERT_EQ(root->event_data_type(), schema::EventData::OrderUpdate);
+        const auto target_order_update = common::convert(root->event_data_as_OrderUpdate());
+        // event (target)
+        const auto target = common::OrderUpdateEvent{
+            .message_info = target_message_info,
+            .order_update = target_order_update};
+        // validate
+        compare(target.message_info, source.message_info);
+        compare(target.order_update, source.order_update);
+    }
+}
+
+TEST(flatbuffers, trade_update_event) {
+    FlatBufferBuilder fbb;
+    for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+        // reset
+        fbb.Clear();  // doesn't de-allocate
+        ASSERT_EQ(fbb.GetSize(), 0);
+        // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_trade_update = CreateRandomTradeUpdate();
+        const auto source = common::TradeUpdateEvent{
+            .message_info = source_message_info,
+            .trade_update = source_trade_update};
+        // serialize using flatbuffers
+        fbb.Finish(common::convert(fbb, source));
+        ASSERT_GT(fbb.GetSize(), 0);
+        // copy of the buffer (just making sure...)
+        const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+        // deserialize using flatbuffers
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
+        ASSERT_EQ(root->event_data_type(), schema::EventData::TradeUpdate);
+        const auto target_trade_update = common::convert(root->event_data_as_TradeUpdate());
+        // event (target)
+        const auto target = common::TradeUpdateEvent{
+            .message_info = target_message_info,
+            .trade_update = target_trade_update};
+        // validate
+        compare(target.message_info, source.message_info);
+        compare(target.trade_update, source.trade_update);
+    }
+}
+
+TEST(flatbuffers, create_order_request) {
+    FlatBufferBuilder fbb;
+    for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+        // reset
+        fbb.Clear();  // doesn't de-allocate
+        ASSERT_EQ(fbb.GetSize(), 0);
+        // request (source)
+        const auto source_request_info = CreateRandomRequestInfo();
+        const auto source_create_order = CreateRandomCreateOrder();
+        const auto source = common::CreateOrderRequest{
+            .request_info = source_request_info,
+            .create_order = source_create_order};
+        // serialize using flatbuffers
+        fbb.Finish(common::convert(fbb, source));
+        ASSERT_GT(fbb.GetSize(), 0);
+        // copy of the buffer (just making sure...)
+        const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+        // deserialize using flatbuffers
+        const auto root = GetRoot<schema::Request>(&buffer[0]);
+        const auto target_request_info = common::convert(root->request_info());
+        ASSERT_EQ(root->request_data_type(), schema::RequestData::CreateOrder);
+        const auto target_create_order = common::convert(root->request_data_as_CreateOrder());
+        // request (target)
+        const auto target = common::CreateOrderRequest{
+            .request_info = target_request_info,
+            .create_order = target_create_order};
+        // validate
+        compare(target.request_info, source.request_info);
+        compare(target.create_order, source.create_order);
+    }
+}
+
+TEST(flatbuffers, modify_order_request) {
+    FlatBufferBuilder fbb;
+    for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+        // reset
+        fbb.Clear();  // doesn't de-allocate
+        ASSERT_EQ(fbb.GetSize(), 0);
+        // request (source)
+        const auto source_request_info = CreateRandomRequestInfo();
+        const auto source_modify_order = CreateRandomModifyOrder();
+        const auto source = common::ModifyOrderRequest{
+            .request_info = source_request_info,
+            .modify_order = source_modify_order};
+        // serialize using flatbuffers
+        fbb.Finish(common::convert(fbb, source));
+        ASSERT_GT(fbb.GetSize(), 0);
+        // copy of the buffer (just making sure...)
+        const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+        // deserialize using flatbuffers
+        const auto root = GetRoot<schema::Request>(&buffer[0]);
+        const auto target_request_info = common::convert(root->request_info());
+        ASSERT_EQ(root->request_data_type(), schema::RequestData::ModifyOrder);
+        const auto target_modify_order = common::convert(root->request_data_as_ModifyOrder());
+        // request (target)
+        const auto target = common::ModifyOrderRequest{
+            .request_info = target_request_info,
+            .modify_order = target_modify_order};
+        // validate
+        compare(target.request_info, source.request_info);
+        compare(target.modify_order, source.modify_order);
+    }
+}
+
+TEST(flatbuffers, cancel_order_request) {
+    FlatBufferBuilder fbb;
+    for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+        // reset
+        fbb.Clear();  // doesn't de-allocate
+        ASSERT_EQ(fbb.GetSize(), 0);
+        // request (source)
+        const auto source_request_info = CreateRandomRequestInfo();
+        const auto source_cancel_order = CreateRandomCancelOrder();
+        const auto source = common::CancelOrderRequest{
+            .request_info = source_request_info,
+            .cancel_order = source_cancel_order};
+        // serialize using flatbuffers
+        fbb.Finish(common::convert(fbb, source));
+        ASSERT_GT(fbb.GetSize(), 0);
+        // copy of the buffer (just making sure...)
+        const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+        // deserialize using flatbuffers
+        const auto root = GetRoot<schema::Request>(&buffer[0]);
+        const auto target_request_info = common::convert(root->request_info());
+        ASSERT_EQ(root->request_data_type(), schema::RequestData::CancelOrder);
+        const auto target_cancel_order = common::convert(root->request_data_as_CancelOrder());
+        // request (target)
+        const auto target = common::CancelOrderRequest{
+            .request_info = target_request_info,
+            .cancel_order = target_cancel_order};
+        // validate
+        compare(target.request_info, source.request_info);
+        compare(target.cancel_order, source.cancel_order);
     }
 }
 

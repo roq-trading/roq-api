@@ -175,23 +175,25 @@ TEST(flatbuffers, gateway_status_event) {
         fbb.Clear();  // doesn't de-allocate
         ASSERT_EQ(fbb.GetSize(), 0);
         // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_gateway_status = CreateRandomGatewayStatus();
         const auto source = common::GatewayStatusEvent{
-            .message_info = CreateRandomMessageInfo(),
-            .gateway_status = CreateRandomGatewayStatus()};
+            .message_info = source_message_info,
+            .gateway_status = source_gateway_status};
         // serialize using flatbuffers
         fbb.Finish(common::convert(fbb, source));
         ASSERT_GT(fbb.GetSize(), 0);
         // copy of the buffer (just making sure...)
         const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
         // deserialize using flatbuffers
-        auto root = GetRoot<schema::Event>(&buffer[0]);
-        auto message_info = common::convert(root->message_info());
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
         ASSERT_EQ(root->event_data_type(), schema::EventData::GatewayStatus);
-        auto gateway_status = common::convert(root->event_data_as_GatewayStatus());
+        const auto target_gateway_status = common::convert(root->event_data_as_GatewayStatus());
         // event (target)
-        auto target = common::GatewayStatusEvent{
-            .message_info = message_info,
-            .gateway_status = gateway_status};
+        const auto target = common::GatewayStatusEvent{
+            .message_info = target_message_info,
+            .gateway_status = target_gateway_status};
         // validate
         compare(target.message_info, source.message_info);
         compare(target.gateway_status, source.gateway_status);
@@ -205,23 +207,25 @@ TEST(flatbuffers, market_by_price_event) {
         fbb.Clear();  // doesn't de-allocate
         ASSERT_EQ(fbb.GetSize(), 0);
         // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_market_by_price = CreateRandomMarketByPrice();
         const auto source = common::MarketByPriceEvent{
-            .message_info = CreateRandomMessageInfo(),
-            .market_by_price = CreateRandomMarketByPrice()};
+            .message_info = source_message_info,
+            .market_by_price = source_market_by_price};
         // serialize using flatbuffers
         fbb.Finish(common::convert(fbb, source));
         ASSERT_GT(fbb.GetSize(), 0);
         // copy of the buffer (just making sure...)
         const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
         // deserialize using flatbuffers
-        auto root = GetRoot<schema::Event>(&buffer[0]);
-        auto message_info = common::convert(root->message_info());
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
         ASSERT_EQ(root->event_data_type(), schema::EventData::MarketByPrice);
-        auto market_by_price = common::convert(root->event_data_as_MarketByPrice());
+        const auto target_market_by_price = common::convert(root->event_data_as_MarketByPrice());
         // event (target)
-        auto target = common::MarketByPriceEvent{
-            .message_info = message_info,
-            .market_by_price = market_by_price};
+        const auto target = common::MarketByPriceEvent{
+            .message_info = target_message_info,
+            .market_by_price = target_market_by_price};
         // validate
         compare(target.message_info, source.message_info);
         compare(target.market_by_price, source.market_by_price);
@@ -235,23 +239,25 @@ TEST(flatbuffers, session_statistics_event) {
         fbb.Clear();  // doesn't de-allocate
         ASSERT_EQ(fbb.GetSize(), 0);
         // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_session_statistics = CreateRandomSessionStatistics();
         const auto source = common::SessionStatisticsEvent{
-            .message_info = CreateRandomMessageInfo(),
-            .session_statistics = CreateRandomSessionStatistics()};
+            .message_info = source_message_info,
+            .session_statistics = source_session_statistics};
         // serialize using flatbuffers
         fbb.Finish(common::convert(fbb, source));
         ASSERT_GT(fbb.GetSize(), 0);
         // copy of the buffer (just making sure...)
         const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
         // deserialize using flatbuffers
-        auto root = GetRoot<schema::Event>(&buffer[0]);
-        auto message_info = common::convert(root->message_info());
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
         ASSERT_EQ(root->event_data_type(), schema::EventData::SessionStatistics);
-        auto session_statistics = common::convert(root->event_data_as_SessionStatistics());
+        const auto target_session_statistics = common::convert(root->event_data_as_SessionStatistics());
         // event (target)
-        auto target = common::SessionStatisticsEvent{
-            .message_info = message_info,
-            .session_statistics = session_statistics};
+        const auto target = common::SessionStatisticsEvent{
+            .message_info = target_message_info,
+            .session_statistics = target_session_statistics};
         // validate
         compare(target.message_info, source.message_info);
         compare(target.session_statistics, source.session_statistics);
@@ -265,23 +271,25 @@ TEST(flatbuffers, daily_statistics_event) {
         fbb.Clear();  // doesn't de-allocate
         ASSERT_EQ(fbb.GetSize(), 0);
         // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_daily_statistics = CreateRandomDailyStatistics();
         const auto source = common::DailyStatisticsEvent{
-            .message_info = CreateRandomMessageInfo(),
-            .daily_statistics = CreateRandomDailyStatistics()};
+            .message_info = source_message_info,
+            .daily_statistics = source_daily_statistics};
         // serialize using flatbuffers
         fbb.Finish(common::convert(fbb, source));
         ASSERT_GT(fbb.GetSize(), 0);
         // copy of the buffer (just making sure...)
         const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
         // deserialize using flatbuffers
-        auto root = GetRoot<schema::Event>(&buffer[0]);
-        auto message_info = common::convert(root->message_info());
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
         ASSERT_EQ(root->event_data_type(), schema::EventData::DailyStatistics);
-        auto daily_statistics = common::convert(root->event_data_as_DailyStatistics());
+        const auto target_daily_statistics = common::convert(root->event_data_as_DailyStatistics());
         // event (target)
-        auto target = common::DailyStatisticsEvent{
-            .message_info = message_info,
-            .daily_statistics = daily_statistics};
+        const auto target = common::DailyStatisticsEvent{
+            .message_info = target_message_info,
+            .daily_statistics = target_daily_statistics};
         // validate
         compare(target.message_info, source.message_info);
         compare(target.daily_statistics, source.daily_statistics);
@@ -295,23 +303,25 @@ TEST(flatbuffers, reference_data_event) {
         fbb.Clear();  // doesn't de-allocate
         ASSERT_EQ(fbb.GetSize(), 0);
         // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_reference_data = CreateRandomReferenceData();
         const auto source = common::ReferenceDataEvent{
-            .message_info = CreateRandomMessageInfo(),
-            .reference_data = CreateRandomReferenceData()};
+            .message_info = source_message_info,
+            .reference_data = source_reference_data};
         // serialize using flatbuffers
         fbb.Finish(common::convert(fbb, source));
         ASSERT_GT(fbb.GetSize(), 0);
         // copy of the buffer (just making sure...)
         const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
         // deserialize using flatbuffers
-        auto root = GetRoot<schema::Event>(&buffer[0]);
-        auto message_info = common::convert(root->message_info());
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
         ASSERT_EQ(root->event_data_type(), schema::EventData::ReferenceData);
-        auto reference_data = common::convert(root->event_data_as_ReferenceData());
+        const auto target_reference_data = common::convert(root->event_data_as_ReferenceData());
         // event (target)
-        auto target = common::ReferenceDataEvent{
-            .message_info = message_info,
-            .reference_data = reference_data};
+        const auto target = common::ReferenceDataEvent{
+            .message_info = target_message_info,
+            .reference_data = target_reference_data};
         // validate
         compare(target.message_info, source.message_info);
         compare(target.reference_data, source.reference_data);
@@ -325,23 +335,25 @@ TEST(flatbuffers, market_status_event) {
         fbb.Clear();  // doesn't de-allocate
         ASSERT_EQ(fbb.GetSize(), 0);
         // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_market_status = CreateRandomMarketStatus();
         const auto source = common::MarketStatusEvent{
-            .message_info = CreateRandomMessageInfo(),
-            .market_status = CreateRandomMarketStatus()};
+            .message_info = source_message_info,
+            .market_status = source_market_status};
         // serialize using flatbuffers
         fbb.Finish(common::convert(fbb, source));
         ASSERT_GT(fbb.GetSize(), 0);
         // copy of the buffer (just making sure...)
         const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
         // deserialize using flatbuffers
-        auto root = GetRoot<schema::Event>(&buffer[0]);
-        auto message_info = common::convert(root->message_info());
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
         ASSERT_EQ(root->event_data_type(), schema::EventData::MarketStatus);
-        auto market_status = common::convert(root->event_data_as_MarketStatus());
+        const auto target_market_status = common::convert(root->event_data_as_MarketStatus());
         // event (target)
-        auto target = common::MarketStatusEvent{
-            .message_info = message_info,
-            .market_status = market_status};
+        const auto target = common::MarketStatusEvent{
+            .message_info = target_message_info,
+            .market_status = target_market_status};
         // validate
         compare(target.message_info, source.message_info);
         compare(target.market_status, source.market_status);
@@ -355,23 +367,25 @@ TEST(flatbuffers, create_order_ack_event) {
         fbb.Clear();  // doesn't de-allocate
         ASSERT_EQ(fbb.GetSize(), 0);
         // event (source)
+        const auto source_message_info = CreateRandomMessageInfo();
+        const auto source_create_order_ack = CreateRandomCreateOrderAck();
         const auto source = common::CreateOrderAckEvent{
-            .message_info = CreateRandomMessageInfo(),
-            .create_order_ack = CreateRandomCreateOrderAck()};
+            .message_info = source_message_info,
+            .create_order_ack = source_create_order_ack};
         // serialize using flatbuffers
         fbb.Finish(common::convert(fbb, source));
         ASSERT_GT(fbb.GetSize(), 0);
         // copy of the buffer (just making sure...)
         const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
         // deserialize using flatbuffers
-        auto root = GetRoot<schema::Event>(&buffer[0]);
-        auto message_info = common::convert(root->message_info());
+        const auto root = GetRoot<schema::Event>(&buffer[0]);
+        const auto target_message_info = common::convert(root->message_info());
         ASSERT_EQ(root->event_data_type(), schema::EventData::CreateOrderAck);
-        auto create_order_ack = common::convert(root->event_data_as_CreateOrderAck());
+        const auto target_create_order_ack = common::convert(root->event_data_as_CreateOrderAck());
         // event (target)
-        auto target = common::CreateOrderAckEvent{
-            .message_info = message_info,
-            .create_order_ack = create_order_ack};
+        const auto target = common::CreateOrderAckEvent{
+            .message_info = target_message_info,
+            .create_order_ack = target_create_order_ack};
         // validate
         compare(target.message_info, source.message_info);
         compare(target.create_order_ack, source.create_order_ack);

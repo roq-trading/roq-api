@@ -1,8 +1,8 @@
 /* Copyright (c) 2017,  Hans Erik Thrane */
 
+#include <gtest/gtest.h>
 #include <cstdlib>
 #include <random>
-#include <gtest/gtest.h>
 #include "quinclas/codec.h"
 
 using namespace flatbuffers;
@@ -52,7 +52,7 @@ static common::TradingStatus rand_trading_status() {
 static common::OrderStatus rand_order_status() {
     return static_cast<common::OrderStatus>(rand_uint32() % static_cast<uint32_t>(common::OrderStatus::MAX));
 }
-}
+}  // namespace
 
 namespace {
 inline common::MessageInfo CreateRandomMessageInfo() {

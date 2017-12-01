@@ -4,6 +4,7 @@
 
 #include <quinclas/tradingapi.h>
 #include <cassert>
+#include <vector>
 
 namespace quinclas {
 namespace common {
@@ -475,5 +476,5 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderRequest& v
     return schema::CreateRequest(fbb, request_info, schema::RequestData::CancelOrder, cancel_order.Union());
 }
 
-}  // namespace execution_engine
+}  // namespace common
 }  // namespace quinclas

@@ -3,7 +3,7 @@
 #pragma once
 
 // TODO(thraneh): share enum class definitions (drop here)
-#include "tradingapi_generated.h"
+#include <quinclas/tradingapi_generated.h>
 #include <iostream>
 
 // Version

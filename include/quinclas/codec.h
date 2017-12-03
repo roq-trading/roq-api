@@ -11,14 +11,20 @@ namespace common {
 
 // envelope
 
-class Envelope {
- public:
+struct Envelope {
     static const size_t LENGTH = 4;
-    explicit Envelope(const unsigned char *data) :
-        _length((static_cast<int>(data[2]) << 8) + static_cast<int>(data[3])) {}
-    size_t length() { return _length; }
- private:
-    size_t _length;
+    static size_t decode(const void *buffer) {
+        const auto buffer_ = reinterpret_cast<const uint8_t *>(buffer);
+        // TODO(thraneh): validate magic
+        return (static_cast<int>(buffer_[2]) << 8) + static_cast<int>(buffer_[3]);
+    }
+    static void encode(void *buffer, const size_t length) {
+        // TODO(thraneh): validate length
+        auto buffer_ = reinterpret_cast<uint8_t *>(buffer);
+        // TODO(thraneh): populate magic
+        buffer_[2] = static_cast<uint8_t>(static_cast<int>(length) >> 8);
+        buffer_[3] = static_cast<uint8_t>(static_cast<int>(length));
+    }
 };
 
 // decode (events / low level)
@@ -458,104 +464,111 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderRequest& v
 
 // dispatch
 
-inline void dispatch(Strategy& strategy, const void *buffer, const size_t length) {
-    const auto root = flatbuffers::GetRoot<schema::Event>(buffer);
-    const auto message_info = convert(root->message_info());
-    const auto type = root->event_data_type();
-    switch (type) {
-        case schema::EventData::GatewayStatus: {
-            const auto gateway_status = convert(root->event_data_as_GatewayStatus());
-            const auto event = GatewayStatusEvent{
-                .message_info = message_info,
-                .gateway_status = gateway_status};
-            strategy.on(event);
-            break;
-        }
-        case schema::EventData::ReferenceData: {
-            const auto reference_data = convert(root->event_data_as_ReferenceData());
-            const auto event = ReferenceDataEvent{
-                .message_info = message_info,
-                .reference_data = reference_data};
-            strategy.on(event);
-            break;
-        }
-        case schema::EventData::MarketStatus: {
-            const auto market_status = convert(root->event_data_as_MarketStatus());
-            const auto event = MarketStatusEvent{
-                .message_info = message_info,
-                .market_status = market_status};
-            strategy.on(event);
-            break;
-        }
-        case schema::EventData::MarketByPrice: {
-            const auto market_by_price = convert(root->event_data_as_MarketByPrice());
-            const auto event = MarketByPriceEvent{
-                .message_info = message_info,
-                .market_by_price = market_by_price};
-            strategy.on(event);
-            break;
-        }
-        case schema::EventData::SessionStatistics: {
-            const auto session_statistics = convert(root->event_data_as_SessionStatistics());
-            const auto event = SessionStatisticsEvent{
-                .message_info = message_info,
-                .session_statistics = session_statistics};
-            strategy.on(event);
-            break;
-        }
-        case schema::EventData::DailyStatistics: {
-            const auto daily_statistics = convert(root->event_data_as_DailyStatistics());
-            const auto event = DailyStatisticsEvent{
-                .message_info = message_info,
-                .daily_statistics = daily_statistics};
-            strategy.on(event);
-            break;
-        }
-        case schema::EventData::CreateOrderAck: {
-            const auto create_order_ack = convert(root->event_data_as_CreateOrderAck());
-            const auto event = CreateOrderAckEvent{
-                .message_info = message_info,
-                .create_order_ack = create_order_ack};
-            strategy.on(event);
-            break;
-        }
-        case schema::EventData::ModifyOrderAck: {
-            const auto modify_order_ack = convert(root->event_data_as_ModifyOrderAck());
-            const auto event = ModifyOrderAckEvent{
-                .message_info = message_info,
-                .modify_order_ack = modify_order_ack};
-            strategy.on(event);
-            break;
-        }
-        case schema::EventData::CancelOrderAck: {
-            const auto cancel_order_ack = convert(root->event_data_as_CancelOrderAck());
-            const auto event = CancelOrderAckEvent{
-                .message_info = message_info,
-                .cancel_order_ack = cancel_order_ack};
-            strategy.on(event);
-            break;
-        }
-        case schema::EventData::OrderUpdate: {
-            const auto order_update = convert(root->event_data_as_OrderUpdate());
-            const auto event = OrderUpdateEvent{
-                .message_info = message_info,
-                .order_update = order_update};
-            strategy.on(event);
-            break;
-        }
-        case schema::EventData::TradeUpdate: {
-            const auto trade_update = convert(root->event_data_as_TradeUpdate());
-            const auto event = TradeUpdateEvent{
-                .message_info = message_info,
-                .trade_update = trade_update};
-            strategy.on(event);
-            break;
-        }
-        default: {
-            throw std::runtime_error("Unknown message type");
+class EventDispatcher {
+ public:
+    EventDispatcher(Strategy& strategy) : _strategy(strategy) {}
+    void dispatch_event(const void *buffer, const size_t length) {
+        const auto root = flatbuffers::GetRoot<schema::Event>(buffer);
+        const auto message_info = convert(root->message_info());
+        const auto type = root->event_data_type();
+        switch (type) {
+            case schema::EventData::GatewayStatus: {
+                const auto gateway_status = convert(root->event_data_as_GatewayStatus());
+                const auto event = GatewayStatusEvent{
+                    .message_info = message_info,
+                    .gateway_status = gateway_status};
+                _strategy.on(event);
+                break;
+            }
+            case schema::EventData::ReferenceData: {
+                const auto reference_data = convert(root->event_data_as_ReferenceData());
+                const auto event = ReferenceDataEvent{
+                    .message_info = message_info,
+                    .reference_data = reference_data};
+                _strategy.on(event);
+                break;
+            }
+            case schema::EventData::MarketStatus: {
+                const auto market_status = convert(root->event_data_as_MarketStatus());
+                const auto event = MarketStatusEvent{
+                    .message_info = message_info,
+                    .market_status = market_status};
+                _strategy.on(event);
+                break;
+            }
+            case schema::EventData::MarketByPrice: {
+                const auto market_by_price = convert(root->event_data_as_MarketByPrice());
+                const auto event = MarketByPriceEvent{
+                    .message_info = message_info,
+                    .market_by_price = market_by_price};
+                _strategy.on(event);
+                break;
+            }
+            case schema::EventData::SessionStatistics: {
+                const auto session_statistics = convert(root->event_data_as_SessionStatistics());
+                const auto event = SessionStatisticsEvent{
+                    .message_info = message_info,
+                    .session_statistics = session_statistics};
+                _strategy.on(event);
+                break;
+            }
+            case schema::EventData::DailyStatistics: {
+                const auto daily_statistics = convert(root->event_data_as_DailyStatistics());
+                const auto event = DailyStatisticsEvent{
+                    .message_info = message_info,
+                    .daily_statistics = daily_statistics};
+                _strategy.on(event);
+                break;
+            }
+            case schema::EventData::CreateOrderAck: {
+                const auto create_order_ack = convert(root->event_data_as_CreateOrderAck());
+                const auto event = CreateOrderAckEvent{
+                    .message_info = message_info,
+                    .create_order_ack = create_order_ack};
+                _strategy.on(event);
+                break;
+            }
+            case schema::EventData::ModifyOrderAck: {
+                const auto modify_order_ack = convert(root->event_data_as_ModifyOrderAck());
+                const auto event = ModifyOrderAckEvent{
+                    .message_info = message_info,
+                    .modify_order_ack = modify_order_ack};
+                _strategy.on(event);
+                break;
+            }
+            case schema::EventData::CancelOrderAck: {
+                const auto cancel_order_ack = convert(root->event_data_as_CancelOrderAck());
+                const auto event = CancelOrderAckEvent{
+                    .message_info = message_info,
+                    .cancel_order_ack = cancel_order_ack};
+                _strategy.on(event);
+                break;
+            }
+            case schema::EventData::OrderUpdate: {
+                const auto order_update = convert(root->event_data_as_OrderUpdate());
+                const auto event = OrderUpdateEvent{
+                    .message_info = message_info,
+                    .order_update = order_update};
+                _strategy.on(event);
+                break;
+            }
+            case schema::EventData::TradeUpdate: {
+                const auto trade_update = convert(root->event_data_as_TradeUpdate());
+                const auto event = TradeUpdateEvent{
+                    .message_info = message_info,
+                    .trade_update = trade_update};
+                _strategy.on(event);
+                break;
+            }
+            default: {
+                throw std::runtime_error("Unknown message type");
+            }
         }
     }
-}
+ private:
+    Strategy& _strategy;
+    flatbuffers::FlatBufferBuilder _flat_buffer_builder;
+};
 
 
 }  // namespace common

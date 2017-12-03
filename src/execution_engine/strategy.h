@@ -4,13 +4,16 @@
 
 #include <quinclas/tradingapi.h>
 
+#include "execution_engine/event.h"
+
 namespace quinclas {
 namespace execution_engine {
 
-class Strategy : public common::Strategy {
+class Strategy : public event::TimerEvent::Handler, public common::Strategy {
  public:
     explicit Strategy(common::Strategy::Dispatcher& dispatcher);
  protected:
+    void on_timer() override;
     void on(const common::IdleEvent&) override;
     void on(const common::GatewayStatusEvent&) override;
     void on(const common::ReferenceDataEvent&) override;

@@ -4,7 +4,7 @@
 
 #include <sys/types.h>
 #include <sys/un.h>
-#include <quinclas/tradingapi.h>
+#include <quinclas/codec.h>
 #include <string>
 
 #include "execution_engine/event.h"
@@ -12,17 +12,19 @@
 namespace quinclas {
 namespace execution_engine {
 
-class Dispatcher : public common::Strategy::Dispatcher {
+class RequestDispatcher : public common::Strategy::Dispatcher {
  public:
-    explicit Dispatcher(event::BufferEvent& buffer_event);
+    explicit RequestDispatcher(event::BufferEvent& buffer_event);
  protected:
     void send(const common::CreateOrderRequest& create_order_request) override;
     void send(const common::ModifyOrderRequest& modify_order_request) override;
     void send(const common::CancelOrderRequest& cancel_order_request) override;
-    void send(uint8_t msg_id);
+    void send();
  private:
+    event::Buffer _buffer;
     event::BufferEvent& _buffer_event;
     flatbuffers::FlatBufferBuilder _flat_buffer_builder;
+    uint8_t _envelope[common::Envelope::LENGTH];
 };
 
 }  // namespace execution_engine

@@ -54,6 +54,7 @@ class Buffer {
     size_t length();
     unsigned char *pullup(ev_ssize_t size);
     void drain(size_t length);
+    void add(const void *data, size_t datlen);
  private:
     Buffer(Buffer const&) = delete;
     Buffer& operator=(Buffer const&) = delete;
@@ -114,6 +115,7 @@ class BufferEvent {
     void read(Buffer& buffer);
     size_t read(void* data, size_t length);
     void write(const void* data, size_t length);
+    void write(Buffer& buffer);
     void connect(const struct sockaddr *address, int address_length);
     void connect(DNSBase& dns_base, int family, const char *hostname, int port);
  private:

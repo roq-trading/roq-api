@@ -117,6 +117,14 @@ void Buffer::drain(size_t length) {
     }
 }
 
+void Buffer::add(const void *data, size_t datlen) {
+    int res = evbuffer_add(_evbuffer, data, datlen);
+    if (res < 0) {
+        LOG(WARNING) << "evbuffer_add() failed";
+        throw std::runtime_error("failed to add the event buffer");
+    }
+}
+
 // Event
 
 Event::Event(Base& base, int fd, short events, event_callback_fn callback, void *cbarg) :
@@ -200,6 +208,13 @@ void BufferEvent::write(const void* data, size_t length) {
     const int res = bufferevent_write(_bufferevent, data, length);
     if (res != 0) {
         LOG(ERROR) << "bufferevent_write() failed";
+        throw std::runtime_error("unable to write");
+    }
+}
+
+void BufferEvent::write(Buffer& buffer) {
+    if (bufferevent_write_buffer(_bufferevent, buffer.get_raw()) < 0) {
+        LOG(ERROR) << "bufferevent_write_buffer() failed";
         throw std::runtime_error("unable to write");
     }
 }

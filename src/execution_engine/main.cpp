@@ -1,18 +1,13 @@
 /* Copyright (c) 2017, Hans Erik Thrane */
 
-#include <glog/logging.h>
 #include <gflags/gflags.h>
+#include <glog/logging.h>
 
-#include "execution_engine/dispatcher.h"
+#include "execution_engine/event_dispatcher.h"
+#include "execution_engine/request_dispatcher.h"
 #include "execution_engine/strategy.h"
-#include "execution_engine/controller.h"
 
 DEFINE_string(local_address, "", "local address (unix domain socket)");
-
-namespace {
-class Address {
-};
-}  // namespace
 
 int main(int argc, char *argv[]) {
     int result = EXIT_FAILURE;
@@ -29,19 +24,27 @@ int main(int argc, char *argv[]) {
 
         LOG(INFO) << "*** START ***";
 
+        // local (unix domain) socket address
         struct sockaddr_un address = {};
         address.sun_family = AF_LOCAL;
         strncpy(address.sun_path, FLAGS_local_address.c_str(), sizeof(address.sun_path));
         address.sun_path[sizeof(address.sun_path) - 1] = '\0';
-
+        // initialize libevent base
         quinclas::event::Base base;
+        // create a socket and wrap it for use by libevent
         quinclas::net::Socket socket(PF_LOCAL, SOCK_DGRAM, 0);
         socket.non_blocking(true);
         quinclas::event::BufferEvent buffer_event(base, std::move(socket));
-        quinclas::execution_engine::Dispatcher dispatcher(buffer_event);
-        quinclas::execution_engine::Strategy strategy(dispatcher);
-        quinclas::execution_engine::Controller controller(base, buffer_event, strategy);
+        // create strategy (including request dispatcher, event dispatcher and timer)
+        quinclas::execution_engine::RequestDispatcher request_dispatcher(buffer_event);
+        quinclas::execution_engine::Strategy strategy(request_dispatcher);
+        quinclas::execution_engine::EventDispatcher event_dispatcher(strategy, base, buffer_event);
+        quinclas::event::TimerEvent timer(strategy, base);
+        struct timeval timeout{ .tv_sec = 1, .tv_usec = 0 };
+        timer.add(&timeout);
+        // connect the socket
         buffer_event.connect(reinterpret_cast<const struct sockaddr *>(&address), sizeof(address));
+        // start the libevent loop
         base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
 
         result = EXIT_SUCCESS;

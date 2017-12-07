@@ -1,4 +1,3 @@
-SUBDIRS = . tests
 bin_PROGRAMS = execution-engine
 execution_engine_LDFLAGS = \
 	$(GFLAGS_LIBS) \

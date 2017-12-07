@@ -1,4 +1,4 @@
-SUBDIRS=. utils tests
+SUBDIRS=. utils
 
 pkgincludedir=$(includedir)/quinclas
 pkginclude_HEADERS=tradingapi.h tradingapi_generated.h common_generated.h codec.h

@@ -11,4 +11,4 @@ check-local:
 .PHONY: lint
 
 lint:
-	cpplint --linelength=120 --recursive include/quinclas src/*
+	cpplint --linelength=120 --recursive include/* test/* samples/*

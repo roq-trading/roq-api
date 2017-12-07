@@ -5,17 +5,14 @@ execution_engine_LDFLAGS = \
 	$(LIBGLOG_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(LIBEVENT_LIBS) \
-	-levent_pthreads \
-	-L/Users/thraneh/tmp/cctz-master \
-	-lcctz
+	-levent_pthreads
 execution_engine_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/src \
 	$(GFLAGS_CFLAGS) \
 	$(LIBGLOG_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
-	$(LIBEVENT_CFLAGS) \
-	-I/Users/thraneh/tmp/cctz-master/include
+	$(LIBEVENT_CFLAGS)
 execution_engine_SOURCES = \
 	strategy.cpp \
 	main.cpp

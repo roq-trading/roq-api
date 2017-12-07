@@ -8,27 +8,10 @@
 
 #include "execution_engine/strategy.h"
 
-#include "cctz/civil_time.h"
-#include "cctz/time_zone.h"
-
 DEFINE_string(local_address, "", "local address (unix domain socket)");
 
 int main(int argc, char *argv[]) {
   int result = EXIT_FAILURE;
-  /*
-  cctz::civil_day epoch(1970, 1, 1);
-  cctz::civil_day time(2017, 1, 2);
-  int days = time - epoch;
-  std::cout << "days" << days << std::endl;
-  const auto x = epoch + days;
-  std::cout << "x " << x << std::endl;
-  cctz::time_zone syd;
-  cctz::time_zone utc = cctz::utc_time_zone();
-  cctz::load_time_zone("Australia/Sydney", &syd);
-  const auto tp = cctz::convert(cctz::civil_second(), syd);
-  cctz::civil_second cx = cctz::convert(tp, utc);
-  std::cout << "cx " << cx << std::endl;
-  */
   try {
     google::InitGoogleLogging(argv[0]);
     google::InstallFailureSignalHandler();

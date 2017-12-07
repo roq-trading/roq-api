@@ -3,60 +3,77 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-#include "execution_engine/event_dispatcher.h"
-#include "execution_engine/request_dispatcher.h"
+#include <quinclas/utils/event_dispatcher.h>
+#include <quinclas/utils/request_dispatcher.h>
+
 #include "execution_engine/strategy.h"
+
+#include "cctz/civil_time.h"
+#include "cctz/time_zone.h"
 
 DEFINE_string(local_address, "", "local address (unix domain socket)");
 
 int main(int argc, char *argv[]) {
-    int result = EXIT_FAILURE;
+  int result = EXIT_FAILURE;
+  /*
+  cctz::civil_day epoch(1970, 1, 1);
+  cctz::civil_day time(2017, 1, 2);
+  int days = time - epoch;
+  std::cout << "days" << days << std::endl;
+  const auto x = epoch + days;
+  std::cout << "x " << x << std::endl;
+  cctz::time_zone syd;
+  cctz::time_zone utc = cctz::utc_time_zone();
+  cctz::load_time_zone("Australia/Sydney", &syd);
+  const auto tp = cctz::convert(cctz::civil_second(), syd);
+  cctz::civil_second cx = cctz::convert(tp, utc);
+  std::cout << "cx " << cx << std::endl;
+  */
+  try {
+    google::InitGoogleLogging(argv[0]);
+    google::InstallFailureSignalHandler();
 
-    try {
-        google::InitGoogleLogging(argv[0]);
-        google::InstallFailureSignalHandler();
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
+    gflags::ShutDownCommandLineFlags();
 
-        gflags::ParseCommandLineFlags(&argc, &argv, true);
-        gflags::ShutDownCommandLineFlags();
+    if (FLAGS_local_address.empty())
+      throw std::runtime_error("local_address is missing");
 
-        if (FLAGS_local_address.empty())
-            throw std::runtime_error("local_address is missing");
+    LOG(INFO) << "*** START ***";
 
-        LOG(INFO) << "*** START ***";
+    // local (unix domain) socket address
+    struct sockaddr_un address = {};
+    address.sun_family = AF_LOCAL;
+    strncpy(address.sun_path, FLAGS_local_address.c_str(), sizeof(address.sun_path));
+    address.sun_path[sizeof(address.sun_path) - 1] = '\0';
+    // initialize libevent base
+    quinclas::libevent::Base base;
+    // create a socket and wrap it for use by libevent
+    quinclas::net::Socket socket(PF_LOCAL, SOCK_DGRAM, 0);
+    socket.non_blocking(true);
+    quinclas::libevent::BufferEvent buffer_event(base, std::move(socket));
+    // create strategy (including request dispatcher, event dispatcher and timer)
+    quinclas::execution_engine::RequestDispatcher request_dispatcher(buffer_event);
+    quinclas::execution_engine::Strategy strategy(request_dispatcher);
+    quinclas::execution_engine::EventDispatcher event_dispatcher(strategy, base, buffer_event);
+    quinclas::libevent::TimerEvent timer(strategy, base);
+    struct timeval timeout{ .tv_sec = 1, .tv_usec = 0 };
+    timer.add(&timeout);
+    // connect the socket
+    buffer_event.connect(reinterpret_cast<const struct sockaddr *>(&address), sizeof(address));
+    // start the libevent loop
+    base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
 
-        // local (unix domain) socket address
-        struct sockaddr_un address = {};
-        address.sun_family = AF_LOCAL;
-        strncpy(address.sun_path, FLAGS_local_address.c_str(), sizeof(address.sun_path));
-        address.sun_path[sizeof(address.sun_path) - 1] = '\0';
-        // initialize libevent base
-        quinclas::event::Base base;
-        // create a socket and wrap it for use by libevent
-        quinclas::net::Socket socket(PF_LOCAL, SOCK_DGRAM, 0);
-        socket.non_blocking(true);
-        quinclas::event::BufferEvent buffer_event(base, std::move(socket));
-        // create strategy (including request dispatcher, event dispatcher and timer)
-        quinclas::execution_engine::RequestDispatcher request_dispatcher(buffer_event);
-        quinclas::execution_engine::Strategy strategy(request_dispatcher);
-        quinclas::execution_engine::EventDispatcher event_dispatcher(strategy, base, buffer_event);
-        quinclas::event::TimerEvent timer(strategy, base);
-        struct timeval timeout{ .tv_sec = 1, .tv_usec = 0 };
-        timer.add(&timeout);
-        // connect the socket
-        buffer_event.connect(reinterpret_cast<const struct sockaddr *>(&address), sizeof(address));
-        // start the libevent loop
-        base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
+    result = EXIT_SUCCESS;
+  }
+  catch (std::exception& e) {
+    LOG(ERROR) << "Exception: " << e.what();
+  }
+  catch (...) {
+    LOG(ERROR) << "Exception: <unknown>";
+  }
 
-        result = EXIT_SUCCESS;
-    }
-    catch (std::exception& e) {
-        LOG(ERROR) << "Exception: " << e.what();
-    }
-    catch (...) {
-        LOG(ERROR) << "Exception: <unknown>";
-    }
+  LOG(INFO) << "*** STOP *** (exit code: " << result << ")";
 
-    LOG(INFO) << "*** STOP *** (exit code: " << result << ")";
-
-    return result;
+  return result;
 }

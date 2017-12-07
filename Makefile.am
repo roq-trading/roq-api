@@ -1,4 +1,4 @@
-SUBDIRS = . include src
+SUBDIRS = . include samples
 
 dist_doc_DATA = LICENSE README.md VERSION
 

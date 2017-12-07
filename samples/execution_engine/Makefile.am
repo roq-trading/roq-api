@@ -8,7 +8,7 @@ execution_engine_LDFLAGS = \
 	-levent_pthreads
 execution_engine_CPPFLAGS = \
 	-I$(top_srcdir)/include \
-	-I$(top_srcdir)/src \
+	-I$(top_srcdir)/samples \
 	$(GFLAGS_CFLAGS) \
 	$(LIBGLOG_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \

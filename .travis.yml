@@ -9,3 +9,7 @@ matrix:
 
 script:
   - ./autogen.sh && make -j2 && make maintainer-clean
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y apt-get install libgflags-dev libgoogle-glog-dev libconfig++-dev build-essential

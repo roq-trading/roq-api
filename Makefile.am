@@ -1,4 +1,4 @@
-SUBDIRS = . include test samples
+SUBDIRS = . include tests samples
 
 dist_doc_DATA = LICENSE README.md VERSION
 

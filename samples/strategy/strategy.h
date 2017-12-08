@@ -7,7 +7,7 @@
 #include <limits>
 
 namespace quinclas {
-namespace execution_engine {
+namespace strategy {
 
 class Strategy : public io::libevent::TimerEvent::Handler, public common::Strategy {
  public:

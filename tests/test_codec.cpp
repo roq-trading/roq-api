@@ -750,8 +750,3 @@ TEST(flatbuffers, cancel_order_request) {
         compare(target.cancel_order, source.cancel_order);
     }
 }
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

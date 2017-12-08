@@ -40,10 +40,11 @@ AC_CONFIG_FILES([
  include/quinclas/io/Makefile
  include/quinclas/client/Makefile
  include/quinclas/server/Makefile
- test/Makefile
+ tests/Makefile
  samples/Makefile
+ samples/strategy/Makefile
+ samples/simulator/Makefile
  samples/execution_engine/Makefile
- samples/execution_engine/tests/Makefile
  quinclas-tradingapi.pc
 ])
 AC_CONFIG_SUBDIRS([

@@ -1,9 +1,9 @@
 /* Copyright (c) 2017, Hans Erik Thrane */
 
-#include "execution_engine/strategy.h"
+#include "strategy/strategy.h"
 
 namespace quinclas {
-namespace execution_engine {
+namespace strategy {
 
 const char    *GATEWAY        = "FEMAS1";
 const char    *EXCHANGE       = "CFFEX";

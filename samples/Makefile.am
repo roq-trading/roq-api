@@ -1,1 +1,1 @@
-SUBDIRS = execution_engine
+SUBDIRS = strategy execution_engine simulator

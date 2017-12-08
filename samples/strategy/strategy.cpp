@@ -77,5 +77,5 @@ void Strategy::on(const OrderUpdateEvent&) {
 void Strategy::on(const TradeUpdateEvent&) {
 }
 
-}  // namespace execution_engine
-}  // namespace quinclas
+}  // namespace strategy
+}  // namespace samples

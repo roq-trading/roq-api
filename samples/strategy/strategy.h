@@ -32,5 +32,5 @@ class Strategy : public quinclas::io::libevent::TimerEvent::Handler, public quin
   quinclas::common::Strategy::Dispatcher& _dispatcher;
 };
 
-}  // namespace execution_engine
-}  // namespace quinclas
+}  // namespace strategy
+}  // namespace samples

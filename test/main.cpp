@@ -5,8 +5,8 @@
 #include <random>
 #include "quinclas/codec/codec.h"
 
-using namespace flatbuffers;
-using namespace quinclas;
+using namespace flatbuffers;  // NOLINT
+using namespace quinclas;  // NOLINT
 
 const int MAX_ITERATIONS = 1000;
 

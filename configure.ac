@@ -1,6 +1,7 @@
 AC_INIT([quinclas-tradingapi], m4_esyscmd([tr -d '\n' < VERSION]), [thraneh@gmail.com])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_MACRO_DIRS([m4])
+m4_pattern_allow(PKG_CONFIG_LIBDIR)
 AC_DISABLE_STATIC
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])

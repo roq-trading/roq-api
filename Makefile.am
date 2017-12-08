@@ -1,3 +1,5 @@
+ACLOCAL_AMFLAGS = -I m4
+
 SUBDIRS = . include tests samples
 
 dist_doc_DATA = LICENSE README.md VERSION

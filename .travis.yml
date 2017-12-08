@@ -1,0 +1,8 @@
+language: cpp
+sudo: false
+
+matrix:
+  include :
+    - os: linux
+      compiler: g++-5
+      env: AUTOTOOLS=yes COVERAGE=no BUILD=shared

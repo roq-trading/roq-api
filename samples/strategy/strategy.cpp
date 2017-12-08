@@ -2,7 +2,10 @@
 
 #include "strategy/strategy.h"
 
-namespace quinclas {
+using namespace quinclas::common;  // NOLINT
+using namespace quinclas::io;  // NOLINT
+
+namespace samples {
 namespace strategy {
 
 const char    *GATEWAY        = "FEMAS1";
@@ -12,20 +15,20 @@ const uint32_t QUANTITY       =  1;        // CAREFUL
 const double   LIMIT_PRICE    =  0.01;     // CAREFUL
 const char    *ORDER_TEMPLATE = "ioc_open";
 
-Strategy::Strategy(common::Strategy::Dispatcher& dispatcher) :
+Strategy::Strategy(Strategy::Dispatcher& dispatcher) :
   _dispatcher(dispatcher) {
 }
 
 void Strategy::on_timer() {
 }
 
-void Strategy::on(const common::IdleEvent&) {
+void Strategy::on(const IdleEvent&) {
 }
 
-void Strategy::on(const common::GatewayStatusEvent& event) {
-  if (event.gateway_status.market_data_login_status == common::LoginStatus::On &&
-      event.gateway_status.order_management_login_status == common::LoginStatus::On) {
-    const common::CreateOrderRequest create_order_request = {
+void Strategy::on(const GatewayStatusEvent& event) {
+  if (event.gateway_status.market_data_login_status == LoginStatus::On &&
+      event.gateway_status.order_management_login_status == LoginStatus::On) {
+    const CreateOrderRequest create_order_request = {
       .request_info = {
         .destination = GATEWAY,
       },
@@ -33,7 +36,7 @@ void Strategy::on(const common::GatewayStatusEvent& event) {
         .exchange            = EXCHANGE,
         .order_template_name = ORDER_TEMPLATE,
         .instrument          = INSTRUMENT,
-        .direction           = common::TradeDirection::Buy,
+        .direction           = TradeDirection::Buy,
         .quantity            = QUANTITY,
         .limit_price         = LIMIT_PRICE,
         .stop_price          = std::numeric_limits<double>::quiet_NaN(),
@@ -44,34 +47,34 @@ void Strategy::on(const common::GatewayStatusEvent& event) {
   }
 }
 
-void Strategy::on(const common::ReferenceDataEvent&) {
+void Strategy::on(const ReferenceDataEvent&) {
 }
 
-void Strategy::on(const common::MarketStatusEvent&) {
+void Strategy::on(const MarketStatusEvent&) {
 }
 
-void Strategy::on(const common::MarketByPriceEvent&) {
+void Strategy::on(const MarketByPriceEvent&) {
 }
 
-void Strategy::on(const common::SessionStatisticsEvent&) {
+void Strategy::on(const SessionStatisticsEvent&) {
 }
 
-void Strategy::on(const common::DailyStatisticsEvent&) {
+void Strategy::on(const DailyStatisticsEvent&) {
 }
 
-void Strategy::on(const common::CreateOrderAckEvent&) {
+void Strategy::on(const CreateOrderAckEvent&) {
 }
 
-void Strategy::on(const common::ModifyOrderAckEvent&) {
+void Strategy::on(const ModifyOrderAckEvent&) {
 }
 
-void Strategy::on(const common::CancelOrderAckEvent&) {
+void Strategy::on(const CancelOrderAckEvent&) {
 }
 
-void Strategy::on(const common::OrderUpdateEvent&) {
+void Strategy::on(const OrderUpdateEvent&) {
 }
 
-void Strategy::on(const common::TradeUpdateEvent&) {
+void Strategy::on(const TradeUpdateEvent&) {
 }
 
 }  // namespace execution_engine

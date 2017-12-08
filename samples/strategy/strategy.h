@@ -6,30 +6,30 @@
 #include <quinclas/io/libevent.h>  // FIXME(thraneha): NOT HERE
 #include <limits>
 
-namespace quinclas {
+namespace samples {
 namespace strategy {
 
-class Strategy : public io::libevent::TimerEvent::Handler, public common::Strategy {
+class Strategy : public quinclas::io::libevent::TimerEvent::Handler, public quinclas::common::Strategy {
  public:
-  explicit Strategy(common::Strategy::Dispatcher& dispatcher);
+  explicit Strategy(quinclas::common::Strategy::Dispatcher& dispatcher);
 
  protected:
   void on_timer() override;
-  void on(const common::IdleEvent&) override;
-  void on(const common::GatewayStatusEvent&) override;
-  void on(const common::ReferenceDataEvent&) override;
-  void on(const common::MarketStatusEvent&) override;
-  void on(const common::MarketByPriceEvent&) override;
-  void on(const common::SessionStatisticsEvent&) override;
-  void on(const common::DailyStatisticsEvent&) override;
-  void on(const common::CreateOrderAckEvent&) override;
-  void on(const common::ModifyOrderAckEvent&) override;
-  void on(const common::CancelOrderAckEvent&) override;
-  void on(const common::OrderUpdateEvent&) override;
-  void on(const common::TradeUpdateEvent&) override;
+  void on(const quinclas::common::IdleEvent&) override;
+  void on(const quinclas::common::GatewayStatusEvent&) override;
+  void on(const quinclas::common::ReferenceDataEvent&) override;
+  void on(const quinclas::common::MarketStatusEvent&) override;
+  void on(const quinclas::common::MarketByPriceEvent&) override;
+  void on(const quinclas::common::SessionStatisticsEvent&) override;
+  void on(const quinclas::common::DailyStatisticsEvent&) override;
+  void on(const quinclas::common::CreateOrderAckEvent&) override;
+  void on(const quinclas::common::ModifyOrderAckEvent&) override;
+  void on(const quinclas::common::CancelOrderAckEvent&) override;
+  void on(const quinclas::common::OrderUpdateEvent&) override;
+  void on(const quinclas::common::TradeUpdateEvent&) override;
 
  private:
-  common::Strategy::Dispatcher& _dispatcher;
+  quinclas::common::Strategy::Dispatcher& _dispatcher;
 };
 
 }  // namespace execution_engine

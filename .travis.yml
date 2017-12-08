@@ -4,5 +4,8 @@ sudo: false
 matrix:
   include :
     - os: linux
-      compiler: g++-5
+      compiler: gcc
       env: AUTOTOOLS=yes COVERAGE=no BUILD=shared
+
+script:
+  - ./autogen.sh && make -j2 && make maintainer-clean

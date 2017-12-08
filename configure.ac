@@ -1,14 +1,21 @@
+m4_include(m4/ax_cxx_compile_stdcxx.m4)  # https://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx.html
+
 AC_INIT([quinclas-tradingapi], m4_esyscmd([tr -d '\n' < VERSION]), [thraneh@gmail.com])
-AC_CONFIG_AUX_DIR([.])
+
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([build-aux])
+
 AC_DISABLE_STATIC
 AC_CANONICAL_TARGET
+
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
 AM_PROG_AR
 LT_INIT
 AC_PROG_CXX
-m4_include([m4/ax_cxx_compile_stdcxx.m4])  # https://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx.html
+
 AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
+
 PKG_CHECK_MODULES([LIBGLOG], [libglog])
 PKG_CHECK_MODULES([LIBCONFIG], [libconfig++])
 PKG_CHECK_MODULES([GFLAGS], [gflags])
@@ -31,6 +38,7 @@ SAVE_PATH="$PATH"
 PATH="$PATH:$prefix/bin:$prefix/usr/local/bin"
 AC_PATH_PROGS([FLATC], [flatc], [])
 PATH="$SAVE_PATH"
+
 AC_CONFIG_FILES([
  Makefile
  include/Makefile
@@ -47,10 +55,13 @@ AC_CONFIG_FILES([
  samples/execution_engine/Makefile
  quinclas-tradingapi.pc
 ])
+
 AC_CONFIG_SUBDIRS([
   googletest/googletest
 ])
+
 AC_SUBST([GTEST_DIR], ['${top_builddir}/googletest/googletest'])
 AC_SUBST([GTEST_CFLAGS], ['-I${GTEST_DIR}/include'])
 AC_SUBST([GTEST_LIBS], ['${GTEST_DIR}/lib/libgtest.la ${GTEST_DIR}/lib/libgtest_main.la'])
+
 AC_OUTPUT

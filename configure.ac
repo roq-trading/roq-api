@@ -36,7 +36,9 @@ AC_CONFIG_FILES([
  include/Makefile
  include/quinclas/Makefile
  include/quinclas/tradingapi.h
- include/quinclas/utils/Makefile
+ include/quinclas/io/Makefile
+ include/quinclas/client/Makefile
+ include/quinclas/server/Makefile
  test/Makefile
  samples/Makefile
  samples/execution_engine/Makefile

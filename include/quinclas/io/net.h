@@ -12,6 +12,7 @@
 #include <string>
 
 namespace quinclas {
+namespace io {
 namespace net {
 
 class Socket {
@@ -136,4 +137,5 @@ class Utilities {
 };
 
 }  // namespace net
+}  // namespace io
 }  // namespace quinclas

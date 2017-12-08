@@ -4,16 +4,16 @@
 
 #include <quinclas/codec.h>
 #include <glog/logging.h>
-#include <quinclas/utils/libevent.h>
+#include <quinclas/io/libevent.h>
 
 namespace quinclas {
-namespace execution_engine {
+namespace server {
 
 // TODO(thraneh): reconnect instead of shutdown
 
 class EventDispatcher : public common::EventDispatcher {
  public:
-  EventDispatcher(common::Strategy& strategy, libevent::Base& base, libevent::BufferEvent& buffer_event) :
+  EventDispatcher(common::Strategy& strategy, io::libevent::Base& base, io::libevent::BufferEvent& buffer_event) :
     common::EventDispatcher(strategy),
     _base(base),
     _buffer_event(buffer_event) {
@@ -22,9 +22,9 @@ class EventDispatcher : public common::EventDispatcher {
   }
 
  private:
-  libevent::Base& _base;
-  libevent::BufferEvent& _buffer_event;
-  libevent::Buffer _buffer;
+  io::libevent::Base& _base;
+  io::libevent::BufferEvent& _buffer_event;
+  io::libevent::Buffer _buffer;
   static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT short
     auto& self = *reinterpret_cast<EventDispatcher*>(arg);
     if (what & BEV_EVENT_EOF)
@@ -63,5 +63,5 @@ class EventDispatcher : public common::EventDispatcher {
   }
 };
 
-}  // namespace execution_engine
+}  // namespace server
 }  // namespace quinclas

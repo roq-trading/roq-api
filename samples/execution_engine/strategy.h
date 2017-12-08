@@ -3,13 +3,13 @@
 #pragma once
 
 #include <quinclas/tradingapi.h>
-#include <quinclas/utils/libevent.h>  // FIXME(thraneha): NOT HERE
+#include <quinclas/io/libevent.h>  // FIXME(thraneha): NOT HERE
 #include <limits>
 
 namespace quinclas {
 namespace execution_engine {
 
-class Strategy : public libevent::TimerEvent::Handler, public common::Strategy {
+class Strategy : public io::libevent::TimerEvent::Handler, public common::Strategy {
  public:
   explicit Strategy(common::Strategy::Dispatcher& dispatcher);
 

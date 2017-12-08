@@ -5,17 +5,17 @@
 #include <sys/types.h>
 #include <sys/un.h>
 #include <quinclas/codec.h>
-#include <quinclas/utils/libevent.h>
+#include <quinclas/io/libevent.h>
 
 #include <glog/logging.h>
 #include <string>
 
 namespace quinclas {
-namespace execution_engine {
+namespace client {
 
 class RequestDispatcher : public common::Strategy::Dispatcher {
  public:
-  explicit RequestDispatcher(libevent::BufferEvent& buffer_event) :
+  explicit RequestDispatcher(io::libevent::BufferEvent& buffer_event) :
       _buffer_event(buffer_event) {}
 
  private:
@@ -42,11 +42,11 @@ class RequestDispatcher : public common::Strategy::Dispatcher {
     _buffer.add(payload, length_payload);
     _buffer_event.write(_buffer);
   }
-  libevent::Buffer _buffer;
-  libevent::BufferEvent& _buffer_event;
+  io::libevent::Buffer _buffer;
+  io::libevent::BufferEvent& _buffer_event;
   flatbuffers::FlatBufferBuilder _flat_buffer_builder;
   uint8_t _envelope[common::Envelope::LENGTH];
 };
 
-}  // namespace execution_engine
+}  // namespace client
 }  // namespace quinclas

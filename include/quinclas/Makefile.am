@@ -1,22 +1,16 @@
-SUBDIRS=. utils
+SUBDIRS=. io client server
 
 pkgincludedir=$(includedir)/quinclas
-pkginclude_HEADERS=tradingapi.h tradingapi_generated.h common_generated.h codec.h
+pkginclude_HEADERS=tradingapi.h enums_generated.h tradingapi_generated.h codec.h
 
-EXTRA_DIST = \
-	tradingapi.fbs \
-	common.fbs
+EXTRA_DIST=tradingapi.fbs enums.fbs
 
-BUILT_SOURCES = \
-	tradingapi_generated.h \
-	common_generated.h
+BUILT_SOURCES=enums_generated.h tradingapi_generated.h
 
-CLEANFILES = \
-	tradingapi_generated.h \
-	common_generated.h
+CLEANFILES=enums_generated.h tradingapi_generated.h
 
 tradingapi_generated.h: ${srcdir}/tradingapi.fbs
 	$(FLATC) --cpp --scoped-enums $<
 
-common_generated.h: ${srcdir}/common.fbs
+enums_generated.h: ${srcdir}/enums.fbs
 	$(FLATC) --cpp --scoped-enums $<

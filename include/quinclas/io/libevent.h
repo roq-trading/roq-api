@@ -11,11 +11,12 @@
 
 #include <glog/logging.h>
 
-#include <quinclas/utils/net.h>
+#include <quinclas/io/net.h>
 
 // FIXME(thraneh): remove dependency on net::
 
 namespace quinclas {
+namespace io {
 namespace libevent {
 
 class Thread {
@@ -205,7 +206,7 @@ class SignalEvent : public Event {
 class BufferEvent {
  public:
   // BufferEvent(Base& base, DNSBase& dns_base, int family, const char *hostname, int port);
-  BufferEvent(Base& base, net::Socket&& socket, int options = 0) :
+  BufferEvent(Base& base, io::net::Socket&& socket, int options = 0) :
     _socket(std::move(socket)),
     _bufferevent(bufferevent_socket_new(base.get_raw(), _socket.get_raw(), options)) {
     if (_bufferevent == nullptr) {
@@ -267,7 +268,7 @@ class BufferEvent {
   BufferEvent() = delete;
   BufferEvent(BufferEvent const&) = delete;
   BufferEvent& operator=(BufferEvent const&) = delete;
-  net::Socket _socket;
+  io::net::Socket _socket;
   struct bufferevent *_bufferevent;
 };
 
@@ -277,7 +278,7 @@ class Listener {
    public:
     virtual void on_accept(BufferEvent&& buffer) = 0;
   };
-  Listener(Handler& handler, Base& base, int flags, int backlog, net::Socket&& socket) :
+  Listener(Handler& handler, Base& base, int flags, int backlog, io::net::Socket&& socket) :
     _handler(handler),
     _base(base),
     _socket(std::move(socket)),
@@ -299,18 +300,19 @@ class Listener {
   Listener& operator=(Listener const&) = delete;
   static void callback(struct evconnlistener *, evutil_socket_t fd, struct sockaddr *, int socklen, void *cbarg) {
     auto& listener = *reinterpret_cast<Listener*>(cbarg);
-    net::Socket socket(fd);
+    io::net::Socket socket(fd);
     DCHECK_EQ(socket.non_blocking(), true) << "Socket must be non-blocking";
     socket.no_delay(true);  // FIXME(thraneh): maybe not here?
-    // LOG(INFO) << "Accepted new connection from " << net::Utilities::inet_ntop(AF_INET, &(address.sin_addr));
+    // LOG(INFO) << "Accepted new connection from " << io::net::Utilities::inet_ntop(AF_INET, &(address.sin_addr));
     BufferEvent buffer(listener._base, std::move(socket));
     listener._handler.on_accept(std::move(buffer));
   }
   Handler& _handler;
   Base& _base;
-  net::Socket _socket;
+  io::net::Socket _socket;
   struct evconnlistener *_evconnlistener;
 };
 
 }  // namespace libevent
+}  // namespace io
 }  // namespace quinclas

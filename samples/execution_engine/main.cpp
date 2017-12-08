@@ -3,8 +3,8 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-#include <quinclas/utils/event_dispatcher.h>
-#include <quinclas/utils/request_dispatcher.h>
+#include <quinclas/client/event_dispatcher.h>
+#include <quinclas/client/request_dispatcher.h>
 
 #include "execution_engine/strategy.h"
 
@@ -30,16 +30,16 @@ int main(int argc, char *argv[]) {
     strncpy(address.sun_path, FLAGS_local_address.c_str(), sizeof(address.sun_path));
     address.sun_path[sizeof(address.sun_path) - 1] = '\0';
     // initialize libevent base
-    quinclas::libevent::Base base;
+    quinclas::io::libevent::Base base;
     // create a socket and wrap it for use by libevent
-    quinclas::net::Socket socket(PF_LOCAL, SOCK_DGRAM, 0);
+    quinclas::io::net::Socket socket(PF_LOCAL, SOCK_DGRAM, 0);
     socket.non_blocking(true);
-    quinclas::libevent::BufferEvent buffer_event(base, std::move(socket));
+    quinclas::io::libevent::BufferEvent buffer_event(base, std::move(socket));
     // create strategy (including request dispatcher, event dispatcher and timer)
-    quinclas::execution_engine::RequestDispatcher request_dispatcher(buffer_event);
+    quinclas::client::RequestDispatcher request_dispatcher(buffer_event);
     quinclas::execution_engine::Strategy strategy(request_dispatcher);
-    quinclas::execution_engine::EventDispatcher event_dispatcher(strategy, base, buffer_event);
-    quinclas::libevent::TimerEvent timer(strategy, base);
+    quinclas::client::EventDispatcher event_dispatcher(strategy, base, buffer_event);
+    quinclas::io::libevent::TimerEvent timer(strategy, base);
     struct timeval timeout{ .tv_sec = 1, .tv_usec = 0 };
     timer.add(&timeout);
     // connect the socket

@@ -36,3 +36,7 @@ m4/
 
 *.log
 *.trs
+
+include/quinclas/tradingapi.h
+test/tradingapi-tests
+samples/execution_engine/execution-engine

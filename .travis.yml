@@ -1,6 +1,6 @@
 language: cpp
 script:
-  - ./autogen.sh && make -j2 && make maintainer-clean
+  - ./autogen.sh && ./configure && make -j2
 
 before_install:
   - sudo apt-get -qq update

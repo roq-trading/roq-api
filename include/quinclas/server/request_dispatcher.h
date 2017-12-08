@@ -4,7 +4,7 @@
 
 #include <sys/types.h>
 #include <sys/un.h>
-#include <quinclas/codec.h>
+#include <quinclas/codec/codec.h>
 #include <quinclas/io/libevent.h>
 
 #include <glog/logging.h>

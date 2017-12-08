@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <quinclas/tradingapi_generated.h>
+#include <quinclas/codec/tradingapi_generated.h>
 #include <iostream>
 
 // Version

@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 #include <cstdlib>
 #include <random>
-#include "quinclas/codec.h"
+#include "quinclas/codec/codec.h"
 
 using namespace flatbuffers;
 using namespace quinclas;

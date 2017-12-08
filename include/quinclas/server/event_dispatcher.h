@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <quinclas/codec.h>
+#include <quinclas/codec/codec.h>
 #include <glog/logging.h>
 #include <quinclas/io/libevent.h>
 

@@ -87,7 +87,7 @@ Here is an example of how to set up your own Conda environment, install a packag
     # write logs to the console
     export GLOG_logtostderr=1
 
-    # you should now be able to run the trading engine example
-    trading-engine
+    # you should now be able to run the trading engine
+    example-trading-engine
 
 For further details about Conda, please refere to the official documentation ([link](https://conda.io/docs/)).

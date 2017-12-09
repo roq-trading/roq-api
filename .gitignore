@@ -28,5 +28,5 @@ build-aux/
 quinclas-tradingapi.pc
 include/quinclas/tradingapi.h
 tests/tradingapi-tests
-examples/trading_engine/trading-engine
-examples/gateway_simulator/gateway-simulator
+examples/trading_engine/example-trading-engine
+examples/gateway_simulator/example-gateway-simulator

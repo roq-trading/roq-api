@@ -1,4 +1,5 @@
 language: cpp
+sudo: required
 script: ./autogen.sh && ./configure && make -j2
 before_install: scripts/install-ubuntu.sh
 install: scripts/install-flatbuffers.sh

@@ -5,10 +5,10 @@ simulator_LDFLAGS = \
 	$(FLATBUFFERS_LIBS) \
 	$(LIBEVENT_LIBS) \
 	-levent_pthreads \
-	$(top_builddir)/samples/strategy/libstrategy.la
+	$(top_builddir)/examples/strategy/libstrategy.la
 simulator_CPPFLAGS = \
 	-I$(top_srcdir)/include \
-	-I$(top_srcdir)/samples \
+	-I$(top_srcdir)/examples \
 	$(GFLAGS_CFLAGS) \
 	$(LIBGLOG_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \

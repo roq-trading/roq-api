@@ -17,10 +17,10 @@ AC_CONFIG_FILES([
  include/quinclas/client/Makefile
  include/quinclas/server/Makefile
  tests/Makefile
- samples/Makefile
- samples/strategy/Makefile
- samples/simulator/Makefile
- samples/execution_engine/Makefile
+ examples/Makefile
+ examples/strategy/Makefile
+ examples/simulator/Makefile
+ examples/execution_engine/Makefile
 ])
 AC_CONFIG_FILES([include/quinclas/tradingapi.h])
 AC_CONFIG_FILES([quinclas-tradingapi.pc])

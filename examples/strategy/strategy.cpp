@@ -5,7 +5,7 @@
 using namespace quinclas::common;  // NOLINT
 using namespace quinclas::io;  // NOLINT
 
-namespace samples {
+namespace examples {
 namespace strategy {
 
 const char    *GATEWAY        = "FEMAS1";
@@ -78,4 +78,4 @@ void Strategy::on(const TradeUpdateEvent&) {
 }
 
 }  // namespace strategy
-}  // namespace samples
+}  // namespace examples

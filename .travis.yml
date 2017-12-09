@@ -7,6 +7,7 @@ script:
  - ./autogen.sh && ./configure && make -j2 && make -j2 check
 before_install: scripts/install-ubuntu.sh
 install:
+ - scripts/install-glog.sh
  - scripts/install-gflags.sh
  - scripts/install-flatbuffers.sh
  - scripts/install-libevent.sh

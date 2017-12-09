@@ -6,7 +6,7 @@
 #include <quinclas/io/libevent.h>  // FIXME(thraneha): NOT HERE
 #include <limits>
 
-namespace samples {
+namespace examples {
 namespace strategy {
 
 class Strategy : public quinclas::io::libevent::TimerEvent::Handler, public quinclas::common::Strategy {
@@ -33,4 +33,4 @@ class Strategy : public quinclas::io::libevent::TimerEvent::Handler, public quin
 };
 
 }  // namespace strategy
-}  // namespace samples
+}  // namespace examples

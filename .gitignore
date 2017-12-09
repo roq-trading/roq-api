@@ -1,35 +1,23 @@
 *.swp
 
-.dirstamp
 Makefile
 Makefile.in
 aclocal.m4
-ar-lib
-compile
-config.guess
-config.log
 config.status
-config.sub
 configure
-depcomp
-install-sh
 libtool
-libtws_api.la
-ltmain.sh
-missing
-test-driver
+autom4te.cache/
+m4/
+build-aux/
 
 .deps/
 .libs/
-autom4te.cache/
-m4/
 
 *.Plo
 *.la
 *.lo
 *.o
 
-*.pc
 *.tar.*
 
 *_generated.h
@@ -37,7 +25,8 @@ m4/
 *.log
 *.trs
 
+quinclas-tradingapi.pc
 include/quinclas/tradingapi.h
 tests/tradingapi-tests
-samples/execution_engine/execution-engine
-samples/simulator/simulator
+examples/execution_engine/execution-engine
+examples/simulator/simulator

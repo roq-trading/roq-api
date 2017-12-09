@@ -4,8 +4,8 @@ compiler: gcc
 sudo: required
 script:
  - gcc --version
- - ./autogen.sh && ./configure && make -j2 && make -j2 check
-before_install: scripts/install-ubuntu.sh
+ - ./autogen.sh && ./configure && make -j2 && make -j2 check && make lint
+before_install: scripts/ubuntu.sh
 install:
  - scripts/install-glog.sh
  - scripts/install-gflags.sh

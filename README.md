@@ -12,19 +12,28 @@ Detailed documentation available [here](https://quinclas.github.io/tradingapi/in
 
 ## Usage
 
-### Requirements
+### Platforms
+
+    Linux
+    OSX
+
+### Build Tools
 
     autoconf
     automake
     libtool
     gcc >= 4.8.1
     clang >= 3.3
-    glog >= 0.3.5
-    gflags >= 2.2
-    flatbuffers >= 1.7
-    libevent >= 2.1
-    cctz
-    double-conversion
+
+### Dependencies
+
+    glog >= 0.3.5 (BSD 3-Clause)
+    gflags >= 2.2 (BSD 3-Clause)
+    libconfig >= 1.7  (LGPL 2.1)
+    flatbuffers >= 1.7 (Apache 2.0)
+    libevent >= 2.1 (BSD 3-Clause)
+    cctz >= 2.1 (Apache 2.0)
+    double-conversion >= 3.0 (BSD 3-Clause)
 
 ### Building
 

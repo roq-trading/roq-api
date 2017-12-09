@@ -6,4 +6,4 @@ sudo apt-get install -qq g++-6
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
 sudo apt-get install -y \
 	libssl-dev build-essential m4 autoconf autoconf-archive automake \
-       	libtool pkg-config cmake gcc libgoogle-glog-dev libconfig++-dev
+       	libtool pkg-config cmake gcc libconfig++-dev

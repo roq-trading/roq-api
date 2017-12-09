@@ -24,7 +24,19 @@ PKG_CHECK_MODULES([LIBGLOG], [libglog])
 PKG_CHECK_MODULES([LIBCONFIG], [libconfig++])
 
 # Find libevent.
-PKG_CHECK_MODULES([LIBEVENT], [libevent])
+PKG_CHECK_MODULES([LIBEVENT], [libevent], [], [
+  AC_LANG_PUSH([C++])
+  SAVE_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS -I$prefix/include"
+  AC_CHECK_HEADER(
+    [event2/event.h],
+    [AC_SUBST([LIBEVENT_CFLAGS])],
+    [AC_MSG_ERROR([unable to find libevent header files])]
+  )
+  CPPFLAGS="$SAVE_CPPFLAGS"
+  AC_LANG_POP([C++])
+  AC_SUBST([LIBEVENT_LIBS], [-levent])
+])
 
 # Find gflags.
 PKG_CHECK_MODULES([GFLAGS], [gflags], [] [

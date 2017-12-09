@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -ex
-wget https://github.com/gflags/gflags/archive/v2.2.1.tar.gz
-tar -xzvf v2.2.1.tar.gz
-cd gflags-2.2.1 && mkdir build && cd build && cmake .. && make -j2 && sudo make install
+VERSION="2.2.1"
+wget https://github.com/gflags/gflags/archive/v$VERSION.tar.gz
+tar -xzvf v$VERSION.tar.gz
+cd gflags-$VERSION && cmake -DCMAKE_BUILD_TYPE=Release . && make -j2 && sudo make install

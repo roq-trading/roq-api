@@ -2,7 +2,9 @@ dist: trusty
 language: cpp
 compiler: gcc
 sudo: required
-script: ./autogen.sh && ./configure && make -j2
+script:
+ - gcc --version
+ - ./autogen.sh && ./configure && make -j2
 before_install: scripts/install-ubuntu.sh
 install:
  - scripts/install-gflags.sh

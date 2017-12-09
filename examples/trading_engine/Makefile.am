@@ -1,16 +1,16 @@
-bin_PROGRAMS = simulator
-simulator_LDFLAGS = \
+bin_PROGRAMS = trading-engine
+trading_engine_LDFLAGS = \
 	$(GFLAGS_LIBS) \
 	$(LIBGLOG_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(LIBEVENT_LIBS) \
 	-levent_pthreads \
 	$(top_builddir)/examples/strategy/libstrategy.la
-simulator_CPPFLAGS = \
+trading_engine_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \
 	$(GFLAGS_CFLAGS) \
 	$(LIBGLOG_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
 	$(LIBEVENT_CFLAGS)
-simulator_SOURCES = main.cpp
+trading_engine_SOURCES = main.cpp

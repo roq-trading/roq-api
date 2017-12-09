@@ -62,6 +62,19 @@ PKG_CHECK_MODULES([GFLAGS], [gflags], [], [
   AC_SUBST([GFLAGS_LIBS], [-lgflags])
 ])
 
+# Find cctz.
+PKG_CHECK_MODULES([CCTZ], [cctz], [], [
+  SAVE_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS -I$prefix/include"
+  AC_CHECK_HEADER(
+    [cctz/civil_time.h],
+    [AC_SUBST([CCTZ_CFLAGS])],
+    [AC_MSG_ERROR([unable to find cctz header files])]
+  )
+  CPPFLAGS="$SAVE_CPPFLAGS"
+  AC_SUBST([CCTZ_LIBS], [-lcctz])
+])
+
 # Find flatbuffers.
 PKG_CHECK_MODULES([FLATBUFFERS], [flatbuffers], [], [
   SAVE_CPPFLAGS="$CPPFLAGS"

@@ -9,5 +9,6 @@ before_install: scripts/install-ubuntu.sh
 install:
  - scripts/install-glog.sh
  - scripts/install-gflags.sh
+ - scripts/install-cctz.sh
  - scripts/install-flatbuffers.sh
  - scripts/install-libevent.sh

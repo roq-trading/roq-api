@@ -62,6 +62,19 @@ PKG_CHECK_MODULES([GFLAGS], [gflags], [], [
   AC_SUBST([GFLAGS_LIBS], [-lgflags])
 ])
 
+# Find double-conversion.
+PKG_CHECK_MODULES([DOUBLE_CONVERSION], [cctz], [], [
+  SAVE_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS -I$prefix/include"
+  AC_CHECK_HEADER(
+    [double-conversion/double-conversion.h],
+    [AC_SUBST([DOUBLE_CONVERSION_CFLAGS])],
+    [AC_MSG_ERROR([unable to find double-conversion header files])]
+  )
+  CPPFLAGS="$SAVE_CPPFLAGS"
+  AC_SUBST([DOUBLE_CONVERSION_LIBS], [-ldouble-conversion])
+])
+
 # Find cctz.
 PKG_CHECK_MODULES([CCTZ], [cctz], [], [
   SAVE_CPPFLAGS="$CPPFLAGS"

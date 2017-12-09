@@ -48,3 +48,46 @@ Detailed documentation available [here](https://quinclas.github.io/tradingapi/in
     ./configure
     make
     make install
+
+### Broker API's
+
+The gateways have not been open sourced.
+You can only download pre-built binaries from the Conda repository (see next section).
+
+*Please note that gateways will only work with valid license keys*.
+
+### Conda
+
+You are able to access pre-built binaries from the Conda repository: <http://quinclas.com/dist/conda/stable>.
+
+Here is an example of how to set up your own Conda environment, install a package, and use a binary.
+
+    # download the installer
+    wget -c http://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
+
+    # install miniconda
+    bash ./Miniconda2-latest-Linux-x86_64.sh -b -p ~/miniconda2
+
+    # activate the root environment
+    source ~/miniconda2/bin/activate
+
+    # add extra channels for package sources
+    conda config --add channels conda-forge
+    conda config --add channels http://quinclas.com/dist/conda/stable
+
+    # create your environment
+    conda create -y -n my_env_name
+
+    # activate your new environment
+    source activate my_env_name
+
+    # install quinclas tradingapi
+    conda install -y quinclas-tradingapi
+
+    # write logs to the console
+    export GLOG_logtostderr=1
+
+    # you should now be able to run the trading engine example
+    trading-engine
+
+For further details about Conda, please refere to the official documentation ([link](https://conda.io/docs/)).

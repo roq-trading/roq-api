@@ -7,7 +7,7 @@
 #include <limits>
 
 namespace examples {
-namespace strategy {
+namespace your {
 
 class Strategy : public quinclas::io::libevent::TimerEvent::Handler, public quinclas::common::Strategy {
  public:

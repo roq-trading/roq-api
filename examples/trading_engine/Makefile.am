@@ -5,7 +5,7 @@ trading_engine_LDFLAGS = \
 	$(FLATBUFFERS_LIBS) \
 	$(LIBEVENT_LIBS) \
 	-levent_pthreads \
-	$(top_builddir)/examples/strategy/libstrategy.la
+	$(top_builddir)/examples/your/libexample-strategy.la
 trading_engine_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \

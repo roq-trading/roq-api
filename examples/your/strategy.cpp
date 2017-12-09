@@ -1,12 +1,12 @@
 /* Copyright (c) 2017, Hans Erik Thrane */
 
-#include "strategy/strategy.h"
+#include "your/strategy.h"
 
 using namespace quinclas::common;  // NOLINT
 using namespace quinclas::io;  // NOLINT
 
 namespace examples {
-namespace strategy {
+namespace your {
 
 const char    *GATEWAY        = "FEMAS1";
 const char    *EXCHANGE       = "CFFEX";

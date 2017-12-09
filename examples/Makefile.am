@@ -1,1 +1,1 @@
-SUBDIRS = strategy trading_engine gateway_simulator
+SUBDIRS = your trading_engine gateway_simulator

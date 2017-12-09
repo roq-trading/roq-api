@@ -6,7 +6,7 @@
 #include <quinclas/client/event_dispatcher.h>
 #include <quinclas/client/request_dispatcher.h>
 
-#include "strategy/strategy.h"
+#include "your/strategy.h"
 
 DEFINE_string(local_address, "", "local address (unix domain socket)");
 
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     quinclas::io::libevent::BufferEvent buffer_event(base, std::move(socket));
     // create strategy (including request dispatcher, event dispatcher and timer)
     quinclas::client::RequestDispatcher request_dispatcher(buffer_event);
-    examples::strategy::Strategy strategy(request_dispatcher);
+    examples::your::Strategy strategy(request_dispatcher);
     quinclas::client::EventDispatcher event_dispatcher(strategy, base, buffer_event);
     quinclas::io::libevent::TimerEvent timer(strategy, base);
     struct timeval timeout{ .tv_sec = 1, .tv_usec = 0 };

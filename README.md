@@ -2,24 +2,30 @@
 
 Copyright (c) 2017, Hans Erik Thrane.
 
+## License
+
+[BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)
+
 ## Overview
 
-This repository contains the public interfaces.
+This repository contains open sourced APIs and tools.
 
 ![overview](https://github.com/quinclas/tradingapi/blob/gh-pages/_images/design.png)
 
-Detailed documentation available [here](https://quinclas.github.io/tradingapi/index.html).
+## Documentation
 
-## Usage
+Detailed documentation can be found [here](https://quinclas.github.io/tradingapi/index.html).
 
-### Platforms
+## Platforms
 
 * Linux
 * macOS
 
-### Build Tools
+*Windows is not yet supported*.
 
-| tool     | version  |
+## Build Tools
+
+| Tool     | Version  |
 | -------- | -------- |
 | autoconf |          |
 | automake |          |
@@ -29,44 +35,44 @@ Detailed documentation available [here](https://quinclas.github.io/tradingapi/in
 
 *Indirectly requiring CMake*.
 
-### Dependencies
+## Dependencies
 
-| tool              | version  | license      | source                                                |
-| ----------------- | -------- | ------------ | ----------------------------------------------------- |
-| cctz              | >= 2.1   | Apache-2.0   | [github](https://github.com/google/cctz)              |
-| double-conversion | >= 3.0   | BSD-3-Clause | [github](https://github.com/google/double-conversion) |
-| flatbuffers       | >= 1.7   | Apache-2.0   | [github](https://github.com/google/flatbuffers)       |
-| gflags            | >= 2.2   | BSD-3-Clause | [github](https://github.com/gflags/gflags)            |
-| glog              | >= 0.3.5 | BSD-3-Clause | [github](https://github.com/google/glog)              |
-| googletest        | >= 1.8   | BSD-3-Clause | [github](https://github.com/google/googletest)        |
-| libconfig         | >= 1.7   | LGPL-2.1     | [github](https://github.com/hyperrealm/libconfig)     |
-| libevent          | >= 2.1   | BSD-3-Clause | [github](https://github.com/libevent/libevent)        |
+| Library                                                          | Version  | License                                                      | Purpose                         |
+| ---------------------------------------------------------------- | -------- | ------------------------------------------------------------ | ------------------------------- |
+| [cctz](https://github.com/google/cctz)                           | >= 2.1   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Time and time-zone conversion   |
+| [double-conversion](https://github.com/google/double-conversion) | >= 3.0   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Convert numbers to/from string  |
+| [flatbuffers](https://github.com/google/flatbuffers)             | >= 1.7   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Messaging                       |
+| [gflags](https://github.com/gflags/gflags)                       | >= 2.2   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Command-line options            |
+| [glog](https://github.com/google/glog)                           | >= 0.3.5 | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Logging                         |
+| [googletest](https://github.com/google/googletest)               | >= 1.8   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Testing                         |
+| [libevent](https://github.com/libevent/libevent)                 | >= 2.1   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Async event processing          |
 
-### Building
+## Building
 
     ./autogen.sh
     ./configure
     make
     make install
 
-### Broker API's
+## Conda
 
-The gateways have not been open sourced.
-You can only download pre-built binaries from the Conda repository (see next section).
+You are able to access pre-built binaries from our Conda repositories
 
-*Please note that gateways will only work with valid license keys*.
+* <http://quinclas.com/dist/conda/stable>
+* <http://quinclas.com/dist/conda/unstable>
 
-### Conda
+*Conda makes it easy to install programs and libraries without requiring root access.
+For further details about Conda, please refer to the official documentation ([link](https://conda.io/docs/))*.
 
-You are able to access pre-built binaries from the Conda repository: <http://quinclas.com/dist/conda/stable>.
+## Example
 
-Here is an example of how to set up your own Conda environment, install a package, and use a binary.
+Here is an example of how to set up your own Conda environment, install a package, and execute a binary.
 
     # download the installer
     wget -c http://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
 
-    # install miniconda
-    bash ./Miniconda2-latest-Linux-x86_64.sh -b -p ~/miniconda2
+    # install miniconda to your home directory
+    bash Miniconda2-latest-Linux-x86_64.sh -b -p ~/miniconda2
 
     # activate the root environment
     source ~/miniconda2/bin/activate
@@ -88,6 +94,17 @@ Here is an example of how to set up your own Conda environment, install a packag
     export GLOG_logtostderr=1
 
     # you should now be able to run the trading engine
-    example-trading-engine
+    example-trading-engine --local-address=/tmp/gateway-simulator.unix
 
-For further details about Conda, please refere to the official documentation ([link](https://conda.io/docs/)).
+## Broker API's
+
+The gateways have not been open sourced.
+Pre-built binaries are available from our Conda repositories;
+
+| Gateway  | Package Name      | Access             | Market Data | Order Routing | Linux | Windows | macOS |
+| -------- | ----------------- | ------------------ | ----------- | ------------- | ----- | ------- | ----- |
+| FemasAPI | quinclas-femasapi | Chinese brokers    | Yes         | Yes           | Yes   | No      | No    |
+| TWS API  | quinclas-twsapi   | InteractiveBrokers | Yes         | Yes           | Yes   | No      | Yes   |
+| CME MDP3 | quinclas-cmemdp3  | CME Group          | Yes         | No            | No    | No      | No    |
+
+*Gateways will only work with valid license keys. Please contact us for further details*.

@@ -5,3 +5,6 @@ script:
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y build-essential gcc m4 autoconf autoconf-archive automake libtool pkg-config libgflags-dev libgoogle-glog-dev libevent-dev
+
+install:
+  - scripts/install-flatbuffers.sh

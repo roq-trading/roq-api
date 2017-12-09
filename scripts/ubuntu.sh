@@ -7,4 +7,4 @@ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
 sudo apt-get install -y \
 	libssl-dev build-essential m4 autoconf autoconf-archive automake \
        	libtool pkg-config cmake gcc python-pip libconfig++-dev
-sudo -s -- 'yes | pip install cpplint'
+sudo pip install cpplint

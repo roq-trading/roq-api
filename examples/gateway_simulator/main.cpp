@@ -14,10 +14,12 @@ namespace {
 class MyListener : public quinclas::io::libevent::Listener::Handler {
  public:
    MyListener(quinclas::io::net::Socket&& socket, quinclas::io::libevent::Base& base) :
-     _listener(*this, base, LEV_OPT_REUSEABLE, 5, std::move(socket)) {
+     _listener(*this, base, LEV_OPT_REUSEABLE, -1, std::move(socket)) {
    }
  private:
   void on_accept(quinclas::io::libevent::BufferEvent&& buffer) override {
+      LOG(INFO) << "got connection";
+      // TODO(thraneh): start dispatching
   }
   quinclas::io::libevent::Listener _listener;
 };
@@ -43,7 +45,7 @@ int main(int argc, char *argv[]) {
     // initialize libevent base
     quinclas::io::libevent::Base base;
     // create a socket and wrap it for use by libevent
-    quinclas::io::net::Socket socket(PF_LOCAL, SOCK_DGRAM, 0);
+    quinclas::io::net::Socket socket(PF_LOCAL, SOCK_STREAM, 0);
     socket.non_blocking(true);
     socket.bind(address);
     // listener

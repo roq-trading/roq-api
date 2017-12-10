@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     // initialize libevent base
     quinclas::io::libevent::Base base;
     // create a socket and wrap it for use by libevent
-    quinclas::io::net::Socket socket(PF_LOCAL, SOCK_DGRAM, 0);
+    quinclas::io::net::Socket socket(PF_LOCAL, SOCK_STREAM, 0);
     socket.non_blocking(true);
     quinclas::io::libevent::BufferEvent buffer_event(base, std::move(socket));
     // create strategy (including request dispatcher, event dispatcher and timer)

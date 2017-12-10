@@ -309,7 +309,7 @@ class Listener {
     auto& listener = *reinterpret_cast<Listener*>(cbarg);
     io::net::Socket socket(fd);
     DCHECK_EQ(socket.non_blocking(), true) << "Socket must be non-blocking";
-    socket.no_delay(true);  // FIXME(thraneh): maybe not here?
+    // socket.no_delay(true);  // FIXME(thraneh): do this elsewhere - only for tcp sockets, though
     // LOG(INFO) << "Accepted new connection from " << io::net::Utilities::inet_ntop(AF_INET, &(address.sin_addr));
     BufferEvent buffer(listener._base, std::move(socket));
     listener._handler.on_accept(std::move(buffer));

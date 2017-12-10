@@ -11,10 +11,11 @@ namespace client {
 
 // TODO(thraneh): reconnect instead of shutdown
 
-class EventDispatcher : public common::EventDispatcher {
+class EventDispatcher : public common::EventDispatcher, public io::libevent::TimerEvent::Handler {
  public:
   EventDispatcher(common::Strategy& strategy, io::libevent::Base& base, io::libevent::BufferEvent& buffer_event) :
     common::EventDispatcher(strategy),
+    _strategy(strategy),
     _base(base),
     _buffer_event(buffer_event) {
     _buffer_event.setcb(on_read, nullptr, on_error, this);
@@ -22,6 +23,7 @@ class EventDispatcher : public common::EventDispatcher {
   }
 
  private:
+  common::Strategy& _strategy;
   io::libevent::Base& _base;
   io::libevent::BufferEvent& _buffer_event;
   io::libevent::Buffer _buffer;
@@ -60,6 +62,12 @@ class EventDispatcher : public common::EventDispatcher {
       LOG(ERROR) << "Exception: <unknown>";
     }
     _base.loopexit();
+  }
+  void on_timer() {
+    const common::TimerEvent event = {
+      0
+    };
+    _strategy.on(event);
   }
 };
 

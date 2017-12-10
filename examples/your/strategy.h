@@ -3,18 +3,17 @@
 #pragma once
 
 #include <quinclas/tradingapi.h>
-#include <quinclas/io/libevent.h>  // FIXME(thraneha): NOT HERE
 #include <limits>
 
 namespace examples {
 namespace your {
 
-class Strategy : public quinclas::io::libevent::TimerEvent::Handler, public quinclas::common::Strategy {
+class Strategy : public quinclas::common::Strategy {
  public:
   explicit Strategy(quinclas::common::Strategy::Dispatcher& dispatcher);
 
  protected:
-  void on_timer() override;
+  void on(const quinclas::common::TimerEvent&) override;
   void on(const quinclas::common::IdleEvent&) override;
   void on(const quinclas::common::GatewayStatusEvent&) override;
   void on(const quinclas::common::ReferenceDataEvent&) override;

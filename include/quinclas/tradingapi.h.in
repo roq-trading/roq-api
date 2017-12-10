@@ -166,6 +166,13 @@ struct MessageInfo {
 };
 
 /**
+ * Timer event.
+ */
+struct TimerEvent {
+  datetime_t current_utc_time;                             // Current time
+};
+
+/**
  * Idle event.
  */
 struct IdleEvent {};
@@ -400,6 +407,7 @@ class Strategy {
     virtual void send(const CancelOrderRequest& cancel_order_request) = 0;
   };
   virtual ~Strategy() = default;
+  virtual void on(const TimerEvent&) = 0;                  ///< Timer (don't rely on the accuracy!)
   virtual void on(const IdleEvent&) = 0;                   ///< Idle
   virtual void on(const GatewayStatusEvent&) = 0;          ///< Connection or login status has changed for a gateway
   virtual void on(const ReferenceDataEvent&) = 0;          ///< Reference data update for an instrument

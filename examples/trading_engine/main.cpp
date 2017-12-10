@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
     quinclas::client::RequestDispatcher request_dispatcher(buffer_event);
     examples::your::Strategy strategy(request_dispatcher);
     quinclas::client::EventDispatcher event_dispatcher(strategy, base, buffer_event);
-    quinclas::io::libevent::TimerEvent timer(strategy, base);
+    quinclas::io::libevent::TimerEvent timer(event_dispatcher, base);
     struct timeval timeout{ .tv_sec = 1, .tv_usec = 0 };
     timer.add(&timeout);
     // connect the socket

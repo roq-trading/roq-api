@@ -3,7 +3,6 @@
 #include "your/strategy.h"
 
 using namespace quinclas::common;  // NOLINT
-using namespace quinclas::io;  // NOLINT
 
 namespace examples {
 namespace your {
@@ -19,7 +18,7 @@ Strategy::Strategy(Strategy::Dispatcher& dispatcher) :
   _dispatcher(dispatcher) {
 }
 
-void Strategy::on_timer() {
+void Strategy::on(const TimerEvent&) {
 }
 
 void Strategy::on(const IdleEvent&) {

@@ -38,83 +38,62 @@ AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
 
 # Find glog.
 PKG_CHECK_MODULES([LIBGLOG], [libglog], [], [
-  SAVE_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS -I$prefix/include"
   AC_CHECK_HEADER(
     [glog/logging.h],
     [AC_SUBST([LIBGLOG_CFLAGS])],
     [AC_MSG_ERROR([unable to find glog header files])]
   )
-  CPPFLAGS="$SAVE_CPPFLAGS"
   AC_SUBST([LIBGLOG_LIBS], [-lglog])
 ])
 
 # Find gflags.
 PKG_CHECK_MODULES([GFLAGS], [gflags], [], [
-  SAVE_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS -I$prefix/include"
   AC_CHECK_HEADER(
     [gflags/gflags.h],
     [AC_SUBST([GFLAGS_CFLAGS])],
     [AC_MSG_ERROR([unable to find gflags header files])]
   )
-  CPPFLAGS="$SAVE_CPPFLAGS"
   AC_SUBST([GFLAGS_LIBS], [-lgflags])
 ])
 
 # Find double-conversion.
 PKG_CHECK_MODULES([DOUBLE_CONVERSION], [cctz], [], [
-  SAVE_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS -I$prefix/include"
   AC_CHECK_HEADER(
     [double-conversion/double-conversion.h],
     [AC_SUBST([DOUBLE_CONVERSION_CFLAGS])],
     [AC_MSG_ERROR([unable to find double-conversion header files])]
   )
-  CPPFLAGS="$SAVE_CPPFLAGS"
   AC_SUBST([DOUBLE_CONVERSION_LIBS], [-ldouble-conversion])
 ])
 
 # Find cctz.
 PKG_CHECK_MODULES([CCTZ], [cctz], [], [
-  SAVE_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS -I$prefix/include"
   AC_CHECK_HEADER(
     [cctz/civil_time.h],
     [AC_SUBST([CCTZ_CFLAGS])],
     [AC_MSG_ERROR([unable to find cctz header files])]
   )
-  CPPFLAGS="$SAVE_CPPFLAGS"
   AC_SUBST([CCTZ_LIBS], [-lcctz])
 ])
 
 # Find flatbuffers.
 PKG_CHECK_MODULES([FLATBUFFERS], [flatbuffers], [], [
-  SAVE_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS -I$prefix/include"
   AC_CHECK_HEADER(
     [flatbuffers/flatbuffers.h],
     [AC_SUBST([FLATBUFFERS_CFLAGS])],
     [AC_MSG_ERROR([unable to find flatbuffers header files])]
   )
-  CPPFLAGS="$SAVE_CPPFLAGS"
   AC_SUBST([FLATBUFFERS_LIBS], [-lflatbuffers])
 ])
-SAVE_PATH="$PATH"
-PATH="$PATH:$prefix/bin:$prefix/usr/local/bin"
 AC_PATH_PROGS([FLATC], [flatc], [])
-PATH="$SAVE_PATH"
 
 # Find libevent.
 PKG_CHECK_MODULES([LIBEVENT], [libevent], [], [
-  SAVE_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS -I$prefix/include"
   AC_CHECK_HEADER(
     [event2/event.h],
     [AC_SUBST([LIBEVENT_CFLAGS])],
     [AC_MSG_ERROR([unable to find libevent header files])]
   )
-  CPPFLAGS="$SAVE_CPPFLAGS"
   AC_SUBST([LIBEVENT_LIBS], [-levent])
 ])
 

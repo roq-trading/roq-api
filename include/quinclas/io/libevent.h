@@ -263,6 +263,13 @@ class BufferEvent {
       throw std::runtime_error("unable to connect");
     }
   }
+  template <typename T>
+  void connect(const T& address) {
+    if (bufferevent_socket_connect(_bufferevent, address.raw(), address.size()) < 0) {
+      LOG(ERROR) << "bufferevent_socket_connect() failed";
+      throw std::runtime_error("unable to connect");
+    }
+  }
 
  private:
   BufferEvent() = delete;

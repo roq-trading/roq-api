@@ -25,10 +25,7 @@ int main(int argc, char *argv[]) {
     LOG(INFO) << "*** START ***";
 
     // local (unix domain) socket address
-    struct sockaddr_un address = {};
-    address.sun_family = AF_LOCAL;
-    strncpy(address.sun_path, FLAGS_local_address.c_str(), sizeof(address.sun_path));
-    address.sun_path[sizeof(address.sun_path) - 1] = '\0';
+    quinclas::io::net::UnixAddress address(FLAGS_local_address.c_str());
     // initialize libevent base
     quinclas::io::libevent::Base base;
     // create a socket and wrap it for use by libevent
@@ -43,7 +40,7 @@ int main(int argc, char *argv[]) {
     struct timeval timeout{ .tv_sec = 1, .tv_usec = 0 };
     timer.add(&timeout);
     // connect the socket
-    buffer_event.connect(reinterpret_cast<const struct sockaddr *>(&address), sizeof(address));
+    buffer_event.connect(address);
     // start the libevent loop
     base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
 

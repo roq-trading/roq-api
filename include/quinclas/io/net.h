@@ -6,6 +6,7 @@
 #include <arpa/inet.h>
 #include <netinet/tcp.h>
 #include <sys/socket.h>
+#include <sys/un.h>
 
 #include <glog/logging.h>
 
@@ -34,6 +35,14 @@ class Socket {
   int get_raw() const { return _fd; }
   void bind(const struct sockaddr *address, socklen_t address_len) {
     if (::bind(_fd, address, address_len) < 0) {
+      const std::error_code error_code(errno, std::system_category());
+      PLOG(WARNING) << "bind() failed";
+      throw std::system_error(error_code);
+    }
+  }
+  template <typename T>
+  void bind(const T& address) {
+    if (::bind(_fd, address.raw(), address.size()) < 0) {
       const std::error_code error_code(errno, std::system_category());
       PLOG(WARNING) << "bind() failed";
       throw std::system_error(error_code);
@@ -124,6 +133,21 @@ class Socket {
   Socket(Socket const&) = delete;
   Socket& operator=(const Socket&) = delete;
   int _fd;
+};
+
+class UnixAddress {
+ public:
+  explicit UnixAddress(const char *path) {
+    _address.sun_family = AF_LOCAL;
+    strncpy(_address.sun_path, path, sizeof(_address.sun_path));
+    _address.sun_path[sizeof(_address.sun_path) - 1] = '\0';
+  }
+  size_t size() const { return sizeof(_address); }
+  const struct sockaddr *raw() const {
+    return reinterpret_cast<const struct sockaddr *>(&_address);
+  }
+ private:
+  struct sockaddr_un _address;
 };
 
 class Utilities {

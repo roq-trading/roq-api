@@ -4,8 +4,7 @@ example_gateway_simulator_LDFLAGS = \
 	$(LIBGLOG_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(LIBEVENT_LIBS) \
-	-levent_pthreads \
-	$(top_builddir)/examples/your/libexample-strategy.la
+	-levent_pthreads
 example_gateway_simulator_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \

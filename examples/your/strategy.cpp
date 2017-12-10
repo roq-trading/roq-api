@@ -76,5 +76,5 @@ void Strategy::on(const OrderUpdateEvent&) {
 void Strategy::on(const TradeUpdateEvent&) {
 }
 
-}  // namespace strategy
+}  // namespace your
 }  // namespace examples

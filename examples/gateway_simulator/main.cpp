@@ -10,6 +10,19 @@
 
 DEFINE_string(local_address, "", "local address (unix domain socket)");
 
+namespace {
+class MyListener : public quinclas::io::libevent::Listener::Handler {
+ public:
+   MyListener(quinclas::io::net::Socket&& socket, quinclas::io::libevent::Base& base) :
+     _listener(*this, base, LEV_OPT_REUSEABLE, 5, std::move(socket)) {
+   }
+ private:
+  void on_accept(quinclas::io::libevent::BufferEvent&& buffer) override {
+  }
+  quinclas::io::libevent::Listener _listener;
+};
+}  // namespace
+
 int main(int argc, char *argv[]) {
   int result = EXIT_FAILURE;
   try {
@@ -25,25 +38,16 @@ int main(int argc, char *argv[]) {
     LOG(INFO) << "*** START ***";
 
     // local (unix domain) socket address
-    struct sockaddr_un address = {};
-    address.sun_family = AF_LOCAL;
-    strncpy(address.sun_path, FLAGS_local_address.c_str(), sizeof(address.sun_path));
-    address.sun_path[sizeof(address.sun_path) - 1] = '\0';
+    unlink(FLAGS_local_address.c_str());
+    quinclas::io::net::UnixAddress address(FLAGS_local_address.c_str());
     // initialize libevent base
     quinclas::io::libevent::Base base;
     // create a socket and wrap it for use by libevent
     quinclas::io::net::Socket socket(PF_LOCAL, SOCK_DGRAM, 0);
     socket.non_blocking(true);
-    quinclas::io::libevent::BufferEvent buffer_event(base, std::move(socket));
-    // create strategy (including request dispatcher, event dispatcher and timer)
-    quinclas::client::RequestDispatcher request_dispatcher(buffer_event);
-    examples::your::Strategy strategy(request_dispatcher);
-    quinclas::client::EventDispatcher event_dispatcher(strategy, base, buffer_event);
-    quinclas::io::libevent::TimerEvent timer(event_dispatcher, base);
-    struct timeval timeout{ .tv_sec = 1, .tv_usec = 0 };
-    timer.add(&timeout);
-    // connect the socket
-    buffer_event.connect(reinterpret_cast<const struct sockaddr *>(&address), sizeof(address));
+    socket.bind(address);
+    // listener
+    MyListener listener(std::move(socket), base);
     // start the libevent loop
     base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
 

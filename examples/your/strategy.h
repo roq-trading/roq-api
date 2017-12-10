@@ -31,5 +31,5 @@ class Strategy : public quinclas::common::Strategy {
   quinclas::common::Strategy::Dispatcher& _dispatcher;
 };
 
-}  // namespace strategy
+}  // namespace your
 }  // namespace examples

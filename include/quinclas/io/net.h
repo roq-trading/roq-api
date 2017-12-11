@@ -150,16 +150,6 @@ class UnixAddress {
   struct sockaddr_un _address;
 };
 
-class Utilities {
- public:
-  static std::string inet_ntop(int af, const void *src) {
-    char buffer[INET_ADDRSTRLEN];
-    ::inet_ntop(af, src, buffer, sizeof(buffer));
-    buffer[sizeof(buffer) - 1] = '\0';
-    return buffer;
-  }
-};
-
 }  // namespace net
 }  // namespace io
 }  // namespace quinclas

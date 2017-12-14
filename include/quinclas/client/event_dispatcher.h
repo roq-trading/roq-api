@@ -13,8 +13,8 @@ namespace client {
 
 class EventDispatcher : public common::EventDispatcher, public io::libevent::TimerEvent::Handler {
  public:
-  EventDispatcher(common::Strategy& strategy, io::libevent::Base& base, io::libevent::BufferEvent& buffer_event) :
-    common::EventDispatcher(strategy),
+  EventDispatcher(common::Strategy& strategy, io::libevent::Base& base, io::libevent::BufferEvent& buffer_event)
+      : common::EventDispatcher(strategy),
     _strategy(strategy),
     _base(base),
     _buffer_event(buffer_event) {
@@ -30,10 +30,10 @@ class EventDispatcher : public common::EventDispatcher, public io::libevent::Tim
   static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT short
     auto& self = *reinterpret_cast<EventDispatcher*>(arg);
     if (what & BEV_EVENT_EOF)
-      LOG(INFO) << "Client disconnected";
+      LOG(INFO) << "client: disconnect";
     else
-      LOG(WARNING) << "Socket error";
-    self._base.loopexit();
+      LOG(WARNING) << "client: socket error";
+    // self._base.loopexit();
   }
   static void on_read(struct bufferevent *bev, void *arg) {
     reinterpret_cast<EventDispatcher*>(arg)->on_read();
@@ -56,10 +56,10 @@ class EventDispatcher : public common::EventDispatcher, public io::libevent::Tim
       }
       return;
     } catch (std::exception& e) {
-      LOG(WARNING) << "Exception: " << e.what();
+      LOG(WARNING) << "exception: " << e.what();
     }
     catch (...) {
-      LOG(ERROR) << "Exception: <unknown>";
+      LOG(ERROR) << "exception: <unknown>";
     }
     _base.loopexit();
   }

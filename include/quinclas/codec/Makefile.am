@@ -8,7 +8,7 @@ BUILT_SOURCES=enums_generated.h tradingapi_generated.h
 CLEANFILES=enums_generated.h tradingapi_generated.h
 
 tradingapi_generated.h: ${srcdir}/tradingapi.fbs
-	$(FLATC) --cpp --scoped-enums $<
+	$(FLATC) --cpp --python --scoped-enums $<
 
 enums_generated.h: ${srcdir}/enums.fbs
-	$(FLATC) --cpp --scoped-enums $<
+	$(FLATC) --cpp --python --scoped-enums $<

@@ -2,6 +2,8 @@
 
 #include "your/strategy.h"
 
+#include <limits>
+
 using namespace quinclas::common;  // NOLINT
 
 namespace examples {
@@ -14,9 +16,9 @@ const uint32_t QUANTITY       =  1;        // CAREFUL
 const double   LIMIT_PRICE    =  0.01;     // CAREFUL
 const char    *ORDER_TEMPLATE = "ioc_open";
 
-Strategy::Strategy(Strategy::Dispatcher& dispatcher) :
-  _dispatcher(dispatcher) {
-}
+Strategy::Strategy(Strategy::Dispatcher& dispatcher, const uint32_t ticks_to_trade)
+    : _dispatcher(dispatcher),
+      _ticks_to_trade(ticks_to_trade) {}
 
 void Strategy::on(const TimerEvent&) {
 }

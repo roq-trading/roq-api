@@ -3,14 +3,13 @@
 #pragma once
 
 #include <quinclas/tradingapi.h>
-#include <limits>
 
 namespace examples {
 namespace your {
 
 class Strategy : public quinclas::common::Strategy {
  public:
-  explicit Strategy(quinclas::common::Strategy::Dispatcher& dispatcher);
+  explicit Strategy(quinclas::common::Strategy::Dispatcher& dispatcher, const uint32_t ticks_to_trade);
 
  protected:
   void on(const quinclas::common::TimerEvent&) override;
@@ -29,6 +28,7 @@ class Strategy : public quinclas::common::Strategy {
 
  private:
   quinclas::common::Strategy::Dispatcher& _dispatcher;
+  const uint32_t _ticks_to_trade;
 };
 
 }  // namespace your

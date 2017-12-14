@@ -3,15 +3,15 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-#include <list>
-#include <unordered_map>
-
 #include <quinclas/client/event_dispatcher.h>
 #include <quinclas/client/request_dispatcher.h>
 
+#include <list>
+#include <unordered_map>
+
 #include "your/strategy.h"
 
-DEFINE_string(local_address, "", "local address (unix domain socket)");
+DEFINE_string(local_address, "", "host-internal socket address (path)");
 
 namespace {
 template <typename T>
@@ -19,7 +19,7 @@ class Connection {
  public:
   class Handler {
    public:
-      virtual void on_remove(const quinclas::io::libevent::BufferEvent& buffer) = 0;
+    virtual void on_remove(const quinclas::io::libevent::BufferEvent& buffer) = 0;
   };
   Connection(Handler& handler, quinclas::io::libevent::BufferEvent&& bufferevent, T&& client) :
     _handler(handler),
@@ -28,25 +28,32 @@ class Connection {
     _bufferevent.setcb(on_read, nullptr, on_error, this);
     _bufferevent.enable(EV_READ);
   }
+  Connection(Connection&& rhs) :
+    _handler(rhs._handler),
+    _bufferevent(std::move(rhs._bufferevent)),
+    _buffer(std::move(rhs._buffer)),
+    _client(std::move(rhs._client)) {
+  }
 
  private:
   static void on_read(struct bufferevent *bev, void *arg) {
-    LOG(INFO) << "Read";
-    auto& self = *reinterpret_cast<Connection*>(arg);
-    self._bufferevent.read(self._buffer);
-    self._client.on_read(self._buffer);
+    auto self = reinterpret_cast<Connection*>(arg);
+    self->_bufferevent.read(self->_buffer);
+    self->_client.on_read(self->_buffer);
   }
-  static void on_error(struct bufferevent *bev, short what, void *arg) {
-    LOG(INFO) << "Error";
-    auto& self = *reinterpret_cast<Connection*>(arg);
+  static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT
+    auto self = reinterpret_cast<Connection*>(arg);
     if (what & BEV_EVENT_EOF)
-      LOG(INFO) << "Client disconnected";
+      LOG(INFO) << "client disconnected";
     else
-      LOG(WARNING) << "Socket error";
-    self._handler.on_remove(self._bufferevent);
+      LOG(WARNING) << "socket error";
+    self->_handler.on_remove(self->_bufferevent);
   }
 
  private:
+  Connection() = delete;
+  Connection(const Connection&) = delete;
+  Connection& operator=(const Connection&) = delete;
   Handler& _handler;
   quinclas::io::libevent::BufferEvent _bufferevent;
   quinclas::io::libevent::Buffer _buffer;
@@ -75,14 +82,15 @@ class Service :
   }
 
  protected:
-  void on_accept(quinclas::io::libevent::BufferEvent&& buffer) override {
+  void on_accept(quinclas::io::libevent::BufferEvent&& bufferevent) override {
     LOG(INFO) << "Accept";
-    _connections.emplace(buffer.get_raw(), Connection<T>(*this, std::move(buffer), std::move(_factory.create())));
+    _connections.emplace(bufferevent.raw(),
+                         Connection<T>(*this, std::move(bufferevent), std::move(_factory.create())));
     LOG(INFO) << "Added client";
   }
   void on_remove(const quinclas::io::libevent::BufferEvent& buffer) override {
     LOG(INFO) << "Remove";
-    auto iter = _connections.find(buffer.get_raw());
+    auto iter = _connections.find(buffer.raw());
     if (iter == _connections.end()) {
       LOG(ERROR) << "Can't remove non-existing client";
     } else {
@@ -99,6 +107,9 @@ class Service :
     }
   }
  private:
+  Service() = delete;
+  Service(const Service&) = delete;
+  Service& operator=(const Service&) = delete;
   quinclas::io::libevent::TimerEvent _timer;
   quinclas::io::libevent::Listener _listener;
   Factory<T> _factory;
@@ -133,7 +144,10 @@ class Client {
   }
 
  private:
-    int _a;
+  Client() = delete;
+  // Client(const Client&) = delete;
+  // Client& operator=(const Client&) = delete;
+  int _a;
 };
 }  // namespace
 
@@ -143,10 +157,14 @@ class Factory<Client> {
  public:
   explicit Factory(int a) : _a(a) {
   }
+  // Factory(Factory&& rhs) : _a(std::move(rhs._a)) {}
   Client create() {
     return Client(_a);
   }
  private:
+  Factory() = delete;
+  // Factory(const Factory&) = delete;
+  // Factory& operator=(const Factory&) = delete;
   int _a;
 };
 }  // namespace
@@ -160,13 +178,13 @@ int main(int argc, char *argv[]) {
   gflags::ShutDownCommandLineFlags();
   // validate command-line options
   if (FLAGS_local_address.empty())
-    throw std::runtime_error("local_address is missing");
+    throw std::invalid_argument("local_address is missing");
   // we're ready
   LOG(INFO) << "===== START =====";
   // remove left-over unix domain socket (protect with pidfile?)
   unlink(FLAGS_local_address.c_str());
   // create host-internal socket address
-  quinclas::io::net::UnixAddress address(FLAGS_local_address.c_str());
+  quinclas::io::net::Address address(FLAGS_local_address.c_str());
   // create and bind host-internal listen socket
   quinclas::io::net::Socket socket(PF_LOCAL, SOCK_STREAM, 0);
   socket.non_blocking(true);

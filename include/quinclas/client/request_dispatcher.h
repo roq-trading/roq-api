@@ -15,8 +15,7 @@ namespace client {
 
 class RequestDispatcher : public common::Strategy::Dispatcher {
  public:
-  explicit RequestDispatcher(io::libevent::BufferEvent& buffer_event) :
-      _buffer_event(buffer_event) {}
+  explicit RequestDispatcher(io::libevent::BufferEvent& buffer_event) : _buffer_event(buffer_event) {}
 
  private:
   void send(const common::CreateOrderRequest& create_order_request) override {

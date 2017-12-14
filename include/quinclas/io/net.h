@@ -2,8 +2,9 @@
 
 #pragma once
 
-#include <fcntl.h>
 #include <arpa/inet.h>
+#include <fcntl.h>
+#include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -11,121 +12,149 @@
 #include <glog/logging.h>
 
 #include <string>
+#include <utility>
 
 namespace quinclas {
 namespace io {
 namespace net {
 
+class Address {
+ public:
+  explicit Address(const char *path) : _size(sizeof(_address.un)) {
+    std::memset(&_address.un, 0, sizeof(_address.un));
+    _address.un.sun_family = AF_LOCAL;
+    if (sizeof(_address.un.sun_path) <= std::strlen(path))
+      throw std::runtime_error("net: path is too long");
+    strncpy(_address.un.sun_path, path, sizeof(_address.un.sun_path));
+  }
+  explicit Address(const std::string& path) : Address(path.c_str()) {}
+  // use gethostbyname (or some similar async version) to look up the address given a hostname
+  Address(const struct in_addr address, const uint16_t port) : _size(sizeof(_address.in)) {
+    struct hostent *hostinfo;
+    _address.in.sin_family = AF_INET;
+    _address.in.sin_port = htons(port);
+    _address.in.sin_addr = address;
+  }
+  const struct sockaddr *raw() const {
+    return reinterpret_cast<const struct sockaddr *>(&_address);
+  }
+  size_t size() const { return _size; }
+
+ private:
+  typedef union {
+    struct sockaddr_in in;
+    struct sockaddr_un un;
+  } sockaddr_t;
+  sockaddr_t _address;
+  socklen_t _size;
+};
+
 class Socket {
  public:
   explicit Socket(int fd) : _fd(fd) {}
-  Socket(int domain, int type, int protocol) :
-    _fd(socket(domain, type, protocol)) {
+  Socket(int domain, int type, int protocol) : _fd(socket(domain, type, protocol)) {
     if (_fd < 0) {
-      PLOG(WARNING) << "socket() failed";
-      throw std::bad_alloc();
+      PLOG(WARNING) << "net: socket() failed";
+      throw std::system_error(errno, std::system_category());
     }
   }
-  Socket(Socket&& rhs) : _fd(rhs._fd) {}
+  Socket(Socket&& rhs) : _fd(rhs._fd) {
+    rhs._fd = -1;
+  }
   ~Socket() {
     if (_fd >= 0)
       close(_fd);
   }
+  Socket& operator=(Socket&& rhs) {
+    if (_fd >= 0)
+      close(_fd);
+    _fd = rhs._fd;
+    rhs._fd = -1;
+    return *this;
+  }
   operator int() const { return _fd; }
-  int get_raw() const { return _fd; }
+  int raw() const { return _fd; }
+  int release() {
+    int res = -1;
+    std::swap(_fd, res);
+    return res;
+  }
   void bind(const struct sockaddr *address, socklen_t address_len) {
     if (::bind(_fd, address, address_len) < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "bind() failed";
-      throw std::system_error(error_code);
+      PLOG(WARNING) << "net: bind() failed";
+      throw std::system_error(errno, std::system_category());
     }
   }
-  template <typename T>
-  void bind(const T& address) {
-    if (::bind(_fd, address.raw(), address.size()) < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "bind() failed";
-      throw std::system_error(error_code);
-    }
+  void bind(const Address& address) {
+    bind(address.raw(), address.size());
   }
   void listen(int backlog) {
     if (::listen(_fd, backlog) < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "bind() failed";
-      throw std::system_error(error_code);
+      PLOG(WARNING) << "net: bind() failed";
+      throw std::system_error(errno, std::system_category());
     }
   }
-  Socket accept(struct sockaddr *address, socklen_t *address_len) {
+  Socket accept(struct sockaddr *address, socklen_t *address_len) const {
     const auto fd = ::accept(_fd, address, address_len);
     if (fd < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "accept() failed";
-      throw std::system_error(error_code);
+      PLOG(WARNING) << "net: accept() failed";
+      throw std::system_error(errno, std::system_category());
     }
     return Socket(fd);
   }
-  // non-standard
-  bool non_blocking() const {
+  int getfl() const {
     const auto flags = ::fcntl(_fd, F_GETFL);
     if (flags < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "fcntl(F_SETFL) failed";
-      throw std::system_error(error_code);
+      PLOG(WARNING) << "net: fcntl(F_GETFL) failed";
+      throw std::system_error(errno, std::system_category());
     }
-    return (flags & O_NONBLOCK) != 0;
+    return flags;
+  }
+  void setfl(int option, bool mode) {
+    auto flags = getfl();
+    flags = mode ? (flags | option) : (flags & ~option);
+    if (::fcntl(_fd, F_SETFL, flags) < 0) {
+      PLOG(WARNING) << "net: fcntl(F_SETFL) failed";
+      throw std::system_error(errno, std::system_category());
+    }
+  }
+  template <typename T>
+  T getsockopt(int level, int option_name) const {
+    T value;
+    socklen_t length = sizeof(value);
+    if (::getsockopt(_fd, level, option_name, &value, &length) < 0) {
+      PLOG(WARNING) << "net: getsockopt() failed";
+      throw std::system_error(errno, std::system_category());
+    }
+    return value;
+  }
+  template <typename T>
+  void setsockopt(int level, int option_name, T value) {
+    if (::setsockopt(_fd, level, option_name, &value, sizeof(value)) < 0) {
+      PLOG(WARNING) << "net: setsockopt() failed";
+      throw std::system_error(errno, std::system_category());
+    }
+  }
+  // non-standard helper functions
+  bool non_blocking() const {
+    return (getfl() & O_NONBLOCK) != 0;
   }
   void non_blocking(bool mode) {
-    auto flags = ::fcntl(_fd, F_GETFL);
-    if (flags < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "fcntl(F_GETFL) failed";
-      throw std::system_error(error_code);
-    }
-    if (mode)
-      flags |= O_NONBLOCK;
-    else
-      flags &= ~O_NONBLOCK;
-    if (::fcntl(_fd, F_SETFL, flags) < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "fcntl(F_SETFL) failed";
-      throw std::system_error(error_code);
-    }
+    setfl(O_NONBLOCK, mode);
   }
   bool reuse_address() const {
-    int value = 0;
-    socklen_t length = sizeof(value);
-    if (::getsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &value, &length) < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "getsockopt(SOL_SOCKET, SO_REUSEADDR) failed";
-      throw std::system_error(error_code);
-    }
-    return value != 0;
+    return getsockopt<int>(SOL_SOCKET, SO_REUSEADDR) != 0;
   }
   void reuse_address(bool mode) {
     const int value = mode ? 1 : 0;
-    if (::setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &value, sizeof(value)) < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "setsockopt(SOL_SOCKET, SO_REUSEADDR) failed";
-      throw std::system_error(error_code);
-    }
+    setsockopt(SOL_SOCKET, SO_REUSEADDR, value);
   }
   bool no_delay() const {
-    int value = 0;
-    socklen_t length = sizeof(value);
-    if (::getsockopt(_fd, IPPROTO_TCP, TCP_NODELAY, &value, &length) < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "getsockopt(IPPROTO_TCP, TCP_NODELAY) failed";
-      throw std::system_error(error_code);
-    }
-    return value != 0;
+    return getsockopt<int>(IPPROTO_TCP, TCP_NODELAY) != 0;
   }
   void no_delay(bool mode) {
     const int value = mode ? 1 : 0;
-    if (::setsockopt(_fd, IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value)) < 0) {
-      const std::error_code error_code(errno, std::system_category());
-      PLOG(WARNING) << "setsockopt(IPPROTO_TCP, TCP_NODELAY) failed";
-      throw std::system_error(error_code);
-    }
+    setsockopt(IPPROTO_TCP, TCP_NODELAY, value);
   }
 
  private:
@@ -133,21 +162,6 @@ class Socket {
   Socket(Socket const&) = delete;
   Socket& operator=(const Socket&) = delete;
   int _fd;
-};
-
-class UnixAddress {
- public:
-  explicit UnixAddress(const char *path) {
-    _address.sun_family = AF_LOCAL;
-    strncpy(_address.sun_path, path, sizeof(_address.sun_path));
-    _address.sun_path[sizeof(_address.sun_path) - 1] = '\0';
-  }
-  size_t size() const { return sizeof(_address); }
-  const struct sockaddr *raw() const {
-    return reinterpret_cast<const struct sockaddr *>(&_address);
-  }
- private:
-  struct sockaddr_un _address;
 };
 
 }  // namespace net

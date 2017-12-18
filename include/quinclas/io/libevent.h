@@ -13,6 +13,8 @@
 
 #include <quinclas/io/net.h>
 
+#include <cstring>
+
 namespace quinclas {
 namespace io {
 namespace libevent {

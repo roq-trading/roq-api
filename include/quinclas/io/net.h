@@ -11,6 +11,7 @@
 
 #include <glog/logging.h>
 
+#include <cstring>
 #include <string>
 #include <utility>
 

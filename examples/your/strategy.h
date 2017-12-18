@@ -9,7 +9,7 @@ namespace your {
 
 class Strategy : public quinclas::common::Strategy {
  public:
-  explicit Strategy(quinclas::common::Strategy::Dispatcher& dispatcher, const uint32_t ticks_to_trade);
+  Strategy(quinclas::common::Strategy::Dispatcher& dispatcher, const uint32_t ticks_to_trade);
 
  protected:
   void on(const quinclas::common::TimerEvent&) override;

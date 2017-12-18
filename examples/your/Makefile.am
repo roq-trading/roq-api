@@ -1,4 +1,5 @@
 lib_LTLIBRARIES = libexample-strategy.la
+libexample_strategy_la_LDFLAGS = -static
 libexample_strategy_la_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \

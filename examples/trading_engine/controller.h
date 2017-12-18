@@ -33,13 +33,14 @@ class Controller final {
   class Dispatcher final
       : public quinclas::common::Strategy::Dispatcher,
         public quinclas::io::libevent::TimerEvent::Handler {
-    // managing the state of gateway connectivity
+    // maintains gateway state
     class Gateway final {
      public:
       Gateway(const std::string& name, const int domain, const std::string& address,
-              quinclas::io::libevent::Base& base, std::unordered_set<Gateway *>& callbacks)
-          : _name(name), _domain(domain), _address(address), _base(base), _callbacks(callbacks), _state(Disconnected),
-            _retry(0), _countdown(0) {}
+              quinclas::common::Strategy& strategy, quinclas::io::libevent::Base& base,
+              std::unordered_set<Gateway *>& callbacks)
+          : _name(name), _domain(domain), _address(address), _strategy(strategy), _base(base), _callbacks(callbacks),
+            _state(Disconnected), _retry(0), _countdown(0) {}
       bool refresh() {
         if (0 < _countdown && 0 != --_countdown)
           return false;
@@ -70,25 +71,23 @@ class Controller final {
         socket.non_blocking(true);
         auto buffer_event = std::unique_ptr<quinclas::io::libevent::BufferEvent>(
           new quinclas::io::libevent::BufferEvent(_base, std::move(socket)));
-        // TODO(thraneh): c+11 lambda for callback
         buffer_event->setcb(on_read, nullptr, on_error, this);
         buffer_event->enable(EV_READ);
         buffer_event->connect(_address);
         _buffer_event = std::move(buffer_event);
       }
       static void on_read(struct bufferevent *bev, void *arg) {
-        // decode and notify strategy -- should we take strategy as arg to constructor?
         LOG(INFO) << "read";
+        // TODO(thraneh): decode and notify strategy
       }
       static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT short
-        // TODO(thraneh): move self to zombie state
         auto& self = *reinterpret_cast<Gateway *>(arg);
         LOG(INFO) << "gateway name=" << self._name << ", error=0x" << std::setw(2) << std::hex << what;
         if (what & BEV_EVENT_CONNECTED) {
           LOG(INFO) << "gateway name=" << self._name << ", state=connected";
           self._state = Connected;
           self._retry = 0;
-        } else {  // unless we start using the timeout feature, this should catch all other errors
+        } else {  // this should catch all real errors
           LOG(INFO) << "gateway name=" << self._name << ", state=failed";
           self._state = Failed;
           self._callbacks.insert(&self);
@@ -99,6 +98,7 @@ class Controller final {
       std::string _name;
       int _domain;
       quinclas::io::net::Address _address;
+      quinclas::common::Strategy& _strategy;
       quinclas::io::libevent::Base& _base;
       std::unordered_set<Gateway *>& _callbacks;
       enum { Disconnected, Connecting, Connected, Failed } _state;
@@ -112,10 +112,8 @@ class Controller final {
     explicit Dispatcher(const gateways_t& gateways, Args&&... args)
         : _strategy(*this, std::forward<Args>(args)...),  // request handler, then whatever the strategy needs
           _timer(*this, _base) {
-      // TODO(thraneh): check duplicate address
       for (const auto iter : gateways) {
-        // TODO(thraneh): C++11 doesn't return the reference -- C++17 can fix next 2 lines (or just use abseil ?)
-        _gateways.emplace_back(Gateway(iter.first, PF_LOCAL, iter.second, _base, _callbacks));
+        _gateways.emplace_back(Gateway(iter.first, PF_LOCAL, iter.second, _strategy, _base, _callbacks));
         Gateway *gateway = &(*_gateways.rbegin());
         _gateways_by_name[iter.first] = gateway;
         _callbacks.insert(gateway);

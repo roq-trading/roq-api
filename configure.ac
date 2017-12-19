@@ -18,7 +18,6 @@ AC_CONFIG_FILES([
  include/quinclas/server/Makefile
  tests/Makefile
  examples/Makefile
- examples/your/Makefile
  examples/trading_engine/Makefile
  examples/gateway_simulator/Makefile
 ])

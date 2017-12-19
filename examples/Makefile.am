@@ -1,1 +1,1 @@
-SUBDIRS = your trading_engine gateway_simulator
+SUBDIRS = trading_engine gateway_simulator

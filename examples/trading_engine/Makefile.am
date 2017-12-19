@@ -4,8 +4,7 @@ example_trading_engine_LDFLAGS = \
 	$(LIBGLOG_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(LIBEVENT_LIBS) \
-	-levent_pthreads \
-	$(top_builddir)/examples/your/libexample-strategy.la
+	-levent_pthreads
 example_trading_engine_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \
@@ -13,4 +12,5 @@ example_trading_engine_CPPFLAGS = \
 	$(LIBGLOG_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
 	$(LIBEVENT_CFLAGS)
-example_trading_engine_SOURCES = main.cpp
+example_trading_engine_SOURCES = strategy.cpp main.cpp
+EXTRA_example_trading_engine_SOURCES = strategy.h

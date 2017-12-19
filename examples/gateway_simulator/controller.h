@@ -7,18 +7,51 @@
 #include <quinclas/tradingapi.h>
 #include <quinclas/io/libevent.h>
 
-#include <unordered_map>
 #include <list>
 #include <string>
+#include <unordered_map>
 
 namespace examples {
 namespace gateway_simulator {
 
 class Client {
  public:
-  typedef std::function<void(Client *)> Remove;
-  typedef std::function<std::unique_ptr<Client>(quinclas::io::libevent::BufferEvent&&, Remove remove)> Factory;
+  class Writer {
+    virtual void write(const void *buffer, size_t length) = 0;
+  };
+  typedef std::function<std::unique_ptr<Client>(Writer&)> Factory;
   virtual ~Client() {}
+  virtual void on_read() = 0;
+};
+
+
+class Connection : public Client::Writer {
+ public:
+  typedef std::function<void(Connection *)> Finalizer;
+  Connection(quinclas::io::libevent::BufferEvent&& buffer_event, Client::Factory factory, Finalizer finalizer)
+      : _buffer_event(std::move(buffer_event)), _client(factory(*this)), _finalizer(finalizer) {
+    _buffer_event.setcb(on_read, nullptr, on_error, this);
+    _buffer_event.enable(EV_READ);
+  }
+
+ private:
+  static void on_read(struct bufferevent *bev, void *arg) {
+    // TODO(thraneh): forward to _client
+  }
+  static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT
+    auto& self = *reinterpret_cast<Connection *>(arg);
+    self._finalizer(&self);  // garbage collect
+  }
+
+ private:
+  void write(const void *buffer, size_t length) override {
+    _buffer_event.write(buffer, length);
+  }
+
+ private:
+  quinclas::io::libevent::BufferEvent _buffer_event;
+  std::unique_ptr<Client> _client;
+  Finalizer _finalizer;
 };
 
 class Service final : public quinclas::io::libevent::Listener::Handler {
@@ -32,24 +65,25 @@ class Service final : public quinclas::io::libevent::Listener::Handler {
  private:
   void on_accept(quinclas::io::libevent::BufferEvent&& buffer_event) override {
     LOG(INFO) << "got connection";
-    auto client = _factory(std::move(buffer_event), [&](Client *client){ remove(client); });
-    _clients.emplace(client.get(), std::move(client));
+    auto finalizer = [&](Connection *connection){ remove(connection); };
+    auto connection = std::unique_ptr<Connection>(new Connection(std::move(buffer_event), _factory, finalizer));
+    _connection.emplace(connection.get(), std::move(connection));
   }
 
  private:
-  void remove(Client *client) {
+  void remove(Connection *connection) {
     LOG(INFO) << "removing connection";
-    auto iter = _clients.find(client);
-    assert(iter != _clients.end());
+    auto iter = _connection.find(connection);
+    assert(iter != _connection.end());
     _zombies.push_back(std::move((*iter).second));
-    _clients.erase(iter);
+    _connection.erase(iter);
   }
 
  private:
   quinclas::io::libevent::Listener _listener;
   Client::Factory _factory;
-  std::unordered_map<Client *, std::unique_ptr<Client> > _clients;
-  std::list<std::unique_ptr<Client> > _zombies;
+  std::unordered_map<Connection *, std::unique_ptr<Connection> > _connection;
+  std::list<std::unique_ptr<Connection> > _zombies;
 };
 
 class Controller final : public quinclas::io::libevent::TimerEvent::Handler {

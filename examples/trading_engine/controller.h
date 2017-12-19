@@ -33,14 +33,13 @@ class Controller final {
   class Dispatcher final
       : public quinclas::common::Strategy::Dispatcher,
         public quinclas::io::libevent::TimerEvent::Handler {
-    // maintains gateway state
     class Gateway final {
      public:
       Gateway(const std::string& name, const int domain, const std::string& address,
               quinclas::common::Strategy& strategy, quinclas::io::libevent::Base& base,
               std::unordered_set<Gateway *>& callbacks)
-          : _name(name), _domain(domain), _address(address), _strategy(strategy), _base(base), _callbacks(callbacks),
-            _state(Disconnected), _retry(0), _countdown(0) {}
+          : _name(name), _domain(domain), _address(address), _strategy(strategy), _base(base),
+            _callbacks(callbacks), _state(Disconnected), _retry(0), _countdown(0) {}
       bool refresh() {
         if (_countdown > 0 && 0 != --_countdown)
           return false;
@@ -52,9 +51,9 @@ class Controller final {
               connect();
               _state = Connecting;
               return true;  // remove
-            } catch (std::runtime_error& e) {
+            } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
               LOG(WARNING) << e.what();
-              _countdown = std::min(std::max(_retry, 1), 10);  // TODO(thraneh): table lookup
+              _countdown = delay[std::min(_retry, static_cast<int>((sizeof(delay) / sizeof(delay[0])) - 1))];
               return false;  // keep
             }
           }
@@ -62,7 +61,7 @@ class Controller final {
             LOG(INFO) << "gateway name=" << _name << ", state=disconnected";
             _buffer_event.release();
             _state = Disconnected;
-            _countdown = std::min(std::max(_retry, 1), 10);  // TODO(thraneh): table lookup
+            _countdown = delay[std::min(_retry, static_cast<int>((sizeof(delay) / sizeof(delay[0])) - 1))];
             _callbacks.insert(this);
             return false;  // keep
           }
@@ -99,6 +98,9 @@ class Controller final {
           self._callbacks.insert(&self);
         }
       }
+
+     private:
+      const int delay[8] = { 1, 1, 1, 2, 2, 5, 5, 10 };
 
      private:
       std::string _name;

@@ -1,13 +1,13 @@
 /* Copyright (c) 2017, Hans Erik Thrane */
 
-#include "your/strategy.h"
+#include "trading_engine/strategy.h"
 
 #include <limits>
 
 using namespace quinclas::common;  // NOLINT
 
 namespace examples {
-namespace your {
+namespace trading_engine {
 
 const char    *GATEWAY        = "FEMAS1";
 const char    *EXCHANGE       = "CFFEX";
@@ -78,5 +78,5 @@ void Strategy::on(const OrderUpdateEvent&) {
 void Strategy::on(const TradeUpdateEvent&) {
 }
 
-}  // namespace your
+}  // namespace trading_engine
 }  // namespace examples

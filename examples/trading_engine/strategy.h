@@ -5,7 +5,7 @@
 #include <quinclas/tradingapi.h>
 
 namespace examples {
-namespace your {
+namespace trading_engine {
 
 class Strategy : public quinclas::common::Strategy {
  public:
@@ -31,5 +31,5 @@ class Strategy : public quinclas::common::Strategy {
   const uint32_t _ticks_to_trade;
 };
 
-}  // namespace your
+}  // namespace trading_engine
 }  // namespace examples

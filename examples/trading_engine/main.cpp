@@ -5,8 +5,9 @@
 
 // currently in this directory  -- will be moved into quinclas/tradingapi when feature complete
 #include "trading_engine/controller.h"
+// #include <quinclas/client/controller.h>
 
-#include "your/strategy.h"
+#include "trading_engine/strategy.h"
 
 DEFINE_string(local_address, "", "host-internal socket address (path)");
 
@@ -32,7 +33,7 @@ int main(int argc, char *argv[]) {
 
   // create framework, instantiate strategy and start event dispatching
 
-  examples::trading_engine::Controller<examples::your::Strategy>({
+  examples::trading_engine::Controller<examples::trading_engine::Strategy>({
       { "FEMAS", FLAGS_local_address },
     }).create_and_dispatch(
       /*ticks_to_trade =*/ 10);

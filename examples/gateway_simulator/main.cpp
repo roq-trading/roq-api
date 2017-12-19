@@ -5,6 +5,7 @@
 
 // currently in this directory  -- will be moved into quinclas/tradingapi when feature complete
 #include "gateway_simulator/controller.h"
+// #include <quinclas/server/controller.h>
 
 DEFINE_string(local_address, "", "host-internal socket address (path)");
 
@@ -12,23 +13,15 @@ namespace {
 // communicates with a strategy
 class Strategy : public examples::gateway_simulator::Client {
  public:
-  Strategy(quinclas::io::libevent::BufferEvent&& buffer_event, Remove remove, const int latency)
-      : _buffer_event(std::move(buffer_event)), _remove(remove), _latency(latency) {
-    _buffer_event.setcb(on_read, nullptr, on_error, this);
-    _buffer_event.enable(EV_READ);
+  Strategy(examples::gateway_simulator::Client::Writer& writer, const int latency)
+      : _writer(writer), _latency(latency) {}
+
+ private:
+  void on_read() override {
   }
 
  private:
-  static void on_read(struct bufferevent *bev, void *arg) {
-  }
-  static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT
-    auto& self = *reinterpret_cast<Strategy *>(arg);
-    self._remove(&self);  // note! we need this callback for the garbage collection
-  }
-
- private:
-  Remove _remove;
-  quinclas::io::libevent::BufferEvent _buffer_event;
+  examples::gateway_simulator::Client::Writer& _writer;
   int _latency;
 };
 }  // namespace
@@ -59,10 +52,8 @@ int main(int argc, char *argv[]) {
 
   // handler
 
-  const auto handler = [&](quinclas::io::libevent::BufferEvent&& buffer_event,
-                           examples::gateway_simulator::Client::Remove remove) {
-    return std::unique_ptr<examples::gateway_simulator::Client>(
-        new Strategy(std::move(buffer_event), remove, latency));
+  const auto handler = [&](examples::gateway_simulator::Client::Writer& writer) {
+    return std::unique_ptr<examples::gateway_simulator::Client>(new Strategy(writer, latency));
   };
 
   examples::gateway_simulator::Controller({

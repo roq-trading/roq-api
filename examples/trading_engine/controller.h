@@ -42,15 +42,21 @@ class Controller final {
           : _name(name), _domain(domain), _address(address), _strategy(strategy), _base(base), _callbacks(callbacks),
             _state(Disconnected), _retry(0), _countdown(0) {}
       bool refresh() {
-        if (0 < _countdown && 0 != --_countdown)
+        if (_countdown > 0 && 0 != --_countdown)
           return false;
         switch (_state) {
           case Disconnected: {
             LOG(INFO) << "gateway name=" << _name << ", state=connecting, retry=" << _retry;
             ++_retry;
-            _state = Connecting;
-            connect();
-            return true;  // remove
+            try {
+              connect();
+              _state = Connecting;
+              return true;  // remove
+            } catch (std::runtime_error& e) {
+              LOG(WARNING) << e.what();
+              _countdown = std::min(std::max(_retry, 1), 10);  // TODO(thraneh): table lookup
+              return false;  // keep
+            }
           }
           case Failed: {
             LOG(INFO) << "gateway name=" << _name << ", state=disconnected";
@@ -120,7 +126,7 @@ class Controller final {
       }
     }
     void dispatch() {
-      _timer.add({.tv_sec = 1, .tv_usec = 0 });
+      _timer.add({.tv_sec = 1});
       _base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
     }
 
@@ -142,8 +148,12 @@ class Controller final {
       for (const auto iter : _callbacks)
         if ((*iter).refresh())
           remove.push_back(iter);
-      for (auto iter : remove)
-        _callbacks.erase(iter);
+      if (_callbacks.size() == remove.size()) {
+        _callbacks.clear();
+      } else {
+        for (auto iter : remove)
+          _callbacks.erase(iter);
+      }
     }
 
    private:

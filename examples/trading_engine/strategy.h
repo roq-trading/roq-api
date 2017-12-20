@@ -7,7 +7,7 @@
 namespace examples {
 namespace trading_engine {
 
-class Strategy : public quinclas::common::Strategy {
+class Strategy final : public quinclas::common::Strategy {
  public:
   Strategy(quinclas::common::Strategy::Dispatcher& dispatcher, const uint32_t ticks_to_trade);
 

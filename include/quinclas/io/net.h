@@ -40,6 +40,16 @@ class Address {
     return reinterpret_cast<const struct sockaddr *>(&_address);
   }
   size_t size() const { return _size; }
+  std::string to_string() const {
+    switch (_size) {
+      case sizeof(_address.un):
+        return std::string(_address.un.sun_path);
+      case sizeof(_address.in):
+        throw std::runtime_error("ipv4 address not implemented");  // TODO(thraneh): implement
+      default:
+        assert(false);  // not a valid address?
+    }
+  }
 
  private:
   typedef union {

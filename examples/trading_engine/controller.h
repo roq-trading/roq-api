@@ -6,6 +6,7 @@
 
 #include <quinclas/tradingapi.h>
 #include <quinclas/io/libevent.h>
+#include <quinclas/codec/codec.h>
 
 #include <algorithm>
 #include <iomanip>
@@ -13,11 +14,11 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
 
 namespace examples {
 namespace trading_engine {
 
+// Controller
 template <typename T>
 class Controller final {
   typedef std::unordered_map<std::string, std::string> gateways_t;
@@ -30,50 +31,107 @@ class Controller final {
   }
 
  private:
+  // Dispatcher
   class Dispatcher final
       : public quinclas::common::Strategy::Dispatcher,
         public quinclas::io::libevent::TimerEvent::Handler {
-    class Gateway final {
+    // Gateway
+    class Gateway final : public quinclas::common::Strategy::Dispatcher {
      public:
       Gateway(const std::string& name, const int domain, const std::string& address,
               quinclas::common::Strategy& strategy, quinclas::io::libevent::Base& base,
               std::unordered_set<Gateway *>& callbacks)
-          : _name(name), _domain(domain), _address(address), _strategy(strategy), _base(base),
-            _callbacks(callbacks), _state(Disconnected), _retry(0), _countdown(0) {}
+          : _name(name), _domain(domain), _address(address), _base(base), _event_dispatcher(strategy),
+            _callbacks(callbacks), _state(Disconnected), _retries(0), _retry_timer(0) {}
       bool refresh() {
-        if (_countdown > 0 && 0 != --_countdown)
+        assert(_retry_timer >= 0);
+        if (_retry_timer > 0 && 0 != --_retry_timer)
           return false;
         switch (_state) {
-          case Disconnected: {
-            LOG(INFO) << "gateway name=" << _name << ", state=connecting, retry=" << _retry;
-            ++_retry;
-            try {
-              connect();
-              _state = Connecting;
-              return true;  // remove
-            } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
-              LOG(WARNING) << e.what();
-              _countdown = delay[std::min(_retry, static_cast<int>((sizeof(delay) / sizeof(delay[0])) - 1))];
-              return false;  // keep
-            }
-          }
-          case Failed: {
-            LOG(INFO) << "gateway name=" << _name << ", state=disconnected";
-            _buffer_event.release();
-            _state = Disconnected;
-            _countdown = delay[std::min(_retry, static_cast<int>((sizeof(delay) / sizeof(delay[0])) - 1))];
-            _callbacks.insert(this);
-            return false;  // keep
-          }
+          case Disconnected:
+            return try_connect();
+          case Failed:
+            return reset();
           default:
             assert(false);  // should never get here...
         }
       }
+      void send(const quinclas::common::CreateOrderRequest& create_order_request) override {
+        send_helper(create_order_request);
+      }
+      void send(const quinclas::common::ModifyOrderRequest& modify_order_request) override {
+        send_helper(modify_order_request);
+      }
+      void send(const quinclas::common::CancelOrderRequest& cancel_order_request) override {
+        send_helper(cancel_order_request);
+      }
 
      private:
+      bool try_connect() {
+        LOG(INFO) << "gateway: " << _name << " connecting to " << _address.to_string();
+        increment_retries();
+        try {
+          connect();
+          _state = Connecting;
+          return true;  // remove
+        } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
+          LOG(WARNING) << "gateway: caught exception, what=\"" << e.what() << "\"";
+          reset_retry_timer();
+          return false;
+        }
+        assert(false);
+      }
+      bool reset() {
+        _state = Disconnected;
+        reset_buffers();
+        reset_retry_timer();
+        schedule_async_callback();
+        return false;
+      }
+      void connection_succeeded() {
+        LOG(INFO) << "gateway: " << _name << " connected";
+        _state = Connected;
+        reset_retries();
+        // TODO(thraneh): notify strategy
+      }
+      void connection_failed() {
+        if (_state == Connected) {
+          LOG(INFO) << "gateway: " << _name << " disconnected";
+          // TODO(thraneh): notify strategy
+        } else {
+          LOG(INFO) << "gateway: " << _name << " connection attempt " << _retries << " failed";
+        }
+        _state = Failed;
+        schedule_async_callback();
+      }
+      void write_failed() {
+        LOG(INFO) << "gateway: " << _name << " write failed";
+        _state = Failed;
+        schedule_async_callback();
+      }
+
+     private:
+      void reset_retries() {
+        _retries = 0;
+      }
+      void increment_retries() {
+        ++_retries;
+      }
+      void reset_retry_timer() {
+        const int delay[8] = { 1, 1, 1, 2, 2, 5, 5, 10 };
+        _retry_timer = delay[std::min(_retries, static_cast<int>((sizeof(delay) / sizeof(delay[0])) - 1))];
+      }
+      void reset_buffers() {
+        _buffer_event.release();
+        _buffer.drain(_buffer.length());
+      }
+      void schedule_async_callback() {
+        _callbacks.insert(this);
+      }
       void connect() {
         quinclas::io::net::Socket socket(_domain, SOCK_STREAM, 0);
         socket.non_blocking(true);
+        assert(!_buffer_event);  // should have been cleared when connection attempt failed
         auto buffer_event = std::unique_ptr<quinclas::io::libevent::BufferEvent>(
           new quinclas::io::libevent::BufferEvent(_base, std::move(socket)));
         buffer_event->setcb(on_read, nullptr, on_error, this);
@@ -81,38 +139,72 @@ class Controller final {
         buffer_event->connect(_address);
         _buffer_event = std::move(buffer_event);
       }
-      static void on_read(struct bufferevent *bev, void *arg) {
-        LOG(INFO) << "read";
-        // TODO(thraneh): decode and notify strategy
+      void on_error(int what) {
+        if (what & BEV_EVENT_CONNECTED)
+          connection_succeeded();
+        else
+          connection_failed();
       }
-      static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT short
-        auto& self = *reinterpret_cast<Gateway *>(arg);
-        LOG(INFO) << "gateway name=" << self._name << ", error=0x" << std::setw(2) << std::hex << what;
-        if (what & BEV_EVENT_CONNECTED) {
-          LOG(INFO) << "gateway name=" << self._name << ", state=connected";
-          self._state = Connected;
-          self._retry = 0;
-        } else {  // this should catch all real errors
-          LOG(INFO) << "gateway name=" << self._name << ", state=failed";
-          self._state = Failed;
-          self._callbacks.insert(&self);
+      void on_read() {
+        _buffer_event->read(_buffer);
+        while (true) {
+          const auto envelope = _buffer.pullup(quinclas::common::Envelope::LENGTH);
+          if (envelope == nullptr)
+            break;
+          const auto length_payload = quinclas::common::Envelope::decode(envelope);
+          const auto bytes = quinclas::common::Envelope::LENGTH + length_payload;
+          const auto frame = _buffer.pullup(bytes);
+          if (frame == nullptr)
+            break;
+          const auto payload = frame + quinclas::common::Envelope::LENGTH;
+          _event_dispatcher.dispatch_event(payload, length_payload);
+          _buffer.drain(bytes);
+        }
+      }
+      template <typename R>
+      void send_helper(const R& request) {
+        if (_state != Connected) {
+          LOG(ERROR) << "gateway: " << _name << " not connected -- unable to send the request";
+          throw std::runtime_error("unable to send the request");
+        }
+        _flat_buffer_builder.Clear();
+        _flat_buffer_builder.Finish(quinclas::common::convert(_flat_buffer_builder, request));
+        try {
+          _buffer_event->write(_flat_buffer_builder.GetBufferPointer(), _flat_buffer_builder.GetSize());
+        } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
+          LOG(WARNING) << "gateway: caught exception, what=\"" << e.what() << "\"";
+          write_failed();
+          LOG(WARNING) << "gateway: " << _name << " failed write attempt -- unable to send the request";
+          throw std::runtime_error("unable to send the request");
         }
       }
 
      private:
-      const int delay[8] = { 1, 1, 1, 2, 2, 5, 5, 10 };
+      static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT short
+        reinterpret_cast<Gateway *>(arg)->on_error(what);
+      }
+      static void on_read(struct bufferevent *bev, void *arg) {
+        reinterpret_cast<Gateway *>(arg)->on_read();
+      }
 
      private:
-      std::string _name;
-      int _domain;
-      quinclas::io::net::Address _address;
-      quinclas::common::Strategy& _strategy;
+      Gateway() = delete;
+      Gateway(const Gateway&) = delete;
+      Gateway& operator=(const Gateway&) = delete;
+
+     private:
+      const std::string _name;
+      const int _domain;
+      const quinclas::io::net::Address _address;
       quinclas::io::libevent::Base& _base;
+      quinclas::common::EventDispatcher _event_dispatcher;
+      std::unique_ptr<quinclas::io::libevent::BufferEvent> _buffer_event;
+      quinclas::io::libevent::Buffer _buffer;
+      flatbuffers::FlatBufferBuilder _flat_buffer_builder;
       std::unordered_set<Gateway *>& _callbacks;
       enum { Disconnected, Connecting, Connected, Failed } _state;
-      int _retry;
-      int _countdown;
-      std::unique_ptr<quinclas::io::libevent::BufferEvent> _buffer_event;
+      int _retries;
+      int _retry_timer;
     };
 
    public:
@@ -121,10 +213,10 @@ class Controller final {
         : _strategy(*this, std::forward<Args>(args)...),  // request handler, then whatever the strategy needs
           _timer(*this, _base) {
       for (const auto iter : gateways) {
-        _gateways.emplace_back(Gateway(iter.first, PF_LOCAL, iter.second, _strategy, _base, _callbacks));
-        Gateway *gateway = &(*_gateways.rbegin());
-        _gateways_by_name[iter.first] = gateway;
-        _callbacks.insert(gateway);
+        _gateways.emplace_back(iter.first, PF_LOCAL, iter.second, _strategy, _base, _callbacks);
+        Gateway& gateway = _gateways.back();
+        _gateways_by_name[iter.first] = &gateway;
+        _callbacks.insert(&gateway);
       }
     }
     void dispatch() {
@@ -134,16 +226,13 @@ class Controller final {
 
    private:
     void send(const quinclas::common::CreateOrderRequest& create_order_request) override {
-      Gateway *gateway = _gateways_by_name[create_order_request.request_info.destination];
-      // TODO(thraneh): implement
+      _gateways_by_name[create_order_request.request_info.destination]->send(create_order_request);
     }
     void send(const quinclas::common::ModifyOrderRequest& modify_order_request) override {
-      Gateway *gateway = _gateways_by_name[modify_order_request.request_info.destination];
-      // TODO(thraneh): implement
+      _gateways_by_name[modify_order_request.request_info.destination]->send(modify_order_request);
     }
     void send(const quinclas::common::CancelOrderRequest& cancel_order_request) override {
-      Gateway *gateway = _gateways_by_name[cancel_order_request.request_info.destination];
-      // TODO(thraneh): implement
+      _gateways_by_name[cancel_order_request.request_info.destination]->send(cancel_order_request);
     }
     void on_timer() override {
       std::list<Gateway *> remove;
@@ -159,13 +248,23 @@ class Controller final {
     }
 
    private:
+    Dispatcher() = delete;
+    Dispatcher(const Dispatcher&) = delete;
+    Dispatcher& operator=(const Dispatcher&) = delete;
+
+   private:
     T _strategy;
     quinclas::io::libevent::Base _base;
     quinclas::io::libevent::TimerEvent _timer;
-    std::vector<Gateway> _gateways;
+    std::list<Gateway> _gateways;
     std::unordered_map<std::string, Gateway *> _gateways_by_name;
     std::unordered_set<Gateway *> _callbacks;
   };
+
+ private:
+  Controller() = delete;
+  Controller(const Controller&) = delete;
+  Controller& operator=(const Controller&) = delete;
 
  private:
   gateways_t _gateways;

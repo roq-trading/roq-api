@@ -14,8 +14,10 @@
 namespace examples {
 namespace gateway_simulator {
 
+// Client
 class Client {
  public:
+  // Writer
   class Writer {
     virtual void write(const void *buffer, size_t length) = 0;
   };
@@ -24,8 +26,8 @@ class Client {
   virtual void on_read() = 0;
 };
 
-
-class Connection : public Client::Writer {
+// Connection
+class Connection final : public Client::Writer {
  public:
   typedef std::function<void(Connection *)> Finalizer;
   Connection(quinclas::io::libevent::BufferEvent&& buffer_event, Client::Factory factory, Finalizer finalizer)
@@ -35,18 +37,34 @@ class Connection : public Client::Writer {
   }
 
  private:
-  static void on_read(struct bufferevent *bev, void *arg) {
-    // TODO(thraneh): forward to _client
+  void on_error(int reason) {
+    assert(0 == (reason & BEV_EVENT_CONNECTED));  // the listener should only pass already connected sockets
+    _finalizer(this);  // garbage collect
   }
-  static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT
-    auto& self = *reinterpret_cast<Connection *>(arg);
-    self._finalizer(&self);  // garbage collect
+  void on_read() {
+    // TODO(thraneh): parse and dispatch
+  }
+  void write(const void *buffer, size_t length) override {
+    try {
+      _buffer_event.write(buffer, length);
+    } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
+      LOG(WARNING) << "connection: caught exception, what=\"" << e.what() << "\"";
+      // TODO(thraneh): how to remove connection?
+    }
   }
 
  private:
-  void write(const void *buffer, size_t length) override {
-    _buffer_event.write(buffer, length);
+  static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT
+    reinterpret_cast<Connection *>(arg)->on_error(what);
   }
+  static void on_read(struct bufferevent *bev, void *arg) {
+    reinterpret_cast<Connection *>(arg)->on_read();
+  }
+
+ private:
+  Connection() = delete;
+  Connection(const Connection&) = delete;
+  Connection& operator=(const Connection&) = delete;
 
  private:
   quinclas::io::libevent::BufferEvent _buffer_event;
@@ -54,6 +72,7 @@ class Connection : public Client::Writer {
   Finalizer _finalizer;
 };
 
+// Service
 class Service final : public quinclas::io::libevent::Listener::Handler {
  public:
   Service(quinclas::io::libevent::Base& base, quinclas::io::net::Socket&& socket, Client::Factory factory)
@@ -64,20 +83,25 @@ class Service final : public quinclas::io::libevent::Listener::Handler {
 
  private:
   void on_accept(quinclas::io::libevent::BufferEvent&& buffer_event) override {
-    LOG(INFO) << "got connection";
-    auto finalizer = [&](Connection *connection){ remove(connection); };
+    LOG(INFO) << "service: got connection";
+    auto finalizer = [this](Connection *connection){ remove(connection); };
     auto connection = std::unique_ptr<Connection>(new Connection(std::move(buffer_event), _factory, finalizer));
     _connection.emplace(connection.get(), std::move(connection));
   }
 
  private:
   void remove(Connection *connection) {
-    LOG(INFO) << "removing connection";
+    LOG(INFO) << "service: removing connection";
     auto iter = _connection.find(connection);
     assert(iter != _connection.end());
     _zombies.push_back(std::move((*iter).second));
     _connection.erase(iter);
   }
+
+ private:
+  Service() = delete;
+  Service(const Service&) = delete;
+  Service& operator=(const Service&) = delete;
 
  private:
   quinclas::io::libevent::Listener _listener;
@@ -86,6 +110,7 @@ class Service final : public quinclas::io::libevent::Listener::Handler {
   std::list<std::unique_ptr<Connection> > _zombies;
 };
 
+// Controller
 class Controller final : public quinclas::io::libevent::TimerEvent::Handler {
  public:
   explicit Controller(const std::unordered_map<std::string, Client::Factory>& handlers)
@@ -109,6 +134,11 @@ class Controller final : public quinclas::io::libevent::TimerEvent::Handler {
     for (auto& iter : _services)
       (*iter).refresh();
   }
+
+ private:
+  Controller() = delete;
+  Controller(const Controller&) = delete;
+  Controller& operator=(const Controller&) = delete;
 
  private:
   quinclas::io::libevent::Base _base;

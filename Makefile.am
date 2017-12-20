@@ -13,4 +13,4 @@ check-local:
 .PHONY: lint
 
 lint:
-	cpplint --linelength=120 --recursive include/* test/* examples/*
+	cpplint --linelength=120 --recursive include/* tests/* examples/*

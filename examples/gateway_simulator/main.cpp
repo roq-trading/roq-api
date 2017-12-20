@@ -7,24 +7,9 @@
 #include "gateway_simulator/controller.h"
 // #include <quinclas/server/controller.h>
 
+#include "gateway_simulator/strategy.h"
+
 DEFINE_string(local_address, "", "host-internal socket address (path)");
-
-namespace {
-// communicates with a strategy
-class Strategy : public examples::gateway_simulator::Client {
- public:
-  Strategy(examples::gateway_simulator::Client::Writer& writer, const int latency)
-      : _writer(writer), _latency(latency) {}
-
- private:
-  void on_read() override {
-  }
-
- private:
-  examples::gateway_simulator::Client::Writer& _writer;
-  int _latency;
-};
-}  // namespace
 
 int main(int argc, char *argv[]) {
   // initialize logging library
@@ -53,7 +38,8 @@ int main(int argc, char *argv[]) {
   // handler
 
   const auto handler = [&](examples::gateway_simulator::Client::Writer& writer) {
-    return std::unique_ptr<examples::gateway_simulator::Client>(new Strategy(writer, latency));
+    return std::unique_ptr<examples::gateway_simulator::Client>(
+        new examples::gateway_simulator::Strategy(writer, latency));
   };
 
   examples::gateway_simulator::Controller({

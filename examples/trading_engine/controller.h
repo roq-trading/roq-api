@@ -1,4 +1,4 @@
-/* Copyright (c) 2017,  Hans Erik Thrane */
+/* Copyright (c) 2017, Hans Erik Thrane */
 
 #pragma once
 

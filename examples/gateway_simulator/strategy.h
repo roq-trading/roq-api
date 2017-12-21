@@ -2,12 +2,14 @@
 
 #pragma once
 
+#include <quinclas/server/controller.h>
+
 namespace examples {
 namespace gateway_simulator {
 
-class Strategy : public examples::gateway_simulator::Client {
+class Strategy : public quinclas::server::Client {
  public:
-  Strategy(examples::gateway_simulator::Client::Writer& writer, const int latency)
+  Strategy(quinclas::server::Client::Writer& writer, const int latency)
       : _writer(writer), _latency(latency) {}
 
  private:
@@ -15,7 +17,7 @@ class Strategy : public examples::gateway_simulator::Client {
   }
 
  private:
-  examples::gateway_simulator::Client::Writer& _writer;
+  quinclas::server::Client::Writer& _writer;
   int _latency;
 };
 

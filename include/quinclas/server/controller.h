@@ -11,8 +11,8 @@
 #include <string>
 #include <unordered_map>
 
-namespace examples {
-namespace gateway_simulator {
+namespace quinclas {
+namespace server {
 
 // Client
 class Client {
@@ -146,5 +146,5 @@ class Controller final : public quinclas::io::libevent::TimerEvent::Handler {
   std::list<std::unique_ptr<Service> > _services;
 };
 
-}  // namespace gateway_simulator
-}  // namespace examples
+}  // namespace server
+}  // namespace quinclas

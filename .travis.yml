@@ -5,7 +5,7 @@ sudo: required
 script:
  - gcc --version
  - ./autogen.sh && ./configure && make -j2 && make -j2 check && make lint
-before_install: scripts/travis/prepare_ubuntu.sh
+before_install: scripts/travis/prepare-ubuntu.sh
 install:
  - scripts/travis/install-glog.sh
  - scripts/travis/install-gflags.sh

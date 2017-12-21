@@ -15,8 +15,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
-namespace examples {
-namespace trading_engine {
+namespace quinclas {
+namespace client {
 
 // Controller
 template <typename T>
@@ -169,8 +169,13 @@ class Controller final {
         }
         _flat_buffer_builder.Clear();
         _flat_buffer_builder.Finish(quinclas::common::convert(_flat_buffer_builder, request));
+        const auto payload = _flat_buffer_builder.GetBufferPointer();
+        const auto length_payload = _flat_buffer_builder.GetSize();
+        quinclas::common::Envelope::encode(_envelope, length_payload);
+        _buffer.add(_envelope, sizeof(_envelope));
+        _buffer.add(payload, length_payload);
         try {
-          _buffer_event->write(_flat_buffer_builder.GetBufferPointer(), _flat_buffer_builder.GetSize());
+          _buffer_event->write(_buffer);
         } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
           LOG(WARNING) << "gateway: caught exception, what=\"" << e.what() << "\"";
           write_failed();
@@ -201,6 +206,7 @@ class Controller final {
       std::unique_ptr<quinclas::io::libevent::BufferEvent> _buffer_event;
       quinclas::io::libevent::Buffer _buffer;
       flatbuffers::FlatBufferBuilder _flat_buffer_builder;
+      uint8_t _envelope[common::Envelope::LENGTH];
       std::unordered_set<Gateway *>& _callbacks;
       enum { Disconnected, Connecting, Connected, Failed } _state;
       int _retries;
@@ -270,5 +276,5 @@ class Controller final {
   gateways_t _gateways;
 };
 
-}  // namespace trading_engine
-}  // namespace examples
+}  // namespace client
+}  // namespace quinclas

@@ -3,11 +3,11 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-// currently in this directory  -- will be moved into quinclas/tradingapi when feature complete
-#include "gateway_simulator/controller.h"
-// #include <quinclas/server/controller.h>
+#include <quinclas/server/controller.h>
 
 #include "gateway_simulator/strategy.h"
+
+using namespace examples::gateway_simulator;  // NOLINT
 
 DEFINE_string(local_address, "", "host-internal socket address (path)");
 
@@ -37,12 +37,12 @@ int main(int argc, char *argv[]) {
 
   // handler
 
-  const auto handler = [&](examples::gateway_simulator::Client::Writer& writer) {
-    return std::unique_ptr<examples::gateway_simulator::Client>(
-        new examples::gateway_simulator::Strategy(writer, latency));
+  const auto handler = [&](quinclas::server::Client::Writer& writer) {
+    return std::unique_ptr<quinclas::server::Client>(
+        new Strategy(writer, latency));
   };
 
-  examples::gateway_simulator::Controller({
+  quinclas::server::Controller({
     { FLAGS_local_address, handler },
   }).dispatch();
 

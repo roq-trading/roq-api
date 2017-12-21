@@ -3,13 +3,13 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-// currently in this directory  -- will be moved into quinclas/tradingapi when feature complete
-#include "trading_engine/controller.h"
-// #include <quinclas/client/controller.h>
+#include <quinclas/client/controller.h>
 
 #include "trading_engine/strategy.h"
 
 DEFINE_string(local_address, "", "host-internal socket address (path)");
+
+using namespace examples::trading_engine;  // NOLINT
 
 int main(int argc, char *argv[]) {
   // initialize logging library
@@ -31,12 +31,15 @@ int main(int argc, char *argv[]) {
 
   LOG(INFO) << "===== START =====";
 
+  // configuration
+
+  const uint32_t ticks_to_trade = 10;
+
   // create framework, instantiate strategy and start event dispatching
 
-  examples::trading_engine::Controller<examples::trading_engine::Strategy>({
+  quinclas::client::Controller<Strategy>({
       { "FEMAS", FLAGS_local_address },
-    }).create_and_dispatch(
-      /*ticks_to_trade =*/ 10);
+    }).create_and_dispatch(ticks_to_trade);
 
   LOG(INFO) << "===== STOP =====";
 

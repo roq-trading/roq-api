@@ -5,11 +5,11 @@ sudo: required
 script:
  - gcc --version
  - ./autogen.sh && ./configure && make -j2 && make -j2 check && make lint
-before_install: scripts/ubuntu.sh
+before_install: scripts/travis/prepare_ubuntu.sh
 install:
- - scripts/install-glog.sh
- - scripts/install-gflags.sh
- - scripts/install-double-conversion.sh
- - scripts/install-cctz.sh
- - scripts/install-flatbuffers.sh
- - scripts/install-libevent.sh
+ - scripts/travis/install-glog.sh
+ - scripts/travis/install-gflags.sh
+ - scripts/travis/install-double-conversion.sh
+ - scripts/travis/install-cctz.sh
+ - scripts/travis/install-flatbuffers.sh
+ - scripts/travis/install-libevent.sh

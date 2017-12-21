@@ -1,13 +1,13 @@
 /* Copyright (c) 2017, Hans Erik Thrane */
 
-#include "trading_engine/strategy.h"
+#include "strategy/strategy.h"
 
 #include <limits>
 
 using namespace quinclas::common;  // NOLINT
 
 namespace examples {
-namespace trading_engine {
+namespace strategy {
 
 // some hard-coded config (for now)
 
@@ -112,5 +112,5 @@ void Strategy::on(const TradeUpdateEvent&) {
   // trade update
 }
 
-}  // namespace trading_engine
+}  // namespace strategy
 }  // namespace examples

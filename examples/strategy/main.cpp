@@ -5,11 +5,11 @@
 
 #include <quinclas/client.h>
 
-#include "trading_engine/strategy.h"
+#include "strategy/strategy.h"
 
 DEFINE_string(local_address, "", "host-internal socket address (path)");
 
-using namespace examples::trading_engine;  // NOLINT
+using namespace examples::strategy;  // NOLINT
 
 int main(int argc, char *argv[]) {
   // initialize logging library

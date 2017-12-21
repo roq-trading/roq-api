@@ -1,16 +1,16 @@
-bin_PROGRAMS = example-trading-engine
-example_trading_engine_LDFLAGS = \
+bin_PROGRAMS = example-strategy
+example_strategy_LDFLAGS = \
 	$(GFLAGS_LIBS) \
 	$(LIBGLOG_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(LIBEVENT_LIBS) \
 	-levent_pthreads
-example_trading_engine_CPPFLAGS = \
+example_strategy_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \
 	$(GFLAGS_CFLAGS) \
 	$(LIBGLOG_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
 	$(LIBEVENT_CFLAGS)
-example_trading_engine_SOURCES = strategy.cpp main.cpp
-EXTRA_example_trading_engine_SOURCES = strategy.h
+example_strategy_SOURCES = strategy.cpp main.cpp
+EXTRA_example_strategy_SOURCES = strategy.h

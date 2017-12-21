@@ -5,9 +5,9 @@
 
 #include <quinclas/server.h>
 
-#include "gateway_simulator/strategy.h"
+#include "gateway/strategy.h"
 
-using namespace examples::gateway_simulator;  // NOLINT
+using namespace examples::gateway;  // NOLINT
 
 DEFINE_string(local_address, "", "host-internal socket address (path)");
 

@@ -5,7 +5,7 @@
 #include <quinclas/server.h>
 
 namespace examples {
-namespace gateway_simulator {
+namespace gateway {
 
 class Strategy : public quinclas::server::Client {
  public:
@@ -21,5 +21,5 @@ class Strategy : public quinclas::server::Client {
   int _latency;
 };
 
-}  // namespace gateway_simulator
+}  // namespace gateway
 }  // namespace examples

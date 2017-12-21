@@ -11,12 +11,11 @@
 
 #include <glog/logging.h>
 
-#include <quinclas/io/net.h>
+#include <quinclas/net.h>
 
 #include <cstring>
 
 namespace quinclas {
-namespace io {
 namespace libevent {
 
 // Thread
@@ -281,9 +280,9 @@ class BufferEvent {
     }
   }
   BufferEvent(Base& base, int fd, int options = 0) : BufferEvent(base.raw(), fd, options) {}
-  BufferEvent(struct event_base *base, io::net::Socket&& socket, int options = 0)
+  BufferEvent(struct event_base *base, net::Socket&& socket, int options = 0)
       : BufferEvent(base, socket.release(), options | BEV_OPT_CLOSE_ON_FREE) {}
-  BufferEvent(Base& base, io::net::Socket&& socket, int options = 0)
+  BufferEvent(Base& base, net::Socket&& socket, int options = 0)
       : BufferEvent(base.raw(), socket.release(), options | BEV_OPT_CLOSE_ON_FREE) {}
   ~BufferEvent() {
     if (_bufferevent != nullptr)
@@ -369,7 +368,7 @@ class Listener {
    public:
     virtual void on_accept(BufferEvent&& buffer) = 0;
   };
-  Listener(Handler& handler, struct event_base *base, int flags, int backlog, io::net::Socket&& socket)
+  Listener(Handler& handler, struct event_base *base, int flags, int backlog, net::Socket&& socket)
       : _handler(handler),
         _base(base),
         _socket(std::move(socket)),
@@ -380,7 +379,7 @@ class Listener {
     }
     DCHECK_EQ(_socket.non_blocking(), true) << "socket must be non-blocking";
   }
-  Listener(Handler& handler, Base& base, int flags, int backlog, io::net::Socket&& socket)
+  Listener(Handler& handler, Base& base, int flags, int backlog, net::Socket&& socket)
       : Listener(handler, base.raw(), flags, backlog, std::move(socket)) {}
   ~Listener() {
     if (_evconnlistener != nullptr)
@@ -398,10 +397,9 @@ class Listener {
   }
   Handler& _handler;
   struct event_base *_base;
-  io::net::Socket _socket;  // TODO(thraneh): pass to evconnlistener and use LEV_OPT_CLOSE_ON_FREE
+  net::Socket _socket;  // TODO(thraneh): pass to evconnlistener and use LEV_OPT_CLOSE_ON_FREE
   struct evconnlistener *_evconnlistener;
 };
 
 }  // namespace libevent
-}  // namespace io
 }  // namespace quinclas

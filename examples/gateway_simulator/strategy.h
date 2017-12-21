@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <quinclas/server/controller.h>
+#include <quinclas/server.h>
 
 namespace examples {
 namespace gateway_simulator {

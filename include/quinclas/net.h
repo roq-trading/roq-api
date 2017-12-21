@@ -16,7 +16,6 @@
 #include <utility>
 
 namespace quinclas {
-namespace io {
 namespace net {
 
 class Address {
@@ -176,5 +175,4 @@ class Socket {
 };
 
 }  // namespace net
-}  // namespace io
 }  // namespace quinclas

@@ -13,9 +13,6 @@ AC_CONFIG_FILES([
  include/Makefile
  include/quinclas/Makefile
  include/quinclas/codec/Makefile
- include/quinclas/io/Makefile
- include/quinclas/client/Makefile
- include/quinclas/server/Makefile
  tests/Makefile
  examples/Makefile
  examples/trading_engine/Makefile

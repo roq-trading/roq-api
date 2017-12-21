@@ -5,7 +5,7 @@
 #include <glog/logging.h>
 
 #include <quinclas/tradingapi.h>
-#include <quinclas/io/libevent.h>
+#include <quinclas/libevent.h>
 
 #include <list>
 #include <string>
@@ -30,7 +30,7 @@ class Client {
 class Connection final : public Client::Writer {
  public:
   typedef std::function<void(Connection *)> Finalizer;
-  Connection(quinclas::io::libevent::BufferEvent&& buffer_event, Client::Factory factory, Finalizer finalizer)
+  Connection(libevent::BufferEvent&& buffer_event, Client::Factory factory, Finalizer finalizer)
       : _buffer_event(std::move(buffer_event)), _client(factory(*this)), _finalizer(finalizer) {
     _buffer_event.setcb(on_read, nullptr, on_error, this);
     _buffer_event.enable(EV_READ);
@@ -67,22 +67,22 @@ class Connection final : public Client::Writer {
   Connection& operator=(const Connection&) = delete;
 
  private:
-  quinclas::io::libevent::BufferEvent _buffer_event;
+  libevent::BufferEvent _buffer_event;
   std::unique_ptr<Client> _client;
   Finalizer _finalizer;
 };
 
 // Service
-class Service final : public quinclas::io::libevent::Listener::Handler {
+class Service final : public libevent::Listener::Handler {
  public:
-  Service(quinclas::io::libevent::Base& base, quinclas::io::net::Socket&& socket, Client::Factory factory)
+  Service(libevent::Base& base, net::Socket&& socket, Client::Factory factory)
       : _listener(*this, base, 0, -1, std::move(socket)), _factory(factory) {}
   void refresh() {
     _zombies.clear();
   }
 
  private:
-  void on_accept(quinclas::io::libevent::BufferEvent&& buffer_event) override {
+  void on_accept(libevent::BufferEvent&& buffer_event) override {
     LOG(INFO) << "service: got connection";
     auto finalizer = [this](Connection *connection){ remove(connection); };
     auto connection = std::unique_ptr<Connection>(new Connection(std::move(buffer_event), _factory, finalizer));
@@ -104,21 +104,21 @@ class Service final : public quinclas::io::libevent::Listener::Handler {
   Service& operator=(const Service&) = delete;
 
  private:
-  quinclas::io::libevent::Listener _listener;
+  libevent::Listener _listener;
   Client::Factory _factory;
   std::unordered_map<Connection *, std::unique_ptr<Connection> > _connection;
   std::list<std::unique_ptr<Connection> > _zombies;
 };
 
 // Controller
-class Controller final : public quinclas::io::libevent::TimerEvent::Handler {
+class Controller final : public libevent::TimerEvent::Handler {
  public:
   explicit Controller(const std::unordered_map<std::string, Client::Factory>& handlers)
       : _timer(*this, _base) {
     for (auto iter : handlers) {
       unlink(iter.first.c_str());
-      quinclas::io::net::Address address(iter.first.c_str());
-      quinclas::io::net::Socket socket(PF_LOCAL, SOCK_STREAM, 0);
+      net::Address address(iter.first.c_str());
+      net::Socket socket(PF_LOCAL, SOCK_STREAM, 0);
       socket.non_blocking(true);
       socket.bind(address);
       _services.emplace_back(std::unique_ptr<Service>(new Service(_base, std::move(socket), iter.second)));
@@ -141,8 +141,8 @@ class Controller final : public quinclas::io::libevent::TimerEvent::Handler {
   Controller& operator=(const Controller&) = delete;
 
  private:
-  quinclas::io::libevent::Base _base;
-  quinclas::io::libevent::TimerEvent _timer;
+  libevent::Base _base;
+  libevent::TimerEvent _timer;
   std::list<std::unique_ptr<Service> > _services;
 };
 

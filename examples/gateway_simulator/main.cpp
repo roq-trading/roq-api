@@ -3,7 +3,7 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-#include <quinclas/server/controller.h>
+#include <quinclas/server.h>
 
 #include "gateway_simulator/strategy.h"
 

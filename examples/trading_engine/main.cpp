@@ -3,7 +3,7 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-#include <quinclas/client/controller.h>
+#include <quinclas/client.h>
 
 #include "trading_engine/strategy.h"
 

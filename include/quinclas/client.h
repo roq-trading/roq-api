@@ -5,7 +5,7 @@
 #include <glog/logging.h>
 
 #include <quinclas/tradingapi.h>
-#include <quinclas/io/libevent.h>
+#include <quinclas/libevent.h>
 #include <quinclas/codec/codec.h>
 
 #include <algorithm>
@@ -33,13 +33,13 @@ class Controller final {
  private:
   // Dispatcher
   class Dispatcher final
-      : public quinclas::common::Strategy::Dispatcher,
-        public quinclas::io::libevent::TimerEvent::Handler {
+      : public common::Strategy::Dispatcher,
+        public libevent::TimerEvent::Handler {
     // Gateway
-    class Gateway final : public quinclas::common::Strategy::Dispatcher {
+    class Gateway final : public common::Strategy::Dispatcher {
      public:
       Gateway(const std::string& name, const int domain, const std::string& address,
-              quinclas::common::Strategy& strategy, quinclas::io::libevent::Base& base,
+              common::Strategy& strategy, libevent::Base& base,
               std::unordered_set<Gateway *>& callbacks)
           : _name(name), _domain(domain), _address(address), _base(base), _event_dispatcher(strategy),
             _callbacks(callbacks), _state(Disconnected), _retries(0), _retry_timer(0) {}
@@ -56,13 +56,13 @@ class Controller final {
             assert(false);  // should never get here...
         }
       }
-      void send(const quinclas::common::CreateOrderRequest& create_order_request) override {
+      void send(const common::CreateOrderRequest& create_order_request) override {
         send_helper(create_order_request);
       }
-      void send(const quinclas::common::ModifyOrderRequest& modify_order_request) override {
+      void send(const common::ModifyOrderRequest& modify_order_request) override {
         send_helper(modify_order_request);
       }
-      void send(const quinclas::common::CancelOrderRequest& cancel_order_request) override {
+      void send(const common::CancelOrderRequest& cancel_order_request) override {
         send_helper(cancel_order_request);
       }
 
@@ -129,11 +129,11 @@ class Controller final {
         _callbacks.insert(this);
       }
       void connect() {
-        quinclas::io::net::Socket socket(_domain, SOCK_STREAM, 0);
+        net::Socket socket(_domain, SOCK_STREAM, 0);
         socket.non_blocking(true);
         assert(!_buffer_event);  // should have been cleared when connection attempt failed
-        auto buffer_event = std::unique_ptr<quinclas::io::libevent::BufferEvent>(
-          new quinclas::io::libevent::BufferEvent(_base, std::move(socket)));
+        auto buffer_event = std::unique_ptr<libevent::BufferEvent>(
+          new libevent::BufferEvent(_base, std::move(socket)));
         buffer_event->setcb(on_read, nullptr, on_error, this);
         buffer_event->enable(EV_READ);
         buffer_event->connect(_address);
@@ -148,15 +148,15 @@ class Controller final {
       void on_read() {
         _buffer_event->read(_buffer);
         while (true) {
-          const auto envelope = _buffer.pullup(quinclas::common::Envelope::LENGTH);
+          const auto envelope = _buffer.pullup(common::Envelope::LENGTH);
           if (envelope == nullptr)
             break;
-          const auto length_payload = quinclas::common::Envelope::decode(envelope);
-          const auto bytes = quinclas::common::Envelope::LENGTH + length_payload;
+          const auto length_payload = common::Envelope::decode(envelope);
+          const auto bytes = common::Envelope::LENGTH + length_payload;
           const auto frame = _buffer.pullup(bytes);
           if (frame == nullptr)
             break;
-          const auto payload = frame + quinclas::common::Envelope::LENGTH;
+          const auto payload = frame + common::Envelope::LENGTH;
           _event_dispatcher.dispatch_event(payload, length_payload);
           _buffer.drain(bytes);
         }
@@ -168,10 +168,10 @@ class Controller final {
           throw std::runtime_error("unable to send the request");
         }
         _flat_buffer_builder.Clear();
-        _flat_buffer_builder.Finish(quinclas::common::convert(_flat_buffer_builder, request));
+        _flat_buffer_builder.Finish(common::convert(_flat_buffer_builder, request));
         const auto payload = _flat_buffer_builder.GetBufferPointer();
         const auto length_payload = _flat_buffer_builder.GetSize();
-        quinclas::common::Envelope::encode(_envelope, length_payload);
+        common::Envelope::encode(_envelope, length_payload);
         _buffer.add(_envelope, sizeof(_envelope));
         _buffer.add(payload, length_payload);
         try {
@@ -200,11 +200,11 @@ class Controller final {
      private:
       const std::string _name;
       const int _domain;
-      const quinclas::io::net::Address _address;
-      quinclas::io::libevent::Base& _base;
-      quinclas::common::EventDispatcher _event_dispatcher;
-      std::unique_ptr<quinclas::io::libevent::BufferEvent> _buffer_event;
-      quinclas::io::libevent::Buffer _buffer;
+      const net::Address _address;
+      libevent::Base& _base;
+      common::EventDispatcher _event_dispatcher;
+      std::unique_ptr<libevent::BufferEvent> _buffer_event;
+      libevent::Buffer _buffer;
       flatbuffers::FlatBufferBuilder _flat_buffer_builder;
       uint8_t _envelope[common::Envelope::LENGTH];
       std::unordered_set<Gateway *>& _callbacks;
@@ -231,13 +231,13 @@ class Controller final {
     }
 
    private:
-    void send(const quinclas::common::CreateOrderRequest& create_order_request) override {
+    void send(const common::CreateOrderRequest& create_order_request) override {
       _gateways_by_name[create_order_request.request_info.destination]->send(create_order_request);
     }
-    void send(const quinclas::common::ModifyOrderRequest& modify_order_request) override {
+    void send(const common::ModifyOrderRequest& modify_order_request) override {
       _gateways_by_name[modify_order_request.request_info.destination]->send(modify_order_request);
     }
-    void send(const quinclas::common::CancelOrderRequest& cancel_order_request) override {
+    void send(const common::CancelOrderRequest& cancel_order_request) override {
       _gateways_by_name[cancel_order_request.request_info.destination]->send(cancel_order_request);
     }
     void on_timer() override {
@@ -260,8 +260,8 @@ class Controller final {
 
    private:
     T _strategy;
-    quinclas::io::libevent::Base _base;
-    quinclas::io::libevent::TimerEvent _timer;
+    libevent::Base _base;
+    libevent::TimerEvent _timer;
     std::list<Gateway> _gateways;
     std::unordered_map<std::string, Gateway *> _gateways_by_name;
     std::unordered_set<Gateway *> _callbacks;

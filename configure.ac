@@ -12,7 +12,6 @@ AC_CONFIG_FILES([
  Makefile
  include/Makefile
  include/quinclas/Makefile
- include/quinclas/codec/Makefile
  tests/Makefile
  examples/Makefile
  examples/trading_engine/Makefile

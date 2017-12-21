@@ -6,7 +6,7 @@
 
 #include <quinclas/tradingapi.h>
 #include <quinclas/libevent.h>
-#include <quinclas/codec/codec.h>
+#include <quinclas/codec.h>
 
 #include <algorithm>
 #include <iomanip>

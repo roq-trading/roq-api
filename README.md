@@ -94,7 +94,7 @@ Here is an example of how to set up your own Conda environment, install a packag
     export GLOG_logtostderr=1
 
     # you should now be able to run the trading engine
-    example-trading-engine --local-address=/var/tmp/gateway-simulator.unix
+    example-strategy --local-address /var/tmp/gateway.unix
 
 ## Broker API's
 

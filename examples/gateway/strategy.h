@@ -7,17 +7,24 @@
 namespace examples {
 namespace gateway {
 
-class Strategy : public quinclas::server::Client {
+class Strategy : public quinclas::server::Connection {
  public:
-  Strategy(quinclas::server::Client::Writer& writer, const int latency)
-      : _writer(writer), _latency(latency) {}
+  Strategy(quinclas::server::Connection::Dispatcher& dispatcher, const int latency)
+      : _dispatcher(dispatcher), _latency(latency) {}
 
  private:
-  void on_read() override {
+  void send(const quinclas::common::CreateOrderRequest& request) override {
+    // TODO(thraneh): implement
+  }
+  void send(const quinclas::common::ModifyOrderRequest& request) override {
+    // TODO(thraneh): implement
+  }
+  void send(const quinclas::common::CancelOrderRequest& request) override {
+    // TODO(thraneh): implement
   }
 
  private:
-  quinclas::server::Client::Writer& _writer;
+  quinclas::server::Client::Dispatcher& _dispatcher;
   int _latency;
 };
 

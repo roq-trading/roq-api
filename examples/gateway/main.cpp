@@ -31,15 +31,18 @@ int main(int argc, char *argv[]) {
 
   LOG(INFO) << "===== START =====";
 
+  // this is a good place to spawn a thread if market access is through an API
+  // --> how does it find the connected clients ??? (do we need a queue?)
+
   // configuration
 
   const uint32_t latency = 10;
 
   // handler
 
-  const auto handler = [&](quinclas::server::Client::Writer& writer) {
-    return std::unique_ptr<quinclas::server::Client>(
-        new Strategy(writer, latency));
+  const auto handler = [latency](quinclas::server::Connection::Dispatcher& dispatcher) {
+    return std::unique_ptr<quinclas::server::Connection>(
+        new Strategy(dispatcher, latency));
   };
 
   quinclas::server::Controller({

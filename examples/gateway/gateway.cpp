@@ -24,5 +24,5 @@ void Gateway::send(const quinclas::common::CancelOrderRequest& request) {
   // the client has requested an order to be cancelled
 }
 
-}  // namespace strategy
+}  // namespace gateway
 }  // namespace examples

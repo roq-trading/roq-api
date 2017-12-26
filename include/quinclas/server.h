@@ -34,12 +34,13 @@ class Controller final {
    public:
     typedef std::function<void(std::unique_ptr<Client>&&)> Initializer;
     typedef std::function<void(Client *)> Finalizer;
-    Client(libevent::BufferEvent&& buffer_event, common::Strategy::Dispatcher& gateway, Finalizer finalizer)
+    Client(libevent::BufferEvent&& buffer_event, Finalizer finalizer, common::Strategy::Dispatcher& gateway)
         : _buffer_event(std::move(buffer_event)), _finalizer(finalizer),
           _request_dispatcher(gateway) {
       _buffer_event.setcb(on_read, nullptr, on_error, this);
       _buffer_event.enable(EV_READ);
     }
+    // FIXME(thraneh): probably this should all be done on the outside???
     void send(const void *payload, const size_t length_payload) {
       common::Envelope::encode(_envelope, length_payload);
       _buffer.add(_envelope, sizeof(_envelope));
@@ -93,6 +94,7 @@ class Controller final {
     libevent::BufferEvent _buffer_event;
     Finalizer _finalizer;
     common::RequestDispatcher _request_dispatcher;
+
     libevent::Buffer _buffer;
     // flatbuffers::FlatBufferBuilder _flat_buffer_builder;
     uint8_t _envelope[common::Envelope::LENGTH];
@@ -110,7 +112,7 @@ class Controller final {
    private:
     void on_accept(libevent::BufferEvent&& buffer_event) override {
       LOG(INFO) << "service: got connection";
-      auto client = std::unique_ptr<Client>(new Client(std::move(buffer_event), _gateway, _finalizer));
+      auto client = std::unique_ptr<Client>(new Client(std::move(buffer_event), _finalizer, _gateway));
       _initializer(std::move(client));
     }
 
@@ -158,6 +160,7 @@ class Controller final {
       // FIXME(thraneh): drop
     }
 
+    // FIXME(thraneh): should be cleaned up through better interfaces -- need "send", not "on"
    protected:
     void on(const common::GatewayStatusEvent& event)  override {
       send_helper(event);
@@ -203,6 +206,7 @@ class Controller final {
         _flat_buffer_builder.Finish(common::convert(_flat_buffer_builder, event));
         const auto payload = _flat_buffer_builder.GetBufferPointer();
         const auto length_payload = _flat_buffer_builder.GetSize();
+        // TODO(thraneh): broadcast or directed? try-catch
         /*
         common::Envelope::encode(_envelope, length_payload);
         _buffer.add(_envelope, sizeof(_envelope));

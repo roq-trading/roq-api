@@ -16,6 +16,11 @@
 namespace quinclas {
 namespace server {
 
+// TODO(thraneh): locking (or two different controller implementations -- sync/non-sync)
+// TODO(thraneh): interface clean-up
+// TODO(thraneh): handshake and heartbeat
+// TODO(thraneh): timeout -> disconnect
+
 // Controller
 template <typename T>
 class Controller final {
@@ -40,24 +45,13 @@ class Controller final {
       _buffer_event.setcb(on_read, nullptr, on_error, this);
       _buffer_event.enable(EV_READ);
     }
-    // FIXME(thraneh): probably this should all be done on the outside???
-    void send(const void *payload, const size_t length_payload) {
-      common::Envelope::encode(_envelope, length_payload);
-      _buffer.add(_envelope, sizeof(_envelope));
-      _buffer.add(payload, length_payload);
-      try {
-        _buffer_event.write(_buffer);
-      } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
-        LOG(WARNING) << "gateway: caught exception, what=\"" << e.what() << "\"";
-        // FIXM(thraneh): remove connection...
-        LOG(WARNING) << "failed write attempt -- unable to send the event";
-        throw std::runtime_error("unable to send the request");
-      }
+    void send(libevent::Buffer& buffer) {
+      _buffer_event.write(buffer);
     }
 
    private:
     void on_error(int reason) {
-      assert(0 == (reason & BEV_EVENT_CONNECTED));  // the listener should only pass already connected sockets
+      assert(0 == (reason & BEV_EVENT_CONNECTED));  // we don't expect connection events when created by accept()
       _finalizer(this);  // garbage collect
     }
     void on_read() {
@@ -94,10 +88,7 @@ class Controller final {
     libevent::BufferEvent _buffer_event;
     Finalizer _finalizer;
     common::RequestDispatcher _request_dispatcher;
-
     libevent::Buffer _buffer;
-    // flatbuffers::FlatBufferBuilder _flat_buffer_builder;
-    uint8_t _envelope[common::Envelope::LENGTH];
   };
 
  private:
@@ -129,6 +120,7 @@ class Controller final {
   };
 
  private:
+  // Dispatcher
   class Dispatcher final : public common::Gateway::Handler,
                            public libevent::TimerEvent::Handler,
                            public common::Strategy::Dispatcher {
@@ -206,20 +198,24 @@ class Controller final {
         _flat_buffer_builder.Finish(common::convert(_flat_buffer_builder, event));
         const auto payload = _flat_buffer_builder.GetBufferPointer();
         const auto length_payload = _flat_buffer_builder.GetSize();
-        // TODO(thraneh): broadcast or directed? try-catch
-        /*
         common::Envelope::encode(_envelope, length_payload);
-        _buffer.add(_envelope, sizeof(_envelope));
-        _buffer.add(payload, length_payload);
-        try {
-          _buffer_event->write(_buffer);
-        } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
-          LOG(WARNING) << "gateway: caught exception, what=\"" << e.what() << "\"";
-          write_failed();
-          LOG(WARNING) << "gateway: " << _name << " failed write attempt -- unable to send the request";
-          throw std::runtime_error("unable to send the request");
+        std::list<Client *> failures;
+        for (auto& iter : _clients) {
+          _buffer.add(_envelope, sizeof(_envelope));
+          _buffer.add(payload, length_payload);
+          try {
+            iter.second->send(_buffer);
+          } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
+            LOG(WARNING) << "dispatcher: caught exception, what=\"" << e.what() << "\"";
+            LOG(WARNING) << "dispatcher: failed write attempt -- unable to send the event";
+            failures.push_back(iter.first);
+          }
         }
-        */
+        if (failures.empty())
+          return;
+        // TODO(thraneh): need locking
+        for (auto iter : failures)
+          remove(iter);
       }
 
     // FIXME(thraneh): should be cleaned up through better interfaces -- this is just an unnecessary bridge
@@ -267,6 +263,8 @@ class Controller final {
     std::unordered_map<Client *, std::unique_ptr<Client> > _clients;
     std::list<std::unique_ptr<Client> > _zombies;
     flatbuffers::FlatBufferBuilder _flat_buffer_builder;
+    libevent::Buffer _buffer;
+    uint8_t _envelope[common::Envelope::LENGTH];
   };
 
  private:

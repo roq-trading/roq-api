@@ -7,18 +7,18 @@
 namespace examples {
 namespace gateway {
 
-class Gateway : public quinclas::common::Gateway {
+class Gateway : public quinclas::common::Gateway2 {
  public:
-  Gateway(quinclas::common::Gateway::Handler& dispatcher, const int latency);
+  Gateway(quinclas::common::Gateway2::Dispatcher& dispatcher, const int latency);
 
  protected:
   void start() override;
-  void send(const quinclas::common::CreateOrderRequest&) override;
-  void send(const quinclas::common::ModifyOrderRequest&) override;
-  void send(const quinclas::common::CancelOrderRequest&) override;
+  void on(const quinclas::common::CreateOrderRequest&) override;
+  void on(const quinclas::common::ModifyOrderRequest&) override;
+  void on(const quinclas::common::CancelOrderRequest&) override;
 
  private:
-  quinclas::common::Gateway::Handler& _dispatcher;
+  quinclas::common::Gateway2::Dispatcher& _dispatcher;
   int _latency;
 };
 

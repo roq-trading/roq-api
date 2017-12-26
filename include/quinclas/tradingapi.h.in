@@ -378,6 +378,53 @@ class Gateway {
 };
 
 /**
+ * Gateway2 interface.
+ */
+class Gateway2 {
+ public:
+   /**
+    * Dispatcher interface.
+    */
+  class Dispatcher {
+   public:
+    virtual void send(const GatewayStatusEvent&) = 0;      ///< Connection or login status has changed for a gateway
+    virtual void send(const ReferenceDataEvent&) = 0;      ///< Reference data update for an instrument
+    virtual void send(const MarketStatusEvent&) = 0;       ///< Market status update for an instrument
+    virtual void send(const MarketByPriceEvent&) = 0;      ///< Market-by-price update for an instrument
+    virtual void send(const SessionStatisticsEvent&) = 0;  ///< Session statistics update for an instrument
+    virtual void send(const DailyStatisticsEvent&) = 0;    ///< Daily statistics update for an instrument
+    virtual void send(const CreateOrderAckEvent&) = 0;     ///< Response to a create order request
+    virtual void send(const ModifyOrderAckEvent&) = 0;     ///< Response to a modify order request
+    virtual void send(const CancelOrderAckEvent&) = 0;     ///< Response to a cancel order request
+    virtual void send(const OrderUpdateEvent&) = 0;        ///< New order, or order details have been updated
+    virtual void send(const TradeUpdateEvent&) = 0;        ///< New trade, or trade details have been updated
+  };
+  virtual ~Gateway2() = default;
+  /**
+   * Start the event loop.
+   */
+  virtual void start() = 0;
+  /**
+   * Send a CreateOrder request.
+   *
+   * @param create_order_request has the order creation request details.
+   */
+  virtual void on(const CreateOrderRequest& create_order_request) = 0;
+  /**
+   * Send a ModifyOrder request.
+   *
+   * @param modify_order_request has the order modification request details.
+   */
+  virtual void on(const ModifyOrderRequest& modify_order_request) = 0;
+  /**
+   * Send a CancelOrder request.
+   *
+   * @param cancel_order_request has the order cancellation request details.
+   */
+  virtual void on(const CancelOrderRequest& cancel_order_request) = 0;
+};
+
+/**
  * Strategy interface.
  */
 class Strategy {

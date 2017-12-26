@@ -121,7 +121,7 @@ class Controller final {
 
  private:
   // Dispatcher
-  class Dispatcher final : public common::Gateway::Handler,
+  class Dispatcher final : public common::Gateway2::Dispatcher,
                            public libevent::TimerEvent::Handler,
                            public common::Strategy::Dispatcher {
    public:
@@ -142,49 +142,43 @@ class Controller final {
       }
     }
     void dispatch() {
-      static_cast<common::Gateway&>(_gateway).start();
+      static_cast<common::Gateway2&>(_gateway).start();
       _timer.add({.tv_sec = 1});
       _base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
     }
 
    protected:
-    void on(const common::TerminationEvent& event)  override {
-      // FIXME(thraneh): drop
-    }
-
-    // FIXME(thraneh): should be cleaned up through better interfaces -- need "send", not "on"
-   protected:
-    void on(const common::GatewayStatusEvent& event)  override {
+    void send(const common::GatewayStatusEvent& event)  override {
       send_helper(event);
     }
-    void on(const common::ReferenceDataEvent& event)  override {
+    void send(const common::ReferenceDataEvent& event)  override {
       send_helper(event);
     }
-    void on(const common::MarketStatusEvent& event)  override {
+    void send(const common::MarketStatusEvent& event)  override {
       send_helper(event);
     }
-    void on(const common::MarketByPriceEvent& event)  override {
+    void send(const common::MarketByPriceEvent& event)  override {
       send_helper(event);
     }
-    void on(const common::SessionStatisticsEvent& event)  override {
+    void send(const common::SessionStatisticsEvent& event)  override {
       send_helper(event);
     }
-    void on(const common::DailyStatisticsEvent& event)  override {
+    void send(const common::DailyStatisticsEvent& event)  override {
       send_helper(event);
     }
-    void on(const common::CreateOrderAckEvent& event)  override {
+    void send(const common::CreateOrderAckEvent& event)  override {
       send_helper(event);
     }
-    void on(const common::ModifyOrderAckEvent& event)  override {
+    void send(const common::ModifyOrderAckEvent& event)  override {
       send_helper(event);
     }
-    void on(const common::CancelOrderAckEvent& event)  override {
+    void send(const common::CancelOrderAckEvent& event)  override {
       send_helper(event);
     }
-    void on(const common::OrderUpdateEvent& event)  override {
+    void send(const common::OrderUpdateEvent& event)  override {
       send_helper(event);
     }
-    void on(const common::TradeUpdateEvent& event)  override {
+    void send(const common::TradeUpdateEvent& event)  override {
       send_helper(event);
     }
 
@@ -221,13 +215,13 @@ class Controller final {
     // FIXME(thraneh): should be cleaned up through better interfaces -- this is just an unnecessary bridge
    protected:
     void send(const common::CreateOrderRequest& request) override {
-      static_cast<common::Gateway&>(_gateway).send(request);
+      static_cast<common::Gateway2&>(_gateway).on(request);
     }
     void send(const common::ModifyOrderRequest& request) override {
-      static_cast<common::Gateway&>(_gateway).send(request);
+      static_cast<common::Gateway2&>(_gateway).on(request);
     }
     void send(const common::CancelOrderRequest& request) override {
-      static_cast<common::Gateway&>(_gateway).send(request);
+      static_cast<common::Gateway2&>(_gateway).on(request);
     }
 
    private:

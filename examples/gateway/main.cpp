@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
   // create framework, instantiate gateway and start even dispatching
 
   quinclas::server::Controller<Gateway>({
-    { FLAGS_local_address },
+    { FLAGS_local_address, },
   }).create_and_dispatch(latency);
 
   LOG(INFO) << "===== STOP =====";

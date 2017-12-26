@@ -5,7 +5,7 @@
 
 #include <quinclas/server.h>
 
-#include "gateway/strategy.h"
+#include "gateway/gateway.h"
 
 using namespace examples::gateway;  // NOLINT
 
@@ -31,23 +31,15 @@ int main(int argc, char *argv[]) {
 
   LOG(INFO) << "===== START =====";
 
-  // this is a good place to spawn a thread if market access is through an API
-  // --> how does it find the connected clients ??? (do we need a queue?)
-
   // configuration
 
   const uint32_t latency = 10;
 
-  // handler
+  // create framework, instantiate gateway and start even dispatching
 
-  const auto handler = [latency](quinclas::server::Connection::Dispatcher& dispatcher) {
-    return std::unique_ptr<quinclas::server::Connection>(
-        new Strategy(dispatcher, latency));
-  };
-
-  quinclas::server::Controller({
-    { FLAGS_local_address, handler },
-  }).dispatch();
+  quinclas::server::Controller<Gateway>({
+    { FLAGS_local_address },
+  }).create_and_dispatch(latency);
 
   LOG(INFO) << "===== STOP =====";
 

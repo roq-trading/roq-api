@@ -56,14 +56,14 @@ class Controller final {
             assert(false);  // should never get here...
         }
       }
-      void send(const common::CreateOrderRequest& create_order_request) override {
-        send_helper(create_order_request);
+      void send(const common::CreateOrderRequest& request) override {
+        send_helper(request);
       }
-      void send(const common::ModifyOrderRequest& modify_order_request) override {
-        send_helper(modify_order_request);
+      void send(const common::ModifyOrderRequest& request) override {
+        send_helper(request);
       }
-      void send(const common::CancelOrderRequest& cancel_order_request) override {
-        send_helper(cancel_order_request);
+      void send(const common::CancelOrderRequest& request) override {
+        send_helper(request);
       }
 
      private:

@@ -12,4 +12,5 @@ example_gateway_CPPFLAGS = \
 	$(LIBGLOG_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
 	$(LIBEVENT_CFLAGS)
-example_gateway_SOURCES = main.cpp
+example_gateway_SOURCES = main.cpp gateway.cpp
+EXTRA_example_gateway_SOURCES = gateway.h

@@ -9,6 +9,14 @@ struct Layer {
   ask_quantity:double;
 }
 
+table HandshakeAck {
+    api_version:string;
+}
+
+table HeartbeatAck {
+    opaque:ulong;
+}
+
 table GatewayStatus {
     market_data_connection_status:common.ConnectionStatus;
     market_data_login_status:common.LoginStatus;
@@ -92,6 +100,16 @@ table TradeUpdate {
     opaque:int;
 }
 
+table Handshake {
+    api_version:string;
+    login:string;
+    password:string;
+}
+
+table Heartbeat {
+    opaque:ulong;
+}
+
 table CreateOrder {
     exchange:string;
     order_template_name:string;
@@ -128,6 +146,8 @@ table MessageInfo {
 }
 
 union EventData {
+    HandshakeAck,
+    HeartbeatAck,
     GatewayStatus,
     ReferenceData,
     MarketStatus,
@@ -153,6 +173,8 @@ table RequestInfo {
 }
 
 union RequestData {
+    Handshake,
+    Heartbeat,
     CreateOrder,
     ModifyOrder,
     CancelOrder,

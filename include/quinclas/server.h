@@ -38,9 +38,10 @@ class Controller final {
    public:
     typedef std::function<void(std::unique_ptr<Client>&&)> Initializer;
     typedef std::function<void(Client *)> Finalizer;
-    Client(libevent::BufferEvent&& buffer_event, Finalizer finalizer, common::Gateway2& gateway)
+    Client(libevent::BufferEvent&& buffer_event, Finalizer finalizer,
+           common::Server& server, common::Gateway2& gateway)
         : _buffer_event(std::move(buffer_event)), _finalizer(finalizer),
-          _request_dispatcher(gateway) {
+          _request_dispatcher(server, gateway) {
       _buffer_event.setcb(on_read, nullptr, on_error, this);
       _buffer_event.enable(EV_READ);
     }
@@ -95,14 +96,15 @@ class Controller final {
   class Service final : public libevent::Listener::Handler {
    public:
     Service(libevent::Base& base, net::Socket&& socket, typename Client::Finalizer finalizer,
-            typename Client::Initializer initializer, common::Gateway2& gateway)
+            typename Client::Initializer initializer, common::Server& server, common::Gateway2& gateway)
         : _listener(*this, base, 0, -1, std::move(socket)),
-          _finalizer(finalizer), _initializer(initializer), _gateway(gateway) {}
+          _finalizer(finalizer), _initializer(initializer),
+          _server(server), _gateway(gateway) {}
 
    private:
     void on_accept(libevent::BufferEvent&& buffer_event) override {
       LOG(INFO) << "service: got connection";
-      auto client = std::unique_ptr<Client>(new Client(std::move(buffer_event), _finalizer, _gateway));
+      auto client = std::unique_ptr<Client>(new Client(std::move(buffer_event), _finalizer, _server, _gateway));
       _initializer(std::move(client));
     }
 
@@ -115,12 +117,14 @@ class Controller final {
     libevent::Listener _listener;
     typename Client::Finalizer _finalizer;
     typename Client::Initializer _initializer;
+    common::Server& _server;
     common::Gateway2& _gateway;
   };
 
  private:
   // Dispatcher
-  class Dispatcher final : public common::Gateway2::Dispatcher,
+  class Dispatcher final : public common::Server,
+                           public common::Gateway2::Dispatcher,
                            public libevent::TimerEvent::Handler {
    public:
     template <typename... Args>
@@ -136,7 +140,7 @@ class Controller final {
         socket.non_blocking(true);
         socket.bind(address);
         _services.emplace_back(std::unique_ptr<Service>(
-              new Service(_base, std::move(socket), finalizer, initializer, _gateway)));
+              new Service(_base, std::move(socket), finalizer, initializer, *this, _gateway)));
       }
     }
     void dispatch() {
@@ -207,6 +211,36 @@ class Controller final {
         for (auto iter : failures)
           remove(iter);  // TODO(thraneh): threading
       }
+
+   protected:
+    void on(const common::HandshakeRequest& request) override {
+      LOG(INFO) << "got handshake request";
+      const common::MessageInfo message_info = {
+        .gateway = "XXX",
+      };
+      const common::HandshakeAck handshake_ack = {
+        .api_version = "",
+      };
+      const common::HandshakeAckEvent event = {
+        .message_info = message_info,
+        .handshake_ack = handshake_ack,
+      };
+      send_helper(event);
+    }
+    void on(const common::HeartbeatRequest& request) override {
+      LOG(INFO) << "got heartbeat request";
+      const common::MessageInfo message_info = {
+        .gateway = "XXX",
+      };
+      const common::HeartbeatAck heartbeat_ack = {
+        .opaque = request.heartbeat.opaque,
+      };
+      const common::HeartbeatAckEvent event = {
+        .message_info = message_info,
+        .heartbeat_ack = heartbeat_ack,
+      };
+      send_helper(event);
+    }
 
    private:
     void add(std::unique_ptr<Client>&& client) {

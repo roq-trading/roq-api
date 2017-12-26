@@ -32,6 +32,22 @@ struct Layer {
 };
 
 /**
+ * Handshake ack.
+ */
+
+struct HandshakeAck {
+  const char *api_version;
+};
+
+/**
+ * Heatbeat ack.
+ */
+
+struct HeartbeatAck {
+  datetime_t opaque;
+};
+
+/**
  * Gateway status.
  */
 struct GatewayStatus {
@@ -178,6 +194,22 @@ struct TimerEvent {
 struct IdleEvent {};
 
 /**
+ * Handshake ack event.
+ */
+struct HandshakeAckEvent {
+  const MessageInfo& message_info;                         ///< Message info
+  const HandshakeAck& handshake_ack;                       ///< Handshake ack
+};
+
+/**
+ * Heartbeat ack event.
+ */
+struct HeartbeatAckEvent {
+  const MessageInfo& message_info;                         ///< Message info
+  const HeartbeatAck& heartbeat_ack;                       ///< Heartbeat ack
+};
+
+/**
  * Gateway status update event.
  */
 struct GatewayStatusEvent {
@@ -266,6 +298,24 @@ struct TradeUpdateEvent {
 };
 
 /**
+ * Handshake.
+ */
+
+struct Handshake {
+  const char *api_version;
+  const char *login;
+  const char *password;
+};
+
+/**
+ * Heatbeat.
+ */
+
+struct Heartbeat {
+  datetime_t opaque;
+};
+
+/**
  * Create order.
  */
 struct CreateOrder {
@@ -300,6 +350,24 @@ struct CancelOrder {
  */
 struct RequestInfo {
   const char *destination;                                 ///< Destination name, typically a gateway
+};
+
+/*
+ * Handshake request.
+ */
+
+struct HandshakeRequest {
+  const RequestInfo& request_info;                         ///< Routing information
+  const Handshake& handshake;                              ///< Handshake details
+};
+
+/*
+ * Heartbeat request.
+ */
+
+struct HeartbeatRequest {
+  const RequestInfo& request_info;                         ///< Routing information
+  const Heartbeat& heartbeat;                              ///< Heartbeat details
 };
 
 /*
@@ -378,6 +446,16 @@ class Gateway {
 };
 
 /**
+ * Server interface.
+ */
+
+class Server {
+ public:
+  virtual void on(const HandshakeRequest&) = 0;
+  virtual void on(const HeartbeatRequest&) = 0;
+};
+
+/**
  * Gateway2 interface.
  */
 class Gateway2 {
@@ -405,23 +483,35 @@ class Gateway2 {
    */
   virtual void start() = 0;
   /**
-   * Send a CreateOrder request.
+   * CreateOrder request.
    *
    * @param create_order_request has the order creation request details.
    */
   virtual void on(const CreateOrderRequest& create_order_request) = 0;
   /**
-   * Send a ModifyOrder request.
+   * ModifyOrder request.
    *
    * @param modify_order_request has the order modification request details.
    */
   virtual void on(const ModifyOrderRequest& modify_order_request) = 0;
   /**
-   * Send a CancelOrder request.
+   * CancelOrder request.
    *
    * @param cancel_order_request has the order cancellation request details.
    */
   virtual void on(const CancelOrderRequest& cancel_order_request) = 0;
+};
+
+/**
+ * Client interface.
+ */
+
+class Client {
+ public:
+  virtual void on(const HandshakeAckEvent&) = 0;
+  virtual void on(const HeartbeatAckEvent&) = 0;
+  virtual void send(const HandshakeRequest&) = 0;
+  virtual void send(const HeartbeatRequest&) = 0;
 };
 
 /**

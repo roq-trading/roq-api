@@ -69,6 +69,16 @@ inline common::RequestInfo CreateRandomRequestInfo() {
     .destination = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
+inline common::HandshakeAck CreateRandomHandshakeAck() {
+  return common::HandshakeAck{
+    .api_version = NAME[rand_uint32() % NAME_LENGTH],
+  };
+}
+inline common::HeartbeatAck CreateRandomHeartbeatAck() {
+  return common::HeartbeatAck{
+    .opaque = rand_uint64(),
+  };
+}
 inline common::GatewayStatus CreateRandomGatewayStatus() {
   return common::GatewayStatus{
     .market_data_connection_status = rand_connection_status(),
@@ -169,6 +179,18 @@ inline common::TradeUpdate CreateRandomTradeUpdate() {
     .opaque = rand_int32(),
   };
 }
+inline common::Handshake CreateRandomHandshake() {
+  return common::Handshake{
+    .api_version = NAME[rand_uint32() % NAME_LENGTH],
+    .login = NAME[rand_uint32() % NAME_LENGTH],
+    .password = NAME[rand_uint32() % NAME_LENGTH],
+  };
+}
+inline common::Heartbeat CreateRandomHeartbeat() {
+  return common::Heartbeat{
+    .opaque = rand_uint64(),
+  };
+}
 inline common::CreateOrder CreateRandomCreateOrder() {
   return common::CreateOrder{
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
@@ -205,6 +227,12 @@ void compare(const common::MessageInfo& lhs, const common::MessageInfo& rhs) {
 }
 void compare(const common::RequestInfo& lhs, const common::RequestInfo& rhs) {
   EXPECT_STREQ(lhs.destination, rhs.destination);
+}
+void compare(const common::HandshakeAck& lhs, const common::HandshakeAck& rhs) {
+  EXPECT_STREQ(lhs.api_version, rhs.api_version);
+}
+void compare(const common::HeartbeatAck& lhs, const common::HeartbeatAck& rhs) {
+  EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 void compare(const common::GatewayStatus& lhs, const common::GatewayStatus& rhs) {
   EXPECT_EQ(lhs.market_data_connection_status, rhs.market_data_connection_status);
@@ -283,6 +311,14 @@ void compare(const common::TradeUpdate& lhs, const common::TradeUpdate& rhs) {
   EXPECT_EQ(lhs.price, rhs.price);
   EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
+void compare(const common::Handshake& lhs, const common::Handshake& rhs) {
+  EXPECT_STREQ(lhs.api_version, rhs.api_version);
+  EXPECT_STREQ(lhs.login, rhs.login);
+  EXPECT_STREQ(lhs.password, rhs.password);
+}
+void compare(const common::Heartbeat& lhs, const common::Heartbeat& rhs) {
+  EXPECT_EQ(lhs.opaque, rhs.opaque);
+}
 void compare(const common::CreateOrder& lhs, const common::CreateOrder& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.order_template_name, rhs.order_template_name);
@@ -302,6 +338,70 @@ void compare(const common::CancelOrder& lhs, const common::CancelOrder& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 }  // namespace
+
+TEST(flatbuffers, handshake_ack_event) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // event (source)
+    const auto source_message_info = CreateRandomMessageInfo();
+    const auto source_handshake_ack = CreateRandomHandshakeAck();
+    const auto source = common::HandshakeAckEvent{
+      .message_info = source_message_info,
+      .handshake_ack = source_handshake_ack};
+    // serialize using flatbuffers
+    fbb.Finish(common::convert(fbb, source));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    const auto root = GetRoot<schema::Event>(&buffer[0]);
+    const auto target_message_info = common::convert(root->message_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::HandshakeAck);
+    const auto target_handshake_ack = common::convert(root->event_data_as_HandshakeAck());
+    // event (target)
+    const auto target = common::HandshakeAckEvent{
+      .message_info = target_message_info,
+      .handshake_ack = target_handshake_ack};
+    // validate
+    compare(target.message_info, source.message_info);
+    compare(target.handshake_ack, source.handshake_ack);
+  }
+}
+
+TEST(flatbuffers, heartbeat_ack_event) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // event (source)
+    const auto source_message_info = CreateRandomMessageInfo();
+    const auto source_heartbeat_ack = CreateRandomHeartbeatAck();
+    const auto source = common::HeartbeatAckEvent{
+      .message_info = source_message_info,
+      .heartbeat_ack = source_heartbeat_ack};
+    // serialize using flatbuffers
+    fbb.Finish(common::convert(fbb, source));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    const auto root = GetRoot<schema::Event>(&buffer[0]);
+    const auto target_message_info = common::convert(root->message_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::HeartbeatAck);
+    const auto target_heartbeat_ack = common::convert(root->event_data_as_HeartbeatAck());
+    // event (target)
+    const auto target = common::HeartbeatAckEvent{
+      .message_info = target_message_info,
+      .heartbeat_ack = target_heartbeat_ack};
+    // validate
+    compare(target.message_info, source.message_info);
+    compare(target.heartbeat_ack, source.heartbeat_ack);
+  }
+}
 
 TEST(flatbuffers, gateway_status_event) {
   FlatBufferBuilder fbb;
@@ -652,6 +752,70 @@ TEST(flatbuffers, trade_update_event) {
     // validate
     compare(target.message_info, source.message_info);
     compare(target.trade_update, source.trade_update);
+  }
+}
+
+TEST(flatbuffers, handshake_request) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // request (source)
+    const auto source_request_info = CreateRandomRequestInfo();
+    const auto source_handshake = CreateRandomHandshake();
+    const auto source = common::HandshakeRequest{
+      .request_info = source_request_info,
+      .handshake = source_handshake};
+    // serialize using flatbuffers
+    fbb.Finish(common::convert(fbb, source));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    const auto root = GetRoot<schema::Request>(&buffer[0]);
+    const auto target_request_info = common::convert(root->request_info());
+    EXPECT_EQ(root->request_data_type(), schema::RequestData::Handshake);
+    const auto target_handshake = common::convert(root->request_data_as_Handshake());
+    // request (target)
+    const auto target = common::HandshakeRequest{
+      .request_info = target_request_info,
+      .handshake = target_handshake};
+    // validate
+    compare(target.request_info, source.request_info);
+    compare(target.handshake, source.handshake);
+  }
+}
+
+TEST(flatbuffers, heartbeat_request) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // request (source)
+    const auto source_request_info = CreateRandomRequestInfo();
+    const auto source_heartbeat = CreateRandomHeartbeat();
+    const auto source = common::HeartbeatRequest{
+      .request_info = source_request_info,
+      .heartbeat = source_heartbeat};
+    // serialize using flatbuffers
+    fbb.Finish(common::convert(fbb, source));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    const auto root = GetRoot<schema::Request>(&buffer[0]);
+    const auto target_request_info = common::convert(root->request_info());
+    EXPECT_EQ(root->request_data_type(), schema::RequestData::Heartbeat);
+    const auto target_heartbeat = common::convert(root->request_data_as_Heartbeat());
+    // request (target)
+    const auto target = common::HeartbeatRequest{
+      .request_info = target_request_info,
+      .heartbeat = target_heartbeat};
+    // validate
+    compare(target.request_info, source.request_info);
+    compare(target.heartbeat, source.heartbeat);
   }
 }
 

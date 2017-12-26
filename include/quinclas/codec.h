@@ -39,6 +39,18 @@ inline common::MessageInfo convert(const schema::MessageInfo *value) {
   };
 }
 
+inline common::HandshakeAck convert(const schema::HandshakeAck *value) {
+  return common::HandshakeAck{
+    .api_version = value->api_version()->c_str(),
+  };
+}
+
+inline common::HeartbeatAck convert(const schema::HeartbeatAck *value) {
+  return common::HeartbeatAck{
+    .opaque = value->opaque(),
+  };
+}
+
 inline common::GatewayStatus convert(const schema::GatewayStatus *value) {
   return common::GatewayStatus{
     .market_data_connection_status = value->market_data_connection_status(),
@@ -166,6 +178,20 @@ inline common::RequestInfo convert(const schema::RequestInfo *value) {
   };
 }
 
+inline common::Handshake convert(const schema::Handshake *value) {
+  return common::Handshake{
+    .api_version = value->api_version()->c_str(),
+    .login = value->login()->c_str(),
+    .password = value->password()->c_str(),
+  };
+}
+
+inline common::Heartbeat convert(const schema::Heartbeat *value) {
+  return common::Heartbeat{
+    .opaque = value->opaque(),
+  };
+}
+
 inline common::CreateOrder convert(const schema::CreateOrder *value) {
   return common::CreateOrder{
     .exchange = value->exchange()->c_str(),
@@ -204,6 +230,20 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::MessageInfo& value) {
     value.exchange_time,
     value.receive_time,
     value.enqueue_time);
+}
+
+inline flatbuffers::Offset<schema::HandshakeAck>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::HandshakeAck& value) {
+  return schema::CreateHandshakeAck(
+    fbb,
+    fbb.CreateString(value.api_version));
+}
+
+inline flatbuffers::Offset<schema::HeartbeatAck>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatAck& value) {
+  return schema::CreateHeartbeatAck(
+    fbb,
+    value.opaque);
 }
 
 inline flatbuffers::Offset<schema::GatewayStatus>
@@ -332,6 +372,20 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdate& value) {
 // encode (events)
 
 inline flatbuffers::Offset<schema::Event>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::HandshakeAckEvent& value) {
+  auto message_info = convert(fbb, value.message_info);
+  auto handshake_ack = convert(fbb, value.handshake_ack);
+  return schema::CreateEvent(fbb, message_info, schema::EventData::HandshakeAck, handshake_ack.Union());
+}
+
+inline flatbuffers::Offset<schema::Event>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatAckEvent& value) {
+  auto message_info = convert(fbb, value.message_info);
+  auto heartbeat_ack = convert(fbb, value.heartbeat_ack);
+  return schema::CreateEvent(fbb, message_info, schema::EventData::HeartbeatAck, heartbeat_ack.Union());
+}
+
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatusEvent& value) {
   auto message_info = convert(fbb, value.message_info);
   auto gateway_status = convert(fbb, value.gateway_status);
@@ -415,6 +469,22 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::RequestInfo& value) {
   return schema::CreateRequestInfo(fbb, fbb.CreateString(value.destination));
 }
 
+inline flatbuffers::Offset<schema::Handshake>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::Handshake& value) {
+  return schema::CreateHandshake(
+    fbb,
+    fbb.CreateString(value.api_version),
+    fbb.CreateString(value.login),
+    fbb.CreateString(value.password));
+}
+
+inline flatbuffers::Offset<schema::Heartbeat>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::Heartbeat& value) {
+  return schema::CreateHeartbeat(
+    fbb,
+    value.opaque);
+}
+
 inline flatbuffers::Offset<schema::CreateOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrder& value) {
   return schema::CreateCreateOrder(
@@ -442,6 +512,20 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrder& value) {
 // encode (requests)
 
 inline flatbuffers::Offset<schema::Request>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::HandshakeRequest& value) {
+  auto request_info = convert(fbb, value.request_info);
+  auto handshake = convert(fbb, value.handshake);
+  return schema::CreateRequest(fbb, request_info, schema::RequestData::Handshake, handshake.Union());
+}
+
+inline flatbuffers::Offset<schema::Request>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatRequest& value) {
+  auto request_info = convert(fbb, value.request_info);
+  auto heartbeat = convert(fbb, value.heartbeat);
+  return schema::CreateRequest(fbb, request_info, schema::RequestData::Heartbeat, heartbeat.Union());
+}
+
+inline flatbuffers::Offset<schema::Request>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrderRequest& value) {
   auto request_info = convert(fbb, value.request_info);
   auto create_order = convert(fbb, value.create_order);
@@ -466,12 +550,28 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderRequest& v
 
 class EventDispatcher {
  public:
-  explicit EventDispatcher(Strategy& strategy) : _strategy(strategy) {}
+  explicit EventDispatcher(Client& client, Strategy& strategy) : _client(client), _strategy(strategy) {}
   void dispatch_event(const void *buffer, const size_t length) {
     const auto root = flatbuffers::GetRoot<schema::Event>(buffer);
     const auto message_info = convert(root->message_info());
     const auto type = root->event_data_type();
     switch (type) {
+      case schema::EventData::HandshakeAck: {
+        const auto handshake_ack = convert(root->event_data_as_HandshakeAck());
+        const auto event = HandshakeAckEvent{
+          .message_info = message_info,
+          .handshake_ack = handshake_ack};
+        _client.on(event);
+        break;
+      }
+      case schema::EventData::HeartbeatAck: {
+        const auto heartbeat_ack = convert(root->event_data_as_HeartbeatAck());
+        const auto event = HeartbeatAckEvent{
+          .message_info = message_info,
+          .heartbeat_ack = heartbeat_ack};
+        _client.on(event);
+        break;
+      }
       case schema::EventData::GatewayStatus: {
         const auto gateway_status = convert(root->event_data_as_GatewayStatus());
         const auto event = GatewayStatusEvent{
@@ -572,18 +672,35 @@ class EventDispatcher {
   EventDispatcher& operator=(const EventDispatcher&) = delete;
 
  private:
+  Client& _client;
   Strategy& _strategy;
   flatbuffers::FlatBufferBuilder _flat_buffer_builder;
 };
 
 class RequestDispatcher {
  public:
-  explicit RequestDispatcher(Gateway2& dispatcher) : _dispatcher(dispatcher) {}
+  explicit RequestDispatcher(Server& server, Gateway2& dispatcher) : _server(server), _dispatcher(dispatcher) {}
   void dispatch_request(const void *buffer, const size_t length) {
     const auto root = flatbuffers::GetRoot<schema::Request>(buffer);
     const auto request_info = convert(root->request_info());
     const auto type = root->request_data_type();
     switch (type) {
+      case schema::RequestData::Handshake: {
+        const auto handshake = convert(root->request_data_as_Handshake());
+        const auto request = HandshakeRequest{
+          .request_info = request_info,
+          .handshake = handshake};
+        _server.on(request);
+        break;
+      }
+      case schema::RequestData::Heartbeat: {
+        const auto heartbeat = convert(root->request_data_as_Heartbeat());
+        const auto request = HeartbeatRequest{
+          .request_info = request_info,
+          .heartbeat = heartbeat};
+        _server.on(request);
+        break;
+      }
       case schema::RequestData::CreateOrder: {
         const auto create_order = convert(root->request_data_as_CreateOrder());
         const auto request = CreateOrderRequest{
@@ -620,6 +737,7 @@ class RequestDispatcher {
   RequestDispatcher& operator=(const RequestDispatcher&) = delete;
 
  private:
+  Server& _server;
   Gateway2& _dispatcher;
   flatbuffers::FlatBufferBuilder _flat_buffer_builder;
 };

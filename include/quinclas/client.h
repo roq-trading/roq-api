@@ -36,13 +36,18 @@ class Controller final {
       : public common::Strategy::Dispatcher,
         public libevent::TimerEvent::Handler {
     // Gateway
-    class Gateway final : public common::Strategy::Dispatcher {
+    class Gateway final
+        : public common::Client,
+          public common::Strategy::Dispatcher {
      public:
       Gateway(const std::string& name, const int domain, const std::string& address,
               common::Strategy& strategy, libevent::Base& base,
               std::unordered_set<Gateway *>& callbacks)
-          : _name(name), _domain(domain), _address(address), _base(base), _event_dispatcher(strategy),
+          : _name(name), _domain(domain), _address(address), _base(base), _event_dispatcher(*this, strategy),
             _callbacks(callbacks), _state(Disconnected), _retries(0), _retry_timer(0) {}
+      bool ready() const {
+        return _state == Connected;
+      }
       bool refresh() {
         assert(_retry_timer >= 0);
         if (_retry_timer > 0 && 0 != --_retry_timer)
@@ -55,6 +60,12 @@ class Controller final {
           default:
             assert(false);  // should never get here...
         }
+      }
+      void send(const common::HandshakeRequest& request) override {
+        send_helper(request);
+      }
+      void send(const common::HeartbeatRequest& request) override {
+        send_helper(request);
       }
       void send(const common::CreateOrderRequest& request) override {
         send_helper(request);
@@ -192,6 +203,14 @@ class Controller final {
         reinterpret_cast<Gateway *>(arg)->on_read();
       }
 
+     protected:
+      void on(const common::HandshakeAckEvent& event) override {
+        LOG(INFO) << "got handshake ack";
+      }
+      void on(const common::HeartbeatAckEvent& event) override {
+        LOG(INFO) << "got heartbeeat ack";
+      }
+
      private:
       Gateway() = delete;
       Gateway(const Gateway&) = delete;
@@ -251,6 +270,20 @@ class Controller final {
         for (auto iter : remove)
           _callbacks.erase(iter);
       }
+      // experimental
+      const common::RequestInfo request_info = {
+        .destination = "",
+      };
+      const common::Heartbeat heartbeat = {
+        .opaque = 123,
+      };
+      const common::HeartbeatRequest request = {
+        .request_info = request_info,
+        .heartbeat = heartbeat,
+      };
+      for (auto& iter : _gateways)
+        if (iter.ready())
+          iter.send(request);
     }
 
    private:

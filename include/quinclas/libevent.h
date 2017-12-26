@@ -20,7 +20,7 @@ namespace libevent {
 
 // Thread
 
-class Thread {
+class Thread final {
  public:
   static void use_pthreads() {
 #if EVTHREAD_USE_PTHREADS_IMPLEMENTED == 1
@@ -36,7 +36,7 @@ class Thread {
 
 // Base
 
-class Base {
+class Base final {
  public:
   Base() : _base(event_base_new()) {
     if (_base == nullptr) {
@@ -92,7 +92,7 @@ class Base {
 
 // DNSBase
 
-class DNSBase {
+class DNSBase final {
  public:
   DNSBase(struct event_base *base, int initialize_nameservers)
       : _evdns_base(evdns_base_new(base, initialize_nameservers)) {
@@ -165,7 +165,8 @@ class Event {
 
 // TimerEvent
 
-class TimerEvent : public Event {
+class TimerEvent final
+    : public Event {
  public:
   class Handler {
    public:
@@ -185,7 +186,8 @@ class TimerEvent : public Event {
 
 // SignalEvent
 
-class SignalEvent : public Event {
+class SignalEvent final
+    : public Event {
  public:
   class Handler {
    public:
@@ -207,7 +209,7 @@ class SignalEvent : public Event {
 
 // Buffer
 
-class Buffer {
+class Buffer final {
  public:
   Buffer() : _evbuffer(evbuffer_new()) {
     if (_evbuffer == nullptr) {
@@ -270,7 +272,7 @@ class Buffer {
 // BufferEvent
 // - BEV_OPT_THREADSAFE
 
-class BufferEvent {
+class BufferEvent final {
  public:
   BufferEvent(struct event_base *base, int fd, int options = 0)
       : _bufferevent(bufferevent_socket_new(base, fd, options)) {
@@ -362,7 +364,7 @@ class BufferEvent {
 // Listener
 // - LEV_OPT_THREADSAFE
 
-class Listener {
+class Listener final {
  public:
   class Handler {
    public:

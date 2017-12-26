@@ -18,7 +18,7 @@
 namespace quinclas {
 namespace net {
 
-class Address {
+class Address final {
  public:
   explicit Address(const char *path) : _size(sizeof(_address.un)) {
     std::memset(&_address.un, 0, sizeof(_address.un));
@@ -59,7 +59,7 @@ class Address {
   socklen_t _size;
 };
 
-class Socket {
+class Socket final {
  public:
   explicit Socket(int fd) : _fd(fd) {}
   Socket(int domain, int type, int protocol) : _fd(socket(domain, type, protocol)) {

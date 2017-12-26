@@ -11,7 +11,7 @@ namespace common {
 
 // envelope
 
-struct Envelope {
+struct Envelope final {
   static const size_t LENGTH = 4;
   static size_t decode(const void *buffer) {
     const auto buffer_ = reinterpret_cast<const uint8_t *>(buffer);
@@ -548,7 +548,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderRequest& v
 
 // dispatch
 
-class EventDispatcher {
+class EventDispatcher final {
  public:
   explicit EventDispatcher(Client& client, Strategy& strategy) : _client(client), _strategy(strategy) {}
   void dispatch_event(const void *buffer, const size_t length) {
@@ -677,9 +677,9 @@ class EventDispatcher {
   flatbuffers::FlatBufferBuilder _flat_buffer_builder;
 };
 
-class RequestDispatcher {
+class RequestDispatcher final {
  public:
-  explicit RequestDispatcher(Server& server, Gateway2& dispatcher) : _server(server), _dispatcher(dispatcher) {}
+  explicit RequestDispatcher(Server& server, Gateway& gateway) : _server(server), _gateway(gateway) {}
   void dispatch_request(const void *buffer, const size_t length) {
     const auto root = flatbuffers::GetRoot<schema::Request>(buffer);
     const auto request_info = convert(root->request_info());
@@ -706,7 +706,7 @@ class RequestDispatcher {
         const auto request = CreateOrderRequest{
           .request_info = request_info,
           .create_order = create_order};
-        _dispatcher.on(request);
+        _gateway.on(request);
         break;
       }
       case schema::RequestData::ModifyOrder: {
@@ -714,7 +714,7 @@ class RequestDispatcher {
         const auto request = ModifyOrderRequest{
           .request_info = request_info,
           .modify_order = modify_order};
-        _dispatcher.on(request);
+        _gateway.on(request);
         break;
       }
       case schema::RequestData::CancelOrder: {
@@ -722,7 +722,7 @@ class RequestDispatcher {
         const auto request = CancelOrderRequest{
           .request_info = request_info,
           .cancel_order = cancel_order};
-        _dispatcher.on(request);
+        _gateway.on(request);
         break;
       }
       default: {
@@ -738,7 +738,7 @@ class RequestDispatcher {
 
  private:
   Server& _server;
-  Gateway2& _dispatcher;
+  Gateway& _gateway;
   flatbuffers::FlatBufferBuilder _flat_buffer_builder;
 };
 }  // namespace common

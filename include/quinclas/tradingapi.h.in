@@ -36,7 +36,7 @@ struct Layer {
  */
 
 struct HandshakeAck {
-  const char *api_version;
+  const char *api_version;                                 ///< API verison.
 };
 
 /**
@@ -44,7 +44,7 @@ struct HandshakeAck {
  */
 
 struct HeartbeatAck {
-  datetime_t opaque;
+  datetime_t opaque;                                       ///< Timestamp.
 };
 
 /**
@@ -302,9 +302,9 @@ struct TradeUpdateEvent {
  */
 
 struct Handshake {
-  const char *api_version;
-  const char *login;
-  const char *password;
+  const char *api_version;                                 ///< API version.
+  const char *login;                                       ///< Login.
+  const char *password;                                    ///< Password.
 };
 
 /**
@@ -312,7 +312,7 @@ struct Handshake {
  */
 
 struct Heartbeat {
-  datetime_t opaque;
+  datetime_t opaque;                                       ///< Timestamp.
 };
 
 /**
@@ -398,67 +398,19 @@ struct CancelOrderRequest {
 };
 
 /**
- * Gateway interface.
- */
-class Gateway {
- public:
-   /**
-    * Callback handler interface.
-    */
-  class Handler {
-   public:
-    virtual void on(const TerminationEvent&) = 0;        ///< Gateway has issued a termination (shutdown) event
-    virtual void on(const GatewayStatusEvent&) = 0;      ///< Connection or login status has changed for a gateway
-    virtual void on(const ReferenceDataEvent&) = 0;      ///< Reference data update for an instrument
-    virtual void on(const MarketStatusEvent&) = 0;       ///< Market status update for an instrument
-    virtual void on(const MarketByPriceEvent&) = 0;      ///< Market-by-price update for an instrument
-    virtual void on(const SessionStatisticsEvent&) = 0;  ///< Session statistics update for an instrument
-    virtual void on(const DailyStatisticsEvent&) = 0;    ///< Daily statistics update for an instrument
-    virtual void on(const CreateOrderAckEvent&) = 0;     ///< Response to a create order request
-    virtual void on(const ModifyOrderAckEvent&) = 0;     ///< Response to a modify order request
-    virtual void on(const CancelOrderAckEvent&) = 0;     ///< Response to a cancel order request
-    virtual void on(const OrderUpdateEvent&) = 0;        ///< New order, or order details have been updated
-    virtual void on(const TradeUpdateEvent&) = 0;        ///< New trade, or trade details have been updated
-  };
-  virtual ~Gateway() = default;
-  /**
-   * Start the event loop.
-   */
-  virtual void start() = 0;
-  /**
-   * Send a CreateOrder request.
-   *
-   * @param create_order_request has the order creation request details.
-   */
-  virtual void send(const CreateOrderRequest& create_order_request) = 0;
-  /**
-   * Send a ModifyOrder request.
-   *
-   * @param modify_order_request has the order modification request details.
-   */
-  virtual void send(const ModifyOrderRequest& modify_order_request) = 0;
-  /**
-   * Send a CancelOrder request.
-   *
-   * @param cancel_order_request has the order cancellation request details.
-   */
-  virtual void send(const CancelOrderRequest& cancel_order_request) = 0;
-};
-
-/**
  * Server interface.
  */
 
 class Server {
  public:
-  virtual void on(const HandshakeRequest&) = 0;
-  virtual void on(const HeartbeatRequest&) = 0;
+  virtual void on(const HandshakeRequest&) = 0;            ///< Handshake request handler.
+  virtual void on(const HeartbeatRequest&) = 0;            ///< Heartbeat request handler.
 };
 
 /**
- * Gateway2 interface.
+ * Gateway interface.
  */
-class Gateway2 {
+class Gateway {
  public:
    /**
     * Dispatcher interface.
@@ -477,7 +429,7 @@ class Gateway2 {
     virtual void send(const OrderUpdateEvent&) = 0;        ///< New order, or order details have been updated
     virtual void send(const TradeUpdateEvent&) = 0;        ///< New trade, or trade details have been updated
   };
-  virtual ~Gateway2() = default;
+  virtual ~Gateway() = default;
   /**
    * Start the event loop.
    */
@@ -508,10 +460,8 @@ class Gateway2 {
 
 class Client {
  public:
-  virtual void on(const HandshakeAckEvent&) = 0;
-  virtual void on(const HeartbeatAckEvent&) = 0;
-  virtual void send(const HandshakeRequest&) = 0;
-  virtual void send(const HeartbeatRequest&) = 0;
+  virtual void on(const HandshakeAckEvent&) = 0;           ///< Handshake ack event handler.
+  virtual void on(const HeartbeatAckEvent&) = 0;           ///< Heartbeat ack event handler.
 };
 
 /**
@@ -557,6 +507,54 @@ class Strategy {
   virtual void on(const CancelOrderAckEvent&) = 0;         ///< Response to a cancel order request
   virtual void on(const OrderUpdateEvent&) = 0;            ///< New order, or order details have been updated
   virtual void on(const TradeUpdateEvent&) = 0;            ///< New trade, or trade details have been updated
+};
+
+/**
+ * Legacy gateway interface.
+ */
+class Gateway3 {
+ public:
+   /**
+    * Callback handler interface.
+    */
+  class Handler {
+   public:
+    virtual void on(const TerminationEvent&) = 0;        ///< Gateway has issued a termination (shutdown) event
+    virtual void on(const GatewayStatusEvent&) = 0;      ///< Connection or login status has changed for a gateway
+    virtual void on(const ReferenceDataEvent&) = 0;      ///< Reference data update for an instrument
+    virtual void on(const MarketStatusEvent&) = 0;       ///< Market status update for an instrument
+    virtual void on(const MarketByPriceEvent&) = 0;      ///< Market-by-price update for an instrument
+    virtual void on(const SessionStatisticsEvent&) = 0;  ///< Session statistics update for an instrument
+    virtual void on(const DailyStatisticsEvent&) = 0;    ///< Daily statistics update for an instrument
+    virtual void on(const CreateOrderAckEvent&) = 0;     ///< Response to a create order request
+    virtual void on(const ModifyOrderAckEvent&) = 0;     ///< Response to a modify order request
+    virtual void on(const CancelOrderAckEvent&) = 0;     ///< Response to a cancel order request
+    virtual void on(const OrderUpdateEvent&) = 0;        ///< New order, or order details have been updated
+    virtual void on(const TradeUpdateEvent&) = 0;        ///< New trade, or trade details have been updated
+  };
+  virtual ~Gateway3() = default;
+  /**
+   * Start the event loop.
+   */
+  virtual void start() = 0;
+  /**
+   * Send a CreateOrder request.
+   *
+   * @param create_order_request has the order creation request details.
+   */
+  virtual void send(const CreateOrderRequest& create_order_request) = 0;
+  /**
+   * Send a ModifyOrder request.
+   *
+   * @param modify_order_request has the order modification request details.
+   */
+  virtual void send(const ModifyOrderRequest& modify_order_request) = 0;
+  /**
+   * Send a CancelOrder request.
+   *
+   * @param cancel_order_request has the order cancellation request details.
+   */
+  virtual void send(const CancelOrderRequest& cancel_order_request) = 0;
 };
 
 }  // namespace common

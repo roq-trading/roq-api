@@ -7,9 +7,9 @@
 namespace examples {
 namespace gateway {
 
-class Gateway : public quinclas::common::Gateway2 {
+class Gateway : public quinclas::common::Gateway {
  public:
-  Gateway(quinclas::common::Gateway2::Dispatcher& dispatcher, const int latency);
+  Gateway(quinclas::common::Gateway::Dispatcher& dispatcher, const int latency);
 
  protected:
   void start() override;
@@ -19,7 +19,7 @@ class Gateway : public quinclas::common::Gateway2 {
 
  private:
   // dispatch interface (used to broadcast update events)
-  quinclas::common::Gateway2::Dispatcher& _dispatcher;
+  quinclas::common::Gateway::Dispatcher& _dispatcher;
   // gateway specific configuration
   int _latency;
 };

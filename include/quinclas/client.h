@@ -61,10 +61,10 @@ class Controller final {
             assert(false);  // should never get here...
         }
       }
-      void send(const common::HandshakeRequest& request) override {
+      void send(const common::HandshakeRequest& request) {
         send_helper(request);
       }
-      void send(const common::HeartbeatRequest& request) override {
+      void send(const common::HeartbeatRequest& request) {
         send_helper(request);
       }
       void send(const common::CreateOrderRequest& request) override {

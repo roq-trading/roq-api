@@ -39,7 +39,7 @@ class Controller final {
     typedef std::function<void(std::unique_ptr<Client>&&)> Initializer;
     typedef std::function<void(Client *)> Finalizer;
     Client(libevent::BufferEvent&& buffer_event, Finalizer finalizer,
-           common::Server& server, common::Gateway2& gateway)
+           common::Server& server, common::Gateway& gateway)
         : _buffer_event(std::move(buffer_event)), _finalizer(finalizer),
           _request_dispatcher(server, gateway) {
       _buffer_event.setcb(on_read, nullptr, on_error, this);
@@ -93,10 +93,11 @@ class Controller final {
 
  private:
   // Service
-  class Service final : public libevent::Listener::Handler {
+  class Service final
+      : public libevent::Listener::Handler {
    public:
     Service(libevent::Base& base, net::Socket&& socket, typename Client::Finalizer finalizer,
-            typename Client::Initializer initializer, common::Server& server, common::Gateway2& gateway)
+            typename Client::Initializer initializer, common::Server& server, common::Gateway& gateway)
         : _listener(*this, base, 0, -1, std::move(socket)),
           _finalizer(finalizer), _initializer(initializer),
           _server(server), _gateway(gateway) {}
@@ -118,14 +119,15 @@ class Controller final {
     typename Client::Finalizer _finalizer;
     typename Client::Initializer _initializer;
     common::Server& _server;
-    common::Gateway2& _gateway;
+    common::Gateway& _gateway;
   };
 
  private:
   // Dispatcher
-  class Dispatcher final : public common::Server,
-                           public common::Gateway2::Dispatcher,
-                           public libevent::TimerEvent::Handler {
+  class Dispatcher final
+      : public common::Server,
+        public common::Gateway::Dispatcher,
+        public libevent::TimerEvent::Handler {
    public:
     template <typename... Args>
     explicit Dispatcher(const handlers_t& handlers, Args&&... args)
@@ -144,7 +146,7 @@ class Controller final {
       }
     }
     void dispatch() {
-      static_cast<common::Gateway2&>(_gateway).start();
+      static_cast<common::Gateway&>(_gateway).start();
       _timer.add({.tv_sec = 1});
       _base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
     }

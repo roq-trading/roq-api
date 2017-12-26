@@ -7,7 +7,7 @@ using namespace quinclas::common;  // NOLINT
 namespace examples {
 namespace gateway {
 
-Gateway::Gateway(quinclas::common::Gateway2::Dispatcher& dispatcher, const int latency)
+Gateway::Gateway(quinclas::common::Gateway::Dispatcher& dispatcher, const int latency)
     : _dispatcher(dispatcher), _latency(latency) {
   // create objects, but don't spawn threads just yet
 }

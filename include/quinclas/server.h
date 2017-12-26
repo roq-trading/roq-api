@@ -17,7 +17,6 @@ namespace quinclas {
 namespace server {
 
 // TODO(thraneh): locking (or two different controller implementations -- sync/non-sync)
-// TODO(thraneh): interface clean-up
 // TODO(thraneh): handshake and heartbeat
 // TODO(thraneh): timeout -> disconnect
 
@@ -39,7 +38,7 @@ class Controller final {
    public:
     typedef std::function<void(std::unique_ptr<Client>&&)> Initializer;
     typedef std::function<void(Client *)> Finalizer;
-    Client(libevent::BufferEvent&& buffer_event, Finalizer finalizer, common::Strategy::Dispatcher& gateway)
+    Client(libevent::BufferEvent&& buffer_event, Finalizer finalizer, common::Gateway2& gateway)
         : _buffer_event(std::move(buffer_event)), _finalizer(finalizer),
           _request_dispatcher(gateway) {
       _buffer_event.setcb(on_read, nullptr, on_error, this);
@@ -51,7 +50,7 @@ class Controller final {
 
    private:
     void on_error(int reason) {
-      assert(0 == (reason & BEV_EVENT_CONNECTED));  // we don't expect connection events when created by accept()
+      assert(0 == (reason & BEV_EVENT_CONNECTED));  // we don't expect the connection events when created by listener
       _finalizer(this);  // garbage collect
     }
     void on_read() {
@@ -96,7 +95,7 @@ class Controller final {
   class Service final : public libevent::Listener::Handler {
    public:
     Service(libevent::Base& base, net::Socket&& socket, typename Client::Finalizer finalizer,
-            typename Client::Initializer initializer, common::Strategy::Dispatcher& gateway)
+            typename Client::Initializer initializer, common::Gateway2& gateway)
         : _listener(*this, base, 0, -1, std::move(socket)),
           _finalizer(finalizer), _initializer(initializer), _gateway(gateway) {}
 
@@ -116,14 +115,13 @@ class Controller final {
     libevent::Listener _listener;
     typename Client::Finalizer _finalizer;
     typename Client::Initializer _initializer;
-    common::Strategy::Dispatcher& _gateway;
+    common::Gateway2& _gateway;
   };
 
  private:
   // Dispatcher
   class Dispatcher final : public common::Gateway2::Dispatcher,
-                           public libevent::TimerEvent::Handler,
-                           public common::Strategy::Dispatcher {
+                           public libevent::TimerEvent::Handler {
    public:
     template <typename... Args>
     explicit Dispatcher(const handlers_t& handlers, Args&&... args)
@@ -138,7 +136,7 @@ class Controller final {
         socket.non_blocking(true);
         socket.bind(address);
         _services.emplace_back(std::unique_ptr<Service>(
-              new Service(_base, std::move(socket), finalizer, initializer, *this)));
+              new Service(_base, std::move(socket), finalizer, initializer, _gateway)));
       }
     }
     void dispatch() {
@@ -183,9 +181,8 @@ class Controller final {
     }
 
    private:
-      // careful - this could be called from another thread
       template <typename E>
-      void send_helper(const E& event) {
+      void send_helper(const E& event) {  // TODO(thraneh): threading
         if (_clients.empty())
           return;
         _flat_buffer_builder.Clear();
@@ -194,7 +191,7 @@ class Controller final {
         const auto length_payload = _flat_buffer_builder.GetSize();
         common::Envelope::encode(_envelope, length_payload);
         std::list<Client *> failures;
-        for (auto& iter : _clients) {
+        for (auto& iter : _clients) {  // TODO(thraneh): threading
           _buffer.add(_envelope, sizeof(_envelope));
           _buffer.add(payload, length_payload);
           try {
@@ -207,22 +204,9 @@ class Controller final {
         }
         if (failures.empty())
           return;
-        // TODO(thraneh): need locking
         for (auto iter : failures)
-          remove(iter);
+          remove(iter);  // TODO(thraneh): threading
       }
-
-    // FIXME(thraneh): should be cleaned up through better interfaces -- this is just an unnecessary bridge
-   protected:
-    void send(const common::CreateOrderRequest& request) override {
-      static_cast<common::Gateway2&>(_gateway).on(request);
-    }
-    void send(const common::ModifyOrderRequest& request) override {
-      static_cast<common::Gateway2&>(_gateway).on(request);
-    }
-    void send(const common::CancelOrderRequest& request) override {
-      static_cast<common::Gateway2&>(_gateway).on(request);
-    }
 
    private:
     void add(std::unique_ptr<Client>&& client) {

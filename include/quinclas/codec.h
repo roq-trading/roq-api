@@ -578,7 +578,7 @@ class EventDispatcher {
 
 class RequestDispatcher {
  public:
-  explicit RequestDispatcher(Strategy::Dispatcher& dispatcher) : _dispatcher(dispatcher) {}
+  explicit RequestDispatcher(Gateway2& dispatcher) : _dispatcher(dispatcher) {}
   void dispatch_request(const void *buffer, const size_t length) {
     const auto root = flatbuffers::GetRoot<schema::Request>(buffer);
     const auto request_info = convert(root->request_info());
@@ -589,7 +589,7 @@ class RequestDispatcher {
         const auto request = CreateOrderRequest{
           .request_info = request_info,
           .create_order = create_order};
-        _dispatcher.send(request);
+        _dispatcher.on(request);
         break;
       }
       case schema::RequestData::ModifyOrder: {
@@ -597,7 +597,7 @@ class RequestDispatcher {
         const auto request = ModifyOrderRequest{
           .request_info = request_info,
           .modify_order = modify_order};
-        _dispatcher.send(request);
+        _dispatcher.on(request);
         break;
       }
       case schema::RequestData::CancelOrder: {
@@ -605,7 +605,7 @@ class RequestDispatcher {
         const auto request = CancelOrderRequest{
           .request_info = request_info,
           .cancel_order = cancel_order};
-        _dispatcher.send(request);
+        _dispatcher.on(request);
         break;
       }
       default: {
@@ -620,7 +620,7 @@ class RequestDispatcher {
   RequestDispatcher& operator=(const RequestDispatcher&) = delete;
 
  private:
-  Strategy::Dispatcher& _dispatcher;
+  Gateway2& _dispatcher;
   flatbuffers::FlatBufferBuilder _flat_buffer_builder;
 };
 }  // namespace common

@@ -18,7 +18,9 @@ class Gateway : public quinclas::common::Gateway2 {
   void on(const quinclas::common::CancelOrderRequest&) override;
 
  private:
+  // dispatch interface (used to broadcast update events)
   quinclas::common::Gateway2::Dispatcher& _dispatcher;
+  // gateway specific configuration
   int _latency;
 };
 

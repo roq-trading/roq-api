@@ -230,7 +230,7 @@ class Controller final {
       send_helper(event);
     }
     void on(const common::HeartbeatRequest& request) override {
-      LOG(INFO) << "got heartbeat request";
+      // LOG(INFO) << "got heartbeat request";
       const common::MessageInfo message_info = {
         .gateway = "XXX",
       };

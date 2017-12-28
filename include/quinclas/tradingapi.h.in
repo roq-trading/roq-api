@@ -509,54 +509,6 @@ class Strategy {
   virtual void on(const TradeUpdateEvent&) = 0;            ///< New trade, or trade details have been updated
 };
 
-/**
- * Legacy gateway interface.
- */
-class Gateway3 {
- public:
-   /**
-    * Callback handler interface.
-    */
-  class Handler {
-   public:
-    virtual void on(const TerminationEvent&) = 0;        ///< Gateway has issued a termination (shutdown) event
-    virtual void on(const GatewayStatusEvent&) = 0;      ///< Connection or login status has changed for a gateway
-    virtual void on(const ReferenceDataEvent&) = 0;      ///< Reference data update for an instrument
-    virtual void on(const MarketStatusEvent&) = 0;       ///< Market status update for an instrument
-    virtual void on(const MarketByPriceEvent&) = 0;      ///< Market-by-price update for an instrument
-    virtual void on(const SessionStatisticsEvent&) = 0;  ///< Session statistics update for an instrument
-    virtual void on(const DailyStatisticsEvent&) = 0;    ///< Daily statistics update for an instrument
-    virtual void on(const CreateOrderAckEvent&) = 0;     ///< Response to a create order request
-    virtual void on(const ModifyOrderAckEvent&) = 0;     ///< Response to a modify order request
-    virtual void on(const CancelOrderAckEvent&) = 0;     ///< Response to a cancel order request
-    virtual void on(const OrderUpdateEvent&) = 0;        ///< New order, or order details have been updated
-    virtual void on(const TradeUpdateEvent&) = 0;        ///< New trade, or trade details have been updated
-  };
-  virtual ~Gateway3() = default;
-  /**
-   * Start the event loop.
-   */
-  virtual void start() = 0;
-  /**
-   * Send a CreateOrder request.
-   *
-   * @param create_order_request has the order creation request details.
-   */
-  virtual void send(const CreateOrderRequest& create_order_request) = 0;
-  /**
-   * Send a ModifyOrder request.
-   *
-   * @param modify_order_request has the order modification request details.
-   */
-  virtual void send(const ModifyOrderRequest& modify_order_request) = 0;
-  /**
-   * Send a CancelOrder request.
-   *
-   * @param cancel_order_request has the order cancellation request details.
-   */
-  virtual void send(const CancelOrderRequest& cancel_order_request) = 0;
-};
-
 }  // namespace common
 }  // namespace quinclas
 

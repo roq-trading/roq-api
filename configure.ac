@@ -2,8 +2,8 @@ m4_include(m4/ax_cxx_compile_stdcxx.m4)  # https://www.gnu.org/software/autoconf
 
 AC_INIT([Quinclas TradingAPI],
         [0.1],
-	[thraneh@gmail.com],
-	[quinclas-tradingapi])
+        [thraneh@gmail.com],
+        [quinclas-tradingapi])
 
 AC_PREREQ([2.59])
 AC_CONFIG_MACRO_DIR([m4])

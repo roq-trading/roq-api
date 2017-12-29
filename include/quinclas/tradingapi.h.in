@@ -570,8 +570,11 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ma
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MarketByPrice& value) {
+  stream << "{"
+    "exchange=\"" << value.exchange << "\", " <<
+    "instrument=\"" << value.exchange << "\", " <<
+    "layers=[";
   const size_t length = sizeof(value.depth) / sizeof(value.depth[0]);
-  stream << "[";
   for (size_t index = 0; index < length; ++index) {
     if (index > 0)
       stream << ", ";
@@ -623,6 +626,27 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Tr
     "quantity=" << value.quantity << ", "
     "price=" << value.price << ", "
     "opaque=" << value.opaque <<
+    "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CreateOrderAck& value) {
+  return stream << "{"
+    "opaque=" << value.opaque << ", " <<
+    "order_id=\"" << value.order_id << "\"" <<
+    "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ModifyOrderAck& value) {
+  return stream << "{"
+    "opaque=" << value.opaque << ", " <<
+    "order_id=\"" << value.order_id << "\"" <<
+    "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CancelOrderAck& value) {
+  return stream << "{"
+    "opaque=" << value.opaque << ", " <<
+    "order_id=\"" << value.order_id << "\"" <<
     "}";
 }
 
@@ -689,6 +713,27 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Tr
   return stream << "{"
     "message_info=" << value.message_info << ", "
     "trade_update=" << value.trade_update <<
+    "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CreateOrderAckEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "create_order_ack=" << value.create_order_ack <<
+    "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ModifyOrderAckEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "modify_order_ack=" << value.modify_order_ack <<
+    "}";
+}
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CancelOrderAckEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "cancel_order_ack=" << value.cancel_order_ack <<
     "}";
 }
 

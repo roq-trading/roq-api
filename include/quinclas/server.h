@@ -96,6 +96,7 @@ class Controller final {
   class Service final
       : public libevent::Listener::Handler {
    public:
+    // TODO(thraneh): somehow we must be able to pass BEV_OPT_THREADSAFE
     Service(libevent::Base& base, net::Socket&& socket, typename Client::Finalizer finalizer,
             typename Client::Initializer initializer, common::Server& server, common::Gateway& gateway)
         : _listener(*this, base, 0, -1, std::move(socket)),

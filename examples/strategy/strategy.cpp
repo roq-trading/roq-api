@@ -42,7 +42,7 @@ void Strategy::on(const IdleEvent&) {
 }
 
 void Strategy::on(const GatewayStatusEvent& event) {
-  DLOG(INFO) << "GatewayStatusEvent=" << event;
+  LOG(INFO) << "GatewayStatusEvent=" << event;
   // every change to gateway connection and/or login status will be communicated here
   // changes include
   // - gateway unable to connect
@@ -72,53 +72,55 @@ void Strategy::on(const GatewayStatusEvent& event) {
 }
 
 void Strategy::on(const ReferenceDataEvent& event) {
-  DLOG(INFO) << "ReferenceDataEvent=" << event;
+  LOG(INFO) << "ReferenceDataEvent=" << event;
   // reference data update per instrument, e.g. tick-size
 }
 
 void Strategy::on(const MarketStatusEvent& event) {
-  DLOG(INFO) << "MarketStatusEvent=" << event;
+  LOG(INFO) << "MarketStatusEvent=" << event;
   // market status update, e.g. status is "open for trading"
 }
 
 void Strategy::on(const MarketByPriceEvent& event) {
-  DLOG(INFO) << "MarketByPriceEvent=" << event;
+  LOG(INFO) << "MarketByPriceEvent=" << event;
   // market depth update by instrument
 }
 
 void Strategy::on(const SessionStatisticsEvent& event) {
-  DLOG(INFO) << "SessionStatisticsEvent=" << event;
+  LOG(INFO) << "SessionStatisticsEvent=" << event;
   // session statistics per instrument, e.g. open/high/low prices
 }
 
 void Strategy::on(const DailyStatisticsEvent& event) {
-  DLOG(INFO) << "DailyStatisticsEvent=" << event;
+  LOG(INFO) << "DailyStatisticsEvent=" << event;
   // daily statistics per instrument, e.g. open interest
 }
 
 void Strategy::on(const CreateOrderAckEvent& event) {
-  DLOG(INFO) << "CreateOrderAckEvent=" << event;
+  LOG(INFO) << "CreateOrderAckEvent=" << event;
   // response to your create order request
   // note! a response is not guaranteed
 }
 
 void Strategy::on(const ModifyOrderAckEvent& event) {
-  DLOG(INFO) << "ModifyOrderAckEvent=" << event;
+  LOG(INFO) << "ModifyOrderAckEvent=" << event;
   // response to your modify order request
   // note! a response is not guaranteed
 }
 
 void Strategy::on(const CancelOrderAckEvent& event) {
-  DLOG(INFO) << "CancelOrderAckEvent=" << event;
+  LOG(INFO) << "CancelOrderAckEvent=" << event;
   // response to your cancel order request
   // note! a response is not guaranteed
 }
 
-void Strategy::on(const OrderUpdateEvent&) {
+void Strategy::on(const OrderUpdateEvent& event) {
+  LOG(INFO) << "OrderUpdateEvent=" << event;
   // order update
 }
 
-void Strategy::on(const TradeUpdateEvent&) {
+void Strategy::on(const TradeUpdateEvent& event) {
+  LOG(INFO) << "TradeUpdateEvent=" << event;
   // trade update
 }
 

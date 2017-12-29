@@ -572,7 +572,7 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ma
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MarketByPrice& value) {
   stream << "{"
     "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.exchange << "\", " <<
+    "instrument=\"" << value.instrument << "\", " <<
     "layers=[";
   const size_t length = sizeof(value.depth) / sizeof(value.depth[0]);
   for (size_t index = 0; index < length; ++index) {

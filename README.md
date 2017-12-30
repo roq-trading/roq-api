@@ -1,6 +1,6 @@
 # Programmatic access to broker API's.
 
-Copyright (c) 2017, Hans Erik Thrane.
+Copyright (c) 2017-2018, Hans Erik Thrane.
 
 ## License
 

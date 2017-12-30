@@ -163,6 +163,7 @@ struct TradeUpdate {
   TradeDirection trade_direction;                          ///< Trade direction
   double quantity;                                         ///< Trade quantity
   double price;                                            ///< Trade price
+  time_point_t trade_time;                                 ///< Trade time
   int32_t opaque;                                          ///< User provided opaque value
 };
 

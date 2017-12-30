@@ -178,6 +178,7 @@ inline common::TradeUpdate convert(const schema::TradeUpdate *value) {
     .trade_direction = value->trade_direction(),
     .quantity = value->quantity(),
     .price = value->price(),
+    .trade_time = uint64_to_time_point(value->trade_time()),
     .opaque = value->opaque(),
   };
 }
@@ -378,6 +379,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdate& value) {
     value.trade_direction,
     value.quantity,
     value.price,
+    time_point_to_uint64(value.trade_time),
     value.opaque);
 }
 

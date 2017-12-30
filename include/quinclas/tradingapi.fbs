@@ -97,6 +97,7 @@ table TradeUpdate {
     trade_direction:common.TradeDirection;
     quantity:double;
     price:double;
+    trade_time:ulong;
     opaque:int;
 }
 

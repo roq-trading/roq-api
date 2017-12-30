@@ -181,6 +181,7 @@ inline common::TradeUpdate CreateRandomTradeUpdate() {
     .trade_direction = rand_trade_direction(),
     .quantity = rand_double(),
     .price = rand_double(),
+    .trade_time = rand_time_point(),
     .opaque = rand_int32(),
   };
 }
@@ -314,6 +315,7 @@ void compare(const common::TradeUpdate& lhs, const common::TradeUpdate& rhs) {
   EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.quantity, rhs.quantity);
   EXPECT_EQ(lhs.price, rhs.price);
+  EXPECT_EQ(lhs.trade_time, rhs.trade_time);
   EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 void compare(const common::Handshake& lhs, const common::Handshake& rhs) {

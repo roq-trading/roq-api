@@ -9,6 +9,7 @@
 #include <quinclas/codec.h>
 
 #include <algorithm>
+#include <chrono>
 #include <iomanip>
 #include <list>
 #include <string>
@@ -275,7 +276,7 @@ class Controller final {
         .destination = "",
       };
       const common::Heartbeat heartbeat = {
-        .opaque = std::chrono::system_clock::now(),
+        .opaque = std::chrono::time_point_cast<common::duration_t>(std::chrono::system_clock::now()),
       };
       const common::HeartbeatRequest request = {
         .request_info = request_info,

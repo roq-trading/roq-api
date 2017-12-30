@@ -21,7 +21,8 @@ const size_t MAX_DEPTH = 10;                                 ///< Maximum market
 /**
  * Typedefs.
  */
-typedef std::chrono::time_point<std::chrono::system_clock, std::chrono::microseconds> time_point_t;
+typedef std::chrono::microseconds duration_t;
+typedef std::chrono::time_point<std::chrono::system_clock, duration_t> time_point_t;
 
 /**
  * Order book layer (positional by-price aggregated view of an order book).

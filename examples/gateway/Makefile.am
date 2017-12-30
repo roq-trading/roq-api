@@ -4,6 +4,7 @@ example_gateway_LDFLAGS = \
 	$(LIBGLOG_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(LIBEVENT_LIBS) \
+	$(CCTZ_LIBS) \
 	-levent_pthreads
 example_gateway_CPPFLAGS = \
 	-I$(top_srcdir)/include \
@@ -11,6 +12,7 @@ example_gateway_CPPFLAGS = \
 	$(GFLAGS_CFLAGS) \
 	$(LIBGLOG_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
-	$(LIBEVENT_CFLAGS)
+	$(LIBEVENT_CFLAGS) \
+	$(CCTZ_CFLAGS)
 example_gateway_SOURCES = main.cpp gateway.cpp
 EXTRA_example_gateway_SOURCES = gateway.h

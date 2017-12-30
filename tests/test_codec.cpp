@@ -18,8 +18,13 @@ static uint32_t rand_uint32() {
   return random_generator_uint32(random_engine);
 }
 static std::uniform_int_distribution<uint64_t> random_generator_uint64;
-static uint32_t rand_uint64() {
+static uint64_t rand_uint64() {
   return random_generator_uint64(random_engine);
+}
+static common::time_point_t rand_time_point() {
+  const auto microseconds = random_generator_uint64(random_engine);
+  const auto duration = std::chrono::microseconds(microseconds);
+  return common::time_point_t(duration);
 }
 static std::uniform_real_distribution<double> random_generator_double;
 static double rand_double() {
@@ -59,9 +64,9 @@ inline common::MessageInfo CreateRandomMessageInfo() {
   return common::MessageInfo{
     .gateway = NAME[rand_uint32() % NAME_LENGTH],
     .message_id = rand_uint32(),
-    .exchange_time = rand_uint64(),
-    .receive_time = rand_uint64(),
-    .enqueue_time = rand_uint64(),
+    .exchange_time = rand_time_point(),
+    .receive_time = rand_time_point(),
+    .enqueue_time = rand_time_point(),
   };
 }
 inline common::RequestInfo CreateRandomRequestInfo() {
@@ -76,7 +81,7 @@ inline common::HandshakeAck CreateRandomHandshakeAck() {
 }
 inline common::HeartbeatAck CreateRandomHeartbeatAck() {
   return common::HeartbeatAck{
-    .opaque = rand_uint64(),
+    .opaque = rand_time_point(),
   };
 }
 inline common::GatewayStatus CreateRandomGatewayStatus() {
@@ -161,8 +166,8 @@ inline common::OrderUpdate CreateRandomOrderUpdate() {
     .trade_direction = rand_trade_direction(),
     .remaining_quantity = rand_double(),
     .traded_quantity = rand_double(),
-    .insert_time = rand_uint64(),
-    .cancel_time = rand_uint64(),
+    .insert_time = rand_time_point(),
+    .cancel_time = rand_time_point(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
     .opaque = rand_int32(),
   };
@@ -188,7 +193,7 @@ inline common::Handshake CreateRandomHandshake() {
 }
 inline common::Heartbeat CreateRandomHeartbeat() {
   return common::Heartbeat{
-    .opaque = rand_uint64(),
+    .opaque = rand_time_point(),
   };
 }
 inline common::CreateOrder CreateRandomCreateOrder() {

@@ -275,7 +275,7 @@ class Controller final {
         .destination = "",
       };
       const common::Heartbeat heartbeat = {
-        .opaque = 123,
+        .opaque = std::chrono::system_clock::now(),
       };
       const common::HeartbeatRequest request = {
         .request_info = request_info,

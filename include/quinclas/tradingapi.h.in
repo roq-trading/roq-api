@@ -2,7 +2,9 @@
 
 #pragma once
 
+#include <cctz/time_zone.h>
 #include <quinclas/tradingapi_generated.h>
+#include <chrono>
 #include <iostream>
 
 // Version
@@ -19,7 +21,7 @@ const size_t MAX_DEPTH = 10;                                 ///< Maximum market
 /**
  * Typedefs.
  */
-typedef uint64_t datetime_t;                                 // Date time
+typedef std::chrono::time_point<std::chrono::system_clock, std::chrono::microseconds> time_point_t;
 
 /**
  * Order book layer (positional by-price aggregated view of an order book).
@@ -44,7 +46,7 @@ struct HandshakeAck {
  */
 
 struct HeartbeatAck {
-  datetime_t opaque;                                       ///< Timestamp.
+  time_point_t opaque;                                     ///< Timestamp.
 };
 
 /**
@@ -143,8 +145,8 @@ struct OrderUpdate {
   TradeDirection trade_direction;                          ///< Trade direction
   double remaining_quantity;                               ///< Remaining (unfilled) quantity
   double traded_quantity;                                  ///< Traded (filled) quantity
-  datetime_t insert_time;                                  ///< Order insertion time
-  datetime_t cancel_time;                                  ///< Order cancellation time
+  time_point_t insert_time;                                ///< Order insertion time
+  time_point_t cancel_time;                                ///< Order cancellation time
   const char *order_template;                              ///< Order template
   int32_t opaque;                                          ///< User provided opaque value
 };
@@ -176,16 +178,16 @@ struct TerminationEvent {
 struct MessageInfo {
   const char *gateway;                                     ///< Gateway name
   uint64_t message_id;                                     ///< Message identifier
-  datetime_t exchange_time;                                ///< Exchange timestamp
-  datetime_t receive_time;                                 ///< Receive timestamp
-  datetime_t enqueue_time;                                 ///< Enqueue timestamp
+  time_point_t exchange_time;                              ///< Exchange timestamp
+  time_point_t receive_time;                               ///< Receive timestamp
+  time_point_t enqueue_time;                               ///< Enqueue timestamp
 };
 
 /**
  * Timer event.
  */
 struct TimerEvent {
-  datetime_t current_utc_time;                             // Current time
+  time_point_t current_utc_time;                           // Current time
 };
 
 /**
@@ -312,7 +314,7 @@ struct Handshake {
  */
 
 struct Heartbeat {
-  datetime_t opaque;                                       ///< Timestamp.
+  time_point_t opaque;                                     ///< Timestamp.
 };
 
 /**
@@ -608,8 +610,8 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Or
     "trade_direction=" << value.trade_direction << ", "
     "remaining_quantity=" << value.remaining_quantity << ", "
     "traded_quantity=" << value.traded_quantity << ", "
-    "insert_time=" << value.insert_time << ", "
-    "cancel_time=" << value.cancel_time << ", "
+    "insert_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.insert_time, cctz::utc_time_zone()) << ", " <<
+    "cancel_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.cancel_time, cctz::utc_time_zone()) << ", " <<
     "order_template=\"" << value.order_template << "\", " <<
     "opaque=" << value.opaque <<
     "}";
@@ -654,9 +656,9 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Me
   return stream << "{"
     "gateway=\"" << value.gateway << "\", " <<
     "message_id=" << value.message_id << ", " <<
-    "exchange_time=" << value.exchange_time << ", " <<
-    "receive_time=" << value.receive_time << ", " <<
-    "enqueue_time=" << value.enqueue_time <<
+    "exchange_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.exchange_time, cctz::utc_time_zone()) << ", " <<
+    "receive_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.receive_time, cctz::utc_time_zone()) << ", " <<
+    "enqueue_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.enqueue_time, cctz::utc_time_zone()) << ", " <<
     "}";
 }
 

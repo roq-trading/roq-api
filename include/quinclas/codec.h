@@ -27,15 +27,27 @@ struct Envelope final {
   }
 };
 
+// time_point utilities
+
+inline time_point_t uint64_to_time_point(uint64_t microseconds) {
+  auto duration = std::chrono::microseconds(microseconds);
+  return time_point_t(duration);
+}
+
+inline uint64_t time_point_to_uint64(time_point_t time_point) {
+  auto microseconds = std::chrono::time_point_cast<std::chrono::microseconds>(time_point);
+  return microseconds.time_since_epoch().count();
+}
+
 // decode (events / low level)
 
 inline common::MessageInfo convert(const schema::MessageInfo *value) {
   return common::MessageInfo{
     .gateway = value->gateway()->c_str(),
     .message_id = value->message_id(),
-    .exchange_time = value->exchange_time(),
-    .receive_time = value->receive_time(),
-    .enqueue_time = value->enqueue_time(),
+    .exchange_time = uint64_to_time_point(value->exchange_time()),
+    .receive_time = uint64_to_time_point(value->receive_time()),
+    .enqueue_time = uint64_to_time_point(value->enqueue_time()),
   };
 }
 
@@ -47,7 +59,7 @@ inline common::HandshakeAck convert(const schema::HandshakeAck *value) {
 
 inline common::HeartbeatAck convert(const schema::HeartbeatAck *value) {
   return common::HeartbeatAck{
-    .opaque = value->opaque(),
+    .opaque = uint64_to_time_point(value->opaque()),
   };
 }
 
@@ -150,8 +162,8 @@ inline common::OrderUpdate convert(const schema::OrderUpdate *value) {
     .trade_direction = value->trade_direction(),
     .remaining_quantity = value->remaining_quantity(),
     .traded_quantity = value->traded_quantity(),
-    .insert_time = value->insert_time(),
-    .cancel_time = value->cancel_time(),
+    .insert_time = uint64_to_time_point(value->insert_time()),
+    .cancel_time = uint64_to_time_point(value->cancel_time()),
     .order_template = value->order_template()->c_str(),
     .opaque = value->opaque(),
   };
@@ -188,7 +200,7 @@ inline common::Handshake convert(const schema::Handshake *value) {
 
 inline common::Heartbeat convert(const schema::Heartbeat *value) {
   return common::Heartbeat{
-    .opaque = value->opaque(),
+    .opaque = uint64_to_time_point(value->opaque()),
   };
 }
 
@@ -227,9 +239,9 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::MessageInfo& value) {
     fbb,
     fbb.CreateString(value.gateway),
     value.message_id,
-    value.exchange_time,
-    value.receive_time,
-    value.enqueue_time);
+    time_point_to_uint64(value.exchange_time),
+    time_point_to_uint64(value.receive_time),
+    time_point_to_uint64(value.enqueue_time));
 }
 
 inline flatbuffers::Offset<schema::HandshakeAck>
@@ -243,7 +255,7 @@ inline flatbuffers::Offset<schema::HeartbeatAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatAck& value) {
   return schema::CreateHeartbeatAck(
     fbb,
-    value.opaque);
+    time_point_to_uint64(value.opaque));
 }
 
 inline flatbuffers::Offset<schema::GatewayStatus>
@@ -349,8 +361,8 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::OrderUpdate& value) {
     value.trade_direction,
     value.remaining_quantity,
     value.traded_quantity,
-    value.insert_time,
-    value.cancel_time,
+    time_point_to_uint64(value.insert_time),
+    time_point_to_uint64(value.cancel_time),
     fbb.CreateString(value.order_template),
     value.opaque);
 }
@@ -482,7 +494,7 @@ inline flatbuffers::Offset<schema::Heartbeat>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::Heartbeat& value) {
   return schema::CreateHeartbeat(
     fbb,
-    value.opaque);
+    time_point_to_uint64(value.opaque));
 }
 
 inline flatbuffers::Offset<schema::CreateOrder>

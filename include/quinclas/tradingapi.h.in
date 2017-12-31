@@ -460,6 +460,7 @@ class Gateway {
    * Start the event loop.
    */
   virtual void start() = 0;
+  // TODO(thraneh): client connect & disconnet
   /**
    * CreateOrder request.
    *

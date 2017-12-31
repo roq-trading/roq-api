@@ -135,51 +135,70 @@ inline common::DailyStatistics convert(const schema::DailyStatistics *value) {
 inline common::CreateOrderAck convert(const schema::CreateOrderAck *value) {
   return common::CreateOrderAck{
     .opaque = value->opaque(),
-    .order_id = value->order_id()->c_str(),
+    .order_id = value->order_id(),
+    .failure = value->failure(),
+    .reason = value->reason()->c_str(),
+    .order_template = value->order_template()->c_str(),
+    .external_order_id = value->external_order_id()->c_str(),
+    .exchange = value->exchange()->c_str(),
+    .instrument = value->instrument()->c_str(),
   };
 }
 
 inline common::ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
   return common::ModifyOrderAck{
     .opaque = value->opaque(),
-    .order_id = value->order_id()->c_str(),
+    .order_id = value->order_id(),
+    .failure = value->failure(),
+    .reason = value->reason()->c_str(),
+    .order_template = value->order_template()->c_str(),
+    .external_order_id = value->external_order_id()->c_str(),
+    .exchange = value->exchange()->c_str(),
+    .instrument = value->instrument()->c_str(),
   };
 }
 
 inline common::CancelOrderAck convert(const schema::CancelOrderAck *value) {
   return common::CancelOrderAck{
     .opaque = value->opaque(),
-    .order_id = value->order_id()->c_str(),
+    .order_id = value->order_id(),
+    .failure = value->failure(),
+    .reason = value->reason()->c_str(),
+    .order_template = value->order_template()->c_str(),
+    .external_order_id = value->external_order_id()->c_str(),
+    .exchange = value->exchange()->c_str(),
+    .instrument = value->instrument()->c_str(),
   };
 }
 
 inline common::OrderUpdate convert(const schema::OrderUpdate *value) {
   return common::OrderUpdate{
+    .opaque = value->opaque(),
+    .order_id = value->order_id(),
+    .order_template = value->order_template()->c_str(),
+    .external_order_id = value->external_order_id()->c_str(),
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
-    .order_id = value->order_id()->c_str(),
     .status = value->status(),
     .trade_direction = value->trade_direction(),
     .remaining_quantity = value->remaining_quantity(),
     .traded_quantity = value->traded_quantity(),
     .insert_time = uint64_to_time_point(value->insert_time()),
     .cancel_time = uint64_to_time_point(value->cancel_time()),
-    .order_template = value->order_template()->c_str(),
-    .opaque = value->opaque(),
   };
 }
 
 inline common::TradeUpdate convert(const schema::TradeUpdate *value) {
   return common::TradeUpdate{
+    .order_id = value->order_id(),
+    .external_order_id = value->external_order_id()->c_str(),
+    .external_trade_id = value->external_trade_id()->c_str(),
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
-    .order_id = value->order_id()->c_str(),
-    .trade_id = value->trade_id()->c_str(),
     .trade_direction = value->trade_direction(),
     .quantity = value->quantity(),
     .price = value->price(),
     .trade_time = uint64_to_time_point(value->trade_time()),
-    .opaque = value->opaque(),
   };
 }
 
@@ -207,28 +226,26 @@ inline common::Heartbeat convert(const schema::Heartbeat *value) {
 
 inline common::CreateOrder convert(const schema::CreateOrder *value) {
   return common::CreateOrder{
+    .opaque = value->opaque(),
+    .order_template = value->order_template()->c_str(),
     .exchange = value->exchange()->c_str(),
-    .order_template_name = value->order_template_name()->c_str(),
     .instrument = value->instrument()->c_str(),
     .direction = value->direction(),
     .quantity = value->quantity(),
     .limit_price = value->limit_price(),
     .stop_price = value->stop_price(),
-    .opaque = value->opaque(),
   };
 }
 
 inline common::ModifyOrder convert(const schema::ModifyOrder *value) {
   return common::ModifyOrder{
     .order_id = value->order_id(),
-    .opaque = value->opaque(),
   };
 }
 
 inline common::CancelOrder convert(const schema::CancelOrder *value) {
   return common::CancelOrder{
     .order_id = value->order_id(),
-    .opaque = value->opaque(),
   };
 }
 
@@ -332,7 +349,13 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrderAck& value
   return schema::CreateCreateOrderAck(
     fbb,
     value.opaque,
-    fbb.CreateString(value.order_id));
+    value.order_id,
+    value.failure,
+    fbb.CreateString(value.reason),
+    fbb.CreateString(value.order_template),
+    fbb.CreateString(value.external_order_id),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument));
 }
 
 inline flatbuffers::Offset<schema::ModifyOrderAck>
@@ -340,7 +363,13 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrderAck& value
   return schema::CreateModifyOrderAck(
     fbb,
     value.opaque,
-    fbb.CreateString(value.order_id));
+    value.order_id,
+    value.failure,
+    fbb.CreateString(value.reason),
+    fbb.CreateString(value.order_template),
+    fbb.CreateString(value.external_order_id),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument));
 }
 
 inline flatbuffers::Offset<schema::CancelOrderAck>
@@ -348,39 +377,46 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderAck& value
   return schema::CreateCancelOrderAck(
     fbb,
     value.opaque,
-    fbb.CreateString(value.order_id));
+    value.order_id,
+    value.failure,
+    fbb.CreateString(value.reason),
+    fbb.CreateString(value.order_template),
+    fbb.CreateString(value.external_order_id),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument));
 }
 
 inline flatbuffers::Offset<schema::OrderUpdate>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::OrderUpdate& value) {
   return schema::CreateOrderUpdate(
     fbb,
+    value.opaque,
+    value.order_id,
+    fbb.CreateString(value.order_template),
+    fbb.CreateString(value.external_order_id),
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.instrument),
-    fbb.CreateString(value.order_id),
     value.status,
     value.trade_direction,
     value.remaining_quantity,
     value.traded_quantity,
     time_point_to_uint64(value.insert_time),
-    time_point_to_uint64(value.cancel_time),
-    fbb.CreateString(value.order_template),
-    value.opaque);
+    time_point_to_uint64(value.cancel_time));
 }
 
 inline flatbuffers::Offset<schema::TradeUpdate>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdate& value) {
   return schema::CreateTradeUpdate(
     fbb,
+    value.order_id,
+    fbb.CreateString(value.external_order_id),
+    fbb.CreateString(value.external_trade_id),
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.instrument),
-    fbb.CreateString(value.order_id),
-    fbb.CreateString(value.trade_id),
     value.trade_direction,
     value.quantity,
     value.price,
-    time_point_to_uint64(value.trade_time),
-    value.opaque);
+    time_point_to_uint64(value.trade_time));
 }
 
 // encode (events)
@@ -503,24 +539,24 @@ inline flatbuffers::Offset<schema::CreateOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrder& value) {
   return schema::CreateCreateOrder(
     fbb,
+    value.opaque,
+    fbb.CreateString(value.order_template),
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.order_template_name),
     fbb.CreateString(value.instrument),
     value.direction,
     value.quantity,
     value.limit_price,
-    value.stop_price,
-    value.opaque);
+    value.stop_price);
 }
 
 inline flatbuffers::Offset<schema::ModifyOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrder& value) {
-  return schema::CreateModifyOrder(fbb, value.order_id, value.opaque);
+  return schema::CreateModifyOrder(fbb, value.order_id);
 }
 
 inline flatbuffers::Offset<schema::CancelOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrder& value) {
-  return schema::CreateCancelOrder(fbb, value.order_id, value.opaque);
+  return schema::CreateCancelOrder(fbb, value.order_id);
 }
 
 // encode (requests)

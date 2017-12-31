@@ -115,56 +115,78 @@ struct MarketStatus {
  * Response to create order
  */
 struct CreateOrderAck {
-  int32_t opaque;                                          ///< User provided opaque value
-  const char *order_id;                                    ///< Order identifier
+  uint32_t opaque;                                         ///< User provided opaque value
+  uint32_t order_id;                                       ///< Order id (as known by the gateway).
+  bool failure;                                            ///< Failure?
+  const char *reason;                                      ///< Reason (if failure).
+  // following fields may or may not be populated
+  const char *order_template;                              ///< Order template
+  const char *external_order_id;                           ///< External order id.
+  const char *exchange;                                    ///< Exchange name
+  const char *instrument;                                  ///< Instrument name
 };
 
 /**
  * Response to modify order
  */
 struct ModifyOrderAck {
-  int32_t opaque;                                          ///< User provided opaque value
-  const char *order_id;                                    ///< Order identifier
+  uint32_t opaque;                                         ///< User provided opaque value
+  uint32_t order_id;                                       ///< Order id (as known by the gateway).
+  bool failure;                                            ///< Failure?
+  const char *reason;                                      ///< Reason (if failure).
+  // following fields may or may not be populated
+  const char *order_template;                              ///< Order template
+  const char *external_order_id;                           ///< External order id.
+  const char *exchange;                                    ///< Exchange name
+  const char *instrument;                                  ///< Instrument name
 };
 
 /**
  * Response to cancel order
  */
 struct CancelOrderAck {
-  int32_t opaque;                                          ///< User provided opaque value
-  const char *order_id;                                    ///< Order identifier
+  uint32_t opaque;                                         ///< User provided opaque value
+  uint32_t order_id;                                       ///< Order id (as known by the gateway).
+  bool failure;                                            ///< Failure?
+  const char *reason;                                      ///< Reason (if failure).
+  // following fields may or may not be populated
+  const char *order_template;                              ///< Order template
+  const char *external_order_id;                           ///< External order id.
+  const char *exchange;                                    ///< Exchange name
+  const char *instrument;                                  ///< Instrument name
 };
 
 /**
  * Order update.
  */
 struct OrderUpdate {
+  uint32_t opaque;                                         ///< User provided opaque value
+  uint32_t order_id;                                       ///< Order id (as known by the gateway).
+  const char *order_template;                              ///< Order template
+  const char *external_order_id;                           ///< External order id.
   const char *exchange;                                    ///< Exchange name
   const char *instrument;                                  ///< Instrument name
-  const char *order_id;                                    ///< Order identifier
   OrderStatus status;                                      ///< Order status
   TradeDirection trade_direction;                          ///< Trade direction
   double remaining_quantity;                               ///< Remaining (unfilled) quantity
   double traded_quantity;                                  ///< Traded (filled) quantity
   time_point_t insert_time;                                ///< Order insertion time
   time_point_t cancel_time;                                ///< Order cancellation time
-  const char *order_template;                              ///< Order template
-  int32_t opaque;                                          ///< User provided opaque value
 };
 
 /**
  * Trade update.
  */
 struct TradeUpdate {
+  uint32_t order_id;                                       ///< Order id (as known by the gateway).
+  const char *external_order_id;                           ///< External order id.
+  const char *external_trade_id;                           ///< External rade identifier
   const char *exchange;                                    ///< Exchange name
   const char *instrument;                                  ///< Instrument name
-  const char *order_id;                                    ///< Order identifier
-  const char *trade_id;                                    ///< Trade identifier
   TradeDirection trade_direction;                          ///< Trade direction
   double quantity;                                         ///< Trade quantity
   double price;                                            ///< Trade price
   time_point_t trade_time;                                 ///< Trade time
-  int32_t opaque;                                          ///< User provided opaque value
 };
 
 /**
@@ -323,30 +345,28 @@ struct Heartbeat {
  * Create order.
  */
 struct CreateOrder {
+  const uint32_t opaque;                                   ///< Opaque (user) value
+  const char *order_template;                              ///< Order template name
   const char *exchange;                                    ///< Exchange name
-  const char *order_template_name;                         ///< Order template name
   const char *instrument;                                  ///< Instrument name
   const TradeDirection direction;                          ///< Trade direction
   const double quantity;                                   ///< Desired quantity
   const double limit_price;                                ///< Limit price
   const double stop_price;                                 ///< Stop price
-  const int32_t opaque;                                    ///< Opaque pass-through value
 };
 
 /**
  * Modify order.
  */
 struct ModifyOrder {
-  const int order_id;                                      ///< Order id
-  const int32_t opaque;                                    ///< Opaque pass-through value
+  uint32_t order_id;                                       ///< Order id (as known by the gateway).
 };
 
 /**
  * Cancel order.
  */
 struct CancelOrder {
-  const int order_id;                                      ///< Order id
-  const int32_t opaque;                                    ///< Opaque pass-through value
+  uint32_t order_id;                                       ///< Order id (as known by the gateway).
 };
 
 /**
@@ -605,52 +625,71 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Da
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::OrderUpdate& value) {
   return stream << "{"
+    "opaque=" << value.opaque << ", " <<
+    "order_id=" << value.order_id << ", " <<
+    "order_template=\"" << value.order_template << "\", " <<
+    "external_order_id=\"" << value.external_order_id << "\", " <<
     "exchange=\"" << value.exchange << "\", " <<
     "instrument=\"" << value.instrument << "\", " <<
-    "order_id=\"" << value.order_id << "\", " <<
     "status=" << value.status << ", "
     "trade_direction=" << value.trade_direction << ", "
     "remaining_quantity=" << value.remaining_quantity << ", "
     "traded_quantity=" << value.traded_quantity << ", "
     "insert_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.insert_time, cctz::utc_time_zone()) << ", " <<
-    "cancel_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.cancel_time, cctz::utc_time_zone()) << ", " <<
-    "order_template=\"" << value.order_template << "\", " <<
-    "opaque=" << value.opaque <<
+    "cancel_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.cancel_time, cctz::utc_time_zone()) <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::TradeUpdate& value) {
   return stream << "{"
+    "order_id=" << value.order_id << ", " <<
+    "external_order_id=\"" << value.external_order_id << "\", " <<
+    "external_trade_id=\"" << value.external_trade_id << "\", " <<
     "exchange=\"" << value.exchange << "\", " <<
     "instrument=\"" << value.instrument << "\", " <<
-    "order_id=\"" << value.order_id << "\", " <<
-    "trade_id=\"" << value.trade_id << "\", " <<
     "trade_direction=" << value.trade_direction << ", "
-    "remaining_quantity=" << value.quantity << ", "
     "quantity=" << value.quantity << ", "
     "price=" << value.price << ", "
-    "opaque=" << value.opaque <<
+    "trade_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.trade_time, cctz::utc_time_zone()) <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CreateOrderAck& value) {
   return stream << "{"
     "opaque=" << value.opaque << ", " <<
-    "order_id=\"" << value.order_id << "\"" <<
+    "order_id=" << value.order_id << ", " <<
+    "failure=" << (value.failure ? "true" : "false") << ", " <<
+    "reason=\"" << value.reason << "\", " <<
+    "order_template=\"" << value.order_template << "\", " <<
+    "external_order_id=\"" << value.external_order_id << "\", " <<
+    "exchange=\"" << value.exchange << "\", " <<
+    "instrument=\"" << value.instrument << "\"" <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ModifyOrderAck& value) {
   return stream << "{"
     "opaque=" << value.opaque << ", " <<
-    "order_id=\"" << value.order_id << "\"" <<
+    "order_id=" << value.order_id << ", " <<
+    "failure=" << (value.failure ? "true" : "false") << ", " <<
+    "reason=\"" << value.reason << "\", " <<
+    "order_template=\"" << value.order_template << "\", " <<
+    "external_order_id=\"" << value.external_order_id << "\", " <<
+    "exchange=\"" << value.exchange << "\", " <<
+    "instrument=\"" << value.instrument << "\"" <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CancelOrderAck& value) {
   return stream << "{"
     "opaque=" << value.opaque << ", " <<
-    "order_id=\"" << value.order_id << "\"" <<
+    "order_id=" << value.order_id << ", " <<
+    "failure=" << (value.failure ? "true" : "false") << ", " <<
+    "reason=\"" << value.reason << "\", " <<
+    "order_template=\"" << value.order_template << "\", " <<
+    "external_order_id=\"" << value.external_order_id << "\", " <<
+    "exchange=\"" << value.exchange << "\", " <<
+    "instrument=\"" << value.instrument << "\"" <<
     "}";
 }
 
@@ -743,28 +782,26 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ca
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CreateOrder& value) {
   return stream << "{"
+    "opaque=" << value.opaque << ", "
+    "order_template=" << value.order_template << ", "
     "exchange=\"" << value.exchange << "\", " <<
-    "order_template_name=\"" << value.order_template_name << "\", " <<
     "instrument=\"" << value.instrument << "\", " <<
     "direction=" << value.direction << ", "
     "quantity=" << value.quantity << ", "
     "limit_price=" << value.limit_price << ", "
-    "stop_price=" << value.stop_price << ", "
-    "opaque=" << value.opaque <<
+    "stop_price=" << value.stop_price <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ModifyOrder& value) {
   return stream << "{"
-    "order_id=\"" << value.order_id << "\", " <<
-    "opaque=" << value.opaque <<
+    "order_id=" << value.order_id <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CancelOrder& value) {
   return stream << "{"
-    "order_id=\"" << value.order_id << "\", " <<
-    "opaque=" << value.opaque <<
+    "order_id=" << value.order_id <<
     "}";
 }
 

@@ -61,44 +61,63 @@ table MarketStatus {
 }
 
 table CreateOrderAck {
-    opaque:int;
-    order_id:string;
+    opaque:uint;
+    order_id:uint;
+    failure:bool;
+    reason:string;
+    order_template:string;
+    external_order_id:string;
+    exchange:string;
+    instrument:string;
 }
 
 table ModifyOrderAck {
-    opaque:int;
-    order_id:string;
+    opaque:uint;
+    order_id:uint;
+    failure:bool;
+    reason:string;
+    order_template:string;
+    external_order_id:string;
+    exchange:string;
+    instrument:string;
 }
 
 table CancelOrderAck {
-    opaque:int;
-    order_id:string;
+    opaque:uint;
+    order_id:uint;
+    failure:bool;
+    reason:string;
+    order_template:string;
+    external_order_id:string;
+    exchange:string;
+    instrument:string;
 }
 
 table OrderUpdate {
+    opaque:uint;
+    order_id:uint;
+    order_template:string;
+    external_order_id:string;
     exchange:string;
     instrument:string;
-    order_id:string;
     status:common.OrderStatus;
     trade_direction:common.TradeDirection;
     remaining_quantity:double;
     traded_quantity:double;
     insert_time:ulong;
     cancel_time:ulong;
-    order_template:string;
-    opaque:int;
 }
 
 table TradeUpdate {
+    order_id:uint;
+    external_order_id:string;
+    external_trade_id:string;
     exchange:string;
     instrument:string;
-    order_id:string;
-    trade_id:string;
     trade_direction:common.TradeDirection;
     quantity:double;
     price:double;
     trade_time:ulong;
-    opaque:int;
 }
 
 table Handshake {
@@ -112,24 +131,22 @@ table Heartbeat {
 }
 
 table CreateOrder {
+    opaque:uint;
+    order_template:string;
     exchange:string;
-    order_template_name:string;
     instrument:string;
     direction:common.TradeDirection;
     quantity:double;
     limit_price:double;
     stop_price:double;
-    opaque:int;
 }
 
 table ModifyOrder {
-    order_id:int;
-    opaque:int;
+    order_id:uint;
 }
 
 table CancelOrder {
-    order_id:int;
-    opaque:int;
+    order_id:uint;
 }
 
 // events

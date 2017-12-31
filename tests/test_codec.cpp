@@ -21,6 +21,9 @@ static std::uniform_int_distribution<uint64_t> random_generator_uint64;
 static uint64_t rand_uint64() {
   return random_generator_uint64(random_engine);
 }
+static bool rand_bool() {
+  return (random_generator_uint32(random_engine) % 2) ? true : false;
+}
 static common::time_point_t rand_time_point() {
   const auto microseconds = random_generator_uint64(random_engine);
   const auto duration = std::chrono::microseconds(microseconds);
@@ -141,48 +144,67 @@ inline common::MarketStatus CreateRandomMarketStatus() {
 }
 inline common::CreateOrderAck CreateRandomCreateOrderAck() {
   return common::CreateOrderAck{
-    .opaque = rand_int32(),
-    .order_id = NAME[rand_uint32() % NAME_LENGTH],
+    .opaque = rand_uint32(),
+    .order_id = rand_uint32(),
+    .failure = rand_bool(),
+    .reason = NAME[rand_uint32() % NAME_LENGTH],
+    .order_template = NAME[rand_uint32() % NAME_LENGTH],
+    .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
+    .exchange = NAME[rand_uint32() % NAME_LENGTH],
+    .instrument = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
 inline common::ModifyOrderAck CreateRandomModifyOrderAck() {
   return common::ModifyOrderAck{
-    .opaque = rand_int32(),
-    .order_id = NAME[rand_uint32() % NAME_LENGTH],
+    .opaque = rand_uint32(),
+    .order_id = rand_uint32(),
+    .failure = rand_bool(),
+    .reason = NAME[rand_uint32() % NAME_LENGTH],
+    .order_template = NAME[rand_uint32() % NAME_LENGTH],
+    .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
+    .exchange = NAME[rand_uint32() % NAME_LENGTH],
+    .instrument = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
 inline common::CancelOrderAck CreateRandomCancelOrderAck() {
   return common::CancelOrderAck{
-    .opaque = rand_int32(),
-    .order_id = NAME[rand_uint32() % NAME_LENGTH],
+    .opaque = rand_uint32(),
+    .order_id = rand_uint32(),
+    .failure = rand_bool(),
+    .reason = NAME[rand_uint32() % NAME_LENGTH],
+    .order_template = NAME[rand_uint32() % NAME_LENGTH],
+    .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
+    .exchange = NAME[rand_uint32() % NAME_LENGTH],
+    .instrument = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
 inline common::OrderUpdate CreateRandomOrderUpdate() {
   return common::OrderUpdate{
+    .opaque = rand_uint32(),
+    .order_id = rand_uint32(),
+    .order_template = NAME[rand_uint32() % NAME_LENGTH],
+    .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
-    .order_id = NAME[rand_uint32() % NAME_LENGTH],
     .status = rand_order_status(),
     .trade_direction = rand_trade_direction(),
     .remaining_quantity = rand_double(),
     .traded_quantity = rand_double(),
     .insert_time = rand_time_point(),
     .cancel_time = rand_time_point(),
-    .order_template = NAME[rand_uint32() % NAME_LENGTH],
-    .opaque = rand_int32(),
   };
 }
 inline common::TradeUpdate CreateRandomTradeUpdate() {
   return common::TradeUpdate{
+    .order_id = rand_uint32(),
+    .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
+    .external_trade_id = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
-    .order_id = NAME[rand_uint32() % NAME_LENGTH],
-    .trade_id = NAME[rand_uint32() % NAME_LENGTH],
     .trade_direction = rand_trade_direction(),
     .quantity = rand_double(),
     .price = rand_double(),
     .trade_time = rand_time_point(),
-    .opaque = rand_int32(),
   };
 }
 inline common::Handshake CreateRandomHandshake() {
@@ -199,26 +221,24 @@ inline common::Heartbeat CreateRandomHeartbeat() {
 }
 inline common::CreateOrder CreateRandomCreateOrder() {
   return common::CreateOrder{
+    .opaque = rand_uint32(),
+    .order_template = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .order_template_name = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
     .direction = rand_trade_direction(),
     .quantity = rand_double(),
     .limit_price = rand_double(),
     .stop_price = rand_double(),
-    .opaque = rand_int32(),
   };
 }
 inline common::ModifyOrder CreateRandomModifyOrder() {
   return common::ModifyOrder{
-    .order_id = rand_int32(),
-    .opaque = rand_int32(),
+    .order_id = rand_uint32(),
   };
 }
 inline common::CancelOrder CreateRandomCancelOrder() {
   return common::CancelOrder{
-    .order_id = rand_int32(),
-    .opaque = rand_int32(),
+    .order_id = rand_uint32(),
   };
 }
 }  // namespace
@@ -284,39 +304,58 @@ void compare(const common::MarketStatus& lhs, const common::MarketStatus& rhs) {
 }
 void compare(const common::CreateOrderAck& lhs, const common::CreateOrderAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
-  EXPECT_STREQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.failure, rhs.failure);
+  EXPECT_STREQ(lhs.reason, rhs.reason);
+  EXPECT_STREQ(lhs.order_template, rhs.order_template);
+  EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
+  EXPECT_STREQ(lhs.exchange, rhs.exchange);
+  EXPECT_STREQ(lhs.instrument, rhs.instrument);
 }
 void compare(const common::ModifyOrderAck& lhs, const common::ModifyOrderAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
-  EXPECT_STREQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.failure, rhs.failure);
+  EXPECT_STREQ(lhs.reason, rhs.reason);
+  EXPECT_STREQ(lhs.order_template, rhs.order_template);
+  EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
+  EXPECT_STREQ(lhs.exchange, rhs.exchange);
+  EXPECT_STREQ(lhs.instrument, rhs.instrument);
 }
 void compare(const common::CancelOrderAck& lhs, const common::CancelOrderAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
-  EXPECT_STREQ(lhs.order_id, rhs.order_id);
-}
-void compare(const common::OrderUpdate& lhs, const common::OrderUpdate& rhs) {
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.failure, rhs.failure);
+  EXPECT_STREQ(lhs.reason, rhs.reason);
+  EXPECT_STREQ(lhs.order_template, rhs.order_template);
+  EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
-  EXPECT_STREQ(lhs.order_id, rhs.order_id);
+}
+void compare(const common::OrderUpdate& lhs, const common::OrderUpdate& rhs) {
+  EXPECT_EQ(lhs.opaque, rhs.opaque);
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_STREQ(lhs.order_template, rhs.order_template);
+  EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
+  EXPECT_STREQ(lhs.exchange, rhs.exchange);
+  EXPECT_STREQ(lhs.instrument, rhs.instrument);
   EXPECT_EQ(lhs.status, rhs.status);
   EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.remaining_quantity, rhs.remaining_quantity);
   EXPECT_EQ(lhs.traded_quantity, rhs.traded_quantity);
   EXPECT_EQ(lhs.insert_time, rhs.insert_time);
   EXPECT_EQ(lhs.cancel_time, rhs.cancel_time);
-  EXPECT_STREQ(lhs.order_template, rhs.order_template);
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 void compare(const common::TradeUpdate& lhs, const common::TradeUpdate& rhs) {
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
+  EXPECT_STREQ(lhs.external_trade_id, rhs.external_trade_id);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
-  EXPECT_STREQ(lhs.order_id, rhs.order_id);
-  EXPECT_STREQ(lhs.trade_id, rhs.trade_id);
   EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.quantity, rhs.quantity);
   EXPECT_EQ(lhs.price, rhs.price);
   EXPECT_EQ(lhs.trade_time, rhs.trade_time);
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 void compare(const common::Handshake& lhs, const common::Handshake& rhs) {
   EXPECT_STREQ(lhs.api_version, rhs.api_version);
@@ -327,22 +366,20 @@ void compare(const common::Heartbeat& lhs, const common::Heartbeat& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 void compare(const common::CreateOrder& lhs, const common::CreateOrder& rhs) {
+  EXPECT_EQ(lhs.opaque, rhs.opaque);
+  EXPECT_STREQ(lhs.order_template, rhs.order_template);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.order_template_name, rhs.order_template_name);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
   EXPECT_EQ(lhs.direction, rhs.direction);
   EXPECT_EQ(lhs.quantity, rhs.quantity);
   EXPECT_EQ(lhs.limit_price, rhs.limit_price);
   EXPECT_EQ(lhs.stop_price, rhs.stop_price);
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 void compare(const common::ModifyOrder& lhs, const common::ModifyOrder& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 void compare(const common::CancelOrder& lhs, const common::CancelOrder& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 }  // namespace
 

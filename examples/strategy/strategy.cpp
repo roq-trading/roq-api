@@ -12,12 +12,12 @@ namespace strategy {
 
 // some hard-coded config (for now)
 
-const char    *GATEWAY        = "FEMAS1";
-const char    *EXCHANGE       = "CFFEX";
-const char    *INSTRUMENT     = "IF1712";
-const uint32_t QUANTITY       =  1;        // CAREFUL
-const double   LIMIT_PRICE    =  0.01;     // CAREFUL
-const char    *ORDER_TEMPLATE = "ioc_open";
+const char  *GATEWAY        = "FEMAS";
+const char  *ORDER_TEMPLATE = "ioc_open";
+const char  *EXCHANGE       = "CFFEX";
+const char  *INSTRUMENT     = "IF1802";
+const double QUANTITY       =  1;        // !!! CAREFUL WHEN TESTING !!!
+const double LIMIT_PRICE    =  0.01;     // !!! CAREFUL WHEN TESTING !!!
 
 Strategy::Strategy(Strategy::Dispatcher& dispatcher, uint32_t ticks_to_trade)
     : _dispatcher(dispatcher),
@@ -54,17 +54,17 @@ void Strategy::on(const GatewayStatusEvent& event) {
       event.gateway_status.order_management_login_status == LoginStatus::On) {
     const CreateOrderRequest create_order_request = {
       .request_info = {
-        .destination = GATEWAY,
+        .destination    = GATEWAY,
       },
       .create_order = {
-        .exchange            = EXCHANGE,
-        .order_template_name = ORDER_TEMPLATE,
-        .instrument          = INSTRUMENT,
-        .direction           = TradeDirection::Buy,
-        .quantity            = QUANTITY,
-        .limit_price         = LIMIT_PRICE,
-        .stop_price          = std::numeric_limits<double>::quiet_NaN(),
-        .opaque              = 1,
+        .opaque         = 1,
+        .order_template = ORDER_TEMPLATE,
+        .exchange       = EXCHANGE,
+        .instrument     = INSTRUMENT,
+        .direction      = TradeDirection::Buy,
+        .quantity       = QUANTITY,
+        .limit_price    = LIMIT_PRICE,
+        .stop_price     = std::numeric_limits<double>::quiet_NaN(),
       }
     };
     _dispatcher.send(create_order_request);

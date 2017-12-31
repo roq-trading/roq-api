@@ -157,6 +157,8 @@ inline common::ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
     .external_order_id = value->external_order_id()->c_str(),
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
+    .quantity_change = value->quantity_change(),
+    .limit_price = value->limit_price(),
   };
 }
 
@@ -242,6 +244,8 @@ inline common::CreateOrder convert(const schema::CreateOrder *value) {
 inline common::ModifyOrder convert(const schema::ModifyOrder *value) {
   return common::ModifyOrder{
     .order_id = value->order_id(),
+    .quantity_change = value->quantity_change(),
+    .limit_price = value->limit_price(),
   };
 }
 
@@ -373,7 +377,9 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrderAck& value
     fbb.CreateString(value.order_template),
     fbb.CreateString(value.external_order_id),
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument));
+    fbb.CreateString(value.instrument),
+    value.quantity_change,
+    value.limit_price);
 }
 
 inline flatbuffers::Offset<schema::CancelOrderAck>
@@ -555,12 +561,18 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrder& value) {
 
 inline flatbuffers::Offset<schema::ModifyOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrder& value) {
-  return schema::CreateModifyOrder(fbb, value.order_id);
+  return schema::CreateModifyOrder(
+    fbb,
+    value.order_id,
+    value.quantity_change,
+    value.limit_price);
 }
 
 inline flatbuffers::Offset<schema::CancelOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrder& value) {
-  return schema::CreateCancelOrder(fbb, value.order_id);
+  return schema::CreateCancelOrder(
+    fbb,
+    value.order_id);
 }
 
 // encode (requests)

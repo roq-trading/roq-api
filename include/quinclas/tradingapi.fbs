@@ -82,6 +82,8 @@ table ModifyOrderAck {
   external_order_id:string;
   exchange:string;
   instrument:string;
+  quantity_change:double;
+  limit_price:double;
 }
 
 table CancelOrderAck {
@@ -145,6 +147,8 @@ table CreateOrder {
 
 table ModifyOrder {
   order_id:uint;
+  quantity_change:double;
+  limit_price:double;
 }
 
 table CancelOrder {

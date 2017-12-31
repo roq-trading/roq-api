@@ -166,6 +166,8 @@ inline common::ModifyOrderAck CreateRandomModifyOrderAck() {
     .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .quantity_change = rand_double(),
+    .limit_price = rand_double(),
   };
 }
 inline common::CancelOrderAck CreateRandomCancelOrderAck() {
@@ -236,6 +238,8 @@ inline common::CreateOrder CreateRandomCreateOrder() {
 inline common::ModifyOrder CreateRandomModifyOrder() {
   return common::ModifyOrder{
     .order_id = rand_uint32(),
+    .quantity_change = rand_double(),
+    .limit_price = rand_double(),
   };
 }
 inline common::CancelOrder CreateRandomCancelOrder() {
@@ -325,6 +329,8 @@ void compare(const common::ModifyOrderAck& lhs, const common::ModifyOrderAck& rh
   EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_EQ(lhs.quantity_change, rhs.quantity_change);
+  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
 }
 void compare(const common::CancelOrderAck& lhs, const common::CancelOrderAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
@@ -381,6 +387,8 @@ void compare(const common::CreateOrder& lhs, const common::CreateOrder& rhs) {
 }
 void compare(const common::ModifyOrder& lhs, const common::ModifyOrder& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.quantity_change, rhs.quantity_change);
+  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
 }
 void compare(const common::CancelOrder& lhs, const common::CancelOrder& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);

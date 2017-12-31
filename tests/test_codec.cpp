@@ -80,6 +80,8 @@ inline common::RequestInfo CreateRandomRequestInfo() {
 inline common::HandshakeAck CreateRandomHandshakeAck() {
   return common::HandshakeAck{
     .api_version = NAME[rand_uint32() % NAME_LENGTH],
+    .failure = rand_bool(),
+    .reason = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
 inline common::HeartbeatAck CreateRandomHeartbeatAck() {
@@ -256,6 +258,8 @@ void compare(const common::RequestInfo& lhs, const common::RequestInfo& rhs) {
 }
 void compare(const common::HandshakeAck& lhs, const common::HandshakeAck& rhs) {
   EXPECT_STREQ(lhs.api_version, rhs.api_version);
+  EXPECT_EQ(lhs.failure, rhs.failure);
+  EXPECT_STREQ(lhs.reason, rhs.reason);
 }
 void compare(const common::HeartbeatAck& lhs, const common::HeartbeatAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);

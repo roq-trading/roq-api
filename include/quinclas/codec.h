@@ -54,6 +54,8 @@ inline common::MessageInfo convert(const schema::MessageInfo *value) {
 inline common::HandshakeAck convert(const schema::HandshakeAck *value) {
   return common::HandshakeAck{
     .api_version = value->api_version()->c_str(),
+    .failure = value->failure(),
+    .reason = value->reason()->c_str(),
   };
 }
 
@@ -266,7 +268,9 @@ inline flatbuffers::Offset<schema::HandshakeAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::HandshakeAck& value) {
   return schema::CreateHandshakeAck(
     fbb,
-    fbb.CreateString(value.api_version));
+    fbb.CreateString(value.api_version),
+    value.failure,
+    fbb.CreateString(value.reason));
 }
 
 inline flatbuffers::Offset<schema::HeartbeatAck>

@@ -10,178 +10,180 @@ struct Layer {
 }
 
 table HandshakeAck {
-    api_version:string;
+  api_version:string;
+  failure:bool;
+  reason:string;
 }
 
 table HeartbeatAck {
-    opaque:ulong;
+  opaque:ulong;
 }
 
 table GatewayStatus {
-    market_data_connection_status:common.ConnectionStatus;
-    market_data_login_status:common.LoginStatus;
-    order_management_connection_status:common.ConnectionStatus;
-    order_management_login_status:common.LoginStatus;
+  market_data_connection_status:common.ConnectionStatus;
+  market_data_login_status:common.LoginStatus;
+  order_management_connection_status:common.ConnectionStatus;
+  order_management_login_status:common.LoginStatus;
 }
 
 table MarketByPrice {
-    exchange:string;
-    instrument:string;
-    depth:[Layer];
+  exchange:string;
+  instrument:string;
+  depth:[Layer];
 }
 
 table SessionStatistics {
-    exchange:string;
-    instrument:string;
-    open:double;
-    high:double;
-    low:double;
+  exchange:string;
+  instrument:string;
+  open:double;
+  high:double;
+  low:double;
 }
 
 table DailyStatistics {
-    exchange:string;
-    instrument:string;
-    settlement:double;
-    open_interest:double;
-    volume:double;
+  exchange:string;
+  instrument:string;
+  settlement:double;
+  open_interest:double;
+  volume:double;
 }
 
 table ReferenceData {
-    exchange:string;
-    instrument:string;
-    tick_size:double;
-    limit_up:double;
-    limit_down:double;
+  exchange:string;
+  instrument:string;
+  tick_size:double;
+  limit_up:double;
+  limit_down:double;
 }
 
 table MarketStatus {
-    exchange:string;
-    instrument:string;
-    trading_status:common.TradingStatus;
+  exchange:string;
+  instrument:string;
+  trading_status:common.TradingStatus;
 }
 
 table CreateOrderAck {
-    opaque:uint;
-    order_id:uint;
-    failure:bool;
-    reason:string;
-    order_template:string;
-    external_order_id:string;
-    exchange:string;
-    instrument:string;
+  opaque:uint;
+  order_id:uint;
+  failure:bool;
+  reason:string;
+  order_template:string;
+  external_order_id:string;
+  exchange:string;
+  instrument:string;
 }
 
 table ModifyOrderAck {
-    opaque:uint;
-    order_id:uint;
-    failure:bool;
-    reason:string;
-    order_template:string;
-    external_order_id:string;
-    exchange:string;
-    instrument:string;
+  opaque:uint;
+  order_id:uint;
+  failure:bool;
+  reason:string;
+  order_template:string;
+  external_order_id:string;
+  exchange:string;
+  instrument:string;
 }
 
 table CancelOrderAck {
-    opaque:uint;
-    order_id:uint;
-    failure:bool;
-    reason:string;
-    order_template:string;
-    external_order_id:string;
-    exchange:string;
-    instrument:string;
+  opaque:uint;
+  order_id:uint;
+  failure:bool;
+  reason:string;
+  order_template:string;
+  external_order_id:string;
+  exchange:string;
+  instrument:string;
 }
 
 table OrderUpdate {
-    opaque:uint;
-    order_id:uint;
-    order_template:string;
-    external_order_id:string;
-    exchange:string;
-    instrument:string;
-    status:common.OrderStatus;
-    trade_direction:common.TradeDirection;
-    remaining_quantity:double;
-    traded_quantity:double;
-    insert_time:ulong;
-    cancel_time:ulong;
+  opaque:uint;
+  order_id:uint;
+  order_template:string;
+  external_order_id:string;
+  exchange:string;
+  instrument:string;
+  status:common.OrderStatus;
+  trade_direction:common.TradeDirection;
+  remaining_quantity:double;
+  traded_quantity:double;
+  insert_time:ulong;
+  cancel_time:ulong;
 }
 
 table TradeUpdate {
-    order_id:uint;
-    external_order_id:string;
-    external_trade_id:string;
-    exchange:string;
-    instrument:string;
-    trade_direction:common.TradeDirection;
-    quantity:double;
-    price:double;
-    trade_time:ulong;
+  order_id:uint;
+  external_order_id:string;
+  external_trade_id:string;
+  exchange:string;
+  instrument:string;
+  trade_direction:common.TradeDirection;
+  quantity:double;
+  price:double;
+  trade_time:ulong;
 }
 
 table Handshake {
-    api_version:string;
-    login:string;
-    password:string;
+  api_version:string;
+  login:string;
+  password:string;
 }
 
 table Heartbeat {
-    opaque:ulong;
+  opaque:ulong;
 }
 
 table CreateOrder {
-    opaque:uint;
-    order_template:string;
-    exchange:string;
-    instrument:string;
-    direction:common.TradeDirection;
-    quantity:double;
-    limit_price:double;
-    stop_price:double;
+  opaque:uint;
+  order_template:string;
+  exchange:string;
+  instrument:string;
+  direction:common.TradeDirection;
+  quantity:double;
+  limit_price:double;
+  stop_price:double;
 }
 
 table ModifyOrder {
-    order_id:uint;
+  order_id:uint;
 }
 
 table CancelOrder {
-    order_id:uint;
+  order_id:uint;
 }
 
 // events
 
 table TerminationEvent {
-    gateway:string;
+  gateway:string;
 }
 
 table MessageInfo {
-    gateway:string;
-    message_id:ulong;
-    exchange_time:ulong;
-    receive_time:ulong;
-    enqueue_time:ulong;
+  gateway:string;
+  message_id:ulong;
+  exchange_time:ulong;
+  receive_time:ulong;
+  enqueue_time:ulong;
 }
 
 union EventData {
-    HandshakeAck,
-    HeartbeatAck,
-    GatewayStatus,
-    ReferenceData,
-    MarketStatus,
-    MarketByPrice,
-    SessionStatistics,
-    DailyStatistics,
-    CreateOrderAck,
-    ModifyOrderAck,
-    CancelOrderAck,
-    OrderUpdate,
-    TradeUpdate,
+  HandshakeAck,
+  HeartbeatAck,
+  GatewayStatus,
+  ReferenceData,
+  MarketStatus,
+  MarketByPrice,
+  SessionStatistics,
+  DailyStatistics,
+  CreateOrderAck,
+  ModifyOrderAck,
+  CancelOrderAck,
+  OrderUpdate,
+  TradeUpdate,
 }
 
 table Event {
-    message_info:MessageInfo;
-    event_data:EventData;
+  message_info:MessageInfo;
+  event_data:EventData;
 }
 
 // requests
@@ -191,14 +193,14 @@ table RequestInfo {
 }
 
 union RequestData {
-    Handshake,
-    Heartbeat,
-    CreateOrder,
-    ModifyOrder,
-    CancelOrder,
+  Handshake,
+  Heartbeat,
+  CreateOrder,
+  ModifyOrder,
+  CancelOrder,
 }
 
 table Request {
-    request_info:RequestInfo;
-    request_data:RequestData;
+  request_info:RequestInfo;
+  request_data:RequestData;
 }

@@ -16,7 +16,7 @@ namespace common {
 /**
  * Constants.
  */
-const size_t MAX_DEPTH = 10;                                 ///< Maximum market-by-price depth
+const size_t MAX_DEPTH = 10;                               ///< Maximum market-by-price depth
 
 /**
  * Typedefs.
@@ -39,7 +39,9 @@ struct Layer {
  */
 
 struct HandshakeAck {
-  const char *api_version;                                 ///< API verison.
+  const char *api_version;                                 ///< API version.
+  bool failure;                                            ///< Failure?
+  const char *reason;                                      ///< Reason (if failure)
 };
 
 /**

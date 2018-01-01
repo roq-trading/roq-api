@@ -10,15 +10,6 @@ using namespace quinclas::common;  // NOLINT
 namespace examples {
 namespace strategy {
 
-// some hard-coded config (for now)
-
-const char  *GATEWAY        = "FEMAS";
-const char  *ORDER_TEMPLATE = "ioc_open";
-const char  *EXCHANGE       = "CFFEX";
-const char  *INSTRUMENT     = "IF1802";
-const double QUANTITY       =  1;        // !!! CAREFUL WHEN TESTING !!!
-const double LIMIT_PRICE    =  0.01;     // !!! CAREFUL WHEN TESTING !!!
-
 Strategy::Strategy(Strategy::Dispatcher& dispatcher, uint32_t ticks_to_trade)
     : _dispatcher(dispatcher),
       _ticks_to_trade(ticks_to_trade) {}
@@ -54,15 +45,15 @@ void Strategy::on(const GatewayStatusEvent& event) {
       event.gateway_status.order_management_login_status == LoginStatus::On) {
     const CreateOrder create_order {
       .opaque         = 1,
-      .order_template = ORDER_TEMPLATE,
-      .exchange       = EXCHANGE,
-      .instrument     = INSTRUMENT,
+      .order_template = "ioc_open",
+      .exchange       = "CFFEX",
+      .instrument     = "IF1802",
       .direction      = TradeDirection::Buy,
-      .quantity       = QUANTITY,
-      .limit_price    = LIMIT_PRICE,
+      .quantity       = 1,
+      .limit_price    = 0.01,
       .stop_price     = std::numeric_limits<double>::quiet_NaN(),
     };
-    _dispatcher.send(GATEWAY, create_order);
+    _dispatcher.send("femas", create_order);
   }
 }
 

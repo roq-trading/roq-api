@@ -9,7 +9,7 @@ namespace collector {
 
 class Collector final : public quinclas::common::Strategy {
  public:
-  explicit Collector(quinclas::common::Strategy::Dispatcher& dispatcher);
+  explicit Collector(quinclas::common::Strategy::Dispatcher& dispatcher) : _dispatcher(dispatcher) {}
 
  protected:
   void on(const quinclas::common::TimerEvent&) override {}

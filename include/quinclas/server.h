@@ -29,6 +29,7 @@ class Controller final {
   explicit Controller(const handlers_t& handlers) : _handlers(handlers) {}
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
+    libevent::Thread::use_pthreads();
     Dispatcher(_handlers, std::forward<Args>(args)...).dispatch();
   }
 
@@ -99,7 +100,7 @@ class Controller final {
     // TODO(thraneh): somehow we must be able to pass BEV_OPT_THREADSAFE
     Service(libevent::Base& base, net::Socket&& socket, typename Client::Finalizer finalizer,
             typename Client::Initializer initializer, common::Server& server, common::Gateway& gateway)
-        : _listener(*this, base, 0, -1, std::move(socket)),
+        : _listener(*this, base, 0, -1, std::move(socket), BEV_OPT_THREADSAFE),
           _finalizer(finalizer), _initializer(initializer),
           _server(server), _gateway(gateway) {}
 

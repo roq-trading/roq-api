@@ -370,19 +370,22 @@ class Listener final {
    public:
     virtual void on_accept(BufferEvent&& buffer) = 0;
   };
-  Listener(Handler& handler, struct event_base *base, int flags, int backlog, net::Socket&& socket)
+  Listener(Handler& handler, struct event_base *base, int flags, int backlog, net::Socket&& socket,
+           int buffer_event_create_flags)
       : _handler(handler),
         _base(base),
         _socket(std::move(socket)),
-        _evconnlistener(evconnlistener_new(base, callback, this, flags, backlog, _socket.raw())) {
+        _evconnlistener(evconnlistener_new(base, callback, this, flags, backlog, _socket.raw())),
+        _buffer_event_create_flags(buffer_event_create_flags) {
     if (_evconnlistener == nullptr) {
       LOG(WARNING) << "libevent: evconnlistener_new() failed";
       throw std::runtime_error("libevent: evconnlistener_new");
     }
     DCHECK_EQ(_socket.non_blocking(), true) << "socket must be non-blocking";
   }
-  Listener(Handler& handler, Base& base, int flags, int backlog, net::Socket&& socket)
-      : Listener(handler, base.raw(), flags, backlog, std::move(socket)) {}
+  Listener(Handler& handler, Base& base, int flags, int backlog, net::Socket&& socket,
+           int buffer_event_create_flags)
+      : Listener(handler, base.raw(), flags, backlog, std::move(socket), buffer_event_create_flags) {}
   ~Listener() {
     if (_evconnlistener != nullptr)
       evconnlistener_free(_evconnlistener);
@@ -394,13 +397,14 @@ class Listener final {
   Listener& operator=(const Listener&) = delete;
   static void callback(struct evconnlistener *, evutil_socket_t fd, struct sockaddr *, int socklen, void *cbarg) {
     auto& self = *reinterpret_cast<Listener*>(cbarg);
-    BufferEvent bufferevent(self._base, fd, BEV_OPT_CLOSE_ON_FREE);
+    BufferEvent bufferevent(self._base, fd, self._buffer_event_create_flags | BEV_OPT_CLOSE_ON_FREE);
     self._handler.on_accept(std::move(bufferevent));
   }
   Handler& _handler;
   struct event_base *_base;
   net::Socket _socket;  // TODO(thraneh): pass to evconnlistener and use LEV_OPT_CLOSE_ON_FREE
   struct evconnlistener *_evconnlistener;
+  int _buffer_event_create_flags;
 };
 
 }  // namespace libevent

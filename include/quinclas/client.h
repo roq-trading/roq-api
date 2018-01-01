@@ -206,10 +206,10 @@ class Controller final {
 
      protected:
       void on(const common::HandshakeAckEvent& event) override {
-        LOG(INFO) << "got handshake ack";
+        // LOG(INFO) << "got handshake ack";
       }
       void on(const common::HeartbeatAckEvent& event) override {
-        LOG(INFO) << "got heartbeeat ack";
+        // LOG(INFO) << "got heartbeat ack";
       }
 
      private:

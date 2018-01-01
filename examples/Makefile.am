@@ -1,1 +1,1 @@
-SUBDIRS = strategy gateway
+SUBDIRS = strategy gateway collector

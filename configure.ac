@@ -16,6 +16,7 @@ AC_CONFIG_FILES([
  examples/Makefile
  examples/strategy/Makefile
  examples/gateway/Makefile
+ examples/collector/Makefile
 ])
 AC_CONFIG_FILES([include/quinclas/tradingapi.h])
 AC_CONFIG_FILES([quinclas-tradingapi.pc])

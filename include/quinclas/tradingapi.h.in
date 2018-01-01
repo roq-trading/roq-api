@@ -380,6 +380,10 @@ struct CancelOrder {
  */
 struct RequestInfo {
   const char *destination;                                 ///< Destination name, typically a gateway
+  const char *trace_source;                                ///< Triggering source
+  uint64_t trace_message_id;                               ///< Triggering message id
+  time_point_t send_time;                                  ///< Request time
+  time_point_t receive_time;                               ///< Receive timestamp
 };
 
 /*
@@ -508,21 +512,24 @@ class Strategy {
     /**
      * Send CreateOrder request.
      *
-     * @param create_order_request has the order creation request details.
+     * @param gateway name of the destination gateway.
+     * @param create_order has the order creation details.
      */
-    virtual void send(const CreateOrderRequest& create_order_request) = 0;
+    virtual void send(const char *gateway, const CreateOrder& create_order) = 0;
     /**
      * Send ModifyOrder request.
      *
-     * @param modify_order_request has the order modification request details.
+     * @param gateway name of the destination gateway.
+     * @param modify_order has the order modification details.
      */
-    virtual void send(const ModifyOrderRequest& modify_order_request) = 0;
+    virtual void send(const char *gateway, const ModifyOrder& modify_order) = 0;
     /**
      * Send CancelOrder request.
      *
-     * @param cancel_order_request has the order cancellation request details.
+     * @param gateway name of the destination gateway.
+     * @param cancel_order has the order cancellation details.
      */
-    virtual void send(const CancelOrderRequest& cancel_order_request) = 0;
+    virtual void send(const char *gateway, const CancelOrder& cancel_order) = 0;
   };
   virtual ~Strategy() = default;
   virtual void on(const TimerEvent&) = 0;                  ///< Timer (don't rely on the accuracy!)
@@ -818,7 +825,11 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ca
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::RequestInfo& value) {
   return stream << "{"
-    "destination=\"" << value.destination <<
+    "destination=\"" << value.destination << "\", "
+    "trace_source=\"" << value.trace_source << "\", "
+    "trace_message_id=" << value.trace_message_id << ", "
+    "send_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.send_time, cctz::utc_time_zone()) << ", "
+    "receive_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.receive_time, cctz::utc_time_zone()) <<
     "}";
 }
 

@@ -75,6 +75,10 @@ inline common::MessageInfo CreateRandomMessageInfo() {
 inline common::RequestInfo CreateRandomRequestInfo() {
   return common::RequestInfo{
     .destination = NAME[rand_uint32() % NAME_LENGTH],
+    .trace_source = NAME[rand_uint32() % NAME_LENGTH],
+    .trace_message_id = rand_uint32(),
+    .send_time = rand_time_point(),
+    .receive_time = rand_time_point(),
   };
 }
 inline common::HandshakeAck CreateRandomHandshakeAck() {
@@ -259,6 +263,10 @@ void compare(const common::MessageInfo& lhs, const common::MessageInfo& rhs) {
 }
 void compare(const common::RequestInfo& lhs, const common::RequestInfo& rhs) {
   EXPECT_STREQ(lhs.destination, rhs.destination);
+  EXPECT_STREQ(lhs.trace_source, rhs.trace_source);
+  EXPECT_EQ(lhs.trace_message_id, rhs.trace_message_id);
+  EXPECT_EQ(lhs.send_time, rhs.send_time);
+  EXPECT_EQ(lhs.receive_time, rhs.receive_time);
 }
 void compare(const common::HandshakeAck& lhs, const common::HandshakeAck& rhs) {
   EXPECT_STREQ(lhs.api_version, rhs.api_version);

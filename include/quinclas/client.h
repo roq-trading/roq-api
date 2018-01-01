@@ -28,6 +28,8 @@ class Controller final {
   explicit Controller(const gateways_t&& gateways) : _gateways(std::move(gateways)) {}
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
+    const char *trace_source = "";
+    uint32_t trace_message_id = 0;
     Dispatcher(_gateways, std::forward<Args>(args)...).dispatch();
   }
 
@@ -42,10 +44,11 @@ class Controller final {
           public common::Strategy::Dispatcher {
      public:
       Gateway(const std::string& name, const int domain, const std::string& address,
-              common::Strategy& strategy, libevent::Base& base,
-              std::unordered_set<Gateway *>& callbacks)
-          : _name(name), _domain(domain), _address(address), _base(base), _event_dispatcher(*this, strategy),
-            _callbacks(callbacks), _state(Disconnected), _retries(0), _retry_timer(0) {}
+              common::Strategy& strategy, libevent::Base& base, std::unordered_set<Gateway *>& callbacks,
+              const common::MessageInfo *&trace)
+          : _name(name), _domain(domain), _address(address), _base(base),
+            _event_dispatcher(*this, strategy, trace), _callbacks(callbacks),
+            _state(Disconnected), _retries(0), _retry_timer(0), _trace(trace) {}
       bool ready() const {
         return _state == Connected;
       }
@@ -62,20 +65,44 @@ class Controller final {
             assert(false);  // should never get here...
         }
       }
+      // TODO(thraneh): handshake should be private
       void send(const common::HandshakeRequest& request) {
         send_helper(request);
       }
+      // TODO(thraneh): heartbeat should be private
       void send(const common::HeartbeatRequest& request) {
         send_helper(request);
       }
-      void send(const common::CreateOrderRequest& request) override {
-        send_helper(request);
+      void send(const char *gateway, const common::CreateOrder& create_order) override {
+        const common::CreateOrderRequest create_order_request = {
+          .request_info = create_request_info(gateway),
+          .create_order = create_order
+        };
+        send_helper(create_order_request);
       }
-      void send(const common::ModifyOrderRequest& request) override {
-        send_helper(request);
+      void send(const char *gateway, const common::ModifyOrder& modify_order) override {
+        const common::ModifyOrderRequest modify_order_request = {
+          .request_info = create_request_info(gateway),
+          .modify_order = modify_order
+        };
+        send_helper(modify_order_request);
       }
-      void send(const common::CancelOrderRequest& request) override {
-        send_helper(request);
+      void send(const char *gateway, const common::CancelOrder& cancel_order) override {
+        const common::CancelOrderRequest cancel_order_request = {
+          .request_info = create_request_info(gateway),
+          .cancel_order = cancel_order
+        };
+        send_helper(cancel_order_request);
+      }
+
+     private:
+      common::RequestInfo create_request_info(const char *gateway) {
+        return common::RequestInfo {
+          .destination = gateway,
+          .trace_source = _trace ? _trace->gateway : "",  // TODO(thraneh): drop conditional after live test
+          .trace_message_id = _trace ? _trace->message_id : 0,  // TODO(thraneh): drop conditional after live test
+          .send_time = std::chrono::time_point_cast<common::duration_t>(std::chrono::system_clock::now()),
+        };
       }
 
      private:
@@ -169,12 +196,13 @@ class Controller final {
           if (frame == nullptr)
             break;
           const auto payload = frame + common::Envelope::LENGTH;
+          // TODO(thraneh): here we must capture MessageInfo
           _event_dispatcher.dispatch_event(payload, length_payload);
           _buffer.drain(bytes);
         }
       }
       template <typename R>
-      void send_helper(const R& request) {
+      void send_helper(R request) {
         if (_state != Connected) {
           LOG(ERROR) << "gateway: " << _name << " not connected -- unable to send the request";
           throw std::runtime_error("unable to send the request");
@@ -231,6 +259,7 @@ class Controller final {
       enum { Disconnected, Connecting, Connected, Failed } _state;
       int _retries;
       int _retry_timer;
+      const common::MessageInfo *&_trace;
     };
 
    public:
@@ -239,7 +268,7 @@ class Controller final {
         : _strategy(*this, std::forward<Args>(args)...),  // request handler, then whatever the strategy needs
           _timer(*this, _base) {
       for (const auto iter : gateways) {
-        _gateways.emplace_back(iter.first, PF_LOCAL, iter.second, _strategy, _base, _callbacks);
+        _gateways.emplace_back(iter.first, PF_LOCAL, iter.second, _strategy, _base, _callbacks, _trace);
         Gateway& gateway = _gateways.back();
         _gateways_by_name[iter.first] = &gateway;
         _callbacks.insert(&gateway);
@@ -251,14 +280,14 @@ class Controller final {
     }
 
    private:
-    void send(const common::CreateOrderRequest& create_order_request) override {
-      _gateways_by_name[create_order_request.request_info.destination]->send(create_order_request);
+    void send(const char *gateway, const common::CreateOrder& create_order) override {
+      _gateways_by_name[gateway]->send(gateway, create_order);
     }
-    void send(const common::ModifyOrderRequest& modify_order_request) override {
-      _gateways_by_name[modify_order_request.request_info.destination]->send(modify_order_request);
+    void send(const char *gateway, const common::ModifyOrder& modify_order) override {
+      _gateways_by_name[gateway]->send(gateway, modify_order);
     }
-    void send(const common::CancelOrderRequest& cancel_order_request) override {
-      _gateways_by_name[cancel_order_request.request_info.destination]->send(cancel_order_request);
+    void send(const char *gateway, const common::CancelOrder& cancel_order) override {
+      _gateways_by_name[gateway]->send(gateway, cancel_order);
     }
     void on_timer() override {
       std::list<Gateway *> remove;
@@ -274,6 +303,7 @@ class Controller final {
       // experimental
       const common::RequestInfo request_info = {
         .destination = "",
+        .trace_source = "",
       };
       const common::Heartbeat heartbeat = {
         .opaque = std::chrono::time_point_cast<common::duration_t>(std::chrono::system_clock::now()),
@@ -299,6 +329,7 @@ class Controller final {
     std::list<Gateway> _gateways;
     std::unordered_map<std::string, Gateway *> _gateways_by_name;
     std::unordered_set<Gateway *> _callbacks;
+    const common::MessageInfo *_trace = nullptr;
   };
 
  private:

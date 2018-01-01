@@ -52,22 +52,17 @@ void Strategy::on(const GatewayStatusEvent& event) {
   // - this application being disconnected from the gateway
   if (event.gateway_status.market_data_login_status == LoginStatus::On &&
       event.gateway_status.order_management_login_status == LoginStatus::On) {
-    const CreateOrderRequest create_order_request = {
-      .request_info = {
-        .destination    = GATEWAY,
-      },
-      .create_order = {
-        .opaque         = 1,
-        .order_template = ORDER_TEMPLATE,
-        .exchange       = EXCHANGE,
-        .instrument     = INSTRUMENT,
-        .direction      = TradeDirection::Buy,
-        .quantity       = QUANTITY,
-        .limit_price    = LIMIT_PRICE,
-        .stop_price     = std::numeric_limits<double>::quiet_NaN(),
-      }
+    const CreateOrder create_order {
+      .opaque         = 1,
+      .order_template = ORDER_TEMPLATE,
+      .exchange       = EXCHANGE,
+      .instrument     = INSTRUMENT,
+      .direction      = TradeDirection::Buy,
+      .quantity       = QUANTITY,
+      .limit_price    = LIMIT_PRICE,
+      .stop_price     = std::numeric_limits<double>::quiet_NaN(),
     };
-    _dispatcher.send(create_order_request);
+    _dispatcher.send(GATEWAY, create_order);
   }
 }
 

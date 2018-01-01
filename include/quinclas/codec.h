@@ -211,6 +211,10 @@ inline common::TradeUpdate convert(const schema::TradeUpdate *value) {
 inline common::RequestInfo convert(const schema::RequestInfo *value) {
   return common::RequestInfo{
     .destination = value->destination()->c_str(),
+    .trace_source = value->trace_source()->c_str(),
+    .trace_message_id = value->trace_message_id(),
+    .send_time = uint64_to_time_point(value->send_time()),
+    .receive_time = uint64_to_time_point(value->receive_time()),
   };
 }
 
@@ -526,7 +530,13 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdateEvent& val
 
 inline flatbuffers::Offset<schema::RequestInfo>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::RequestInfo& value) {
-  return schema::CreateRequestInfo(fbb, fbb.CreateString(value.destination));
+  return schema::CreateRequestInfo(
+    fbb,
+    fbb.CreateString(value.destination),
+    fbb.CreateString(value.trace_source),
+    value.trace_message_id,
+    time_point_to_uint64(value.send_time),
+    time_point_to_uint64(value.receive_time));
 }
 
 inline flatbuffers::Offset<schema::Handshake>
@@ -616,10 +626,12 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderRequest& v
 
 class EventDispatcher final {
  public:
-  explicit EventDispatcher(Client& client, Strategy& strategy) : _client(client), _strategy(strategy) {}
+  explicit EventDispatcher(Client& client, Strategy& strategy, const MessageInfo *&trace)
+      : _client(client), _strategy(strategy), _trace(trace) {}
   void dispatch_event(const void *buffer, const size_t length) {
     const auto root = flatbuffers::GetRoot<schema::Event>(buffer);
     const auto message_info = convert(root->message_info());
+    _trace = &message_info;
     const auto type = root->event_data_type();
     switch (type) {
       case schema::EventData::HandshakeAck: {
@@ -740,6 +752,7 @@ class EventDispatcher final {
  private:
   Client& _client;
   Strategy& _strategy;
+  const MessageInfo *_trace;
   flatbuffers::FlatBufferBuilder _flat_buffer_builder;
 };
 

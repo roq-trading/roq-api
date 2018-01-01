@@ -194,6 +194,10 @@ table Event {
 
 table RequestInfo {
   destination:string;
+  trace_source:string;
+  trace_message_id:ulong;
+  send_time:ulong;
+  receive_time:ulong;
 }
 
 union RequestData {

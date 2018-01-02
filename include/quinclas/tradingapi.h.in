@@ -623,6 +623,8 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ma
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::SessionStatistics& value) {
   return stream << "{"
+    "exchange=\"" << value.exchange << "\", " <<
+    "instrument=\"" << value.instrument << "\", " <<
     "open=" << value.open << ", " <<
     "high=" << value.high << ", " <<
     "low=" << value.low <<
@@ -631,6 +633,8 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Se
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::DailyStatistics& value) {
   return stream << "{"
+    "exchange=\"" << value.exchange << "\", " <<
+    "instrument=\"" << value.instrument << "\", " <<
     "settlement=" << value.settlement << ", " <<
     "open_interest=" << value.open_interest << ", " <<
     "volume=" << value.volume <<

@@ -1,16 +1,35 @@
-# Strategy
+# Example: Strategy
 
-The example is fairly trivial.
-Intention is to show what event handlers are available.
-Running the program will log every event to the console.
+## What does it do?
 
-## Executing
+Logs every event received from the gateway.
 
-./example-strategy --local-address /var/tmp/xyz
+Sends an order when;
 
-## Debugging
+* Market data connection has been established and the user has been successfully logged in.
+* Order management connection has been established and the user has been successfully logged in.
 
-libtool --mode=execute gdb --args ./example-strategy --local-address /var/tmp/xyz
+## How to use?
 
-See this [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
-for further details.
+For example, to execute the strategy using the Femas API;
+
+	./example-strategy --local-address /var/tmp/femas
+
+## Enable logging?
+
+You can redirect logs to stderr like this;
+
+	export GLOG_logtostderr=1
+
+Then start the program as already described.
+
+This [link](http://rpg.ifi.uzh.ch/docs/glog.html) is a good place to read about Google's Logging Library.
+
+## How do I debug?
+
+On Linux;
+
+	libtool --mode=execute gdb --args ./example-strategy --local-address /var/tmp/femas
+
+This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
+is a good place to get started with debugging.

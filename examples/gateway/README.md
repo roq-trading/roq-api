@@ -1,26 +1,14 @@
-# Example: Collector
+# Example: Gateway
 
 ## What does it do?
 
-Connects to a gateway and writes top of book to stdout.
-
-Fields
-
-* Exchange time (UTC).
-* Gateway receive time (UTC).
-* Client receive time (UTC).
-* Exchange name (if available).
-* Instrument name.
-* Best bid price.
-* Quantity offered at best bid price.
-* Best ask price.
-* Quantity offered at best ask price.
+Currently no real functionality -- only showing the skeleton of a gateway application.
 
 ## How to use?
 
-For example, to collect market data from the Femas API
+To start the gateway and bind it to a unix domain socket
 
-	./example-collector --local-address /var/tmp/femas
+	./example-gateway --local-address /var/tmp/xyz
 
 ## Enable logging?
 

@@ -4,20 +4,20 @@
 
 Logs every event received from the gateway.
 
-Sends an order when;
+Sends an order when
 
 * Market data connection has been established and the user has been successfully logged in.
 * Order management connection has been established and the user has been successfully logged in.
 
 ## How to use?
 
-For example, to execute the strategy using the Femas API;
+For example, to execute the strategy using the Femas API
 
 	./example-strategy --local-address /var/tmp/femas
 
 ## Enable logging?
 
-You can redirect logs to stderr like this;
+You can redirect logs to stderr like this
 
 	export GLOG_logtostderr=1
 
@@ -27,7 +27,7 @@ This [link](http://rpg.ifi.uzh.ch/docs/glog.html) is a good place to read about 
 
 ## How do I debug?
 
-On Linux;
+On Linux
 
 	libtool --mode=execute gdb --args ./example-strategy --local-address /var/tmp/femas
 

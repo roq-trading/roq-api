@@ -20,7 +20,7 @@ Fields
 
 For example, to collect market data from the Femas API
 
-	./example-collector --local-address /var/tmp/femas
+	example-collector --local-address /var/tmp/femas
 
 ## Enable logging?
 
@@ -36,7 +36,7 @@ This [link](http://rpg.ifi.uzh.ch/docs/glog.html) is a good place to read about 
 
 On Linux
 
-	libtool --mode=execute gdb --args ./example-collector --local-address /var/tmp/femas
+	libtool --mode=execute gdb --args example-collector --local-address /var/tmp/femas
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
 is a good place to get started with debugging.

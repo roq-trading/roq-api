@@ -4,7 +4,7 @@
 
 Logs every event received from the gateway.
 
-Sends an order when
+Sends an order when both of these conditions are met
 
 * Market data connection has been established and the user has been successfully logged in.
 * Order management connection has been established and the user has been successfully logged in.
@@ -13,7 +13,7 @@ Sends an order when
 
 For example, to execute the strategy using the Femas API
 
-	./example-strategy --local-address /var/tmp/femas
+	example-strategy --local-address /var/tmp/femas
 
 ## Enable logging?
 
@@ -29,7 +29,7 @@ This [link](http://rpg.ifi.uzh.ch/docs/glog.html) is a good place to read about 
 
 On Linux
 
-	libtool --mode=execute gdb --args ./example-strategy --local-address /var/tmp/femas
+	libtool --mode=execute gdb --args example-strategy --local-address /var/tmp/femas
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
 is a good place to get started with debugging.

@@ -8,7 +8,7 @@ Currently no real functionality -- only showing the skeleton of a gateway applic
 
 To start the gateway and bind it to a unix domain socket
 
-	./example-gateway --local-address /var/tmp/xyz
+	example-gateway --local-address /var/tmp/xyz
 
 ## Enable logging?
 
@@ -24,7 +24,7 @@ This [link](http://rpg.ifi.uzh.ch/docs/glog.html) is a good place to read about 
 
 On Linux
 
-	libtool --mode=execute gdb --args ./example-collector --local-address /var/tmp/femas
+	libtool --mode=execute gdb --args example-gateway --local-address /var/tmp/xyz
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
 is a good place to get started with debugging.

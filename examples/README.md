@@ -1,6 +1,6 @@
 # Examples
 
-Demonstrates various concepts.
+Demonstration of various concepts.
 
 * [Collector](./collector) &mdash; capture top-of-book market data.
 * [Strategy](./strategy) &mdash; request order creation and log all events.

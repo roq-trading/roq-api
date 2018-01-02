@@ -1,7 +1,7 @@
 # Examples
 
-Demonstrates how to implement various concepts.
+Demonstrates various concepts.
 
-* Collector -- capturing top of book market data.
-* Strategy -- order management.
-* Gateway -- minimum interaction required when writing gateways.
+* [Collector](./collector) &mdash; capture top-of-book market data.
+* [Strategy](./strategy) &mdash; request order creation and log all events.
+* [Gateway](./gateway) &mdash; skeleton used by all gateways.

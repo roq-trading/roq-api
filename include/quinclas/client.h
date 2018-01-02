@@ -97,10 +97,11 @@ class Controller final {
 
      private:
       common::RequestInfo create_request_info(const char *gateway) {
+        assert(gateway != nullptr);
         return common::RequestInfo {
           .destination = gateway,
-          .trace_source = _trace ? _trace->gateway : "",  // TODO(thraneh): drop conditional after live test
-          .trace_message_id = _trace ? _trace->message_id : 0,  // TODO(thraneh): drop conditional after live test
+          .trace_source = _trace ? _trace->gateway : "",
+          .trace_message_id = _trace ? _trace->message_id : 0,
           .send_time = std::chrono::time_point_cast<common::duration_t>(std::chrono::system_clock::now()),
         };
       }

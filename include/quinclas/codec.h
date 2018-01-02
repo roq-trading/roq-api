@@ -631,6 +631,7 @@ class EventDispatcher final {
   void dispatch_event(const void *buffer, const size_t length) {
     const auto root = flatbuffers::GetRoot<schema::Event>(buffer);
     const auto message_info = convert(root->message_info());
+    assert(message_info.gateway != nullptr);
     _trace = &message_info;
     const auto type = root->event_data_type();
     switch (type) {
@@ -742,6 +743,7 @@ class EventDispatcher final {
         throw std::runtime_error("Unknown message type");
       }
     }
+    _trace = nullptr;
   }
 
  private:

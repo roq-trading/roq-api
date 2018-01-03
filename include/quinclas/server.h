@@ -9,6 +9,7 @@
 #include <quinclas/codec.h>
 
 #include <list>
+#include <mutex>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -190,7 +191,9 @@ class Controller final {
 
    private:
       template <typename E>
-      void send_helper(const E& event) {  // TODO(thraneh): threading
+      void send_helper(const E& event) {
+        // FIXME(thraneh): encoding should be extracted out threads can work in parallel
+        std::lock_guard<std::mutex> guard(_mutex);
         if (_clients.empty())
           return;
         _flat_buffer_builder.Clear();
@@ -276,11 +279,12 @@ class Controller final {
     libevent::Base _base;
     libevent::TimerEvent _timer;
     std::list<std::unique_ptr<Service> > _services;
-    std::unordered_map<Client *, std::unique_ptr<Client> > _clients;
-    std::list<std::unique_ptr<Client> > _zombies;
-    flatbuffers::FlatBufferBuilder _flat_buffer_builder;
-    libevent::Buffer _buffer;
-    uint8_t _envelope[common::Envelope::LENGTH];
+    std::mutex _mutex;
+    std::unordered_map<Client *, std::unique_ptr<Client> > _clients;  // threading
+    std::list<std::unique_ptr<Client> > _zombies;  // threading
+    flatbuffers::FlatBufferBuilder _flat_buffer_builder;  // threading
+    libevent::Buffer _buffer;  // threading
+    uint8_t _envelope[common::Envelope::LENGTH];  // threading
   };
 
  private:

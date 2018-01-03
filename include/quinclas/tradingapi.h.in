@@ -719,7 +719,7 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Me
     "message_id=" << value.message_id << ", " <<
     "exchange_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.exchange_time, cctz::utc_time_zone()) << ", " <<
     "receive_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.receive_time, cctz::utc_time_zone()) << ", " <<
-    "enqueue_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.enqueue_time, cctz::utc_time_zone()) << ", " <<
+    "enqueue_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.enqueue_time, cctz::utc_time_zone()) <<
     "}";
 }
 

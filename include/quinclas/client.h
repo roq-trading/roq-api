@@ -234,6 +234,7 @@ class Controller final {
         } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
           LOG(WARNING) << "gateway: caught exception, what=\"" << e.what() << "\"";
           write_failed();
+          ++_statistics.connections_failed;
           LOG(WARNING) << "gateway: " << _name << " failed write attempt -- unable to send the request";
           throw std::runtime_error("unable to send the request");
         }

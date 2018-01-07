@@ -37,10 +37,10 @@ class Controller final {
  private:
   // Statistics
   struct Statistics final {
-    uint64_t messages_sent = 0;
-    uint64_t messages_received = 0;
-    uint64_t connections_succeeded = 0;
-    uint64_t connections_failed = 0;
+    std::atomic<uint64_t> messages_sent;
+    std::atomic<uint64_t> messages_received;
+    std::atomic<uint64_t> client_connects;
+    std::atomic<uint64_t> client_disconnects;
   };  // Statistics
 
  private:
@@ -79,7 +79,7 @@ class Controller final {
           const auto payload = frame + common::Envelope::LENGTH;
           _request_dispatcher.dispatch_request(payload, length_payload);
           _buffer.drain(bytes);
-          ++_statistics.messages_received;  // TODO(thraneh): locking
+          ++_statistics.messages_received;
         }
     }
 
@@ -123,6 +123,7 @@ class Controller final {
       auto client = std::unique_ptr<Client>(
           new Client(std::move(buffer_event), _finalizer, _server, _gateway,  _statistics));
       _initializer(std::move(client));
+      ++_statistics.client_connects;
     }
 
    private:
@@ -228,11 +229,11 @@ class Controller final {
             LOG(WARNING) << "dispatcher: caught exception, what=\"" << e.what() << "\"";
             LOG(WARNING) << "dispatcher: failed write attempt -- unable to send the event";
             failures.push_back(iter.first);
+            ++_statistics.client_disconnects;
           }
         }
         for (auto iter : failures)
           remove(iter);  // TODO(thraneh): threading
-        ++_statistics.messages_sent;
       }
 
    protected:
@@ -316,8 +317,8 @@ class Controller final {
       LOG(INFO) << "Statistics={"
         "messages_sent=" << _statistics.messages_sent << ", "
         "messages_received=" << _statistics.messages_received << ", "
-        "connections_succeeded=" << _statistics.connections_succeeded << ", "
-        "connections_failed=" << _statistics.connections_failed <<
+        "client_connects=" << _statistics.client_connects << ", "
+        "client_disconnects=" << _statistics.client_disconnects <<
         "}";
       google::FlushLogFiles(google::GLOG_INFO);
     }

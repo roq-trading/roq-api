@@ -8,6 +8,7 @@
 #include <quinclas/libevent.h>
 #include <quinclas/codec.h>
 
+#include <atomic>
 #include <list>
 #include <mutex>
 #include <string>

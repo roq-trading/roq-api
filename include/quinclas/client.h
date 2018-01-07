@@ -34,6 +34,15 @@ class Controller final {
   }
 
  private:
+  // Statistics
+  struct Statistics final {
+    uint64_t messages_sent = 0;
+    uint64_t messages_received = 0;
+    uint64_t connections_succeeded = 0;
+    uint64_t connections_failed = 0;
+  };  // Statistics
+
+ private:
   // Dispatcher
   class Dispatcher final
       : public common::Strategy::Dispatcher,
@@ -44,11 +53,12 @@ class Controller final {
           public common::Strategy::Dispatcher {
      public:
       Gateway(const std::string& name, const int domain, const std::string& address,
-              common::Strategy& strategy, libevent::Base& base, std::unordered_set<Gateway *>& callbacks,
-              const common::MessageInfo *&trace)
+              common::Strategy& strategy, libevent::Base& base, Statistics& statistics,
+              std::unordered_set<Gateway *>& callbacks, const common::MessageInfo *&trace)
           : _name(name), _domain(domain), _address(address), _base(base),
-            _event_dispatcher(*this, strategy, trace), _callbacks(callbacks),
-            _state(Disconnected), _retries(0), _retry_timer(0), _trace(trace) {}
+            _statistics(statistics), _event_dispatcher(*this, strategy, trace),
+            _callbacks(callbacks), _state(Disconnected), _retries(0), _retry_timer(0),
+            _trace(trace) {}
       bool ready() const {
         return _state == Connected;
       }
@@ -133,6 +143,7 @@ class Controller final {
         _state = Connected;
         reset_retries();
         // TODO(thraneh): notify strategy
+        ++_statistics.connections_succeeded;
       }
       void connection_failed() {
         if (_state == Connected) {
@@ -143,6 +154,7 @@ class Controller final {
         }
         _state = Failed;
         schedule_async_callback();
+        ++_statistics.connections_failed;
       }
       void write_failed() {
         LOG(INFO) << "gateway: " << _name << " write failed";
@@ -200,6 +212,7 @@ class Controller final {
           // TODO(thraneh): here we must capture MessageInfo
           _event_dispatcher.dispatch_event(payload, length_payload);
           _buffer.drain(bytes);
+          ++_statistics.messages_received;
         }
       }
       template <typename R>
@@ -217,6 +230,7 @@ class Controller final {
         _buffer.add(payload, length_payload);
         try {
           _buffer_event->write(_buffer);
+          ++_statistics.messages_sent;
         } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
           LOG(WARNING) << "gateway: caught exception, what=\"" << e.what() << "\"";
           write_failed();
@@ -251,6 +265,7 @@ class Controller final {
       const int _domain;
       const net::Address _address;
       libevent::Base& _base;
+      Statistics& _statistics;
       common::EventDispatcher _event_dispatcher;
       std::unique_ptr<libevent::BufferEvent> _buffer_event;
       libevent::Buffer _buffer;
@@ -261,15 +276,17 @@ class Controller final {
       int _retries;
       int _retry_timer;
       const common::MessageInfo *&_trace;
-    };
+    };  // Gateway
 
    public:
     template <typename... Args>
     explicit Dispatcher(const gateways_t& gateways, Args&&... args)
         : _strategy(*this, std::forward<Args>(args)...),  // request handler, then whatever the strategy needs
-          _timer(*this, _base) {
+          _timer(*this, _base),
+          _next_refresh(std::chrono::system_clock::now() + std::chrono::seconds(5)),
+          _next_statistics(_next_refresh) {
       for (const auto iter : gateways) {
-        _gateways.emplace_back(iter.first, PF_LOCAL, iter.second, _strategy, _base, _callbacks, _trace);
+        _gateways.emplace_back(iter.first, PF_LOCAL, iter.second, _strategy, _base, _statistics, _callbacks, _trace);
         Gateway& gateway = _gateways.back();
         _gateways_by_name[iter.first] = &gateway;
         _callbacks.insert(&gateway);
@@ -291,6 +308,25 @@ class Controller final {
       _gateways_by_name[gateway]->send(gateway, cancel_order);
     }
     void on_timer() override {
+      auto now = std::chrono::system_clock::now();
+      if (refresh(now)) {
+        remove_zombie_connections();
+        send_heartbeat(now);
+      }
+      if (statistics(now)) {
+        write_statistics();
+      }
+    }
+    bool refresh(const std::chrono::system_clock::time_point now) {
+      if (now < _next_refresh)
+        return false;
+      while (true) {
+        _next_refresh += std::chrono::seconds(5);
+        if (now < _next_refresh)
+          return true;
+      }
+    }
+    void remove_zombie_connections() {
       std::list<Gateway *> remove;
       for (const auto iter : _callbacks)
         if ((*iter).refresh())
@@ -301,13 +337,14 @@ class Controller final {
         for (auto iter : remove)
           _callbacks.erase(iter);
       }
-      // experimental
+    }
+    void send_heartbeat(const std::chrono::system_clock::time_point now) {
       const common::RequestInfo request_info = {
         .destination = "",
         .trace_source = "",
       };
       const common::Heartbeat heartbeat = {
-        .opaque = std::chrono::time_point_cast<common::duration_t>(std::chrono::system_clock::now()),
+        .opaque = std::chrono::time_point_cast<common::duration_t>(now),
       };
       const common::HeartbeatRequest request = {
         .request_info = request_info,
@@ -316,6 +353,25 @@ class Controller final {
       for (auto& iter : _gateways)
         if (iter.ready())
           iter.send(request);
+    }
+    bool statistics(const std::chrono::system_clock::time_point now) {
+      if (now < _next_statistics)
+        return false;
+      while (true) {
+        _next_statistics += std::chrono::minutes(5);
+        if (now < _next_statistics)
+          return true;
+      }
+    }
+    void write_statistics() {
+      std::cout << std::flush;
+      LOG(INFO) << "Statistics={"
+        "messages_sent=" << _statistics.messages_sent << ", "
+        "messages_received=" << _statistics.messages_received << ", "
+        "connections_succeeded=" << _statistics.connections_succeeded << ", "
+        "connections_failed=" << _statistics.connections_failed <<
+        "}";
+      google::FlushLogFiles(google::GLOG_INFO);
     }
 
    private:
@@ -327,11 +383,14 @@ class Controller final {
     T _strategy;
     libevent::Base _base;
     libevent::TimerEvent _timer;
+    Statistics _statistics;
     std::list<Gateway> _gateways;
     std::unordered_map<std::string, Gateway *> _gateways_by_name;
     std::unordered_set<Gateway *> _callbacks;
     const common::MessageInfo *_trace = nullptr;
-  };
+    std::chrono::system_clock::time_point _next_refresh;
+    std::chrono::system_clock::time_point _next_statistics;
+  };  // Dispatcher
 
  private:
   Controller() = delete;
@@ -340,7 +399,7 @@ class Controller final {
 
  private:
   gateways_t _gateways;
-};
+};  // Controller
 
 }  // namespace client
 }  // namespace quinclas

@@ -58,8 +58,8 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 
 You are able to access pre-built binaries from our Conda repositories
 
-* <http://quinclas.com/dist/conda/stable>
 * <http://quinclas.com/dist/conda/unstable>
+* <http://quinclas.com/dist/conda/stable>
 
 *Conda makes it easy to install programs and libraries without requiring root access.
 For further details about Conda, please refer to the official documentation ([link](https://conda.io/docs/))*.
@@ -79,7 +79,7 @@ Here is an example of how to set up your own Conda environment, install a packag
 
     # add extra channels for package sources
     conda config --add channels conda-forge
-    conda config --add channels http://quinclas.com/dist/conda/stable
+    conda config --add channels http://quinclas.com/dist/conda/unstable
 
     # create your environment
     conda create -y -n my_env_name
@@ -87,14 +87,22 @@ Here is an example of how to set up your own Conda environment, install a packag
     # activate your new environment
     source activate my_env_name
 
-    # install quinclas tradingapi
+    # install the quinclas tradingapi
     conda install -y quinclas-tradingapi
 
-    # write logs to the console
+    # write logs to the console (otherwise you'll find the logs in /tmp)
     export GLOG_logtostderr=1
 
-    # you should now be able to run the trading engine
-    example-strategy --local-address /var/tmp/gateway.unix
+    # you should now be able to run an example, like this
+    example-strategy --local-address /var/tmp/gateway.sock
+
+Of course, you will likely be interested in developing your own strategies.
+
+    # miniconda doesn't do this automatically
+    export PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig
+
+    # then you can find the necessary CFLAGS like this
+    pkg-config --cflags quinclas-tradingapi
 
 ## Broker API's
 
@@ -105,6 +113,6 @@ Pre-built binaries are available from our Conda repositories;
 | -------- | ----------------- | ------------------ | ----------- | ------------- | ----- | ------- | ----- |
 | FemasAPI | quinclas-femasapi | Chinese brokers    | Yes         | Yes           | Yes   | No      | No    |
 | TWS API  | quinclas-twsapi   | InteractiveBrokers | Yes         | Yes           | Yes   | No      | Yes   |
-| CME MDP3 | quinclas-cmemdp3  | CME Group          | Yes         | No            | No    | No      | No    |
+| CME MDP  | quinclas-cmemdp   | CME Group          | Yes         | No            | No    | No      | No    |
 
 *Gateways will only work with valid license keys. Please contact us for further details*.

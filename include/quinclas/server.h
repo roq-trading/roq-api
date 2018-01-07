@@ -35,15 +35,24 @@ class Controller final {
   }
 
  private:
+  // Statistics
+  struct Statistics final {
+    uint64_t messages_sent = 0;
+    uint64_t messages_received = 0;
+    uint64_t connections_succeeded = 0;
+    uint64_t connections_failed = 0;
+  };  // Statistics
+
+ private:
   // Client
   class Client final {
    public:
     typedef std::function<void(std::unique_ptr<Client>&&)> Initializer;
     typedef std::function<void(Client *)> Finalizer;
     Client(libevent::BufferEvent&& buffer_event, Finalizer finalizer,
-           common::Server& server, common::Gateway& gateway)
+           common::Server& server, common::Gateway& gateway, Statistics& statistics)
         : _buffer_event(std::move(buffer_event)), _finalizer(finalizer),
-          _request_dispatcher(server, gateway) {
+          _request_dispatcher(server, gateway), _statistics(statistics) {
       _buffer_event.setcb(on_read, nullptr, on_error, this);
       _buffer_event.enable(EV_READ);
     }
@@ -70,6 +79,7 @@ class Controller final {
           const auto payload = frame + common::Envelope::LENGTH;
           _request_dispatcher.dispatch_request(payload, length_payload);
           _buffer.drain(bytes);
+          ++_statistics.messages_received;  // TODO(thraneh): locking
         }
     }
 
@@ -91,7 +101,8 @@ class Controller final {
     Finalizer _finalizer;
     common::RequestDispatcher _request_dispatcher;
     libevent::Buffer _buffer;
-  };
+    Statistics& _statistics;
+  };  // Client
 
  private:
   // Service
@@ -100,15 +111,17 @@ class Controller final {
    public:
     // TODO(thraneh): somehow we must be able to pass BEV_OPT_THREADSAFE
     Service(libevent::Base& base, net::Socket&& socket, typename Client::Finalizer finalizer,
-            typename Client::Initializer initializer, common::Server& server, common::Gateway& gateway)
+            typename Client::Initializer initializer, common::Server& server, common::Gateway& gateway,
+            Statistics& statistics)
         : _listener(*this, base, 0, -1, std::move(socket), BEV_OPT_THREADSAFE),
           _finalizer(finalizer), _initializer(initializer),
-          _server(server), _gateway(gateway) {}
+          _server(server), _gateway(gateway), _statistics(statistics) {}
 
    private:
     void on_accept(libevent::BufferEvent&& buffer_event) override {
       LOG(INFO) << "service: got connection";
-      auto client = std::unique_ptr<Client>(new Client(std::move(buffer_event), _finalizer, _server, _gateway));
+      auto client = std::unique_ptr<Client>(
+          new Client(std::move(buffer_event), _finalizer, _server, _gateway,  _statistics));
       _initializer(std::move(client));
     }
 
@@ -123,7 +136,8 @@ class Controller final {
     typename Client::Initializer _initializer;
     common::Server& _server;
     common::Gateway& _gateway;
-  };
+    Statistics& _statistics;
+  };  // Service
 
  private:
   // Dispatcher
@@ -135,7 +149,9 @@ class Controller final {
     template <typename... Args>
     explicit Dispatcher(const handlers_t& handlers, Args&&... args)
         : _gateway(*this, std::forward<Args>(args)...),  // dispatcher, then whatever the gateway needs
-          _timer(*this, _base) {
+          _timer(*this, _base),
+          _next_refresh(std::chrono::system_clock::now() + std::chrono::seconds(5)),
+          _next_statistics(_next_refresh) {
       auto initializer = [this](std::unique_ptr<Client>&& client){ add(std::move(client)); };
       auto finalizer = [this](Client *client){ remove(client); };
       for (auto iter : handlers) {
@@ -145,7 +161,7 @@ class Controller final {
         socket.non_blocking(true);
         socket.bind(address);
         _services.emplace_back(std::unique_ptr<Service>(
-              new Service(_base, std::move(socket), finalizer, initializer, *this, _gateway)));
+              new Service(_base, std::move(socket), finalizer, initializer, *this, _gateway, _statistics)));
       }
     }
     void dispatch() {
@@ -207,16 +223,16 @@ class Controller final {
           _buffer.add(payload, length_payload);
           try {
             iter.second->send(_buffer);
+            ++_statistics.messages_sent;
           } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
             LOG(WARNING) << "dispatcher: caught exception, what=\"" << e.what() << "\"";
             LOG(WARNING) << "dispatcher: failed write attempt -- unable to send the event";
             failures.push_back(iter.first);
           }
         }
-        if (failures.empty())
-          return;
         for (auto iter : failures)
           remove(iter);  // TODO(thraneh): threading
+        ++_statistics.messages_sent;
       }
 
    protected:
@@ -263,10 +279,47 @@ class Controller final {
 
    private:
     void on_timer() override {
+      auto now = std::chrono::system_clock::now();
+      if (refresh(now)) {
+        remove_zombie_connections();
+      }
+      if (statistics(now)) {
+        write_statistics();
+      }
+    }
+    bool refresh(const std::chrono::system_clock::time_point now) {
+      if (now < _next_refresh)
+        return false;
+      while (true) {
+        _next_refresh += std::chrono::seconds(5);
+        if (now < _next_refresh)
+          return true;
+      }
+    }
+    void remove_zombie_connections() {
       if (_zombies.empty())
         return;
       LOG(INFO) << "controller: removing " << _zombies.size() << " zombied client(s)";
       _zombies.clear();
+    }
+    bool statistics(const std::chrono::system_clock::time_point now) {
+      if (now < _next_statistics)
+        return false;
+      while (true) {
+        _next_statistics += std::chrono::minutes(5);
+        if (now < _next_statistics)
+          return true;
+      }
+    }
+    void write_statistics() {
+      std::cout << std::flush;
+      LOG(INFO) << "Statistics={"
+        "messages_sent=" << _statistics.messages_sent << ", "
+        "messages_received=" << _statistics.messages_received << ", "
+        "connections_succeeded=" << _statistics.connections_succeeded << ", "
+        "connections_failed=" << _statistics.connections_failed <<
+        "}";
+      google::FlushLogFiles(google::GLOG_INFO);
     }
 
    private:
@@ -278,14 +331,17 @@ class Controller final {
     T _gateway;
     libevent::Base _base;
     libevent::TimerEvent _timer;
+    std::chrono::system_clock::time_point _next_refresh;
+    std::chrono::system_clock::time_point _next_statistics;
     std::list<std::unique_ptr<Service> > _services;
     std::mutex _mutex;
+    Statistics _statistics;  // threading
     std::unordered_map<Client *, std::unique_ptr<Client> > _clients;  // threading
     std::list<std::unique_ptr<Client> > _zombies;  // threading
     flatbuffers::FlatBufferBuilder _flat_buffer_builder;  // threading
     libevent::Buffer _buffer;  // threading
     uint8_t _envelope[common::Envelope::LENGTH];  // threading
-  };
+  };  // Dispatcher
 
  private:
   Controller() = delete;
@@ -294,7 +350,7 @@ class Controller final {
 
  private:
   const handlers_t& _handlers;
-};
+};  // Controller
 
 }  // namespace server
 }  // namespace quinclas

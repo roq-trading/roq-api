@@ -37,7 +37,10 @@ class Controller final {
 
  private:
   // Statistics
-  struct Statistics final {
+  class Statistics final {
+   public:
+    Statistics() : messages_sent(0), messages_received(0),
+      client_connects(0), client_disconnects(0) {}
     std::atomic<uint64_t> messages_sent;
     std::atomic<uint64_t> messages_received;
     std::atomic<uint64_t> client_connects;

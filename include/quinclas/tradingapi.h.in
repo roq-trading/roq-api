@@ -6,6 +6,7 @@
 #include <quinclas/tradingapi_generated.h>
 #include <chrono>
 #include <iostream>
+#include <utility>
 
 // Version
 #define QUINCLAS_VERSION "@PACKAGE_VERSION@"

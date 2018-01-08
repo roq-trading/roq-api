@@ -23,6 +23,8 @@ const size_t MAX_DEPTH = 10;                               ///< Maximum market-b
  */
 typedef std::chrono::microseconds duration_t;
 typedef std::chrono::time_point<std::chrono::system_clock, duration_t> time_point_t;
+typedef std::pair<const void *, size_t> buffer_t;
+typedef std::pair<buffer_t, buffer_t> message_t;
 
 /**
  * Order book layer (positional by-price aggregated view of an order book).
@@ -451,17 +453,7 @@ class Gateway {
     */
   class Dispatcher {
    public:
-    virtual void send(const GatewayStatusEvent&) = 0;      ///< Connection or login status has changed for a gateway
-    virtual void send(const ReferenceDataEvent&) = 0;      ///< Reference data update for an instrument
-    virtual void send(const MarketStatusEvent&) = 0;       ///< Market status update for an instrument
-    virtual void send(const MarketByPriceEvent&) = 0;      ///< Market-by-price update for an instrument
-    virtual void send(const SessionStatisticsEvent&) = 0;  ///< Session statistics update for an instrument
-    virtual void send(const DailyStatisticsEvent&) = 0;    ///< Daily statistics update for an instrument
-    virtual void send(const CreateOrderAckEvent&) = 0;     ///< Response to a create order request
-    virtual void send(const ModifyOrderAckEvent&) = 0;     ///< Response to a modify order request
-    virtual void send(const CancelOrderAckEvent&) = 0;     ///< Response to a cancel order request
-    virtual void send(const OrderUpdateEvent&) = 0;        ///< New order, or order details have been updated
-    virtual void send(const TradeUpdateEvent&) = 0;        ///< New trade, or trade details have been updated
+    virtual void send(const message_t& message) = 0;       ///< Send mesage.
   };
   virtual ~Gateway() = default;
   /**

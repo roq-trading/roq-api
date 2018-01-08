@@ -22,6 +22,25 @@ namespace server {
 // TODO(thraneh): handshake and heartbeat
 // TODO(thraneh): timeout -> disconnect
 
+// Encoder
+class Encoder final {
+ public:
+  template <typename T>
+  common::message_t encode(const T& event) {
+    _flat_buffer_builder.Clear();
+    _flat_buffer_builder.Finish(common::convert(_flat_buffer_builder, event));
+    const auto length_payload = _flat_buffer_builder.GetSize();
+    common::Envelope::encode(_envelope, length_payload);
+    return std::make_pair(
+        std::make_pair(_envelope, sizeof(_envelope)),
+        std::make_pair(_flat_buffer_builder.GetBufferPointer(), _flat_buffer_builder.GetSize()));
+  }
+
+ private:
+  flatbuffers::FlatBufferBuilder _flat_buffer_builder;
+  uint8_t _envelope[common::Envelope::LENGTH];
+};
+
 // Controller
 template <typename T>
 class Controller final {
@@ -60,8 +79,14 @@ class Controller final {
       _buffer_event.setcb(on_read, nullptr, on_error, this);
       _buffer_event.enable(EV_READ);
     }
+    // HANS -- drop
     void send(libevent::Buffer& buffer) {
       _buffer_event.write(buffer);
+    }
+    // HANS -- new
+    void send(const common::message_t& message) {
+      _buffer_event.write(message.first.first, message.first.second);
+      _buffer_event.write(message.second.first, message.second.second);
     }
 
    private:
@@ -176,69 +201,25 @@ class Controller final {
     }
 
    protected:
-    void send(const common::GatewayStatusEvent& event)  override {
-      send_helper(event);
-    }
-    void send(const common::ReferenceDataEvent& event)  override {
-      send_helper(event);
-    }
-    void send(const common::MarketStatusEvent& event)  override {
-      send_helper(event);
-    }
-    void send(const common::MarketByPriceEvent& event)  override {
-      send_helper(event);
-    }
-    void send(const common::SessionStatisticsEvent& event)  override {
-      send_helper(event);
-    }
-    void send(const common::DailyStatisticsEvent& event)  override {
-      send_helper(event);
-    }
-    void send(const common::CreateOrderAckEvent& event)  override {
-      send_helper(event);
-    }
-    void send(const common::ModifyOrderAckEvent& event)  override {
-      send_helper(event);
-    }
-    void send(const common::CancelOrderAckEvent& event)  override {
-      send_helper(event);
-    }
-    void send(const common::OrderUpdateEvent& event)  override {
-      send_helper(event);
-    }
-    void send(const common::TradeUpdateEvent& event)  override {
-      send_helper(event);
-    }
-
-   private:
-      template <typename E>
-      void send_helper(const E& event) {
-        // FIXME(thraneh): encoding should be extracted out threads can work in parallel
-        std::lock_guard<std::mutex> guard(_mutex);
-        if (_clients.empty())
-          return;
-        _flat_buffer_builder.Clear();
-        _flat_buffer_builder.Finish(common::convert(_flat_buffer_builder, event));
-        const auto payload = _flat_buffer_builder.GetBufferPointer();
-        const auto length_payload = _flat_buffer_builder.GetSize();
-        common::Envelope::encode(_envelope, length_payload);
-        std::list<Client *> failures;
-        for (auto& iter : _clients) {  // TODO(thraneh): threading
-          _buffer.add(_envelope, sizeof(_envelope));
-          _buffer.add(payload, length_payload);
-          try {
-            iter.second->send(_buffer);
-            ++_statistics.messages_sent;
-          } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
-            LOG(WARNING) << "dispatcher: caught exception, what=\"" << e.what() << "\"";
-            LOG(WARNING) << "dispatcher: failed write attempt -- unable to send the event";
-            failures.push_back(iter.first);
-            ++_statistics.client_disconnects;
-          }
+    void send(const common::message_t& message) override {
+      std::list<Client *> failures;
+      std::lock_guard<std::mutex> guard(_mutex);  // HANS -- _clients, _zombies
+      if (_clients.empty())
+        return;
+      for (auto& iter : _clients) {
+        try {
+          iter.second->send(message);
+          ++_statistics.messages_sent;
+        } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
+          LOG(WARNING) << "dispatcher: caught exception, what=\"" << e.what() << "\"";
+          LOG(WARNING) << "dispatcher: failed write attempt -- unable to send the event";
+          failures.push_back(iter.first);
+          ++_statistics.client_disconnects;
         }
-        for (auto iter : failures)
-          remove(iter);  // TODO(thraneh): threading
       }
+      for (auto iter : failures)
+        remove(iter);  // HANS -- maybe copy code to here so lock scope is clear
+    }
 
    protected:
     void on(const common::HandshakeRequest& request) override {
@@ -249,11 +230,12 @@ class Controller final {
       const common::HandshakeAck handshake_ack = {
         .api_version = "",
       };
-      const common::HandshakeAckEvent event = {
+      const common::HandshakeAckEvent handshake_ack_event = {
         .message_info = message_info,
         .handshake_ack = handshake_ack,
       };
-      send_helper(event);
+      const auto message = _encoder.encode(handshake_ack_event);
+      send(message);
     }
     void on(const common::HeartbeatRequest& request) override {
       // LOG(INFO) << "got heartbeat request";
@@ -263,15 +245,17 @@ class Controller final {
       const common::HeartbeatAck heartbeat_ack = {
         .opaque = request.heartbeat.opaque,
       };
-      const common::HeartbeatAckEvent event = {
+      const common::HeartbeatAckEvent heartbeat_ack_event = {
         .message_info = message_info,
         .heartbeat_ack = heartbeat_ack,
       };
-      send_helper(event);
+      const auto message = _encoder.encode(heartbeat_ack_event);
+      send(message);
     }
 
    private:
     void add(std::unique_ptr<Client>&& client) {
+      std::lock_guard<std::mutex> guard(_mutex);
       _clients.emplace(client.get(), std::move(client));
     }
     void remove(Client *client) {
@@ -302,6 +286,7 @@ class Controller final {
       }
     }
     void remove_zombie_connections() {
+      std::lock_guard<std::mutex> guard(_mutex);
       if (_zombies.empty())
         return;
       LOG(INFO) << "controller: removing " << _zombies.size() << " zombied client(s)";
@@ -346,6 +331,7 @@ class Controller final {
     flatbuffers::FlatBufferBuilder _flat_buffer_builder;  // threading
     libevent::Buffer _buffer;  // threading
     uint8_t _envelope[common::Envelope::LENGTH];  // threading
+    Encoder _encoder;
   };  // Dispatcher
 
  private:

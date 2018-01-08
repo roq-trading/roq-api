@@ -366,12 +366,12 @@ class Controller final {
     }
     void write_statistics() {
       std::cout << std::flush;
-      LOG(INFO) << "Statistics={"
+      LOG(INFO) << "Statistics("
         "messages_sent=" << _statistics.messages_sent << ", "
         "messages_received=" << _statistics.messages_received << ", "
         "connections_succeeded=" << _statistics.connections_succeeded << ", "
         "connections_failed=" << _statistics.connections_failed <<
-        "}";
+        ")";
       google::FlushLogFiles(google::GLOG_INFO);
     }
 

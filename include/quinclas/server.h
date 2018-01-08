@@ -79,11 +79,6 @@ class Controller final {
       _buffer_event.setcb(on_read, nullptr, on_error, this);
       _buffer_event.enable(EV_READ);
     }
-    // HANS -- drop
-    void send(libevent::Buffer& buffer) {
-      _buffer_event.write(buffer);
-    }
-    // HANS -- new
     void send(const common::message_t& message) {
       _buffer_event.write(message.first.first, message.first.second);
       _buffer_event.write(message.second.first, message.second.second);
@@ -91,8 +86,8 @@ class Controller final {
 
    private:
     void on_error(int reason) {
-      assert(0 == (reason & BEV_EVENT_CONNECTED));  // we don't expect the connection events when created by listener
-      _finalizer(this);  // garbage collect
+      assert(0 == (reason & BEV_EVENT_CONNECTED));  // we don't expect connection event when created by listener
+      _finalizer(this);  // schedule for garbage collection
     }
     void on_read() {
         _buffer_event.read(_buffer);
@@ -182,8 +177,14 @@ class Controller final {
           _timer(*this, _base),
           _next_refresh(std::chrono::system_clock::now() + std::chrono::seconds(5)),
           _next_statistics(_next_refresh) {
-      auto initializer = [this](std::unique_ptr<Client>&& client){ add(std::move(client)); };
-      auto finalizer = [this](Client *client){ remove(client); };
+      auto initializer = [this](std::unique_ptr<Client>&& client){
+        std::lock_guard<std::mutex> guard(_mutex);
+        add(std::move(client));
+      };
+      auto finalizer = [this](Client *client){
+        std::lock_guard<std::mutex> guard(_mutex);
+        remove(client);
+      };
       for (auto iter : handlers) {
         unlink(iter.c_str());
         net::Address address(iter);
@@ -202,10 +203,10 @@ class Controller final {
 
    protected:
     void send(const common::message_t& message) override {
-      std::list<Client *> failures;
-      std::lock_guard<std::mutex> guard(_mutex);  // HANS -- _clients, _zombies
+      std::lock_guard<std::mutex> guard(_mutex);
       if (_clients.empty())
         return;
+      std::list<Client *> failures;
       for (auto& iter : _clients) {
         try {
           iter.second->send(message);
@@ -218,7 +219,7 @@ class Controller final {
         }
       }
       for (auto iter : failures)
-        remove(iter);  // HANS -- maybe copy code to here so lock scope is clear
+        remove(iter);
     }
 
    protected:
@@ -238,7 +239,6 @@ class Controller final {
       send(message);
     }
     void on(const common::HeartbeatRequest& request) override {
-      // LOG(INFO) << "got heartbeat request";
       const common::MessageInfo message_info = {
         .gateway = "XXX",
       };
@@ -255,7 +255,6 @@ class Controller final {
 
    private:
     void add(std::unique_ptr<Client>&& client) {
-      std::lock_guard<std::mutex> guard(_mutex);
       _clients.emplace(client.get(), std::move(client));
     }
     void remove(Client *client) {
@@ -303,12 +302,12 @@ class Controller final {
     }
     void write_statistics() {
       std::cout << std::flush;
-      LOG(INFO) << "Statistics={"
+      LOG(INFO) << "Statistics("
         "messages_sent=" << _statistics.messages_sent << ", "
         "messages_received=" << _statistics.messages_received << ", "
         "client_connects=" << _statistics.client_connects << ", "
         "client_disconnects=" << _statistics.client_disconnects <<
-        "}";
+        ")";
       google::FlushLogFiles(google::GLOG_INFO);
     }
 
@@ -324,14 +323,12 @@ class Controller final {
     std::chrono::system_clock::time_point _next_refresh;
     std::chrono::system_clock::time_point _next_statistics;
     std::list<std::unique_ptr<Service> > _services;
-    std::mutex _mutex;
-    Statistics _statistics;  // threading
-    std::unordered_map<Client *, std::unique_ptr<Client> > _clients;  // threading
-    std::list<std::unique_ptr<Client> > _zombies;  // threading
-    flatbuffers::FlatBufferBuilder _flat_buffer_builder;  // threading
-    libevent::Buffer _buffer;  // threading
-    uint8_t _envelope[common::Envelope::LENGTH];  // threading
     Encoder _encoder;
+    Statistics _statistics;
+    // following must be protected by a mutex
+    std::mutex _mutex;
+    std::unordered_map<Client *, std::unique_ptr<Client> > _clients;
+    std::list<std::unique_ptr<Client> > _zombies;
   };  // Dispatcher
 
  private:

@@ -288,7 +288,8 @@ class Controller final {
     void on_timer() override {
       try {
         auto now = std::chrono::system_clock::now();
-        //  std::chrono::duration_cast<std::chrono::minutes>(now.time_since_epoch() % std::chrono::minutes(5)).count() == 0;
+        //  std::chrono::duration_cast<std::chrono::minutes>(
+        //    now.time_since_epoch() % std::chrono::minutes(5)).count() == 0;
         if (refresh(now)) {
           remove_zombie_connections();
         }

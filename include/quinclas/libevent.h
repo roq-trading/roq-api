@@ -180,7 +180,13 @@ class TimerEvent final
   TimerEvent(TimerEvent const&) = delete;
   TimerEvent& operator=(TimerEvent const&) = delete;
   static void callback(evutil_socket_t, short, void *cbarg) {  // NOLINT
-    reinterpret_cast<Handler*>(cbarg)->on_timer();
+    try {
+      reinterpret_cast<Handler*>(cbarg)->on_timer();
+    } catch (std::exception& e) {
+      LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
+    } catch (...) {
+      LOG(FATAL) << "Unexpected: unhandled exception";
+    }
   }
 };
 
@@ -203,7 +209,13 @@ class SignalEvent final
   SignalEvent(SignalEvent const&) = delete;
   SignalEvent& operator=(SignalEvent const&) = delete;
   static void callback(evutil_socket_t sig, short events, void *cbarg) {  // NOLINT
-    reinterpret_cast<Handler*>(cbarg)->on_signal(sig);
+    try {
+      reinterpret_cast<Handler*>(cbarg)->on_signal(sig);
+    } catch (std::exception& e) {
+      LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
+    } catch (...) {
+      LOG(FATAL) << "Unexpected: unhandled exception";
+    }
   }
 };
 
@@ -396,9 +408,15 @@ class Listener final {
   Listener(const Listener&) = delete;
   Listener& operator=(const Listener&) = delete;
   static void callback(struct evconnlistener *, evutil_socket_t fd, struct sockaddr *, int socklen, void *cbarg) {
-    auto& self = *reinterpret_cast<Listener*>(cbarg);
-    BufferEvent bufferevent(self._base, fd, self._buffer_event_create_flags | BEV_OPT_CLOSE_ON_FREE);
-    self._handler.on_accept(std::move(bufferevent));
+    try {
+      auto& self = *reinterpret_cast<Listener*>(cbarg);
+      BufferEvent bufferevent(self._base, fd, self._buffer_event_create_flags | BEV_OPT_CLOSE_ON_FREE);
+      self._handler.on_accept(std::move(bufferevent));
+    } catch (std::exception& e) {
+      LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
+    } catch (...) {
+      LOG(FATAL) << "Unexpected: unhandled exception";
+    }
   }
   Handler& _handler;
   struct event_base *_base;

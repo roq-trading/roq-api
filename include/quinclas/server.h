@@ -145,7 +145,6 @@ class Controller final {
   class Service final
       : public libevent::Listener::Handler {
    public:
-    // TODO(thraneh): somehow we must be able to pass BEV_OPT_THREADSAFE
     Service(libevent::Base& base, net::Socket&& socket, typename Client::Finalizer finalizer,
             typename Client::Initializer initializer, common::Server& server, common::Gateway& gateway,
             Statistics& statistics)
@@ -155,17 +154,11 @@ class Controller final {
 
    private:
     void on_accept(libevent::BufferEvent&& buffer_event) override {
-      try {
-        LOG(INFO) << "service: got connection";
-        auto client = std::unique_ptr<Client>(
-            new Client(std::move(buffer_event), _finalizer, _server, _gateway,  _statistics));
-        _initializer(std::move(client));
-        ++_statistics.client_connects;
-      } catch (std::exception& e) {
-        LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
-      } catch (...) {
-        LOG(FATAL) << "Unexpected: unhandled exception";
-      }
+      LOG(INFO) << "service: got connection";
+      auto client = std::unique_ptr<Client>(
+          new Client(std::move(buffer_event), _finalizer, _server, _gateway,  _statistics));
+      _initializer(std::move(client));
+      ++_statistics.client_connects;
     }
 
    private:
@@ -286,20 +279,14 @@ class Controller final {
 
    private:
     void on_timer() override {
-      try {
-        auto now = std::chrono::system_clock::now();
-        //  std::chrono::duration_cast<std::chrono::minutes>(
-        //    now.time_since_epoch() % std::chrono::minutes(5)).count() == 0;
-        if (refresh(now)) {
-          remove_zombie_connections();
-        }
-        if (statistics(now)) {
-          write_statistics();
-        }
-      } catch (std::exception& e) {
-        LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
-      } catch (...) {
-        LOG(FATAL) << "Unexpected: unhandled exception";
+      auto now = std::chrono::system_clock::now();
+      //  std::chrono::duration_cast<std::chrono::minutes>(
+      //    now.time_since_epoch() % std::chrono::minutes(5)).count() == 0;
+      if (refresh(now)) {
+        remove_zombie_connections();
+      }
+      if (statistics(now)) {
+        write_statistics();
       }
     }
     bool refresh(const std::chrono::system_clock::time_point now) {
@@ -322,7 +309,7 @@ class Controller final {
       if (now < _next_statistics)
         return false;
       while (true) {
-        _next_statistics += std::chrono::minutes(5);
+        _next_statistics += std::chrono::minutes(1);
         if (now < _next_statistics)
           return true;
       }

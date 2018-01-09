@@ -29,7 +29,6 @@ class Controller final {
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
     const char *trace_source = "";
-    uint32_t trace_message_id = 0;
     Dispatcher(_gateways, std::forward<Args>(args)...).dispatch();
   }
 

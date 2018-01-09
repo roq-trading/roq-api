@@ -18,7 +18,6 @@
 namespace quinclas {
 namespace server {
 
-// TODO(thraneh): locking (or two different controller implementations -- sync/non-sync)
 // TODO(thraneh): handshake and heartbeat
 // TODO(thraneh): timeout -> disconnect
 
@@ -86,33 +85,46 @@ class Controller final {
 
    private:
     void on_error(int reason) {
-      assert(0 == (reason & BEV_EVENT_CONNECTED));  // we don't expect connection event when created by listener
+      if (0 != (reason & BEV_EVENT_CONNECTED))
+        LOG(WARNING) << "Unexpected: got BEV_EVENT_CONNECTED";
       _finalizer(this);  // schedule for garbage collection
     }
     void on_read() {
-        _buffer_event.read(_buffer);
-        while (true) {
-          const auto envelope = _buffer.pullup(common::Envelope::LENGTH);
-          if (envelope == nullptr)
-            break;
-          const auto length_payload = common::Envelope::decode(envelope);
-          const auto bytes = common::Envelope::LENGTH + length_payload;
-          const auto frame = _buffer.pullup(bytes);
-          if (frame == nullptr)
-            break;
-          const auto payload = frame + common::Envelope::LENGTH;
-          _request_dispatcher.dispatch_request(payload, length_payload);
-          _buffer.drain(bytes);
-          ++_statistics.messages_received;
-        }
+      _buffer_event.read(_buffer);
+      while (true) {
+        const auto envelope = _buffer.pullup(common::Envelope::LENGTH);
+        if (envelope == nullptr)
+          break;
+        const auto length_payload = common::Envelope::decode(envelope);
+        const auto bytes = common::Envelope::LENGTH + length_payload;
+        const auto frame = _buffer.pullup(bytes);
+        if (frame == nullptr)
+          break;
+        const auto payload = frame + common::Envelope::LENGTH;
+        _request_dispatcher.dispatch_request(payload, length_payload);
+        _buffer.drain(bytes);
+        ++_statistics.messages_received;
+      }
     }
 
    private:
     static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT
-      reinterpret_cast<Client *>(arg)->on_error(what);
+      try {
+        reinterpret_cast<Client *>(arg)->on_error(what);
+      } catch (std::exception& e) {
+        LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
+      } catch (...) {
+        LOG(FATAL) << "Unexpected: unhandled exception";
+      }
     }
     static void on_read(struct bufferevent *bev, void *arg) {
-      reinterpret_cast<Client *>(arg)->on_read();
+      try {
+        reinterpret_cast<Client *>(arg)->on_read();
+      } catch (std::exception& e) {
+        LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
+      } catch (...) {
+        LOG(FATAL) << "Unexpected: unhandled exception";
+      }
     }
 
    private:
@@ -143,11 +155,17 @@ class Controller final {
 
    private:
     void on_accept(libevent::BufferEvent&& buffer_event) override {
-      LOG(INFO) << "service: got connection";
-      auto client = std::unique_ptr<Client>(
-          new Client(std::move(buffer_event), _finalizer, _server, _gateway,  _statistics));
-      _initializer(std::move(client));
-      ++_statistics.client_connects;
+      try {
+        LOG(INFO) << "service: got connection";
+        auto client = std::unique_ptr<Client>(
+            new Client(std::move(buffer_event), _finalizer, _server, _gateway,  _statistics));
+        _initializer(std::move(client));
+        ++_statistics.client_connects;
+      } catch (std::exception& e) {
+        LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
+      } catch (...) {
+        LOG(FATAL) << "Unexpected: unhandled exception";
+      }
     }
 
    private:
@@ -260,19 +278,27 @@ class Controller final {
     void remove(Client *client) {
       LOG(INFO) << "controller: removing client";
       auto iter = _clients.find(client);
-      assert(iter != _clients.end());
-      _zombies.push_back(std::move((*iter).second));
-      _clients.erase(iter);
+      if (iter != _clients.end()) {
+        _zombies.push_back(std::move((*iter).second));
+        _clients.erase(iter);
+      }
     }
 
    private:
     void on_timer() override {
-      auto now = std::chrono::system_clock::now();
-      if (refresh(now)) {
-        remove_zombie_connections();
-      }
-      if (statistics(now)) {
-        write_statistics();
+      try {
+        auto now = std::chrono::system_clock::now();
+        //  std::chrono::duration_cast<std::chrono::minutes>(now.time_since_epoch() % std::chrono::minutes(5)).count() == 0;
+        if (refresh(now)) {
+          remove_zombie_connections();
+        }
+        if (statistics(now)) {
+          write_statistics();
+        }
+      } catch (std::exception& e) {
+        LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
+      } catch (...) {
+        LOG(FATAL) << "Unexpected: unhandled exception";
       }
     }
     bool refresh(const std::chrono::system_clock::time_point now) {

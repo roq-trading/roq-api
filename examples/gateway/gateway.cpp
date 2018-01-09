@@ -16,6 +16,10 @@ void Gateway::start() {
   // good place to spawn a thread when working with 3rd party APIs
 }
 
+void Gateway::write_statistics() {
+  // option to log gateway internal statistics
+}
+
 void Gateway::on(const quinclas::common::CreateOrderRequest& request) {
   // a client has requested an order to be created
 }

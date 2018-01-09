@@ -13,6 +13,7 @@ class Gateway : public quinclas::common::Gateway {
 
  protected:
   void start() override;
+  void write_statistics() override;
   void on(const quinclas::common::CreateOrderRequest&) override;
   void on(const quinclas::common::ModifyOrderRequest&) override;
   void on(const quinclas::common::CancelOrderRequest&) override;

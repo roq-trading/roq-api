@@ -322,6 +322,7 @@ class Controller final {
         "client_connects=" << _statistics.client_connects << ", "
         "client_disconnects=" << _statistics.client_disconnects <<
         ")";
+      static_cast<common::Gateway&>(_gateway).write_statistics();
       google::FlushLogFiles(google::GLOG_INFO);
     }
 

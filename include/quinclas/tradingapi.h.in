@@ -5,6 +5,7 @@
 #include <cctz/time_zone.h>
 #include <quinclas/tradingapi_generated.h>
 #include <chrono>
+#include <cmath>
 #include <iostream>
 #include <utility>
 
@@ -544,8 +545,20 @@ class Strategy {
   virtual void on(const TradeUpdateEvent&) = 0;            ///< New trade, or trade details have been updated
 };
 
+// Number
+struct Number {
+  explicit Number(double value) : _value(value) {}
+  const double _value;
+};
+
 }  // namespace common
 }  // namespace quinclas
+
+inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Number number) {
+  if (std::isinf(number._value))
+    return stream << number._value;
+  return stream;
+}
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ConnectionStatus value) {
   return stream << quinclas::common::EnumNameConnectionStatus(value);
@@ -567,12 +580,18 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Or
   return stream << quinclas::common::EnumNameOrderStatus(value);
 }
 
+inline std::ostream& operator<<(std::ostream& stream, quinclas::common::time_point_t time_point) {
+  if (0 == time_point.time_since_epoch().count())
+    return stream << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", time_point, cctz::utc_time_zone());
+  return stream;
+}
+
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Layer& value) {
   return stream << "{"
-    "bid_price=" << value.bid_price << ", " <<
-    "bid_quantity=" << value.bid_quantity << ", " <<
-    "ask_price=" << value.ask_price << ", " <<
-    "ask_quantity=" << value.ask_quantity <<
+    "bid_price=" << quinclas::common::Number(value.bid_price) << ", "
+    "bid_quantity=" << quinclas::common::Number(value.bid_quantity) << ", "
+    "ask_price=" << quinclas::common::Number(value.ask_price) << ", "
+    "ask_quantity=" << quinclas::common::Number(value.ask_quantity) <<
     "}";
 }
 
@@ -587,27 +606,27 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ga
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ReferenceData& value) {
   return stream << "{"
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.exchange << "\", " <<
-    "tick_size=" << value.tick_size << ", "
-    "tick_size=" << value.tick_size << ", "
-    "limit_up=" << value.limit_up << ", "
-    "limit_down=" << value.limit_down <<
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.exchange << "\", "
+    "tick_size=" << quinclas::common::Number(value.tick_size) << ", "
+    "tick_size=" << quinclas::common::Number(value.tick_size) << ", "
+    "limit_up=" << quinclas::common::Number(value.limit_up) << ", "
+    "limit_down=" << quinclas::common::Number(value.limit_down) <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MarketStatus& value) {
   return stream << "{"
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.exchange << "\", " <<
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.exchange << "\", "
     "trading_status=" << value.trading_status <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MarketByPrice& value) {
   stream << "{"
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.instrument << "\", " <<
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\", "
     "layers=[";
   const size_t length = sizeof(value.depth) / sizeof(value.depth[0]);
   for (size_t index = 0; index < length; ++index) {
@@ -620,103 +639,103 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Ma
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::SessionStatistics& value) {
   return stream << "{"
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.instrument << "\", " <<
-    "open=" << value.open << ", " <<
-    "high=" << value.high << ", " <<
-    "low=" << value.low <<
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\", "
+    "open=" << quinclas::common::Number(value.open) << ", "
+    "high=" << quinclas::common::Number(value.high) << ", "
+    "low=" << quinclas::common::Number(value.low) <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::DailyStatistics& value) {
   return stream << "{"
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.instrument << "\", " <<
-    "settlement=" << value.settlement << ", " <<
-    "open_interest=" << value.open_interest << ", " <<
-    "volume=" << value.volume <<
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\", "
+    "settlement=" << quinclas::common::Number(value.settlement) << ", "
+    "open_interest=" << quinclas::common::Number(value.open_interest) << ", "
+    "volume=" << quinclas::common::Number(value.volume) <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::OrderUpdate& value) {
   return stream << "{"
-    "opaque=" << value.opaque << ", " <<
-    "order_id=" << value.order_id << ", " <<
-    "order_template=\"" << value.order_template << "\", " <<
-    "external_order_id=\"" << value.external_order_id << "\", " <<
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.instrument << "\", " <<
+    "opaque=" << value.opaque << ", "
+    "order_id=" << value.order_id << ", "
+    "order_template=\"" << value.order_template << "\", "
+    "external_order_id=\"" << value.external_order_id << "\", "
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\", "
     "status=" << value.status << ", "
     "trade_direction=" << value.trade_direction << ", "
-    "remaining_quantity=" << value.remaining_quantity << ", "
-    "traded_quantity=" << value.traded_quantity << ", "
-    "insert_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.insert_time, cctz::utc_time_zone()) << ", " <<
-    "cancel_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.cancel_time, cctz::utc_time_zone()) <<
+    "remaining_quantity=" << quinclas::common::Number(value.remaining_quantity) << ", "
+    "traded_quantity=" << quinclas::common::Number(value.traded_quantity) << ", "
+    "insert_time=" << value.insert_time << ", "
+    "cancel_time=" << value.cancel_time <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::TradeUpdate& value) {
   return stream << "{"
-    "order_id=" << value.order_id << ", " <<
-    "external_order_id=\"" << value.external_order_id << "\", " <<
-    "external_trade_id=\"" << value.external_trade_id << "\", " <<
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.instrument << "\", " <<
+    "order_id=" << value.order_id << ", "
+    "external_order_id=\"" << value.external_order_id << "\", "
+    "external_trade_id=\"" << value.external_trade_id << "\", "
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\", "
     "trade_direction=" << value.trade_direction << ", "
-    "quantity=" << value.quantity << ", "
-    "price=" << value.price << ", "
-    "trade_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.trade_time, cctz::utc_time_zone()) <<
+    "quantity=" << quinclas::common::Number(value.quantity) << ", "
+    "price=" << quinclas::common::Number(value.price) << ", "
+    "trade_time=" << value.trade_time <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CreateOrderAck& value) {
   return stream << "{"
-    "opaque=" << value.opaque << ", " <<
-    "order_id=" << value.order_id << ", " <<
-    "failure=" << (value.failure ? "true" : "false") << ", " <<
-    "reason=\"" << value.reason << "\", " <<
-    "order_template=\"" << value.order_template << "\", " <<
-    "external_order_id=\"" << value.external_order_id << "\", " <<
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.instrument << "\"" <<
+    "opaque=" << value.opaque << ", "
+    "order_id=" << value.order_id << ", "
+    "failure=" << (value.failure ? "true" : "false") << ", "
+    "reason=\"" << value.reason << "\", "
+    "order_template=\"" << value.order_template << "\", "
+    "external_order_id=\"" << value.external_order_id << "\", "
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\""
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ModifyOrderAck& value) {
   return stream << "{"
-    "opaque=" << value.opaque << ", " <<
-    "order_id=" << value.order_id << ", " <<
-    "failure=" << (value.failure ? "true" : "false") << ", " <<
-    "reason=\"" << value.reason << "\", " <<
-    "order_template=\"" << value.order_template << "\", " <<
-    "external_order_id=\"" << value.external_order_id << "\", " <<
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.instrument << "\", " <<
-    "quantity_change=" << value.quantity_change << ", " <<
-    "limit_price=" << value.limit_price <<
+    "opaque=" << value.opaque << ", "
+    "order_id=" << value.order_id << ", "
+    "failure=" << (value.failure ? "true" : "false") << ", "
+    "reason=\"" << value.reason << "\", "
+    "order_template=\"" << value.order_template << "\", "
+    "external_order_id=\"" << value.external_order_id << "\", "
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\", "
+    "quantity_change=" << quinclas::common::Number(value.quantity_change) << ", "
+    "limit_price=" << quinclas::common::Number(value.limit_price) <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::CancelOrderAck& value) {
   return stream << "{"
-    "opaque=" << value.opaque << ", " <<
-    "order_id=" << value.order_id << ", " <<
-    "failure=" << (value.failure ? "true" : "false") << ", " <<
-    "reason=\"" << value.reason << "\", " <<
-    "order_template=\"" << value.order_template << "\", " <<
-    "external_order_id=\"" << value.external_order_id << "\", " <<
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.instrument << "\"" <<
+    "opaque=" << value.opaque << ", "
+    "order_id=" << value.order_id << ", "
+    "failure=" << (value.failure ? "true" : "false") << ", "
+    "reason=\"" << value.reason << "\", "
+    "order_template=\"" << value.order_template << "\", "
+    "external_order_id=\"" << value.external_order_id << "\", "
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\""
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::MessageInfo& value) {
   return stream << "{"
-    "gateway=\"" << value.gateway << "\", " <<
-    "message_id=" << value.message_id << ", " <<
-    "exchange_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.exchange_time, cctz::utc_time_zone()) << ", " <<
-    "receive_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.receive_time, cctz::utc_time_zone()) << ", " <<
-    "enqueue_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.enqueue_time, cctz::utc_time_zone()) <<
+    "gateway=\"" << value.gateway << "\", "
+    "message_id=" << value.message_id << ", "
+    "exchange_time=" << value.exchange_time << ", "
+    "receive_time=" << value.receive_time << ", "
+    "enqueue_time=" << value.enqueue_time <<
     "}";
 }
 
@@ -801,20 +820,20 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Cr
   return stream << "{"
     "opaque=" << value.opaque << ", "
     "order_template=" << value.order_template << ", "
-    "exchange=\"" << value.exchange << "\", " <<
-    "instrument=\"" << value.instrument << "\", " <<
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\", "
     "direction=" << value.direction << ", "
-    "quantity=" << value.quantity << ", "
-    "limit_price=" << value.limit_price << ", "
-    "stop_price=" << value.stop_price <<
+    "quantity=" << quinclas::common::Number(value.quantity) << ", "
+    "limit_price=" << quinclas::common::Number(value.limit_price) << ", "
+    "stop_price=" << quinclas::common::Number(value.stop_price) <<
     "}";
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::ModifyOrder& value) {
   return stream << "{"
     "order_id=" << value.order_id <<
-    "quantity_change=" << value.quantity_change << ", "
-    "limit_price=" << value.limit_price <<
+    "quantity_change=" << quinclas::common::Number(value.quantity_change) << ", "
+    "limit_price=" << quinclas::common::Number(value.limit_price) <<
     "}";
 }
 
@@ -829,8 +848,8 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Re
     "destination=\"" << value.destination << "\", "
     "trace_source=\"" << value.trace_source << "\", "
     "trace_message_id=" << value.trace_message_id << ", "
-    "send_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.send_time, cctz::utc_time_zone()) << ", "
-    "receive_time=" << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", value.receive_time, cctz::utc_time_zone()) <<
+    "send_time=" << value.send_time << ", "
+    "receive_time=" << value.receive_time <<
     "}";
 }
 

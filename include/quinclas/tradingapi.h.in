@@ -582,8 +582,8 @@ inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Or
 
 inline std::ostream& operator<<(std::ostream& stream, quinclas::common::time_point_t time_point) {
   if (0 == time_point.time_since_epoch().count())
-    return stream << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", time_point, cctz::utc_time_zone());
-  return stream;
+    return stream;
+  return stream << cctz::format("%E4Y-%m-%dT%H:%M:%E6S", time_point, cctz::utc_time_zone());
 }
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Layer& value) {

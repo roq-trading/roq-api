@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/quinclas/tradingapi.svg?branch=master)](https://travis-ci.org/quinclas/tradingapi)
+
 # Standardized access to broker APIs.
 
 Copyright (c) 2017-2018, Hans Erik Thrane.

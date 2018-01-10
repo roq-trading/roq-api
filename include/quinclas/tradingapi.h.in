@@ -555,7 +555,7 @@ struct Number {
 }  // namespace quinclas
 
 inline std::ostream& operator<<(std::ostream& stream, const quinclas::common::Number number) {
-  if (std::isinf(number._value))
+  if (std::isfinite(number._value))
     return stream << number._value;
   return stream;
 }

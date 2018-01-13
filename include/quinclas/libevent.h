@@ -499,7 +499,6 @@ class HTTPRequest final {
 
  private:
   struct evhttp_request *_evhttp_request;
-  bool _own;  // TODO(thraneh): any scenarios where we really this?
 };
 
 // HTTP

@@ -46,11 +46,12 @@ class Controller final {
   typedef std::unordered_set<std::string> handlers_t;
 
  public:
-  explicit Controller(const handlers_t& handlers) : _handlers(handlers) {}
+  explicit Controller(const uint16_t monitor_port, const handlers_t& handlers)
+      : _monitor_port(monitor_port), _handlers(handlers) {}
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
-    libevent::Thread::use_pthreads();
-    Dispatcher(_handlers, std::forward<Args>(args)...).dispatch();
+    libevent::use_pthreads();
+    Dispatcher(_handlers, _monitor_port, std::forward<Args>(args)...).dispatch();
   }
 
  private:
@@ -75,7 +76,7 @@ class Controller final {
            common::Server& server, common::Gateway& gateway, Statistics& statistics)
         : _buffer_event(std::move(buffer_event)), _finalizer(finalizer),
           _request_dispatcher(server, gateway), _statistics(statistics) {
-      _buffer_event.setcb(on_read, nullptr, on_error, this);
+      _buffer_event.setcb([this](){ on_read(); }, [this](int what){ on_error(what); });
       _buffer_event.enable(EV_READ);
     }
     void send(const common::message_t& message) {
@@ -108,26 +109,6 @@ class Controller final {
     }
 
    private:
-    static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT
-      try {
-        reinterpret_cast<Client *>(arg)->on_error(what);
-      } catch (std::exception& e) {
-        LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
-      } catch (...) {
-        LOG(FATAL) << "Unexpected: unhandled exception";
-      }
-    }
-    static void on_read(struct bufferevent *bev, void *arg) {
-      try {
-        reinterpret_cast<Client *>(arg)->on_read();
-      } catch (std::exception& e) {
-        LOG(FATAL) << "Unexpected: unhandled exception: " << e.what();
-      } catch (...) {
-        LOG(FATAL) << "Unexpected: unhandled exception";
-      }
-    }
-
-   private:
     Client() = delete;
     Client(const Client&) = delete;
     Client& operator=(const Client&) = delete;
@@ -142,19 +123,19 @@ class Controller final {
 
  private:
   // Service
-  class Service final
-      : public libevent::Listener::Handler {
+  class Service final {
    public:
     Service(libevent::Base& base, net::Socket&& socket, typename Client::Finalizer finalizer,
             typename Client::Initializer initializer, common::Server& server, common::Gateway& gateway,
             Statistics& statistics)
-        : _listener(*this, base, 0, -1, std::move(socket), BEV_OPT_THREADSAFE),
+        : _listener(base, 0, -1, std::move(socket), BEV_OPT_THREADSAFE,
+            [this](libevent::BufferEvent&& buffer_event){ on_accept(std::move(buffer_event)); }),
           _finalizer(finalizer), _initializer(initializer),
           _server(server), _gateway(gateway), _statistics(statistics) {}
 
    private:
-    void on_accept(libevent::BufferEvent&& buffer_event) override {
-      LOG(INFO) << "service: got connection";
+    void on_accept(libevent::BufferEvent&& buffer_event) {
+      LOG(INFO) << "got connection";
       auto client = std::unique_ptr<Client>(
           new Client(std::move(buffer_event), _finalizer, _server, _gateway,  _statistics));
       _initializer(std::move(client));
@@ -179,13 +160,12 @@ class Controller final {
   // Dispatcher
   class Dispatcher final
       : public common::Server,
-        public common::Gateway::Dispatcher,
-        public libevent::TimerEvent::Handler {
+        public common::Gateway::Dispatcher {
    public:
     template <typename... Args>
-    explicit Dispatcher(const handlers_t& handlers, Args&&... args)
+    explicit Dispatcher(const handlers_t& handlers, uint16_t port, Args&&... args)
         : _gateway(*this, std::forward<Args>(args)...),  // dispatcher, then whatever the gateway needs
-          _timer(*this, _base),
+          _timer(_base, [this](){ on_timer(); }),
           _next_refresh(std::chrono::system_clock::now() + std::chrono::seconds(5)),
           _next_statistics(_next_refresh) {
       auto initializer = [this](std::unique_ptr<Client>&& client){
@@ -208,7 +188,7 @@ class Controller final {
     }
     void dispatch() {
       static_cast<common::Gateway&>(_gateway).start();
-      _timer.add({.tv_sec = 1});
+      _timer.add(std::chrono::seconds(1)),
       _base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
     }
 
@@ -223,8 +203,8 @@ class Controller final {
           iter.second->send(message);
           ++_statistics.messages_sent;
         } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
-          LOG(WARNING) << "dispatcher: caught exception, what=\"" << e.what() << "\"";
-          LOG(WARNING) << "dispatcher: failed write attempt -- unable to send the event";
+          LOG(WARNING) << "caught exception, what=\"" << e.what() << "\"";
+          LOG(WARNING) << "failed write attempt -- unable to send the event";
           failures.push_back(iter.first);
           ++_statistics.client_disconnects;
         }
@@ -269,7 +249,7 @@ class Controller final {
       _clients.emplace(client.get(), std::move(client));
     }
     void remove(Client *client) {
-      LOG(INFO) << "controller: removing client";
+      LOG(INFO) << "removing client";
       auto iter = _clients.find(client);
       if (iter != _clients.end()) {
         _zombies.push_back(std::move((*iter).second));
@@ -278,7 +258,7 @@ class Controller final {
     }
 
    private:
-    void on_timer() override {
+    void on_timer() {
       auto now = std::chrono::system_clock::now();
       //  std::chrono::duration_cast<std::chrono::minutes>(
       //    now.time_since_epoch() % std::chrono::minutes(5)).count() == 0;
@@ -302,7 +282,7 @@ class Controller final {
       std::lock_guard<std::mutex> guard(_mutex);
       if (_zombies.empty())
         return;
-      LOG(INFO) << "controller: removing " << _zombies.size() << " zombied client(s)";
+      LOG(INFO) << "removing " << _zombies.size() << " zombied client(s)";
       _zombies.clear();
     }
     bool statistics(const std::chrono::system_clock::time_point now) {
@@ -334,7 +314,7 @@ class Controller final {
    private:
     T _gateway;
     libevent::Base _base;
-    libevent::TimerEvent _timer;
+    libevent::Timer _timer;
     std::chrono::system_clock::time_point _next_refresh;
     std::chrono::system_clock::time_point _next_statistics;
     std::list<std::unique_ptr<Service> > _services;
@@ -352,6 +332,7 @@ class Controller final {
   Controller& operator=(const Controller&) = delete;
 
  private:
+  uint16_t _monitor_port;
   const handlers_t& _handlers;
 };  // Controller
 

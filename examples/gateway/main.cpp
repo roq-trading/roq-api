@@ -10,6 +10,7 @@
 using namespace examples::gateway;  // NOLINT
 
 DEFINE_string(local_address, "", "host-internal socket address (path)");
+DEFINE_int32(monitor_port, 0, "monitor port (port)");
 
 int main(int argc, char *argv[]) {
   // initialize logging library
@@ -29,6 +30,14 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
+  if (FLAGS_monitor_port == 0) {
+    LOG(ERROR) << "monitor-port is a required parameter";
+    return EXIT_FAILURE;
+  } else if (FLAGS_monitor_port < 0 || FLAGS_monitor_port > std::numeric_limits<uint16_t>::max()) {
+    LOG(ERROR) << "monitor-port is out of range";
+    return EXIT_FAILURE;
+  }
+
   LOG(INFO) << "===== START =====";
 
   // configuration
@@ -37,9 +46,9 @@ int main(int argc, char *argv[]) {
 
   // create framework, instantiate gateway and start even dispatching
 
-  quinclas::server::Controller<Gateway>({
-    FLAGS_local_address,
-  }).create_and_dispatch(latency);
+  quinclas::server::Controller<Gateway>(
+      static_cast<uint16_t>(FLAGS_monitor_port),
+      { FLAGS_local_address }).create_and_dispatch(latency);
 
   LOG(INFO) << "===== STOP =====";
 

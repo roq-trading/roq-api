@@ -44,8 +44,7 @@ class Controller final {
  private:
   // Dispatcher
   class Dispatcher final
-      : public common::Strategy::Dispatcher,
-        public libevent::TimerEvent::Handler {
+      : public common::Strategy::Dispatcher {
     // Gateway
     class Gateway final
         : public common::Client,
@@ -117,14 +116,14 @@ class Controller final {
 
      private:
       bool try_connect() {
-        LOG(INFO) << "gateway: " << _name << " connecting to " << _address.to_string();
+        LOG(INFO) << "[" << _name << "] connecting to " << _address.to_string();
         increment_retries();
         try {
           connect();
           _state = Connecting;
           return true;  // remove
         } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
-          LOG(WARNING) << "gateway: caught exception, what=\"" << e.what() << "\"";
+          LOG(WARNING) << "caught exception, what=\"" << e.what() << "\"";
           reset_retry_timer();
           return false;
         }
@@ -138,7 +137,7 @@ class Controller final {
         return false;
       }
       void connection_succeeded() {
-        LOG(INFO) << "gateway: " << _name << " connected";
+        LOG(INFO) << "[" << _name << "] connected";
         _state = Connected;
         reset_retries();
         // TODO(thraneh): notify strategy
@@ -146,17 +145,17 @@ class Controller final {
       }
       void connection_failed() {
         if (_state == Connected) {
-          LOG(INFO) << "gateway: " << _name << " disconnected";
+          LOG(INFO) << "[" << _name << "] disconnected";
           // TODO(thraneh): notify strategy
         } else {
-          LOG(INFO) << "gateway: " << _name << " connection attempt " << _retries << " failed";
+          LOG(INFO) << "[" << _name << "] connection attempt " << _retries << " failed";
         }
         _state = Failed;
         schedule_async_callback();
         ++_statistics.connections_failed;
       }
       void write_failed() {
-        LOG(INFO) << "gateway: " << _name << " write failed";
+        LOG(INFO) << "[" << _name << "] write failed";
         _state = Failed;
         schedule_async_callback();
       }
@@ -184,8 +183,9 @@ class Controller final {
         socket.non_blocking(true);
         assert(!_buffer_event);  // should have been cleared when connection attempt failed
         auto buffer_event = std::unique_ptr<libevent::BufferEvent>(
-          new libevent::BufferEvent(_base, std::move(socket)));
-        buffer_event->setcb(on_read, nullptr, on_error, this);
+          new libevent::BufferEvent(_base, std::move(socket), 0));
+        buffer_event->setcb([this](){ on_read(); },
+                            [this](int what){ on_error(what); });
         buffer_event->enable(EV_READ);
         buffer_event->connect(_address);
         _buffer_event = std::move(buffer_event);
@@ -217,7 +217,7 @@ class Controller final {
       template <typename R>
       void send_helper(R request) {
         if (_state != Connected) {
-          LOG(ERROR) << "gateway: " << _name << " not connected -- unable to send the request";
+          LOG(ERROR) << "[" << _name << "] not connected -- unable to send the request";
           throw std::runtime_error("unable to send the request");
         }
         _flat_buffer_builder.Clear();
@@ -231,20 +231,12 @@ class Controller final {
           _buffer_event->write(_buffer);
           ++_statistics.messages_sent;
         } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
-          LOG(WARNING) << "gateway: caught exception, what=\"" << e.what() << "\"";
+          LOG(WARNING) << "caught exception, what=\"" << e.what() << "\"";
           write_failed();
           ++_statistics.connections_failed;
-          LOG(WARNING) << "gateway: " << _name << " failed write attempt -- unable to send the request";
+          LOG(WARNING) << "[" << _name << "] failed write attempt -- unable to send the request";
           throw std::runtime_error("unable to send the request");
         }
-      }
-
-     private:
-      static void on_error(struct bufferevent *bev, short what, void *arg) {  // NOLINT short
-        reinterpret_cast<Gateway *>(arg)->on_error(what);
-      }
-      static void on_read(struct bufferevent *bev, void *arg) {
-        reinterpret_cast<Gateway *>(arg)->on_read();
       }
 
      protected:
@@ -282,7 +274,7 @@ class Controller final {
     template <typename... Args>
     explicit Dispatcher(const gateways_t& gateways, Args&&... args)
         : _strategy(*this, std::forward<Args>(args)...),  // request handler, then whatever the strategy needs
-          _timer(*this, _base),
+          _timer(_base, [this](){ on_timer(); }),
           _next_refresh(std::chrono::system_clock::now() + std::chrono::seconds(5)),
           _next_statistics(_next_refresh) {
       for (const auto iter : gateways) {
@@ -293,7 +285,7 @@ class Controller final {
       }
     }
     void dispatch() {
-      _timer.add({.tv_sec = 1});
+      _timer.add(std::chrono::seconds(1));
       _base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
     }
 
@@ -307,7 +299,7 @@ class Controller final {
     void send(const char *gateway, const common::CancelOrder& cancel_order) override {
       _gateways_by_name[gateway]->send(gateway, cancel_order);
     }
-    void on_timer() override {
+    void on_timer() {
       auto now = std::chrono::system_clock::now();
       if (refresh(now)) {
         remove_zombie_connections();
@@ -382,7 +374,7 @@ class Controller final {
    private:
     T _strategy;
     libevent::Base _base;
-    libevent::TimerEvent _timer;
+    libevent::Timer _timer;
     Statistics _statistics;
     std::list<Gateway> _gateways;
     std::unordered_map<std::string, Gateway *> _gateways_by_name;

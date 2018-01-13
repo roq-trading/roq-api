@@ -18,13 +18,23 @@
 namespace quinclas {
 namespace net {
 
+class RuntimeError : public std::exception {
+ public:
+  explicit RuntimeError(std::string&& what) : _what(std::move(what)) {
+    VLOG(1) << "RuntimeError, what=" << _what.c_str();
+  }
+  const char *what() const noexcept override { return _what.c_str(); }
+ private:
+  std::string _what;
+};
+
 class Address final {
  public:
   explicit Address(const char *path) : _size(sizeof(_address.un)) {
     std::memset(&_address.un, 0, sizeof(_address.un));
     _address.un.sun_family = AF_LOCAL;
     if (sizeof(_address.un.sun_path) <= std::strlen(path))
-      throw std::runtime_error("net: path is too long");
+      throw RuntimeError("path is too long");
     strncpy(_address.un.sun_path, path, sizeof(_address.un.sun_path));
   }
   explicit Address(const std::string& path) : Address(path.c_str()) {}
@@ -35,7 +45,7 @@ class Address final {
     _address.in.sin_port = htons(port);
     _address.in.sin_addr = address;
   }
-  const struct sockaddr *raw() const {
+  const struct sockaddr *get() const {
     return reinterpret_cast<const struct sockaddr *>(&_address);
   }
   size_t size() const { return _size; }
@@ -44,7 +54,7 @@ class Address final {
       case sizeof(_address.un):
         return std::string(_address.un.sun_path);
       case sizeof(_address.in):
-        throw std::runtime_error("ipv4 address not implemented");  // TODO(thraneh): implement
+        throw RuntimeError("ipv4 address not implemented");  // TODO(thraneh): implement
       default:
         assert(false);  // not a valid address?
     }
@@ -64,7 +74,7 @@ class Socket final {
   explicit Socket(int fd) : _fd(fd) {}
   Socket(int domain, int type, int protocol) : _fd(socket(domain, type, protocol)) {
     if (_fd < 0) {
-      PLOG(WARNING) << "net: socket() failed";
+      PLOG(WARNING) << "socket() failed";
       throw std::system_error(errno, std::system_category());
     }
   }
@@ -83,7 +93,7 @@ class Socket final {
     return *this;
   }
   operator int() const { return _fd; }
-  int raw() const { return _fd; }
+  int get() const { return _fd; }
   int release() {
     int res = -1;
     std::swap(_fd, res);
@@ -91,23 +101,23 @@ class Socket final {
   }
   void bind(const struct sockaddr *address, socklen_t address_len) {
     if (::bind(_fd, address, address_len) < 0) {
-      PLOG(WARNING) << "net: bind() failed";
+      PLOG(WARNING) << "bind() failed";
       throw std::system_error(errno, std::system_category());
     }
   }
   void bind(const Address& address) {
-    bind(address.raw(), address.size());
+    bind(address.get(), address.size());
   }
   void listen(int backlog) {
     if (::listen(_fd, backlog) < 0) {
-      PLOG(WARNING) << "net: bind() failed";
+      PLOG(WARNING) << "bind() failed";
       throw std::system_error(errno, std::system_category());
     }
   }
   Socket accept(struct sockaddr *address, socklen_t *address_len) const {
     const auto fd = ::accept(_fd, address, address_len);
     if (fd < 0) {
-      PLOG(WARNING) << "net: accept() failed";
+      PLOG(WARNING) << "accept() failed";
       throw std::system_error(errno, std::system_category());
     }
     return Socket(fd);
@@ -115,7 +125,7 @@ class Socket final {
   int getfl() const {
     const auto flags = ::fcntl(_fd, F_GETFL);
     if (flags < 0) {
-      PLOG(WARNING) << "net: fcntl(F_GETFL) failed";
+      PLOG(WARNING) << "fcntl(F_GETFL) failed";
       throw std::system_error(errno, std::system_category());
     }
     return flags;
@@ -124,7 +134,7 @@ class Socket final {
     auto flags = getfl();
     flags = mode ? (flags | option) : (flags & ~option);
     if (::fcntl(_fd, F_SETFL, flags) < 0) {
-      PLOG(WARNING) << "net: fcntl(F_SETFL) failed";
+      PLOG(WARNING) << "fcntl(F_SETFL) failed";
       throw std::system_error(errno, std::system_category());
     }
   }
@@ -133,7 +143,7 @@ class Socket final {
     T value;
     socklen_t length = sizeof(value);
     if (::getsockopt(_fd, level, option_name, &value, &length) < 0) {
-      PLOG(WARNING) << "net: getsockopt() failed";
+      PLOG(WARNING) << "getsockopt() failed";
       throw std::system_error(errno, std::system_category());
     }
     return value;
@@ -141,7 +151,7 @@ class Socket final {
   template <typename T>
   void setsockopt(int level, int option_name, T value) {
     if (::setsockopt(_fd, level, option_name, &value, sizeof(value)) < 0) {
-      PLOG(WARNING) << "net: setsockopt() failed";
+      PLOG(WARNING) << "setsockopt() failed";
       throw std::system_error(errno, std::system_category());
     }
   }

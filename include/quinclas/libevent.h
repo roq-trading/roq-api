@@ -456,10 +456,15 @@ class Listener final {
 class HTTPRequest final {
  public:
   explicit HTTPRequest(struct evhttp_request *evhttp_request)
-      : _evhttp_request(evhttp_request) {}
+      : _evhttp_request(evhttp_request) {
+    evhttp_request_own(_evhttp_request);  // FIXME(thraneh): this doesn't work?
+  }
   ~HTTPRequest() {
-    if (_evhttp_request != nullptr)
-      evhttp_request_free(_evhttp_request);
+    /* FIXME(thraneh): see comment about evhttp_request_own
+    if (evhttp_request_is_owned(_evhttp_request) == 1)
+      if (_evhttp_request != nullptr)
+        evhttp_request_free(_evhttp_request);
+    */
   }
   enum evhttp_cmd_type get_command() {
     return evhttp_request_get_command(_evhttp_request);
@@ -497,6 +502,7 @@ class HTTPRequest final {
 
  private:
   struct evhttp_request *_evhttp_request;
+  bool _own;  // TODO(thraneh): any scenarios where we really this?
 };
 
 // HTTP

@@ -197,12 +197,24 @@ class Controller final {
 
    private:
     void on(libevent::HTTPRequest&& request) {
-      // request.send_error(404, "NOT FOUND");
-      request.add_output_header("Content-Type", "application/json");
-      libevent::Buffer buffer;
-      buffer.add("{\"hello\":\"world\"}", 17);
-      request.send_reply(200, "OK", buffer);
-    };
+      switch (request.get_command()) {
+        case EVHTTP_REQ_GET: {
+          request.add_output_header("Content-Type", "application/json");
+          libevent::Buffer buffer;
+          buffer.add("{\"hello\":\"world\"}", 17);
+          request.send_reply(200, "OK", buffer);
+          break;
+        }
+        case EVHTTP_REQ_HEAD: {
+          libevent::Buffer buffer;
+          request.send_reply(200, "OK", buffer);
+          break;
+        }
+        default: {
+          request.send_error(404, "NOT FOUND");
+        }
+      }
+    }
 
    protected:
     void send(const common::message_t& message) override {

@@ -201,8 +201,7 @@ class Controller final {
     void on(libevent::HTTPRequest&& request) {
       switch (request.get_command()) {
         case EVHTTP_REQ_GET: {
-          DLOG(INFO) << "uri: " << request.get_uri();
-          if (std::strcmp(request.get_uri(), "prometheus") == 0) {
+          if (std::strcmp(request.get_uri(), "/prometheus/metrics") == 0) {
             // https://prometheus.io/docs/instrumenting/exposition_formats/
             request.add_header("Content-Type", "text/plain; version=0.0.4");
             libevent::Buffer buffer;

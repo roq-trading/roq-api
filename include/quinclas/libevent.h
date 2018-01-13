@@ -269,6 +269,12 @@ class Buffer final {
     if (evbuffer_add(_evbuffer, data, datlen) < 0)
       throw RuntimeError("evbuffer_add");
   }
+  template<typename... Args>
+  void printf(const char* fmt, Args... args) {
+    auto bytes = evbuffer_add_printf(_evbuffer, fmt, args...);
+    if (bytes < 0)
+      throw RuntimeError("evbuffer_add_printf");
+  }
 
  private:
   Buffer(const Buffer&) = delete;
@@ -469,7 +475,7 @@ class HTTPRequest final {
   enum evhttp_cmd_type get_command() {
     return evhttp_request_get_command(_evhttp_request);
   }
-  std::string get_uri() {
+  const char *get_uri() {
     return evhttp_request_get_uri(_evhttp_request);
   }
   void send_error(int error, const char *reason) {
@@ -481,19 +487,10 @@ class HTTPRequest final {
   void send_reply(int code, const char *reason, Buffer& buffer) {
     send_reply(code, reason, buffer.get());
   }
-  void add_output_header(const char *key, const char *value) {
+  void add_header(const char *key, const char *value) {
     if (evhttp_add_header(evhttp_request_get_output_headers(_evhttp_request), key, value) < 0)
       throw RuntimeError("evhttp_add_header");
   }
-  /*
-  struct evbuffer *get_output_buffer() {
-    return evhttp_request_get_output_buffer(_evhttp_request);
-  }
-  */
-  // const struct evhttp_uri *evhttp_request_get_evhttp_uri(const struct evhttp_request *req);
-  // enum evhttp_cmd_type evhttp_request_get_command(const struct evhttp_request *req);
-  // struct evkeyvalq *evhttp_request_get_input_headers(struct evhttp_request *req);
-  // struct evhttp_uri *evhttp_uri_parse(const char *source_uri);
 
  private:
   HTTPRequest() = delete;
@@ -524,9 +521,12 @@ class HTTP final {
     if (evhttp_bind_socket(_evhttp, address, port) < 0)
       throw RuntimeError("evhttp_bind_socket");
   }
-  void set_allowed_methods(uint16_t methods) {  // e.g. EVHTTP_REQ_GET | EVHTTP_REQ_OPTIONS
+  void set_allowed_methods(uint16_t methods) {  // e.g. EVHTTP_REQ_HEAD|EVHTTP_REQ_GET
     evhttp_set_allowed_methods(_evhttp, methods);
   }
+  // note! this interface is dangerous with current implementation
+  // the reason is that it should be possible to take ownership of the request
+  // however, it doesn't seem to work (see comments above)
   typedef std::function<void(HTTPRequest&&)> handler_t;
   void add(handler_t&& handler) {
     _handlers.emplace_back(std::move(handler));
@@ -557,8 +557,6 @@ class HTTP final {
   struct evhttp *_evhttp;
   std::list<handler_t> _handlers;
 };
-
-// TODO(thraneh): consider this pattern std::unique_ptr<evhttp, decltype(&evhttp_free)>(evhttp_start(...))
 
 }  // namespace libevent
 }  // namespace quinclas

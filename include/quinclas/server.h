@@ -2,6 +2,8 @@
 
 #pragma once
 
+#define __STDC_FORMAT_MACROS
+
 #include <glog/logging.h>
 
 #include <quinclas/tradingapi.h>
@@ -199,10 +201,22 @@ class Controller final {
     void on(libevent::HTTPRequest&& request) {
       switch (request.get_command()) {
         case EVHTTP_REQ_GET: {
-          request.add_output_header("Content-Type", "application/json");
-          libevent::Buffer buffer;
-          buffer.add("{\"hello\":\"world\"}", 17);
-          request.send_reply(200, "OK", buffer);
+          DLOG(INFO) << "uri: " << request.get_uri();
+          if (std::strcmp(request.get_uri(), "prometheus") == 0) {
+            // https://prometheus.io/docs/instrumenting/exposition_formats/
+            request.add_header("Content-Type", "text/plain; version=0.0.4");
+            libevent::Buffer buffer;
+            buffer.printf(
+                "HELP connections Gateway counters.\n"
+                "TYPE connections counter\n"
+                "connections{type=\"client\"} %" PRIu64 " %" PRIu64 "\n"
+                "\n",
+                uint64_t(123),
+                uint64_t(1395066363000));  // milliseconds
+            request.send_reply(200, "OK", buffer);
+          } else {
+            request.send_error(404, "NOT FOUND");
+          }
           break;
         }
         case EVHTTP_REQ_HEAD: {

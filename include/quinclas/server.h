@@ -52,7 +52,7 @@ class Controller final {
       : _monitor_port(monitor_port), _handlers(handlers) {}
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
-    libevent::use_pthreads();
+    libevent::Threading::enable();
     Dispatcher(_monitor_port, _handlers, std::forward<Args>(args)...).dispatch();
   }
 

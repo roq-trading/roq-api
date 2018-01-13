@@ -25,15 +25,18 @@ namespace libevent {
 
 // generic utilities
 
-static void unhandled_exception() {
-  try {
-    throw;
-  } catch (std::exception& e) {
-    LOG(FATAL) << "Unhandled exception, type=" << typeid(e).name() << ", what=" << e.what();
-  } catch (...) {
-    LOG(FATAL) << "Unhandled exception";
+class UnhandledException {
+ public:
+  static void terminate() {
+    try {
+      throw;
+    } catch (std::exception& e) {
+      LOG(FATAL) << "Unhandled exception, type=" << typeid(e).name() << ", what=" << e.what();
+    } catch (...) {
+      LOG(FATAL) << "Unhandled exception";
+    }
   }
-}
+};
 
 class RuntimeError : public std::exception {
  public:
@@ -47,14 +50,17 @@ class RuntimeError : public std::exception {
 
 // threading support
 
-static void use_pthreads() {
+class Threading {
+ public:
+  static void enable() {
 #if EVTHREAD_USE_PTHREADS_IMPLEMENTED == 1
-  if (evthread_use_pthreads() < 0)
-    throw RuntimeError("evthread_use_pthreads");
+    if (evthread_use_pthreads() < 0)
+      throw RuntimeError("evthread_use_pthreads");
 #else
 #error "libevent does not support pthread operations"
 #endif
-}
+  }
+};
 
 // Base
 
@@ -175,7 +181,7 @@ class Timer final {
     try {
       (*reinterpret_cast<handler_t *>(cbarg))();
     } catch (...) {
-      unhandled_exception();
+      UnhandledException::terminate();
     }
   }
 
@@ -208,7 +214,7 @@ class SignalEvent final {
     try {
       (*reinterpret_cast<handler_t *>(cbarg))(sig);
     } catch (...) {
-      unhandled_exception();
+      UnhandledException::terminate();
     }
   }
 
@@ -374,7 +380,7 @@ class BufferEvent final {
       const auto& self = *reinterpret_cast<BufferEvent*>(ctx);
       self._read_handler();
     } catch (...) {
-      unhandled_exception();
+      UnhandledException::terminate();
     }
   }
   static void write_callback(struct bufferevent *bev, void *ctx) {
@@ -382,7 +388,7 @@ class BufferEvent final {
       const auto& self = *reinterpret_cast<BufferEvent*>(ctx);
       self._write_handler();
     } catch (...) {
-      unhandled_exception();
+      UnhandledException::terminate();
     }
   }
   static void error_callback(struct bufferevent *bev, short what, void *ctx) {  // NOLINT
@@ -390,7 +396,7 @@ class BufferEvent final {
       const auto& self = *reinterpret_cast<BufferEvent*>(ctx);
       self._error_handler(what);
     } catch (...) {
-      unhandled_exception();
+      UnhandledException::terminate();
     }
   }
 
@@ -440,7 +446,7 @@ class Listener final {
       BufferEvent bufferevent(self._base, fd, self._create_flags | BEV_OPT_CLOSE_ON_FREE);
       self._handler(std::move(bufferevent));
     } catch (...) {
-      unhandled_exception();
+      UnhandledException::terminate();
     }
   }
 
@@ -543,7 +549,7 @@ class HTTP final {
       HTTPRequest request(evhttp_request);
       (*reinterpret_cast<handler_t *>(arg))(std::move(request));
     } catch (...) {
-      unhandled_exception();
+      UnhandledException::terminate();
     }
   }
 

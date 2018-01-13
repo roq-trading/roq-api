@@ -51,7 +51,7 @@ class Controller final {
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
     libevent::use_pthreads();
-    Dispatcher(_handlers, _monitor_port, std::forward<Args>(args)...).dispatch();
+    Dispatcher(_monitor_port, _handlers, std::forward<Args>(args)...).dispatch();
   }
 
  private:
@@ -163,8 +163,9 @@ class Controller final {
         public common::Gateway::Dispatcher {
    public:
     template <typename... Args>
-    explicit Dispatcher(const handlers_t& handlers, uint16_t port, Args&&... args)
+    explicit Dispatcher(uint16_t monitor_port, const handlers_t& handlers, Args&&... args)
         : _gateway(*this, std::forward<Args>(args)...),  // dispatcher, then whatever the gateway needs
+          _http(_base),
           _timer(_base, [this](){ on_timer(); }),
           _next_refresh(std::chrono::system_clock::now() + std::chrono::seconds(5)),
           _next_statistics(_next_refresh) {
@@ -185,12 +186,23 @@ class Controller final {
         _services.emplace_back(std::unique_ptr<Service>(
               new Service(_base, std::move(socket), finalizer, initializer, *this, _gateway, _statistics)));
       }
+      _http.add([this](libevent::HTTPRequest&& request){ on(std::move(request)); });
+      _http.bind("0.0.0.0", monitor_port);
     }
     void dispatch() {
       static_cast<common::Gateway&>(_gateway).start();
       _timer.add(std::chrono::seconds(1)),
       _base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
     }
+
+   private:
+    void on(libevent::HTTPRequest&& request) {
+      // request.send_error(404, "NOT FOUND");
+      request.add_output_header("Content-Type", "application/json");
+      libevent::Buffer buffer;
+      buffer.add("{\"hello\":\"world\"}", 17);
+      request.send_reply(200, "OK", buffer);
+    };
 
    protected:
     void send(const common::message_t& message) override {
@@ -314,6 +326,7 @@ class Controller final {
    private:
     T _gateway;
     libevent::Base _base;
+    libevent::HTTP _http;
     libevent::Timer _timer;
     std::chrono::system_clock::time_point _next_refresh;
     std::chrono::system_clock::time_point _next_statistics;

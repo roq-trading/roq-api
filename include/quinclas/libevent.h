@@ -16,7 +16,9 @@
 
 #include <chrono>
 #include <cstring>
+#include <list>
 #include <string>
+#include <utility>
 
 namespace quinclas {
 namespace libevent {
@@ -459,19 +461,34 @@ class HTTPRequest final {
     if (_evhttp_request != nullptr)
       evhttp_request_free(_evhttp_request);
   }
+  enum evhttp_cmd_type get_command() {
+    return evhttp_request_get_command(_evhttp_request);
+  }
+  std::string get_uri() {
+    return evhttp_request_get_uri(_evhttp_request);
+  }
   void send_error(int error, const char *reason) {
     evhttp_send_error(_evhttp_request, error, reason);
   }
   void send_reply(int code, const char *reason, struct evbuffer *databuf) {
     evhttp_send_reply(_evhttp_request, code, reason, databuf);
   }
+  void send_reply(int code, const char *reason, Buffer& buffer) {
+    send_reply(code, reason, buffer.get());
+  }
+  void add_output_header(const char *key, const char *value) {
+    if (evhttp_add_header(evhttp_request_get_output_headers(_evhttp_request), key, value) < 0)
+      throw RuntimeError("evhttp_add_header");
+  }
+  /*
   struct evbuffer *get_output_buffer() {
     return evhttp_request_get_output_buffer(_evhttp_request);
   }
-  // const char *evhttp_request_get_uri(const struct evhttp_request *req);
+  */
   // const struct evhttp_uri *evhttp_request_get_evhttp_uri(const struct evhttp_request *req);
   // enum evhttp_cmd_type evhttp_request_get_command(const struct evhttp_request *req);
   // struct evkeyvalq *evhttp_request_get_input_headers(struct evhttp_request *req);
+  // struct evhttp_uri *evhttp_uri_parse(const char *source_uri);
 
  private:
   HTTPRequest() = delete;
@@ -491,6 +508,8 @@ class HTTP final {
     if (_evhttp == nullptr)
       throw RuntimeError("evhttp_new");
   }
+  explicit HTTP(libevent::Base& base)
+      : HTTP(base.get()) {}
   ~HTTP() {
     if (_evhttp != nullptr)
       evhttp_free(_evhttp);
@@ -503,12 +522,14 @@ class HTTP final {
     evhttp_set_allowed_methods(_evhttp, methods);
   }
   typedef std::function<void(HTTPRequest&&)> handler_t;
-  void set_cb(const char *path, const handler_t& handler) {
-    if (evhttp_set_cb(_evhttp, path, callback, &const_cast<handler_t&>(handler)) < 0)
-      throw RuntimeError("evhttp_set_cb");
+  void add(handler_t&& handler) {
+    _handlers.emplace_back(std::move(handler));
+    evhttp_set_gencb(_evhttp, callback, &*_handlers.rbegin());
   }
-  void set_gencb(const handler_t& handler) {
-    evhttp_set_gencb(_evhttp, callback, &const_cast<handler_t&>(handler));
+  void add(const char *path, handler_t&& handler) {
+    _handlers.emplace_back(std::move(handler));
+    if (evhttp_set_cb(_evhttp, path, callback, &*_handlers.rbegin()) < 0)
+      throw RuntimeError("evhttp_set_cb");
   }
 
  private:
@@ -528,6 +549,7 @@ class HTTP final {
 
  private:
   struct evhttp *_evhttp;
+  std::list<handler_t> _handlers;
 };
 
 // TODO(thraneh): consider this pattern std::unique_ptr<evhttp, decltype(&evhttp_free)>(evhttp_start(...))

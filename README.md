@@ -2,7 +2,7 @@
 [![License: BSD](https://img.shields.io/badge/license-BSD-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Join the chat at https://gitter.im/quinclas/Lobby](https://badges.gitter.im/quinclas/Lobby.svg)](https://gitter.im/quinclas/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# Standardized access to broker APIs.
+# Generic trading interface to broker APIs.
 
 Copyright (c) 2017-2018, Hans Erik Thrane.
 

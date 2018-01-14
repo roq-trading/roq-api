@@ -122,7 +122,7 @@ class Controller final {
           connect();
           _state = Connecting;
           return true;  // remove
-        } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
+        } catch (std::exception& e) {  // TODO(thraneh): maybe a more specific exception type?
           LOG(WARNING) << "caught exception, what=\"" << e.what() << "\"";
           reset_retry_timer();
           return false;
@@ -230,7 +230,7 @@ class Controller final {
         try {
           _buffer_event->write(_buffer);
           ++_statistics.messages_sent;
-        } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
+        } catch (std::exception& e) {  // TODO(thraneh): maybe a more specific exception type?
           LOG(WARNING) << "caught exception, what=\"" << e.what() << "\"";
           write_failed();
           ++_statistics.connections_failed;

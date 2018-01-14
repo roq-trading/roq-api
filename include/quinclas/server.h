@@ -239,7 +239,7 @@ class Controller final {
         try {
           iter.second->send(message);
           ++_statistics.messages_sent;
-        } catch (std::runtime_error& e) {  // TODO(thraneh): maybe a more specific exception type?
+        } catch (std::exception& e) {  // TODO(thraneh): maybe a more specific exception type?
           LOG(WARNING) << "caught exception, what=\"" << e.what() << "\"";
           LOG(WARNING) << "failed write attempt -- unable to send the event";
           failures.push_back(iter.first);

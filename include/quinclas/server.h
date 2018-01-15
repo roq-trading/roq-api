@@ -231,23 +231,26 @@ class Controller final {
 
    protected:
     void send(const common::message_t& message) override {
-      std::lock_guard<std::mutex> guard(_mutex);
-      if (_clients.empty())
-        return;
+      size_t length;
       std::list<Client *> failures;
-      for (auto& iter : _clients) {
-        try {
-          iter.second->send(message);
-          ++_statistics.messages_sent;
-        } catch (std::exception& e) {  // TODO(thraneh): maybe a more specific exception type?
-          LOG(WARNING) << "caught exception, what=\"" << e.what() << "\"";
-          LOG(WARNING) << "failed write attempt -- unable to send the event";
-          failures.push_back(iter.first);
-          ++_statistics.client_disconnects;
+      {
+        std::lock_guard<std::mutex> guard(_mutex);
+        length = _clients.size();
+        if (length == 0)
+          return;
+        for (auto& iter : _clients) {
+          try {
+            iter.second->send(message);
+          } catch (std::exception& e) {  // TODO(thraneh): maybe a more specific exception type?
+            LOG(INFO) << "caught exception, type=" << typeid(e).name() << ", what=\"" << e.what() << "\"";
+            failures.push_back(iter.first);
+          }
         }
+        for (auto iter : failures)
+          remove(iter);
       }
-      for (auto iter : failures)
-        remove(iter);
+      _statistics.messages_sent += length;
+      _statistics.client_disconnects += failures.size();
     }
 
    protected:

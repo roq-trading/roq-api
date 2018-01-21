@@ -62,6 +62,37 @@ class Threading {
   }
 };
 
+// logging support
+
+class Logging {
+ public:
+  static void enable_debug(uint32_t which) {
+    event_enable_debug_logging(which);
+  }
+  static void use_glog() {
+    event_set_log_callback(error_callback);
+    event_set_fatal_callback(fatal_callback);
+  }
+ private:
+  static void error_callback(int severity, const char *msg) {
+    switch (severity) {
+      case EVENT_LOG_DEBUG:
+      case EVENT_LOG_MSG:
+        LOG(INFO) << "[libevent] " << msg;
+        break;
+      case EVENT_LOG_WARN:
+      case EVENT_LOG_ERR:
+        LOG(WARNING) << "[libevent] " << msg;
+        break;
+      default:
+        LOG(WARNING) << "[libevent] (unknown severity) " << msg;
+    }
+  }
+  static void fatal_callback(int err) {
+    LOG(FATAL) << "[libevent] " << err;
+  }
+};
+
 // Base
 
 class Base final {

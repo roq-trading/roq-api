@@ -73,6 +73,7 @@ class Logging {
     event_set_log_callback(error_callback);
     event_set_fatal_callback(fatal_callback);
   }
+
  private:
   static void error_callback(int severity, const char *msg) {
     switch (severity) {

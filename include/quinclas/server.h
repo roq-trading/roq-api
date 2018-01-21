@@ -53,6 +53,7 @@ class Controller final {
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
     libevent::Threading::enable();
+    libevent::Logging::use_glog();
     Dispatcher(_monitor_port, _handlers, std::forward<Args>(args)...).dispatch();
   }
 

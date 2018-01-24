@@ -446,6 +446,14 @@ class Server {
 };
 
 /**
+ * Metrics interface.
+ */
+class Metrics {
+ public:
+  virtual void add(const char *name, uint64_t value) = 0;
+};
+
+/**
  * Gateway interface.
  */
 class Gateway {
@@ -463,9 +471,9 @@ class Gateway {
    */
   virtual void start() = 0;
   /**
-   * Log statistics.
+   * Get metrics.
    */
-  virtual void write_statistics() = 0;
+  virtual void get(Metrics& metrics) = 0;
   // TODO(thraneh): client connect & disconnet
   /**
    * CreateOrder request.

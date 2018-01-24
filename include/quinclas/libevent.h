@@ -72,6 +72,7 @@ class Logging {
   static void use_glog() {
     event_set_log_callback(error_callback);
     event_set_fatal_callback(fatal_callback);
+    LOG(INFO) << "[libevent] version=" << event_get_version();
   }
 
  private:

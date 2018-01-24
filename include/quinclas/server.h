@@ -160,6 +160,11 @@ class Controller final {
   };  // Service
 
  private:
+  class Metrics : public quinclas::common::Metrics {
+   public:
+    void add(const char *name, uint64_t value) {
+    }
+  };
   // Dispatcher
   class Dispatcher final
       : public common::Server,
@@ -204,15 +209,23 @@ class Controller final {
         case EVHTTP_REQ_GET: {
           if (std::strcmp(request.get_uri(), "/metrics") == 0) {
             // https://prometheus.io/docs/instrumenting/exposition_formats/
+            const auto now = std::chrono::time_point_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now()).time_since_epoch().count();
             request.add_header("Content-Type", "text/plain; version=0.0.4");
             libevent::Buffer buffer;
             buffer.printf(
-                "HELP connections Gateway counters.\n"
-                "TYPE connections counter\n"
-                "connections{type=\"client\"} %" PRIu64 " %" PRIu64 "\n"
+                "# HELP connections Gateway counters.\n"
+                "# TYPE connections counter\n"
+                "connections{type=\"messages_sent\"} %" PRIu64 " %" PRIu64 "\n"
+                "connections{type=\"messages_received\"} %" PRIu64 " %" PRIu64 "\n"
+                "connections{type=\"client_connects\"} %" PRIu64 " %" PRIu64 "\n"
+                "connections{type=\"client_disconnects\"} %" PRIu64 " %" PRIu64 "\n"
                 "\n",
-                uint64_t(123),
-                uint64_t(1395066363000));  // milliseconds
+                uint64_t(_statistics.messages_sent), uint64_t(now),
+                uint64_t(_statistics.messages_received), uint64_t(now),
+                uint64_t(_statistics.client_connects), uint64_t(now),
+                uint64_t(_statistics.client_disconnects), uint64_t(now)
+                );
             request.send_reply(200, "OK", buffer);
           } else {
             request.send_error(404, "NOT FOUND");
@@ -337,13 +350,16 @@ class Controller final {
     }
     void write_statistics() {
       std::cout << std::flush;
+      // HANS
+      Metrics metrics;
       LOG(INFO) << "Statistics("
         "messages_sent=" << _statistics.messages_sent << ", "
         "messages_received=" << _statistics.messages_received << ", "
         "client_connects=" << _statistics.client_connects << ", "
         "client_disconnects=" << _statistics.client_disconnects <<
         ")";
-      static_cast<common::Gateway&>(_gateway).write_statistics();
+      static_cast<common::Gateway&>(_gateway).get(metrics);
+      // write metrics
       google::FlushLogFiles(google::GLOG_INFO);
     }
 

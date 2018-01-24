@@ -224,8 +224,7 @@ class Controller final {
                 uint64_t(_statistics.messages_sent), uint64_t(now),
                 uint64_t(_statistics.messages_received), uint64_t(now),
                 uint64_t(_statistics.client_connects), uint64_t(now),
-                uint64_t(_statistics.client_disconnects), uint64_t(now)
-                );
+                uint64_t(_statistics.client_disconnects), uint64_t(now));
             request.send_reply(200, "OK", buffer);
           } else {
             request.send_error(404, "NOT FOUND");

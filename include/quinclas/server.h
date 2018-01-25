@@ -214,12 +214,12 @@ class Controller final {
             std::stringstream ss;
             ss <<
                 "# TYPE " << _name << "_messages counter\n" <<
-                _name << "_messages{type=\"sent\"} " << _statistics.messages_sent << "\n" <<
-                _name << "_messages{type=\"received\"} " << _statistics.messages_received << "\n"
+                _name << "_client_messages{type=\"sent\"} " << _statistics.messages_sent << "\n" <<
+                _name << "_client_messages{type=\"received\"} " << _statistics.messages_received << "\n"
                 "\n"
                 "# TYPE " << _name << "_connections counter\n" <<
-                _name << "_connections{type=\"accepted\"} " << _statistics.client_connects << "\n" <<
-                _name << "_connections{type=\"closed\"} " << _statistics.client_disconnects << "\n" <<
+                _name << "_client_connections{type=\"accepted\"} " << _statistics.client_connects << "\n" <<
+                _name << "_client_connections{type=\"closed\"} " << _statistics.client_disconnects << "\n" <<
                 "\n";
             static_cast<common::Gateway&>(_gateway).get_metrics(ss, "prometheus");
             const auto body = ss.str();

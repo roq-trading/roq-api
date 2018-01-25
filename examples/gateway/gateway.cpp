@@ -16,7 +16,7 @@ void Gateway::start() {
   // good place to spawn a thread when working with 3rd party APIs
 }
 
-void Gateway::get(quinclas::common::Metrics&) {
+void Gateway::get_metrics(std::ostream& stream, const char *format) {
   // option to log gateway internal statistics
 }
 

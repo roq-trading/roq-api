@@ -446,14 +446,6 @@ class Server {
 };
 
 /**
- * Metrics interface.
- */
-class Metrics {
- public:
-  virtual void add(const char *name, uint64_t value) = 0;
-};
-
-/**
  * Gateway interface.
  */
 class Gateway {
@@ -472,8 +464,11 @@ class Gateway {
   virtual void start() = 0;
   /**
    * Get metrics.
+   *
+   * @param ostream output stream.
+   * @param format output format.
    */
-  virtual void get(Metrics& metrics) = 0;
+  virtual void get_metrics(std::ostream& ostream, const char *format) = 0;
   // TODO(thraneh): client connect & disconnet
   /**
    * CreateOrder request.

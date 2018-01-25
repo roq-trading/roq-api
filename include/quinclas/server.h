@@ -11,6 +11,7 @@
 #include <quinclas/tradingapi.h>
 
 #include <atomic>
+#include <csignal>
 #include <list>
 #include <mutex>
 #include <sstream>

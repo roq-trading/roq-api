@@ -13,6 +13,7 @@ class Gateway : public quinclas::common::Gateway {
 
  protected:
   void start() override;
+  void stop() override;
   void get_metrics(std::ostream& stream, const char *format) override;
   void on(const quinclas::common::CreateOrderRequest&) override;
   void on(const quinclas::common::ModifyOrderRequest&) override;

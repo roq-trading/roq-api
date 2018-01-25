@@ -228,19 +228,19 @@ class Timer final {
   struct event *_event;
 };
 
-// SignalEvent
+// Signal
 
-class SignalEvent final {
+class Signal final {
  public:
   typedef std::function<void(int)> handler_t;
-  SignalEvent(struct event_base *base, int signal, handler_t&& handler)
+  Signal(struct event_base *base, int signal, handler_t&& handler)
       : _handler(std::move(handler)),
         _event(event_new(base, signal, EV_SIGNAL | EV_PERSIST, callback, &_handler)) {
     if (_event == nullptr)
       throw RuntimeError("event_new");
   }
-  SignalEvent(Base& base, int signal, handler_t&& handler)
-      : SignalEvent(base.get(), signal, std::move(handler)) {}
+  Signal(Base& base, int signal, handler_t&& handler)
+      : Signal(base.get(), signal, std::move(handler)) {}
 
  private:
   static void callback(evutil_socket_t sig, short events, void *cbarg) {  // NOLINT
@@ -252,9 +252,9 @@ class SignalEvent final {
   }
 
  private:
-  SignalEvent() = delete;
-  SignalEvent(SignalEvent const&) = delete;
-  SignalEvent& operator=(SignalEvent const&) = delete;
+  Signal() = delete;
+  Signal(Signal const&) = delete;
+  Signal& operator=(Signal const&) = delete;
 
  private:
   handler_t _handler;

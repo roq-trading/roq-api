@@ -463,6 +463,10 @@ class Gateway {
    */
   virtual void start() = 0;
   /**
+   * Stop the event loop.
+   */
+  virtual void stop() = 0;
+  /**
    * Get metrics.
    *
    * @param ostream output stream.

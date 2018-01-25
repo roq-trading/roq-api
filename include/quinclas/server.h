@@ -171,6 +171,8 @@ class Controller final {
         : _gateway(*this, std::forward<Args>(args)...),  // dispatcher, then whatever the gateway needs
           _http(_base),
           _timer(_base, [this](){ on_timer(); }),
+          _sigterm(_base, SIGTERM, [this](int signal){ on_shutdown(signal); }),
+          _sigint(_base, SIGINT, [this](int signal){ on_shutdown(signal); }),
           _next_refresh(std::chrono::system_clock::now() + std::chrono::seconds(5)),
           _next_statistics(_next_refresh) {
       auto initializer = [this](std::unique_ptr<Client>&& client){
@@ -316,6 +318,11 @@ class Controller final {
         write_statistics();
       }
     }
+    void on_shutdown(int signal) {
+      LOG(INFO) << "received signal: " << strsignal(signal);
+      _base.loopbreak();
+      static_cast<quinclas::common::Gateway&>(_gateway).stop();
+    }
     bool refresh(const std::chrono::system_clock::time_point now) {
       if (now < _next_refresh)
         return false;
@@ -362,6 +369,8 @@ class Controller final {
     libevent::Base _base;
     libevent::HTTP _http;
     libevent::Timer _timer;
+    libevent::Signal _sigterm;
+    libevent::Signal _sigint;
     std::chrono::system_clock::time_point _next_refresh;
     std::chrono::system_clock::time_point _next_statistics;
     std::list<std::unique_ptr<Service> > _services;

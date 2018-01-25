@@ -10,6 +10,7 @@
 using namespace examples::gateway;  // NOLINT
 
 DEFINE_string(local_address, "", "host-internal socket address (path)");
+DEFINE_string(name, "", "name");
 DEFINE_int32(monitor_port, 0, "monitor port (port)");
 
 int main(int argc, char *argv[]) {
@@ -30,6 +31,11 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
+  if (FLAGS_name.empty()) {
+    LOG(ERROR) << "name is a required parameter";
+    return EXIT_FAILURE;
+  }
+
   if (FLAGS_monitor_port == 0) {
     LOG(ERROR) << "monitor-port is a required parameter";
     return EXIT_FAILURE;
@@ -47,7 +53,7 @@ int main(int argc, char *argv[]) {
   // create framework, instantiate gateway and start even dispatching
 
   quinclas::server::Controller<Gateway>(
-      static_cast<uint16_t>(FLAGS_monitor_port),
+      FLAGS_name, static_cast<uint16_t>(FLAGS_monitor_port),
       { FLAGS_local_address }).create_and_dispatch(latency);
 
   LOG(INFO) << "===== STOP =====";

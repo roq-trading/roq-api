@@ -50,13 +50,15 @@ class Controller final {
   typedef std::unordered_set<std::string> handlers_t;
 
  public:
-  explicit Controller(const uint16_t monitor_port, const handlers_t& handlers)
-      : _monitor_port(monitor_port), _handlers(handlers) {}
+  Controller(const char *name, const uint16_t monitor_port, const handlers_t& handlers)
+      : _name(name), _monitor_port(monitor_port), _handlers(handlers) {}
+  Controller(const std::string& name, const uint16_t monitor_port, const handlers_t& handlers)
+      : Controller(name.c_str(), monitor_port, handlers) {}
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
     libevent::Threading::enable();
     libevent::Logging::use_glog();
-    Dispatcher(_monitor_port, _handlers, std::forward<Args>(args)...).dispatch();
+    Dispatcher(_name, _monitor_port, _handlers, std::forward<Args>(args)...).dispatch();
   }
 
  private:
@@ -168,8 +170,9 @@ class Controller final {
         public common::Gateway::Dispatcher {
    public:
     template <typename... Args>
-    explicit Dispatcher(uint16_t monitor_port, const handlers_t& handlers, Args&&... args)
-        : _gateway(*this, std::forward<Args>(args)...),  // dispatcher, then whatever the gateway needs
+    explicit Dispatcher(const std::string& name, uint16_t monitor_port, const handlers_t& handlers, Args&&... args)
+        : _gateway(*this, name, std::forward<Args>(args)...),  // dispatcher, then whatever the gateway needs
+          _name(name),
           _http(_base),
           _timer(_base, [this](){ on_timer(); }),
           _sigterm(_base, SIGTERM, [this](int signal){ on_shutdown(signal); }),
@@ -210,12 +213,13 @@ class Controller final {
             // https://prometheus.io/docs/instrumenting/exposition_formats/
             std::stringstream ss;
             ss <<
-                "# HELP connections Gateway counters.\n"
-                "# TYPE connections counter\n"
-                "connections{type=\"messages_sent\"} " << _statistics.messages_sent << "\n"
-                "connections{type=\"messages_received\"} " << _statistics.messages_received << "\n"
-                "connections{type=\"client_connects\"} " << _statistics.client_connects << "\n"
-                "connections{type=\"client_disconnects\"} " << _statistics.client_disconnects << "\n"
+                "# TYPE " << _name << "_messages counter\n" <<
+                _name << "_messages{type=\"sent\"} " << _statistics.messages_sent << "\n" <<
+                _name << "_messages{type=\"received\"} " << _statistics.messages_received << "\n"
+                "\n"
+                "# TYPE " << _name << "_connections counter\n" <<
+                _name << "_connections{type=\"accepted\"} " << _statistics.client_connects << "\n" <<
+                _name << "_connections{type=\"closed\"} " << _statistics.client_disconnects << "\n" <<
                 "\n";
             static_cast<common::Gateway&>(_gateway).get_metrics(ss, "prometheus");
             const auto body = ss.str();
@@ -367,6 +371,7 @@ class Controller final {
 
    private:
     T _gateway;
+    std::string _name;
     libevent::Base _base;
     libevent::HTTP _http;
     libevent::Timer _timer;
@@ -389,6 +394,7 @@ class Controller final {
   Controller& operator=(const Controller&) = delete;
 
  private:
+  std::string _name;
   uint16_t _monitor_port;
   const handlers_t& _handlers;
 };  // Controller

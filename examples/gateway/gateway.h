@@ -4,12 +4,15 @@
 
 #include <quinclas/server.h>
 
+#include <string>
+
 namespace examples {
 namespace gateway {
 
 class Gateway : public quinclas::common::Gateway {
  public:
-  Gateway(quinclas::common::Gateway::Dispatcher& dispatcher, const int latency);
+  Gateway(quinclas::common::Gateway::Dispatcher& dispatcher, const std::string& name,
+          const int latency);
 
  protected:
   void start() override;

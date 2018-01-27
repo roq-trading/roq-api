@@ -14,13 +14,11 @@ struct Config {
   explicit Config(const std::string& config_file);
 
  private:
-  // needed to support c++11 move
+  // simple wrapper of libconfig::Config (mainly to support c++11 move semantics)
   class ConfigReader final {
    public:
     explicit ConfigReader(const std::string& config_file);
-    const libconfig::Config& get() const {
-      return _config;
-    }
+    const libconfig::Setting& get(const char *lookup) const;
 
    private:
     ConfigReader() = delete;

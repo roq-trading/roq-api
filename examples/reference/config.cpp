@@ -14,27 +14,27 @@ namespace {
       const char *value = iter;
       result.emplace(std::make_pair(name, value));
     }
-    /*
-    for (const auto& iter : result)
-      LOG(INFO) << iter.first << " " << iter.second;
-    */
     return result;
   }
 }  // namespace
 
-Config::Config(const std::string& config_file)
-    : Config(std::move(ConfigReader(config_file))) {
+Config::Config(const std::string& config_file) : Config(std::move(ConfigReader(config_file))) {}
+
+Config::Config(ConfigReader&& config_reader)
+    : gateways(std::move(parse_gateways(config_reader.get("gateways")))) {
+  // log the configuration
   LOG(INFO) << "gateways = {";
   for (const auto& iter : gateways)
     LOG(INFO) << "    " << iter.first << ": " << iter.second;
   LOG(INFO) << "}";
 }
 
-Config::Config(ConfigReader&& config_reader)
-    : gateways(std::move(parse_gateways(config_reader.get().getRoot().lookup("gateways")))) {}
-
 Config::ConfigReader::ConfigReader(const std::string& config_file) {
   _config.readFile(config_file.c_str());
+}
+
+const libconfig::Setting& Config::ConfigReader::get(const char *name) const {
+  return _config.getRoot().lookup(name);
 }
 
 }  // namespace reference

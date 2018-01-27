@@ -30,5 +30,6 @@ include/quinclas/tradingapi.h
 include/quinclas/quinclas
 tests/tradingapi-tests
 examples/strategy/example-strategy
-examples/gateway/example-gateway
 examples/collector/example-collector
+examples/reference/example-reference
+examples/gateway/example-gateway

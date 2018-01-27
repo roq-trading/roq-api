@@ -27,17 +27,21 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
+  try {
   // Read config file.
-  Config config(FLAGS_config_file);
+    Config config(FLAGS_config_file);
 
-  // Ready.
-  LOG(INFO) << "===== START =====";
+    // Ready.
+    LOG(INFO) << "===== START =====";
 
-  // Create and dispatch.
-  quinclas::client::Controller<Strategy>(config.gateways).create_and_dispatch(config);
+    // Create and dispatch.
+    quinclas::client::Controller<Strategy>(config.gateways).create_and_dispatch(config);
 
-  // Done.
-  LOG(INFO) << "===== STOP =====";
+    // Done.
+    LOG(INFO) << "===== STOP =====";
 
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
+  } catch (libconfig::ParseException& exception) {
+    LOG(FATAL) << exception.what() << "(file=" << exception.getFile() << ", line=" << exception.getLine() << ")";
+  }
 }

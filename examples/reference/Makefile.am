@@ -4,6 +4,7 @@ example_reference_LDFLAGS = \
 	$(LIBGLOG_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(LIBEVENT_LIBS) \
+	$(LIBCONFIG_LIBS) \
 	$(CCTZ_LIBS)
 example_reference_CPPFLAGS = \
 	-I$(top_srcdir)/include \
@@ -12,6 +13,7 @@ example_reference_CPPFLAGS = \
 	$(LIBGLOG_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
 	$(LIBEVENT_CFLAGS) \
+	$(LIBCONFIG_CFLAGS) \
 	$(CCTZ_CFLAGS)
 example_reference_SOURCES = config.cpp position.cpp strategy.cpp main.cpp
 EXTRA_example_reference_SOURCES = config.h position.h strategy.h

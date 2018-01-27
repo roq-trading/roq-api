@@ -4,13 +4,33 @@
 
 #include <string>
 #include <unordered_map>
+#include <libconfig.h++>
 
 namespace examples {
 namespace reference {
 
-class Config final {
+struct Config {
  public:
   explicit Config(const std::string& config_file);
+
+ private:
+  // needed to support c++11 move
+  class ConfigReader final {
+   public:
+    explicit ConfigReader(const std::string& config_file);
+    const libconfig::Config& get() const {
+      return _config;
+    }
+
+   private:
+    ConfigReader() = delete;
+    ConfigReader(ConfigReader&) = delete;
+    ConfigReader& operator=(ConfigReader&) = delete;
+
+   private:
+    libconfig::Config _config;
+  };
+  explicit Config(ConfigReader&& config_reader);
 
  private:
   Config() = delete;

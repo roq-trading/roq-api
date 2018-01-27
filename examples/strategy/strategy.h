@@ -7,13 +7,19 @@
 namespace examples {
 namespace strategy {
 
-class Strategy final
-    : public quinclas::common::Strategy {
+// Example of a strategy implementation.
+// The implementation makes no sense -- it is only meant to show the "how-to"s.
+class Strategy final : public quinclas::common::Strategy {
  public:
+  // The first argument to the constructor must always be an interface to a
+  // request dispatcher.
+  // Any further arguments are optional -- here we have a simple configuration
+  // with number of ticks required before we send a single trade.
   Strategy(quinclas::common::Strategy::Dispatcher& dispatcher,
            uint32_t ticks_to_trade);
 
  protected:
+  // You must implement event handlers;
   void on(const quinclas::common::TimerEvent&) override;
   void on(const quinclas::common::IdleEvent&) override;
   void on(const quinclas::common::GatewayStatusEvent&) override;

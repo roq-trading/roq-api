@@ -25,6 +25,7 @@ class Controller final {
   typedef std::unordered_map<std::string, std::string> gateways_t;
 
  public:
+  explicit Controller(const gateways_t& gateways) : _gateways(gateways) {}
   explicit Controller(const gateways_t&& gateways) : _gateways(std::move(gateways)) {}
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {

@@ -4,10 +4,10 @@
 
 #include <cctz/time_zone.h>
 
+#include <quinclas/tradingapi.h>
+
 #include <string>
 #include <utility>
-
-#include <quinclas/tradingapi.h>
 
 #include "reference/config.h"
 #include "reference/order_manager.h"
@@ -16,11 +16,11 @@
 namespace examples {
 namespace reference {
 
-class Strategy final : public quinclas::common::Strategy {
+class GatewayManager final : public quinclas::common::Strategy {
  public:
   // constructor
-  Strategy(quinclas::common::Strategy::Dispatcher& dispatcher,
-           const Config&& config);
+  GatewayManager(quinclas::common::Strategy::Dispatcher& dispatcher,
+                    const Config&& config);
 
  protected:
   // event handlers
@@ -44,9 +44,9 @@ class Strategy final : public quinclas::common::Strategy {
 
  private:
   // disallow default behaviour
-  Strategy() = delete;
-  Strategy(Strategy&) = delete;
-  Strategy& operator=(Strategy&) = delete;
+  GatewayManager() = delete;
+  GatewayManager(GatewayManager&) = delete;
+  GatewayManager& operator=(GatewayManager&) = delete;
 
  private:
   quinclas::common::Strategy::Dispatcher& _dispatcher;

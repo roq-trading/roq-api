@@ -1,7 +1,11 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "reference/config_reader.h"
+
 #include <glog/logging.h>
+
+#include <string>
+#include <utility>
 
 namespace examples {
 namespace reference {

@@ -2,6 +2,7 @@
 
 #include "reference/order_manager.h"
 #include <glog/logging.h>
+#include <limits>
 
 namespace examples {
 namespace reference {
@@ -13,6 +14,9 @@ OrderManager::OrderManager(quinclas::common::Strategy::Dispatcher& dispatcher,
     : _dispatcher(dispatcher), _config(config) {}
 
 // event handlers
+
+void OrderManager::on(const quinclas::common::Timer& timer) {
+}
 
 void OrderManager::on(const quinclas::common::CreateOrderAck& create_order_ack) {
 }
@@ -38,8 +42,7 @@ void OrderManager::sell_ioc(const double quantity, const double limit_price) {
 
 void OrderManager::create_order(const char *order_template,
                                 const quinclas::common::TradeDirection direction,
-                                const double quantity, const double limit_price)
-{
+                                const double quantity, const double limit_price) {
   quinclas::common::CreateOrder create_order {
     .opaque         = 0,
     .order_template = order_template,

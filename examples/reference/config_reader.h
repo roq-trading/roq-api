@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <string>
 #include <libconfig.h++>
 #include "reference/config.h"
 

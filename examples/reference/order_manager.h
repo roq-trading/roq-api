@@ -2,10 +2,8 @@
 
 #pragma once
 
-#include <unordered_map>
-
 #include <quinclas/tradingapi.h>
-
+#include <unordered_map>
 #include "reference/config.h"
 
 namespace examples {
@@ -19,6 +17,7 @@ class OrderManager final {
 
  public:
   // event handlers
+  void on(const quinclas::common::Timer& timer);
   void on(const quinclas::common::CreateOrderAck& create_order_ack);
   void on(const quinclas::common::ModifyOrderAck& modify_order_ack);
   void on(const quinclas::common::CancelOrderAck& cancel_order_ack);

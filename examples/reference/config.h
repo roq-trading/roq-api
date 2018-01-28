@@ -4,6 +4,7 @@
 
 #include <cctz/time_zone.h>
 
+#include <iostream>
 #include <string>
 #include <utility>
 
@@ -21,3 +22,5 @@ struct Config {
 
 }  // namespace reference
 }  // namespace examples
+
+std::ostream& operator<<(std::ostream& stream, const examples::reference::Config& config);

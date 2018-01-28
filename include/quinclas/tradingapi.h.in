@@ -57,6 +57,14 @@ struct HeartbeatAck {
 };
 
 /**
+ * Timer.
+ */
+
+struct Timer {
+  time_point_t utc_time;                                   ///< Timestamp.
+};
+
+/**
  * Gateway status.
  */
 struct GatewayStatus {
@@ -219,7 +227,7 @@ struct MessageInfo {
  * Timer event.
  */
 struct TimerEvent {
-  time_point_t current_utc_time;                           // Current time
+  Timer timer;
 };
 
 /**

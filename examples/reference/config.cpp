@@ -6,9 +6,11 @@
 namespace examples {
 namespace reference {
 
-/*
-static void log(const Strategy::Config& config) {
-  LOG(INFO) << "Config = {"
+}  // namespace reference
+}  // namespace examples
+
+std::ostream& operator<<(std::ostream& stream, const examples::reference::Config& config) {
+  return stream << "Config = {"
       "time_zone=\"" << config.time_zone.name() << "\", "
       "instrument=\"" << config.instrument << "\", "
       "exchange=\"" << config.exchange << "\", "
@@ -17,7 +19,4 @@ static void log(const Strategy::Config& config) {
       config.model_params.second <<
       ")"
       "}";
-*/
-
-}  // namespace reference
-}  // namespace examples
+}

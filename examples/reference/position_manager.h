@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include <unordered_map>
-
 #include <quinclas/tradingapi.h>
+#include <string>
+#include <unordered_map>
 
 namespace examples {
 namespace reference {

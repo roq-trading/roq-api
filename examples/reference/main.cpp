@@ -6,15 +6,15 @@
 #include <quinclas/client.h>
 
 #include "reference/config_reader.h"
-#include "reference/strategy.h"
+#include "reference/gateway_manager.h"
+
+using namespace examples::reference;  // NOLINT
 
 DEFINE_string(local_address, "",
     "Host-internal (aka unix domain) socket address (path)");
 
 DEFINE_string(config_file, "",
     "Config filename for strategy (path)");
-
-using namespace examples;  // NOLINT
 
 int main(int argc, char *argv[]) {
   // Initialize glog.
@@ -43,13 +43,13 @@ int main(int argc, char *argv[]) {
 
   try {
     // Read the strategy config file.
-    const auto config = reference::ConfigReader(FLAGS_config_file).parse();
+    const auto config = ConfigReader(FLAGS_config_file).parse();
 
     // Ready.
     LOG(INFO) << "===== START =====";
 
     // Create Controller, Dispatcher, Strategy, and then start the event loop.
-    quinclas::client::Controller<reference::Strategy>(
+    quinclas::client::Controller<GatewayManager>(
         std::move(gateways)).create_and_dispatch(std::move(config));
 
     // Done.

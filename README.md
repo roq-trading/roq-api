@@ -24,21 +24,18 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 ## Platforms
 
 * Linux
-* macOS
-
-*Windows is not yet supported*.
+* macOS (partial support)
 
 ## Build Tools
 
-| Tool     | Version  |
-| -------- | -------- |
-| autoconf |          |
-| automake |          |
-| libtool  |          |
-| gcc      | >= 4.8.1 |
-| clang    | >= 3.3   |
-
-*Indirectly requiring CMake*.
+| Tool     | Version  | Purpose |
+| -------- | -------- | ------- |
+| autoconf |          | Build   |
+| automake |          | Build   |
+| libtool  |          | Build   |
+| gcc      | >= 4.8.1 | Build   |
+| clang    | >= 3.3   | Build   |
+| cmake    | >= 2.6.4 | Test    |
 
 ## Dependencies
 
@@ -50,6 +47,7 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 | [gflags](https://github.com/gflags/gflags)                       | >= 2.2   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Command-line options            |
 | [glog](https://github.com/google/glog)                           | >= 0.3.5 | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Logging                         |
 | [googletest](https://github.com/google/googletest)               | >= 1.8   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Testing                         |
+| [libconfig](https://github.com/hyperrealm/libconfig)             | >= 1.5   | [LGPL-2.1](https://opensource.org/licenses/lgpl-2.1.php)     | Parse config files              |
 | [libevent](https://github.com/libevent/libevent)                 | >= 2.1   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Async event processing          |
 
 ## Building

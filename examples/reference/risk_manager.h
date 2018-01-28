@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <string>
 #include "reference/config.h"
 #include "reference/position_manager.h"
 

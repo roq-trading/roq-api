@@ -20,7 +20,7 @@ static double get_real_quantity(const quinclas::common::TradeDirection direction
       LOG(FATAL) << "Received unknown trade direction!";
   }
 }
-}
+}  // namespace
 
 void PositionManager::on(const quinclas::common::TradeUpdate& trade_update) {
   const auto trade_id = trade_update.external_trade_id;

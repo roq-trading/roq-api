@@ -22,7 +22,7 @@ static double get_real_quantity(const quinclas::common::TradeDirection direction
       LOG(FATAL) << "Received unknown trade direction!";
   }
 }
-}
+}  // namespace
 
 // constructor
 
@@ -75,8 +75,7 @@ bool OrderManager::create_order(const char *order_template,
     };
     _dispatcher.send(GATEWAY, create_order);
     return true;
-  }
-  else {
+  } else {
     LOG(WARNING) << "Unable to sell instrument=" << _config.instrument << "!";
     return false;
   }

@@ -2,6 +2,7 @@
 
 #include "reference/risk_manager.h"
 #include <glog/logging.h>
+#include <algorithm>
 
 namespace examples {
 namespace reference {

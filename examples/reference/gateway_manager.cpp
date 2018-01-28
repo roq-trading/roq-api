@@ -14,7 +14,8 @@ GatewayManager::GatewayManager(
     quinclas::common::Strategy::Dispatcher& dispatcher,
     const Config&& config)
     : _dispatcher(dispatcher), _config(std::move(config)),
-      _order_manager(dispatcher, _config) {
+      _risk_manager(_config, _position_manager),
+      _order_manager(_config, _risk_manager, _dispatcher) {
   LOG(INFO) << _config;
 }
 
@@ -22,40 +23,41 @@ GatewayManager::GatewayManager(
 
 void GatewayManager::on(const TimerEvent& event) {
   _order_manager.on(event.timer);
+  trade();
 }
 
 void GatewayManager::on(const IdleEvent&) {
-  LOG(INFO) << "idle";
 }
 
 void GatewayManager::on(const GatewayStatusEvent& event) {
-  LOG(INFO) << "xyz";
+  const auto& gateway_status = event.gateway_status;
+  _order_manager_ready = gateway_status.market_data_login_status == LoginStatus::On;
+  _market_data_ready = gateway_status.market_data_login_status == LoginStatus::On;
+  trade();
 }
 
 void GatewayManager::on(const ReferenceDataEvent& event) {
-  LOG(INFO) << "xyz";
 }
 
 void GatewayManager::on(const MarketStatusEvent& event) {
-  LOG(INFO) << "xyz";
+  const auto& market_status = event.market_status;
+  if (_config.instrument.compare(market_status.instrument) != 0)
+    return;
+  _market_open = market_status.trading_status == TradingStatus::Open;
 }
 
 void GatewayManager::on(const MarketByPriceEvent& event) {
-  // TODO(thraneh): need price class + pre-initialized unordered_map
   const auto& market_by_price = event.market_by_price;
   if (_config.instrument.compare(market_by_price.instrument) != 0)
     return;
-  const auto& depth = market_by_price.depth;
-  double bid_price = depth[0].bid_price;
-  double ask_price = depth[0].ask_price;
+  _order_imbalance.on(market_by_price);
+  trade();
 }
 
 void GatewayManager::on(const SessionStatisticsEvent& event) {
-  LOG(INFO) << "xyz";
 }
 
 void GatewayManager::on(const DailyStatisticsEvent& event) {
-  LOG(INFO) << "xyz";
 }
 
 void GatewayManager::on(const CreateOrderAckEvent& event) {
@@ -81,6 +83,9 @@ void GatewayManager::on(const TradeUpdateEvent& event) {
 // state management
 
 void GatewayManager::trade() {
+  if (!(_order_manager_ready && _market_data_ready && _market_open))
+    return;
+  // TODO(thraneh): model implementation
 }
 
 }  // namespace reference

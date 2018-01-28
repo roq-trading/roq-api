@@ -18,8 +18,6 @@ struct Config {
   std::pair<double, double> model_params;
 };
 
-// TODO(thraneh): operator<<
-
 }  // namespace reference
 }  // namespace examples
 

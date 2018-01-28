@@ -10,8 +10,10 @@
 #include <utility>
 
 #include "reference/config.h"
+#include "reference/order_imbalance.h"
 #include "reference/order_manager.h"
 #include "reference/position_manager.h"
+#include "reference/risk_manager.h"
 
 namespace examples {
 namespace reference {
@@ -52,7 +54,12 @@ class GatewayManager final : public quinclas::common::Strategy {
   quinclas::common::Strategy::Dispatcher& _dispatcher;
   const Config _config;
   PositionManager _position_manager;
+  RiskManager _risk_manager;
   OrderManager _order_manager;
+  OrderImbalance _order_imbalance;
+  bool _order_manager_ready = false;
+  bool _market_data_ready = false;
+  bool _market_open = false;
 };
 
 }  // namespace reference

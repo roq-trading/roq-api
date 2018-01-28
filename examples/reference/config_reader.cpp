@@ -11,6 +11,9 @@ namespace examples {
 namespace reference {
 
 namespace {
+  static libconfig::Setting& lookup(const libconfig::Setting& setting, const char *name) {
+    return setting.lookup(name);
+  }
   static std::string parse_string(const libconfig::Setting& setting) {
     return setting.c_str();
   }
@@ -34,8 +37,8 @@ namespace {
     return result;
   }
   static std::pair<double, double> parse_model_params(const libconfig::Setting& setting) {
-    return std::make_pair(parse_double(setting.lookup("fast")),
-                          parse_double(setting.lookup("slow")));
+    return std::make_pair(parse_double(lookup(setting, "fast")),
+                          parse_double(lookup(setting, "slow")));
   }
 }  // namespace
 
@@ -46,10 +49,10 @@ ConfigReader::ConfigReader(const std::string& config_file) {
 Config ConfigReader::parse() const {
   const auto& root = _config.getRoot();
   return Config {
-    .time_zone    = parse_time_zone(root.lookup("time_zone")),
-    .instrument   = parse_string(root.lookup("instrument")),
-    .exchange     = parse_string(root.lookup("exchange")),
-    .model_params = parse_model_params(root.lookup("model_params")),
+    .time_zone    = parse_time_zone(lookup(root, "time_zone")),
+    .instrument   = parse_string(lookup(root, "instrument")),
+    .exchange     = parse_string(lookup(root, "exchange")),
+    .model_params = parse_model_params(lookup(root, "model_params")),
   };
 }
 

@@ -5,6 +5,7 @@
 #include <quinclas/tradingapi.h>
 #include <unordered_map>
 #include "reference/config.h"
+#include "reference/risk_manager.h"
 
 namespace examples {
 namespace reference {
@@ -12,8 +13,8 @@ namespace reference {
 class OrderManager final {
  public:
   // constructor
-  OrderManager(quinclas::common::Strategy::Dispatcher& dispatcher,
-               const Config& config);
+  OrderManager(const Config& config, const RiskManager& risk_manager,
+               quinclas::common::Strategy::Dispatcher& dispatcher);
 
  public:
   // event handlers
@@ -32,8 +33,9 @@ class OrderManager final {
                     const double quantity, const double limit_price);
 
  private:
-  quinclas::common::Strategy::Dispatcher& _dispatcher;
   const Config& _config;
+  const RiskManager& _risk_manager;
+  quinclas::common::Strategy::Dispatcher& _dispatcher;
 };
 
 }  // namespace reference

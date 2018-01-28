@@ -9,9 +9,9 @@ namespace reference {
 
 // constructor
 
-OrderManager::OrderManager(quinclas::common::Strategy::Dispatcher& dispatcher,
-                           const Config& config)
-    : _dispatcher(dispatcher), _config(config) {}
+OrderManager::OrderManager(const Config& config, const RiskManager& risk_manager,
+                           quinclas::common::Strategy::Dispatcher& dispatcher)
+    : _config(config), _risk_manager(risk_manager), _dispatcher(dispatcher) {}
 
 // event handlers
 

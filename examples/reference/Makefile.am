@@ -32,3 +32,5 @@ EXTRA_reference_strategy_SOURCES = \
   order_manager.h \
   position_manager.h \
   risk_manager.h
+configdir=$(datadir)/quinclas/examples
+config_DATA = strategy.conf

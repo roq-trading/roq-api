@@ -33,3 +33,8 @@ On Linux
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
 is a good place to get started with debugging.
+
+## Conda
+
+The strategy is distributed with the `quinclas-tradingapi` package.
+You will find the config file here: `$CONDA_PREFIX/share/quinclas/examples/strategy.conf`

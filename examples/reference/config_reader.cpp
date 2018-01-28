@@ -12,7 +12,9 @@ namespace reference {
 
 namespace {
   static libconfig::Setting& lookup(const libconfig::Setting& setting, const char *name) {
-    return setting.lookup(name);
+    return setting[name];
+    // not available on Ubuntu 14.04:
+    // return setting.lookup(name);
   }
   static std::string parse_string(const libconfig::Setting& setting) {
     return setting.c_str();

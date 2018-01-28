@@ -3,7 +3,7 @@
 #pragma once
 
 #include <libconfig.h++>
-#include "reference/strategy.h"
+#include "reference/config.h"
 
 namespace examples {
 namespace reference {
@@ -11,7 +11,7 @@ namespace reference {
 class ConfigReader final {
  public:
   explicit ConfigReader(const std::string& config_file);
-  Strategy::Config parse() const;
+  Config parse() const;
 
  private:
   ConfigReader() = delete;

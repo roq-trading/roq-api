@@ -15,5 +15,5 @@ example_reference_CPPFLAGS = \
 	$(LIBCONFIG_CFLAGS) \
 	$(LIBEVENT_CFLAGS) \
 	$(LIBGLOG_CFLAGS)
-example_reference_SOURCES = position.cpp strategy.cpp config_reader.cpp main.cpp
-EXTRA_example_reference_SOURCES = position.h strategy.h config_reader.h
+example_reference_SOURCES = position_manager.cpp order_manager.cpp strategy.cpp config.cpp config_reader.cpp main.cpp
+EXTRA_example_reference_SOURCES = position_manager.h order_manager.cpp strategy.h config.h config_reader.h

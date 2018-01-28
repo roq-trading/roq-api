@@ -14,7 +14,7 @@ DEFINE_string(local_address, "",
 DEFINE_string(config_file, "",
     "Config filename for strategy (path)");
 
-using namespace examples::reference;  // NOLINT
+using namespace examples;  // NOLINT
 
 int main(int argc, char *argv[]) {
   // Initialize glog.
@@ -43,14 +43,14 @@ int main(int argc, char *argv[]) {
 
   try {
     // Read the strategy config file.
-    auto config = ConfigReader(FLAGS_config_file).parse();
+    const auto config = reference::ConfigReader(FLAGS_config_file).parse();
 
     // Ready.
     LOG(INFO) << "===== START =====";
 
     // Create Controller, Dispatcher, Strategy, and then start the event loop.
-    quinclas::client::Controller<Strategy>(gateways).create_and_dispatch(
-        std::move(config));
+    quinclas::client::Controller<reference::Strategy>(
+        std::move(gateways)).create_and_dispatch(std::move(config));
 
     // Done.
     LOG(INFO) << "===== STOP =====";

@@ -1,17 +1,17 @@
 bin_PROGRAMS = example-strategy
 example_strategy_LDFLAGS = \
-	$(GFLAGS_LIBS) \
-	$(LIBGLOG_LIBS) \
+	$(CCTZ_LIBS) \
 	$(FLATBUFFERS_LIBS) \
+	$(GFLAGS_LIBS) \
 	$(LIBEVENT_LIBS) \
-	$(CCTZ_LIBS)
+	$(LIBGLOG_LIBS)
 example_strategy_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \
-	$(GFLAGS_CFLAGS) \
-	$(LIBGLOG_CFLAGS) \
+	$(CCTZ_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
+	$(GFLAGS_CFLAGS) \
 	$(LIBEVENT_CFLAGS) \
-	$(CCTZ_CFLAGS)
+	$(LIBGLOG_CFLAGS)
 example_strategy_SOURCES = strategy.cpp main.cpp
 EXTRA_example_strategy_SOURCES = strategy.h

@@ -9,22 +9,21 @@
 
 #include <quinclas/tradingapi.h>
 
+#include "reference/config.h"
+#include "reference/order_manager.h"
+#include "reference/position_manager.h"
+
 namespace examples {
 namespace reference {
 
 class Strategy final : public quinclas::common::Strategy {
  public:
-  struct Config {
-    cctz::time_zone time_zone;
-    std::string instrument;
-    std::string exchange;
-    std::pair<double, double> model_params;
-  };
-
- public:
-  Strategy(quinclas::common::Strategy::Dispatcher& dispatcher, Config&& config);
+  // constructor
+  Strategy(quinclas::common::Strategy::Dispatcher& dispatcher,
+           const Config&& config);
 
  protected:
+  // event handlers
   void on(const quinclas::common::TimerEvent&) override;
   void on(const quinclas::common::IdleEvent&) override;
   void on(const quinclas::common::GatewayStatusEvent&) override;
@@ -40,13 +39,20 @@ class Strategy final : public quinclas::common::Strategy {
   void on(const quinclas::common::TradeUpdateEvent&) override;
 
  private:
+  // state management
+  void trade();
+
+ private:
+  // disallow default behaviour
   Strategy() = delete;
   Strategy(Strategy&) = delete;
   Strategy& operator=(Strategy&) = delete;
 
  private:
   quinclas::common::Strategy::Dispatcher& _dispatcher;
-  Config _config;
+  const Config _config;
+  PositionManager _position_manager;
+  OrderManager _order_manager;
 };
 
 }  // namespace reference

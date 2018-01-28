@@ -39,9 +39,9 @@ ConfigReader::ConfigReader(const std::string& config_file) {
   _config.readFile(config_file.c_str());
 }
 
-Strategy::Config ConfigReader::parse() const {
+Config ConfigReader::parse() const {
   const auto& root = _config.getRoot();
-  return Strategy::Config {
+  return Config {
     .time_zone    = parse_time_zone(root.lookup("time_zone")),
     .instrument   = parse_string(root.lookup("instrument")),
     .exchange     = parse_string(root.lookup("exchange")),

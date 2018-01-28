@@ -8,11 +8,24 @@ using namespace quinclas::common;  // NOLINT
 namespace examples {
 namespace reference {
 
-Strategy::Strategy(Strategy::Dispatcher& dispatcher, const Config& config)
-    : _dispatcher(dispatcher),
-      _config(config) {}
+namespace {
+static void log(const Strategy::Config& config) {
+  LOG(INFO) << "Config = {"
+      "time_zone=\"" << config.time_zone.name() << "\", "
+      "instrument=\"" << config.instrument << "\", "
+      "exchange=\"" << config.exchange << "\", "
+      "model_params=(" <<
+      config.model_params.first << ", " <<
+      config.model_params.second <<
+      ")"
+      "}";
+}
+}  // namespace
 
-void Strategy::on(const TimerEvent& event) {
+Strategy::Strategy(quinclas::common::Strategy::Dispatcher& dispatcher,
+                   Config&& config)
+    : _dispatcher(dispatcher), _config(std::move(config)) {
+  log(_config);
 }
 
 void Strategy::on(const IdleEvent&) {
@@ -28,6 +41,8 @@ void Strategy::on(const MarketStatusEvent& event) {
 }
 
 void Strategy::on(const MarketByPriceEvent& event) {
+  if (_config.instrument.compare(event.market_by_price.instrument) == 0)
+    LOG(INFO) << event;
 }
 
 void Strategy::on(const SessionStatisticsEvent& event) {

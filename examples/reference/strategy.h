@@ -2,17 +2,27 @@
 
 #pragma once
 
-#include <quinclas/tradingapi.h>
+#include <cctz/time_zone.h>
 
-#include "reference/config.h"
+#include <string>
+#include <utility>
+
+#include <quinclas/tradingapi.h>
 
 namespace examples {
 namespace reference {
 
 class Strategy final : public quinclas::common::Strategy {
  public:
-  Strategy(quinclas::common::Strategy::Dispatcher& dispatcher,
-           const Config& config);
+  struct Config {
+    cctz::time_zone time_zone;
+    std::string instrument;
+    std::string exchange;
+    std::pair<double, double> model_params;
+  };
+
+ public:
+  Strategy(quinclas::common::Strategy::Dispatcher& dispatcher, Config&& config);
 
  protected:
   void on(const quinclas::common::TimerEvent&) override;
@@ -30,8 +40,13 @@ class Strategy final : public quinclas::common::Strategy {
   void on(const quinclas::common::TradeUpdateEvent&) override;
 
  private:
+  Strategy() = delete;
+  Strategy(Strategy&) = delete;
+  Strategy& operator=(Strategy&) = delete;
+
+ private:
   quinclas::common::Strategy::Dispatcher& _dispatcher;
-  const Config& _config;
+  Config _config;
 };
 
 }  // namespace reference

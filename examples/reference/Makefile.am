@@ -1,19 +1,19 @@
 bin_PROGRAMS = example-reference
 example_reference_LDFLAGS = \
-	$(GFLAGS_LIBS) \
-	$(LIBGLOG_LIBS) \
+	$(CCTZ_LIBS) \
 	$(FLATBUFFERS_LIBS) \
-	$(LIBEVENT_LIBS) \
+	$(GFLAGS_LIBS) \
 	$(LIBCONFIG_LIBS) \
-	$(CCTZ_LIBS)
+	$(LIBEVENT_LIBS) \
+	$(LIBGLOG_LIBS)
 example_reference_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \
-	$(GFLAGS_CFLAGS) \
-	$(LIBGLOG_CFLAGS) \
+	$(CCTZ_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
-	$(LIBEVENT_CFLAGS) \
+	$(GFLAGS_CFLAGS) \
 	$(LIBCONFIG_CFLAGS) \
-	$(CCTZ_CFLAGS)
-example_reference_SOURCES = config.cpp position.cpp strategy.cpp main.cpp
-EXTRA_example_reference_SOURCES = config.h position.h strategy.h
+	$(LIBEVENT_CFLAGS) \
+	$(LIBGLOG_CFLAGS)
+example_reference_SOURCES = position.cpp strategy.cpp config_reader.cpp main.cpp
+EXTRA_example_reference_SOURCES = position.h strategy.h config_reader.h

@@ -1,12 +1,12 @@
-bin_PROGRAMS = example-reference
-example_reference_LDFLAGS = \
+bin_PROGRAMS = reference-strategy
+reference_strategy_LDFLAGS = \
 	$(CCTZ_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(GFLAGS_LIBS) \
 	$(LIBCONFIG_LIBS) \
 	$(LIBEVENT_LIBS) \
 	$(LIBGLOG_LIBS)
-example_reference_CPPFLAGS = \
+reference_strategy_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \
 	$(CCTZ_CFLAGS) \
@@ -15,7 +15,7 @@ example_reference_CPPFLAGS = \
 	$(LIBCONFIG_CFLAGS) \
 	$(LIBEVENT_CFLAGS) \
 	$(LIBGLOG_CFLAGS)
-example_reference_SOURCES = \
+reference_strategy_SOURCES = \
   config.cpp \
   config_reader.cpp \
   gateway_manager.cpp \
@@ -24,7 +24,7 @@ example_reference_SOURCES = \
   position_manager.cpp \
   risk_manager.cpp \
   main.cpp
-EXTRA_example_reference_SOURCES = \
+EXTRA_reference_strategy_SOURCES = \
   config.h \
   config_reader.h \
   gateway_manager.h \

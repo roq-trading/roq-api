@@ -31,5 +31,5 @@ include/quinclas/quinclas
 tests/tradingapi-tests
 examples/strategy/example-strategy
 examples/collector/example-collector
-examples/reference/example-reference
+examples/reference/reference-strategy
 examples/gateway/example-gateway

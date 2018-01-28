@@ -13,7 +13,7 @@ Please refer to the [strategy example](../strategy/README.md) for documented det
 
 For example, to execute the strategy using the Femas API
 
-	example-reference --config-file strategy.conf --local-address /var/tmp/femasapi.sock
+	reference-strategy --config-file strategy.conf --local-address /var/tmp/femasapi.sock
 
 ## Enable logging?
 
@@ -29,7 +29,7 @@ This [link](http://rpg.ifi.uzh.ch/docs/glog.html) is a good place to read about 
 
 On Linux
 
-	libtool --mode=execute gdb --args example-reference --config-file strategy.conf --local-address /var/tmp/femasapi.sock
+	libtool --mode=execute gdb --args reference-strategy --config-file strategy.conf --local-address /var/tmp/femasapi.sock
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
 is a good place to get started with debugging.

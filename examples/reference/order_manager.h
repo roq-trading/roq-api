@@ -26,9 +26,12 @@ class OrderManager final {
 
  public:
   // create order
-  void buy_ioc(const double quantity, const double limit_price);
-  void sell_ioc(const double quantity, const double limit_price);
-  void create_order(const char *order_template,
+  bool buy_ioc(const double quantity, const double limit_price);
+  bool sell_ioc(const double quantity, const double limit_price);
+
+ private:
+  // internal create order
+  bool create_order(const char *order_template,
                     const quinclas::common::TradeDirection direction,
                     const double quantity, const double limit_price);
 
@@ -36,6 +39,12 @@ class OrderManager final {
   const Config& _config;
   const RiskManager& _risk_manager;
   quinclas::common::Strategy::Dispatcher& _dispatcher;
+
+ private:
+  // seed (opaque)
+  // sent orders
+  // cancelling orders
+  // ack'ed orders
 };
 
 }  // namespace reference

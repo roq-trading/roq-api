@@ -77,7 +77,12 @@ void GatewayManager::on(const OrderUpdateEvent& event) {
 }
 
 void GatewayManager::on(const TradeUpdateEvent& event) {
-  _position_manager.on(event.trade_update);
+  const auto& trade_update = event.trade_update;
+  _position_manager.on(trade_update);
+  if (_risk_manager.is_above_limit(trade_update.instrument)) {
+    LOG(WARNING) << "Limit has been breached!";
+    // TODO(thraneh): take action to reduce risk exposure
+  }
 }
 
 // state management

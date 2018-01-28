@@ -16,6 +16,8 @@ DEFINE_string(local_address, "",
 DEFINE_string(config_file, "",
     "Config filename for strategy (path)");
 
+const char *GATEWAY = "FEMAS";
+
 int main(int argc, char *argv[]) {
   // Initialize glog.
   google::InitGoogleLogging(argv[0]);
@@ -38,7 +40,7 @@ int main(int argc, char *argv[]) {
   // Create the gateway connection list.
   // TODO(thraneh): Invent a command-line format for fully specifying gateways.
   const std::unordered_map<std::string, std::string> gateways = {
-    { "FEMAS", FLAGS_local_address },
+    { GATEWAY, FLAGS_local_address },
   };
 
   try {

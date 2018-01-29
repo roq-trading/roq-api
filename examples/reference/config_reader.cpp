@@ -60,8 +60,8 @@ Config ConfigReader::parse() const {
     .time_zone     = parse_time_zone(lookup(root, "time_zone")),
     .instrument    = parse_string(lookup(root, "instrument")),
     .exchange      = parse_string(lookup(root, "exchange")),
-    .order_timeout = parse_seconds(lookup(root, "order_timeout_seconds")),
     .model_params  = parse_model_params(lookup(root, "model_params")),
+    .order_timeout = parse_seconds(lookup(root, "order_timeout_seconds")),
   };
 }
 

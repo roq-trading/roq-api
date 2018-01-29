@@ -16,6 +16,7 @@ struct Config {
   std::string instrument;
   std::string exchange;
   std::pair<double, double> model_params;
+  std::chrono::seconds order_timeout;
 };
 
 }  // namespace reference

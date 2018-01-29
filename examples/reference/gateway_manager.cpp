@@ -22,7 +22,7 @@ GatewayManager::GatewayManager(
 // event handlers
 
 void GatewayManager::on(const TimerEvent& event) {
-  _order_manager.on(event.timer);
+  _order_manager.on(event);
   trade();
 }
 
@@ -61,19 +61,19 @@ void GatewayManager::on(const DailyStatisticsEvent& event) {
 }
 
 void GatewayManager::on(const CreateOrderAckEvent& event) {
-  _order_manager.on(event.create_order_ack);
+  _order_manager.on(event);
 }
 
 void GatewayManager::on(const ModifyOrderAckEvent& event) {
-  _order_manager.on(event.modify_order_ack);
+  _order_manager.on(event);
 }
 
 void GatewayManager::on(const CancelOrderAckEvent& event) {
-  _order_manager.on(event.cancel_order_ack);
+  _order_manager.on(event);
 }
 
 void GatewayManager::on(const OrderUpdateEvent& event) {
-  _order_manager.on(event.order_update);
+  _order_manager.on(event);
 }
 
 void GatewayManager::on(const TradeUpdateEvent& event) {

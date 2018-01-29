@@ -19,6 +19,9 @@ namespace {
   static std::string parse_string(const libconfig::Setting& setting) {
     return setting.c_str();
   }
+  static int parse_int(const libconfig::Setting& setting) {
+    return static_cast<int>(setting);
+  }
   static double parse_double(const libconfig::Setting& setting) {
     switch (setting.getType()) {
       case libconfig::Setting::TypeInt:
@@ -38,6 +41,9 @@ namespace {
       throw std::runtime_error("Unable to initialize time-zone object");
     return result;
   }
+  static std::chrono::seconds parse_seconds(const libconfig::Setting& setting) {
+    return std::chrono::seconds(parse_int(setting));
+  }
   static std::pair<double, double> parse_model_params(const libconfig::Setting& setting) {
     return std::make_pair(parse_double(lookup(setting, "fast")),
                           parse_double(lookup(setting, "slow")));
@@ -51,10 +57,11 @@ ConfigReader::ConfigReader(const std::string& config_file) {
 Config ConfigReader::parse() const {
   const auto& root = _config.getRoot();
   return Config {
-    .time_zone    = parse_time_zone(lookup(root, "time_zone")),
-    .instrument   = parse_string(lookup(root, "instrument")),
-    .exchange     = parse_string(lookup(root, "exchange")),
-    .model_params = parse_model_params(lookup(root, "model_params")),
+    .time_zone     = parse_time_zone(lookup(root, "time_zone")),
+    .instrument    = parse_string(lookup(root, "instrument")),
+    .exchange      = parse_string(lookup(root, "exchange")),
+    .order_timeout = parse_seconds(lookup(root, "order_timeout_seconds")),
+    .model_params  = parse_model_params(lookup(root, "model_params")),
   };
 }
 

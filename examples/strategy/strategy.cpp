@@ -24,7 +24,7 @@ void Strategy::on(const TimerEvent& event) {
 
   // Example:
   LOG(INFO) << "TimerEvent={"
-      "current_utc_time=" << event.timer.utc_time <<
+      "current_utc_time=" << event.message_info.enqueue_time <<
       "}";
 }
 

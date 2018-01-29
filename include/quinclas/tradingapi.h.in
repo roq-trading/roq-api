@@ -227,7 +227,7 @@ struct MessageInfo {
  * Timer event.
  */
 struct TimerEvent {
-  Timer timer;
+  const MessageInfo& message_info;                         ///< Message info
 };
 
 /**

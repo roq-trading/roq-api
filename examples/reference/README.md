@@ -2,10 +2,21 @@
 
 ## What does it do?
 
-This is a reference implementation of a mostly realistic trading strategy.
+This is a reference implementation of a (mostly) realistic trading system.
+The idea is to *demonstrate* how one could implement such a system.
+
+Note!
+The example is *not* optimal.
+The design is only meant to demonstrate *some* features of real trading when using the Quinclas Trading API.
+
+There are safer and more performant designs.
+Please contact us for consultancy.
+
+## Documentation
 
 Please note, the documentation is intentionally kept to a minimum.
-Reading and understanding this example should direct the attention to the logic.
+
+The hope is that by reading the actual code, one gets an idea of how to use the API.
 
 Please refer to the [strategy example](../strategy/README.md) for documented details about interfaces.
 

@@ -10,20 +10,6 @@ namespace reference {
 const char *GATEWAY = "FEMAS";
 const char *IOC = "ioc";
 
-namespace {
-// TODO(thraneh): this is a utility funtion!
-static double get_real_quantity(const quinclas::common::TradeDirection direction, const double quantity) {
-  switch (direction) {
-    case quinclas::common::TradeDirection::Buy:
-      return quantity;
-    case quinclas::common::TradeDirection::Sell:
-      return -quantity;
-    default:
-      LOG(FATAL) << "Received unknown trade direction!";
-  }
-}
-}  // namespace
-
 // constructor
 
 OrderManager::OrderManager(const Config& config, const RiskManager& risk_manager,
@@ -49,20 +35,26 @@ void OrderManager::on(const quinclas::common::OrderUpdate& order_update) {
 
 // create order
 
-bool OrderManager::buy_ioc(const double quantity, const double limit_price) {
-  return create_order(IOC, quinclas::common::TradeDirection::Buy, quantity, limit_price);
+bool OrderManager::buy_ioc(double quantity, double limit_price) {
+  return create_order(IOC, quinclas::common::TradeDirection::Buy,
+                      quantity, limit_price);
 }
 
-bool OrderManager::sell_ioc(const double quantity, const double limit_price) {
-  return create_order(IOC, quinclas::common::TradeDirection::Sell, quantity, limit_price);
+bool OrderManager::sell_ioc(double quantity, double limit_price) {
+  return create_order(IOC, quinclas::common::TradeDirection::Sell,
+                      quantity, limit_price);
 }
 
 bool OrderManager::create_order(const char *order_template,
-                                const quinclas::common::TradeDirection direction,
-                                const double quantity, const double limit_price) {
-  auto real_quantity = get_real_quantity(direction, quantity);
-  auto available_quantity = _risk_manager.available_quantity(_config.instrument, direction);
-  if (true) {  // TODO(thraneh): check if we have headroom
+                                quinclas::common::TradeDirection direction,
+                                double quantity, double limit_price) {
+  // risk manager must confirm
+  double exposure = get_exposure(direction);
+  if (!_risk_manager.can_trade(_config.instrument, direction,
+                               quantity, exposure))
+    return false;
+  // send the new order
+  try {
     quinclas::common::CreateOrder create_order {
       .opaque         = 0,
       .order_template = order_template,
@@ -74,11 +66,15 @@ bool OrderManager::create_order(const char *order_template,
       .stop_price     = std::numeric_limits<double>::quiet_NaN(),
     };
     _dispatcher.send(GATEWAY, create_order);
-    return true;
-  } else {
-    LOG(WARNING) << "Unable to sell instrument=" << _config.instrument << "!";
+  } catch (std::exception& e) {
+    LOG(WARNING) << e.what();
     return false;
   }
+  return true;
+}
+
+double OrderManager::get_exposure(quinclas::common::TradeDirection direction) const {
+  return 0.0;  // TODO(thraneh): implement
 }
 
 }  // namespace reference

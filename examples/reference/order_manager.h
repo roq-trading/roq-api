@@ -26,14 +26,18 @@ class OrderManager final {
 
  public:
   // create order
-  bool buy_ioc(const double quantity, const double limit_price);
-  bool sell_ioc(const double quantity, const double limit_price);
+  bool buy_ioc(double quantity, double limit_price);
+  bool sell_ioc(double quantity, double limit_price);
 
  private:
   // internal create order
   bool create_order(const char *order_template,
-                    const quinclas::common::TradeDirection direction,
-                    const double quantity, const double limit_price);
+                    quinclas::common::TradeDirection direction,
+                    double quantity, double limit_price);
+
+ private:
+  // internal utilities
+  double get_exposure(quinclas::common::TradeDirection direction) const;
 
  private:
   const Config& _config;

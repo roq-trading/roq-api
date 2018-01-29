@@ -20,6 +20,7 @@ reference_strategy_SOURCES = \
   config_reader.cpp \
   gateway_manager.cpp \
   utilities.cpp \
+  order.cpp \
   order_imbalance.cpp \
   order_manager.cpp \
   position_manager.cpp \
@@ -30,6 +31,7 @@ EXTRA_reference_strategy_SOURCES = \
   config_reader.h \
   gateway_manager.h \
   utilities.h \
+  order.h \
   order_imbalance.h \
   order_manager.h \
   position_manager.h \

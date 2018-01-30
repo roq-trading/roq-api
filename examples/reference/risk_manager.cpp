@@ -14,6 +14,8 @@ namespace reference {
 RiskManager::RiskManager(const Config& config, const PositionManager& position_manager)
     : _config(config), _position_manager(position_manager) {}
 
+// TODO(thraneh): access global time -- risk limits could very well be time-dependent
+
 bool RiskManager::can_trade(const std::string& instrument,
                             quinclas::common::TradeDirection direction,
                             double quantity, double exposure) const {
@@ -35,7 +37,7 @@ bool RiskManager::is_above_limit(const std::string& instrument) const {
 }
 
 double RiskManager::get_limit(const std::string& instrument) const {
-  return 2.0;  // TODO(thraneh): implement (remember to check time)
+  return _config.risk_limit;
 }
 
 }  // namespace reference

@@ -58,10 +58,11 @@ Config ConfigReader::parse() const {
   const auto& root = _config.getRoot();
   return Config {
     .time_zone     = parse_time_zone(lookup(root, "time_zone")),
-    .instrument    = parse_string(lookup(root, "instrument")),
-    .exchange      = parse_string(lookup(root, "exchange")),
-    .model_params  = parse_model_params(lookup(root, "model_params")),
+    .risk_limit    = parse_double(lookup(root, "risk_limit")),
     .order_timeout = parse_seconds(lookup(root, "order_timeout_seconds")),
+    .exchange      = parse_string(lookup(root, "exchange")),
+    .instrument    = parse_string(lookup(root, "instrument")),
+    .model_params  = parse_model_params(lookup(root, "model_params")),
   };
 }
 

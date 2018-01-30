@@ -35,8 +35,7 @@ uint32_t OrderManager::sell(const char *order_template, double quantity,
 uint32_t OrderManager::create_order(const char *order_template,
                                     quinclas::common::TradeDirection direction,
                                     double quantity, double limit_price) {
-  // risk manager
-  // TODO(thraneh): here we need to access a global "time" !!!
+  // risk management
   double exposure = get_exposure(direction);
   if (!_risk_manager.can_trade(_config.instrument, direction,
                                quantity, exposure))

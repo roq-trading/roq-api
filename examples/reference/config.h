@@ -12,11 +12,16 @@ namespace examples {
 namespace reference {
 
 struct Config {
+  // global configuration
   cctz::time_zone time_zone;
-  std::string instrument;
-  std::string exchange;
-  std::pair<double, double> model_params;
+  // risk management
+  double risk_limit;
+  // order management
   std::chrono::seconds order_timeout;
+  // model configuration
+  std::string exchange;
+  std::string instrument;
+  std::pair<double, double> model_params;
 };
 
 }  // namespace reference

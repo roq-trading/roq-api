@@ -12,7 +12,7 @@ namespace reference {
 
 GatewayManager::GatewayManager(
     quinclas::common::Strategy::Dispatcher& dispatcher,
-    const Config&& config)
+    Config&& config)
     : _dispatcher(dispatcher), _config(std::move(config)),
       _risk_manager(_config, _position_manager),
       _order_manager(_config, _risk_manager, _dispatcher) {

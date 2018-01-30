@@ -22,7 +22,7 @@ class GatewayManager final : public quinclas::common::Strategy {
  public:
   // constructor
   GatewayManager(quinclas::common::Strategy::Dispatcher& dispatcher,
-                    const Config&& config);
+                 Config&& config);
 
  protected:
   // event handlers
@@ -52,7 +52,7 @@ class GatewayManager final : public quinclas::common::Strategy {
 
  private:
   quinclas::common::Strategy::Dispatcher& _dispatcher;
-  const Config _config;
+  Config _config;
   PositionManager _position_manager;
   RiskManager _risk_manager;
   OrderManager _order_manager;

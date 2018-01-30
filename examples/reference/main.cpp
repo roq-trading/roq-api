@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 
   try {
     // Read the strategy config file.
-    const auto config = ConfigReader(FLAGS_config_file).parse();
+    auto config = ConfigReader(FLAGS_config_file).parse();
 
     // Ready.
     LOG(INFO) << "===== START =====";

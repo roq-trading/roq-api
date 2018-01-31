@@ -4,6 +4,7 @@
 #include <glog/logging.h>
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include "reference/utilities.h"
 
 namespace examples {

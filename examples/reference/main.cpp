@@ -47,6 +47,8 @@ int main(int argc, char *argv[]) {
     // Read the strategy config file.
     auto config = ConfigReader(FLAGS_config_file).parse();
 
+    LOG(INFO) << config;
+
     // Ready.
     LOG(INFO) << "===== START =====";
 

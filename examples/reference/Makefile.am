@@ -19,22 +19,22 @@ reference_strategy_SOURCES = \
   config.cpp \
   config_reader.cpp \
   gateway_manager.cpp \
-  utilities.cpp \
   order.cpp \
-  order_imbalance.cpp \
   order_manager.cpp \
   position_manager.cpp \
   risk_manager.cpp \
+  trading_model.cpp \
+  utilities.cpp \
   main.cpp
 EXTRA_reference_strategy_SOURCES = \
   config.h \
   config_reader.h \
   gateway_manager.h \
-  utilities.h \
   order.h \
-  order_imbalance.h \
   order_manager.h \
   position_manager.h \
-  risk_manager.h
+  risk_manager.h \
+  trading_model.h \
+  utilities.h
 configdir=$(datadir)/quinclas/examples
 config_DATA = strategy.conf

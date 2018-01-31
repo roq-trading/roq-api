@@ -6,14 +6,15 @@
 
 #include <quinclas/tradingapi.h>
 
+#include <chrono>
 #include <string>
 #include <utility>
 
 #include "reference/config.h"
-#include "reference/order_imbalance.h"
 #include "reference/order_manager.h"
 #include "reference/position_manager.h"
 #include "reference/risk_manager.h"
+#include "reference/trading_model.h"
 
 namespace examples {
 namespace reference {
@@ -42,7 +43,7 @@ class GatewayManager final : public quinclas::common::Strategy {
 
  private:
   // state management
-  void trade();
+  void check(const quinclas::common::MessageInfo&);
 
  private:
   // disallow default behaviour
@@ -56,10 +57,14 @@ class GatewayManager final : public quinclas::common::Strategy {
   PositionManager _position_manager;
   RiskManager _risk_manager;
   OrderManager _order_manager;
-  OrderImbalance _order_imbalance;
+  TradingModel _trading_model;
+  // state management
   bool _order_manager_ready = false;
   bool _market_data_ready = false;
   bool _market_open = false;
+  // consistency check
+  typedef std::chrono::system_clock::time_point time_point_t;
+  time_point_t _last_update_time;
 };
 
 }  // namespace reference

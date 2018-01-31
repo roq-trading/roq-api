@@ -41,12 +41,14 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 
 | Library                                                          | Version  | License                                                      | Purpose                         |
 | ---------------------------------------------------------------- | -------- | ------------------------------------------------------------ | ------------------------------- |
+| [breakpad](https://github.com/google/breakpad)                   |          | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Crash dump (debugging)          |
 | [cctz](https://github.com/google/cctz)                           | >= 2.1   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Time and time-zone conversion   |
-| [double-conversion](https://github.com/google/double-conversion) | >= 3.0   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Convert numbers to/from string  |
-| [flatbuffers](https://github.com/google/flatbuffers)             | >= 1.7   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Messaging                       |
+| [double-conversion](https://github.com/google/double-conversion) | >= 3.0   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Number to/from string           |
+| [flatbuffers](https://github.com/google/flatbuffers)             | >= 1.7   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Communication protocol          |
 | [gflags](https://github.com/gflags/gflags)                       | >= 2.2   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Command-line options            |
 | [glog](https://github.com/google/glog)                           | >= 0.3.5 | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Logging                         |
 | [googletest](https://github.com/google/googletest)               | >= 1.8   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Testing                         |
+| [gperftools](https://github.com/gperftools/gperftools)           | >= 2.6   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Memory management               |
 | [libconfig](https://github.com/hyperrealm/libconfig)             | >= 1.5   | [LGPL-2.1](https://opensource.org/licenses/lgpl-2.1.php)     | Parse config files              |
 | [libevent](https://github.com/libevent/libevent)                 | >= 2.1   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Async event processing          |
 

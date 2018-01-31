@@ -6,7 +6,7 @@
 
 #include <quinclas/tradingapi.h>
 
-#include <chrono>
+#include <chrono>  // NOLINT
 #include <string>
 #include <utility>
 

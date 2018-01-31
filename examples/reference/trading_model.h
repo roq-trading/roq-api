@@ -11,7 +11,7 @@ namespace reference {
 
 class TradingModel final {
  public:
-  TradingModel(const Config& config);
+  explicit TradingModel(const Config& config);
   void on(const quinclas::common::TimerEvent&);
   void on(const quinclas::common::MarketByPriceEvent&);
   // TODO(thraneh): something more realistic

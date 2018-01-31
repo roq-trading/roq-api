@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#include "../../include/quinclas/tradingapi.h"
+#include "quinclas/tradingapi.h"
 
 namespace quinclas {
 namespace common {

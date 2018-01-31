@@ -12,6 +12,7 @@
 
 #include <atomic>
 #include <csignal>
+#include <iostream>
 #include <list>
 #include <mutex>
 #include <sstream>

@@ -1,8 +1,11 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "collector/collector.h"
+
+#include <cctz/time_zone.h>
 #include <glog/logging.h>
 
+#include <iostream>
 #include <limits>
 
 using namespace quinclas::common;  // NOLINT

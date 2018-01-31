@@ -1,5 +1,6 @@
 bin_PROGRAMS = example-strategy
 example_strategy_LDFLAGS = \
+	$(top_builddir)/src/tradingapi/libquinclas-tradingapi.la \
 	$(CCTZ_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(GFLAGS_LIBS) \

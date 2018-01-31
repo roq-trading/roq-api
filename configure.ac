@@ -12,6 +12,8 @@ AC_CONFIG_FILES([
  Makefile
  include/Makefile
  include/quinclas/Makefile
+ src/Makefile
+ src/tradingapi/Makefile
  tests/Makefile
  examples/Makefile
  examples/strategy/Makefile

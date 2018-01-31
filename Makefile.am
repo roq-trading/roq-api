@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = . include tests examples
+SUBDIRS = . include src tests examples
 
 dist_doc_DATA = LICENSE README.md CHANGELOG.md
 
@@ -13,7 +13,7 @@ check-local:
 .PHONY: lint
 
 lint:
-	cpplint --linelength=120 --recursive include/ tests/ examples/
+	cpplint --linelength=120 --recursive include/ src/ tests/ examples/
 
 cppcheck:
 	cppcheck --language=c++ --std=c++11 include/ examples/

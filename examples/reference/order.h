@@ -12,7 +12,7 @@ class Order {
   Order(quinclas::common::TradeDirection direction, double quantity)
       : direction(direction), remaining_quantity(quantity) {}
   const quinclas::common::TradeDirection direction;
-  enum { Requested, Sent, Working } state = Requested;
+  enum { Requested, Sent, Accepted } state = Requested;
   double remaining_quantity;
   uint32_t gateway_order_id = 0;
 };

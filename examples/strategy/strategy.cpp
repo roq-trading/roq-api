@@ -218,7 +218,7 @@ void Strategy::on(const OrderUpdateEvent& event) {
       break;
     case OrderStatus::Sent:
       break;
-    case OrderStatus::Failed:
+    case OrderStatus::Rejected:
       break;
     case OrderStatus::Accepted:
       break;

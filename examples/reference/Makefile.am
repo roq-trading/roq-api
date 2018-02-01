@@ -18,6 +18,7 @@ reference_strategy_CPPFLAGS = \
 reference_strategy_SOURCES = \
   config.cpp \
   config_reader.cpp \
+  exposure.cpp \
   gateway_manager.cpp \
   order.cpp \
   order_manager.cpp \
@@ -29,6 +30,7 @@ reference_strategy_SOURCES = \
 EXTRA_reference_strategy_SOURCES = \
   config.h \
   config_reader.h \
+  exposure.h \
   gateway_manager.h \
   order.h \
   order_manager.h \

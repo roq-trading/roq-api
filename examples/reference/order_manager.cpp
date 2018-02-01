@@ -64,8 +64,21 @@ uint32_t OrderManager::create_order(const char *order_template,
   _orders.emplace(order_id, Order(direction, quantity));
   // request (future) check for timeout
   _timeout.emplace_back(_last_update_time + _config.order_timeout, order_id);
-  // update exposure metrics
-  update_exposure(direction, quantity);
+  // update exposure
+  switch (direction) {
+    case quinclas::common::TradeDirection::Undefined: {
+      LOG(FATAL) << "Unexpected direction";
+      break;
+    }
+    case quinclas::common::TradeDirection::Buy: {
+      _bid.create(quantity);
+      break;
+    }
+    case quinclas::common::TradeDirection::Sell: {
+      _offer.create(quantity);
+      break;
+    }
+  }
   // finally return the id of the new order -- the user should use this id to modify and/or cancel the order
   return order_id;
 }
@@ -80,41 +93,63 @@ void OrderManager::on(const quinclas::common::CreateOrderAckEvent& event) {
   check(event.message_info);
   const auto& create_order_ack = event.create_order_ack;
   auto order_id = create_order_ack.opaque;
+  auto iter = _orders.find(order_id);
   if (create_order_ack.failure) {
-    remove_order(order_id);
+    if (iter != _orders.end()) {
+      LOG(WARNING) << "How can the order not exist?";
+      return;
+    }
+    auto& order = (*iter).second;
+    LOG_IF(FATAL, Order::Sent < order.state) << "Order was expected to have status: Sent";
+    // update exposure
+    switch (order.direction) {
+      case quinclas::common::TradeDirection::Undefined: {
+        LOG(FATAL) << "Unexpected direction";
+        break;
+      }
+      case quinclas::common::TradeDirection::Buy: {
+        _bid.reject(order.remaining_quantity);
+        break;
+      }
+      case quinclas::common::TradeDirection::Sell: {
+        _offer.reject(order.remaining_quantity);
+        break;
+      }
+    }
+    // remove the order -- we don't expect any further updates
+    _orders.erase(iter);
   } else {
-    auto iter = _orders.find(order_id);
     if (iter == _orders.end())
       return;
     auto& order = (*iter).second;
+    // record the order id known to the gateway -- we need it if we later want to modify or cancel
     order.gateway_order_id = create_order_ack.order_id;
   }
 }
 
 void OrderManager::on(const quinclas::common::ModifyOrderAckEvent& event) {
   check(event.message_info);
-  const auto& modify_order_ack = event.modify_order_ack;
-  auto order_id = modify_order_ack.opaque;
-  if (modify_order_ack.failure) {
-    LOG(WARNING) << "Failed to modify the order!";
-  } else {
-    auto iter = _orders.find(order_id);
-    if (iter == _orders.end())
-      return;
-    auto& order = (*iter).second;
-    // TODO(thraneh): this feels unsafe
-    update_exposure(order.direction, modify_order_ack.quantity_change);
-  }
+  // significantly more complex exposure management -- not implemented here
+  LOG(FATAL) << "Order modifications are not supported!";
 }
 
 void OrderManager::on(const quinclas::common::CancelOrderAckEvent& event) {
   check(event.message_info);
   const auto& cancel_order_ack = event.cancel_order_ack;
   auto order_id = cancel_order_ack.opaque;
-  if (cancel_order_ack.failure)
-    LOG(WARNING) << "Failed to cancel the order!";
-  else
-    remove_order(order_id);
+  if (cancel_order_ack.failure) {
+    LOG(WARNING) << "Order cancellation did not succeed!";
+  } else {
+    auto iter = _orders.find(order_id);
+    if (iter == _orders.end())
+      return;
+    // expect this event to be followed by an order update
+    // note! it would be wrong to modify exposure (think: partial fill)
+    auto& order = (*iter).second;
+    order.state = Order::Deleting;
+    // add a timeout (in case we don't get the order update)
+    _timeout.emplace_back(_last_update_time + _config.order_timeout, order_id);
+  }
 }
 
 void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
@@ -123,45 +158,52 @@ void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
   auto order_id = order_update.opaque;
   auto iter = _orders.find(order_id);
   if (iter == _orders.end()) {
-    LOG(WARNING) << "Got update for non-existing order!";
+    LOG(WARNING) << "Got update for non-existing order! (The order could already have timed out).";
     return;
   }
   auto& order = (*iter).second;
+  auto fill = order.fill(order_update);
+  bool has_fill = !is_equal(fill, 0.0);
   bool remove = false, timer = false;
   switch (order_update.status) {
     case quinclas::common::OrderStatus::Undefined: {
-      // this is wrong -- an (unknown?) enum has probably not been processed by the gateway
+      // this is wrong -- an (unknown? new?) enum has probably not been processed by the gateway
       LOG(FATAL) << "Unexpected order status!";
       break;
     }
     case quinclas::common::OrderStatus::Sent: {
       // the order has been confirmed sent by the gateway -- let's check back later (for timeout)
-      if (order.state == Order::Requested) {
-          timer = true;
+      if (order.state < Order::Sent) {
           order.state = Order::Sent;
+          timer = true;
       }
       break;
     }
     case quinclas::common::OrderStatus::Rejected: {
       // the order was rejected (could be any number of reasons)
+      // HANS -- exposure.rejected(remaining)
+      LOG_IF(FATAL, has_fill) << "Unexpected!";
       remove = true;
       break;
     }
     case quinclas::common::OrderStatus::Accepted: {
       // the order has been received by broker or exchange
-      order.state = Order::Accepted;
-      LOG_IF(FATAL, is_equal(order.remaining_quantity, 0.0)) << "Unexpected!";
+      if (order.state < Order::Accepted)
+        order.state = Order::Accepted;
+      LOG_IF(FATAL, has_fill) << "Unexpected!";
       break;
     }
     case quinclas::common::OrderStatus::Pending: {
       // the order has been registered on the exchange and is currently in a pending state
-      order.state = Order::Accepted;
-      LOG_IF(FATAL, is_equal(order.remaining_quantity, 0.0)) << "Unexpected!";
+      if (order.state < Order::Accepted)
+        order.state = Order::Accepted;
+      LOG_IF(FATAL, has_fill) << "Unexpected!";
       break;
     }
     case quinclas::common::OrderStatus::Working: {
       // the order is currently in the queue (waiting for matching) -- could be partially filled
-      order.state = Order::Accepted;
+      if (order.state < Order::Accepted)
+        order.state = Order::Accepted;
       remove = is_equal(order.remaining_quantity, 0.0);
       break;
     }
@@ -176,18 +218,10 @@ void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
       break;
     }
   }
-  // remove the order?
   if (remove) {
-    remove_order(order_id);
-  } else {
-    // add a (future) timeout check?
-    if (timer)
+    _orders.erase(order_id);
+  } else if (timer) {
       _timeout.emplace_back(_last_update_time + _config.order_timeout, order_id);
-    // update exposure by removing fill quantity
-    // TODO(thraneh): this feels unsafe -- there will always be a gap between order and trade feed
-    auto delta_quantity = order_update.remaining_quantity
-                        - order.remaining_quantity;
-    update_exposure(order.direction, delta_quantity);
   }
 }
 
@@ -203,11 +237,14 @@ void OrderManager::check(const quinclas::common::MessageInfo& message_info) {
     const auto& front = _timeout.front();
     if (current_time < front.first)
       break;
-    remove_order(front.second);
+    auto order_id = front.second;
+    // FIXME(thraneh): sometimes update exposure...
+    _orders.erase(order_id);
     _timeout.pop_front();
   }
 }
 
+/*
 void OrderManager::remove_order(uint32_t order_id) {
   auto iter = _orders.find(order_id);
   if (iter == _orders.end())
@@ -217,50 +254,7 @@ void OrderManager::remove_order(uint32_t order_id) {
   update_exposure(order.direction, -order.remaining_quantity);
   _orders.erase(iter);
 }
-
-void OrderManager::update_exposure(quinclas::common::TradeDirection direction,
-                                   double delta_quantity) {
-  switch (direction) {
-    case quinclas::common::TradeDirection::Undefined: {
-      LOG(FATAL) << "Unexpected direction";
-      break;
-    }
-    case quinclas::common::TradeDirection::Buy: {
-      _buy_exposure = std::max(_buy_exposure + delta_quantity, 0.0);
-      break;
-    }
-    case quinclas::common::TradeDirection::Sell: {
-      _sell_exposure = std::max(_sell_exposure + delta_quantity, 0.0);
-      break;
-    }
-  }
-}
-
-void OrderManager::compute_and_update_exposure() {
-  // for testing and debugging -- O(n) implementation
-  double buy_exposure = 0.0, sell_exposure = 0.0;
-  for (const auto iter : _orders) {
-    const auto& order = iter.second;
-    switch (order.direction) {
-      case quinclas::common::TradeDirection::Undefined: {
-        LOG(FATAL) << "Unexpected direction";
-        break;
-      }
-      case quinclas::common::TradeDirection::Buy: {
-        buy_exposure += order.remaining_quantity;
-        break;
-      }
-      case quinclas::common::TradeDirection::Sell: {
-        sell_exposure += order.remaining_quantity;
-        break;
-      }
-    }
-  }
-  // atomic update
-  _buy_exposure = buy_exposure;
-  _sell_exposure = sell_exposure;
-}
-
+*/
 
 double OrderManager::get_exposure(
     quinclas::common::TradeDirection direction) const {
@@ -270,29 +264,13 @@ double OrderManager::get_exposure(
       break;
     }
     case quinclas::common::TradeDirection::Buy: {
-      return _buy_exposure;
+      return _bid.get();
     }
     case quinclas::common::TradeDirection::Sell: {
-      return _sell_exposure;
+      return _offer.get();
     }
   }
 }
-
-/*
-void OrderManager::update_order(uint32_t order_id, uint32_t gateway_order_id,
-                                double remaining_quantity) {
-  auto iter = _orders.find(order_id);
-  if (iter == _orders.end())
-    return;
-  auto& order = (*iter).second;
-  order.gateway_order_id = gateway_order_id;
-  auto delta_quantity = remaining_quantity - order.remaining_quantity;
-  if (is_equal(delta_quantity, 0.0))
-    return;
-  order.remaining_quantity = remaining_quantity;
-  update_exposure(order.direction, delta_quantity);
-}
-*/
 
 }  // namespace reference
 }  // namespace examples

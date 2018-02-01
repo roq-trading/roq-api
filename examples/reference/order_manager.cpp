@@ -208,12 +208,19 @@ void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
       order.state = Order::Working;
       LOG_IF(FATAL, is_equal(order.remaining_quantity, 0.0)) << "Unexpected!";
       break;
-    case quinclas::common::OrderStatus::Cancelled:
-      remove = true;
+    case quinclas::common::OrderStatus::Pending:
+      order.state = Order::Working;
+      LOG_IF(FATAL, is_equal(order.remaining_quantity, 0.0)) << "Unexpected!";
       break;
-    case quinclas::common::OrderStatus::Filled:
+    case quinclas::common::OrderStatus::Working:
       order.state = Order::Working;
       remove = is_equal(order.remaining_quantity, 0.0);
+      break;
+    case quinclas::common::OrderStatus::Completed:
+      remove = true;
+      break;
+    case quinclas::common::OrderStatus::Cancelled:
+      remove = true;
       break;
   }
   if (remove) {

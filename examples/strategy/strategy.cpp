@@ -222,14 +222,20 @@ void Strategy::on(const OrderUpdateEvent& event) {
       break;
     case OrderStatus::Accepted:
       break;
+    case OrderStatus::Pending:
+    case OrderStatus::Working:
+      if (0 == static_cast<uint32_t>(order_update.remaining_quantity)) {
+        // That's strange...
+      }
+      break;
+    case OrderStatus::Completed:
+      if (0 == static_cast<uint32_t>(order_update.remaining_quantity)) {
+        // We're done -- there is no remaining quantity.
+      }
+      break;
     case OrderStatus::Cancelled:
       if (0 < static_cast<uint32_t>(order_update.remaining_quantity)) {
         // Should probably deal with remaining quantity.
-      }
-      break;
-    case OrderStatus::Filled:
-      if (0 == static_cast<uint32_t>(order_update.remaining_quantity)) {
-        // We're done -- there is no remaining quantity.
       }
       break;
   }

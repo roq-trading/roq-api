@@ -39,14 +39,18 @@ enum TradingStatus:byte {
 /// Order status.
 enum OrderStatus:byte {
   Undefined = 0,
-  ///< Order was sent, but no ack has been received yet
+  ///< Order was sent (from gateway)
   Sent = 1,
-  ///< Order was not accepted
+  ///< Order was not accepted (by gateway or exchange)
   Failed = 2,
-  ///< Order has been accepted by the exchange
+  ///< Order was accepted (by the exchange)
   Accepted = 3,
-  ///< Order has been cancelled
-  Cancelled = 4,
+  ///< Order is in a pending state (e.g. a stop order)
+  Pending = 4,
+  ///< Order is in the queue
+  Working = 5,
   ///< Order has been completed
-  Filled = 5
+  Completed = 6,
+  ///< Order has been cancelled (by user, gateway or exchange)
+  Cancelled = 7
 }

@@ -36,12 +36,12 @@ uint32_t OrderManager::create_order(const char *order_template,
                                     quinclas::common::TradeDirection direction,
                                     double quantity, double limit_price) {
   // manage exposure by direction -- we can't trade if we will breach a limit
-  double exposure = get_exposure(direction);
+  auto exposure = _exposure.get(direction);
   if (!_risk_manager.can_trade(_config.instrument, direction,
                                quantity, exposure)) {
     return 0;
   }
-  // risk manager was happy, now send the order
+  // risk manager was happy, now try to send the order
   auto order_id = ++_next_order_id;
   try {
     quinclas::common::CreateOrder create_order {
@@ -56,29 +56,16 @@ uint32_t OrderManager::create_order(const char *order_template,
     };
     _dispatcher.send(GATEWAY, create_order);
   } catch (std::exception& e) {  // TODO(thraneh): more specific type(s)
-    // this exception can happen if the gateway isn't connected
+    // could also let the exception reach the user
     LOG(WARNING) << e.what();
     return 0;
   }
-  // add state management for this order
+  // state management for this order
   _orders.emplace(order_id, Order(direction, quantity));
   // request (future) check for timeout
-  _timeout.emplace_back(_last_update_time + _config.order_timeout, order_id);
+  add_timeout_check(order_id);
   // update exposure
-  switch (direction) {
-    case quinclas::common::TradeDirection::Undefined: {
-      LOG(FATAL) << "Unexpected direction";
-      break;
-    }
-    case quinclas::common::TradeDirection::Buy: {
-      _bid.create(quantity);
-      break;
-    }
-    case quinclas::common::TradeDirection::Sell: {
-      _offer.create(quantity);
-      break;
-    }
-  }
+  _exposure.update(Exposure::Create, direction, quantity);
   // finally return the id of the new order -- the user should use this id to modify and/or cancel the order
   return order_id;
 }
@@ -94,43 +81,26 @@ void OrderManager::on(const quinclas::common::CreateOrderAckEvent& event) {
   const auto& create_order_ack = event.create_order_ack;
   auto order_id = create_order_ack.opaque;
   auto iter = _orders.find(order_id);
+  if (iter == _orders.end())
+    return;
+  auto& order = (*iter).second;
   if (create_order_ack.failure) {
-    if (iter != _orders.end()) {
-      LOG(WARNING) << "How can the order not exist?";
-      return;
-    }
-    auto& order = (*iter).second;
-    LOG_IF(FATAL, Order::Sent < order.state) << "Order was expected to have status: Sent";
+    LOG_IF(FATAL, Order::Sent < order.state) << "Unexpected -- order was previously accepted or working";
     // update exposure
-    switch (order.direction) {
-      case quinclas::common::TradeDirection::Undefined: {
-        LOG(FATAL) << "Unexpected direction";
-        break;
-      }
-      case quinclas::common::TradeDirection::Buy: {
-        _bid.reject(order.remaining_quantity);
-        break;
-      }
-      case quinclas::common::TradeDirection::Sell: {
-        _offer.reject(order.remaining_quantity);
-        break;
-      }
-    }
+    _exposure.update(Exposure::Reject, order.direction, order.remaining_quantity);
     // remove the order -- we don't expect any further updates
     _orders.erase(iter);
   } else {
-    if (iter == _orders.end())
-      return;
-    auto& order = (*iter).second;
-    // record the order id known to the gateway -- we need it if we later want to modify or cancel
-    order.gateway_order_id = create_order_ack.order_id;
+    // record the order id known to the gateway -- we need it if the user later want to modify or cancel
+    if (create_order_ack.order_id > 0)
+      order.gateway_order_id = create_order_ack.order_id;
   }
 }
 
 void OrderManager::on(const quinclas::common::ModifyOrderAckEvent& event) {
   check(event.message_info);
-  // significantly more complex exposure management -- not implemented here
-  LOG(FATAL) << "Order modifications are not supported!";
+  // significantly more complex exposure management -- not implemented for this example
+  LOG(FATAL) << "Order modifications not supported!";
 }
 
 void OrderManager::on(const quinclas::common::CancelOrderAckEvent& event) {
@@ -143,12 +113,11 @@ void OrderManager::on(const quinclas::common::CancelOrderAckEvent& event) {
     auto iter = _orders.find(order_id);
     if (iter == _orders.end())
       return;
-    // expect this event to be followed by an order update
-    // note! it would be wrong to modify exposure (think: partial fill)
+    // expect this event to be followed by an order update (there could be fills)
     auto& order = (*iter).second;
     order.state = Order::Deleting;
     // add a timeout (in case we don't get the order update)
-    _timeout.emplace_back(_last_update_time + _config.order_timeout, order_id);
+    add_timeout_check(order_id);
   }
 }
 
@@ -162,9 +131,11 @@ void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
     return;
   }
   auto& order = (*iter).second;
+  // get current fill -- order will be updated with remaining quantity
   auto fill = order.fill(order_update);
   bool has_fill = !is_equal(fill, 0.0);
-  bool remove = false, timer = false;
+  if (has_fill)
+    _exposure.update(Exposure::Fill, order.direction, fill);
   switch (order_update.status) {
     case quinclas::common::OrderStatus::Undefined: {
       // this is wrong -- an (unknown? new?) enum has probably not been processed by the gateway
@@ -175,15 +146,15 @@ void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
       // the order has been confirmed sent by the gateway -- let's check back later (for timeout)
       if (order.state < Order::Sent) {
           order.state = Order::Sent;
-          timer = true;
+          add_timeout_check(order_id);
       }
       break;
     }
     case quinclas::common::OrderStatus::Rejected: {
       // the order was rejected (could be any number of reasons)
-      // HANS -- exposure.rejected(remaining)
       LOG_IF(FATAL, has_fill) << "Unexpected!";
-      remove = true;
+      _exposure.update(Exposure::Reject, order.direction, order.remaining_quantity);
+      _orders.erase(order_id);
       break;
     }
     case quinclas::common::OrderStatus::Accepted: {
@@ -204,71 +175,51 @@ void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
       // the order is currently in the queue (waiting for matching) -- could be partially filled
       if (order.state < Order::Accepted)
         order.state = Order::Accepted;
-      remove = is_equal(order.remaining_quantity, 0.0);
+      if (is_equal(order.remaining_quantity, 0.0))
+        _orders.erase(order_id);
       break;
     }
     case quinclas::common::OrderStatus::Completed: {
       // the order has been matched and is completely filled
-      remove = true;
+      _orders.erase(order_id);
       break;
     }
     case quinclas::common::OrderStatus::Cancelled: {
       // the order has been cancelled -- could be partially filled
-      remove = true;
+      _orders.erase(order_id);
       break;
     }
-  }
-  if (remove) {
-    _orders.erase(order_id);
-  } else if (timer) {
-      _timeout.emplace_back(_last_update_time + _config.order_timeout, order_id);
   }
 }
 
 // utilities
+
+void OrderManager::add_timeout_check(uint32_t order_id) {
+  _timeout.emplace_back(_last_update_time + _config.order_timeout, order_id);
+}
 
 void OrderManager::check(const quinclas::common::MessageInfo& message_info) {
   // all events contain a timestamp -- this check will catch programming mistakes
   auto current_time = message_info.enqueue_time;
   LOG_IF(FATAL, _last_update_time < current_time) << "Wrong sequencing!";
   _last_update_time = current_time;
-  // we have a list of increasing timestamps where we have to check for timeouts
+  // check timeouts
   while (!_timeout.empty()) {
     const auto& front = _timeout.front();
+    // the list is increasing -- we can stop when the timeout is in the future
     if (current_time < front.first)
       break;
     auto order_id = front.second;
-    // FIXME(thraneh): sometimes update exposure...
-    _orders.erase(order_id);
+    auto iter = _orders.find(order_id);
+    if (iter != _orders.end()) {
+      auto& order = (*iter).second;
+      if (order.state == Order::Deleting) {
+        // this could be wrong! only way to find out is to check trade events...
+        _exposure.update(Exposure::Cancel, order.direction, order.remaining_quantity);
+      }
+    }
+    _orders.erase(iter);
     _timeout.pop_front();
-  }
-}
-
-/*
-void OrderManager::remove_order(uint32_t order_id) {
-  auto iter = _orders.find(order_id);
-  if (iter == _orders.end())
-    return;
-  auto& order = (*iter).second;
-  // remember to remove (remaining) exposure before deleting this order
-  update_exposure(order.direction, -order.remaining_quantity);
-  _orders.erase(iter);
-}
-*/
-
-double OrderManager::get_exposure(
-    quinclas::common::TradeDirection direction) const {
-  switch (direction) {
-    case quinclas::common::TradeDirection::Undefined: {
-      LOG(FATAL) << "Unexpected direction";
-      break;
-    }
-    case quinclas::common::TradeDirection::Buy: {
-      return _bid.get();
-    }
-    case quinclas::common::TradeDirection::Sell: {
-      return _offer.get();
-    }
   }
 }
 

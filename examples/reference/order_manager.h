@@ -39,7 +39,7 @@ class OrderManager final {
   uint32_t create_order(const char *order_template,
                         quinclas::common::TradeDirection direction,
                         double quantity, double limit_price);
-  double get_exposure(quinclas::common::TradeDirection direction) const;
+  void add_timeout_check(uint32_t order_id);
   void check(const quinclas::common::MessageInfo& message_info);
 
  private:
@@ -53,8 +53,7 @@ class OrderManager final {
   std::unordered_map<uint32_t, Order> _orders;
   std::list<std::pair<time_point_t, uint32_t> > _timeout;
   // risk exposure (worst-case)
-  Exposure _bid;
-  Exposure _offer;
+  Exposure _exposure;
 };
 
 }  // namespace reference

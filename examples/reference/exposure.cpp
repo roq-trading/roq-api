@@ -8,36 +8,66 @@
 namespace examples {
 namespace reference {
 
-double Exposure::get() const {
-  auto result = _created - _filled - _cancelled - _rejected;
+void Exposure::update(update_t type, quinclas::common::TradeDirection direction,
+                      double quantity) {
+  auto& exposure = get_exposure(direction);
+  switch (type) {
+    case Create: {
+      exposure.created += quantity;
+      break;
+    }
+    case Fill: {
+      exposure.filled += quantity;
+      LOG_IF(FATAL, is_less_than_or_equal(exposure.filled, exposure.created)) <<
+          "Filled quantity (" << exposure.filled << ") should be less than created (" << exposure.created << ")";
+      // TODO(thraneh): can also validate other combinations
+      break;
+    }
+    case Cancel: {
+      exposure.cancelled += quantity;
+      LOG_IF(FATAL, is_less_than_or_equal(exposure.cancelled, exposure.created)) <<
+          "Cancelled quantity (" << exposure.cancelled << ") should be less than created (" << exposure.created << ")";
+      // TODO(thraneh): can also validate other combinations
+      break;
+    }
+    case Reject: {
+      exposure.rejected += quantity;
+      LOG_IF(FATAL, is_less_than_or_equal(exposure.rejected, exposure.created)) <<
+          "Rejected quantity (" << exposure.rejected << ") should be less than created (" << exposure.created << ")";
+      // TODO(thraneh): can also validate other combinations
+      break;
+    }
+  }
+}
+
+double Exposure::get(quinclas::common::TradeDirection direction) const {
+  const auto& exposure = get_exposure(direction);
+  auto result = exposure.created - exposure.filled - exposure.cancelled - exposure.rejected;
   LOG_IF(FATAL, is_less_than_or_equal(0.0, result)) <<
       "Exposure (" << result << ") is negative! ";
   return result;
 }
 
-void Exposure::create(double quantity) {
-  _created += quantity;
+Exposure::exposure_t& Exposure::get_exposure(quinclas::common::TradeDirection direction) {
+  switch (direction) {
+    case quinclas::common::TradeDirection::Undefined:
+      LOG(FATAL) << "Unexpected direction";
+    case quinclas::common::TradeDirection::Buy:
+      return _bid;
+    case quinclas::common::TradeDirection::Sell:
+      return _offer;
+  }
 }
 
-void Exposure::fill(double quantity) {
-  _filled += quantity;
-  LOG_IF(FATAL, is_less_than_or_equal(_filled, _created)) <<
-      "Filled quantity (" << _filled << ") should be less than create (" << _created << ")";
-  // TODO(thraneh): can also validate other combinations
-}
-
-void Exposure::cancel(double quantity) {
-  _cancelled += quantity;
-  LOG_IF(FATAL, is_less_than_or_equal(_cancelled, _created)) <<
-      "Cancelled quantity (" << _cancelled << ") should be less than create (" << _created << ")";
-  // TODO(thraneh): can also validate other combinations
-}
-
-void Exposure::reject(double quantity) {
-  _rejected += quantity;
-  LOG_IF(FATAL, is_less_than_or_equal(_rejected, _created)) <<
-      "Rejected quantity (" << _rejected << ") should be less than create (" << _created << ")";
-  // TODO(thraneh): can also validate other combinations
+const Exposure::exposure_t& Exposure::get_exposure(quinclas::common::TradeDirection direction) const {
+  switch (direction) {
+    case quinclas::common::TradeDirection::Undefined:
+      LOG(FATAL) << "Unexpected direction";
+    case quinclas::common::TradeDirection::Buy:
+      return _bid;
+    case quinclas::common::TradeDirection::Sell:
+      return _offer;
+  }
 }
 
 }  // namespace reference

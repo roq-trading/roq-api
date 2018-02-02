@@ -40,7 +40,7 @@ static int32_t rand_int32() {
 }  // namespace
 
 namespace {
-static const char * const NAME[] = {"G1", "Gateway2", "SomeVeryLongGatewayName3"};
+static const char * const NAME[] = {"G1", "Gateway2", "SomeVeryLongGatewayName3", ""};
 static const size_t NAME_LENGTH = sizeof(NAME) / sizeof(NAME[0]);
 }  // namespace
 

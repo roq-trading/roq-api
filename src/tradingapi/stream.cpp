@@ -1,10 +1,13 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include <cctz/time_zone.h>
+#include <double-conversion/double-conversion.h>
 
 #include <cmath>
 
 #include "quinclas/tradingapi.h"
+
+#define _USE_DOUBLE_CONVERSION 1
 
 namespace quinclas {
 namespace common {
@@ -13,15 +16,29 @@ namespace common {
 }  // namespace quinclas
 
 namespace {
+#if defined(_USE_DOUBLE_CONVERSION)
+const double_conversion::DoubleToStringConverter DOUBLE_CONVERTER(
+    double_conversion::DoubleToStringConverter::UNIQUE_ZERO,
+    "", "", 'e', -6, 21, 6, 0
+);
+#endif
 const char *TIME_FORMAT = "%E4Y-%m-%dT%H:%M:%E6S";
 const auto TIME_ZONE = cctz::utc_time_zone();
 }
 
-
 std::ostream& operator<<(std::ostream& stream, const quinclas::common::Number number) {
+#if defined(_USE_DOUBLE_CONVERSION)
+  char buffer[32];
+  double_conversion::StringBuilder builder(buffer, sizeof(buffer));
+  if (DOUBLE_CONVERTER.ToShortest(number._value, &builder))
+    return stream << builder.Finalize();
+  else
+    return stream << "####";
+#else
   if (std::isfinite(number._value))
     return stream << number._value;
   return stream;
+#endif
 }
 
 std::ostream& operator<<(std::ostream& stream, const quinclas::common::ConnectionStatus value) {

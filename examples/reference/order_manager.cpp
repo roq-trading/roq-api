@@ -206,7 +206,7 @@ void OrderManager::check(const quinclas::common::MessageInfo& message_info) {
   // check timeouts
   while (!_timeout.empty()) {
     const auto& front = _timeout.front();
-    // the list is increasing -- we can stop when the timeout is in the future
+    // the list is increasing -- we can safely stop when a timeout is in the future
     if (current_time < front.first)
       break;
     auto order_id = front.second;
@@ -217,8 +217,8 @@ void OrderManager::check(const quinclas::common::MessageInfo& message_info) {
         // this could be wrong! only way to find out is to check trade events...
         _exposure.update(Exposure::Cancel, order.direction, order.remaining_quantity);
       }
+      _orders.erase(iter);
     }
-    _orders.erase(iter);
     _timeout.pop_front();
   }
 }

@@ -28,14 +28,15 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 
 ## Build Tools
 
-| Tool     | Version  | Purpose |
-| -------- | -------- | ------- |
-| autoconf |          | Build   |
-| automake |          | Build   |
-| libtool  |          | Build   |
-| gcc      | >= 4.8.1 | Build   |
-| clang    | >= 3.3   | Build   |
-| cmake    | >= 2.6.4 | Test    |
+| Tool       | Version  | Purpose |
+| ---------- | -------- | ------- |
+| autoconf   |          | Build   |
+| automake   |          | Build   |
+| libtool    |          | Build   |
+| pkg-config |          | Build   |
+| gcc        | >= 4.8.1 | Build   |
+| clang      | >= 3.3   | Build   |
+| cmake      | >= 2.6.4 | Test    |
 
 ## Dependencies
 

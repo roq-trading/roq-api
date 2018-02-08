@@ -32,4 +32,3 @@ tests/tradingapi-tests
 examples/strategy/example-strategy
 examples/collector/example-collector
 examples/reference/reference-strategy
-examples/gateway/example-gateway

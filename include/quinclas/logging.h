@@ -33,15 +33,24 @@ typedef std::function<void(const char *)> sink_t;
 #define RAW_LOG(logger, sink) logger(__FILE__, __LINE__, sink).stream()
 #if defined(QUINCLAS_SPDLOG)
 extern spdlog::logger *spdlog_logger;
-#define LOG_INFO(logger) RAW_LOG(logger, [](const char *message){ ::quinclas::logging::detail::spdlog_logger->info(message); })
-#define LOG_WARNING(logger) RAW_LOG(logger, [](const char *message){ ::quinclas::logging::detail::spdlog_logger->warn(message); })
-#define LOG_ERROR(logger) RAW_LOG(logger, [](const char *message){ ::quinclas::logging::detail::spdlog_logger->error(message); })
-#define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){ ::quinclas::logging::detail::spdlog_logger->critical(message); std::abort(); })
+#define LOG_INFO(logger) RAW_LOG(logger, [](const char *message){ \
+    ::quinclas::logging::detail::spdlog_logger->info(message); })
+#define LOG_WARNING(logger) RAW_LOG(logger, [](const char *message){  \
+    ::quinclas::logging::detail::spdlog_logger->warn(message); })
+#define LOG_ERROR(logger) RAW_LOG(logger, [](const char *message){  \
+    ::quinclas::logging::detail::spdlog_logger->error(message); })
+#define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){  \
+    ::quinclas::logging::detail::spdlog_logger->critical(message); \
+    std::abort(); })
 #else
-#define LOG_INFO(logger) RAW_LOG(logger, [](const char *message){ std::cout << "I " << message; })
-#define LOG_WARNING(logger) RAW_LOG(logger, [](const char *message){ std::cerr << "W " << message; })
-#define LOG_ERROR(logger) RAW_LOG(logger, [](const char *message){ std::cerr << "E " << message; })
-#define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){ std::cerr << "F " << message; std::abort(); })
+#define LOG_INFO(logger) RAW_LOG(logger, [](const char *message){  \
+    std::cout << "I " << message; })
+#define LOG_WARNING(logger) RAW_LOG(logger, [](const char *message){  \
+    std::cerr << "W " << message; })
+#define LOG_ERROR(logger) RAW_LOG(logger, [](const char *message){  \
+    std::cerr << "E " << message; })
+#define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){  \
+    std::cerr << "F " << message; std::abort(); })
 #endif
 #define LOG(level) LOG_ ## level(::quinclas::logging::detail::LogMessage)
 #define LOG_IF(level, condition) \
@@ -132,7 +141,7 @@ namespace logging {
 
 class Logger {
  public:
-   Logger(int argc, char *argv[]) {
+  Logger(int argc, char *argv[]) {
 #if defined(QUINCLAS_GLOG)
     google::InitGoogleLogging(argv[0]);
     google::InstallFailureSignalHandler();

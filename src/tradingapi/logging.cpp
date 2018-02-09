@@ -1,9 +1,9 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "quinclas/logging.h"
-#include <iostream>
 // FIXME(thraneh): only do this when configure has detected spdlog
 #include <spdlog/spdlog.h>
+#include <iostream>
 
 namespace quinclas {
 namespace logging {

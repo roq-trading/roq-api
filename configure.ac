@@ -34,6 +34,16 @@ AC_PROG_LIBTOOL
 # Check C++ 11 support.
 AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
 
+# Find spdlog.
+PKG_CHECK_MODULES([SPDLOG], [spdlog], [], [
+  AC_CHECK_HEADER(
+    [spdlog/spdlog.h],
+    [AC_SUBST([SPDLOG_CFLAGS])],
+    [AC_MSG_ERROR([unable to find spdlog header files])]
+  )
+  AC_SUBST([SPDLOG_LIBS], [])
+])
+
 # Find glog.
 PKG_CHECK_MODULES([LIBGLOG], [libglog], [], [
   AC_CHECK_HEADER(

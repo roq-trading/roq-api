@@ -2,18 +2,18 @@
 
 #pragma once
 
-// Regardless of the logging framework, the exposed interface
+// Regardless of the logging framework, the interface exposed here
 // borrows heavily from what is used by glog and Easylogging++.
 
-// glog (Google's logging framework)
+// Using glog (Google's logging framework).
 #if defined(QUINCLAS_GLOG)
 #include <glog/logging.h>
 
-// spdlog (a lock-free asynchronous logging framework)
+// Using spdlog (a lock-free asynchronous logging framework).
 #elif defined(QUINCLAS_SPDLOG)
 #include <spdlog/spdlog.h>
 
-// no view on logging framework?
+// Fallback to stdout/stderr.
 #else
 #warning No specific logging framework has been selected.
 #if !defined(QUINCLAS_STDLOG)
@@ -28,34 +28,38 @@
 #include <iostream>
 namespace quinclas {
 namespace logging {
-namespace implementation {
+namespace detail {
 typedef std::function<void(const char *)> sink_t;
-extern sink_t null_sink;
-extern sink_t info_sink;
-extern sink_t warning_sink;
-extern sink_t error_sink;
-extern sink_t fatal_sink;
 #define RAW_LOG(logger, sink) logger(__FILE__, __LINE__, sink).stream()
-#define LOG_INFO(logger) RAW_LOG(logger, ::quinclas::logging::info_sink)
-#define LOG_WARNING(logger) RAW_LOG(logger, ::quinclas::logging::warning_sink)
-#define LOG_ERROR(logger) RAW_LOG(logger, ::quinclas::logging::error_sink)
-#define LOG_FATAL(logger) RAW_LOG(logger, ::quinclas::logging::fatal_sink)
-#define LOG(level) LOG_ ## level(::quinclas::logging::implementation::LogMessage)
+#if defined(QUINCLAS_SPDLOG)
+extern spdlog::logger *spdlog_logger;
+#define LOG_INFO(logger) RAW_LOG(logger, [](const char *message){ ::quinclas::logging::detail::spdlog_logger->info(message); })
+#define LOG_WARNING(logger) RAW_LOG(logger, [](const char *message){ ::quinclas::logging::detail::spdlog_logger->warn(message); })
+#define LOG_ERROR(logger) RAW_LOG(logger, [](const char *message){ ::quinclas::logging::detail::spdlog_logger->error(message); })
+#define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){ ::quinclas::logging::detail::spdlog_logger->critical(message); std::abort(); })
+#else
+#define LOG_INFO(logger) RAW_LOG(logger, [](const char *message){ std::cout << "I " << message; })
+#define LOG_WARNING(logger) RAW_LOG(logger, [](const char *message){ std::cerr << "W " << message; })
+#define LOG_ERROR(logger) RAW_LOG(logger, [](const char *message){ std::cerr << "E " << message; })
+#define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){ std::cerr << "F " << message; std::abort(); })
+#endif
+#define LOG(level) LOG_ ## level(::quinclas::logging::detail::LogMessage)
 #define LOG_IF(level, condition) \
     !(condition) \
     ? (void)(0) \
-    : ::quinclas::logging::implementation::LogMessageVoidify() & LOG(level)
-#define PLOG(level) LOG_ ## level(::quinclas::logging::implementation::ErrnoLogMessage)
+    : ::quinclas::logging::detail::LogMessageVoidify() & LOG(level)
+#define PLOG(level) LOG_ ## level(::quinclas::logging::detail::ErrnoLogMessage)
 #if defined(NDEBUG)
-#define DLOG(level) RAW_LOG(::quinclas::logging::implementation::NullStream, null_sink)
+#define DLOG(level) RAW_LOG(::quinclas::logging::detail::NullStream, [](const char * message){})
 #else
 #define DLOG(level) LOG(level)
 #endif
-thread_local char message_buffer[4096];
+#define MESSAGE_BUFFER_SIZE 4096
+extern thread_local char *message_buffer;
 class LogMessage {
  public:
   LogMessage(const char *file, int line, sink_t sink)
-      : _sink(sink), _stream(&message_buffer[0], sizeof(message_buffer)) {
+      : _sink(sink), _stream(&message_buffer[0], MESSAGE_BUFFER_SIZE) {
     _stream << file << ":" << line << "] ";
   }
   ~LogMessage() { flush(); }
@@ -109,12 +113,16 @@ class NullStream : public LogMessage::LogStream {
  private:
   char _buffer[2];
 };
+template <typename T>
+quinclas::logging::detail::NullStream&
+operator<<(NullStream& stream, T&) {
+  return stream;
+}
 class LogMessageVoidify {
  public:
   void operator&(std::ostream&) {}
 };
-}  // namespace implementation
-
+}  // namespace detail
 }  // namespace logging
 }  // namespace quinclas
 #endif
@@ -124,16 +132,26 @@ namespace logging {
 
 class Logger {
  public:
-  void initialize(int argc, char *argv[]);
+   Logger(int argc, char *argv[]) {
+#if defined(QUINCLAS_GLOG)
+    google::InitGoogleLogging(argv[0]);
+    google::InstallFailureSignalHandler();
+#elif defined(QUINCLAS_SPDLOG)
+    _logger = spdlog::stdout_color_mt("console");
+    ::quinclas::logging::detail::spdlog_logger = _logger.get();
+#else
+#endif
+  }
+  ~Logger() {
+#if defined(QUINCLAS_SPDLOG)
+    _logger.reset();
+#endif
+  }
+ private:
+#if defined(QUINCLAS_SPDLOG)
+  std::shared_ptr<spdlog::logger> _logger;
+#endif
 };
 
 }  // namespace logging
 }  // namespace quinclas
-
-#if !defined(QUINCLAS_GLOG)
-template <typename T>
-quinclas::logging::implementation::NullStream&
-operator<<(quinclas::logging::implementation::NullStream& stream, T&) {
-  return stream;
-}
-#endif

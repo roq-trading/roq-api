@@ -35,6 +35,8 @@ namespace logging {
 namespace detail {
 #define MESSAGE_BUFFER_SIZE 4096
 extern thread_local char *message_buffer;
+extern bool newline;
+extern uint32_t verbosity;
 }  // namespace detail
 }  // namespace logging
 }  // namespace quinclas
@@ -42,7 +44,6 @@ extern thread_local char *message_buffer;
 // Implement an interface supporting C++ streams.
 #if !defined(QUINCLAS_GLOG)
 #include <cstring>
-#include <fstream>
 #include <functional>
 #include <iostream>
 #include <sstream>
@@ -51,7 +52,9 @@ namespace quinclas {
 namespace logging {
 namespace detail {
 typedef std::function<void(const char *)> sink_t;
-#define RAW_LOG(logger, sink) logger(__FILE__, __LINE__, sink).stream()
+// SO8487986
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+#define RAW_LOG(logger, sink) logger(__FILENAME__, __LINE__, sink).stream()
 #if defined(QUINCLAS_SPDLOG)
 extern spdlog::logger *spdlog_logger;
 #define LOG_INFO(logger) RAW_LOG(logger, [](const char *message){ \
@@ -79,8 +82,7 @@ extern spdlog::logger *spdlog_logger;
     ? (void)(0) \
     : ::quinclas::logging::detail::LogMessageVoidify() & LOG(level)
 #define PLOG(level) LOG_ ## level(::quinclas::logging::detail::ErrnoLogMessage)
-// FIXME(thraneh): need a global threshold for verbose logging
-#define VLOG(n) LOG_IF(INFO, true)
+#define VLOG(n) LOG_IF(INFO, (n)<=::quinclas::logging::detail::verbosity)
 #if defined(NDEBUG)
 #define DLOG(level) RAW_LOG(::quinclas::logging::detail::NullStream, [](const char * message){})
 #else
@@ -116,10 +118,8 @@ class LogMessage {
  private:
   void flush() {
     auto n = _stream.pcount();
-#if !defined(QUINCLAS_SPDLOG)
-    if (message_buffer[n - 1] != '\n')
+    if (newline && message_buffer[n - 1] != '\n')
       message_buffer[n++] = '\n';
-#endif
     message_buffer[n] = '\0';
     _sink(message_buffer);
   }
@@ -169,36 +169,27 @@ class Logger {
     google::InitGoogleLogging(argv[0]);
     google::InstallFailureSignalHandler();
 #elif defined(QUINCLAS_SPDLOG)
-    spdlog::set_async_mode(
-        8192,
-        spdlog::async_overflow_policy::discard_log_msg,
-        nullptr,
-        std::chrono::seconds(3),
-        nullptr);
-    // create filename -- (very) quick and dirty
-    std::ifstream comm("/proc/self/comm");
-    std::string program;
-    std::getline(comm, program);
-    char hostname[256];
-    if (gethostname(hostname, sizeof(hostname)) < 0)
-      snprintf(hostname, sizeof(hostname), "<hostname>");
-    char user[256];
-    if (getlogin_r(user, sizeof(user)) != 0)
-      snprintf(user, sizeof(user), "<user>");
-    std::stringstream buffer;
-    const char *log_dir = "/tmp";
-    // glog has <program>.<hostname>.<user>.log.<severity>.<date>.<time>.<pid>
-    buffer << log_dir << "/" << program << "." << hostname << "." << user << ".log." << getpid();
-    std::string path = buffer.str();
-    // spdlog will be caching the logger
-    auto logger = spdlog::basic_logger_st("spdlog", path);
-    // auto logger = spdlog::stdout_logger_st("spdlog");
+    detail::newline = false;
+    auto filename = get_filename();
+    auto console = filename.empty();
+    if (!console)
+      spdlog::set_async_mode(
+          8192,
+          spdlog::async_overflow_policy::discard_log_msg,
+          nullptr,
+          std::chrono::seconds(3),
+          nullptr);
+    auto logger = console ?
+                  spdlog::stdout_logger_st("spdlog") :
+                  spdlog::basic_logger_st("spdlog", filename);
     logger->set_pattern("%L%m%d %T.%f %t %v");  // same as glog
     logger->flush_on(spdlog::level::warn);
+    // note! spdlog keeps a reference
     ::quinclas::logging::detail::spdlog_logger = logger.get();
 #else
 #endif
   }
+  static std::string get_filename();
 };
 
 }  // namespace logging

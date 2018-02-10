@@ -41,9 +41,12 @@ extern thread_local char *message_buffer;
 
 // Implement an interface supporting C++ streams.
 #if !defined(QUINCLAS_GLOG)
-#include <functional>
 #include <cstring>
+#include <fstream>
+#include <functional>
 #include <iostream>
+#include <sstream>
+#include <string>
 namespace quinclas {
 namespace logging {
 namespace detail {
@@ -166,9 +169,32 @@ class Logger {
     google::InitGoogleLogging(argv[0]);
     google::InstallFailureSignalHandler();
 #elif defined(QUINCLAS_SPDLOG)
+    spdlog::set_async_mode(
+        8192,
+        spdlog::async_overflow_policy::discard_log_msg,
+        nullptr,
+        std::chrono::seconds(3),
+        nullptr);
+    // create filename -- (very) quick and dirty
+    std::ifstream comm("/proc/self/comm");
+    std::string program;
+    std::getline(comm, program);
+    char hostname[256];
+    if (gethostname(hostname, sizeof(hostname)) < 0)
+      snprintf(hostname, sizeof(hostname), "<hostname>");
+    char user[256];
+    if (getlogin_r(user, sizeof(user)) != 0)
+      snprintf(user, sizeof(user), "<user>");
+    std::stringstream buffer;
+    const char *log_dir = "/tmp";
+    // glog has <program>.<hostname>.<user>.log.<severity>.<date>.<time>.<pid>
+    buffer << log_dir << "/" << program << "." << hostname << "." << user << ".log." << getpid();
+    std::string path = buffer.str();
     // spdlog will be caching the logger
-    auto logger = spdlog::stdout_color_mt("spdlog");
+    auto logger = spdlog::basic_logger_st("spdlog", path);
+    // auto logger = spdlog::stdout_logger_st("spdlog");
     logger->set_pattern("%L%m%d %T.%f %t %v");  // same as glog
+    logger->flush_on(spdlog::level::warn);
     ::quinclas::logging::detail::spdlog_logger = logger.get();
 #else
 #endif

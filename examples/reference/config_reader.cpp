@@ -2,7 +2,7 @@
 
 #include "reference/config_reader.h"
 
-#include <glog/logging.h>
+#include <quinclas/logging.h>
 
 #include <string>
 #include <utility>

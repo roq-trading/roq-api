@@ -1,8 +1,8 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "strategy/strategy.h"
-#include <glog/logging.h>
 
+#include <quinclas/logging.h>
 #include <limits>
 #include <string>
 

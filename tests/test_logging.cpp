@@ -1,5 +1,7 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
+#define QUINCLAS_STDLOG
+
 #include <gtest/gtest.h>
 #include <fcntl.h>
 #include "quinclas/logging.h"

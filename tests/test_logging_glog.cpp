@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <fcntl.h>
-#include "quinclas/logging.h"
+#include <quinclas/logging.h>
 
 using namespace quinclas;  // NOLINT
 

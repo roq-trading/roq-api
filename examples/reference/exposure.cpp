@@ -1,7 +1,7 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "reference/exposure.h"
-#include <glog/logging.h>
+#include <quinclas/logging.h>
 #include <cassert>
 #include "reference/utilities.h"
 

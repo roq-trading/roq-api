@@ -1,9 +1,9 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include <gflags/gflags.h>
-#include <glog/logging.h>
 
 #include <quinclas/client.h>
+#include <quinclas/logging.h>
 
 #include "reference/config_reader.h"
 #include "reference/gateway_manager.h"
@@ -19,9 +19,8 @@ DEFINE_string(config_file, "",
 const char *GATEWAY = "FEMAS";
 
 int main(int argc, char *argv[]) {
-  // Initialize glog.
-  google::InitGoogleLogging(argv[0]);
-  google::InstallFailureSignalHandler();
+  // Initialize logging framework.
+  quinclas::logging::Logger logger(argc, argv);
 
   // Initialize gflags.
   gflags::ParseCommandLineFlags(&argc, &argv, true);

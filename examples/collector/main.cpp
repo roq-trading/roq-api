@@ -1,9 +1,9 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include <gflags/gflags.h>
-#include <glog/logging.h>
 
 #include <quinclas/client.h>
+#include <quinclas/logging.h>
 
 #include "collector/collector.h"
 
@@ -13,9 +13,7 @@ using namespace examples::collector;  // NOLINT
 
 int main(int argc, char *argv[]) {
   // initialize logging library
-
-  google::InitGoogleLogging(argv[0]);
-  google::InstallFailureSignalHandler();
+  quinclas::logging::Logger logger(argc, argv);
 
   // parse command-line options
 

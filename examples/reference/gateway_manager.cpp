@@ -1,7 +1,7 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "reference/gateway_manager.h"
-#include <glog/logging.h>
+#include <quinclas/logging.h>
 
 using namespace quinclas::common;  // NOLINT
 

@@ -5,6 +5,15 @@
 // Regardless of the logging framework, the interface exposed here
 // borrows heavily from what is used by glog and Easylogging++.
 
+#include <cassert>
+
+// Transition
+#if !defined(QUINCLAS_SPDLOG) && \
+    !defined(QUINCLAS_STDLOG) && \
+    !defined(QUINCLAS_GLOG)
+#define QUINCLAS_GLOG
+#endif
+
 // Using glog (Google's logging framework).
 #if defined(QUINCLAS_GLOG)
 #include <glog/logging.h>
@@ -20,6 +29,16 @@
 #define QUINCLAS_STDLOG
 #endif
 #endif
+
+// Always defined because we must support multiple logging backends.
+namespace quinclas {
+namespace logging {
+namespace detail {
+#define MESSAGE_BUFFER_SIZE 4096
+extern thread_local char *message_buffer;
+}  // namespace detail
+}  // namespace logging
+}  // namespace quinclas
 
 // Implement an interface supporting C++ streams.
 #if !defined(QUINCLAS_GLOG)
@@ -63,8 +82,6 @@ extern spdlog::logger *spdlog_logger;
 #else
 #define DLOG(level) LOG(level)
 #endif
-#define MESSAGE_BUFFER_SIZE 4096
-extern thread_local char *message_buffer;
 class LogMessage {
  public:
   LogMessage(const char *file, int line, sink_t sink)
@@ -141,11 +158,13 @@ namespace logging {
 
 class Logger {
  public:
+  // FIXME(thraneh): should be a static initializer...
   Logger(int argc, char *argv[]) {
 #if defined(QUINCLAS_GLOG)
     google::InitGoogleLogging(argv[0]);
     google::InstallFailureSignalHandler();
 #elif defined(QUINCLAS_SPDLOG)
+    // assert(_logger == nullptr);
     _logger = spdlog::stdout_color_mt("console");
     ::quinclas::logging::detail::spdlog_logger = _logger.get();
 #else
@@ -153,7 +172,7 @@ class Logger {
   }
   ~Logger() {
 #if defined(QUINCLAS_SPDLOG)
-    _logger.reset();
+    // ::quinclas::logging::detail::spdlog_logger = nullptr;
 #endif
   }
  private:

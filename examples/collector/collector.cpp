@@ -3,7 +3,7 @@
 #include "collector/collector.h"
 
 #include <cctz/time_zone.h>
-#include <glog/logging.h>
+#include <quinclas/logging.h>
 
 #include <iostream>
 #include <limits>

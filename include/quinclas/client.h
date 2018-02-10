@@ -2,11 +2,10 @@
 
 #pragma once
 
-#include <glog/logging.h>
-
-#include <quinclas/tradingapi.h>
-#include <quinclas/libevent.h>
 #include <quinclas/codec.h>
+#include <quinclas/libevent.h>
+#include <quinclas/logging.h>
+#include <quinclas/tradingapi.h>
 
 #include <algorithm>
 #include <chrono>

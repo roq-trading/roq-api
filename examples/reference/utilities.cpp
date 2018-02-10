@@ -1,7 +1,7 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "reference/utilities.h"
-#include <glog/logging.h>
+#include <quinclas/logging.h>
 #include <cmath>
 
 namespace examples {

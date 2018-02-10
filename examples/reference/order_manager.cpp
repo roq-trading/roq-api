@@ -1,7 +1,7 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "reference/order_manager.h"
-#include <glog/logging.h>
+#include <quinclas/logging.h>
 #include <algorithm>
 #include <limits>
 #include "reference/utilities.h"

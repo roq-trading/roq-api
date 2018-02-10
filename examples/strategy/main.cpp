@@ -1,9 +1,9 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include <gflags/gflags.h>
-#include <glog/logging.h>
 
 #include <quinclas/client.h>
+#include <quinclas/logging.h>
 
 #include "strategy/strategy.h"
 
@@ -23,19 +23,10 @@ using namespace examples::strategy;  // NOLINT
 
 int main(int argc, char *argv[]) {
   // Initialize the logging library.
-  // Here we use google's logging library.
-  // You should consider using it as it's performant and it offers many
-  // benefits.
-  // It allows you, from the command-line, to configure the logging level.
-  // In other words, you don't have to recompile your code to enable/disable
-  // verbose logging.
-  // However, feel free to use any logging library of your own choice.
-  google::InitGoogleLogging(argv[0]);
-
-  // Install a handler to automatically log a stacktrace for unhandled
-  // exceptions.
-  // Again, there's no requirement to use this.
-  google::InstallFailureSignalHandler();
+  // You have different choices for the logging backend.
+  // Selectable at compile-time by choosing one of
+  //   QUINCLAS_GLOG, QUINCLAS_SPDLOG, QUINCLAS_STDLOG
+  quinclas::logging::Logger logger(argc, argv);
 
   // Parse the command-line options.
   // Here we use google's gflags library.

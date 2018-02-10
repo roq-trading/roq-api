@@ -9,7 +9,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#include <glog/logging.h>
+#include <quinclas/logging.h>
 
 #include <cstring>
 #include <string>

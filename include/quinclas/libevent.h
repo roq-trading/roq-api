@@ -10,8 +10,7 @@
 #include <event2/listener.h>
 #include <event2/thread.h>
 
-#include <glog/logging.h>
-
+#include <quinclas/logging.h>
 #include <quinclas/net.h>
 
 #include <chrono>

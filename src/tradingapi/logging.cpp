@@ -11,12 +11,12 @@
 namespace {
 // TODO(thraneh): cross-platform, e.g. SO1023306
 static std::string get_program() {
-#if defined(__linux)
+#if defined(__linux__)
   std::ifstream comm("/proc/self/comm");
   std::string name;
   std::getline(comm, name);
   return name;
-#elif defined(__darwin)
+#elif defined(__APPLE__)
   char buffer[1024];
   uint32_t size = sizeof(buffer);
   if (_NSGetExecutablePath(buffer, &size) == 0)
@@ -56,6 +56,10 @@ bool newline = true;
 uint32_t verbosity = 0;
 spdlog::logger *spdlog_logger = nullptr;
 }  // namespace detail
+
+std::string Logger::get_argv0() {
+  return get_program();
+}
 
 std::string Logger::get_filename() {
   auto log_dir = std::getenv("GLOG_log_dir");

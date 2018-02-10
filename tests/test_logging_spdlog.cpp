@@ -9,7 +9,7 @@
 using namespace quinclas;  // NOLINT
 
 TEST(logging_spdlog, simple) {
-  logging::Logger::initialize(0, nullptr);
+  logging::Logger::initialize();
   LOG(INFO) << "test";
   LOG(WARNING) << "test";
   LOG(ERROR) << "test";
@@ -18,4 +18,5 @@ TEST(logging_spdlog, simple) {
   LOG_IF(INFO, 2 < 1) << "this can't be true!";
   open("/abc/def/ghi", O_RDONLY);
   PLOG(INFO) << "an expected error";
+  logging::Logger::shutdown();
 }

@@ -164,9 +164,10 @@ namespace logging {
 
 class Logger {
  public:
-  static void initialize(int argc, char *argv[]) {
+  static void initialize() {
 #if defined(QUINCLAS_GLOG)
-    google::InitGoogleLogging(argv[0]);
+    auto argv0 = get_argv0();
+    google::InitGoogleLogging(argv0.c_str());
     google::InstallFailureSignalHandler();
 #elif defined(QUINCLAS_SPDLOG)
     detail::newline = false;
@@ -189,6 +190,17 @@ class Logger {
 #else
 #endif
   }
+  static void shutdown() {
+#if defined(QUINCLAS_GLOG)
+    google::ShutdownGoogleLogging();
+#elif defined(QUINCLAS_SPDLOG)
+    // note! not thread-safe
+    ::quinclas::logging::detail::spdlog_logger = nullptr;
+    spdlog::drop_all();
+#else
+#endif
+  }
+  static std::string get_argv0();
   static std::string get_filename();
 };
 

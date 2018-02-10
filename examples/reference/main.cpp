@@ -20,7 +20,7 @@ const char *GATEWAY = "FEMAS";
 
 int main(int argc, char *argv[]) {
   // Initialize logging framework.
-  quinclas::logging::Logger::initialize(argc, argv);
+  quinclas::logging::Logger::initialize();
 
   // Initialize gflags.
   gflags::ParseCommandLineFlags(&argc, &argv, true);

@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   // You have different choices for the logging backend.
   // Selectable at compile-time by choosing one of
   //   QUINCLAS_GLOG, QUINCLAS_SPDLOG, QUINCLAS_STDLOG
-  quinclas::logging::Logger::initialize(argc, argv);
+  quinclas::logging::Logger::initialize();
 
   // Parse the command-line options.
   // Here we use google's gflags library.

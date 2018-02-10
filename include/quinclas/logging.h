@@ -7,11 +7,11 @@
 
 #include <cassert>
 
-// Transition
+// Define a default logger.
 #if !defined(QUINCLAS_SPDLOG) && \
     !defined(QUINCLAS_STDLOG) && \
     !defined(QUINCLAS_GLOG)
-#define QUINCLAS_GLOG
+#define QUINCLAS_SPDLOG
 #endif
 
 // Using glog (Google's logging framework).
@@ -24,7 +24,6 @@
 
 // Fallback to stdout/stderr.
 #else
-#warning No specific logging framework has been selected.
 #if !defined(QUINCLAS_STDLOG)
 #define QUINCLAS_STDLOG
 #endif
@@ -77,6 +76,8 @@ extern spdlog::logger *spdlog_logger;
     ? (void)(0) \
     : ::quinclas::logging::detail::LogMessageVoidify() & LOG(level)
 #define PLOG(level) LOG_ ## level(::quinclas::logging::detail::ErrnoLogMessage)
+// FIXME(thraneh): need a global threshold for verbose logging
+#define VLOG(n) LOG_IF(INFO, true)
 #if defined(NDEBUG)
 #define DLOG(level) RAW_LOG(::quinclas::logging::detail::NullStream, [](const char * message){})
 #else
@@ -112,8 +113,10 @@ class LogMessage {
  private:
   void flush() {
     auto n = _stream.pcount();
+#if !defined(QUINCLAS_SPDLOG)
     if (message_buffer[n - 1] != '\n')
       message_buffer[n++] = '\n';
+#endif
     message_buffer[n] = '\0';
     _sink(message_buffer);
   }
@@ -158,27 +161,18 @@ namespace logging {
 
 class Logger {
  public:
-  // FIXME(thraneh): should be a static initializer...
-  Logger(int argc, char *argv[]) {
+  static void initialize(int argc, char *argv[]) {
 #if defined(QUINCLAS_GLOG)
     google::InitGoogleLogging(argv[0]);
     google::InstallFailureSignalHandler();
 #elif defined(QUINCLAS_SPDLOG)
-    // assert(_logger == nullptr);
-    _logger = spdlog::stdout_color_mt("console");
-    ::quinclas::logging::detail::spdlog_logger = _logger.get();
+    // spdlog will be caching the logger
+    auto logger = spdlog::stdout_color_mt("spdlog");
+    logger->set_pattern("%L%m%d %T.%f %t %v");  // same as glog
+    ::quinclas::logging::detail::spdlog_logger = logger.get();
 #else
 #endif
   }
-  ~Logger() {
-#if defined(QUINCLAS_SPDLOG)
-    // ::quinclas::logging::detail::spdlog_logger = nullptr;
-#endif
-  }
- private:
-#if defined(QUINCLAS_SPDLOG)
-  std::shared_ptr<spdlog::logger> _logger;
-#endif
 };
 
 }  // namespace logging

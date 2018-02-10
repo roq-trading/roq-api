@@ -9,7 +9,7 @@
 using namespace quinclas;  // NOLINT
 
 TEST(logging_spdlog, simple) {
-  logging::Logger(0, nullptr);
+  logging::Logger::initialize(0, nullptr);
   LOG(INFO) << "test";
   LOG(WARNING) << "test";
   LOG(ERROR) << "test";

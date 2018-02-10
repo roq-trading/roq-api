@@ -459,7 +459,7 @@ class Listener final {
         _handler(std::move(handler)) {
     if (_evconnlistener == nullptr)
       throw RuntimeError("evconnlistener_new");
-    DCHECK_EQ(_socket.non_blocking(), true) << "socket must be non-blocking";
+    // DCHECK_EQ(_socket.non_blocking(), true) << "socket must be non-blocking";
   }
   Listener(Base& base, int flags, int backlog, net::Socket&& socket,
            int create_flags, handler_t&& handler)

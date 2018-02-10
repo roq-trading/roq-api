@@ -1,12 +1,14 @@
 bin_PROGRAMS = reference-strategy
 reference_strategy_LDFLAGS = \
+	$(top_builddir)/src/tradingapi/libquinclas-tradingapi.la \
 	$(CCTZ_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(GFLAGS_LIBS) \
 	$(LIBCONFIG_LIBS) \
 	$(LIBEVENT_LIBS) \
-	$(LIBGLOG_LIBS)
+	$(SPDLOG_LIBS)
 reference_strategy_CPPFLAGS = \
+	-DQUINCLAS_SPDLOG \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \
 	$(CCTZ_CFLAGS) \
@@ -14,7 +16,7 @@ reference_strategy_CPPFLAGS = \
 	$(GFLAGS_CFLAGS) \
 	$(LIBCONFIG_CFLAGS) \
 	$(LIBEVENT_CFLAGS) \
-	$(LIBGLOG_CFLAGS)
+	$(SPDLOG_CFLAGS)
 reference_strategy_SOURCES = \
   config.cpp \
   config_reader.cpp \

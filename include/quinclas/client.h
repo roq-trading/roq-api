@@ -364,7 +364,6 @@ class Controller final {
         "connections_succeeded=" << _statistics.connections_succeeded << ", "
         "connections_failed=" << _statistics.connections_failed <<
         ")";
-      google::FlushLogFiles(google::GLOG_INFO);
     }
 
    private:

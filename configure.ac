@@ -45,13 +45,13 @@ PKG_CHECK_MODULES([SPDLOG], [spdlog], [], [
 ])
 
 # Find glog.
-PKG_CHECK_MODULES([LIBGLOG], [libglog], [], [
+PKG_CHECK_MODULES([GLOG], [libglog], [], [
   AC_CHECK_HEADER(
     [glog/logging.h],
-    [AC_SUBST([LIBGLOG_CFLAGS])],
+    [AC_SUBST([GLOG_CFLAGS])],
     [AC_MSG_ERROR([unable to find glog header files])]
   )
-  AC_SUBST([LIBGLOG_LIBS], [-lglog])
+  AC_SUBST([GLOG_LIBS], [-lglog])
 ])
 
 # Find gflags.
@@ -103,6 +103,16 @@ PKG_CHECK_MODULES([LIBEVENT], [libevent], [], [
     [AC_MSG_ERROR([unable to find libevent header files])]
   )
   AC_SUBST([LIBEVENT_LIBS], [-levent])
+])
+
+# Find libucl.
+PKG_CHECK_MODULES([UCL], [libucl], [], [
+  AC_CHECK_HEADER(
+    [ucl.h],
+    [AC_SUBST([UCL_CFLAGS])],
+    [AC_MSG_ERROR([unable to find ucl header files])]
+  )
+  AC_SUBST([UCL_LIBS], [-lucl])
 ])
 
 # Find libconfig.

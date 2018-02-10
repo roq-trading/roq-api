@@ -13,7 +13,7 @@ using namespace examples::collector;  // NOLINT
 
 int main(int argc, char *argv[]) {
   // initialize logging library
-  quinclas::logging::Logger logger(argc, argv);
+  quinclas::logging::Logger::initialize(argc, argv);
 
   // parse command-line options
 

@@ -7,9 +7,6 @@
 namespace examples {
 namespace reference {
 
-}  // namespace reference
-}  // namespace examples
-
 std::ostream& operator<<(std::ostream& stream, const examples::reference::Config& config) {
   return stream << "Config = {"
       "time_zone=\"" << config.time_zone.name() << "\", "
@@ -23,3 +20,6 @@ std::ostream& operator<<(std::ostream& stream, const examples::reference::Config
       ")"
       "}";
 }
+
+}  // namespace reference
+}  // namespace examples

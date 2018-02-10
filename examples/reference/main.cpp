@@ -19,14 +19,14 @@ DEFINE_string(config_file, "",
 const char *GATEWAY = "FEMAS";
 
 int main(int argc, char *argv[]) {
-  // Initialize logging framework.
+  // Initialize logging framework (default is: spdlog).
   quinclas::logging::Logger::initialize();
 
-  // Initialize gflags.
+  // Parse command-line options.
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   gflags::ShutDownCommandLineFlags();
 
-  // Validate command-line.
+  // Validate command-line options.
   if (FLAGS_local_address.empty()) {
     LOG(ERROR) << "Missing parameter: --local-address";
     return EXIT_FAILURE;
@@ -37,21 +37,23 @@ int main(int argc, char *argv[]) {
   }
 
   // Create the gateway connection list.
-  // TODO(thraneh): Invent a command-line format for fully specifying gateways.
+  // TODO(thraneh): Need command-line format for fully specifying gateways.
   const std::unordered_map<std::string, std::string> gateways = {
     { GATEWAY, FLAGS_local_address },
   };
 
   try {
-    // Read the strategy config file.
+    // Parse config file.
     auto config = ConfigReader(FLAGS_config_file).parse();
 
+    // Log config.
     LOG(INFO) << config;
 
     // Ready.
     LOG(INFO) << "===== START =====";
 
-    // Create Controller, Dispatcher, Strategy, and then start the event loop.
+    // Atomically create Controller, Dispatcher and Strategy.
+    // Then start the event loop.
     quinclas::client::Controller<GatewayManager>(
         std::move(gateways)).create_and_dispatch(std::move(config));
 

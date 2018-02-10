@@ -24,7 +24,7 @@ struct Config {
   std::pair<double, double> model_params;
 };
 
+std::ostream& operator<<(std::ostream& stream, const examples::reference::Config& config);
+
 }  // namespace reference
 }  // namespace examples
-
-std::ostream& operator<<(std::ostream& stream, const examples::reference::Config& config);

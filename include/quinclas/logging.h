@@ -82,7 +82,7 @@ extern spdlog::logger *spdlog_logger;
     ? (void)(0) \
     : ::quinclas::logging::detail::LogMessageVoidify() & LOG(level)
 #define PLOG(level) LOG_ ## level(::quinclas::logging::detail::ErrnoLogMessage)
-#define VLOG(n) LOG_IF(INFO, (n)<=::quinclas::logging::detail::verbosity)
+#define VLOG(n) LOG_IF(INFO, (n) <= ::quinclas::logging::detail::verbosity)
 #if defined(NDEBUG)
 #define DLOG(level) RAW_LOG(::quinclas::logging::detail::NullStream, [](const char * message){})
 #else

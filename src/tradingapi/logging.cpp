@@ -1,9 +1,18 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "quinclas/logging.h"
+
+#if defined(__linux__)
+#elif defined(__APPLE__)
+#include <mach-o/dyld.h>
+#include <libgen.h>
+#include <sys/syslimits.h>
+#endif
+
 #include <cctz/time_zone.h>
 // FIXME(thraneh): only do this when configure has detected spdlog
 #include <spdlog/spdlog.h>
+
 #include <chrono>
 #include <fstream>
 #include <iostream>
@@ -17,10 +26,10 @@ static std::string get_program() {
   std::getline(comm, name);
   return name;
 #elif defined(__APPLE__)
-  char buffer[1024];
+  char buffer[PATH_MAX];
   uint32_t size = sizeof(buffer);
   if (_NSGetExecutablePath(buffer, &size) == 0)
-    return buffer;
+    return basename(buffer);
   else
     return "<program>";
 #else

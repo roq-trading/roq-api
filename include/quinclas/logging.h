@@ -63,6 +63,7 @@ extern spdlog::logger *spdlog_logger;
     ::quinclas::logging::detail::spdlog_logger->warn(message); })
 #define LOG_ERROR(logger) RAW_LOG(logger, [](const char *message){  \
     ::quinclas::logging::detail::spdlog_logger->error(message); })
+// FIXME(thraneh): SO26888805 [[noreturn]]
 #define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){  \
     ::quinclas::logging::detail::spdlog_logger->critical(message); \
     std::abort(); })
@@ -73,6 +74,7 @@ extern spdlog::logger *spdlog_logger;
     std::cerr << "W " << message; })
 #define LOG_ERROR(logger) RAW_LOG(logger, [](const char *message){  \
     std::cerr << "E " << message; })
+// FIXME(thraneh): SO26888805 [[noreturn]]
 #define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){  \
     std::cerr << "F " << message; std::abort(); })
 #endif

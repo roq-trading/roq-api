@@ -8,7 +8,6 @@
 #include <event2/event.h>
 #include <event2/http.h>
 #include <event2/listener.h>
-#include <event2/thread.h>
 
 #include <quinclas/logging.h>
 #include <quinclas/net.h>
@@ -47,20 +46,6 @@ class RuntimeError : public std::exception {
   std::string _what;
 };
 
-// threading support
-
-class Threading {
- public:
-  static void enable() {
-#if EVTHREAD_USE_PTHREADS_IMPLEMENTED == 1
-    if (evthread_use_pthreads() < 0)
-      throw RuntimeError("evthread_use_pthreads");
-#else
-#error "libevent does not support pthread operations"
-#endif
-  }
-};
-
 // logging support
 
 class Logging {
@@ -71,7 +56,7 @@ class Logging {
   static void use_glog() {
     event_set_log_callback(error_callback);
     event_set_fatal_callback(fatal_callback);
-    LOG(INFO) << "[libevent] version=" << event_get_version();
+    LOG(INFO) << "libevent version=" << event_get_version();
   }
 
  private:
@@ -79,18 +64,18 @@ class Logging {
     switch (severity) {
       case EVENT_LOG_DEBUG:
       case EVENT_LOG_MSG:
-        LOG(INFO) << "[libevent] " << msg;
+        LOG(INFO) << msg;
         break;
       case EVENT_LOG_WARN:
       case EVENT_LOG_ERR:
-        LOG(WARNING) << "[libevent] " << msg;
+        LOG(WARNING) << msg;
         break;
       default:
-        LOG(WARNING) << "[libevent] (unknown severity) " << msg;
+        LOG(WARNING) << "(unknown severity) " << msg;
     }
   }
   static void fatal_callback(int err) {
-    LOG(FATAL) << "[libevent] " << err;
+    LOG(FATAL) << err;
   }
 };
 
@@ -323,7 +308,6 @@ class Buffer final {
 };
 
 // BufferEvent
-// - BEV_OPT_THREADSAFE
 
 class BufferEvent final {
  public:
@@ -445,7 +429,6 @@ class BufferEvent final {
 };
 
 // Listener
-// - LEV_OPT_THREADSAFE
 
 class Listener final {
  public:

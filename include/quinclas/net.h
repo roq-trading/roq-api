@@ -185,5 +185,15 @@ class Socket final {
   int _fd;
 };
 
+class SocketPair final {
+ public:
+  std::pair<Socket, Socket> create(int type, int protocol = 0) {
+    int fds[2];
+    if (socketpair(AF_LOCAL, type, protocol, fds) < 0)
+      throw std::system_error(errno, std::system_category());
+    return std::make_pair(Socket(fds[0]), Socket(fds[1]));
+  }
+};
+
 }  // namespace net
 }  // namespace quinclas

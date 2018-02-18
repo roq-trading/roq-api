@@ -578,5 +578,38 @@ class HTTP final {
   std::list<handler_t> _handlers;
 };
 
+// Utilities
+
+class BufferEventPair final {
+ public:
+  BufferEventPair(Base& base) : BufferEventPair(base.get()) {}
+  BufferEventPair(struct event_base *base)
+      : _socket_pair(create_socket_pair()),
+        _buffer_event_pair(
+          BufferEvent(base, _socket_pair.first, 0),
+          BufferEvent(base, _socket_pair.second, 0)) {}
+  BufferEvent& first() { return _buffer_event_pair.first; }
+  BufferEvent& second() { return _buffer_event_pair.second; }
+
+ private:
+  static std::pair<net::Socket, net::Socket> create_socket_pair() {
+    auto result = net::SocketPair::create(SOCK_STREAM, 0);
+    if (evutil_make_socket_nonblocking(result.first) < 0)
+      throw RuntimeError("evutil_make_socket_nonblocking");
+    if (evutil_make_socket_nonblocking(result.second) < 0)
+      throw RuntimeError("evutil_make_socket_nonblocking");
+    return result;
+  }
+
+ private:
+  BufferEventPair() = delete;
+  BufferEventPair(const BufferEventPair&) = delete;
+  BufferEventPair& operator=(const BufferEventPair&) = delete;
+
+ private:
+  std::pair<net::Socket, net::Socket> _socket_pair;
+  std::pair<BufferEvent, BufferEvent> _buffer_event_pair;
+};
+
 }  // namespace libevent
 }  // namespace quinclas

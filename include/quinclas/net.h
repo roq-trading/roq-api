@@ -187,7 +187,7 @@ class Socket final {
 
 class SocketPair final {
  public:
-  std::pair<Socket, Socket> create(int type, int protocol = 0) {
+  static std::pair<Socket, Socket> create(int type, int protocol = 0) {
     int fds[2];
     if (socketpair(AF_LOCAL, type, protocol, fds) < 0)
       throw std::system_error(errno, std::system_category());

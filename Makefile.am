@@ -2,7 +2,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = . include src tests examples
 
-dist_doc_DATA = LICENSE README.md CHANGELOG.md
+dist_doc_DATA = LICENSE README.md ChangeLog.md
 
 pkgconfigdir = @libdir@/pkgconfig
 pkgconfig_DATA = @PACKAGE@.pc

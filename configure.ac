@@ -65,7 +65,7 @@ PKG_CHECK_MODULES([GFLAGS], [gflags], [], [
 ])
 
 # Find double-conversion.
-PKG_CHECK_MODULES([DOUBLE_CONVERSION], [cctz], [], [
+PKG_CHECK_MODULES([DOUBLE_CONVERSION], [double-conversion], [], [
   AC_CHECK_HEADER(
     [double-conversion/double-conversion.h],
     [AC_SUBST([DOUBLE_CONVERSION_CFLAGS])],

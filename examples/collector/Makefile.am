@@ -2,6 +2,7 @@ bin_PROGRAMS = example-collector
 example_collector_LDFLAGS = \
 	$(top_builddir)/src/tradingapi/libquinclas-tradingapi.la \
 	$(CCTZ_LIBS) \
+	$(DOUBLE_CONVERSION_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(GFLAGS_LIBS) \
 	$(GLOG_LIBS) \

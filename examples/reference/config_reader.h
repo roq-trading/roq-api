@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include <string>
-#include <ucl++.h>
 #include "reference/config.h"
+#include <ucl++.h>
+#include <string>
 
 namespace examples {
 namespace reference {

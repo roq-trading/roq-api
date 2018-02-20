@@ -582,8 +582,8 @@ class HTTP final {
 
 class BufferEventPair final {
  public:
-  BufferEventPair(Base& base) : BufferEventPair(base.get()) {}
-  BufferEventPair(struct event_base *base)
+  explicit BufferEventPair(Base& base) : BufferEventPair(base.get()) {}
+  explicit BufferEventPair(struct event_base *base)
       : _socket_pair(create_socket_pair()),
         _buffer_event_pair(
           BufferEvent(base, _socket_pair.first, 0),

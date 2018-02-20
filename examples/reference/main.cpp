@@ -61,10 +61,7 @@ int main(int argc, char *argv[]) {
     LOG(INFO) << "===== STOP =====";
 
     return EXIT_SUCCESS;
-  } catch (libconfig::ParseException& exception) {
-    LOG(FATAL) << exception.what() << "("
-        "file=" << exception.getFile() << ", "
-        "line=" << exception.getLine() <<
-        ")";
+  } catch (std::exception& e) {
+    LOG(FATAL) << e.what();
   }
 }

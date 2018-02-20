@@ -3,7 +3,7 @@
 #pragma once
 
 #include <string>
-#include <libconfig.h++>
+#include <ucl++.h>
 #include "reference/config.h"
 
 namespace examples {
@@ -11,7 +11,7 @@ namespace reference {
 
 class ConfigReader final {
  public:
-  explicit ConfigReader(const std::string& config_file);
+  explicit ConfigReader(const std::string& filename);
   Config parse() const;
 
  private:
@@ -20,7 +20,7 @@ class ConfigReader final {
   ConfigReader& operator=(ConfigReader&) = delete;
 
  private:
-  libconfig::Config _config;
+  ucl::Ucl _config;
 };
 
 }  // namespace reference

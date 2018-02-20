@@ -4,9 +4,9 @@ reference_strategy_LDFLAGS = \
 	$(CCTZ_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(GFLAGS_LIBS) \
-	$(LIBCONFIG_LIBS) \
 	$(LIBEVENT_LIBS) \
-	$(SPDLOG_LIBS)
+	$(SPDLOG_LIBS) \
+	$(UCL_LIBS)
 reference_strategy_CPPFLAGS = \
 	-DQUINCLAS_SPDLOG \
 	-I$(top_srcdir)/include \
@@ -14,9 +14,9 @@ reference_strategy_CPPFLAGS = \
 	$(CCTZ_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
 	$(GFLAGS_CFLAGS) \
-	$(LIBCONFIG_CFLAGS) \
 	$(LIBEVENT_CFLAGS) \
-	$(SPDLOG_CFLAGS)
+	$(SPDLOG_CFLAGS) \
+	$(UCL_CFLAGS)
 reference_strategy_SOURCES = \
   config.cpp \
   config_reader.cpp \

@@ -115,9 +115,6 @@ PKG_CHECK_MODULES([UCL], [libucl], [], [
   AC_SUBST([UCL_LIBS], [-lucl])
 ])
 
-# Find libconfig.
-PKG_CHECK_MODULES([LIBCONFIG], [libconfig++])
-
 # Initialize googletest.
 AC_CONFIG_SUBDIRS([googletest/googletest])
 AC_SUBST([GTEST_DIR], ['${top_builddir}/googletest/googletest'])

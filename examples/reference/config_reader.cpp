@@ -4,6 +4,7 @@
 
 #include <quinclas/logging.h>
 
+#include <fstream>
 #include <string>
 #include <utility>
 
@@ -11,58 +12,47 @@ namespace examples {
 namespace reference {
 
 namespace {
-  static libconfig::Setting& lookup(const libconfig::Setting& setting, const char *name) {
-    return setting[name];
-    // not available on Ubuntu 14.04:
-    // return setting.lookup(name);
-  }
-  static std::string parse_string(const libconfig::Setting& setting) {
-    return setting.c_str();
-  }
-  static int parse_int(const libconfig::Setting& setting) {
-    return static_cast<int>(setting);
-  }
-  static double parse_double(const libconfig::Setting& setting) {
-    switch (setting.getType()) {
-      case libconfig::Setting::TypeInt:
-        return static_cast<int>(setting);
-      case libconfig::Setting::TypeInt64:
-        return static_cast<long long>(setting);  // NOLINT
-      case libconfig::Setting::TypeFloat:
-        return static_cast<double>(setting);
-      default:
-        throw std::runtime_error("Unable to parse double");
-    }
-  }
-  static cctz::time_zone parse_time_zone(const libconfig::Setting& setting) {
-    const std::string time_zone(parse_string(setting));
-    cctz::time_zone result;
-    if (!cctz::load_time_zone(time_zone, &result))
-      throw std::runtime_error("Unable to initialize time-zone object");
-    return result;
-  }
-  static std::chrono::seconds parse_seconds(const libconfig::Setting& setting) {
-    return std::chrono::seconds(parse_int(setting));
-  }
-  static std::pair<double, double> parse_model_params(const libconfig::Setting& setting) {
-    return std::make_pair(parse_double(lookup(setting, "fast")),
-                          parse_double(lookup(setting, "slow")));
-  }
-}  // namespace
 
-ConfigReader::ConfigReader(const std::string& config_file) {
-  _config.readFile(config_file.c_str());
+static cctz::time_zone parse_time_zone(const std::string& value) {
+  cctz::time_zone result;
+  if (!cctz::load_time_zone(value, &result))
+    throw std::runtime_error("Unable to initialize time-zone object");
+  return result;
 }
 
+static std::chrono::seconds parse_duration(double value) {
+  return std::chrono::seconds(static_cast<int>(value));
+}
+
+static std::pair<double, double> parse_model_params(const ucl::Ucl& setting) {
+  return std::make_pair(setting["fast"].number_value(),
+                        setting["slow"].number_value());
+}
+
+static ucl::Ucl read_file(const std::string& filename) {
+  std::ifstream file(filename);
+  std::string data((std::istreambuf_iterator<char>(file)),
+      std::istreambuf_iterator<char>());
+  std::string error;
+  auto result = ucl::Ucl::parse(data, error);
+  if (!error.empty())
+    throw std::runtime_error(error);
+  return result;
+}
+
+}  // namespace
+
+ConfigReader::ConfigReader(const std::string& filename)
+    : _config(read_file(filename)) {}
+
 Config ConfigReader::parse() const {
-  const auto& root = _config.getRoot();
   return Config {
-    .time_zone     = parse_time_zone(lookup(root, "time_zone")),
-    .risk_limit    = parse_double(lookup(root, "risk_limit")),
-    .order_timeout = parse_seconds(lookup(root, "order_timeout_seconds")),
-    .exchange      = parse_string(lookup(root, "exchange")),
-    .instrument    = parse_string(lookup(root, "instrument")),
-    .model_params  = parse_model_params(lookup(root, "model_params")),
+    .time_zone     = parse_time_zone(_config["time_zone"].string_value()),
+    .risk_limit    = _config["risk_limit"].number_value(),
+    .order_timeout = parse_duration(_config["order_timeout"].number_value()),
+    .exchange      = _config["exchange"].string_value(),
+    .instrument    = _config["instrument"].string_value(),
+    .model_params  = parse_model_params(_config["model_params"]),
   };
 }
 

@@ -25,8 +25,8 @@ static std::chrono::seconds parse_duration(double value) {
 }
 
 static std::pair<double, double> parse_model_params(const ucl::Ucl& setting) {
-  return std::make_pair(setting["fast"].number_value(),
-                        setting["slow"].number_value());
+  return std::make_pair(setting.lookup("fast").number_value(),
+                        setting.lookup("slow").number_value());
 }
 
 static ucl::Ucl read_file(const std::string& filename) {
@@ -47,12 +47,12 @@ ConfigReader::ConfigReader(const std::string& filename)
 
 Config ConfigReader::parse() const {
   return Config {
-    .time_zone     = parse_time_zone(_config["time_zone"].string_value()),
-    .risk_limit    = _config["risk_limit"].number_value(),
-    .order_timeout = parse_duration(_config["order_timeout"].number_value()),
-    .exchange      = _config["exchange"].string_value(),
-    .instrument    = _config["instrument"].string_value(),
-    .model_params  = parse_model_params(_config["model_params"]),
+    .time_zone     = parse_time_zone(_config.lookup("time_zone").string_value()),
+    .risk_limit    = _config.lookup("risk_limit").number_value(),
+    .order_timeout = parse_duration(_config.lookup("order_timeout").number_value()),
+    .exchange      = _config.lookup("exchange").string_value(),
+    .instrument    = _config.lookup("instrument").string_value(),
+    .model_params  = parse_model_params(_config.lookup("model_params")),
   };
 }
 

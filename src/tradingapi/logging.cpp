@@ -72,7 +72,9 @@ static char proc_name[1024];
 static const int width = (2 * sizeof(void *)) + 2;
 
 static void print_stacktrace(int signal, siginfo_t *info) {
+#if defined(__linux__)
   psiginfo(info, nullptr);
+#endif
   unw_context_t uc;
   if (unw_getcontext(&uc) != 0) {
     fprintf(stderr, "Unable to initialize libunwind context.\n");

@@ -16,3 +16,5 @@ install:
  - scripts/travis/install-flatbuffers.sh
  - scripts/travis/install-libevent.sh
  - scripts/travis/install-ucl.sh
+ after_failure:
+ - cat tests/test-suite.log

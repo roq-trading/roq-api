@@ -50,7 +50,7 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 | [googletest](https://github.com/google/googletest)               | >= 1.8   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Testing                         |     X    |  X  |          |
 | [gperftools](https://github.com/gperftools/gperftools)           | >= 2.6   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Memory management               |     X    |     |          |
 | [libevent](https://github.com/libevent/libevent)                 | >= 2.1   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Async event processing          |     X    |  X  |     X    |
-| [libunwind](https://github.com/libunwind/libunwind)              | >= 1.2   | [MIT](https://opensource.org/licenses/MIT)                   | Stacktrace                      |     X    |     |     X    |
+| [libunwind](https://github.com/libunwind/libunwind)              | >= 1.2   | [MIT](https://opensource.org/licenses/MIT)                   | Stack trace                     |     X    |     |     X    |
 | [libwebsockets](https://github.com/warmcat/libwebsockets)        | >= 2.4   | [LGPL-2.1](https://opensource.org/licenses/lgpl-2.1)         | Websockets                      |     X    |     |          |
 | [rapidjson](https://github.com/Tencent/rapidjson)                | >= 1.1   | [MIT](https://opensource.org/licenses/MIT)                   | JSON parsing                    |     X    |     |          |
 | [spdlog](https://github.com/gabime/spdlog)                       | >= 0.16  | [MIT](https://opensource.org/licenses/MIT)                   | Logging                         |     X    |  X  |          |
@@ -63,7 +63,7 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
     make
     make install
 
-*You must ensure the above dependencies can be found on the system or via `$PREFIX`*.
+*If you build from source, you must ensure the dependencies listed above can be found on the system or via *`$PREFIX`.
 
 ## Conda
 
@@ -74,6 +74,13 @@ You are able to access pre-built binaries from our Conda repositories
 
 *Conda makes it easy to install programs and libraries without requiring root access.
 For further details about Conda, please refer to the official documentation ([link](https://conda.io/docs/))*.
+
+Quinclas built packages are based on Conda version 5 (conda-build version 3).
+
+With version 5, Conda has made an attempt to isolate package dependencies from the host platform.
+This should (in theory) allow packages to be installed on any Linux distro.
+
+Third-party dependencies (including open sourced solutions) have been packaged by Quinclas when not available from the official anaconda repository.
 
 ## Example
 

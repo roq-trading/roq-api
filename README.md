@@ -80,7 +80,7 @@ Quinclas built packages are based on Conda version 5 (conda-build version 3).
 With version 5, Conda has made an attempt to isolate package dependencies from the host platform.
 This should (in theory) allow packages to be installed on any Linux distro.
 
-Third-party dependencies (including open sourced solutions) have been packaged by Quinclas when not available from the official anaconda repository.
+Third-party dependencies (including open sourced solutions) have been packaged by Quinclas when not available from the official anaconda repository ([link](https://github.com/AnacondaRecipes)).
 
 ## Example
 

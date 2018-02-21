@@ -7,6 +7,7 @@ script:
  - ./autogen.sh && ./configure && make -j2 && make -j2 check && make lint
 before_install: scripts/travis/prepare-ubuntu.sh
 install:
+ - scripts/travis/install-libunwind.sh
  - scripts/travis/install-spdlog.sh
  - scripts/travis/install-glog.sh
  - scripts/travis/install-gflags.sh

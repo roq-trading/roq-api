@@ -1,6 +1,12 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
+#define UNW_LOCAL_ONLY
+
 #include "quinclas/logging.h"
+
+#include <libunwind.h>
+#include <cxxabi.h>
+#include <signal.h>
 
 #if defined(__linux__)
 #elif defined(__APPLE__)
@@ -15,9 +21,11 @@
 
 #include <chrono>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 
 namespace {
+
 // TODO(thraneh): cross-platform, e.g. SO1023306
 static std::string get_program() {
 #if defined(__linux__)
@@ -36,34 +44,91 @@ static std::string get_program() {
 #error "Don't know how to find program name"
 #endif
 }
+
 static std::string get_hostname() {
   char buffer[256];  // gethostname(2)
   if (gethostname(buffer, sizeof(buffer)) < 0)
     return "<hostname>";
   return buffer;
 }
+
 static std::string get_username() {
   char buffer[33];  // SF294121
   if (getlogin_r(buffer, sizeof(buffer)) != 0)
     return "<username>";
   return buffer;
 }
+
 static std::string get_date_time() {
   return cctz::format(
       "%E4Y%m%d-%H%M%S",
       std::chrono::system_clock::now(),
       cctz::utc_time_zone());
 }
+
+static char proc_name[1024];
+static const int width = (2 * sizeof(void *)) + 2;
+
+static void termination_handler(int sig, siginfo_t *info, void *ucontext) {
+  LOG(ERROR) << "*** termination handler ***";
+  unw_context_t uc;
+  if (unw_getcontext(&uc) != 0) {
+    LOG(ERROR) << "Unable to initialize libunwind context.";
+    return;
+  }
+  unw_cursor_t cursor;
+  if (unw_init_local(&cursor, &uc) < 0) {
+    LOG(ERROR) << "Unable to initialize libunwind cursor.";
+    return;
+  }
+  int status;
+  for (int index = 0;; ++index) {
+    status = unw_step(&cursor);
+    if (status == 0)  // done
+      break;
+    if (status < 0) {  // failure
+      LOG(ERROR) << "Unable to step libunwind cursor.";
+      return;
+    }
+    unw_word_t ip = 0;
+    if (unw_get_reg(&cursor, UNW_REG_IP, &ip) < 0) {
+      LOG(ERROR) << "Unable to get libunwind ip register.";
+    }
+    unw_word_t offp;
+    status = unw_get_proc_name(&cursor, proc_name, sizeof(proc_name), &offp);
+    const char *name = "<unknown>";
+    char *demangled_name = nullptr;
+    if (status < 0) {
+      if (status != UNW_ENOINFO) {
+        LOG(ERROR) << "Unable to get libunwind proc_name";
+        return;
+      }
+    } else {
+      name = proc_name;
+      demangled_name = abi::__cxa_demangle(proc_name, nullptr, nullptr, &status);
+      if (status == 0)
+        name = demangled_name;
+    }
+    LOG(ERROR) << std::setw(2) << index << " " << std::setw(width) << std::hex << ip << " " << name;
+    if (demangled_name)
+      free(demangled_name);
+  }
+}
+
 }  // namespace
 
 namespace quinclas {
 namespace logging {
 namespace detail {
+
 thread_local char message_buffer_raw[MESSAGE_BUFFER_SIZE];
 thread_local char *message_buffer = message_buffer_raw;
+
 bool newline = true;
 uint32_t verbosity = 0;
+
 spdlog::logger *spdlog_logger = nullptr;
+
 }  // namespace detail
 
 std::string Logger::get_argv0() {
@@ -91,5 +156,13 @@ std::string Logger::get_filename() {
     std::cerr << "Warning! Unable to create symlink " << base.c_str() << std::endl;
   return result;
 }
+
+void Logger::install_failure_signal_handler() {
+  struct sigaction sa = {};
+  sa.sa_sigaction = termination_handler;
+  sa.sa_flags = SA_SIGINFO;
+  sigaction(SIGABRT, &sa, nullptr);
+}
+
 }  // namespace logging
 }  // namespace quinclas

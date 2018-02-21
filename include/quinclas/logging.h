@@ -5,8 +5,6 @@
 // Regardless of the logging framework, the interface exposed here
 // borrows heavily from what is used by glog and Easylogging++.
 
-#include <cassert>
-
 // Define a default logger.
 #if !defined(QUINCLAS_SPDLOG) && \
     !defined(QUINCLAS_STDLOG) && \
@@ -166,11 +164,12 @@ namespace logging {
 
 class Logger {
  public:
-  static void initialize() {
+  static void initialize(bool stacktrace = false) {
 #if defined(QUINCLAS_GLOG)
     auto argv0 = get_argv0();
     google::InitGoogleLogging(argv0.c_str());
-    google::InstallFailureSignalHandler();
+    if (stacktrace)
+      google::InstallFailureSignalHandler();
 #elif defined(QUINCLAS_SPDLOG)
     detail::newline = false;
     auto filename = get_filename();
@@ -191,6 +190,10 @@ class Logger {
     ::quinclas::logging::detail::spdlog_logger = logger.get();
 #else
 #endif
+#if !defined(QUINCLAS_GLOG)
+    if (stacktrace)
+      install_failure_signal_handler();
+#endif
   }
   static void shutdown() {
 #if defined(QUINCLAS_GLOG)
@@ -204,6 +207,7 @@ class Logger {
   }
   static std::string get_argv0();
   static std::string get_filename();
+  static void install_failure_signal_handler();
 };
 
 }  // namespace logging

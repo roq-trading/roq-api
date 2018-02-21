@@ -18,3 +18,5 @@ install:
  - scripts/travis/install-ucl.sh
 after_failure:
  - cat tests/test-suite.log
+ - ls -ahl /usr/local/lib
+ - env

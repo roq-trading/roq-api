@@ -51,6 +51,7 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 | [googletest](https://github.com/google/googletest)               | >= 1.8   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Testing                         |     X    |  X  |          |
 | [gperftools](https://github.com/gperftools/gperftools)           | >= 2.6   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Memory management               |     X    |     |          |
 | [libevent](https://github.com/libevent/libevent)                 | >= 2.1   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Async event processing          |     X    |  X  |     X    |
+| [libunwind](https://github.com/libunwind/libunwind)              | >= 1.2   | [MIT](https://opensource.org/licenses/MIT)                   | Stacktrace                      |     X    |     |     X    |
 | [libwebsockets](https://github.com/warmcat/libwebsockets)        | >= 2.4   } [LGPL-2.1](https://opensource.org/licenses/lgpl-2.1)         | Websockets                      |          |     |          |
 | [rapidjson](https://github.com/Tencent/rapidjson)                | >= 1.1   } [MIT](https://opensource.org/licenses/MIT)                   | JSON parsing                    |          |     |          |
 | [spdlog](https://github.com/gabime/spdlog)                       | >= 0.16  | [MIT](https://opensource.org/licenses/MIT)                   | Logging                         |     X    |  X  |          |

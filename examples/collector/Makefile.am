@@ -6,7 +6,8 @@ example_collector_LDFLAGS = \
 	$(FLATBUFFERS_LIBS) \
 	$(GFLAGS_LIBS) \
 	$(GLOG_LIBS) \
-	$(LIBEVENT_LIBS)
+	$(LIBEVENT_LIBS) \
+	$(LIBUNWIND_LIBS)
 example_collector_CPPFLAGS = \
 	-DQUINCLAS_GLOG \
 	-I$(top_srcdir)/include \
@@ -15,6 +16,7 @@ example_collector_CPPFLAGS = \
 	$(FLATBUFFERS_CFLAGS) \
 	$(GFLAGS_CFLAGS) \
 	$(GLOG_CFLAGS) \
-	$(LIBEVENT_CFLAGS)
+	$(LIBEVENT_CFLAGS) \
+	$(LIBUNWIND_CFLAGS)
 example_collector_SOURCES = collector.cpp main.cpp
 EXTRA_example_collector_SOURCES = collector.h

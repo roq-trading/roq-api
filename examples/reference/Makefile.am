@@ -6,6 +6,7 @@ reference_strategy_LDFLAGS = \
 	$(FLATBUFFERS_LIBS) \
 	$(GFLAGS_LIBS) \
 	$(LIBEVENT_LIBS) \
+	$(LIBUNWIND_LIBS) \
 	$(SPDLOG_LIBS) \
 	$(UCL_LIBS)
 reference_strategy_CPPFLAGS = \
@@ -16,6 +17,7 @@ reference_strategy_CPPFLAGS = \
 	$(FLATBUFFERS_CFLAGS) \
 	$(GFLAGS_CFLAGS) \
 	$(LIBEVENT_CFLAGS) \
+	$(LIBUNWIND_CFLAGS) \
 	$(SPDLOG_CFLAGS) \
 	$(UCL_CFLAGS)
 reference_strategy_SOURCES = \

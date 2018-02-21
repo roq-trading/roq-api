@@ -66,19 +66,21 @@ static std::string get_date_time() {
       cctz::utc_time_zone());
 }
 
+#if !defined(QUINCLAS_GLOG)
+
 static char proc_name[1024];
 static const int width = (2 * sizeof(void *)) + 2;
 
-static void termination_handler(int sig, siginfo_t *info, void *ucontext) {
-  LOG(ERROR) << "*** termination handler ***";
+static void print_stacktrace(int signal, siginfo_t *info) {
+  psiginfo(info, nullptr);
   unw_context_t uc;
   if (unw_getcontext(&uc) != 0) {
-    LOG(ERROR) << "Unable to initialize libunwind context.";
+    fprintf(stderr, "Unable to initialize libunwind context.\n");
     return;
   }
   unw_cursor_t cursor;
   if (unw_init_local(&cursor, &uc) < 0) {
-    LOG(ERROR) << "Unable to initialize libunwind cursor.";
+    fprintf(stderr, "Unable to initialize libunwind cursor.\n");
     return;
   }
   int status;
@@ -87,12 +89,12 @@ static void termination_handler(int sig, siginfo_t *info, void *ucontext) {
     if (status == 0)  // done
       break;
     if (status < 0) {  // failure
-      LOG(ERROR) << "Unable to step libunwind cursor.";
+      fprintf(stderr, "Unable to step libunwind cursor.\n");
       return;
     }
     unw_word_t ip = 0;
     if (unw_get_reg(&cursor, UNW_REG_IP, &ip) < 0) {
-      LOG(ERROR) << "Unable to get libunwind ip register.";
+      fprintf(stderr, "Unable to get libunwind ip register.\n");
     }
     unw_word_t offp;
     status = unw_get_proc_name(&cursor, proc_name, sizeof(proc_name), &offp);
@@ -100,8 +102,7 @@ static void termination_handler(int sig, siginfo_t *info, void *ucontext) {
     char *demangled_name = nullptr;
     if (status < 0) {
       if (status != UNW_ENOINFO) {
-        LOG(ERROR) << "Unable to get libunwind proc_name";
-        return;
+        fprintf(stderr, "Unable to get libunwind proc_name.\n");
       }
     } else {
       name = proc_name;
@@ -109,11 +110,27 @@ static void termination_handler(int sig, siginfo_t *info, void *ucontext) {
       if (status == 0)
         name = demangled_name;
     }
-    LOG(ERROR) << std::setw(2) << index << " " << std::setw(width) << std::hex << ip << " " << name;
+    fprintf(stderr, "[%2d] %#*lx %s\n", index, width, ip, name);
     if (demangled_name)
       free(demangled_name);
   }
 }
+
+static void invoke_default_signal_handler(int signal) {
+  struct sigaction sa = {};
+  sigemptyset(&sa.sa_mask);
+  sa.sa_handler = SIG_DFL;
+  sigaction(signal, &sa, nullptr);
+  kill(getpid(), signal);
+}
+
+static void termination_handler(int sig, siginfo_t *info, void *ucontext) {
+  fprintf(stderr, "*** TERMINATION HANDLER ***\n");
+  print_stacktrace(sig, info);
+  invoke_default_signal_handler(sig);
+}
+
+#endif
 
 }  // namespace
 
@@ -134,6 +151,8 @@ spdlog::logger *spdlog_logger = nullptr;
 std::string Logger::get_argv0() {
   return get_program();
 }
+
+#if !defined(QUINCLAS_GLOG)
 
 std::string Logger::get_filename() {
   auto log_dir = std::getenv("GLOG_log_dir");
@@ -162,7 +181,11 @@ void Logger::install_failure_signal_handler() {
   sa.sa_sigaction = termination_handler;
   sa.sa_flags = SA_SIGINFO;
   sigaction(SIGABRT, &sa, nullptr);
+  sigaction(SIGILL, &sa, nullptr);
+  sigaction(SIGSEGV, &sa, nullptr);
 }
+
+#endif
 
 }  // namespace logging
 }  // namespace quinclas

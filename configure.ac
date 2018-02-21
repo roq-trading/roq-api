@@ -34,6 +34,16 @@ AC_PROG_LIBTOOL
 # Check C++ 11 support.
 AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
 
+# Find libunwind.
+PKG_CHECK_MODULES([LIBUNWIND], [libunwind], [], [
+  AC_CHECK_HEADER(
+    [libunwind.h],
+    [AC_SUBST([LIBUNWIND_CFLAGS])],
+    [AC_MSG_ERROR([unable to find libunwind header files])]
+  )
+  AC_SUBST([LIBUNWIND_LIBS], [-lunwind])
+])
+
 # Find spdlog.
 PKG_CHECK_MODULES([SPDLOG], [spdlog], [], [
   AC_CHECK_HEADER(

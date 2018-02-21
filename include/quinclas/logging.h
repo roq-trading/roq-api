@@ -164,7 +164,7 @@ namespace logging {
 
 class Logger {
  public:
-  static void initialize(bool stacktrace = false) {
+  static void initialize(bool stacktrace = true) {
 #if defined(QUINCLAS_GLOG)
     auto argv0 = get_argv0();
     google::InitGoogleLogging(argv0.c_str());
@@ -206,8 +206,10 @@ class Logger {
 #endif
   }
   static std::string get_argv0();
+#if !defined(QUINCLAS_GLOG)
   static std::string get_filename();
   static void install_failure_signal_handler();
+#endif
 };
 
 }  // namespace logging

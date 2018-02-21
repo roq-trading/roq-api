@@ -6,6 +6,7 @@ example_strategy_LDFLAGS = \
 	$(FLATBUFFERS_LIBS) \
 	$(GFLAGS_LIBS) \
 	$(LIBEVENT_LIBS) \
+	$(LIBUNWIND_LIBS) \
 	$(SPDLOG_LIBS)
 example_strategy_CPPFLAGS = \
 	-DQUINCLAS_SPDLOG \
@@ -15,6 +16,7 @@ example_strategy_CPPFLAGS = \
 	$(FLATBUFFERS_CFLAGS) \
 	$(GFLAGS_CFLAGS) \
 	$(LIBEVENT_CFLAGS) \
+	$(LIBUNWIND_CFLAGS) \
 	$(SPDLOG_CFLAGS)
 example_strategy_SOURCES = strategy.cpp main.cpp
 EXTRA_example_strategy_SOURCES = strategy.h

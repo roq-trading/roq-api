@@ -300,7 +300,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatus& value)
 
 inline flatbuffers::Offset<schema::MarketByPrice>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPrice& value) {
-  std::vector<schema::Layer> depth(MAX_DEPTH);
+  std::vector<schema::Layer> depth(MAX_DEPTH);  // TODO(thraneh): recycle this array?
   for (auto i = 0; i < MAX_DEPTH; ++i)
     depth[i] = schema::Layer(
       value.depth[i].bid_price,
@@ -526,6 +526,86 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdateEvent& val
   return schema::CreateEvent(fbb, message_info, schema::EventData::TradeUpdate, trade_update.Union());
 }
 
+// encode (event2)
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::HandshakeAck& value) {
+  auto handshake_ack = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::HandshakeAck, handshake_ack.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatAck& value) {
+  auto heartbeat_ack = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::HeartbeatAck, heartbeat_ack.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatus& value) {
+  auto gateway_status = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::GatewayStatus, gateway_status.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::ReferenceData& value) {
+  auto reference_data = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::ReferenceData, reference_data.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::MarketStatus& value) {
+  auto market_status = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::MarketStatus, market_status.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPrice& value) {
+  auto market_by_price = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::MarketByPrice, market_by_price.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::SessionStatistics& value) {
+  auto session_statistics = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::SessionStatistics, session_statistics.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::DailyStatistics& value) {
+  auto daily_statistics = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::DailyStatistics, daily_statistics.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrderAck& value) {
+  auto create_order_ack = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::CreateOrderAck, create_order_ack.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrderAck& value) {
+  auto modify_order_ack = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::ModifyOrderAck, modify_order_ack.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderAck& value) {
+  auto cancel_order_ack = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::CancelOrderAck, cancel_order_ack.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::OrderUpdate& value) {
+  auto order_update = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::OrderUpdate, order_update.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdate& value) {
+  auto trade_update = convert2(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::TradeUpdate, trade_update.Union());
+}
+
 // encode (requests / low level)
 
 inline flatbuffers::Offset<schema::RequestInfo>
@@ -628,6 +708,7 @@ class EventDispatcher final {
  public:
   explicit EventDispatcher(Client& client, Strategy& strategy, const MessageInfo *&trace)
       : _client(client), _strategy(strategy), _trace(trace) {}
+  // LEGACY
   void dispatch_event(const void *buffer, const size_t length) {
     const auto root = flatbuffers::GetRoot<schema::Event>(buffer);
     const auto message_info = convert(root->message_info());
@@ -744,6 +825,128 @@ class EventDispatcher final {
       }
     }
     _trace = nullptr;
+  }
+  // NEW
+  void dispatch_events(const void *buffer, const size_t length) {
+    const auto root = flatbuffers::GetRoot<schema::Batch>(buffer);
+    const auto message_info = convert(root->message_info());
+    assert(message_info.gateway != nullptr);
+    _trace = &message_info;
+    const auto& events = *(root->events());
+    for (int i = 0; i < events.Length(); ++i) {
+      const schema::Event2& item = *(events[i]);
+      const auto type = item.event_data_type();
+      switch (type) {
+        case schema::EventData::HandshakeAck: {
+          const auto handshake_ack = convert(item.event_data_as_HandshakeAck());
+          const auto event = HandshakeAckEvent{
+            .message_info = message_info,
+            .handshake_ack = handshake_ack};
+          _client.on(event);
+          break;
+        }
+        case schema::EventData::HeartbeatAck: {
+          const auto heartbeat_ack = convert(item.event_data_as_HeartbeatAck());
+          const auto event = HeartbeatAckEvent{
+            .message_info = message_info,
+            .heartbeat_ack = heartbeat_ack};
+          _client.on(event);
+          break;
+        }
+        case schema::EventData::GatewayStatus: {
+          const auto gateway_status = convert(item.event_data_as_GatewayStatus());
+          const auto event = GatewayStatusEvent{
+            .message_info = message_info,
+            .gateway_status = gateway_status};
+          _strategy.on(event);
+          break;
+        }
+        case schema::EventData::ReferenceData: {
+          const auto reference_data = convert(item.event_data_as_ReferenceData());
+          const auto event = ReferenceDataEvent{
+            .message_info = message_info,
+            .reference_data = reference_data};
+          _strategy.on(event);
+          break;
+        }
+        case schema::EventData::MarketStatus: {
+          const auto market_status = convert(item.event_data_as_MarketStatus());
+          const auto event = MarketStatusEvent{
+            .message_info = message_info,
+            .market_status = market_status};
+          _strategy.on(event);
+          break;
+        }
+        case schema::EventData::MarketByPrice: {
+          const auto market_by_price = convert(item.event_data_as_MarketByPrice());
+          const auto event = MarketByPriceEvent{
+            .message_info = message_info,
+            .market_by_price = market_by_price};
+          _strategy.on(event);
+          break;
+        }
+        case schema::EventData::SessionStatistics: {
+          const auto session_statistics = convert(item.event_data_as_SessionStatistics());
+          const auto event = SessionStatisticsEvent{
+            .message_info = message_info,
+            .session_statistics = session_statistics};
+          _strategy.on(event);
+          break;
+        }
+        case schema::EventData::DailyStatistics: {
+          const auto daily_statistics = convert(item.event_data_as_DailyStatistics());
+          const auto event = DailyStatisticsEvent{
+            .message_info = message_info,
+            .daily_statistics = daily_statistics};
+          _strategy.on(event);
+          break;
+        }
+        case schema::EventData::CreateOrderAck: {
+          const auto create_order_ack = convert(item.event_data_as_CreateOrderAck());
+          const auto event = CreateOrderAckEvent{
+            .message_info = message_info,
+            .create_order_ack = create_order_ack};
+          _strategy.on(event);
+          break;
+        }
+        case schema::EventData::ModifyOrderAck: {
+          const auto modify_order_ack = convert(item.event_data_as_ModifyOrderAck());
+          const auto event = ModifyOrderAckEvent{
+            .message_info = message_info,
+            .modify_order_ack = modify_order_ack};
+          _strategy.on(event);
+          break;
+        }
+        case schema::EventData::CancelOrderAck: {
+          const auto cancel_order_ack = convert(item.event_data_as_CancelOrderAck());
+          const auto event = CancelOrderAckEvent{
+            .message_info = message_info,
+            .cancel_order_ack = cancel_order_ack};
+          _strategy.on(event);
+          break;
+        }
+        case schema::EventData::OrderUpdate: {
+          const auto order_update = convert(item.event_data_as_OrderUpdate());
+          const auto event = OrderUpdateEvent{
+            .message_info = message_info,
+            .order_update = order_update};
+          _strategy.on(event);
+          break;
+        }
+        case schema::EventData::TradeUpdate: {
+          const auto trade_update = convert(item.event_data_as_TradeUpdate());
+          const auto event = TradeUpdateEvent{
+            .message_info = message_info,
+            .trade_update = trade_update};
+          _strategy.on(event);
+          break;
+        }
+        default: {
+          throw std::runtime_error("Unknown message type");
+        }
+      }
+    }
+    _trace = nullptr;  // FIXME(thraneh): also reset when an exception has been raised!
   }
 
  private:

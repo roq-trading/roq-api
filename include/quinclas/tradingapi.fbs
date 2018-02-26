@@ -190,6 +190,16 @@ table Event {
   event_data:EventData;
 }
 
+// flatbuffers doesn't yet support array of unions
+table Event2 {
+  event_data:EventData;
+}
+
+table Batch {
+  message_info:MessageInfo;
+  events:[Event2];  // see comment above
+}
+
 // requests
 
 table RequestInfo {

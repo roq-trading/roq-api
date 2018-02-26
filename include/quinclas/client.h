@@ -210,7 +210,8 @@ class Controller final {
             break;
           const auto payload = frame + common::Envelope::LENGTH;
           // TODO(thraneh): here we must capture MessageInfo
-          _event_dispatcher.dispatch_event(payload, length_payload);
+          // _event_dispatcher.dispatch_event(payload, length_payload);  // HANS --> dispatch_events()
+          _event_dispatcher.dispatch_events(payload, length_payload);  // HANS --> dispatch_events()
           _buffer.drain(bytes);
           ++_statistics.messages_received;
         }

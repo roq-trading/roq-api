@@ -177,6 +177,26 @@ class Socket final {
     const int value = mode ? 1 : 0;
     setsockopt(IPPROTO_TCP, TCP_NODELAY, value);
   }
+  ssize_t write(const void *buf, size_t nbyte) {
+    while (true) {
+      auto res = ::write(_fd, buf, nbyte);
+      if (res > 0)
+        return res;
+      if (res < 0 && errno == EINTR)
+        continue;
+      throw std::system_error(errno, std::system_category());
+    }
+  }
+  ssize_t writev(const struct iovec *iov, int iovcnt) {
+    while (true) {
+      auto res = ::writev(_fd, iov, iovcnt);
+      if (res > 0)
+        return res;
+      if (res < 0 && errno == EINTR)
+        continue;
+      throw std::system_error(errno, std::system_category());
+    }
+  }
 
  private:
   Socket() = delete;
@@ -189,7 +209,7 @@ class SocketPair final {
  public:
   static std::pair<Socket, Socket> create(int type, int protocol = 0) {
     int fds[2];
-    if (socketpair(AF_LOCAL, type, protocol, fds) < 0)
+    if (socketpair(PF_LOCAL, type, protocol, fds) < 0)
       throw std::system_error(errno, std::system_category());
     return std::make_pair(Socket(fds[0]), Socket(fds[1]));
   }

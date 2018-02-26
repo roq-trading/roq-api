@@ -53,7 +53,7 @@ class Logging {
   static void enable_debug(uint32_t which) {
     event_enable_debug_logging(which);
   }
-  static void use_glog() {
+  static void setcb() {
     event_set_log_callback(error_callback);
     event_set_fatal_callback(fatal_callback);
     LOG(INFO) << "libevent version=" << event_get_version();
@@ -458,8 +458,8 @@ class Listener final {
                        int socklen, void *cbarg) {
     try {
       const auto& self = *reinterpret_cast<Listener*>(cbarg);
-      BufferEvent bufferevent(self._base, fd, self._create_flags | BEV_OPT_CLOSE_ON_FREE);
-      self._handler(std::move(bufferevent));
+      BufferEvent buffer_event(self._base, fd, self._create_flags | BEV_OPT_CLOSE_ON_FREE);
+      self._handler(std::move(buffer_event));
     } catch (...) {
       UnhandledException::terminate();
     }
@@ -576,39 +576,6 @@ class HTTP final {
  private:
   struct evhttp *_evhttp;
   std::list<handler_t> _handlers;
-};
-
-// Utilities
-
-class BufferEventPair final {
- public:
-  explicit BufferEventPair(Base& base) : BufferEventPair(base.get()) {}
-  explicit BufferEventPair(struct event_base *base)
-      : _socket_pair(create_socket_pair()),
-        _buffer_event_pair(
-          BufferEvent(base, _socket_pair.first, 0),
-          BufferEvent(base, _socket_pair.second, 0)) {}
-  BufferEvent& first() { return _buffer_event_pair.first; }
-  BufferEvent& second() { return _buffer_event_pair.second; }
-
- private:
-  static std::pair<net::Socket, net::Socket> create_socket_pair() {
-    auto result = net::SocketPair::create(SOCK_STREAM, 0);
-    if (evutil_make_socket_nonblocking(result.first) < 0)
-      throw RuntimeError("evutil_make_socket_nonblocking");
-    if (evutil_make_socket_nonblocking(result.second) < 0)
-      throw RuntimeError("evutil_make_socket_nonblocking");
-    return result;
-  }
-
- private:
-  BufferEventPair() = delete;
-  BufferEventPair(const BufferEventPair&) = delete;
-  BufferEventPair& operator=(const BufferEventPair&) = delete;
-
- private:
-  std::pair<net::Socket, net::Socket> _socket_pair;
-  std::pair<BufferEvent, BufferEvent> _buffer_event_pair;
 };
 
 }  // namespace libevent

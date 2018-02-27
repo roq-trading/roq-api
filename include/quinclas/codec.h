@@ -3,7 +3,10 @@
 #pragma once
 
 #include <quinclas/tradingapi.h>
+
 #include <cassert>
+
+#include <limits>
 #include <vector>
 
 namespace quinclas {
@@ -12,18 +15,30 @@ namespace common {
 // envelope
 
 struct Envelope final {
-  static const size_t LENGTH = 4;
-  static size_t decode(const void *buffer) {
+  static const size_t LENGTH = 8;
+  static size_t decode(const void *buffer, uint32_t *latency = nullptr) {
     const auto buffer_ = reinterpret_cast<const uint8_t *>(buffer);
-    // TODO(thraneh): validate magic
+    if (buffer_[0] != 0x20 || buffer_[1] != 0x17)
+      throw std::runtime_error("Envelope is corrupted");
+    if (latency != nullptr) {
+      auto time_point = std::chrono::time_point_cast<std::chrono::microseconds>(std::chrono::system_clock::now());
+      uint32_t now = static_cast<uint32_t>(time_point.time_since_epoch().count());
+      uint32_t sent;
+      memcpy(&sent, &buffer_[4], sizeof(sent));
+      *latency = (sent <= now) ? (now - sent) : std::numeric_limits<uint32_t>::max() - ((sent - 1) - now);
+    }
     return (static_cast<int>(buffer_[2]) << 8) + static_cast<int>(buffer_[3]);
   }
   static void encode(void *buffer, const size_t length) {
     // TODO(thraneh): validate length
     auto buffer_ = reinterpret_cast<uint8_t *>(buffer);
-    // TODO(thraneh): populate magic
+    buffer_[0] = 0x20;
+    buffer_[1] = 0x17;
     buffer_[2] = static_cast<uint8_t>(static_cast<int>(length) >> 8);
     buffer_[3] = static_cast<uint8_t>(static_cast<int>(length));
+    auto time_point = std::chrono::time_point_cast<std::chrono::microseconds>(std::chrono::system_clock::now());
+    uint32_t now = static_cast<uint32_t>(time_point.time_since_epoch().count());
+    memcpy(&buffer_[4], &now, sizeof(now));
   }
 };
 

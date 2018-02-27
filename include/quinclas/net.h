@@ -178,24 +178,10 @@ class Socket final {
     setsockopt(IPPROTO_TCP, TCP_NODELAY, value);
   }
   ssize_t write(const void *buf, size_t nbyte) {
-    while (true) {
-      auto res = ::write(_fd, buf, nbyte);
-      if (res > 0)
-        return res;
-      if (res < 0 && errno == EINTR)
-        continue;
-      throw std::system_error(errno, std::system_category());
-    }
+    return ::write(_fd, buf, nbyte);
   }
   ssize_t writev(const struct iovec *iov, int iovcnt) {
-    while (true) {
-      auto res = ::writev(_fd, iov, iovcnt);
-      if (res > 0)
-        return res;
-      if (res < 0 && errno == EINTR)
-        continue;
-      throw std::system_error(errno, std::system_category());
-    }
+    return ::writev(_fd, iov, iovcnt);
   }
 
  private:

@@ -5,18 +5,18 @@ example_collector_LDFLAGS = \
 	$(DOUBLE_CONVERSION_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(GFLAGS_LIBS) \
-	$(GLOG_LIBS) \
 	$(LIBEVENT_LIBS) \
-	$(LIBUNWIND_LIBS)
+	$(LIBUNWIND_LIBS) \
+	$(SPDLOG_LIBS)
 example_collector_CPPFLAGS = \
-	-DQUINCLAS_GLOG \
+	-DQUINCLAS_SPDLOG \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \
 	$(CCTZ_CFLAGS) \
 	$(FLATBUFFERS_CFLAGS) \
 	$(GFLAGS_CFLAGS) \
-	$(GLOG_CFLAGS) \
 	$(LIBEVENT_CFLAGS) \
-	$(LIBUNWIND_CFLAGS)
+	$(LIBUNWIND_CFLAGS) \
+	$(SPDLOG_CFLAGS)
 example_collector_SOURCES = collector.cpp main.cpp
 EXTRA_example_collector_SOURCES = collector.h

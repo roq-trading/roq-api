@@ -542,67 +542,67 @@ convert2(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatAck& value)
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatus& value) {
-  auto gateway_status = convert2(fbb, value);
+  auto gateway_status = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::GatewayStatus, gateway_status.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::ReferenceData& value) {
-  auto reference_data = convert2(fbb, value);
+  auto reference_data = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::ReferenceData, reference_data.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::MarketStatus& value) {
-  auto market_status = convert2(fbb, value);
+  auto market_status = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::MarketStatus, market_status.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPrice& value) {
-  auto market_by_price = convert2(fbb, value);
+  auto market_by_price = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::MarketByPrice, market_by_price.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::SessionStatistics& value) {
-  auto session_statistics = convert2(fbb, value);
+  auto session_statistics = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::SessionStatistics, session_statistics.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::DailyStatistics& value) {
-  auto daily_statistics = convert2(fbb, value);
+  auto daily_statistics = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::DailyStatistics, daily_statistics.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrderAck& value) {
-  auto create_order_ack = convert2(fbb, value);
+  auto create_order_ack = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::CreateOrderAck, create_order_ack.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrderAck& value) {
-  auto modify_order_ack = convert2(fbb, value);
+  auto modify_order_ack = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::ModifyOrderAck, modify_order_ack.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderAck& value) {
-  auto cancel_order_ack = convert2(fbb, value);
+  auto cancel_order_ack = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::CancelOrderAck, cancel_order_ack.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::OrderUpdate& value) {
-  auto order_update = convert2(fbb, value);
+  auto order_update = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::OrderUpdate, order_update.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdate& value) {
-  auto trade_update = convert2(fbb, value);
+  auto trade_update = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::TradeUpdate, trade_update.Union());
 }
 

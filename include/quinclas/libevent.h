@@ -271,16 +271,6 @@ class Buffer final {
   size_t length() const {
     return evbuffer_get_length(_evbuffer);
   }
-  void enable_locking(void *lock = nullptr) {
-    if (evbuffer_enable_locking(_evbuffer, lock) < 0)
-      throw RuntimeError("evbuffer_enable_locking");
-  }
-  void lock() {
-    evbuffer_lock(_evbuffer);
-  }
-  void unlock() {
-    evbuffer_unlock(_evbuffer);
-  }
   unsigned char *pullup(ev_ssize_t size) {
     return evbuffer_pullup(_evbuffer, size);
   }

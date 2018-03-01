@@ -192,6 +192,10 @@ class Timer final {
     if (event_add(_event, &timeval) < 0)
       throw RuntimeError("event_add");
   }
+  void remove() {
+    if (event_del(_event) < 0)
+      throw RuntimeError("event_del");
+  }
 
  private:
   static void callback(evutil_socket_t, short, void *cbarg) {  // NOLINT

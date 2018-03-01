@@ -41,6 +41,7 @@ extern uint32_t verbosity;
 
 // Implement an interface supporting C++ streams.
 #if !defined(QUINCLAS_GLOG)
+#include <cstdlib>
 #include <cstring>
 #include <functional>
 #include <iostream>
@@ -188,6 +189,9 @@ class Logger {
     logger->flush_on(spdlog::level::warn);
     // note! spdlog keeps a reference
     ::quinclas::logging::detail::spdlog_logger = logger.get();
+    auto verbosity = std::getenv("GLOG_v");
+    if (verbosity != nullptr && strlen(verbosity) > 0)
+      detail::verbosity = std::atoi(verbosity);
 #else
 #endif
 #if !defined(QUINCLAS_GLOG)

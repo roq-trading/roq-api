@@ -41,7 +41,15 @@ PKG_CHECK_MODULES([LIBUNWIND], [libunwind], [], [
     [AC_SUBST([LIBUNWIND_CFLAGS])],
     [AC_MSG_ERROR([unable to find libunwind header files])]
   )
-  AC_SUBST([LIBUNWIND_LIBS], [-lunwind])
+  case $host_os in
+  darwin* )
+    AC_MSG_NOTICE([No library needed on Darwin])
+    AC_SUBST([LIBUNWIND_LIBS], [])
+    ;;
+  * )
+    AC_SUBST([LIBUNWIND_LIBS], [-lunwind])
+    ;;
+  esac
 ])
 
 # Find spdlog.

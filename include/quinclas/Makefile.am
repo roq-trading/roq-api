@@ -1,7 +1,10 @@
 pkgincludedir=$(includedir)/quinclas
-pkginclude_HEADERS=tradingapi.h net.h libevent.h codec.h client.h \
-	file_system.h logging.h \
-	enums_generated.h tradingapi_generated.h
+pkginclude_HEADERS=\
+	enums_generated.h tradingapi_generated.h \
+  tradingapi.h codec.h client.h \
+  filesystem.h file.h memory.h net.h \
+  libevent.h \
+  logging.h
 
 EXTRA_DIST=tradingapi.fbs enums.fbs
 

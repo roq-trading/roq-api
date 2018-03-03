@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -51,7 +52,7 @@ class File final {
   void ensure_size(size_t length) {
     if (length <= size())
       return;
-    // create hole
+    // creates a hole (meaning: it doesn't allocate all inodes)
     seek(length - 1, SEEK_SET);
     write("", 1);
   }

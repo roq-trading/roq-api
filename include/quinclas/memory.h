@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <sys/mman.h>
+
 #include "quinclas/file.h"
 
 namespace quinclas {
@@ -14,7 +16,6 @@ class Map final {
         _data(mmap(nullptr, _length, prot, flags, fd, 0)) {
     if (_data == MAP_FAILED)
       throw std::system_error(errno, std::system_category());
-    // file.ensure_size(length);
   }
   Map(size_t length, int prot, int flags, file::File& file)
       : Map(length, prot, flags, file.get()) {}

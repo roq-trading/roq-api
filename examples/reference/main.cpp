@@ -14,7 +14,7 @@ using namespace examples::reference;  // NOLINT
 
 // common
 
-DEFINE_string(mode, "trading",
+DEFINE_string(mode, "",
     "Mode of operation (trading|simulation)");
 
 DEFINE_string(config_file, "",

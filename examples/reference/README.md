@@ -51,19 +51,20 @@ The format is controlled by the *last* column (an integer).
 |      4 | Best Bid Quantity | Float     |                    |
 |      5 | Best Ask Price    | Float     |                    |
 |      6 | Best Ask Quantity | Float     |                    |
-|      7 | ?                 | Float     |                    |
-|      8 | ?                 | Float     |                    |
-|      9 | ?                 | Float     |                    |
-|     10 | ?                 | Float     |                    |
-|     11 | ?                 | Float     |                    |
-|     12 | ?                 | Float     |                    |
-|     13 | ?                 | Float     |                    |
-|     14 | ?                 | Float     |                    |
-|     15 | ?                 | Float     |                    |
-|     16 | ?                 | Float     |                    |
-|     17 | ?                 | Float     |                    |
-|     18 | Update Name       | String    | USTP\_L1           |
-|     19 | Update Type       | Integer   | 0                  |
+|      7 | ?                 | Float     | Price              |
+|      8 | ?                 | Float     | Price              |
+|      9 | ?                 | Float     | Price              |
+|     10 | ?                 | Float     | Price              |
+|     11 | ?                 | Float     | Price              |
+|     12 | ?                 | Float     | Volume ?           |
+|     13 | ?                 | Float     | Price              |
+|     14 | ?                 | Float     | Price              |
+|     15 | ?                 | Float     | Turnover ?         |
+|     16 | ?                 | Float     | Price              |
+|     17 | ?                 | Float     | Volume?            |
+|     18 | ?                 | Float     | Lots?              |
+|     19 | Update Name       | String    | USTP\_L1           |
+|     20 | Update Type       | Integer   | 0                  |
 
 ### Level 2
 
@@ -107,3 +108,4 @@ The format is controlled by the *last* column (an integer).
 |     35 | Update Name       | String    | USTP\_L2           |
 |     36 | Update Type       | Integer   | 1                  |
 
+*It looks like column 23-34 match column 7-18 from L1 updates*.

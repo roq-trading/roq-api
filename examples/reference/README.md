@@ -13,25 +13,16 @@ Please contact us for consultancy.
 
 ## How to use?
 
-For example, to execute the strategy using the Femas API
+The strategy can be started in one of two modes: trading or simulation.
 
-	reference-strategy --config-file strategy.conf --local-address /var/tmp/femasapi.sock
-
-## Enable logging?
-
-You can redirect logs to stderr like this
-
-	export GLOG_logtostderr=1
-
-Then start the program as already described.
-
-This [link](http://rpg.ifi.uzh.ch/docs/glog.html) is a good place to read about Google's Logging Library.
+	reference-strategy --config-file strategy.conf --mode simulation --simulation-file USTP_Multi_20180223.csv
+	reference-strategy --config-file strategy.conf --mode trading --local-address /var/tmp/femasapi.sock
 
 ## How do I debug?
 
 On Linux
 
-	libtool --mode=execute gdb --args reference-strategy --config-file strategy.conf --local-address /var/tmp/femasapi.sock
+	libtool --mode=execute gdb --args reference-strategy --config-file strategy.conf --mode trading --local-address /var/tmp/femasapi.sock
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
 is a good place to get started with debugging.

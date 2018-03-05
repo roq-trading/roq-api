@@ -22,6 +22,7 @@ The strategy can be started in one of two modes: trading or simulation.
 
 On Linux
 
+	libtool --mode=execute gdb --args reference-strategy --config-file strategy.conf --mode simulation --simulation-file USTP_Multi_20180223.csv
 	libtool --mode=execute gdb --args reference-strategy --config-file strategy.conf --mode trading --local-address /var/tmp/femasapi.sock
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
@@ -34,3 +35,75 @@ The strategy is distributed with the `quinclas-tradingapi` package.
   conda install quinclas-tradingapi
 
 You will then find the config file here: `$CONDA_PREFIX/share/quinclas/examples/strategy.conf`
+
+## Simulation Files
+
+The format is controlled by the *last* column (an integer).
+
+### Level 1
+
+| Column | Name              | Type      | Comment            |
+|:------:| ----------------- | --------- | ------------------ |
+|      0 | Symbol            | String    |                    |
+|      1 | Exchange Time     | Timestamp | %Y%m%d %H:%M::%E3S |
+|      2 | Receive Time      | Timestamp | %Y%m%d %H:%M::%E9S |
+|      3 | Best Bid Price    | Float     |                    |
+|      4 | Best Bid Quantity | Float     |                    |
+|      5 | Best Ask Price    | Float     |                    |
+|      6 | Best Ask Quantity | Float     |                    |
+|      7 | ?                 | Float     |                    |
+|      8 | ?                 | Float     |                    |
+|      9 | ?                 | Float     |                    |
+|     10 | ?                 | Float     |                    |
+|     11 | ?                 | Float     |                    |
+|     12 | ?                 | Float     |                    |
+|     13 | ?                 | Float     |                    |
+|     14 | ?                 | Float     |                    |
+|     15 | ?                 | Float     |                    |
+|     16 | ?                 | Float     |                    |
+|     17 | ?                 | Float     |                    |
+|     18 | Update Name       | String    | USTP\_L1           |
+|     19 | Update Type       | Integer   | 0                  |
+
+### Level 2
+
+| Column | Name              | Type      | Comment            |
+|:------:| ----------------- | --------- | ------------------ |
+|      0 | Symbol            | String    |                    |
+|      1 | Exchange Time     | Timestamp | %Y%m%d %H:%M::%E3S |
+|      2 | Receive Time      | Timestamp | %Y%m%d %H:%M::%E9S |
+|      3 | Bid Price 0       | Float     |                    |
+|      4 | Bid Quantity 0    | Float     |                    |
+|      5 | Ask Price 0       | Float     |                    |
+|      6 | Ask Quantity 0    | Float     |                    |
+|      7 | Bid Price 1       | Float     |                    |
+|      8 | Bid Quantity 1    | Float     |                    |
+|      9 | Ask Price 1       | Float     |                    |
+|     10 | Ask Quantity 1    | Float     |                    |
+|     11 | Bid Price 2       | Float     |                    |
+|     12 | Bid Quantity 2    | Float     |                    |
+|     13 | Ask Price 2       | Float     |                    |
+|     14 | Ask Quantity 2    | Float     |                    |
+|     15 | Bid Price 3       | Float     |                    |
+|     16 | Bid Quantity 3    | Float     |                    |
+|     17 | Ask Price 3       | Float     |                    |
+|     18 | Ask Quantity 3    | Float     |                    |
+|     19 | Bid Price 4       | Float     |                    |
+|     20 | Bid Quantity 4    | Float     |                    |
+|     21 | Ask Price 4       | Float     |                    |
+|     22 | Ask Quantity 4    | Float     |                    |
+|     23 | ?                 | Float     |                    |
+|     24 | ?                 | Float     |                    |
+|     25 | ?                 | Float     |                    |
+|     26 | ?                 | Float     |                    |
+|     27 | ?                 | Float     |                    |
+|     28 | ?                 | Float     |                    |
+|     29 | ?                 | Float     |                    |
+|     30 | ?                 | Float     |                    |
+|     31 | ?                 | Float     |                    |
+|     32 | ?                 | Float     |                    |
+|     33 | ?                 | Float     |                    |
+|     34 | ?                 | Float     |                    |
+|     35 | Update Name       | String    | USTP\_L2           |
+|     36 | Update Type       | Integer   | 1                  |
+

@@ -42,7 +42,6 @@ int main(int argc, char *argv[]) {
   LOG(INFO) << config;
 
   if (FLAGS_mode == "trading") {
-
     if (FLAGS_local_address.empty()) {
       LOG(ERROR) << "Missing parameter: --local-address";
       std::exit(EXIT_FAILURE);
@@ -55,7 +54,6 @@ int main(int argc, char *argv[]) {
         std::move(gateways)).create_and_dispatch(std::move(config));
 
   } else if (FLAGS_mode == "simulation") {
-
     if (FLAGS_simulation_file.empty()) {
       LOG(ERROR) << "Missing parameter: --simulation-file";
       std::exit(EXIT_FAILURE);

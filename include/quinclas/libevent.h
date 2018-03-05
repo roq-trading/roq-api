@@ -171,13 +171,14 @@ class DNSBase final {
 class Timer final {
  public:
   typedef std::function<void()> handler_t;
-  Timer(struct event_base *base, handler_t&& handler)
+  Timer(struct event_base *base, short what, handler_t&& handler)  // NOLINT
       : _handler(std::move(handler)),
-        _event(event_new(base, -1, EV_PERSIST, callback, &_handler)) {
+        _event(event_new(base, -1, what, callback, &_handler)) {
     if (_event == nullptr)
       throw RuntimeError("event_new");
   }
-  Timer(Base& base, handler_t&& handler) : Timer(base.get(), std::move(handler)) {}
+  Timer(Base& base, short what, handler_t&& handler)  // NOLINT
+      : Timer(base.get(), what, std::move(handler)) {}
   ~Timer() {
     if (_event != nullptr)
       event_free(_event);

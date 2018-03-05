@@ -276,7 +276,7 @@ class Controller final {
     template <typename... Args>
     explicit Dispatcher(const gateways_t& gateways, Args&&... args)
         : _strategy(*this, std::forward<Args>(args)...),  // request handler, then whatever the strategy needs
-          _timer(_base, [this](){ on_timer(); }),
+          _timer(_base, EV_PERSIST, [this](){ on_timer(); }),
           _next_refresh(std::chrono::system_clock::now() + std::chrono::seconds(5)),
           _next_statistics(_next_refresh) {
       for (const auto iter : gateways) {

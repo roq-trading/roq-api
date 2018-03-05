@@ -51,10 +51,22 @@ class Controller final {
       : public common::Strategy::Dispatcher {
    public:
     template <typename... Args>
-    explicit Dispatcher(const generators_t& generators, Args&&... args)
-        : _strategy(*this, std::forward<Args>(args)...) {
+    explicit Dispatcher(generators_t& generators, Args&&... args)
+        : _generators(generators),
+          _strategy(*this, std::forward<Args>(args)...) {}
+    void dispatch() {
+      // TODO(thraneh): support multiple (interleaved) generators
+      for (auto& iter : _generators) {
+        while (true) {
+          auto res = iter->fetch();
+          if (res.first) {
+            iter->dispatch(_strategy);
+          } else {
+            return;
+          }
+        }
+      }
     }
-    void dispatch() {}
 
    private:
     void send(const char *gateway, const common::CreateOrder& create_order) override {
@@ -71,6 +83,7 @@ class Controller final {
 
    private:
     T _strategy;
+    generators_t& _generators;
   };  // Dispatcher
 
  private:

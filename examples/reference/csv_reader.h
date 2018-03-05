@@ -29,6 +29,10 @@ class CsvReader final {
   const std::pair<const char *, size_t>& get_raw(size_t index) const;
 
  private:
+  CsvReader(CsvReader&) = delete;
+  CsvReader& operator=(CsvReader&) = delete;
+
+ private:
   quinclas::file::File _file;
   quinclas::memory::Map _memory_map;
   const char *_current;

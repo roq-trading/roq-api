@@ -2,6 +2,7 @@
 
 #include "reference/csv_reader.h"
 
+#include <cstring>
 #include <iomanip>
 #include <sstream>
 
@@ -16,7 +17,7 @@ namespace reference {
 
 CsvReader::CsvReader(const std::string& path, size_t max_columns)
     : _file(path, O_RDONLY),
-      _memory_map(_file.size(), PROT_READ|PROT_WRITE, MAP_SHARED, _file),
+      _memory_map(_file.size(), PROT_READ, MAP_SHARED, _file),
       _current(reinterpret_cast<const char *>(_memory_map.get())),
       _end(_current + _memory_map.length()),
       _columns(max_columns),
@@ -42,7 +43,7 @@ bool CsvReader::fetch() {
     }
   }
   _current = eol < _end ? eol + 1 : _end;
-  return true;
+  return _length > 0;
 }
 
 int CsvReader::get_integer(size_t index, int fallback) const {

@@ -52,7 +52,7 @@ void Generator::dispatch(quinclas::common::Strategy& strategy) {
     layer.ask_price = _csv_reader.get_number(offset + 2);
     layer.ask_quantity = _csv_reader.get_number(offset + 3);
   }
-  LOG(INFO) << market_by_price;
+  VLOG(1) << market_by_price;
   MarketByPriceEvent event = { message_info, market_by_price };
   strategy.on(event);
 }

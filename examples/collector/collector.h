@@ -44,7 +44,7 @@ class Collector final : public quinclas::common::Strategy {
   void on(const quinclas::common::TradeUpdateEvent&) override {}
   void on(const quinclas::common::BatchEndEvent&) override;
 
-  State& get_state(const std::string& instrument);
+  State& get(const std::string& instrument);
 
  private:
   quinclas::common::Strategy::Dispatcher& _dispatcher;

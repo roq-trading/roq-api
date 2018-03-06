@@ -47,22 +47,22 @@ The format is controlled by the *last* column (an integer).
 |      0 | Symbol            | String    |                    |
 |      1 | Exchange Time     | Timestamp | %Y%m%d %H:%M::%E3S |
 |      2 | Receive Time      | Timestamp | %Y%m%d %H:%M::%E9S |
-|      3 | Best Bid Price    | Float     |                    |
-|      4 | Best Bid Quantity | Float     |                    |
-|      5 | Best Ask Price    | Float     |                    |
-|      6 | Best Ask Quantity | Float     |                    |
+|      3 | Best Ask Price    | Float     |                    |
+|      4 | Best Ask Quantity | Float     |                    |
+|      5 | Best Bid Price    | Float     |                    |
+|      6 | Best Bid Quantity | Float     |                    |
 |      7 | ?                 | Float     | Price              |
-|      8 | ?                 | Float     | Price              |
+|      8 | ? Last Price ?    | Float     | Price              |
 |      9 | ?                 | Float     | Price              |
 |     10 | ?                 | Float     | Price              |
 |     11 | ?                 | Float     | Price              |
-|     12 | ?                 | Float     | Volume ?           |
+|     12 | ? SeqNo ?         | Integer   | Seqno?             |
 |     13 | ?                 | Float     | Price              |
 |     14 | ?                 | Float     | Price              |
-|     15 | ?                 | Float     | Turnover ?         |
+|     15 | ?                 | Float     | ???                |
 |     16 | ?                 | Float     | Price              |
-|     17 | ?                 | Float     | Volume?            |
-|     18 | ?                 | Float     | Lots?              |
+|     17 | ? Turnover ?      | Float     | Turnover?          |
+|     18 | ? SeqNo ?         | Integer   | SeqNo?             |
 |     19 | Update Name       | String    | USTP\_L1           |
 |     20 | Update Type       | Integer   | 0                  |
 
@@ -73,38 +73,38 @@ The format is controlled by the *last* column (an integer).
 |      0 | Symbol            | String    |                    |
 |      1 | Exchange Time     | Timestamp | %Y%m%d %H:%M::%E3S |
 |      2 | Receive Time      | Timestamp | %Y%m%d %H:%M::%E9S |
-|      3 | Bid Price 0       | Float     |                    |
-|      4 | Bid Quantity 0    | Float     |                    |
-|      5 | Ask Price 0       | Float     |                    |
-|      6 | Ask Quantity 0    | Float     |                    |
-|      7 | Bid Price 1       | Float     |                    |
-|      8 | Bid Quantity 1    | Float     |                    |
-|      9 | Ask Price 1       | Float     |                    |
-|     10 | Ask Quantity 1    | Float     |                    |
-|     11 | Bid Price 2       | Float     |                    |
-|     12 | Bid Quantity 2    | Float     |                    |
-|     13 | Ask Price 2       | Float     |                    |
-|     14 | Ask Quantity 2    | Float     |                    |
-|     15 | Bid Price 3       | Float     |                    |
-|     16 | Bid Quantity 3    | Float     |                    |
-|     17 | Ask Price 3       | Float     |                    |
-|     18 | Ask Quantity 3    | Float     |                    |
-|     19 | Bid Price 4       | Float     |                    |
-|     20 | Bid Quantity 4    | Float     |                    |
-|     21 | Ask Price 4       | Float     |                    |
-|     22 | Ask Quantity 4    | Float     |                    |
+|      3 | Ask Price 0       | Float     |                    |
+|      4 | Ask Quantity 0    | Float     |                    |
+|      5 | Bid Price 0       | Float     |                    |
+|      6 | Bid Quantity 0    | Float     |                    |
+|      7 | Ask Price 1       | Float     |                    |
+|      8 | Ask Quantity 1    | Float     |                    |
+|      9 | Bid Price 1       | Float     |                    |
+|     10 | Bid Quantity 1    | Float     |                    |
+|     11 | Ask Price 2       | Float     |                    |
+|     12 | Ask Quantity 2    | Float     |                    |
+|     13 | Bid Price 2       | Float     |                    |
+|     14 | Bid Quantity 2    | Float     |                    |
+|     15 | Ask Price 3       | Float     |                    |
+|     16 | Ask Quantity 3    | Float     |                    |
+|     17 | Bid Price 3       | Float     |                    |
+|     18 | Bid Quantity 3    | Float     |                    |
+|     19 | Ask Price 4       | Float     |                    |
+|     20 | Ask Quantity 4    | Float     |                    |
+|     21 | Bid Price 4       | Float     |                    |
+|     22 | Bid Quantity 4    | Float     |                    |
 |     23 | ?                 | Float     |                    |
-|     24 | ?                 | Float     |                    |
+|     24 | ? Last Price ?    | Float     |                    |
 |     25 | ?                 | Float     |                    |
 |     26 | ?                 | Float     |                    |
 |     27 | ?                 | Float     |                    |
-|     28 | ?                 | Float     |                    |
+|     28 | ? SeqNo ?         | Integer   |                    |
 |     29 | ?                 | Float     |                    |
 |     30 | ?                 | Float     |                    |
 |     31 | ?                 | Float     |                    |
 |     32 | ?                 | Float     |                    |
-|     33 | ?                 | Float     |                    |
-|     34 | ?                 | Float     |                    |
+|     33 | ? Turnover ?      | Float     |                    |
+|     34 | ? SeqNo ?         | Integer   |                    |
 |     35 | Update Name       | String    | USTP\_L2           |
 |     36 | Update Type       | Integer   | 1                  |
 

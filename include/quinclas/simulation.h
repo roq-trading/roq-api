@@ -2,19 +2,10 @@
 
 #pragma once
 
-#include <quinclas/codec.h>
-#include <quinclas/libevent.h>
-#include <quinclas/logging.h>
 #include <quinclas/tradingapi.h>
 
-#include <algorithm>
 #include <chrono>
-#include <iomanip>
-#include <iostream>
 #include <list>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include <utility>
 
 namespace quinclas {

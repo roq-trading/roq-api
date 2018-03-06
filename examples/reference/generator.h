@@ -22,6 +22,7 @@ class Generator final : public quinclas::simulation::Generator {
  private:
   CsvReader _csv_reader;
   std::chrono::system_clock::time_point _receive_time;
+  uint64_t _message_id = 0;
 };
 
 }  // namespace reference

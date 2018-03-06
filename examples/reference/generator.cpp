@@ -2,6 +2,10 @@
 
 #include "reference/generator.h"
 
+#include <quinclas/logging.h>
+
+#include <limits>
+
 using namespace quinclas::common;  // NOLINT
 
 namespace examples {
@@ -18,6 +22,7 @@ Generator::Generator(const std::string& path)
 std::pair<bool, std::chrono::system_clock::time_point> Generator::fetch() {
   if (!_csv_reader.fetch())
     return std::make_pair(false, std::chrono::system_clock::time_point());
+  ++_message_id;
   auto receive_time = _csv_reader.get_time_point(2, TIME_FORMAT_FILE);
   LOG_IF(FATAL, receive_time < _receive_time) << "Incorrect sequencing";
   _receive_time = receive_time;
@@ -35,7 +40,7 @@ void Generator::dispatch(quinclas::common::Strategy& strategy) {
   }
   MessageInfo message_info = {
     .gateway = "SIM",
-    .message_id = 0,
+    .message_id = _message_id,
     .exchange_time = std::chrono::time_point_cast<duration_t>(exchange_time),
     .receive_time = std::chrono::time_point_cast<duration_t>(_receive_time),
   };
@@ -53,8 +58,19 @@ void Generator::dispatch(quinclas::common::Strategy& strategy) {
     layer.ask_quantity = _csv_reader.get_number(offset + 3);
   }
   VLOG(1) << market_by_price;
-  MarketByPriceEvent event = { message_info, market_by_price };
-  strategy.on(event);
+  MarketByPriceEvent market_by_price_event = { message_info, market_by_price };
+  strategy.on(market_by_price_event);
+  TradeSummary trade_summary = {
+    .exchange = "SIM",
+    .instrument = symbol.c_str(),
+    .price = _csv_reader.get_number(24),
+    .volume = std::numeric_limits<double>::quiet_NaN(),
+    .turnover = _csv_reader.get_number(33),
+    // .direction = common::TradeDirection:Undefined,
+  };
+  VLOG(1) << trade_summary;
+  TradeSummaryEvent trade_summary_event = { message_info, trade_summary };
+  strategy.on(trade_summary_event);
 }
 
 }  // namespace reference

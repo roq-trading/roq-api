@@ -26,7 +26,7 @@ class Controller final {
 
  public:
   explicit Controller(const gateways_t& gateways) : _gateways(gateways) {}
-  explicit Controller(const gateways_t&& gateways) : _gateways(std::move(gateways)) {}
+  explicit Controller(gateways_t&& gateways) : _gateways(std::move(gateways)) {}
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
     const char *trace_source = "";
@@ -210,8 +210,7 @@ class Controller final {
             break;
           const auto payload = frame + common::Envelope::LENGTH;
           // TODO(thraneh): here we must capture MessageInfo
-          // _event_dispatcher.dispatch_event(payload, length_payload);  // HANS --> dispatch_events()
-          _event_dispatcher.dispatch_events(payload, length_payload);  // HANS --> dispatch_events()
+          _event_dispatcher.dispatch_events(payload, length_payload);
           _buffer.drain(bytes);
           ++_statistics.messages_received;
         }

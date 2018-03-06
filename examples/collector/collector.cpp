@@ -22,28 +22,63 @@ std::ostream& operator<<(std::ostream& stream, quinclas::common::time_point_t ti
 }
 }  // namespace
 
+void Collector::on(const BatchBeginEvent&) {
+}
+
 void Collector::on(const MarketByPriceEvent& event) {
-  // convenience
-  const auto& message_info = event.message_info;
-  const auto& market_by_price = event.market_by_price;
-  const auto& depth = market_by_price.depth;
-  // current time
-  const auto now = std::chrono::time_point_cast<duration_t>(std::chrono::system_clock::now());
-  // log to stdout
-  std::cout <<
-    message_info.exchange_time << DELIMITER <<
-    message_info.receive_time << DELIMITER <<
-    now << DELIMITER <<
-    market_by_price.exchange << DELIMITER <<
-    market_by_price.instrument << DELIMITER <<
-    depth[0].bid_price << DELIMITER <<
-    depth[0].bid_quantity << DELIMITER <<
-    depth[0].ask_price << DELIMITER <<
-    depth[0].ask_quantity <<
-    std::endl;
+  get_state(event.market_by_price.instrument).update(event);
 }
 
 void Collector::on(const TradeSummaryEvent& event) {
+  get_state(event.trade_summary.instrument).update(event);
+}
+
+void Collector::on(const BatchEndEvent&) {
+  for (auto iter : _dirty)
+    std::cout << *iter << std::endl;
+  _dirty.clear();
+}
+
+Collector::State& Collector::get_state(const std::string& instrument) {
+  auto iter = _cache.find(instrument);
+  if (iter == _cache.end())
+    iter = _cache.insert({instrument, State(instrument)}).first;
+  auto& result = (*iter).second;
+  _dirty.insert(&result);
+  return result;
+}
+
+void Collector::State::update(
+    const quinclas::common::MarketByPriceEvent& event) {
+  exchange_time = event.message_info.exchange_time;
+  receive_time = event.message_info.receive_time;
+  std::memcpy(
+      &top_of_book,
+      &event.market_by_price.depth[0],
+      sizeof(top_of_book));
+}
+
+void Collector::State::update(
+    const quinclas::common::TradeSummaryEvent& event) {
+  exchange_time = event.message_info.exchange_time;
+  receive_time = event.message_info.receive_time;
+  price = event.trade_summary.price;
+  volume = event.trade_summary.volume;
+  turnover = event.trade_summary.turnover;
+}
+
+std::ostream& operator<<(std::ostream& stream, Collector::State& state) {
+  return stream <<
+    state.exchange_time << DELIMITER <<
+    state.receive_time << DELIMITER <<
+    state.instrument << DELIMITER <<
+    state.top_of_book.bid_price << DELIMITER <<
+    state.top_of_book.bid_quantity << DELIMITER <<
+    state.top_of_book.ask_price << DELIMITER <<
+    state.top_of_book.ask_quantity << DELIMITER <<
+    state.price << DELIMITER <<
+    state.volume << DELIMITER <<
+    state.turnover;
 }
 
 }  // namespace collector

@@ -16,6 +16,7 @@ namespace reference {
 class Generator final : public quinclas::simulation::Generator {
  public:
   explicit Generator(const std::string& path);
+  ~Generator();
   std::pair<bool, std::chrono::system_clock::time_point> fetch() override;
   void dispatch(quinclas::common::Strategy& strategy) override;
 

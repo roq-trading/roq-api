@@ -16,7 +16,10 @@ const size_t MAX_COLUMNS = 40;
 const char *TIME_FORMAT_FILE = "%Y%m%d %H:%M:%S";
 
 Generator::Generator(const std::string& path)
-    : _csv_reader(path, MAX_COLUMNS) {
+    : _csv_reader(path, MAX_COLUMNS) {}
+
+Generator::~Generator() {
+  LOG(INFO) << "Processed " << _message_id << " message(s)";
 }
 
 std::pair<bool, std::chrono::system_clock::time_point> Generator::fetch() {
@@ -44,6 +47,7 @@ void Generator::dispatch(quinclas::common::Strategy& strategy) {
     .exchange_time = std::chrono::time_point_cast<duration_t>(exchange_time),
     .receive_time = std::chrono::time_point_cast<duration_t>(_receive_time),
   };
+  strategy.on(BatchBeginEvent{ .message_info = message_info, });
   MarketByPrice market_by_price = {
     .exchange = "SIM",
     .instrument = symbol.c_str(),
@@ -71,6 +75,7 @@ void Generator::dispatch(quinclas::common::Strategy& strategy) {
   VLOG(1) << trade_summary;
   TradeSummaryEvent trade_summary_event = { message_info, trade_summary };
   strategy.on(trade_summary_event);
+  strategy.on(BatchEndEvent{ .message_info = message_info, });
 }
 
 }  // namespace reference

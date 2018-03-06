@@ -195,13 +195,6 @@ struct TradeUpdate {
 };
 
 /**
- * Termination event. EXPERIMENTAL
- */
-struct TerminationEvent {
-  const char *gateway;                                     ///< Gateway name
-};
-
-/**
  * MessageInfo.
  */
 struct MessageInfo {
@@ -220,9 +213,18 @@ struct TimerEvent {
 };
 
 /**
- * Idle event.
+ * Batch begin event.
  */
-struct IdleEvent {};
+struct BatchBeginEvent {
+  const MessageInfo& message_info;                         ///< Message info
+};
+
+/**
+ * Batch end event.
+ */
+struct BatchEndEvent {
+  const MessageInfo& message_info;                         ///< Message info
+};
 
 /**
  * Handshake ack event.
@@ -526,8 +528,8 @@ class Strategy {
     virtual void send(const char *gateway, const CancelOrder& cancel_order) = 0;
   };
   virtual ~Strategy() = default;
-  virtual void on(const TimerEvent&) = 0;                  ///< Timer (don't rely on the accuracy!)
-  virtual void on(const IdleEvent&) = 0;                   ///< Idle
+  virtual void on(const TimerEvent&) = 0;                  ///< Timer (do *not* rely on the accuracy!)
+  virtual void on(const BatchBeginEvent&) = 0;             ///< Batch begin
   virtual void on(const GatewayStatusEvent&) = 0;          ///< Connection or login status has changed for a gateway
   virtual void on(const ReferenceDataEvent&) = 0;          ///< Reference data update for an instrument
   virtual void on(const MarketStatusEvent&) = 0;           ///< Market status update for an instrument
@@ -538,6 +540,7 @@ class Strategy {
   virtual void on(const CancelOrderAckEvent&) = 0;         ///< Response to a cancel order request
   virtual void on(const OrderUpdateEvent&) = 0;            ///< New order, or order details have been updated
   virtual void on(const TradeUpdateEvent&) = 0;            ///< New trade, or trade details have been updated
+  virtual void on(const BatchEndEvent&) = 0;               ///< Batch end
 };
 
 // Number
@@ -547,13 +550,13 @@ struct Number {
 };
 
 // Stream
+std::ostream& operator<<(std::ostream& stream, time_point_t time_point);
 std::ostream& operator<<(std::ostream& stream, const Number number);
 std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value);
 std::ostream& operator<<(std::ostream& stream, const LoginStatus value);
 std::ostream& operator<<(std::ostream& stream, const TradeDirection value);
 std::ostream& operator<<(std::ostream& stream, const TradingStatus value);
 std::ostream& operator<<(std::ostream& stream, const OrderStatus value);
-std::ostream& operator<<(std::ostream& stream, time_point_t time_point);
 std::ostream& operator<<(std::ostream& stream, const Layer& value);
 std::ostream& operator<<(std::ostream& stream, const GatewayStatus& value);
 std::ostream& operator<<(std::ostream& stream, const ReferenceData& value);

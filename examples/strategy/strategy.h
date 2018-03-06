@@ -21,7 +21,7 @@ class Strategy final : public quinclas::common::Strategy {
  protected:
   // You must implement event handlers;
   void on(const quinclas::common::TimerEvent&) override;
-  void on(const quinclas::common::IdleEvent&) override;
+  void on(const quinclas::common::BatchBeginEvent&) override;
   void on(const quinclas::common::GatewayStatusEvent&) override;
   void on(const quinclas::common::ReferenceDataEvent&) override;
   void on(const quinclas::common::MarketStatusEvent&) override;
@@ -32,6 +32,7 @@ class Strategy final : public quinclas::common::Strategy {
   void on(const quinclas::common::CancelOrderAckEvent&) override;
   void on(const quinclas::common::OrderUpdateEvent&) override;
   void on(const quinclas::common::TradeUpdateEvent&) override;
+  void on(const quinclas::common::BatchEndEvent&) override;
 
  private:
   quinclas::common::Strategy::Dispatcher& _dispatcher;

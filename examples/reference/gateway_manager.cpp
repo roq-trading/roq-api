@@ -25,7 +25,7 @@ void GatewayManager::on(const TimerEvent& event) {
   check(event.message_info);
 }
 
-void GatewayManager::on(const IdleEvent&) {
+void GatewayManager::on(const BatchBeginEvent&) {
 }
 
 void GatewayManager::on(const GatewayStatusEvent& event) {
@@ -90,6 +90,9 @@ void GatewayManager::on(const TradeUpdateEvent& event) {
     // TODO(thraneh): take action to reduce risk exposure
   }
   check(event.message_info);
+}
+
+void GatewayManager::on(const BatchEndEvent&) {
 }
 
 // state management

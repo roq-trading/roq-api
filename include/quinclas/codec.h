@@ -807,6 +807,7 @@ class EventDispatcher final {
     const auto message_info = convert(root->message_info());
     assert(message_info.gateway != nullptr);
     _trace = &message_info;
+    _strategy.on(BatchBeginEvent{ message_info });
     const auto& events = *(root->events());
     for (int i = 0; i < events.Length(); ++i) {
       const schema::Event2& item = *(events[i]);
@@ -913,6 +914,7 @@ class EventDispatcher final {
         }
       }
     }
+    _strategy.on(BatchEndEvent{ .message_info = message_info, });
     _trace = nullptr;  // FIXME(thraneh): also reset when an exception has been raised!
   }
 

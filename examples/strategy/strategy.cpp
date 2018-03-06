@@ -28,21 +28,10 @@ void Strategy::on(const TimerEvent& event) {
       "}";
 }
 
-void Strategy::on(const IdleEvent&) {
-  // You can use idle events to process updates in batch.
-  // For example, the inbound queue may contain multiple updates to the same
-  // market depth.
-  // Your implementation strategy could be such that you set a dirty flag and
-  // otherwise only make a copy each time you receive the market depth update
-  // event (perhaps also do light-weight processing).
-  // You can then use this idle event to detect market depth has been changed
-  // and then begin heavy-weight processing knowing that you can't possibly
-  // fall behind.
-  // The idle event is therefore your tool to implement flow-control (e.g.
-  // conflation as just described in the example).
-
-  // Example:
-  // The event has no associated information!
+void Strategy::on(const BatchBeginEvent&) {
+  // Some events may be delivered in batch, // e.g. MarketByPrice and
+  // TradeSummary.
+  // This message indicates the beginning of such a batch.
 }
 
 void Strategy::on(const GatewayStatusEvent& event) {
@@ -255,6 +244,12 @@ void Strategy::on(const TradeUpdateEvent& event) {
   double quantity = trade_update.quantity;
   // Traded price.
   double price = trade_update.price;
+}
+
+void Strategy::on(const BatchEndEvent&) {
+  // Some events may be delivered in batch, // e.g. MarketByPrice and
+  // TradeSummary.
+  // This message indicates the ending of such a batch.
 }
 
 }  // namespace strategy

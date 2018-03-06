@@ -129,23 +129,14 @@ inline common::MarketByPrice convert(const schema::MarketByPrice *value) {
   return res;
 }
 
-inline common::SessionStatistics convert(const schema::SessionStatistics *value) {
-  return common::SessionStatistics{
+inline common::TradeSummary convert(const schema::TradeSummary *value) {
+  return common::TradeSummary{
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
-    .open = value->open(),
-    .high = value->high(),
-    .low = value->low(),
-  };
-}
-
-inline common::DailyStatistics convert(const schema::DailyStatistics *value) {
-  return common::DailyStatistics{
-    .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
-    .settlement = value->settlement(),
-    .open_interest = value->open_interest(),
+    .price = value->price(),
     .volume = value->volume(),
+    .turnover = value->turnover(),
+    .direction = value->direction(),
   };
 }
 
@@ -329,26 +320,16 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPrice& value)
     fbb.CreateVectorOfStructs(&depth[0], depth.size()));
 }
 
-inline flatbuffers::Offset<schema::SessionStatistics>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::SessionStatistics& value) {
-  return schema::CreateSessionStatistics(
+inline flatbuffers::Offset<schema::TradeSummary>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeSummary& value) {
+  return schema::CreateTradeSummary(
     fbb,
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.instrument),
-    value.open,
-    value.high,
-    value.low);
-}
-
-inline flatbuffers::Offset<schema::DailyStatistics>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::DailyStatistics& value) {
-  return schema::CreateDailyStatistics(
-    fbb,
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    value.settlement,
-    value.open_interest,
-    value.volume);
+    value.price,
+    value.volume,
+    value.turnover,
+    value.direction);
 }
 
 inline flatbuffers::Offset<schema::ReferenceData>
@@ -493,17 +474,10 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPriceEvent& v
 }
 
 inline flatbuffers::Offset<schema::Event>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::SessionStatisticsEvent& value) {
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeSummaryEvent& value) {
   auto message_info = convert(fbb, value.message_info);
-  auto session_statistics = convert(fbb, value.session_statistics);
-  return schema::CreateEvent(fbb, message_info, schema::EventData::SessionStatistics, session_statistics.Union());
-}
-
-inline flatbuffers::Offset<schema::Event>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::DailyStatisticsEvent& value) {
-  auto message_info = convert(fbb, value.message_info);
-  auto daily_statistics = convert(fbb, value.daily_statistics);
-  return schema::CreateEvent(fbb, message_info, schema::EventData::DailyStatistics, daily_statistics.Union());
+  auto trade_summary = convert(fbb, value.trade_summary);
+  return schema::CreateEvent(fbb, message_info, schema::EventData::TradeSummary, trade_summary.Union());
 }
 
 inline flatbuffers::Offset<schema::Event>
@@ -580,15 +554,9 @@ convert2(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPrice& value
 }
 
 inline flatbuffers::Offset<schema::Event2>
-convert2(flatbuffers::FlatBufferBuilder& fbb, const common::SessionStatistics& value) {
-  auto session_statistics = convert(fbb, value);
-  return schema::CreateEvent2(fbb, schema::EventData::SessionStatistics, session_statistics.Union());
-}
-
-inline flatbuffers::Offset<schema::Event2>
-convert2(flatbuffers::FlatBufferBuilder& fbb, const common::DailyStatistics& value) {
-  auto daily_statistics = convert(fbb, value);
-  return schema::CreateEvent2(fbb, schema::EventData::DailyStatistics, daily_statistics.Union());
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::TradeSummary& value) {
+  auto trade_summary = convert(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::TradeSummary, trade_summary.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
@@ -779,19 +747,11 @@ class EventDispatcher final {
         _strategy.on(event);
         break;
       }
-      case schema::EventData::SessionStatistics: {
-        const auto session_statistics = convert(root->event_data_as_SessionStatistics());
-        const auto event = SessionStatisticsEvent{
+      case schema::EventData::TradeSummary: {
+        const auto trade_summary = convert(root->event_data_as_TradeSummary());
+        const auto event = TradeSummaryEvent{
           .message_info = message_info,
-          .session_statistics = session_statistics};
-        _strategy.on(event);
-        break;
-      }
-      case schema::EventData::DailyStatistics: {
-        const auto daily_statistics = convert(root->event_data_as_DailyStatistics());
-        const auto event = DailyStatisticsEvent{
-          .message_info = message_info,
-          .daily_statistics = daily_statistics};
+          .trade_summary = trade_summary};
         _strategy.on(event);
         break;
       }
@@ -900,19 +860,11 @@ class EventDispatcher final {
           _strategy.on(event);
           break;
         }
-        case schema::EventData::SessionStatistics: {
-          const auto session_statistics = convert(item.event_data_as_SessionStatistics());
-          const auto event = SessionStatisticsEvent{
+        case schema::EventData::TradeSummary: {
+          const auto trade_summary = convert(item.event_data_as_TradeSummary());
+          const auto event = TradeSummaryEvent{
             .message_info = message_info,
-            .session_statistics = session_statistics};
-          _strategy.on(event);
-          break;
-        }
-        case schema::EventData::DailyStatistics: {
-          const auto daily_statistics = convert(item.event_data_as_DailyStatistics());
-          const auto event = DailyStatisticsEvent{
-            .message_info = message_info,
-            .daily_statistics = daily_statistics};
+            .trade_summary = trade_summary};
           _strategy.on(event);
           break;
         }

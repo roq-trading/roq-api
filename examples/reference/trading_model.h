@@ -14,6 +14,7 @@ class TradingModel final {
   explicit TradingModel(const Config& config);
   void on(const quinclas::common::TimerEvent&);
   void on(const quinclas::common::MarketByPriceEvent&);
+  void on(const quinclas::common::TradeSummaryEvent&);
   // TODO(thraneh): something more realistic
   double get_model_price() const { return _model_price; }
   double get_target_position() const { return _target_position; }

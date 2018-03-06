@@ -83,25 +83,15 @@ struct MarketByPrice {
 };
 
 /**
- * Session statistics.
+ * Trade summary.
  */
-struct SessionStatistics {
+struct TradeSummary {
   const char *exchange;                                    ///< Exchange name
   const char *instrument;                                  ///< Instrument name
-  double open;                                             ///< Open price
-  double high;                                             ///< Highest traded price
-  double low;                                              ///< Lowest traded price
-};
-
-/**
- * Daily market statistics.
- */
-struct DailyStatistics {
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
-  double settlement;                                       ///< Settlement price
-  double open_interest;                                    ///< Open interest
-  double volume;                                           ///< Total volume
+  double price;                                            ///< Price
+  double volume;                                           ///< Volume
+  double turnover;                                         ///< Turnover
+  TradeDirection direction;                                ///< Direction
 };
 
 /**
@@ -283,19 +273,11 @@ struct MarketByPriceEvent {
 };
 
 /**
- * Session statistics update event.
+ * Trade summary update event.
  */
-struct SessionStatisticsEvent {
+struct TradeSummaryEvent {
   const MessageInfo& message_info;                         ///< Message info
-  const SessionStatistics& session_statistics;             ///< Session statistics update
-};
-
-/**
- * Daily statistics update event.
- */
-struct DailyStatisticsEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const DailyStatistics& daily_statistics;                 ///< Daily statistics update
+  const TradeSummary& trade_summary;                       ///< Trade summary update
 };
 
 /**
@@ -550,8 +532,7 @@ class Strategy {
   virtual void on(const ReferenceDataEvent&) = 0;          ///< Reference data update for an instrument
   virtual void on(const MarketStatusEvent&) = 0;           ///< Market status update for an instrument
   virtual void on(const MarketByPriceEvent&) = 0;          ///< Market-by-price update for an instrument
-  virtual void on(const SessionStatisticsEvent&) = 0;      ///< Session statistics update for an instrument
-  virtual void on(const DailyStatisticsEvent&) = 0;        ///< Daily statistics update for an instrument
+  virtual void on(const TradeSummaryEvent&) = 0;           ///< Trade summary update for an instrument
   virtual void on(const CreateOrderAckEvent&) = 0;         ///< Response to a create order request
   virtual void on(const ModifyOrderAckEvent&) = 0;         ///< Response to a modify order request
   virtual void on(const CancelOrderAckEvent&) = 0;         ///< Response to a cancel order request
@@ -578,8 +559,7 @@ std::ostream& operator<<(std::ostream& stream, const GatewayStatus& value);
 std::ostream& operator<<(std::ostream& stream, const ReferenceData& value);
 std::ostream& operator<<(std::ostream& stream, const MarketStatus& value);
 std::ostream& operator<<(std::ostream& stream, const MarketByPrice& value);
-std::ostream& operator<<(std::ostream& stream, const SessionStatistics& value);
-std::ostream& operator<<(std::ostream& stream, const DailyStatistics& value);
+std::ostream& operator<<(std::ostream& stream, const TradeSummary& value);
 std::ostream& operator<<(std::ostream& stream, const OrderUpdate& value);
 std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value);
 std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value);
@@ -590,8 +570,7 @@ std::ostream& operator<<(std::ostream& stream, const GatewayStatusEvent& value);
 std::ostream& operator<<(std::ostream& stream, const ReferenceDataEvent& value);
 std::ostream& operator<<(std::ostream& stream, const MarketStatusEvent& value);
 std::ostream& operator<<(std::ostream& stream, const MarketByPriceEvent& value);
-std::ostream& operator<<(std::ostream& stream, const SessionStatisticsEvent& value);
-std::ostream& operator<<(std::ostream& stream, const DailyStatisticsEvent& value);
+std::ostream& operator<<(std::ostream& stream, const TradeSummaryEvent& value);
 std::ostream& operator<<(std::ostream& stream, const OrderUpdateEvent& value);
 std::ostream& operator<<(std::ostream& stream, const TradeUpdateEvent& value);
 std::ostream& operator<<(std::ostream& stream, const CreateOrderAckEvent& value);

@@ -26,8 +26,7 @@ class Strategy final : public quinclas::common::Strategy {
   void on(const quinclas::common::ReferenceDataEvent&) override;
   void on(const quinclas::common::MarketStatusEvent&) override;
   void on(const quinclas::common::MarketByPriceEvent&) override;
-  void on(const quinclas::common::SessionStatisticsEvent&) override;
-  void on(const quinclas::common::DailyStatisticsEvent&) override;
+  void on(const quinclas::common::TradeSummaryEvent&) override;
   void on(const quinclas::common::CreateOrderAckEvent&) override;
   void on(const quinclas::common::ModifyOrderAckEvent&) override;
   void on(const quinclas::common::CancelOrderAckEvent&) override;

@@ -105,23 +105,14 @@ std::ostream& operator<<(std::ostream& stream, const MarketByPrice& value) {
   return stream << "]";
 }
 
-std::ostream& operator<<(std::ostream& stream, const SessionStatistics& value) {
+std::ostream& operator<<(std::ostream& stream, const TradeSummary& value) {
   return stream << "{"
     "exchange=\"" << value.exchange << "\", "
     "instrument=\"" << value.instrument << "\", "
-    "open=" << Number(value.open) << ", "
-    "high=" << Number(value.high) << ", "
-    "low=" << Number(value.low) <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const DailyStatistics& value) {
-  return stream << "{"
-    "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
-    "settlement=" << Number(value.settlement) << ", "
-    "open_interest=" << Number(value.open_interest) << ", "
-    "volume=" << Number(value.volume) <<
+    "price=" << Number(value.price) << ", "
+    "volume=" << Number(value.volume) << ", "
+    "turnover=" << Number(value.turnover) << ", "
+    "direction=" << value.direction <<
     "}";
 }
 
@@ -235,17 +226,10 @@ std::ostream& operator<<(std::ostream& stream, const MarketByPriceEvent& value) 
     "}";
 }
 
-std::ostream& operator<<(std::ostream& stream, const SessionStatisticsEvent& value) {
+std::ostream& operator<<(std::ostream& stream, const TradeSummaryEvent& value) {
   return stream << "{"
     "message_info=" << value.message_info << ", "
-    "session_statistics=" << value.session_statistics <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const DailyStatisticsEvent& value) {
-  return stream << "{"
-    "message_info=" << value.message_info << ", "
-    "daily_statistics=" << value.daily_statistics <<
+    "trade_summary=" << value.trade_summary <<
     "}";
 }
 

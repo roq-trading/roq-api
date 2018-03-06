@@ -114,22 +114,14 @@ inline common::MarketByPrice CreateRandomMarketByPrice() {
   }
   return res;
 }
-inline common::SessionStatistics CreateRandomSessionStatistics() {
-  return common::SessionStatistics{
+inline common::TradeSummary CreateRandomTradeSummary() {
+  return common::TradeSummary{
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
-    .open = rand_double(),
-    .high = rand_double(),
-    .low = rand_double(),
-  };
-}
-inline common::DailyStatistics CreateRandomDailyStatistics() {
-  return common::DailyStatistics{
-    .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
-    .settlement = rand_double(),
-    .open_interest = rand_double(),
+    .price = rand_double(),
     .volume = rand_double(),
+    .turnover = rand_double(),
+    .direction = rand_trade_direction(),
   };
 }
 inline common::ReferenceData CreateRandomReferenceData() {
@@ -292,19 +284,13 @@ void compare(const common::MarketByPrice& lhs, const common::MarketByPrice& rhs)
     EXPECT_EQ(lhs.depth[i].ask_quantity, rhs.depth[i].ask_quantity);
   }
 }
-void compare(const common::SessionStatistics& lhs, const common::SessionStatistics& rhs) {
+void compare(const common::TradeSummary& lhs, const common::TradeSummary& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
-  EXPECT_EQ(lhs.open, rhs.open);
-  EXPECT_EQ(lhs.high, rhs.high);
-  EXPECT_EQ(lhs.low, rhs.low);
-}
-void compare(const common::DailyStatistics& lhs, const common::DailyStatistics& rhs) {
-  EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
-  EXPECT_EQ(lhs.settlement, rhs.settlement);
-  EXPECT_EQ(lhs.open_interest, rhs.open_interest);
+  EXPECT_EQ(lhs.price, rhs.price);
   EXPECT_EQ(lhs.volume, rhs.volume);
+  EXPECT_EQ(lhs.turnover, rhs.turnover);
+  EXPECT_EQ(lhs.direction, rhs.direction);
 }
 void compare(const common::ReferenceData& lhs, const common::ReferenceData& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
@@ -531,7 +517,7 @@ TEST(flatbuffers, market_by_price_event) {
   }
 }
 
-TEST(flatbuffers, session_statistics_event) {
+TEST(flatbuffers, trade_summary_event) {
   FlatBufferBuilder fbb;
   for (auto i = 0; i < MAX_ITERATIONS; ++i) {
     // reset
@@ -539,10 +525,10 @@ TEST(flatbuffers, session_statistics_event) {
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
     const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_session_statistics = CreateRandomSessionStatistics();
-    const auto source = common::SessionStatisticsEvent{
+    const auto source_trade_summary = CreateRandomTradeSummary();
+    const auto source = common::TradeSummaryEvent{
       .message_info = source_message_info,
-      .session_statistics = source_session_statistics};
+      .trade_summary = source_trade_summary};
     // serialize using flatbuffers
     fbb.Finish(common::convert(fbb, source));
     EXPECT_GT(fbb.GetSize(), 0);
@@ -551,47 +537,15 @@ TEST(flatbuffers, session_statistics_event) {
     // deserialize using flatbuffers
     const auto root = GetRoot<schema::Event>(&buffer[0]);
     const auto target_message_info = common::convert(root->message_info());
-    EXPECT_EQ(root->event_data_type(), schema::EventData::SessionStatistics);
-    const auto target_session_statistics = common::convert(root->event_data_as_SessionStatistics());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::TradeSummary);
+    const auto target_trade_summary = common::convert(root->event_data_as_TradeSummary());
     // event (target)
-    const auto target = common::SessionStatisticsEvent{
+    const auto target = common::TradeSummaryEvent{
       .message_info = target_message_info,
-      .session_statistics = target_session_statistics};
+      .trade_summary = target_trade_summary};
     // validate
     compare(target.message_info, source.message_info);
-    compare(target.session_statistics, source.session_statistics);
-  }
-}
-
-TEST(flatbuffers, daily_statistics_event) {
-  FlatBufferBuilder fbb;
-  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
-    // reset
-    fbb.Clear();  // doesn't de-allocate
-    EXPECT_EQ(fbb.GetSize(), 0);
-    // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_daily_statistics = CreateRandomDailyStatistics();
-    const auto source = common::DailyStatisticsEvent{
-      .message_info = source_message_info,
-      .daily_statistics = source_daily_statistics};
-    // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
-    EXPECT_GT(fbb.GetSize(), 0);
-    // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
-    // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
-    EXPECT_EQ(root->event_data_type(), schema::EventData::DailyStatistics);
-    const auto target_daily_statistics = common::convert(root->event_data_as_DailyStatistics());
-    // event (target)
-    const auto target = common::DailyStatisticsEvent{
-      .message_info = target_message_info,
-      .daily_statistics = target_daily_statistics};
-    // validate
-    compare(target.message_info, source.message_info);
-    compare(target.daily_statistics, source.daily_statistics);
+    compare(target.trade_summary, source.trade_summary);
   }
 }
 

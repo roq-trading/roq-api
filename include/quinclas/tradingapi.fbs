@@ -32,20 +32,13 @@ table MarketByPrice {
   depth:[Layer];
 }
 
-table SessionStatistics {
+table TradeSummary {
   exchange:string;
   instrument:string;
-  open:double;
-  high:double;
-  low:double;
-}
-
-table DailyStatistics {
-  exchange:string;
-  instrument:string;
-  settlement:double;
-  open_interest:double;
+  price:double;
   volume:double;
+  turnover:double;
+  direction:common.TradeDirection;
 }
 
 table ReferenceData {
@@ -176,8 +169,7 @@ union EventData {
   ReferenceData,
   MarketStatus,
   MarketByPrice,
-  SessionStatistics,
-  DailyStatistics,
+  TradeSummary,
   CreateOrderAck,
   ModifyOrderAck,
   CancelOrderAck,

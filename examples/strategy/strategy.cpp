@@ -137,28 +137,16 @@ void Strategy::on(const MarketByPriceEvent& event) {
     (top_of_book.bid_quantity + top_of_book.ask_quantity);
 }
 
-void Strategy::on(const SessionStatisticsEvent& event) {
-  LOG(INFO) << "SessionStatisticsEvent=" << event;
+void Strategy::on(const TradeSummaryEvent& event) {
+  LOG(INFO) << "TradeSummaryEvent=" << event;
 
   // Example:
-  const auto& session_statistics = event.session_statistics;
+  const auto& trade_summary = event.trade_summary;
   // Return if the update is for something else than what we care about.
-  if (0 != strcmp(session_statistics.instrument, "IF1802"))
+  if (0 != strcmp(trade_summary.instrument, "IF1802"))
     return;
-  // Maybe we need the open price?
-  double open = session_statistics.open;
-}
-
-void Strategy::on(const DailyStatisticsEvent& event) {
-  LOG(INFO) << "DailyStatisticsEvent=" << event;
-
-  // Example:
-  const auto& daily_statistics = event.daily_statistics;
-  // Return if the update is for something else than what we care about.
-  if (0 != strcmp(daily_statistics.instrument, "IF1802"))
-    return;
-  // Maybe we need the volume?
-  double volume = daily_statistics.volume;
+  // Maybe we need the trade volume?
+  double volume = trade_summary.volume;
 }
 
 void Strategy::on(const CreateOrderAckEvent& event) {

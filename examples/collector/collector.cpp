@@ -43,5 +43,8 @@ void Collector::on(const MarketByPriceEvent& event) {
     std::endl;
 }
 
+void Collector::on(const TradeSummaryEvent& event) {
+}
+
 }  // namespace collector
 }  // namespace examples

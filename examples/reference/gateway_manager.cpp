@@ -54,10 +54,12 @@ void GatewayManager::on(const MarketByPriceEvent& event) {
   check(event.message_info);
 }
 
-void GatewayManager::on(const SessionStatisticsEvent& event) {
-}
-
-void GatewayManager::on(const DailyStatisticsEvent& event) {
+void GatewayManager::on(const TradeSummaryEvent& event) {
+  const auto& trade_summary = event.trade_summary;
+  if (_config.instrument.compare(trade_summary.instrument) != 0)
+    return;
+  _trading_model.on(event);
+  check(event.message_info);
 }
 
 void GatewayManager::on(const CreateOrderAckEvent& event) {

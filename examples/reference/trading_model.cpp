@@ -18,5 +18,8 @@ void TradingModel::on(const quinclas::common::MarketByPriceEvent& event) {
                  (layer.bid_quantity + layer.ask_quantity);
 }
 
+void TradingModel::on(const quinclas::common::TradeSummaryEvent& event) {
+}
+
 }  // namespace reference
 }  // namespace examples

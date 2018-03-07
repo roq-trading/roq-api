@@ -15,15 +15,15 @@ Please contact us for consultancy.
 
 The strategy can be started in one of two modes: trading or simulation.
 
-	reference-strategy --config-file strategy.conf --mode simulation --simulation-file USTP_Multi_20180223.csv
-	reference-strategy --config-file strategy.conf --mode trading --local-address /var/tmp/femasapi.sock
+	./reference-strategy --config-file strategy.conf --mode simulation --simulation-file USTP_Multi_20180223.csv
+	./reference-strategy --config-file strategy.conf --mode trading --local-address /var/tmp/femasapi.sock
 
 ## How do I debug?
 
 On Linux
 
-	libtool --mode=execute gdb --args reference-strategy --config-file strategy.conf --mode simulation --simulation-file USTP_Multi_20180223.csv
-	libtool --mode=execute gdb --args reference-strategy --config-file strategy.conf --mode trading --local-address /var/tmp/femasapi.sock
+	libtool --mode=execute gdb --args ./reference-strategy --config-file strategy.conf --mode simulation --simulation-file USTP_Multi_20180223.csv
+	libtool --mode=execute gdb --args ./reference-strategy --config-file strategy.conf --mode trading --local-address /var/tmp/femasapi.sock
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
 is a good place to get started with debugging.

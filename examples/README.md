@@ -3,5 +3,5 @@
 Demonstration of various concepts.
 
 * [Reference](./reference) &mdash; reference strategy (trading system).
-* [Collector](./collector) &mdash; capture top-of-book market data.
+* [Collector](./collector) &mdash; collect market data.
 * [Strategy](./strategy) &mdash; request order creation and log all events.

@@ -72,7 +72,7 @@ void Strategy::on(const GatewayStatusEvent& event) {
     .opaque         = 1,  // this ID can be used to identify your order
     .order_template = "ioc_open",
     .exchange       = "CFFEX",
-    .instrument     = "IF1802",
+    .instrument     = "IF1806",
     .direction      = TradeDirection::Buy,
     .quantity       = 1,
     .limit_price    = 0.01,
@@ -91,7 +91,7 @@ void Strategy::on(const ReferenceDataEvent& event) {
   // Example:
   const auto& reference_data = event.reference_data;
   // Return if the update is for something else than what we care about.
-  if (0 != strcmp(reference_data.instrument, "IF1802"))
+  if (0 != strcmp(reference_data.instrument, "IF1806"))
     return;
   // Maybe we need the tick-size?
   double tick_size = reference_data.tick_size;
@@ -103,7 +103,7 @@ void Strategy::on(const MarketStatusEvent& event) {
   // Example:
   const auto& market_status = event.market_status;
   // Return if the update is for something else than what we care about.
-  if (0 != strcmp(market_status.instrument, "IF1802"))
+  if (0 != strcmp(market_status.instrument, "IF1806"))
     return;
   // Ready for trading?
   bool ready = market_status.trading_status == TradingStatus::Open;
@@ -115,7 +115,7 @@ void Strategy::on(const MarketByPriceEvent& event) {
   // Example:
   const auto& market_by_price = event.market_by_price;
   // Return if the update is for something else than what we care about.
-  if (0 != strcmp(market_by_price.instrument, "IF1802"))
+  if (0 != strcmp(market_by_price.instrument, "IF1806"))
     return;
   // Compute weighted mid based on top of book.
   const auto& depth = market_by_price.depth;
@@ -132,7 +132,7 @@ void Strategy::on(const TradeSummaryEvent& event) {
   // Example:
   const auto& trade_summary = event.trade_summary;
   // Return if the update is for something else than what we care about.
-  if (0 != strcmp(trade_summary.instrument, "IF1802"))
+  if (0 != strcmp(trade_summary.instrument, "IF1806"))
     return;
   // Maybe we need the trade volume?
   double volume = trade_summary.volume;

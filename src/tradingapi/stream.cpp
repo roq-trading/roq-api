@@ -75,8 +75,7 @@ std::ostream& operator<<(std::ostream& stream, const GatewayStatus& value) {
 std::ostream& operator<<(std::ostream& stream, const ReferenceData& value) {
   return stream << "{"
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.exchange << "\", "
-    "tick_size=" << Number(value.tick_size) << ", "
+    "instrument=\"" << value.instrument << "\", "
     "tick_size=" << Number(value.tick_size) << ", "
     "limit_up=" << Number(value.limit_up) << ", "
     "limit_down=" << Number(value.limit_down) <<
@@ -86,7 +85,7 @@ std::ostream& operator<<(std::ostream& stream, const ReferenceData& value) {
 std::ostream& operator<<(std::ostream& stream, const MarketStatus& value) {
   return stream << "{"
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\", "
     "trading_status=" << value.trading_status <<
     "}";
 }

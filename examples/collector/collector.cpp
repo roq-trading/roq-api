@@ -26,11 +26,11 @@ void Collector::on(const BatchBeginEvent&) {
 }
 
 void Collector::on(const MarketByPriceEvent& event) {
-  get_state(event.market_by_price.instrument).update(event);
+  get(event.market_by_price.instrument).update(event);
 }
 
 void Collector::on(const TradeSummaryEvent& event) {
-  get_state(event.trade_summary.instrument).update(event);
+  get(event.trade_summary.instrument).update(event);
 }
 
 void Collector::on(const BatchEndEvent&) {
@@ -39,7 +39,7 @@ void Collector::on(const BatchEndEvent&) {
   _dirty.clear();
 }
 
-Collector::State& Collector::get_state(const std::string& instrument) {
+Collector::State& Collector::get(const std::string& instrument) {
   auto iter = _cache.find(instrument);
   if (iter == _cache.end())
     iter = _cache.insert({instrument, State(instrument)}).first;

@@ -17,7 +17,7 @@ namespace common {
 /**
  * Constants.
  */
-const size_t MAX_DEPTH = 10;                               ///< Maximum market-by-price depth
+const size_t MAX_DEPTH = 5;                                ///< Maximum market-by-price depth
 
 /**
  * Typedefs.

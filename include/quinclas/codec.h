@@ -3,6 +3,7 @@
 #pragma once
 
 #include <quinclas/tradingapi.h>
+#include <quinclas/logging.h>
 
 #include <cassert>
 
@@ -910,7 +911,7 @@ class EventDispatcher final {
           break;
         }
         default: {
-          throw std::runtime_error("Unknown message type");
+          LOG(FATAL) << "Unknown offset=" << i << ", type=" << static_cast<int>(type);
         }
       }
     }

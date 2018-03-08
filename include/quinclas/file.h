@@ -58,6 +58,8 @@ class File final {
   }
 
  private:
+  File(File&) = delete;
+  File& operator=(File&) = delete;
   int _fd;
 };
 

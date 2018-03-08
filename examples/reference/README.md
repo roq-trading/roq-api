@@ -42,70 +42,70 @@ The format is controlled by the *last* column (an integer).
 
 ### Level 1
 
-| Column | Name              | Type      | Comment            |
-|:------:| ----------------- | --------- | ------------------ |
-|      0 | Symbol            | String    |                    |
-|      1 | Exchange Time     | Timestamp | %Y%m%d %H:%M::%E3S |
-|      2 | Receive Time      | Timestamp | %Y%m%d %H:%M::%E9S |
-|      3 | Best Ask Price    | Float     |                    |
-|      4 | Best Ask Quantity | Float     |                    |
-|      5 | Best Bid Price    | Float     |                    |
-|      6 | Best Bid Quantity | Float     |                    |
-|      7 | ?                 | Float     | Price              |
-|      8 | ? Last Price ?    | Float     | Price              |
-|      9 | ?                 | Float     | Price              |
-|     10 | ?                 | Float     | Price              |
-|     11 | ?                 | Float     | Price              |
-|     12 | ? SeqNo ?         | Integer   | Seqno?             |
-|     13 | ?                 | Float     | Price              |
-|     14 | ?                 | Float     | Price              |
-|     15 | ?                 | Float     | ???                |
-|     16 | ?                 | Float     | Price              |
-|     17 | ? Turnover ?      | Float     | Turnover?          |
-|     18 | ? SeqNo ?         | Integer   | SeqNo?             |
-|     19 | Update Name       | String    | USTP\_L1           |
-|     20 | Update Type       | Integer   | 0                  |
+| Column | Name                 | Type      | Comment            |
+|:------:| -------------------- | --------- | ------------------ |
+|      0 | Symbol               | String    |                    |
+|      1 | Exchange Time        | Timestamp | %Y%m%d %H:%M::%E3S |
+|      2 | Receive Time         | Timestamp | %Y%m%d %H:%M::%E9S |
+|      3 | Best Ask Price       | Float     |                    |
+|      4 | Best Ask Quantity    | Float     |                    |
+|      5 | Best Bid Price       | Float     |                    |
+|      6 | Best Bid Quantity    | Float     |                    |
+|      7 | High Price           | Float     |                    |
+|      8 | Last Price           | Float     |                    |
+|      9 | Lower Limit Price    | Float     |                    |
+|     10 | Upper Limit Price    | Float     |                    |
+|     11 | Low Price            | Float     |                    |
+|     12 | Open Interest        | Integer   |                    |
+|     13 | Open Price           | Float     |                    |
+|     14 | Pre-Close Price      | Float     |                    |
+|     15 | Pre-Open Interest    | Integer   |                    |
+|     16 | Pre-Settlement Price | Float     |                    |
+|     17 | Turnover             | Float     |                    |
+|     18 | Volume               | Integer   |                    |
+|     19 | Update Name          | String    | USTP\_L1           |
+|     20 | Update Type          | Integer   | 0                  |
 
 ### Level 2
 
-| Column | Name              | Type      | Comment            |
-|:------:| ----------------- | --------- | ------------------ |
-|      0 | Symbol            | String    |                    |
-|      1 | Exchange Time     | Timestamp | %Y%m%d %H:%M::%E3S |
-|      2 | Receive Time      | Timestamp | %Y%m%d %H:%M::%E9S |
-|      3 | Ask Price 0       | Float     |                    |
-|      4 | Ask Quantity 0    | Float     |                    |
-|      5 | Bid Price 0       | Float     |                    |
-|      6 | Bid Quantity 0    | Float     |                    |
-|      7 | Ask Price 1       | Float     |                    |
-|      8 | Ask Quantity 1    | Float     |                    |
-|      9 | Bid Price 1       | Float     |                    |
-|     10 | Bid Quantity 1    | Float     |                    |
-|     11 | Ask Price 2       | Float     |                    |
-|     12 | Ask Quantity 2    | Float     |                    |
-|     13 | Bid Price 2       | Float     |                    |
-|     14 | Bid Quantity 2    | Float     |                    |
-|     15 | Ask Price 3       | Float     |                    |
-|     16 | Ask Quantity 3    | Float     |                    |
-|     17 | Bid Price 3       | Float     |                    |
-|     18 | Bid Quantity 3    | Float     |                    |
-|     19 | Ask Price 4       | Float     |                    |
-|     20 | Ask Quantity 4    | Float     |                    |
-|     21 | Bid Price 4       | Float     |                    |
-|     22 | Bid Quantity 4    | Float     |                    |
-|     23 | ?                 | Float     |                    |
-|     24 | ? Last Price ?    | Float     |                    |
-|     25 | ?                 | Float     |                    |
-|     26 | ?                 | Float     |                    |
-|     27 | ?                 | Float     |                    |
-|     28 | ? SeqNo ?         | Integer   |                    |
-|     29 | ?                 | Float     |                    |
-|     30 | ?                 | Float     |                    |
-|     31 | ?                 | Float     |                    |
-|     32 | ?                 | Float     |                    |
-|     33 | ? Turnover ?      | Float     |                    |
-|     34 | ? SeqNo ?         | Integer   |                    |
-|     35 | Update Name       | String    | USTP\_L2           |
-|     36 | Update Type       | Integer   | 1                  |
+| Column | Name                 | Type      | Comment            |
+|:------:| -------------------- | --------- | ------------------ |
+|      0 | Symbol               | String    |                    |
+|      1 | Exchange Time        | Timestamp | %Y%m%d %H:%M::%E3S |
+|      2 | Receive Time         | Timestamp | %Y%m%d %H:%M::%E9S |
+|      3 | Ask Price 0          | Float     |                    |
+|      4 | Ask Quantity 0       | Float     |                    |
+|      5 | Bid Price 0          | Float     |                    |
+|      6 | Bid Quantity 0       | Float     |                    |
+|      7 | Ask Price 1          | Float     |                    |
+|      8 | Ask Quantity 1       | Float     |                    |
+|      9 | Bid Price 1          | Float     |                    |
+|     10 | Bid Quantity 1       | Float     |                    |
+|     11 | Ask Price 2          | Float     |                    |
+|     12 | Ask Quantity 2       | Float     |                    |
+|     13 | Bid Price 2          | Float     |                    |
+|     14 | Bid Quantity 2       | Float     |                    |
+|     15 | Ask Price 3          | Float     |                    |
+|     16 | Ask Quantity 3       | Float     |                    |
+|     17 | Bid Price 3          | Float     |                    |
+|     18 | Bid Quantity 3       | Float     |                    |
+|     19 | Ask Price 4          | Float     |                    |
+|     20 | Ask Quantity 4       | Float     |                    |
+|     21 | Bid Price 4          | Float     |                    |
+|     22 | Bid Quantity 4       | Float     |                    |
+|     23 | High Price           | Float     |                    |
+|     24 | Last Price           | Float     |                    |
+|     25 | Lower Limit Price    | Float     |                    |
+|     26 | Upper Limit Price    | Float     |                    |
+|     27 | Low Price            | Float     |                    |
+|     28 | Open Interest        | Integer   |                    |
+|     29 | Open Price           | Float     |                    |
+|     30 | Pre-Close Price      | Float     |                    |
+|     31 | Pre-Open Interest    | Integer   |                    |
+|     32 | Pre-Settlement Price | Float     |                    |
+|     33 | Turnover             | Float     |                    |
+|     34 | Volume               | Integer   |                    |
+|     35 | Update Name          | String    | USTP\_L2           |
+|     36 | Update Type          | Integer   | 1                  |
 
 *It looks like column 23-34 match column 7-18 from L1 updates*.

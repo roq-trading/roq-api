@@ -68,9 +68,9 @@ void Generator::dispatch(quinclas::common::Strategy& strategy) {
     .exchange = "SIM",
     .instrument = symbol.c_str(),
     .price = _csv_reader.get_number(24),
-    .volume = std::numeric_limits<double>::quiet_NaN(),
+    .volume = _csv_reader.get_number(34),
     .turnover = _csv_reader.get_number(33),
-    // .direction = common::TradeDirection:Undefined,
+    .direction = quinclas::common::TradeDirection::Undefined,
   };
   VLOG(1) << trade_summary;
   TradeSummaryEvent trade_summary_event = { message_info, trade_summary };

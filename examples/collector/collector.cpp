@@ -22,7 +22,10 @@ std::ostream& operator<<(std::ostream& stream, quinclas::common::time_point_t ti
 }
 }  // namespace
 
-void Collector::on(const BatchBeginEvent&) {
+void Collector::on(const BatchEndEvent&) {
+  for (auto iter : _dirty)
+    std::cout << *iter << std::endl;
+  _dirty.clear();
 }
 
 void Collector::on(const MarketByPriceEvent& event) {
@@ -31,12 +34,6 @@ void Collector::on(const MarketByPriceEvent& event) {
 
 void Collector::on(const TradeSummaryEvent& event) {
   get(event.trade_summary.instrument).update(event);
-}
-
-void Collector::on(const BatchEndEvent&) {
-  for (auto iter : _dirty)
-    std::cout << *iter << std::endl;
-  _dirty.clear();
 }
 
 Collector::State& Collector::get(const std::string& instrument) {

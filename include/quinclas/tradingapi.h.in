@@ -6,7 +6,9 @@
 
 #include <chrono>
 #include <ostream>
+#include <string>
 #include <utility>
+#include <vector>
 
 // Version
 #define QUINCLAS_VERSION "@PACKAGE_VERSION@"
@@ -38,9 +40,8 @@ struct Layer {
 };
 
 /**
- * Handshake ack.
+ * Handshake ack. (INTERNAL)
  */
-
 struct HandshakeAck {
   const char *api_version;                                 ///< API version.
   bool failure;                                            ///< Failure?
@@ -48,29 +49,37 @@ struct HandshakeAck {
 };
 
 /**
- * Heatbeat ack.
+ * Heatbeat ack. (INTERNAL)
  */
-
 struct HeartbeatAck {
   time_point_t opaque;                                     ///< Timestamp.
 };
 
 /**
+ * Ready. (INTERNAL)
+ */
+struct Ready {};
+
+/**
  * Timer.
  */
-
 struct Timer {
   time_point_t utc_time;                                   ///< Timestamp.
+};
+
+/**
+ * Connection status.
+ */
+struct ConnectionStatus {
+  ConnectionState connection;                              ///< Connection.
 };
 
 /**
  * Gateway status.
  */
 struct GatewayStatus {
-  ConnectionStatus market_data_connection_status;          ///< Connection status to market data infrastructure
-  LoginStatus market_data_login_status;                    ///< Login status with market data infrastructure
-  ConnectionStatus order_management_connection_status;     ///< Connection status to order management infrastructure
-  LoginStatus order_management_login_status;               ///< Login status with order management infrastructure
+  GatewayState market_data;                                ///< Market data.
+  GatewayState order_management;                           ///< Order management.
 };
 
 /**
@@ -195,7 +204,7 @@ struct TradeUpdate {
 };
 
 /**
- * MessageInfo.
+ * MessageInfo. (CHANGE)
  */
 struct MessageInfo {
   const char *gateway;                                     ///< Gateway name
@@ -213,6 +222,14 @@ struct TimerEvent {
 };
 
 /**
+ * Connection event.
+ */
+struct ConnectionStatusEvent {
+  const MessageInfo& message_info;
+  const ConnectionStatus& connection_status;
+};
+
+/**
  * Batch begin event.
  */
 struct BatchBeginEvent {
@@ -227,7 +244,7 @@ struct BatchEndEvent {
 };
 
 /**
- * Handshake ack event.
+ * Handshake ack event. (INTERNAL)
  */
 struct HandshakeAckEvent {
   const MessageInfo& message_info;                         ///< Message info
@@ -235,11 +252,19 @@ struct HandshakeAckEvent {
 };
 
 /**
- * Heartbeat ack event.
+ * Heartbeat ack event. (INTERNAL)
  */
 struct HeartbeatAckEvent {
   const MessageInfo& message_info;                         ///< Message info
   const HeartbeatAck& heartbeat_ack;                       ///< Heartbeat ack
+};
+
+/**
+ * Ready event.
+ */
+struct ReadyEvent {
+  const MessageInfo& message_info;                         ///< Message info
+  const Ready& ready;
 };
 
 /**
@@ -323,19 +348,18 @@ struct TradeUpdateEvent {
 };
 
 /**
- * Handshake.
+ * Handshake. (INTERNAL)
  */
-
 struct Handshake {
   const char *api_version;                                 ///< API version.
   const char *login;                                       ///< Login.
   const char *password;                                    ///< Password.
+  std::vector<std::string> subscriptions;
 };
 
 /**
- * Heatbeat.
+ * Heatbeat. (INTERNAL)
  */
-
 struct Heartbeat {
   time_point_t opaque;                                     ///< Timestamp.
 };
@@ -371,7 +395,7 @@ struct CancelOrder {
 };
 
 /**
- * RequestInfo.
+ * RequestInfo. (INTERNAL+CHANGE)
  */
 struct RequestInfo {
   const char *destination;                                 ///< Destination name, typically a gateway
@@ -382,113 +406,48 @@ struct RequestInfo {
 };
 
 /*
- * Handshake request.
+ * Handshake request. (INTERNAL)
  */
-
 struct HandshakeRequest {
   const RequestInfo& request_info;                         ///< Routing information
   const Handshake& handshake;                              ///< Handshake details
 };
 
 /*
- * Heartbeat request.
+ * Heartbeat request. (INTERNAL)
  */
-
 struct HeartbeatRequest {
   const RequestInfo& request_info;                         ///< Routing information
   const Heartbeat& heartbeat;                              ///< Heartbeat details
 };
 
 /*
- * Create order request.
+ * Create order request. (INTERNAL)
  */
-
 struct CreateOrderRequest {
   const RequestInfo& request_info;                         ///< Routing information
   const CreateOrder& create_order;                         ///< Create order details
 };
 
 /*
- * Modify order request.
+ * Modify order request. (INTERNAL)
  */
-
 struct ModifyOrderRequest {
   const RequestInfo& request_info;                         ///< Routing information
   const ModifyOrder& modify_order;                         ///< Modify order details
 };
 
 /*
- * Cancel order request.
+ * Cancel order request. (INTERNAL)
  */
-
 struct CancelOrderRequest {
   const RequestInfo& request_info;                         ///< Routing information
   const CancelOrder& cancel_order;                         ///< Cancel order details
 };
 
 /**
- * Server interface.
+ * Client interface. (INTERNAL)
  */
-
-class Server {
- public:
-  virtual void on(const HandshakeRequest&) = 0;            ///< Handshake request handler.
-  virtual void on(const HeartbeatRequest&) = 0;            ///< Heartbeat request handler.
-};
-
-/**
- * Gateway interface.
- */
-class Gateway {
- public:
-   /**
-    * Dispatcher interface.
-    */
-  class Dispatcher {
-   public:
-    virtual void send(const message_t& message) = 0;       ///< Send mesage.
-  };
-  virtual ~Gateway() = default;
-  /**
-   * Start the event loop.
-   */
-  virtual void start() = 0;
-  /**
-   * Stop the event loop.
-   */
-  virtual void stop() = 0;
-  /**
-   * Get metrics.
-   *
-   * @param ostream output stream.
-   * @param format output format.
-   */
-  virtual void get_metrics(std::ostream& ostream, const char *format) = 0;
-  // TODO(thraneh): client connect & disconnet
-  /**
-   * CreateOrder request.
-   *
-   * @param create_order_request has the order creation request details.
-   */
-  virtual void on(const CreateOrderRequest& create_order_request) = 0;
-  /**
-   * ModifyOrder request.
-   *
-   * @param modify_order_request has the order modification request details.
-   */
-  virtual void on(const ModifyOrderRequest& modify_order_request) = 0;
-  /**
-   * CancelOrder request.
-   *
-   * @param cancel_order_request has the order cancellation request details.
-   */
-  virtual void on(const CancelOrderRequest& cancel_order_request) = 0;
-};
-
-/**
- * Client interface.
- */
-
 class Client {
  public:
   virtual void on(const HandshakeAckEvent&) = 0;           ///< Handshake ack event handler.
@@ -508,29 +467,32 @@ class Strategy {
     /**
      * Send CreateOrder request.
      *
-     * @param gateway name of the destination gateway.
      * @param create_order has the order creation details.
+     * @param gateway name of the destination gateway.
      */
-    virtual void send(const char *gateway, const CreateOrder& create_order) = 0;
+    virtual void send(const CreateOrder& create_order, const std::string& gateway) = 0;
     /**
      * Send ModifyOrder request.
      *
-     * @param gateway name of the destination gateway.
      * @param modify_order has the order modification details.
+     * @param gateway name of the destination gateway.
      */
-    virtual void send(const char *gateway, const ModifyOrder& modify_order) = 0;
+    virtual void send(const ModifyOrder& modify_order, const std::string& gateway) = 0;
     /**
      * Send CancelOrder request.
      *
-     * @param gateway name of the destination gateway.
      * @param cancel_order has the order cancellation details.
+     * @param gateway name of the destination gateway.
      */
-    virtual void send(const char *gateway, const CancelOrder& cancel_order) = 0;
+    virtual void send(const CancelOrder& cancel_order, const std::string& gateway) = 0;
   };
   virtual ~Strategy() = default;
-  virtual void on(const TimerEvent&) = 0;                  ///< Timer (do *not* rely on the accuracy!)
+  virtual void on(const TimerEvent&) = 0;                  ///< Timer (internal timer, do *not* rely on the accuracy!)
+  virtual void on(const ConnectionStatusEvent&) = 0;       ///< The connection status has changed
   virtual void on(const BatchBeginEvent&) = 0;             ///< Batch begin
-  virtual void on(const GatewayStatusEvent&) = 0;          ///< Connection or login status has changed for a gateway
+  virtual void on(const BatchEndEvent&) = 0;               ///< Batch end
+  virtual void on(const ReadyEvent&) = 0;                  ///< Ready event handler.
+  virtual void on(const GatewayStatusEvent&) = 0;          ///< The gateway's connection or login status has changed
   virtual void on(const ReferenceDataEvent&) = 0;          ///< Reference data update for an instrument
   virtual void on(const MarketStatusEvent&) = 0;           ///< Market status update for an instrument
   virtual void on(const MarketByPriceEvent&) = 0;          ///< Market-by-price update for an instrument
@@ -540,7 +502,6 @@ class Strategy {
   virtual void on(const CancelOrderAckEvent&) = 0;         ///< Response to a cancel order request
   virtual void on(const OrderUpdateEvent&) = 0;            ///< New order, or order details have been updated
   virtual void on(const TradeUpdateEvent&) = 0;            ///< New trade, or trade details have been updated
-  virtual void on(const BatchEndEvent&) = 0;               ///< Batch end
 };
 
 // Number
@@ -548,16 +509,29 @@ struct Number {
   explicit Number(double value) : _value(value) {}
   const double _value;
 };
+// Vector
+template <typename T>
+struct Vector {
+  explicit Vector(const std::vector<T>& value) : _value(value) {}
+  const std::vector<T>& _value;
+};
 
 // Stream
-std::ostream& operator<<(std::ostream& stream, time_point_t time_point);
-std::ostream& operator<<(std::ostream& stream, const Number number);
-std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value);
-std::ostream& operator<<(std::ostream& stream, const LoginStatus value);
+std::ostream& operator<<(std::ostream& stream, time_point_t value);
+std::ostream& operator<<(std::ostream& stream, const Number value);
+template <typename T>
+std::ostream& operator<<(std::ostream& stream, const Vector<T> value);
+std::ostream& operator<<(std::ostream& stream, const ConnectionState value);
+std::ostream& operator<<(std::ostream& stream, const GatewayState value);
 std::ostream& operator<<(std::ostream& stream, const TradeDirection value);
 std::ostream& operator<<(std::ostream& stream, const TradingStatus value);
 std::ostream& operator<<(std::ostream& stream, const OrderStatus value);
 std::ostream& operator<<(std::ostream& stream, const Layer& value);
+std::ostream& operator<<(std::ostream& stream, const ConnectionStatus& value);
+std::ostream& operator<<(std::ostream& stream, const Handshake& value);
+std::ostream& operator<<(std::ostream& stream, const HandshakeAck& value);
+std::ostream& operator<<(std::ostream& stream, const Heartbeat& value);
+std::ostream& operator<<(std::ostream& stream, const HeartbeatAck& value);
 std::ostream& operator<<(std::ostream& stream, const GatewayStatus& value);
 std::ostream& operator<<(std::ostream& stream, const ReferenceData& value);
 std::ostream& operator<<(std::ostream& stream, const MarketStatus& value);
@@ -569,6 +543,10 @@ std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value);
 std::ostream& operator<<(std::ostream& stream, const ModifyOrderAck& value);
 std::ostream& operator<<(std::ostream& stream, const CancelOrderAck& value);
 std::ostream& operator<<(std::ostream& stream, const MessageInfo& value);
+std::ostream& operator<<(std::ostream& stream, const ConnectionStatusEvent& value);
+std::ostream& operator<<(std::ostream& stream, const HandshakeAckEvent& value);
+std::ostream& operator<<(std::ostream& stream, const HeartbeatAckEvent& value);
+std::ostream& operator<<(std::ostream& stream, const ReadyEvent& value);
 std::ostream& operator<<(std::ostream& stream, const GatewayStatusEvent& value);
 std::ostream& operator<<(std::ostream& stream, const ReferenceDataEvent& value);
 std::ostream& operator<<(std::ostream& stream, const MarketStatusEvent& value);
@@ -583,6 +561,8 @@ std::ostream& operator<<(std::ostream& stream, const CreateOrder& value);
 std::ostream& operator<<(std::ostream& stream, const ModifyOrder& value);
 std::ostream& operator<<(std::ostream& stream, const CancelOrder& value);
 std::ostream& operator<<(std::ostream& stream, const RequestInfo& value);
+std::ostream& operator<<(std::ostream& stream, const HandshakeRequest& value);
+std::ostream& operator<<(std::ostream& stream, const HeartbeatRequest& value);
 std::ostream& operator<<(std::ostream& stream, const CreateOrderRequest& value);
 std::ostream& operator<<(std::ostream& stream, const ModifyOrderRequest& value);
 std::ostream& operator<<(std::ostream& stream, const CancelOrderRequest& value);

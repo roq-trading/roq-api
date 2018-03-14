@@ -54,7 +54,7 @@ uint32_t OrderManager::create_order(const char *order_template,
       .limit_price    = limit_price,
       .stop_price     = std::numeric_limits<double>::quiet_NaN(),
     };
-    _dispatcher.send(GATEWAY, create_order);
+    _dispatcher.send(create_order, GATEWAY);
   } catch (std::exception& e) {  // TODO(thraneh): more specific type(s)
     // could also let the exception reach the user
     LOG(WARNING) << e.what();

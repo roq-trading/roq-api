@@ -9,4 +9,8 @@ tradingapi_tests_LDADD = \
 	$(SPDLOG_LIBS) \
 	$(LIBUNWIND_LIBS)
 tradingapi_tests_CPPFLAGS = $(GTEST_CFLAGS) $(CCTZ_CFLAGS) -I$(top_srcdir)/include
-nodist_tradingapi_tests_SOURCES = test_codec.cpp test_logging.cpp test_logging_glog.cpp test_logging_spdlog.cpp test_stream.cpp main.cpp
+nodist_tradingapi_tests_SOURCES = \
+	test_connection_string.cpp test_gateways.cpp \
+	test_codec.cpp test_logging.cpp test_stream.cpp \
+	test_logging_glog.cpp test_logging_spdlog.cpp \
+	main.cpp

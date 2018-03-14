@@ -58,7 +58,7 @@ inline uint64_t time_point_to_uint64(time_point_t time_point) {
 // decode (events / low level)
 
 inline common::MessageInfo convert(const schema::MessageInfo *value) {
-  return common::MessageInfo{
+  return common::MessageInfo {
     .gateway = value->gateway()->c_str(),
     .message_id = value->message_id(),
     .exchange_time = uint64_to_time_point(value->exchange_time()),
@@ -68,7 +68,7 @@ inline common::MessageInfo convert(const schema::MessageInfo *value) {
 }
 
 inline common::HandshakeAck convert(const schema::HandshakeAck *value) {
-  return common::HandshakeAck{
+  return common::HandshakeAck {
     .api_version = value->api_version()->c_str(),
     .failure = value->failure(),
     .reason = value->reason()->c_str(),
@@ -76,22 +76,24 @@ inline common::HandshakeAck convert(const schema::HandshakeAck *value) {
 }
 
 inline common::HeartbeatAck convert(const schema::HeartbeatAck *value) {
-  return common::HeartbeatAck{
+  return common::HeartbeatAck {
     .opaque = uint64_to_time_point(value->opaque()),
   };
 }
 
+inline common::Ready convert(const schema::Ready *value) {
+  return common::Ready {};
+}
+
 inline common::GatewayStatus convert(const schema::GatewayStatus *value) {
-  return common::GatewayStatus{
-    .market_data_connection_status = value->market_data_connection_status(),
-    .market_data_login_status = value->market_data_login_status(),
-    .order_management_connection_status = value->order_management_connection_status(),
-    .order_management_login_status = value->order_management_login_status(),
+  return common::GatewayStatus {
+    .market_data = value->market_data(),
+    .order_management = value->order_management(),
   };
 }
 
 inline common::ReferenceData convert(const schema::ReferenceData *value) {
-  return common::ReferenceData{
+  return common::ReferenceData {
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
     .tick_size = value->tick_size(),
@@ -101,7 +103,7 @@ inline common::ReferenceData convert(const schema::ReferenceData *value) {
 }
 
 inline common::MarketStatus convert(const schema::MarketStatus *value) {
-  return common::MarketStatus{
+  return common::MarketStatus {
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
     .trading_status = value->trading_status(),
@@ -109,7 +111,7 @@ inline common::MarketStatus convert(const schema::MarketStatus *value) {
 }
 
 inline common::Layer convert(const schema::Layer *value) {
-  return common::Layer{
+  return common::Layer {
     .bid_price = value->bid_price(),
     .bid_quantity = value->bid_quantity(),
     .ask_price = value->ask_price(),
@@ -118,7 +120,7 @@ inline common::Layer convert(const schema::Layer *value) {
 }
 
 inline common::MarketByPrice convert(const schema::MarketByPrice *value) {
-  common::MarketByPrice res = {
+  common::MarketByPrice res {
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
   };
@@ -131,7 +133,7 @@ inline common::MarketByPrice convert(const schema::MarketByPrice *value) {
 }
 
 inline common::TradeSummary convert(const schema::TradeSummary *value) {
-  return common::TradeSummary{
+  return common::TradeSummary {
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
     .price = value->price(),
@@ -142,7 +144,7 @@ inline common::TradeSummary convert(const schema::TradeSummary *value) {
 }
 
 inline common::CreateOrderAck convert(const schema::CreateOrderAck *value) {
-  return common::CreateOrderAck{
+  return common::CreateOrderAck {
     .opaque = value->opaque(),
     .order_id = value->order_id(),
     .failure = value->failure(),
@@ -155,7 +157,7 @@ inline common::CreateOrderAck convert(const schema::CreateOrderAck *value) {
 }
 
 inline common::ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
-  return common::ModifyOrderAck{
+  return common::ModifyOrderAck {
     .opaque = value->opaque(),
     .order_id = value->order_id(),
     .failure = value->failure(),
@@ -170,7 +172,7 @@ inline common::ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
 }
 
 inline common::CancelOrderAck convert(const schema::CancelOrderAck *value) {
-  return common::CancelOrderAck{
+  return common::CancelOrderAck {
     .opaque = value->opaque(),
     .order_id = value->order_id(),
     .failure = value->failure(),
@@ -183,7 +185,7 @@ inline common::CancelOrderAck convert(const schema::CancelOrderAck *value) {
 }
 
 inline common::OrderUpdate convert(const schema::OrderUpdate *value) {
-  return common::OrderUpdate{
+  return common::OrderUpdate {
     .opaque = value->opaque(),
     .order_id = value->order_id(),
     .order_template = value->order_template()->c_str(),
@@ -200,7 +202,7 @@ inline common::OrderUpdate convert(const schema::OrderUpdate *value) {
 }
 
 inline common::TradeUpdate convert(const schema::TradeUpdate *value) {
-  return common::TradeUpdate{
+  return common::TradeUpdate {
     .order_id = value->order_id(),
     .external_order_id = value->external_order_id()->c_str(),
     .external_trade_id = value->external_trade_id()->c_str(),
@@ -216,7 +218,7 @@ inline common::TradeUpdate convert(const schema::TradeUpdate *value) {
 // decode (requests / low level)
 
 inline common::RequestInfo convert(const schema::RequestInfo *value) {
-  return common::RequestInfo{
+  return common::RequestInfo {
     .destination = value->destination()->c_str(),
     .trace_source = value->trace_source()->c_str(),
     .trace_message_id = value->trace_message_id(),
@@ -226,21 +228,28 @@ inline common::RequestInfo convert(const schema::RequestInfo *value) {
 }
 
 inline common::Handshake convert(const schema::Handshake *value) {
-  return common::Handshake{
+  common::Handshake result {
     .api_version = value->api_version()->c_str(),
     .login = value->login()->c_str(),
     .password = value->password()->c_str(),
   };
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String> > *subscriptions = value->subscriptions();
+  auto length = subscriptions->Length();
+  result.subscriptions.reserve(length);
+  for (auto i = 0; i < length; ++i) {
+    result.subscriptions.push_back((*subscriptions)[i]->c_str());
+  }
+  return result;
 }
 
 inline common::Heartbeat convert(const schema::Heartbeat *value) {
-  return common::Heartbeat{
+  return common::Heartbeat {
     .opaque = uint64_to_time_point(value->opaque()),
   };
 }
 
 inline common::CreateOrder convert(const schema::CreateOrder *value) {
-  return common::CreateOrder{
+  return common::CreateOrder {
     .opaque = value->opaque(),
     .order_template = value->order_template()->c_str(),
     .exchange = value->exchange()->c_str(),
@@ -253,7 +262,7 @@ inline common::CreateOrder convert(const schema::CreateOrder *value) {
 }
 
 inline common::ModifyOrder convert(const schema::ModifyOrder *value) {
-  return common::ModifyOrder{
+  return common::ModifyOrder {
     .order_id = value->order_id(),
     .quantity_change = value->quantity_change(),
     .limit_price = value->limit_price(),
@@ -261,7 +270,7 @@ inline common::ModifyOrder convert(const schema::ModifyOrder *value) {
 }
 
 inline common::CancelOrder convert(const schema::CancelOrder *value) {
-  return common::CancelOrder{
+  return common::CancelOrder {
     .order_id = value->order_id(),
   };
 }
@@ -295,19 +304,22 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatAck& value) 
     time_point_to_uint64(value.opaque));
 }
 
+inline flatbuffers::Offset<schema::Ready>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::Ready& value) {
+  return schema::CreateReady(fbb);
+}
+
 inline flatbuffers::Offset<schema::GatewayStatus>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatus& value) {
   return schema::CreateGatewayStatus(
     fbb,
-    value.market_data_connection_status,
-    value.market_data_login_status,
-    value.order_management_connection_status,
-    value.order_management_login_status);
+    value.market_data,
+    value.order_management);
 }
 
 inline flatbuffers::Offset<schema::MarketByPrice>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPrice& value) {
-  std::vector<schema::Layer> depth(MAX_DEPTH);  // TODO(thraneh): recycle this array?
+  std::vector<schema::Layer> depth(MAX_DEPTH);
   for (auto i = 0; i < MAX_DEPTH; ++i)
     depth[i] = schema::Layer(
       value.depth[i].bid_price,
@@ -447,6 +459,13 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatAckEvent& va
 }
 
 inline flatbuffers::Offset<schema::Event>
+convert(flatbuffers::FlatBufferBuilder& fbb, const common::ReadyEvent& value) {
+  auto message_info = convert(fbb, value.message_info);
+  auto ready = convert(fbb, value.ready);
+  return schema::CreateEvent(fbb, message_info, schema::EventData::Ready, ready.Union());
+}
+
+inline flatbuffers::Offset<schema::Event>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatusEvent& value) {
   auto message_info = convert(fbb, value.message_info);
   auto gateway_status = convert(fbb, value.gateway_status);
@@ -520,14 +539,20 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdateEvent& val
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::HandshakeAck& value) {
-  auto handshake_ack = convert2(fbb, value);
+  auto handshake_ack = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::HandshakeAck, handshake_ack.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
 convert2(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatAck& value) {
-  auto heartbeat_ack = convert2(fbb, value);
+  auto heartbeat_ack = convert(fbb, value);
   return schema::CreateEvent2(fbb, schema::EventData::HeartbeatAck, heartbeat_ack.Union());
+}
+
+inline flatbuffers::Offset<schema::Event2>
+convert2(flatbuffers::FlatBufferBuilder& fbb, const common::Ready& value) {
+  auto ready = convert(fbb, value);
+  return schema::CreateEvent2(fbb, schema::EventData::Ready, ready.Union());
 }
 
 inline flatbuffers::Offset<schema::Event2>
@@ -609,7 +634,8 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::Handshake& value) {
     fbb,
     fbb.CreateString(value.api_version),
     fbb.CreateString(value.login),
-    fbb.CreateString(value.password));
+    fbb.CreateString(value.password),
+    fbb.CreateVectorOfStrings(value.subscriptions));
 }
 
 inline flatbuffers::Offset<schema::Heartbeat>
@@ -694,103 +720,112 @@ class EventDispatcher final {
       : _client(client), _strategy(strategy), _trace(trace) {}
   // LEGACY
   void dispatch_event(const void *buffer, const size_t length) {
-    const auto root = flatbuffers::GetRoot<schema::Event>(buffer);
-    const auto message_info = convert(root->message_info());
+    auto root = flatbuffers::GetRoot<schema::Event>(buffer);
+    auto message_info = convert(root->message_info());
     assert(message_info.gateway != nullptr);
     _trace = &message_info;
-    const auto type = root->event_data_type();
+    auto type = root->event_data_type();
     switch (type) {
       case schema::EventData::HandshakeAck: {
-        const auto handshake_ack = convert(root->event_data_as_HandshakeAck());
-        const auto event = HandshakeAckEvent{
+        auto handshake_ack = convert(root->event_data_as_HandshakeAck());
+        HandshakeAckEvent event {
           .message_info = message_info,
           .handshake_ack = handshake_ack};
         _client.on(event);
         break;
       }
       case schema::EventData::HeartbeatAck: {
-        const auto heartbeat_ack = convert(root->event_data_as_HeartbeatAck());
-        const auto event = HeartbeatAckEvent{
+        auto heartbeat_ack = convert(root->event_data_as_HeartbeatAck());
+        HeartbeatAckEvent event {
           .message_info = message_info,
           .heartbeat_ack = heartbeat_ack};
         _client.on(event);
         break;
       }
+      case schema::EventData::Ready: {
+        auto ready = convert(root->event_data_as_Ready());
+        ReadyEvent event {
+          .message_info = message_info,
+          .ready = ready
+        };
+        _strategy.on(event);
+        break;
+      }
       case schema::EventData::GatewayStatus: {
-        const auto gateway_status = convert(root->event_data_as_GatewayStatus());
-        const auto event = GatewayStatusEvent{
+        auto gateway_status = convert(root->event_data_as_GatewayStatus());
+        GatewayStatusEvent event {
           .message_info = message_info,
           .gateway_status = gateway_status};
         _strategy.on(event);
         break;
       }
       case schema::EventData::ReferenceData: {
-        const auto reference_data = convert(root->event_data_as_ReferenceData());
-        const auto event = ReferenceDataEvent{
+        auto reference_data = convert(root->event_data_as_ReferenceData());
+        ReferenceDataEvent event {
           .message_info = message_info,
           .reference_data = reference_data};
         _strategy.on(event);
         break;
       }
       case schema::EventData::MarketStatus: {
-        const auto market_status = convert(root->event_data_as_MarketStatus());
-        const auto event = MarketStatusEvent{
+        auto market_status = convert(root->event_data_as_MarketStatus());
+        MarketStatusEvent event {
           .message_info = message_info,
           .market_status = market_status};
         _strategy.on(event);
         break;
       }
       case schema::EventData::MarketByPrice: {
-        const auto market_by_price = convert(root->event_data_as_MarketByPrice());
-        const auto event = MarketByPriceEvent{
+        auto market_by_price = convert(root->event_data_as_MarketByPrice());
+        MarketByPriceEvent event {
           .message_info = message_info,
           .market_by_price = market_by_price};
         _strategy.on(event);
         break;
       }
       case schema::EventData::TradeSummary: {
-        const auto trade_summary = convert(root->event_data_as_TradeSummary());
-        const auto event = TradeSummaryEvent{
+        auto trade_summary = convert(root->event_data_as_TradeSummary());
+        TradeSummaryEvent event {
           .message_info = message_info,
           .trade_summary = trade_summary};
         _strategy.on(event);
         break;
       }
       case schema::EventData::CreateOrderAck: {
-        const auto create_order_ack = convert(root->event_data_as_CreateOrderAck());
-        const auto event = CreateOrderAckEvent{
+        auto create_order_ack = convert(root->event_data_as_CreateOrderAck());
+        CreateOrderAckEvent event {
           .message_info = message_info,
           .create_order_ack = create_order_ack};
         _strategy.on(event);
         break;
       }
       case schema::EventData::ModifyOrderAck: {
-        const auto modify_order_ack = convert(root->event_data_as_ModifyOrderAck());
-        const auto event = ModifyOrderAckEvent{
+        auto modify_order_ack = convert(root->event_data_as_ModifyOrderAck());
+        ModifyOrderAckEvent event {
           .message_info = message_info,
           .modify_order_ack = modify_order_ack};
         _strategy.on(event);
         break;
       }
       case schema::EventData::CancelOrderAck: {
-        const auto cancel_order_ack = convert(root->event_data_as_CancelOrderAck());
-        const auto event = CancelOrderAckEvent{
+        auto cancel_order_ack = convert(root->event_data_as_CancelOrderAck());
+        CancelOrderAckEvent event {
           .message_info = message_info,
           .cancel_order_ack = cancel_order_ack};
         _strategy.on(event);
         break;
       }
       case schema::EventData::OrderUpdate: {
-        const auto order_update = convert(root->event_data_as_OrderUpdate());
-        const auto event = OrderUpdateEvent{
+        auto order_update = convert(root->event_data_as_OrderUpdate());
+        OrderUpdateEvent event {
           .message_info = message_info,
           .order_update = order_update};
         _strategy.on(event);
         break;
       }
       case schema::EventData::TradeUpdate: {
-        const auto trade_update = convert(root->event_data_as_TradeUpdate());
-        const auto event = TradeUpdateEvent{
+        auto trade_update = convert(root->event_data_as_TradeUpdate());
+        TradeUpdateEvent event {
           .message_info = message_info,
           .trade_update = trade_update};
         _strategy.on(event);
@@ -804,109 +839,130 @@ class EventDispatcher final {
   }
   // NEW
   void dispatch_events(const void *buffer, const size_t length) {
-    const auto root = flatbuffers::GetRoot<schema::Batch>(buffer);
-    const auto message_info = convert(root->message_info());
+    auto root = flatbuffers::GetRoot<schema::Batch>(buffer);
+    auto message_info = convert(root->message_info());
     assert(message_info.gateway != nullptr);
     _trace = &message_info;
-    _strategy.on(BatchBeginEvent{ message_info });
+    _strategy.on(BatchBeginEvent { .message_info = message_info });
     const auto& events = *(root->events());
     for (int i = 0; i < events.Length(); ++i) {
       const schema::Event2& item = *(events[i]);
-      const auto type = item.event_data_type();
+      auto type = item.event_data_type();
       switch (type) {
         case schema::EventData::HandshakeAck: {
-          const auto handshake_ack = convert(item.event_data_as_HandshakeAck());
-          const auto event = HandshakeAckEvent{
+          auto handshake_ack = convert(item.event_data_as_HandshakeAck());
+          HandshakeAckEvent event {
             .message_info = message_info,
             .handshake_ack = handshake_ack};
+          VLOG(1) << "HandshakeAckEvent " << event;
           _client.on(event);
           break;
         }
         case schema::EventData::HeartbeatAck: {
-          const auto heartbeat_ack = convert(item.event_data_as_HeartbeatAck());
-          const auto event = HeartbeatAckEvent{
+          auto heartbeat_ack = convert(item.event_data_as_HeartbeatAck());
+          HeartbeatAckEvent event {
             .message_info = message_info,
             .heartbeat_ack = heartbeat_ack};
+          VLOG(1) << "HeartbeatAckEvent " << event;
           _client.on(event);
           break;
         }
+        case schema::EventData::Ready: {
+          auto ready = convert(item.event_data_as_Ready());
+          ReadyEvent event {
+            .message_info = message_info,
+            .ready = ready};
+          VLOG(1) << "ReadyEvent " << event;
+          _strategy.on(event);
+          break;
+        }
         case schema::EventData::GatewayStatus: {
-          const auto gateway_status = convert(item.event_data_as_GatewayStatus());
-          const auto event = GatewayStatusEvent{
+          auto gateway_status = convert(item.event_data_as_GatewayStatus());
+          GatewayStatusEvent event {
             .message_info = message_info,
             .gateway_status = gateway_status};
+          VLOG(1) << "GatewayStatusEvent " << event;
           _strategy.on(event);
           break;
         }
         case schema::EventData::ReferenceData: {
-          const auto reference_data = convert(item.event_data_as_ReferenceData());
-          const auto event = ReferenceDataEvent{
+          auto reference_data = convert(item.event_data_as_ReferenceData());
+          ReferenceDataEvent event {
             .message_info = message_info,
             .reference_data = reference_data};
+          VLOG(1) << "ReferenceDataEvent " << event;
           _strategy.on(event);
           break;
         }
         case schema::EventData::MarketStatus: {
-          const auto market_status = convert(item.event_data_as_MarketStatus());
-          const auto event = MarketStatusEvent{
+          auto market_status = convert(item.event_data_as_MarketStatus());
+          MarketStatusEvent event {
             .message_info = message_info,
             .market_status = market_status};
+          VLOG(1) << "MarketStatusEvent " << event;
           _strategy.on(event);
           break;
         }
         case schema::EventData::MarketByPrice: {
-          const auto market_by_price = convert(item.event_data_as_MarketByPrice());
-          const auto event = MarketByPriceEvent{
+          auto market_by_price = convert(item.event_data_as_MarketByPrice());
+          MarketByPriceEvent event {
             .message_info = message_info,
             .market_by_price = market_by_price};
+          VLOG(1) << "MarketByPriceEvent " << event;
           _strategy.on(event);
           break;
         }
         case schema::EventData::TradeSummary: {
-          const auto trade_summary = convert(item.event_data_as_TradeSummary());
-          const auto event = TradeSummaryEvent{
+          auto trade_summary = convert(item.event_data_as_TradeSummary());
+          TradeSummaryEvent event {
             .message_info = message_info,
             .trade_summary = trade_summary};
+          VLOG(1) << "TradeSummaryEvent " << event;
           _strategy.on(event);
           break;
         }
         case schema::EventData::CreateOrderAck: {
-          const auto create_order_ack = convert(item.event_data_as_CreateOrderAck());
-          const auto event = CreateOrderAckEvent{
+          auto create_order_ack = convert(item.event_data_as_CreateOrderAck());
+          CreateOrderAckEvent event {
             .message_info = message_info,
             .create_order_ack = create_order_ack};
+          VLOG(1) << "CreateOrderAck " << event;
           _strategy.on(event);
           break;
         }
         case schema::EventData::ModifyOrderAck: {
-          const auto modify_order_ack = convert(item.event_data_as_ModifyOrderAck());
-          const auto event = ModifyOrderAckEvent{
+          auto modify_order_ack = convert(item.event_data_as_ModifyOrderAck());
+          ModifyOrderAckEvent event {
             .message_info = message_info,
             .modify_order_ack = modify_order_ack};
+          VLOG(1) << "ModifyOrderAck " << event;
           _strategy.on(event);
           break;
         }
         case schema::EventData::CancelOrderAck: {
-          const auto cancel_order_ack = convert(item.event_data_as_CancelOrderAck());
-          const auto event = CancelOrderAckEvent{
+          auto cancel_order_ack = convert(item.event_data_as_CancelOrderAck());
+          CancelOrderAckEvent event {
             .message_info = message_info,
             .cancel_order_ack = cancel_order_ack};
+          VLOG(1) << "CancelOrderAck " << event;
           _strategy.on(event);
           break;
         }
         case schema::EventData::OrderUpdate: {
-          const auto order_update = convert(item.event_data_as_OrderUpdate());
-          const auto event = OrderUpdateEvent{
+          auto order_update = convert(item.event_data_as_OrderUpdate());
+          OrderUpdateEvent event {
             .message_info = message_info,
             .order_update = order_update};
+          VLOG(1) << "OrderUpdateEvent " << event;
           _strategy.on(event);
           break;
         }
         case schema::EventData::TradeUpdate: {
-          const auto trade_update = convert(item.event_data_as_TradeUpdate());
-          const auto event = TradeUpdateEvent{
+          auto trade_update = convert(item.event_data_as_TradeUpdate());
+          TradeUpdateEvent event {
             .message_info = message_info,
             .trade_update = trade_update};
+          VLOG(1) << "TradeUpdateEvent " << event;
           _strategy.on(event);
           break;
         }
@@ -915,7 +971,7 @@ class EventDispatcher final {
         }
       }
     }
-    _strategy.on(BatchEndEvent{ .message_info = message_info, });
+    _strategy.on(BatchEndEvent { .message_info = message_info, });
     _trace = nullptr;  // FIXME(thraneh): also reset when an exception has been raised!
   }
 
@@ -931,69 +987,5 @@ class EventDispatcher final {
   flatbuffers::FlatBufferBuilder _flat_buffer_builder;
 };
 
-class RequestDispatcher final {
- public:
-  explicit RequestDispatcher(Server& server, Gateway& gateway) : _server(server), _gateway(gateway) {}
-  void dispatch_request(const void *buffer, const size_t length) {
-    const auto root = flatbuffers::GetRoot<schema::Request>(buffer);
-    const auto request_info = convert(root->request_info());
-    const auto type = root->request_data_type();
-    switch (type) {
-      case schema::RequestData::Handshake: {
-        const auto handshake = convert(root->request_data_as_Handshake());
-        const auto request = HandshakeRequest{
-          .request_info = request_info,
-          .handshake = handshake};
-        _server.on(request);
-        break;
-      }
-      case schema::RequestData::Heartbeat: {
-        const auto heartbeat = convert(root->request_data_as_Heartbeat());
-        const auto request = HeartbeatRequest{
-          .request_info = request_info,
-          .heartbeat = heartbeat};
-        _server.on(request);
-        break;
-      }
-      case schema::RequestData::CreateOrder: {
-        const auto create_order = convert(root->request_data_as_CreateOrder());
-        const auto request = CreateOrderRequest{
-          .request_info = request_info,
-          .create_order = create_order};
-        _gateway.on(request);
-        break;
-      }
-      case schema::RequestData::ModifyOrder: {
-        const auto modify_order = convert(root->request_data_as_ModifyOrder());
-        const auto request = ModifyOrderRequest{
-          .request_info = request_info,
-          .modify_order = modify_order};
-        _gateway.on(request);
-        break;
-      }
-      case schema::RequestData::CancelOrder: {
-        const auto cancel_order = convert(root->request_data_as_CancelOrder());
-        const auto request = CancelOrderRequest{
-          .request_info = request_info,
-          .cancel_order = cancel_order};
-        _gateway.on(request);
-        break;
-      }
-      default: {
-        throw std::runtime_error("Unknown message type");
-      }
-    }
-  }
-
- private:
-  RequestDispatcher() = delete;
-  RequestDispatcher(const RequestDispatcher&) = delete;
-  RequestDispatcher& operator=(const RequestDispatcher&) = delete;
-
- private:
-  Server& _server;
-  Gateway& _gateway;
-  flatbuffers::FlatBufferBuilder _flat_buffer_builder;
-};
 }  // namespace common
 }  // namespace quinclas

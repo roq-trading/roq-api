@@ -7,7 +7,10 @@
 
 #include "collector/collector.h"
 
-DEFINE_string(local_address, "", "host-internal socket address (path)");
+DEFINE_string(gateways, "",
+    "List of gateway connection details. "
+    "Comma separated. "
+    "For example: \"femas=unix:/var/tmp/femasapi.sock\".");
 
 using namespace examples::collector;  // NOLINT
 
@@ -22,18 +25,21 @@ int main(int argc, char *argv[]) {
 
   // validate command-line options
 
-  if (FLAGS_local_address.empty()) {
-    LOG(ERROR) << "local-address is a required parameter";
+  if (FLAGS_gateways.empty()) {
+    LOG(ERROR) << "gateways is a required parameter";
     return EXIT_FAILURE;
   }
+
+  // parse connection details for all required gateways
+
+  auto gateways = quinclas::client::Gateways::create(FLAGS_gateways);
 
   LOG(INFO) << "===== START =====";
 
   // create framework, instantiate strategy and start event dispatching
 
-  quinclas::client::Controller<Collector>({
-      { "FEMAS", FLAGS_local_address },
-    }).create_and_dispatch();
+  quinclas::client::Controller<Collector>(
+      std::move(gateways)).create_and_dispatch();
 
   LOG(INFO) << "===== STOP =====";
 

@@ -31,7 +31,8 @@ class RuntimeError : public std::exception {
 
 class Address final {
  public:
-  explicit Address(const char *path) : _size(sizeof(_address.un)) {
+  explicit Address(const char *path)
+      : _size(sizeof(_address.un)) {
     std::memset(&_address.un, 0, sizeof(_address.un));
     _address.un.sun_family = AF_LOCAL;
     if (sizeof(_address.un.sun_path) <= std::strlen(path))
@@ -40,7 +41,8 @@ class Address final {
   }
   explicit Address(const std::string& path) : Address(path.c_str()) {}
   // use gethostbyname (or some similar async version) to look up the address given a hostname
-  Address(const struct in_addr address, const uint16_t port) : _size(sizeof(_address.in)) {
+  Address(const struct in_addr address, const uint16_t port)
+      : _size(sizeof(_address.in)) {
     struct hostent *hostinfo;
     _address.in.sin_family = AF_INET;
     _address.in.sin_port = htons(port);
@@ -48,6 +50,9 @@ class Address final {
   }
   const struct sockaddr *get() const {
     return reinterpret_cast<const struct sockaddr *>(&_address);
+  }
+  int get_family() const {
+    return _address.sa.sa_family;
   }
   size_t size() const { return _size; }
   std::string to_string() const {
@@ -63,6 +68,7 @@ class Address final {
 
  private:
   typedef union {
+    struct sockaddr sa;
     struct sockaddr_in in;
     struct sockaddr_un un;
   } sockaddr_t;

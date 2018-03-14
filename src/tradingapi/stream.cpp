@@ -19,21 +19,34 @@ const char *TIME_FORMAT = "%E4Y-%m-%dT%H:%M:%E6S";
 const auto TIME_ZONE = cctz::utc_time_zone();
 }
 
-std::ostream& operator<<(std::ostream& stream, const Number number) {
+std::ostream& operator<<(std::ostream& stream, const Number value) {
   char buffer[32];
   double_conversion::StringBuilder builder(buffer, sizeof(buffer));
-  if (DOUBLE_CONVERTER.ToShortest(number._value, &builder))
+  if (DOUBLE_CONVERTER.ToShortest(value._value, &builder))
     return stream << builder.Finalize();
   else
     return stream << "####";
 }
 
-std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value) {
-  return stream << EnumNameConnectionStatus(value);
+template <typename T>
+std::ostream& operator<<(std::ostream& stream, const Vector<T> value) {
+  stream << "[";
+  bool insert_delimiter = false;
+  for (const auto& iter : value._value) {
+    if (insert_delimiter)
+      stream << ", ";
+    stream << iter;
+    insert_delimiter = true;
+  }
+  return stream << "]";
 }
 
-std::ostream& operator<<(std::ostream& stream, const LoginStatus value) {
-  return stream << EnumNameLoginStatus(value);
+std::ostream& operator<<(std::ostream& stream, const ConnectionState value) {
+  return stream << EnumNameConnectionState(value);
+}
+
+std::ostream& operator<<(std::ostream& stream, const GatewayState value) {
+  return stream << EnumNameGatewayState(value);
 }
 
 std::ostream& operator<<(std::ostream& stream, const TradeDirection value) {
@@ -63,12 +76,45 @@ std::ostream& operator<<(std::ostream& stream, const Layer& value) {
     "}";
 }
 
+std::ostream& operator<<(std::ostream& stream, const ConnectionStatus& value) {
+  return stream << "{"
+    "connection=" << value.connection <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const Handshake& value) {
+  return stream << "{"
+    "api_version=\"" << value.api_version << "\", "
+    "login=\"" << value.login << "\", "
+    "password=\"***\", "
+    "subscriptions=" << Vector<decltype(value.subscriptions)::value_type>(value.subscriptions) <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const HandshakeAck& value) {
+  return stream << "{"
+    "api_version=\"" << value.api_version << "\", "
+    "failure=" << (value.failure ? "true" : "false") << ", "
+    "reason=\"" << value.reason << "\""
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const Heartbeat& value) {
+  return stream << "{"
+    "opaque=" << value.opaque <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const HeartbeatAck& value) {
+  return stream << "{"
+    "opaque=" << value.opaque <<
+    "}";
+}
+
 std::ostream& operator<<(std::ostream& stream, const GatewayStatus& value) {
   return stream << "{"
-    "market_data_connection_status=" << value.market_data_connection_status << ", "
-    "market_data_login_status=" << value.market_data_login_status << ", "
-    "order_management_connection_status=" << value.order_management_connection_status << ", "
-    "order_management_login_status=" << value.order_management_login_status <<
+    "market_data=" << value.market_data << ", "
+    "order_management=" << value.order_management <<
     "}";
 }
 
@@ -197,6 +243,33 @@ std::ostream& operator<<(std::ostream& stream, const MessageInfo& value) {
     "}";
 }
 
+std::ostream& operator<<(std::ostream& stream, const ConnectionStatusEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "connection_status=" << value.connection_status <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const HandshakeAckEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "handshake_ack=" << value.handshake_ack <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const HeartbeatAckEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "heartbeat_ack=" << value.heartbeat_ack <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const ReadyEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info <<
+    "}";
+}
+
 std::ostream& operator<<(std::ostream& stream, const GatewayStatusEvent& value) {
   return stream << "{"
     "message_info=" << value.message_info << ", "
@@ -301,6 +374,20 @@ std::ostream& operator<<(std::ostream& stream, const RequestInfo& value) {
     "trace_message_id=" << value.trace_message_id << ", "
     "send_time=" << value.send_time << ", "
     "receive_time=" << value.receive_time <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const HandshakeRequest& value) {
+  return stream << "{"
+    "request_info=" << value.request_info << ", "
+    "handshake=" << value.handshake <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const HeartbeatRequest& value) {
+  return stream << "{"
+    "request_info=" << value.request_info << ", "
+    "heartbeat=" << value.heartbeat <<
     "}";
 }
 

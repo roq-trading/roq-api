@@ -28,10 +28,22 @@ void Strategy::on(const TimerEvent& event) {
       "}";
 }
 
+void Strategy::on(const quinclas::common::ConnectionStatusEvent& event) {
+}
+
 void Strategy::on(const BatchBeginEvent&) {
   // Some events may be delivered in batch, // e.g. MarketByPrice and
   // TradeSummary.
   // This message indicates the beginning of such a batch.
+}
+
+void Strategy::on(const BatchEndEvent&) {
+  // Some events may be delivered in batch, // e.g. MarketByPrice and
+  // TradeSummary.
+  // This message indicates the ending of such a batch.
+}
+
+void Strategy::on(const quinclas::common::ReadyEvent&) {
 }
 
 void Strategy::on(const GatewayStatusEvent& event) {
@@ -48,24 +60,10 @@ void Strategy::on(const GatewayStatusEvent& event) {
   // Example:
   const auto& gateway_status = event.gateway_status;
   // Check if we're ready to trade.
-  bool market_data_ready =
-      gateway_status.market_data_connection_status == ConnectionStatus::Connected &&
-      gateway_status.market_data_login_status == LoginStatus::On;
-  bool order_management_ready =
-      gateway_status.order_management_connection_status == ConnectionStatus::Connected &&
-      gateway_status.order_management_login_status == LoginStatus::On;
-  bool ready = market_data_ready && order_management_ready;
-  // Note!
-  // You don't actually have to check both connection and login status.
-  // It is enough to check the login status.
-  // The controller and the gateway will guarantee you can't be logged in
-  // and *not* connected at the same time.
-  // ... this achieves the same;
-  ready =
-      gateway_status.market_data_login_status == LoginStatus::On &&
-      gateway_status.order_management_login_status == LoginStatus::On;
+  bool market_data_ready = gateway_status.market_data == GatewayState::Ready;
+  bool order_management_ready = gateway_status.order_management == GatewayState::Ready;
   // Return if not ready yet.
-  if (!ready)
+  if (!(market_data_ready && order_management_ready))
     return;
   // Construct a create-order request.
   CreateOrder create_order {
@@ -79,7 +77,7 @@ void Strategy::on(const GatewayStatusEvent& event) {
     .stop_price     = std::numeric_limits<double>::quiet_NaN(),
   };
   // Send the request to the FEMAS gateway.
-  _dispatcher.send("FEMAS", create_order);
+  _dispatcher.send(create_order, "FEMAS");
   // Note!
   // The name of the gateway is the name you choose when constructing
   // the controller framework (see: main.cpp).
@@ -244,12 +242,6 @@ void Strategy::on(const TradeUpdateEvent& event) {
   double quantity = trade_update.quantity;
   // Traded price.
   double price = trade_update.price;
-}
-
-void Strategy::on(const BatchEndEvent&) {
-  // Some events may be delivered in batch, // e.g. MarketByPrice and
-  // TradeSummary.
-  // This message indicates the ending of such a batch.
 }
 
 }  // namespace strategy

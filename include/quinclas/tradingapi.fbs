@@ -19,11 +19,12 @@ table HeartbeatAck {
   opaque:ulong;
 }
 
+table Ready {
+}
+
 table GatewayStatus {
-  market_data_connection_status:common.ConnectionStatus;
-  market_data_login_status:common.LoginStatus;
-  order_management_connection_status:common.ConnectionStatus;
-  order_management_login_status:common.LoginStatus;
+  market_data:common.GatewayState;
+  order_management:common.GatewayState;
 }
 
 table MarketByPrice {
@@ -121,6 +122,7 @@ table Handshake {
   api_version:string;
   login:string;
   password:string;
+  subscriptions:[string];
 }
 
 table Heartbeat {
@@ -150,10 +152,6 @@ table CancelOrder {
 
 // events
 
-table TerminationEvent {
-  gateway:string;
-}
-
 table MessageInfo {
   gateway:string;
   message_id:ulong;
@@ -165,6 +163,7 @@ table MessageInfo {
 union EventData {
   HandshakeAck,
   HeartbeatAck,
+  Ready,
   GatewayStatus,
   ReferenceData,
   MarketStatus,

@@ -18,8 +18,10 @@ DEFINE_string(config_file, "",
 DEFINE_string(mode, "",
     "Mode of operation (trading|simulation)");
 
-DEFINE_string(local_address, "",
-    "Host-internal (aka unix domain) socket address (path)");
+DEFINE_string(gateways, "",
+    "List of gateway connection details. "
+    "Comma separated. "
+    "For example: \"femas=unix:/var/tmp/femasapi.sock\".");
 
 DEFINE_string(simulation_file, "",
     "Simulation file (path)");
@@ -42,13 +44,13 @@ int main(int argc, char *argv[]) {
   LOG(INFO) << config;
 
   if (FLAGS_mode == "trading") {
-    if (FLAGS_local_address.empty()) {
-      LOG(ERROR) << "Missing parameter: --local-address";
+    if (FLAGS_gateways.empty()) {
+      LOG(ERROR) << "Missing parameter: --gateways";
       std::exit(EXIT_FAILURE);
     }
 
-    std::unordered_map<std::string, std::string> gateways;
-    gateways.emplace(GATEWAY, FLAGS_local_address);
+    // Parse connection details for all required gateways.
+    auto gateways = quinclas::client::Gateways::create(FLAGS_gateways);
 
     quinclas::client::Controller<GatewayManager>(
         std::move(gateways)).create_and_dispatch(std::move(config));

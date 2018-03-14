@@ -1,19 +1,18 @@
 namespace quinclas.common;
 
-/// Connection status.
-enum ConnectionStatus:byte {
-  ///< Not connected
+/// Connection state.
+enum ConnectionState:byte {
   Disconnected = 0,
-  ///< Connected
   Connected = 1
 }
 
-/// Login status.
-enum LoginStatus:byte {
-  ///< Not logged in
-  Off = 0,
-  ///< Logged in
-  On = 1
+/// Gateway state.
+enum GatewayState:byte {
+  Disconnected = 0,
+  LoginSent = 1,
+  Downloading = 2,
+  Ready = 3,
+  LoggedOut = 4
 }
 
 /// Trade direction.

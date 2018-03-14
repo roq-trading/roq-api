@@ -6,6 +6,8 @@
 
 #include <chrono>
 #include <list>
+#include <stdexcept>
+#include <string>
 #include <utility>
 
 namespace quinclas {
@@ -60,11 +62,14 @@ class Controller final {
     }
 
    private:
-    void send(const char *gateway, const common::CreateOrder& create_order) override {
+    void send(const common::CreateOrder& create_order, const std::string& gateway) override {
+      throw std::runtime_error("This simulator doesn't support order management");
     }
-    void send(const char *gateway, const common::ModifyOrder& modify_order) override {
+    void send(const common::ModifyOrder& modify_order, const std::string& gateway) override {
+      throw std::runtime_error("This simulator doesn't support order management");
     }
-    void send(const char *gateway, const common::CancelOrder& cancel_order) override {
+    void send(const common::CancelOrder& cancel_order, const std::string& gateway) override {
+      throw std::runtime_error("This simulator doesn't support order management");
     }
 
    private:

@@ -28,7 +28,10 @@ class GatewayManager final : public quinclas::common::Strategy {
  protected:
   // event handlers
   void on(const quinclas::common::TimerEvent&) override;
+  void on(const quinclas::common::ConnectionStatusEvent&) override;
   void on(const quinclas::common::BatchBeginEvent&) override;
+  void on(const quinclas::common::BatchEndEvent&) override;
+  void on(const quinclas::common::ReadyEvent&) override;
   void on(const quinclas::common::GatewayStatusEvent&) override;
   void on(const quinclas::common::ReferenceDataEvent&) override;
   void on(const quinclas::common::MarketStatusEvent&) override;
@@ -39,7 +42,6 @@ class GatewayManager final : public quinclas::common::Strategy {
   void on(const quinclas::common::CancelOrderAckEvent&) override;
   void on(const quinclas::common::OrderUpdateEvent&) override;
   void on(const quinclas::common::TradeUpdateEvent&) override;
-  void on(const quinclas::common::BatchEndEvent&) override;
 
  private:
   // state management

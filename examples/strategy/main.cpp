@@ -8,15 +8,11 @@
 #include "strategy/strategy.h"
 
 // Command line options (using gflags, see comments below):
-//
-// --local-address  A filesystem path you want to connect to.
-//                  The gateway exposes its interface through a unix domain
-//                  socket (a filesystem path).
-//                  This particular interface is chosen as a minimum overhead
-//                  IPC protocol between
-//                  strategy and gateway implementation.
-//
-DEFINE_string(local_address, "", "host-internal socket address (path)");
+
+DEFINE_string(gateways, "",
+    "List of gateway connection details. "
+    "Comma separated. "
+    "For example: \"femas=unix:/var/tmp/femasapi.sock\".");
 
 // Convenience (and not liked by cpplint).
 using namespace examples::strategy;  // NOLINT
@@ -35,20 +31,15 @@ int main(int argc, char *argv[]) {
   gflags::ShutDownCommandLineFlags();
 
   // Validate the command-line options.
-  if (FLAGS_local_address.empty()) {
-    LOG(ERROR) << "local-address is a required parameter";
+  if (FLAGS_gateways.empty()) {
+    LOG(ERROR) << "gateways is a required parameter";
     return EXIT_FAILURE;
   }
 
   LOG(INFO) << "===== START =====";
 
-  // Define a list of the gateways you want to connect to.
-  // Each gateway is defined by the name you want to reference the gateway by
-  // (here "FEMAS") and the end-point exposed by the gateway (here the
-  // filesystem path we expect from the command-line).
-  const std::unordered_map<std::string, std::string> gateways = {
-    { "FEMAS", FLAGS_local_address },
-  };
+  // Parse connection details for all required gateways.
+  auto gateways = quinclas::client::Gateways::create(FLAGS_gateways);
 
   // The controller is a pre-defined framework for managing
   // - IPC and/or network connectivity
@@ -57,7 +48,7 @@ int main(int argc, char *argv[]) {
   // - Request dispatching (from your strategy to a gateway)
   // You must instantiate it with the list of gateways required by your
   // strategy implementation.
-  quinclas::client::Controller<Strategy> controller(gateways);
+  quinclas::client::Controller<Strategy> controller(std::move(gateways));
 
   // Your strategy configuration.
   // There's nothing special with this "configuration" -- it is only meant to

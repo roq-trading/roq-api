@@ -25,13 +25,23 @@ void GatewayManager::on(const TimerEvent& event) {
   check(event.message_info);
 }
 
+void GatewayManager::on(const quinclas::common::ConnectionStatusEvent& event) {
+}
+
+
 void GatewayManager::on(const BatchBeginEvent&) {
+}
+
+void GatewayManager::on(const BatchEndEvent&) {
+}
+
+void GatewayManager::on(const ReadyEvent&) {
 }
 
 void GatewayManager::on(const GatewayStatusEvent& event) {
   const auto& gateway_status = event.gateway_status;
-  _order_manager_ready = gateway_status.market_data_login_status == LoginStatus::On;
-  _market_data_ready = gateway_status.market_data_login_status == LoginStatus::On;
+  _order_manager_ready = gateway_status.order_management == GatewayState::Ready;
+  _market_data_ready = gateway_status.market_data == GatewayState::Ready;
   check(event.message_info);
 }
 
@@ -90,9 +100,6 @@ void GatewayManager::on(const TradeUpdateEvent& event) {
     // TODO(thraneh): take action to reduce risk exposure
   }
   check(event.message_info);
-}
-
-void GatewayManager::on(const BatchEndEvent&) {
 }
 
 // state management

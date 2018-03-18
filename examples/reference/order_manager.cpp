@@ -73,7 +73,7 @@ uint32_t OrderManager::create_order(const char *order_template,
 // event handlers
 
 void OrderManager::on(const quinclas::common::TimerEvent& event) {
-  check(event.message_info);
+  // check(event.message_info);  // FIXME(thraneh): re-enable time-check
 }
 
 void OrderManager::on(const quinclas::common::CreateOrderAckEvent& event) {
@@ -200,7 +200,7 @@ void OrderManager::add_timeout_check(uint32_t order_id) {
 
 void OrderManager::check(const quinclas::common::MessageInfo& message_info) {
   // all events contain a timestamp -- this check will catch programming mistakes
-  auto current_time = message_info.enqueue_time;
+  auto current_time = message_info.client_receive_time;
   LOG_IF(FATAL, _last_update_time < current_time) << "Wrong sequencing!";
   _last_update_time = current_time;
   // check timeouts

@@ -24,7 +24,7 @@ void Strategy::on(const TimerEvent& event) {
 
   // Example:
   LOG(INFO) << "TimerEvent={"
-      "current_utc_time=" << event.message_info.enqueue_time <<
+      "current_utc_time=" << event.utc_time <<
       "}";
 }
 
@@ -242,6 +242,10 @@ void Strategy::on(const TradeUpdateEvent& event) {
   double quantity = trade_update.quantity;
   // Traded price.
   double price = trade_update.price;
+}
+
+void Strategy::on(const quinclas::common::PositionUpdateEvent& event) {
+  LOG(INFO) << "PositionUpdateEvent=" << event;
 }
 
 }  // namespace strategy

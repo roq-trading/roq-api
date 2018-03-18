@@ -12,8 +12,11 @@ namespace examples {
 namespace reference {
 
 const size_t MAX_COLUMNS = 40;
-
 const char *TIME_FORMAT_FILE = "%Y%m%d %H:%M:%S";
+
+const char *EXCHANGE = "CFFEX";
+const uint32_t L1_TOPIC_ID = 100;  // CFFEX L1
+const uint32_t L2_TOPIC_ID = 110;  // CFFEX L2
 
 Generator::Generator(const std::string& path)
     : _csv_reader(path, MAX_COLUMNS) {}
@@ -35,6 +38,7 @@ std::pair<bool, std::chrono::system_clock::time_point> Generator::fetch() {
 void Generator::dispatch(quinclas::common::Strategy& strategy) {
   auto symbol = _csv_reader.get_string(0);
   auto exchange_time = _csv_reader.get_time_point(1, TIME_FORMAT_FILE);
+  auto receive_time = _csv_reader.get_time_point(2, TIME_FORMAT_FILE);
   auto type = _csv_reader.get_integer(_csv_reader.length() - 1);  // last column is indicator for L1/L2
   switch (type) {
     case 0: return;  // L1 (don't process, for now)
@@ -42,16 +46,20 @@ void Generator::dispatch(quinclas::common::Strategy& strategy) {
     default: LOG(FATAL) << "Invalid type=" << type;
   }
   MessageInfo message_info = {
-    .gateway = "SIM",
-    .message_id = _message_id,
-    .exchange_time = std::chrono::time_point_cast<duration_t>(exchange_time),
-    .receive_time = std::chrono::time_point_cast<duration_t>(_receive_time),
+    .source = "simulator",
+    .source_create_time = receive_time,
+    .client_receive_time = receive_time,
+    .routing_latency = std::chrono::microseconds(0),
+    .is_cached = false,
+    .is_last = false,
   };
-  strategy.on(BatchBeginEvent{ .message_info = message_info, });
+  strategy.on(BatchBeginEvent { .message_info = message_info});
   MarketByPrice market_by_price = {
-    .exchange = "SIM",
+    .exchange = EXCHANGE,
     .instrument = symbol.c_str(),
-    .depth = {}
+    .depth = {},
+    .exchange_time = exchange_time,
+    .channel = L2_TOPIC_ID,
   };
   for (auto i = 0; i < 5; ++i) {
     auto offset = 3 + (i * 4);
@@ -62,20 +70,25 @@ void Generator::dispatch(quinclas::common::Strategy& strategy) {
     layer.ask_quantity = _csv_reader.get_number(offset + 3);
   }
   VLOG(1) << market_by_price;
-  MarketByPriceEvent market_by_price_event = { message_info, market_by_price };
-  strategy.on(market_by_price_event);
+  strategy.on(MarketByPriceEvent {
+      .message_info = message_info,
+      .market_by_price = market_by_price });
   TradeSummary trade_summary = {
-    .exchange = "SIM",
+    .exchange = EXCHANGE,
     .instrument = symbol.c_str(),
     .price = _csv_reader.get_number(24),
     .volume = _csv_reader.get_number(34),
     .turnover = _csv_reader.get_number(33),
     .direction = quinclas::common::TradeDirection::Undefined,
+    .exchange_time = exchange_time,
+    .channel = L2_TOPIC_ID,
   };
   VLOG(1) << trade_summary;
-  TradeSummaryEvent trade_summary_event = { message_info, trade_summary };
-  strategy.on(trade_summary_event);
-  strategy.on(BatchEndEvent{ .message_info = message_info, });
+  message_info.is_last = true;
+  strategy.on(TradeSummaryEvent {
+      .message_info = message_info,
+      .trade_summary = trade_summary });
+  strategy.on(BatchEndEvent { .message_info = message_info });
 }
 
 }  // namespace reference

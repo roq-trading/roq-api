@@ -41,8 +41,8 @@ std::ostream& operator<<(std::ostream& stream, const Vector<T> value) {
   return stream << "]";
 }
 
-std::ostream& operator<<(std::ostream& stream, const ConnectionState value) {
-  return stream << EnumNameConnectionState(value);
+std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value) {
+  return stream << EnumNameConnectionStatus(value);
 }
 
 std::ostream& operator<<(std::ostream& stream, const GatewayState value) {
@@ -76,15 +76,10 @@ std::ostream& operator<<(std::ostream& stream, const Layer& value) {
     "}";
 }
 
-std::ostream& operator<<(std::ostream& stream, const ConnectionStatus& value) {
-  return stream << "{"
-    "connection=" << value.connection <<
-    "}";
-}
-
 std::ostream& operator<<(std::ostream& stream, const Handshake& value) {
   return stream << "{"
     "api_version=\"" << value.api_version << "\", "
+    "uuid=\"" << value.uuid << "\", "
     "login=\"" << value.login << "\", "
     "password=\"***\", "
     "subscriptions=" << Vector<decltype(value.subscriptions)::value_type>(value.subscriptions) <<
@@ -93,9 +88,14 @@ std::ostream& operator<<(std::ostream& stream, const Handshake& value) {
 
 std::ostream& operator<<(std::ostream& stream, const HandshakeAck& value) {
   return stream << "{"
-    "api_version=\"" << value.api_version << "\", "
     "failure=" << (value.failure ? "true" : "false") << ", "
-    "reason=\"" << value.reason << "\""
+    "failure_reason=\"" << value.failure_reason << "\", "
+    "server_uuid=\"" << value.server_uuid << "\", "
+    "server_name=\"" << value.server_name << "\", "
+    "shmem_s2c_name=\"" << value.shmem_s2c_name << "\", "
+    "shmem_s2c_size=" << value.shmem_s2c_size << ", "
+    "shmem_c2s_name=\"" << value.shmem_c2s_name << "\", "
+    "shmem_c2s_size=" << value.shmem_c2s_size <<
     "}";
 }
 
@@ -147,7 +147,10 @@ std::ostream& operator<<(std::ostream& stream, const MarketByPrice& value) {
       stream << ", ";
     stream << value.depth[index];
   }
-  return stream << "]";
+  return stream << "], "
+    "exchange_time=" << value.exchange_time << ", "
+    "channel=" << value.channel <<
+    "}";
 }
 
 std::ostream& operator<<(std::ostream& stream, const TradeSummary& value) {
@@ -157,7 +160,77 @@ std::ostream& operator<<(std::ostream& stream, const TradeSummary& value) {
     "price=" << Number(value.price) << ", "
     "volume=" << Number(value.volume) << ", "
     "turnover=" << Number(value.turnover) << ", "
-    "direction=" << value.direction <<
+    "direction=" << value.direction << ", "
+    "exchange_time=" << value.exchange_time << ", "
+    "channel=" << value.channel <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const CreateOrder& value) {
+  return stream << "{"
+    "opaque=" << value.opaque << ", "
+    "order_template=" << value.order_template << ", "
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\", "
+    "direction=" << value.direction << ", "
+    "quantity=" << Number(value.quantity) << ", "
+    "limit_price=" << Number(value.limit_price) << ", "
+    "stop_price=" << Number(value.stop_price) <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value) {
+  return stream << "{"
+    "opaque=" << value.opaque << ", "
+    "order_id=" << value.order_id << ", "
+    "failure=" << (value.failure ? "true" : "false") << ", "
+    "reason=\"" << value.reason << "\", "
+    "order_template=\"" << value.order_template << "\", "
+    "external_order_id=\"" << value.external_order_id << "\", "
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\""
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const ModifyOrder& value) {
+  return stream << "{"
+    "order_id=" << value.order_id <<
+    "quantity_change=" << Number(value.quantity_change) << ", "
+    "limit_price=" << Number(value.limit_price) <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const ModifyOrderAck& value) {
+  return stream << "{"
+    "opaque=" << value.opaque << ", "
+    "order_id=" << value.order_id << ", "
+    "failure=" << (value.failure ? "true" : "false") << ", "
+    "reason=\"" << value.reason << "\", "
+    "order_template=\"" << value.order_template << "\", "
+    "external_order_id=\"" << value.external_order_id << "\", "
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\", "
+    "quantity_change=" << Number(value.quantity_change) << ", "
+    "limit_price=" << Number(value.limit_price) <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const CancelOrder& value) {
+  return stream << "{"
+    "order_id=" << value.order_id <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const CancelOrderAck& value) {
+  return stream << "{"
+    "opaque=" << value.opaque << ", "
+    "order_id=" << value.order_id << ", "
+    "failure=" << (value.failure ? "true" : "false") << ", "
+    "reason=\"" << value.reason << "\", "
+    "order_template=\"" << value.order_template << "\", "
+    "external_order_id=\"" << value.external_order_id << "\", "
+    "exchange=\"" << value.exchange << "\", "
+    "instrument=\"" << value.instrument << "\""
     "}";
 }
 
@@ -192,61 +265,38 @@ std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value) {
     "}";
 }
 
-std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value) {
+std::ostream& operator<<(std::ostream& stream, const PositionUpdate& value) {
   return stream << "{"
-    "opaque=" << value.opaque << ", "
-    "order_id=" << value.order_id << ", "
-    "failure=" << (value.failure ? "true" : "false") << ", "
-    "reason=\"" << value.reason << "\", "
-    "order_template=\"" << value.order_template << "\", "
-    "external_order_id=\"" << value.external_order_id << "\", "
-    "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\""
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const ModifyOrderAck& value) {
-  return stream << "{"
-    "opaque=" << value.opaque << ", "
-    "order_id=" << value.order_id << ", "
-    "failure=" << (value.failure ? "true" : "false") << ", "
-    "reason=\"" << value.reason << "\", "
-    "order_template=\"" << value.order_template << "\", "
-    "external_order_id=\"" << value.external_order_id << "\", "
     "exchange=\"" << value.exchange << "\", "
     "instrument=\"" << value.instrument << "\", "
-    "quantity_change=" << Number(value.quantity_change) << ", "
-    "limit_price=" << Number(value.limit_price) <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const CancelOrderAck& value) {
-  return stream << "{"
-    "opaque=" << value.opaque << ", "
-    "order_id=" << value.order_id << ", "
-    "failure=" << (value.failure ? "true" : "false") << ", "
-    "reason=\"" << value.reason << "\", "
-    "order_template=\"" << value.order_template << "\", "
-    "external_order_id=\"" << value.external_order_id << "\", "
-    "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\""
+    "position=" << Number(value.position) <<
     "}";
 }
 
 std::ostream& operator<<(std::ostream& stream, const MessageInfo& value) {
+  auto routing_latency = std::chrono::duration_cast<std::chrono::microseconds>(
+      value.routing_latency).count();
   return stream << "{"
-    "gateway=\"" << value.gateway << "\", "
-    "message_id=" << value.message_id << ", "
-    "exchange_time=" << value.exchange_time << ", "
-    "receive_time=" << value.receive_time << ", "
-    "enqueue_time=" << value.enqueue_time <<
+    "source=\"" << value.source << "\", "
+    "source_create_time=" << value.source_create_time << ", "
+    "client_receive_time=" << value.client_receive_time << ", "
+    "routing_latency=" << routing_latency << ", "
+    "is_cached=" << (value.is_cached ? "true" : "false") << ", "
+    "is_last=" << (value.is_last ? "true" : "false") <<
     "}";
 }
 
 std::ostream& operator<<(std::ostream& stream, const ConnectionStatusEvent& value) {
   return stream << "{"
-    "message_info=" << value.message_info << ", "
+    "source=\"" << value.source << "\", "
     "connection_status=" << value.connection_status <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const HandshakeEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "handshake=" << value.handshake <<
     "}";
 }
 
@@ -254,6 +304,13 @@ std::ostream& operator<<(std::ostream& stream, const HandshakeAckEvent& value) {
   return stream << "{"
     "message_info=" << value.message_info << ", "
     "handshake_ack=" << value.handshake_ack <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const HeartbeatEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "heartbeat=" << value.heartbeat <<
     "}";
 }
 
@@ -305,6 +362,48 @@ std::ostream& operator<<(std::ostream& stream, const TradeSummaryEvent& value) {
     "}";
 }
 
+std::ostream& operator<<(std::ostream& stream, const CreateOrderEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "create_order=" << value.create_order <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const CreateOrderAckEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "create_order_ack=" << value.create_order_ack <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const ModifyOrderEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "modify_order=" << value.modify_order <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const ModifyOrderAckEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "modify_order_ack=" << value.modify_order_ack <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const CancelOrderEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "cancel_order=" << value.cancel_order <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const CancelOrderAckEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "cancel_order_ack=" << value.cancel_order_ack <<
+    "}";
+}
+
 std::ostream& operator<<(std::ostream& stream, const OrderUpdateEvent& value) {
   return stream << "{"
     "message_info=" << value.message_info << ", "
@@ -319,96 +418,10 @@ std::ostream& operator<<(std::ostream& stream, const TradeUpdateEvent& value) {
     "}";
 }
 
-std::ostream& operator<<(std::ostream& stream, const CreateOrderAckEvent& value) {
+std::ostream& operator<<(std::ostream& stream, const PositionUpdateEvent& value) {
   return stream << "{"
     "message_info=" << value.message_info << ", "
-    "create_order_ack=" << value.create_order_ack <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const ModifyOrderAckEvent& value) {
-  return stream << "{"
-    "message_info=" << value.message_info << ", "
-    "modify_order_ack=" << value.modify_order_ack <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const CancelOrderAckEvent& value) {
-  return stream << "{"
-    "message_info=" << value.message_info << ", "
-    "cancel_order_ack=" << value.cancel_order_ack <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const CreateOrder& value) {
-  return stream << "{"
-    "opaque=" << value.opaque << ", "
-    "order_template=" << value.order_template << ", "
-    "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
-    "direction=" << value.direction << ", "
-    "quantity=" << Number(value.quantity) << ", "
-    "limit_price=" << Number(value.limit_price) << ", "
-    "stop_price=" << Number(value.stop_price) <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const ModifyOrder& value) {
-  return stream << "{"
-    "order_id=" << value.order_id <<
-    "quantity_change=" << Number(value.quantity_change) << ", "
-    "limit_price=" << Number(value.limit_price) <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const CancelOrder& value) {
-  return stream << "{"
-    "order_id=" << value.order_id <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const RequestInfo& value) {
-  return stream << "{"
-    "destination=\"" << value.destination << "\", "
-    "trace_source=\"" << value.trace_source << "\", "
-    "trace_message_id=" << value.trace_message_id << ", "
-    "send_time=" << value.send_time << ", "
-    "receive_time=" << value.receive_time <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const HandshakeRequest& value) {
-  return stream << "{"
-    "request_info=" << value.request_info << ", "
-    "handshake=" << value.handshake <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const HeartbeatRequest& value) {
-  return stream << "{"
-    "request_info=" << value.request_info << ", "
-    "heartbeat=" << value.heartbeat <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const CreateOrderRequest& value) {
-  return stream << "{"
-    "request_info=" << value.request_info << ", "
-    "create_order=" << value.create_order <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const ModifyOrderRequest& value) {
-  return stream << "{"
-    "request_info=" << value.request_info << ", "
-    "modify_order=" << value.modify_order <<
-    "}";
-}
-
-std::ostream& operator<<(std::ostream& stream, const CancelOrderRequest& value) {
-  return stream << "{"
-    "request_info=" << value.request_info << ", "
-    "cancel_order=" << value.cancel_order <<
+    "position_update=" << value.position_update <<
     "}";
 }
 

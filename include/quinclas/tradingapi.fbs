@@ -2,17 +2,32 @@ include "enums.fbs";
 
 namespace quinclas.schema;
 
-struct Layer {
-  bid_price:double;
-  bid_quantity:double;
-  ask_price:double;
-  ask_quantity:double;
+table SourceInfo {
+  seqno:ulong;
+  create_time:ulong;
+}
+
+table Handshake {
+  api_version:string;
+  uuid:string;
+  login:string;
+  password:string;
+  subscriptions:[string];
 }
 
 table HandshakeAck {
-  api_version:string;
   failure:bool;
-  reason:string;
+  failure_reason:string;
+  server_uuid:string;
+  server_name:string;
+  shmem_s2c_name:string;
+  shmem_s2c_size:uint;
+  shmem_c2s_name:string;
+  shmem_c2s_size:uint;
+}
+
+table Heartbeat {
+  opaque:ulong;
 }
 
 table HeartbeatAck {
@@ -27,10 +42,19 @@ table GatewayStatus {
   order_management:common.GatewayState;
 }
 
+struct Layer {
+  bid_price:double;
+  bid_quantity:double;
+  ask_price:double;
+  ask_quantity:double;
+}
+
 table MarketByPrice {
   exchange:string;
   instrument:string;
   depth:[Layer];
+  exchange_time:ulong;
+  channel:uint;
 }
 
 table TradeSummary {
@@ -40,6 +64,8 @@ table TradeSummary {
   volume:double;
   turnover:double;
   direction:common.TradeDirection;
+  exchange_time:ulong;
+  channel:uint;
 }
 
 table ReferenceData {
@@ -56,6 +82,17 @@ table MarketStatus {
   trading_status:common.TradingStatus;
 }
 
+table CreateOrder {
+  opaque:uint;
+  order_template:string;
+  exchange:string;
+  instrument:string;
+  direction:common.TradeDirection;
+  quantity:double;
+  limit_price:double;
+  stop_price:double;
+}
+
 table CreateOrderAck {
   opaque:uint;
   order_id:uint;
@@ -65,6 +102,12 @@ table CreateOrderAck {
   external_order_id:string;
   exchange:string;
   instrument:string;
+}
+
+table ModifyOrder {
+  order_id:uint;
+  quantity_change:double;
+  limit_price:double;
 }
 
 table ModifyOrderAck {
@@ -78,6 +121,10 @@ table ModifyOrderAck {
   instrument:string;
   quantity_change:double;
   limit_price:double;
+}
+
+table CancelOrder {
+  order_id:uint;
 }
 
 table CancelOrderAck {
@@ -118,50 +165,16 @@ table TradeUpdate {
   trade_time:ulong;
 }
 
-table Handshake {
-  api_version:string;
-  login:string;
-  password:string;
-  subscriptions:[string];
-}
-
-table Heartbeat {
-  opaque:ulong;
-}
-
-table CreateOrder {
-  opaque:uint;
-  order_template:string;
+table PositionUpdate {
   exchange:string;
   instrument:string;
-  direction:common.TradeDirection;
-  quantity:double;
-  limit_price:double;
-  stop_price:double;
-}
-
-table ModifyOrder {
-  order_id:uint;
-  quantity_change:double;
-  limit_price:double;
-}
-
-table CancelOrder {
-  order_id:uint;
-}
-
-// events
-
-table MessageInfo {
-  gateway:string;
-  message_id:ulong;
-  exchange_time:ulong;
-  receive_time:ulong;
-  enqueue_time:ulong;
+  position:double;
 }
 
 union EventData {
+  Handshake,
   HandshakeAck,
+  Heartbeat,
   HeartbeatAck,
   Ready,
   GatewayStatus,
@@ -169,47 +182,18 @@ union EventData {
   MarketStatus,
   MarketByPrice,
   TradeSummary,
+  CreateOrder,
   CreateOrderAck,
+  ModifyOrder,
   ModifyOrderAck,
+  CancelOrder,
   CancelOrderAck,
   OrderUpdate,
   TradeUpdate,
+  PositionUpdate,
 }
 
 table Event {
-  message_info:MessageInfo;
+  source_info:SourceInfo;
   event_data:EventData;
-}
-
-// flatbuffers doesn't yet support array of unions
-table Event2 {
-  event_data:EventData;
-}
-
-table Batch {
-  message_info:MessageInfo;
-  events:[Event2];  // see comment above
-}
-
-// requests
-
-table RequestInfo {
-  destination:string;
-  trace_source:string;
-  trace_message_id:ulong;
-  send_time:ulong;
-  receive_time:ulong;
-}
-
-union RequestData {
-  Handshake,
-  Heartbeat,
-  CreateOrder,
-  ModifyOrder,
-  CancelOrder,
-}
-
-table Request {
-  request_info:RequestInfo;
-  request_data:RequestData;
 }

@@ -59,8 +59,10 @@ class Address final {
     switch (_size) {
       case sizeof(_address.un):
         return std::string(_address.un.sun_path);
-      case sizeof(_address.in):
-        throw RuntimeError("ipv4 address not implemented");  // TODO(thraneh): implement
+      case sizeof(_address.in): {
+        // TODO(thraneh): create ipv4 address by resolving hostname
+        throw RuntimeError("ipv4 address not implemented");
+      }
       default:
         assert(false);  // not a valid address?
     }

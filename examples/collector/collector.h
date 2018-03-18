@@ -45,6 +45,7 @@ class Collector final : public quinclas::common::Strategy {
   void on(const quinclas::common::CancelOrderAckEvent&) override {}
   void on(const quinclas::common::OrderUpdateEvent&) override {}
   void on(const quinclas::common::TradeUpdateEvent&) override {}
+  void on(const quinclas::common::PositionUpdateEvent&) override {}
 
   State& get(const std::string& instrument);
 

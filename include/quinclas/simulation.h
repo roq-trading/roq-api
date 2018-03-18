@@ -48,7 +48,7 @@ class Controller final {
         : _generators(generators),
           _strategy(*this, std::forward<Args>(args)...) {}
     void dispatch() {
-      // TODO(thraneh): support multiple (interleaved) generators
+      // TODO(thraneh): interleave multiple generators
       for (auto& iter : _generators) {
         while (true) {
           auto res = iter->fetch();

@@ -1,7 +1,7 @@
 namespace quinclas.common;
 
-/// Connection state.
-enum ConnectionState:byte {
+/// Connection status.
+enum ConnectionStatus:byte {
   Disconnected = 0,
   Connected = 1
 }

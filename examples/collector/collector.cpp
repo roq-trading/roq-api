@@ -47,8 +47,8 @@ Collector::State& Collector::get(const std::string& instrument) {
 
 void Collector::State::update(
     const quinclas::common::MarketByPriceEvent& event) {
-  exchange_time = event.message_info.exchange_time;
-  receive_time = event.message_info.receive_time;
+  exchange_time = event.market_by_price.exchange_time;
+  receive_time = event.message_info.client_receive_time;
   std::memcpy(
       &top_of_book,
       &event.market_by_price.depth[0],
@@ -57,8 +57,8 @@ void Collector::State::update(
 
 void Collector::State::update(
     const quinclas::common::TradeSummaryEvent& event) {
-  exchange_time = event.message_info.exchange_time;
-  receive_time = event.message_info.receive_time;
+  exchange_time = event.trade_summary.exchange_time;
+  receive_time = event.message_info.client_receive_time;
   price = event.trade_summary.price;
   volume = event.trade_summary.volume;
   turnover = event.trade_summary.turnover;

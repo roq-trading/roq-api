@@ -70,47 +70,54 @@ static std::vector<std::string> rand_vector_string(size_t max_length = 100) {
 }  // namespace
 
 namespace {
-inline common::MessageInfo CreateRandomMessageInfo() {
-  return common::MessageInfo{
-    .gateway = NAME[rand_uint32() % NAME_LENGTH],
-    .message_id = rand_uint32(),
-    .exchange_time = rand_time_point(),
-    .receive_time = rand_time_point(),
-    .enqueue_time = rand_time_point(),
+inline common::SourceInfo CreateRandomSourceInfo() {
+  return common::SourceInfo {
+    .seqno = rand_uint64(),
+    .create_time = rand_time_point()
   };
 }
-inline common::RequestInfo CreateRandomRequestInfo() {
-  return common::RequestInfo{
-    .destination = NAME[rand_uint32() % NAME_LENGTH],
-    .trace_source = NAME[rand_uint32() % NAME_LENGTH],
-    .trace_message_id = rand_uint32(),
-    .send_time = rand_time_point(),
-    .receive_time = rand_time_point(),
+inline common::Handshake CreateRandomHandshake() {
+  return common::Handshake {
+    .api_version = NAME[rand_uint32() % NAME_LENGTH],
+    .uuid = NAME[rand_uint32() % NAME_LENGTH],
+    .login = NAME[rand_uint32() % NAME_LENGTH],
+    .password = NAME[rand_uint32() % NAME_LENGTH],
+    .subscriptions = rand_vector_string(),
   };
 }
 inline common::HandshakeAck CreateRandomHandshakeAck() {
-  return common::HandshakeAck{
-    .api_version = NAME[rand_uint32() % NAME_LENGTH],
+  return common::HandshakeAck {
     .failure = rand_bool(),
-    .reason = NAME[rand_uint32() % NAME_LENGTH],
+    .failure_reason = NAME[rand_uint32() % NAME_LENGTH],
+    .server_uuid = NAME[rand_uint32() % NAME_LENGTH],
+    .server_name = NAME[rand_uint32() % NAME_LENGTH],
+    .shmem_s2c_name = NAME[rand_uint32() % NAME_LENGTH],
+    .shmem_s2c_size = rand_uint32(),
+    .shmem_c2s_name = NAME[rand_uint32() % NAME_LENGTH],
+    .shmem_c2s_size = rand_uint32(),
+  };
+}
+inline common::Heartbeat CreateRandomHeartbeat() {
+  return common::Heartbeat {
+    .opaque = rand_time_point(),
   };
 }
 inline common::HeartbeatAck CreateRandomHeartbeatAck() {
-  return common::HeartbeatAck{
+  return common::HeartbeatAck {
     .opaque = rand_time_point(),
   };
 }
 inline common::Ready CreateRandomReady() {
-  return common::Ready{};
+  return common::Ready {};
 }
 inline common::GatewayStatus CreateRandomGatewayStatus() {
-  return common::GatewayStatus{
+  return common::GatewayStatus {
     .market_data = rand_gateway_state(),
     .order_management = rand_gateway_state(),
   };
 }
 inline common::MarketByPrice CreateRandomMarketByPrice() {
-  auto res = common::MarketByPrice{
+  common::MarketByPrice res {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
   };
@@ -120,20 +127,24 @@ inline common::MarketByPrice CreateRandomMarketByPrice() {
     res.depth[i].ask_price = rand_double();
     res.depth[i].ask_quantity = rand_double();
   }
+  res.exchange_time = rand_time_point();
+  res.channel = rand_uint32();
   return res;
 }
 inline common::TradeSummary CreateRandomTradeSummary() {
-  return common::TradeSummary{
+  return common::TradeSummary {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
     .price = rand_double(),
     .volume = rand_double(),
     .turnover = rand_double(),
     .direction = rand_trade_direction(),
+    .exchange_time = rand_time_point(),
+    .channel = rand_uint32(),
   };
 }
 inline common::ReferenceData CreateRandomReferenceData() {
-  return common::ReferenceData{
+  return common::ReferenceData {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
     .tick_size = rand_double(),
@@ -142,14 +153,26 @@ inline common::ReferenceData CreateRandomReferenceData() {
   };
 }
 inline common::MarketStatus CreateRandomMarketStatus() {
-  return common::MarketStatus{
+  return common::MarketStatus {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
     .trading_status = rand_trading_status(),
   };
 }
+inline common::CreateOrder CreateRandomCreateOrder() {
+  return common::CreateOrder {
+    .opaque = rand_uint32(),
+    .order_template = NAME[rand_uint32() % NAME_LENGTH],
+    .exchange = NAME[rand_uint32() % NAME_LENGTH],
+    .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .direction = rand_trade_direction(),
+    .quantity = rand_double(),
+    .limit_price = rand_double(),
+    .stop_price = rand_double(),
+  };
+}
 inline common::CreateOrderAck CreateRandomCreateOrderAck() {
-  return common::CreateOrderAck{
+  return common::CreateOrderAck {
     .opaque = rand_uint32(),
     .order_id = rand_uint32(),
     .failure = rand_bool(),
@@ -160,8 +183,15 @@ inline common::CreateOrderAck CreateRandomCreateOrderAck() {
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
+inline common::ModifyOrder CreateRandomModifyOrder() {
+  return common::ModifyOrder {
+    .order_id = rand_uint32(),
+    .quantity_change = rand_double(),
+    .limit_price = rand_double(),
+  };
+}
 inline common::ModifyOrderAck CreateRandomModifyOrderAck() {
-  return common::ModifyOrderAck{
+  return common::ModifyOrderAck {
     .opaque = rand_uint32(),
     .order_id = rand_uint32(),
     .failure = rand_bool(),
@@ -174,8 +204,13 @@ inline common::ModifyOrderAck CreateRandomModifyOrderAck() {
     .limit_price = rand_double(),
   };
 }
+inline common::CancelOrder CreateRandomCancelOrder() {
+  return common::CancelOrder {
+    .order_id = rand_uint32(),
+  };
+}
 inline common::CancelOrderAck CreateRandomCancelOrderAck() {
-  return common::CancelOrderAck{
+  return common::CancelOrderAck {
     .opaque = rand_uint32(),
     .order_id = rand_uint32(),
     .failure = rand_bool(),
@@ -187,7 +222,7 @@ inline common::CancelOrderAck CreateRandomCancelOrderAck() {
   };
 }
 inline common::OrderUpdate CreateRandomOrderUpdate() {
-  return common::OrderUpdate{
+  return common::OrderUpdate {
     .opaque = rand_uint32(),
     .order_id = rand_uint32(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
@@ -203,7 +238,7 @@ inline common::OrderUpdate CreateRandomOrderUpdate() {
   };
 }
 inline common::TradeUpdate CreateRandomTradeUpdate() {
-  return common::TradeUpdate{
+  return common::TradeUpdate {
     .order_id = rand_uint32(),
     .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
     .external_trade_id = NAME[rand_uint32() % NAME_LENGTH],
@@ -215,64 +250,50 @@ inline common::TradeUpdate CreateRandomTradeUpdate() {
     .trade_time = rand_time_point(),
   };
 }
-inline common::Handshake CreateRandomHandshake() {
-  return common::Handshake{
-    .api_version = NAME[rand_uint32() % NAME_LENGTH],
-    .login = NAME[rand_uint32() % NAME_LENGTH],
-    .password = NAME[rand_uint32() % NAME_LENGTH],
-    .subscriptions = rand_vector_string(),
-  };
-}
-inline common::Heartbeat CreateRandomHeartbeat() {
-  return common::Heartbeat{
-    .opaque = rand_time_point(),
-  };
-}
-inline common::CreateOrder CreateRandomCreateOrder() {
-  return common::CreateOrder{
-    .opaque = rand_uint32(),
-    .order_template = NAME[rand_uint32() % NAME_LENGTH],
+inline common::PositionUpdate CreateRandomPositionUpdate() {
+  return common::PositionUpdate {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
-    .direction = rand_trade_direction(),
-    .quantity = rand_double(),
-    .limit_price = rand_double(),
-    .stop_price = rand_double(),
-  };
-}
-inline common::ModifyOrder CreateRandomModifyOrder() {
-  return common::ModifyOrder{
-    .order_id = rand_uint32(),
-    .quantity_change = rand_double(),
-    .limit_price = rand_double(),
-  };
-}
-inline common::CancelOrder CreateRandomCancelOrder() {
-  return common::CancelOrder{
-    .order_id = rand_uint32(),
+    .position = rand_double(),
   };
 }
 }  // namespace
 
 namespace {
-void compare(const common::MessageInfo& lhs, const common::MessageInfo& rhs) {
-  EXPECT_STREQ(lhs.gateway, rhs.gateway);
-  EXPECT_EQ(lhs.message_id, rhs.message_id);
-  EXPECT_EQ(lhs.exchange_time, rhs.exchange_time);
-  EXPECT_EQ(lhs.receive_time, rhs.receive_time);
-  EXPECT_EQ(lhs.enqueue_time, rhs.enqueue_time);
+// comparing time-points must go through normalisation
+// for example, if we use system_clock::now(), we may have a higher
+// resolution than the one we use on-the-wire, in other words, we
+// may truncate a time-point when we encode it
+void compare(common::time_point_t lhs, common::time_point_t rhs) {
+  auto lhs_adj = common::uint64_to_time_point(
+      common::time_point_to_uint64(lhs));
+  auto rhs_adj = common::uint64_to_time_point(
+      common::time_point_to_uint64(rhs));
+  EXPECT_EQ(lhs_adj, rhs_adj);
 }
-void compare(const common::RequestInfo& lhs, const common::RequestInfo& rhs) {
-  EXPECT_STREQ(lhs.destination, rhs.destination);
-  EXPECT_STREQ(lhs.trace_source, rhs.trace_source);
-  EXPECT_EQ(lhs.trace_message_id, rhs.trace_message_id);
-  EXPECT_EQ(lhs.send_time, rhs.send_time);
-  EXPECT_EQ(lhs.receive_time, rhs.receive_time);
+void compare(const common::SourceInfo& lhs, const common::SourceInfo& rhs) {
+  EXPECT_EQ(lhs.seqno, rhs.seqno);
+  compare(lhs.create_time, rhs.create_time);
+}
+void compare(const common::Handshake& lhs, const common::Handshake& rhs) {
+  EXPECT_STREQ(lhs.api_version, rhs.api_version);
+  EXPECT_STREQ(lhs.uuid, rhs.uuid);
+  EXPECT_STREQ(lhs.login, rhs.login);
+  EXPECT_STREQ(lhs.password, rhs.password);
+  // TODO(thraneh): subscriptions
 }
 void compare(const common::HandshakeAck& lhs, const common::HandshakeAck& rhs) {
-  EXPECT_STREQ(lhs.api_version, rhs.api_version);
   EXPECT_EQ(lhs.failure, rhs.failure);
-  EXPECT_STREQ(lhs.reason, rhs.reason);
+  EXPECT_STREQ(lhs.failure_reason, rhs.failure_reason);
+  EXPECT_STREQ(lhs.server_uuid, rhs.server_uuid);
+  EXPECT_STREQ(lhs.server_name, rhs.server_name);
+  EXPECT_STREQ(lhs.shmem_s2c_name, rhs.shmem_s2c_name);
+  EXPECT_EQ(lhs.shmem_s2c_size, rhs.shmem_s2c_size);
+  EXPECT_STREQ(lhs.shmem_c2s_name, rhs.shmem_c2s_name);
+  EXPECT_EQ(lhs.shmem_c2s_size, rhs.shmem_c2s_size);
+}
+void compare(const common::Heartbeat& lhs, const common::Heartbeat& rhs) {
+  EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 void compare(const common::HeartbeatAck& lhs, const common::HeartbeatAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
@@ -291,6 +312,8 @@ void compare(const common::MarketByPrice& lhs, const common::MarketByPrice& rhs)
     EXPECT_EQ(lhs.depth[i].ask_price, rhs.depth[i].ask_price);
     EXPECT_EQ(lhs.depth[i].ask_quantity, rhs.depth[i].ask_quantity);
   }
+  compare(lhs.exchange_time, rhs.exchange_time);
+  EXPECT_EQ(lhs.channel, rhs.channel);
 }
 void compare(const common::TradeSummary& lhs, const common::TradeSummary& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
@@ -299,6 +322,8 @@ void compare(const common::TradeSummary& lhs, const common::TradeSummary& rhs) {
   EXPECT_EQ(lhs.volume, rhs.volume);
   EXPECT_EQ(lhs.turnover, rhs.turnover);
   EXPECT_EQ(lhs.direction, rhs.direction);
+  compare(lhs.exchange_time, rhs.exchange_time);
+  EXPECT_EQ(lhs.channel, rhs.channel);
 }
 void compare(const common::ReferenceData& lhs, const common::ReferenceData& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
@@ -312,6 +337,16 @@ void compare(const common::MarketStatus& lhs, const common::MarketStatus& rhs) {
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
   EXPECT_EQ(lhs.trading_status, rhs.trading_status);
 }
+void compare(const common::CreateOrder& lhs, const common::CreateOrder& rhs) {
+  EXPECT_EQ(lhs.opaque, rhs.opaque);
+  EXPECT_STREQ(lhs.order_template, rhs.order_template);
+  EXPECT_STREQ(lhs.exchange, rhs.exchange);
+  EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_EQ(lhs.direction, rhs.direction);
+  EXPECT_EQ(lhs.quantity, rhs.quantity);
+  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
+  EXPECT_EQ(lhs.stop_price, rhs.stop_price);
+}
 void compare(const common::CreateOrderAck& lhs, const common::CreateOrderAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
@@ -321,6 +356,11 @@ void compare(const common::CreateOrderAck& lhs, const common::CreateOrderAck& rh
   EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
+}
+void compare(const common::ModifyOrder& lhs, const common::ModifyOrder& rhs) {
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.quantity_change, rhs.quantity_change);
+  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
 }
 void compare(const common::ModifyOrderAck& lhs, const common::ModifyOrderAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
@@ -333,6 +373,9 @@ void compare(const common::ModifyOrderAck& lhs, const common::ModifyOrderAck& rh
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
   EXPECT_EQ(lhs.quantity_change, rhs.quantity_change);
   EXPECT_EQ(lhs.limit_price, rhs.limit_price);
+}
+void compare(const common::CancelOrder& lhs, const common::CancelOrder& rhs) {
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
 }
 void compare(const common::CancelOrderAck& lhs, const common::CancelOrderAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
@@ -355,8 +398,8 @@ void compare(const common::OrderUpdate& lhs, const common::OrderUpdate& rhs) {
   EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.remaining_quantity, rhs.remaining_quantity);
   EXPECT_EQ(lhs.traded_quantity, rhs.traded_quantity);
-  EXPECT_EQ(lhs.insert_time, rhs.insert_time);
-  EXPECT_EQ(lhs.cancel_time, rhs.cancel_time);
+  compare(lhs.insert_time, rhs.insert_time);
+  compare(lhs.cancel_time, rhs.cancel_time);
 }
 void compare(const common::TradeUpdate& lhs, const common::TradeUpdate& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
@@ -367,35 +410,49 @@ void compare(const common::TradeUpdate& lhs, const common::TradeUpdate& rhs) {
   EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.quantity, rhs.quantity);
   EXPECT_EQ(lhs.price, rhs.price);
-  EXPECT_EQ(lhs.trade_time, rhs.trade_time);
+  compare(lhs.trade_time, rhs.trade_time);
 }
-void compare(const common::Handshake& lhs, const common::Handshake& rhs) {
-  EXPECT_STREQ(lhs.api_version, rhs.api_version);
-  EXPECT_STREQ(lhs.login, rhs.login);
-  EXPECT_STREQ(lhs.password, rhs.password);
-}
-void compare(const common::Heartbeat& lhs, const common::Heartbeat& rhs) {
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
-}
-void compare(const common::CreateOrder& lhs, const common::CreateOrder& rhs) {
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
-  EXPECT_STREQ(lhs.order_template, rhs.order_template);
+void compare(const common::PositionUpdate& lhs, const common::PositionUpdate& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
-  EXPECT_EQ(lhs.direction, rhs.direction);
-  EXPECT_EQ(lhs.quantity, rhs.quantity);
-  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
-  EXPECT_EQ(lhs.stop_price, rhs.stop_price);
-}
-void compare(const common::ModifyOrder& lhs, const common::ModifyOrder& rhs) {
-  EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_EQ(lhs.quantity_change, rhs.quantity_change);
-  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
-}
-void compare(const common::CancelOrder& lhs, const common::CancelOrder& rhs) {
-  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.position, rhs.position);
 }
 }  // namespace
+
+TEST(chrono, simple) {
+  auto source = std::chrono::system_clock::now();
+  auto tmp = common::time_point_to_uint64(source);
+  auto target = common::uint64_to_time_point(tmp);
+  compare(target, source);
+}
+
+TEST(flatbuffers, handshake_event) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // request (source)
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_handshake = CreateRandomHandshake();
+    // serialize using flatbuffers
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_handshake));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::Handshake);
+    auto target_handshake = common::convert(root->event_data_as_Handshake());
+    // validate
+    compare(target_source_info, source_source_info);
+    compare(target_handshake, source_handshake);
+  }
+}
 
 TEST(flatbuffers, handshake_ack_event) {
   FlatBufferBuilder fbb;
@@ -404,28 +461,52 @@ TEST(flatbuffers, handshake_ack_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_handshake_ack = CreateRandomHandshakeAck();
-    const auto source = common::HandshakeAckEvent{
-      .message_info = source_message_info,
-      .handshake_ack = source_handshake_ack};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_handshake_ack = CreateRandomHandshakeAck();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_handshake_ack));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::HandshakeAck);
-    const auto target_handshake_ack = common::convert(root->event_data_as_HandshakeAck());
-    // event (target)
-    const auto target = common::HandshakeAckEvent{
-      .message_info = target_message_info,
-      .handshake_ack = target_handshake_ack};
+    auto target_handshake_ack = common::convert(root->event_data_as_HandshakeAck());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.handshake_ack, source.handshake_ack);
+    compare(target_source_info, source_source_info);
+    compare(target_handshake_ack, source_handshake_ack);
+  }
+}
+
+TEST(flatbuffers, heartbeat_event) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // request (source)
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_heartbeat = CreateRandomHeartbeat();
+    // serialize using flatbuffers
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_heartbeat));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::Heartbeat);
+    auto target_heartbeat = common::convert(root->event_data_as_Heartbeat());
+    // validate
+    compare(target_source_info, source_source_info);
+    compare(target_heartbeat, source_heartbeat);
   }
 }
 
@@ -436,28 +517,24 @@ TEST(flatbuffers, heartbeat_ack_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_heartbeat_ack = CreateRandomHeartbeatAck();
-    const auto source = common::HeartbeatAckEvent{
-      .message_info = source_message_info,
-      .heartbeat_ack = source_heartbeat_ack};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_heartbeat_ack = CreateRandomHeartbeatAck();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_heartbeat_ack));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::HeartbeatAck);
-    const auto target_heartbeat_ack = common::convert(root->event_data_as_HeartbeatAck());
-    // event (target)
-    const auto target = common::HeartbeatAckEvent{
-      .message_info = target_message_info,
-      .heartbeat_ack = target_heartbeat_ack};
+    auto target_heartbeat_ack = common::convert(root->event_data_as_HeartbeatAck());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.heartbeat_ack, source.heartbeat_ack);
+    compare(target_source_info, source_source_info);
+    compare(target_heartbeat_ack, source_heartbeat_ack);
   }
 }
 
@@ -468,28 +545,24 @@ TEST(flatbuffers, ready_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto ready = CreateRandomReady();
-    const auto source = common::ReadyEvent{
-      .message_info = source_message_info,
-      .ready = ready};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_ready = CreateRandomReady();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_ready));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::Ready);
-    const auto target_ready = common::convert(root->event_data_as_Ready());
-    // event (target)
-    const auto target = common::ReadyEvent{
-      .message_info = target_message_info,
-      .ready = ready};
+    auto target_ready = common::convert(root->event_data_as_Ready());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.ready, source.ready);
+    compare(target_source_info, source_source_info);
+    compare(target_ready, source_ready);
   }
 }
 
@@ -500,28 +573,24 @@ TEST(flatbuffers, gateway_status_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_gateway_status = CreateRandomGatewayStatus();
-    const auto source = common::GatewayStatusEvent{
-      .message_info = source_message_info,
-      .gateway_status = source_gateway_status};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_gateway_status = CreateRandomGatewayStatus();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_gateway_status));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::GatewayStatus);
-    const auto target_gateway_status = common::convert(root->event_data_as_GatewayStatus());
-    // event (target)
-    const auto target = common::GatewayStatusEvent{
-      .message_info = target_message_info,
-      .gateway_status = target_gateway_status};
+    auto target_gateway_status = common::convert(root->event_data_as_GatewayStatus());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.gateway_status, source.gateway_status);
+    compare(target_source_info, source_source_info);
+    compare(target_gateway_status, source_gateway_status);
   }
 }
 
@@ -532,28 +601,24 @@ TEST(flatbuffers, market_by_price_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_market_by_price = CreateRandomMarketByPrice();
-    const auto source = common::MarketByPriceEvent{
-      .message_info = source_message_info,
-      .market_by_price = source_market_by_price};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_market_by_price = CreateRandomMarketByPrice();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_market_by_price));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::MarketByPrice);
-    const auto target_market_by_price = common::convert(root->event_data_as_MarketByPrice());
-    // event (target)
-    const auto target = common::MarketByPriceEvent{
-      .message_info = target_message_info,
-      .market_by_price = target_market_by_price};
+    auto target_market_by_price = common::convert(root->event_data_as_MarketByPrice());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.market_by_price, source.market_by_price);
+    compare(target_source_info, source_source_info);
+    compare(target_market_by_price, source_market_by_price);
   }
 }
 
@@ -564,28 +629,24 @@ TEST(flatbuffers, trade_summary_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_trade_summary = CreateRandomTradeSummary();
-    const auto source = common::TradeSummaryEvent{
-      .message_info = source_message_info,
-      .trade_summary = source_trade_summary};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_trade_summary = CreateRandomTradeSummary();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_trade_summary));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::TradeSummary);
-    const auto target_trade_summary = common::convert(root->event_data_as_TradeSummary());
-    // event (target)
-    const auto target = common::TradeSummaryEvent{
-      .message_info = target_message_info,
-      .trade_summary = target_trade_summary};
+    auto target_trade_summary = common::convert(root->event_data_as_TradeSummary());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.trade_summary, source.trade_summary);
+    compare(target_source_info, source_source_info);
+    compare(target_trade_summary, source_trade_summary);
   }
 }
 
@@ -596,28 +657,24 @@ TEST(flatbuffers, reference_data_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_reference_data = CreateRandomReferenceData();
-    const auto source = common::ReferenceDataEvent{
-      .message_info = source_message_info,
-      .reference_data = source_reference_data};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_reference_data = CreateRandomReferenceData();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_reference_data));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::ReferenceData);
-    const auto target_reference_data = common::convert(root->event_data_as_ReferenceData());
-    // event (target)
-    const auto target = common::ReferenceDataEvent{
-      .message_info = target_message_info,
-      .reference_data = target_reference_data};
+    auto target_reference_data = common::convert(root->event_data_as_ReferenceData());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.reference_data, source.reference_data);
+    compare(target_source_info, source_source_info);
+    compare(target_reference_data, source_reference_data);
   }
 }
 
@@ -628,28 +685,52 @@ TEST(flatbuffers, market_status_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_market_status = CreateRandomMarketStatus();
-    const auto source = common::MarketStatusEvent{
-      .message_info = source_message_info,
-      .market_status = source_market_status};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_market_status = CreateRandomMarketStatus();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_market_status));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::MarketStatus);
-    const auto target_market_status = common::convert(root->event_data_as_MarketStatus());
-    // event (target)
-    const auto target = common::MarketStatusEvent{
-      .message_info = target_message_info,
-      .market_status = target_market_status};
+    auto target_market_status = common::convert(root->event_data_as_MarketStatus());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.market_status, source.market_status);
+    compare(target_source_info, source_source_info);
+    compare(target_market_status, source_market_status);
+  }
+}
+
+TEST(flatbuffers, create_order_event) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // request (source)
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_create_order = CreateRandomCreateOrder();
+    // serialize using flatbuffers
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_create_order));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::CreateOrder);
+    auto target_create_order = common::convert(root->event_data_as_CreateOrder());
+    // validate
+    compare(target_source_info, source_source_info);
+    compare(target_create_order, source_create_order);
   }
 }
 
@@ -660,28 +741,52 @@ TEST(flatbuffers, create_order_ack_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_create_order_ack = CreateRandomCreateOrderAck();
-    const auto source = common::CreateOrderAckEvent{
-      .message_info = source_message_info,
-      .create_order_ack = source_create_order_ack};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_create_order_ack = CreateRandomCreateOrderAck();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_create_order_ack));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::CreateOrderAck);
-    const auto target_create_order_ack = common::convert(root->event_data_as_CreateOrderAck());
-    // event (target)
-    const auto target = common::CreateOrderAckEvent{
-      .message_info = target_message_info,
-      .create_order_ack = target_create_order_ack};
+    auto target_create_order_ack = common::convert(root->event_data_as_CreateOrderAck());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.create_order_ack, source.create_order_ack);
+    compare(target_source_info, source_source_info);
+    compare(target_create_order_ack, source_create_order_ack);
+  }
+}
+
+TEST(flatbuffers, modify_order_event) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // request (source)
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_modify_order = CreateRandomModifyOrder();
+    // serialize using flatbuffers
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_modify_order));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::ModifyOrder);
+    auto target_modify_order = common::convert(root->event_data_as_ModifyOrder());
+    // validate
+    compare(target_source_info, source_source_info);
+    compare(target_modify_order, source_modify_order);
   }
 }
 
@@ -692,28 +797,52 @@ TEST(flatbuffers, modify_order_ack_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_modify_order_ack = CreateRandomModifyOrderAck();
-    const auto source = common::ModifyOrderAckEvent{
-      .message_info = source_message_info,
-      .modify_order_ack = source_modify_order_ack};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_modify_order_ack = CreateRandomModifyOrderAck();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_modify_order_ack));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::ModifyOrderAck);
-    const auto target_modify_order_ack = common::convert(root->event_data_as_ModifyOrderAck());
-    // event (target)
-    const auto target = common::ModifyOrderAckEvent{
-      .message_info = target_message_info,
-      .modify_order_ack = target_modify_order_ack};
+    auto target_modify_order_ack = common::convert(root->event_data_as_ModifyOrderAck());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.modify_order_ack, source.modify_order_ack);
+    compare(target_source_info, source_source_info);
+    compare(target_modify_order_ack, source_modify_order_ack);
+  }
+}
+
+TEST(flatbuffers, cancel_order_event) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // request (source)
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_cancel_order = CreateRandomCancelOrder();
+    // serialize using flatbuffers
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_cancel_order));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::CancelOrder);
+    auto target_cancel_order = common::convert(root->event_data_as_CancelOrder());
+    // validate
+    compare(target_source_info, source_source_info);
+    compare(target_cancel_order, source_cancel_order);
   }
 }
 
@@ -724,28 +853,24 @@ TEST(flatbuffers, cancel_order_ack_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_cancel_order_ack = CreateRandomCancelOrderAck();
-    const auto source = common::CancelOrderAckEvent{
-      .message_info = source_message_info,
-      .cancel_order_ack = source_cancel_order_ack};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_cancel_order_ack = CreateRandomCancelOrderAck();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_cancel_order_ack));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::CancelOrderAck);
-    const auto target_cancel_order_ack = common::convert(root->event_data_as_CancelOrderAck());
-    // event (target)
-    const auto target = common::CancelOrderAckEvent{
-      .message_info = target_message_info,
-      .cancel_order_ack = target_cancel_order_ack};
+    auto target_cancel_order_ack = common::convert(root->event_data_as_CancelOrderAck());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.cancel_order_ack, source.cancel_order_ack);
+    compare(target_source_info, source_source_info);
+    compare(target_cancel_order_ack, source_cancel_order_ack);
   }
 }
 
@@ -756,28 +881,24 @@ TEST(flatbuffers, order_update_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_order_update = CreateRandomOrderUpdate();
-    const auto source = common::OrderUpdateEvent{
-      .message_info = source_message_info,
-      .order_update = source_order_update};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_order_update = CreateRandomOrderUpdate();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_order_update));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::OrderUpdate);
-    const auto target_order_update = common::convert(root->event_data_as_OrderUpdate());
-    // event (target)
-    const auto target = common::OrderUpdateEvent{
-      .message_info = target_message_info,
-      .order_update = target_order_update};
+    auto target_order_update = common::convert(root->event_data_as_OrderUpdate());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.order_update, source.order_update);
+    compare(target_source_info, source_source_info);
+    compare(target_order_update, source_order_update);
   }
 }
 
@@ -788,187 +909,51 @@ TEST(flatbuffers, trade_update_event) {
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
-    const auto source_message_info = CreateRandomMessageInfo();
-    const auto source_trade_update = CreateRandomTradeUpdate();
-    const auto source = common::TradeUpdateEvent{
-      .message_info = source_message_info,
-      .trade_update = source_trade_update};
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_trade_update = CreateRandomTradeUpdate();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_trade_update));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Event>(&buffer[0]);
-    const auto target_message_info = common::convert(root->message_info());
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
     EXPECT_EQ(root->event_data_type(), schema::EventData::TradeUpdate);
-    const auto target_trade_update = common::convert(root->event_data_as_TradeUpdate());
-    // event (target)
-    const auto target = common::TradeUpdateEvent{
-      .message_info = target_message_info,
-      .trade_update = target_trade_update};
+    auto target_trade_update = common::convert(root->event_data_as_TradeUpdate());
     // validate
-    compare(target.message_info, source.message_info);
-    compare(target.trade_update, source.trade_update);
+    compare(target_source_info, source_source_info);
+    compare(target_trade_update, source_trade_update);
   }
 }
 
-TEST(flatbuffers, handshake_request) {
+TEST(flatbuffers, position_update_event) {
   FlatBufferBuilder fbb;
   for (auto i = 0; i < MAX_ITERATIONS; ++i) {
     // reset
     fbb.Clear();  // doesn't de-allocate
     EXPECT_EQ(fbb.GetSize(), 0);
-    // request (source)
-    const auto source_request_info = CreateRandomRequestInfo();
-    const auto source_handshake = CreateRandomHandshake();
-    const auto source = common::HandshakeRequest{
-      .request_info = source_request_info,
-      .handshake = source_handshake};
+    // event (source)
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_position_update = CreateRandomPositionUpdate();
     // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
+    fbb.Finish(common::convert2(
+          fbb,
+          source_source_info,
+          source_position_update));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Request>(&buffer[0]);
-    const auto target_request_info = common::convert(root->request_info());
-    EXPECT_EQ(root->request_data_type(), schema::RequestData::Handshake);
-    const auto target_handshake = common::convert(root->request_data_as_Handshake());
-    // request (target)
-    const auto target = common::HandshakeRequest{
-      .request_info = target_request_info,
-      .handshake = target_handshake};
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = common::convert(root->source_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::PositionUpdate);
+    auto target_position_update = common::convert(root->event_data_as_PositionUpdate());
     // validate
-    compare(target.request_info, source.request_info);
-    compare(target.handshake, source.handshake);
-  }
-}
-
-TEST(flatbuffers, heartbeat_request) {
-  FlatBufferBuilder fbb;
-  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
-    // reset
-    fbb.Clear();  // doesn't de-allocate
-    EXPECT_EQ(fbb.GetSize(), 0);
-    // request (source)
-    const auto source_request_info = CreateRandomRequestInfo();
-    const auto source_heartbeat = CreateRandomHeartbeat();
-    const auto source = common::HeartbeatRequest{
-      .request_info = source_request_info,
-      .heartbeat = source_heartbeat};
-    // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
-    EXPECT_GT(fbb.GetSize(), 0);
-    // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
-    // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Request>(&buffer[0]);
-    const auto target_request_info = common::convert(root->request_info());
-    EXPECT_EQ(root->request_data_type(), schema::RequestData::Heartbeat);
-    const auto target_heartbeat = common::convert(root->request_data_as_Heartbeat());
-    // request (target)
-    const auto target = common::HeartbeatRequest{
-      .request_info = target_request_info,
-      .heartbeat = target_heartbeat};
-    // validate
-    compare(target.request_info, source.request_info);
-    compare(target.heartbeat, source.heartbeat);
-  }
-}
-
-TEST(flatbuffers, create_order_request) {
-  FlatBufferBuilder fbb;
-  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
-    // reset
-    fbb.Clear();  // doesn't de-allocate
-    EXPECT_EQ(fbb.GetSize(), 0);
-    // request (source)
-    const auto source_request_info = CreateRandomRequestInfo();
-    const auto source_create_order = CreateRandomCreateOrder();
-    const auto source = common::CreateOrderRequest{
-      .request_info = source_request_info,
-      .create_order = source_create_order};
-    // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
-    EXPECT_GT(fbb.GetSize(), 0);
-    // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
-    // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Request>(&buffer[0]);
-    const auto target_request_info = common::convert(root->request_info());
-    EXPECT_EQ(root->request_data_type(), schema::RequestData::CreateOrder);
-    const auto target_create_order = common::convert(root->request_data_as_CreateOrder());
-    // request (target)
-    const auto target = common::CreateOrderRequest{
-      .request_info = target_request_info,
-      .create_order = target_create_order};
-    // validate
-    compare(target.request_info, source.request_info);
-    compare(target.create_order, source.create_order);
-  }
-}
-
-TEST(flatbuffers, modify_order_request) {
-  FlatBufferBuilder fbb;
-  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
-    // reset
-    fbb.Clear();  // doesn't de-allocate
-    EXPECT_EQ(fbb.GetSize(), 0);
-    // request (source)
-    const auto source_request_info = CreateRandomRequestInfo();
-    const auto source_modify_order = CreateRandomModifyOrder();
-    const auto source = common::ModifyOrderRequest{
-      .request_info = source_request_info,
-      .modify_order = source_modify_order};
-    // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
-    EXPECT_GT(fbb.GetSize(), 0);
-    // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
-    // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Request>(&buffer[0]);
-    const auto target_request_info = common::convert(root->request_info());
-    EXPECT_EQ(root->request_data_type(), schema::RequestData::ModifyOrder);
-    const auto target_modify_order = common::convert(root->request_data_as_ModifyOrder());
-    // request (target)
-    const auto target = common::ModifyOrderRequest{
-      .request_info = target_request_info,
-      .modify_order = target_modify_order};
-    // validate
-    compare(target.request_info, source.request_info);
-    compare(target.modify_order, source.modify_order);
-  }
-}
-
-TEST(flatbuffers, cancel_order_request) {
-  FlatBufferBuilder fbb;
-  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
-    // reset
-    fbb.Clear();  // doesn't de-allocate
-    EXPECT_EQ(fbb.GetSize(), 0);
-    // request (source)
-    const auto source_request_info = CreateRandomRequestInfo();
-    const auto source_cancel_order = CreateRandomCancelOrder();
-    const auto source = common::CancelOrderRequest{
-      .request_info = source_request_info,
-      .cancel_order = source_cancel_order};
-    // serialize using flatbuffers
-    fbb.Finish(common::convert(fbb, source));
-    EXPECT_GT(fbb.GetSize(), 0);
-    // copy of the buffer (just making sure...)
-    const std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
-    // deserialize using flatbuffers
-    const auto root = GetRoot<schema::Request>(&buffer[0]);
-    const auto target_request_info = common::convert(root->request_info());
-    EXPECT_EQ(root->request_data_type(), schema::RequestData::CancelOrder);
-    const auto target_cancel_order = common::convert(root->request_data_as_CancelOrder());
-    // request (target)
-    const auto target = common::CancelOrderRequest{
-      .request_info = target_request_info,
-      .cancel_order = target_cancel_order};
-    // validate
-    compare(target.request_info, source.request_info);
-    compare(target.cancel_order, source.cancel_order);
+    compare(target_source_info, source_source_info);
+    compare(target_position_update, source_position_update);
   }
 }

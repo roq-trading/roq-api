@@ -42,6 +42,7 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 | Library                                                          | Version  | License                                                      | Purpose                         | Gateways | API | Examples |
 | ---------------------------------------------------------------- | -------- | ------------------------------------------------------------ | ------------------------------- |:--------:|:---:|:--------:|
 | [cctz](https://github.com/google/cctz)                           | >= 2.1   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Time-zone conversion            |     X    |  X  |     X    |
+| [crossguid](https://github.com/graeme-hill/crossguid)            | >= 0.2   | [MIT](https://opensource.org/licenses/MIT)                   | UUID                            |     X    |  X  |     X    |
 | [double-conversion](https://github.com/google/double-conversion) | >= 3.0   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Number conversion               |     X    |  X  |     X    |
 | [flatbuffers](https://github.com/google/flatbuffers)             | >= 1.7   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Communication protocol          |     X    |  X  |     X    |
 | [gflags](https://github.com/gflags/gflags)                       | >= 2.2   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Command-line options            |     X    |     |     X    |

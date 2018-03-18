@@ -52,6 +52,16 @@ PKG_CHECK_MODULES([LIBUNWIND], [libunwind], [], [
   esac
 ])
 
+# Find crossguid.
+PKG_CHECK_MODULES([CROSSGUID], [crossguid], [], [
+  AC_CHECK_HEADER(
+    [crossguid/guid.hpp],
+    [AC_SUBST([CROSSGUID_CFLAGS])],
+    [AC_MSG_ERROR([unable to find crossguid header files])]
+  )
+  AC_SUBST([CROSSGUID_LIBS], ['-lcrossguid -luuid'])
+])
+
 # Find spdlog.
 PKG_CHECK_MODULES([SPDLOG], [spdlog], [], [
   AC_CHECK_HEADER(

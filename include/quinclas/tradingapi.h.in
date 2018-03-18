@@ -10,7 +10,9 @@
 #include <utility>
 #include <vector>
 
-// Version
+/**
+ * API version.
+ */
 #define QUINCLAS_VERSION "@PACKAGE_VERSION@"
 
 namespace quinclas {
@@ -19,251 +21,396 @@ namespace common {
 /**
  * Constants.
  */
-const size_t MAX_DEPTH = 5;                                ///< Maximum market-by-price depth
+const size_t MAX_DEPTH = 5;  ///< Maximum market-by-price depth
 
 /**
- * Typedefs.
+ * Time.
  */
-typedef std::chrono::microseconds duration_t;
-typedef std::chrono::time_point<std::chrono::system_clock, duration_t> time_point_t;
-typedef std::pair<const void *, size_t> buffer_t;
-typedef std::pair<buffer_t, buffer_t> message_t;
+typedef std::chrono::system_clock::duration duration_t;
+typedef std::chrono::system_clock::time_point time_point_t;
 
 /**
- * Order book layer (positional by-price aggregated view of an order book).
+ * Messaging. (INTERNAL)
  */
-struct Layer {
-  double bid_price;                                        ///< Bid price
-  double bid_quantity;                                     ///< Aggregated bid quantity
-  double ask_price;                                        ///< Ask price
-  double ask_quantity;                                     ///< Aggregated ask quantity
+typedef std::pair<const void *, size_t> message_t;
+
+/**
+ * BatchInfo. (INTERNAL)
+ * Used by the communication layer to frame a set of events.
+ */
+struct BatchInfo {
+  uint64_t seqno;          ///< Sequence number specific to the client's connection.
+  time_point_t send_time;  ///< Time when the batch was sent.
+  bool is_cached;          ///< True if messages are snapshot images.
+};
+
+/**
+ * SourceInfo. (INTERNAL)
+ * Information useful for correlating update events.
+ */
+struct SourceInfo {
+  uint64_t seqno;            ///< Sequence number created by the source.
+  time_point_t create_time;  ///< Time at which the source received or created the event.
+};
+
+/**
+ * MessageInfo.
+ * Information allowing the client to identify the origin and age of
+ * the information associated with an update event.
+ */
+struct MessageInfo {
+  const char *source;                ///< Client's own name for the source.
+  time_point_t source_create_time;   ///< Source's create time (perhaps a receive time).
+  time_point_t client_receive_time;  ///< Client's receive time.
+  duration_t routing_latency;        ///< Routing latency (from source to client).
+  bool is_cached;                    ///< Is this update event cached (by the source)?
+  bool is_last;                      ///< Is this update event the last of the batch?
+  // FIXME(thraneh): experimental
+  uint32_t channel;
+};
+
+/**
+ * Handshake. (INTERNAL)
+ * Sent by the client immediately following successful connection.
+ */
+struct Handshake {
+  const char *api_version;  ///< QUINCLAS_VERSION
+  const char *uuid;         ///< GUID uniquely identifying the client process.
+  const char *login;        ///< Login name.
+  const char *password;     ///< Login password.
+  // FIXME(thraneh): experimental
+  std::vector<std::string> subscriptions;
 };
 
 /**
  * Handshake ack. (INTERNAL)
+ * Sent by the server as response to the Handshake message.
+ * The server will disconnect the client, immediately following
+ * the HandshakeAck message, if the login details do not meet
+ * implementation-specific conditions.
+ * The client is allowed to send heartbeat messages if the
+ * handshake returns successfully.
+ * The server may send cached events followed by the ready
+ * message.
+ * The client is only allowed to send requests after the
+ * ready message has been received.
  */
 struct HandshakeAck {
-  const char *api_version;                                 ///< API version.
-  bool failure;                                            ///< Failure?
-  const char *reason;                                      ///< Reason (if failure)
+  bool failure;                 ///< Handshake failure?
+  const char *failure_reason;   ///< Reason for the failure.
+  const char *server_uuid;      ///< GUID uniquely identifying the source process.
+  const char *server_name;      ///< Name representing the source.
+  // FIXME(thraneh): experimental
+  const char *shmem_s2c_name;
+  uint32_t shmem_s2c_size;
+  const char *shmem_c2s_name;
+  uint32_t shmem_c2s_size;
 };
 
 /**
- * Heatbeat ack. (INTERNAL)
+ * Heartbeat. (INTERNAL)
+ * Sent by the client as a keep-alive message.
+ * The server may disconnect the client if it has not received
+ * a heartbat message within a pre-configured grace period.
+ * Heartbeat messages are only allowed after the handshake
+ * sequence has completed successfully.
+ */
+struct Heartbeat {
+  time_point_t opaque;  ///< Opaque value (timestamp).
+};
+
+/**
+ * Heartbeat ack. (INTERNAL)
+ * Sent by the server as a response to a Heartbeat message.
+ * The opaque (time-point) value is returned to the client
+ * allowing it to monitor communication round-trip latency.
  */
 struct HeartbeatAck {
-  time_point_t opaque;                                     ///< Timestamp.
+  time_point_t opaque;  ///< Opaque value (returned).
 };
 
 /**
- * Ready. (INTERNAL)
+ * Ready.
+ * Sent by the server when it has completed the initial
+ * download phase.
+ * Client is allowed to send requests only after having
+ * received the ready event.
  */
 struct Ready {};
 
-/**
- * Timer.
- */
-struct Timer {
-  time_point_t utc_time;                                   ///< Timestamp.
-};
 
-/**
- * Connection status.
- */
-struct ConnectionStatus {
-  ConnectionState connection;                              ///< Connection.
-};
+// ---------------
+
 
 /**
  * Gateway status.
  */
 struct GatewayStatus {
-  GatewayState market_data;                                ///< Market data.
-  GatewayState order_management;                           ///< Order management.
+  GatewayState market_data;       ///< Status of the market data sub-channel.
+  GatewayState order_management;  ///< Status of the order management sub-channel.
+};
+
+/**
+ * Layer.
+ * A positional layer of an order book.
+ * The layer represents an aggregated by-price view of all
+ * resting orders.
+ */
+struct Layer {
+  double bid_price;     // Bid price.
+  double bid_quantity;  // Bid quantity.
+  double ask_price;     // Ask price.
+  double ask_quantity;  // Ask quantity.
 };
 
 /**
  * Market depth (aggregated view of an order book).
  */
 struct MarketByPrice {
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
-  Layer depth[MAX_DEPTH];                                  ///< Layers
+  const char *exchange;        ///< Exchange name
+  const char *instrument;      ///< Instrument name
+  Layer depth[MAX_DEPTH];      ///< Layers
+  time_point_t exchange_time;  ///< Exchange time-stamp
+  // FIXME(thraneh): experimental
+  uint32_t channel;
 };
 
 /**
  * Trade summary.
  */
 struct TradeSummary {
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
-  double price;                                            ///< Price
-  double volume;                                           ///< Volume
-  double turnover;                                         ///< Turnover
-  TradeDirection direction;                                ///< Direction
+  const char *exchange;        ///< Exchange name
+  const char *instrument;      ///< Instrument name
+  double price;                ///< Price
+  double volume;               ///< Volume
+  double turnover;             ///< Turnover
+  TradeDirection direction;    ///< Direction
+  time_point_t exchange_time;  ///< Exchange time-stamp
+  // FIXME(thraneh): experimental
+  uint32_t channel;
 };
 
 /**
  * Reference data.
  */
 struct ReferenceData {
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
-  double tick_size;                                        ///< Tick size (price increments)
-  double limit_up;                                         ///< Price limit-up
-  double limit_down;                                       ///< Price limit-down
+  const char *exchange;    ///< Exchange name
+  const char *instrument;  ///< Instrument name
+  double tick_size;        ///< Tick size (price increments)
+  double limit_up;         ///< Price limit-up
+  double limit_down;       ///< Price limit-down
 };
 
 /**
  * Market status.
  */
 struct MarketStatus {
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
-  TradingStatus trading_status;                            ///< Market status
+  const char *exchange;          ///< Exchange name
+  const char *instrument;        ///< Instrument name
+  TradingStatus trading_status;  ///< Market status
+};
+
+/**
+ * Create order.
+ */
+struct CreateOrder {
+  const uint32_t opaque;           ///< Opaque (user) value
+  const char *order_template;      ///< Order template name
+  const char *exchange;            ///< Exchange name
+  const char *instrument;          ///< Instrument name
+  const TradeDirection direction;  ///< Trade direction
+  const double quantity;           ///< Desired quantity
+  const double limit_price;        ///< Limit price
+  const double stop_price;         ///< Stop price
 };
 
 /**
  * Response to create order
  */
 struct CreateOrderAck {
-  uint32_t opaque;                                         ///< User provided opaque value
-  uint32_t order_id;                                       ///< Order id (as known by the gateway).
-  bool failure;                                            ///< Failure?
-  const char *reason;                                      ///< Reason (if failure).
+  uint32_t opaque;                ///< User provided opaque value  FIXME(thraneh): review naming
+  uint32_t order_id;              ///< Order id (as known by the gateway).
+  bool failure;                   ///< Failure?
+  const char *reason;             ///< Reason (if failure).
   // following fields may or may not be populated
-  const char *order_template;                              ///< Order template
-  const char *external_order_id;                           ///< External order id.
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
+  const char *order_template;     ///< Order template
+  const char *external_order_id;  ///< External order id.
+  const char *exchange;           ///< Exchange name
+  const char *instrument;         ///< Instrument name
+};
+
+/**
+ * Modify order.
+ */
+struct ModifyOrder {
+  uint32_t order_id;             ///< Order id (as known by the gateway).
+  const double quantity_change;  ///< Desired quantity change
+  const double limit_price;      ///< Limit price
 };
 
 /**
  * Response to modify order
  */
 struct ModifyOrderAck {
-  uint32_t opaque;                                         ///< User provided opaque value
-  uint32_t order_id;                                       ///< Order id (as known by the gateway).
-  bool failure;                                            ///< Failure?
-  const char *reason;                                      ///< Reason (if failure).
+  uint32_t opaque;                ///< User provided opaque value  FIXME(thraneh): review naming
+  uint32_t order_id;              ///< Order id (as known by the gateway).
+  bool failure;                   ///< Failure?
+  const char *reason;             ///< Reason (if failure).
   // following fields may or may not be populated
-  const char *order_template;                              ///< Order template
-  const char *external_order_id;                           ///< External order id.
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
-  double quantity_change;                                  ///< Quantity change.
-  double limit_price;                                      ///< Limit price.
+  const char *order_template;     ///< Order template
+  const char *external_order_id;  ///< External order id.
+  const char *exchange;           ///< Exchange name
+  const char *instrument;         ///< Instrument name
+  double quantity_change;         ///< Quantity change.
+  double limit_price;             ///< Limit price.
+};
+
+/**
+ * Cancel order.
+ */
+struct CancelOrder {
+  uint32_t order_id;  ///< Order id (as known by the gateway).
 };
 
 /**
  * Response to cancel order
  */
 struct CancelOrderAck {
-  uint32_t opaque;                                         ///< User provided opaque value
-  uint32_t order_id;                                       ///< Order id (as known by the gateway).
-  bool failure;                                            ///< Failure?
-  const char *reason;                                      ///< Reason (if failure).
+  uint32_t opaque;                ///< User provided opaque value  FIXME(thraneh): review naming
+  uint32_t order_id;              ///< Order id (as known by the gateway).
+  bool failure;                   ///< Failure?
+  const char *reason;             ///< Reason (if failure).
   // following fields may or may not be populated
-  const char *order_template;                              ///< Order template
-  const char *external_order_id;                           ///< External order id.
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
+  const char *order_template;     ///< Order template
+  const char *external_order_id;  ///< External order id.
+  const char *exchange;           ///< Exchange name
+  const char *instrument;         ///< Instrument name
 };
 
 /**
  * Order update.
  */
 struct OrderUpdate {
-  uint32_t opaque;                                         ///< User provided opaque value
-  uint32_t order_id;                                       ///< Order id (as known by the gateway).
-  const char *order_template;                              ///< Order template
-  const char *external_order_id;                           ///< External order id.
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
-  OrderStatus status;                                      ///< Order status
-  TradeDirection trade_direction;                          ///< Trade direction
-  double remaining_quantity;                               ///< Remaining (unfilled) quantity
-  double traded_quantity;                                  ///< Traded (filled) quantity
-  time_point_t insert_time;                                ///< Order insertion time
-  time_point_t cancel_time;                                ///< Order cancellation time
+  uint32_t opaque;                 ///< User provided opaque value  FIXME(thraneh): review naming
+  uint32_t order_id;               ///< Order id (as known by the gateway).
+  const char *order_template;      ///< Order template
+  const char *external_order_id;   ///< External order id.
+  const char *exchange;            ///< Exchange name
+  const char *instrument;          ///< Instrument name
+  OrderStatus status;              ///< Order status
+  TradeDirection trade_direction;  ///< Trade direction
+  double remaining_quantity;       ///< Remaining (unfilled) quantity
+  double traded_quantity;          ///< Traded (filled) quantity
+  time_point_t insert_time;        ///< Order insertion time
+  time_point_t cancel_time;        ///< Order cancellation time
 };
 
 /**
  * Trade update.
+ * Note! User's custom field is often not available for trade updates.
+ * The opaque pass-through value (from the order) is therefore not
+ * represented here.
  */
 struct TradeUpdate {
-  uint32_t order_id;                                       ///< Order id (as known by the gateway).
-  const char *external_order_id;                           ///< External order id.
-  const char *external_trade_id;                           ///< External rade identifier
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
-  TradeDirection trade_direction;                          ///< Trade direction
-  double quantity;                                         ///< Trade quantity
-  double price;                                            ///< Trade price
-  time_point_t trade_time;                                 ///< Trade time
+  uint32_t order_id;               ///< Order id (as known by the gateway).
+  const char *external_order_id;   ///< External order id.
+  const char *external_trade_id;   ///< External trade identifier
+  const char *exchange;            ///< Exchange name
+  const char *instrument;          ///< Instrument name
+  TradeDirection trade_direction;  ///< Trade direction
+  double quantity;                 ///< Trade quantity
+  double price;                    ///< Trade price
+  time_point_t trade_time;         ///< Trade time
 };
 
+
 /**
- * MessageInfo. (CHANGE)
+ * Position update.
  */
-struct MessageInfo {
-  const char *gateway;                                     ///< Gateway name
-  uint64_t message_id;                                     ///< Message identifier
-  time_point_t exchange_time;                              ///< Exchange timestamp
-  time_point_t receive_time;                               ///< Receive timestamp
-  time_point_t enqueue_time;                               ///< Enqueue timestamp
+struct PositionUpdate {
+  const char *exchange;            ///< Exchange name
+  const char *instrument;          ///< Instrument name
+  double position;                 ///< Position.
 };
 
+
+// ---------------
+
+
 /**
- * Timer event.
+ * Timer event. (INTERNAL)
  */
 struct TimerEvent {
-  const MessageInfo& message_info;                         ///< Message info
+  time_point_t utc_time;
 };
 
 /**
- * Connection event.
+ * Connection event. (INTERNAL)
  */
 struct ConnectionStatusEvent {
-  const MessageInfo& message_info;
-  const ConnectionStatus& connection_status;
+  const char *source;
+  ConnectionStatus connection_status;
 };
+
+
+// ---------------
+
 
 /**
  * Batch begin event.
  */
 struct BatchBeginEvent {
-  const MessageInfo& message_info;                         ///< Message info
+  const MessageInfo& message_info;
 };
 
 /**
  * Batch end event.
  */
 struct BatchEndEvent {
-  const MessageInfo& message_info;                         ///< Message info
+  const MessageInfo& message_info;
+};
+
+
+// ---------------
+
+
+/*
+ * Handshake request. (INTERNAL)
+ */
+struct HandshakeEvent {
+  const MessageInfo& message_info;
+  const Handshake& handshake;
 };
 
 /**
  * Handshake ack event. (INTERNAL)
  */
 struct HandshakeAckEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const HandshakeAck& handshake_ack;                       ///< Handshake ack
+  const MessageInfo& message_info;
+  const HandshakeAck& handshake_ack;
+};
+
+/*
+ * Heartbeat request. (INTERNAL)
+ */
+struct HeartbeatEvent {
+  const MessageInfo& message_info;
+  const Heartbeat& heartbeat;
 };
 
 /**
  * Heartbeat ack event. (INTERNAL)
  */
 struct HeartbeatAckEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const HeartbeatAck& heartbeat_ack;                       ///< Heartbeat ack
+  const MessageInfo& message_info;
+  const HeartbeatAck& heartbeat_ack;
 };
 
 /**
  * Ready event.
  */
 struct ReadyEvent {
-  const MessageInfo& message_info;                         ///< Message info
+  const MessageInfo& message_info;
   const Ready& ready;
 };
 
@@ -271,178 +418,112 @@ struct ReadyEvent {
  * Gateway status update event.
  */
 struct GatewayStatusEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const GatewayStatus& gateway_status;                     ///< Gateway status update
+  const MessageInfo& message_info;
+  const GatewayStatus& gateway_status;
 };
 
 /**
  * Reference data update event.
  */
 struct ReferenceDataEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const ReferenceData& reference_data;                     ///< Reference data update
+  const MessageInfo& message_info;
+  const ReferenceData& reference_data;
 };
 
 /**
  * Market status update event.
  */
 struct MarketStatusEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const MarketStatus& market_status;                       ///< Market status update
+  const MessageInfo& message_info;
+  const MarketStatus& market_status;
 };
 
 /**
  * Market depth update event.
  */
 struct MarketByPriceEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const MarketByPrice& market_by_price;                    ///< Market-by-price update
+  const MessageInfo& message_info;
+  const MarketByPrice& market_by_price;
 };
 
 /**
  * Trade summary update event.
  */
 struct TradeSummaryEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const TradeSummary& trade_summary;                       ///< Trade summary update
+  const MessageInfo& message_info;
+  const TradeSummary& trade_summary;
+};
+
+/*
+ * Create order request. (INTERNAL)
+ */
+struct CreateOrderEvent {
+  const MessageInfo& message_info;
+  const CreateOrder& create_order;
 };
 
 /**
  * Create order ack event.
  */
 struct CreateOrderAckEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const CreateOrderAck& create_order_ack;                  ///< Create order ack
+  const MessageInfo& message_info;
+  const CreateOrderAck& create_order_ack;
+};
+
+/*
+ * Modify order request. (INTERNAL)
+ */
+struct ModifyOrderEvent {
+  const MessageInfo& message_info;
+  const ModifyOrder& modify_order;
 };
 
 /**
  * Modify order ack event.
  */
 struct ModifyOrderAckEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const ModifyOrderAck& modify_order_ack;                  ///< Modify order ack
+  const MessageInfo& message_info;
+  const ModifyOrderAck& modify_order_ack;
+};
+
+/*
+ * Cancel order request. (INTERNAL)
+ */
+struct CancelOrderEvent {
+  const MessageInfo& message_info;
+  const CancelOrder& cancel_order;
 };
 
 /**
  * Cancel order ack event.
  */
 struct CancelOrderAckEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const CancelOrderAck& cancel_order_ack;                  ///< Cancel order ack
+  const MessageInfo& message_info;
+  const CancelOrderAck& cancel_order_ack;
 };
 
 /**
  * Order update event.
  */
 struct OrderUpdateEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const OrderUpdate& order_update;                         ///< Order update
+  const MessageInfo& message_info;
+  const OrderUpdate& order_update;
 };
 
 /**
  * Trade update event.
  */
 struct TradeUpdateEvent {
-  const MessageInfo& message_info;                         ///< Message info
-  const TradeUpdate& trade_update;                         ///< Trade update
+  const MessageInfo& message_info;
+  const TradeUpdate& trade_update;
 };
 
 /**
- * Handshake. (INTERNAL)
+ * Position update event.
  */
-struct Handshake {
-  const char *api_version;                                 ///< API version.
-  const char *login;                                       ///< Login.
-  const char *password;                                    ///< Password.
-  std::vector<std::string> subscriptions;
-};
-
-/**
- * Heatbeat. (INTERNAL)
- */
-struct Heartbeat {
-  time_point_t opaque;                                     ///< Timestamp.
-};
-
-/**
- * Create order.
- */
-struct CreateOrder {
-  const uint32_t opaque;                                   ///< Opaque (user) value
-  const char *order_template;                              ///< Order template name
-  const char *exchange;                                    ///< Exchange name
-  const char *instrument;                                  ///< Instrument name
-  const TradeDirection direction;                          ///< Trade direction
-  const double quantity;                                   ///< Desired quantity
-  const double limit_price;                                ///< Limit price
-  const double stop_price;                                 ///< Stop price
-};
-
-/**
- * Modify order.
- */
-struct ModifyOrder {
-  uint32_t order_id;                                       ///< Order id (as known by the gateway).
-  const double quantity_change;                            ///< Desired quantity change
-  const double limit_price;                                ///< Limit price
-};
-
-/**
- * Cancel order.
- */
-struct CancelOrder {
-  uint32_t order_id;                                       ///< Order id (as known by the gateway).
-};
-
-/**
- * RequestInfo. (INTERNAL+CHANGE)
- */
-struct RequestInfo {
-  const char *destination;                                 ///< Destination name, typically a gateway
-  const char *trace_source;                                ///< Triggering source
-  uint64_t trace_message_id;                               ///< Triggering message id
-  time_point_t send_time;                                  ///< Request time
-  time_point_t receive_time;                               ///< Receive timestamp
-};
-
-/*
- * Handshake request. (INTERNAL)
- */
-struct HandshakeRequest {
-  const RequestInfo& request_info;                         ///< Routing information
-  const Handshake& handshake;                              ///< Handshake details
-};
-
-/*
- * Heartbeat request. (INTERNAL)
- */
-struct HeartbeatRequest {
-  const RequestInfo& request_info;                         ///< Routing information
-  const Heartbeat& heartbeat;                              ///< Heartbeat details
-};
-
-/*
- * Create order request. (INTERNAL)
- */
-struct CreateOrderRequest {
-  const RequestInfo& request_info;                         ///< Routing information
-  const CreateOrder& create_order;                         ///< Create order details
-};
-
-/*
- * Modify order request. (INTERNAL)
- */
-struct ModifyOrderRequest {
-  const RequestInfo& request_info;                         ///< Routing information
-  const ModifyOrder& modify_order;                         ///< Modify order details
-};
-
-/*
- * Cancel order request. (INTERNAL)
- */
-struct CancelOrderRequest {
-  const RequestInfo& request_info;                         ///< Routing information
-  const CancelOrder& cancel_order;                         ///< Cancel order details
+struct PositionUpdateEvent {
+  const MessageInfo& message_info;
+  const PositionUpdate& position_update;
 };
 
 /**
@@ -450,8 +531,8 @@ struct CancelOrderRequest {
  */
 class Client {
  public:
-  virtual void on(const HandshakeAckEvent&) = 0;           ///< Handshake ack event handler.
-  virtual void on(const HeartbeatAckEvent&) = 0;           ///< Heartbeat ack event handler.
+  virtual void on(const HandshakeAckEvent&) = 0;  ///< Handshake ack event handler.
+  virtual void on(const HeartbeatAckEvent&) = 0;  ///< Heartbeat ack event handler.
 };
 
 /**
@@ -487,21 +568,22 @@ class Strategy {
     virtual void send(const CancelOrder& cancel_order, const std::string& gateway) = 0;
   };
   virtual ~Strategy() = default;
-  virtual void on(const TimerEvent&) = 0;                  ///< Timer (internal timer, do *not* rely on the accuracy!)
-  virtual void on(const ConnectionStatusEvent&) = 0;       ///< The connection status has changed
-  virtual void on(const BatchBeginEvent&) = 0;             ///< Batch begin
-  virtual void on(const BatchEndEvent&) = 0;               ///< Batch end
-  virtual void on(const ReadyEvent&) = 0;                  ///< Ready event handler.
-  virtual void on(const GatewayStatusEvent&) = 0;          ///< The gateway's connection or login status has changed
-  virtual void on(const ReferenceDataEvent&) = 0;          ///< Reference data update for an instrument
-  virtual void on(const MarketStatusEvent&) = 0;           ///< Market status update for an instrument
-  virtual void on(const MarketByPriceEvent&) = 0;          ///< Market-by-price update for an instrument
-  virtual void on(const TradeSummaryEvent&) = 0;           ///< Trade summary update for an instrument
-  virtual void on(const CreateOrderAckEvent&) = 0;         ///< Response to a create order request
-  virtual void on(const ModifyOrderAckEvent&) = 0;         ///< Response to a modify order request
-  virtual void on(const CancelOrderAckEvent&) = 0;         ///< Response to a cancel order request
-  virtual void on(const OrderUpdateEvent&) = 0;            ///< New order, or order details have been updated
-  virtual void on(const TradeUpdateEvent&) = 0;            ///< New trade, or trade details have been updated
+  virtual void on(const TimerEvent&) = 0;             ///< Timer (internal notification, do *not* rely on accuracy!)
+  virtual void on(const ConnectionStatusEvent&) = 0;  ///< The connection status has changed (internal notification)
+  virtual void on(const BatchBeginEvent&) = 0;        ///< Batch begin
+  virtual void on(const BatchEndEvent&) = 0;          ///< Batch end
+  virtual void on(const ReadyEvent&) = 0;             ///< Ready event handler.
+  virtual void on(const GatewayStatusEvent&) = 0;     ///< The gateway's connection or login status has changed
+  virtual void on(const ReferenceDataEvent&) = 0;     ///< Reference data update for an instrument
+  virtual void on(const MarketStatusEvent&) = 0;      ///< Market status update for an instrument
+  virtual void on(const MarketByPriceEvent&) = 0;     ///< Market-by-price update for an instrument
+  virtual void on(const TradeSummaryEvent&) = 0;      ///< Trade summary update for an instrument
+  virtual void on(const CreateOrderAckEvent&) = 0;    ///< Response to a create order request
+  virtual void on(const ModifyOrderAckEvent&) = 0;    ///< Response to a modify order request
+  virtual void on(const CancelOrderAckEvent&) = 0;    ///< Response to a cancel order request
+  virtual void on(const OrderUpdateEvent&) = 0;       ///< New order, or order details have been updated
+  virtual void on(const TradeUpdateEvent&) = 0;       ///< New trade, or trade details have been updated
+  virtual void on(const PositionUpdateEvent&) = 0;    ///< Position update
 };
 
 // Number
@@ -521,13 +603,14 @@ std::ostream& operator<<(std::ostream& stream, time_point_t value);
 std::ostream& operator<<(std::ostream& stream, const Number value);
 template <typename T>
 std::ostream& operator<<(std::ostream& stream, const Vector<T> value);
-std::ostream& operator<<(std::ostream& stream, const ConnectionState value);
+
+std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value);
 std::ostream& operator<<(std::ostream& stream, const GatewayState value);
 std::ostream& operator<<(std::ostream& stream, const TradeDirection value);
 std::ostream& operator<<(std::ostream& stream, const TradingStatus value);
 std::ostream& operator<<(std::ostream& stream, const OrderStatus value);
 std::ostream& operator<<(std::ostream& stream, const Layer& value);
-std::ostream& operator<<(std::ostream& stream, const ConnectionStatus& value);
+
 std::ostream& operator<<(std::ostream& stream, const Handshake& value);
 std::ostream& operator<<(std::ostream& stream, const HandshakeAck& value);
 std::ostream& operator<<(std::ostream& stream, const Heartbeat& value);
@@ -537,35 +620,39 @@ std::ostream& operator<<(std::ostream& stream, const ReferenceData& value);
 std::ostream& operator<<(std::ostream& stream, const MarketStatus& value);
 std::ostream& operator<<(std::ostream& stream, const MarketByPrice& value);
 std::ostream& operator<<(std::ostream& stream, const TradeSummary& value);
+std::ostream& operator<<(std::ostream& stream, const CreateOrder& value);
+std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value);
+std::ostream& operator<<(std::ostream& stream, const ModifyOrder& value);
+std::ostream& operator<<(std::ostream& stream, const ModifyOrderAck& value);
+std::ostream& operator<<(std::ostream& stream, const CancelOrder& value);
+std::ostream& operator<<(std::ostream& stream, const CancelOrderAck& value);
 std::ostream& operator<<(std::ostream& stream, const OrderUpdate& value);
 std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value);
-std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value);
-std::ostream& operator<<(std::ostream& stream, const ModifyOrderAck& value);
-std::ostream& operator<<(std::ostream& stream, const CancelOrderAck& value);
+std::ostream& operator<<(std::ostream& stream, const PositionUpdate& value);
+
 std::ostream& operator<<(std::ostream& stream, const MessageInfo& value);
+
 std::ostream& operator<<(std::ostream& stream, const ConnectionStatusEvent& value);
+
+std::ostream& operator<<(std::ostream& stream, const HandshakeEvent& value);
 std::ostream& operator<<(std::ostream& stream, const HandshakeAckEvent& value);
+std::ostream& operator<<(std::ostream& stream, const HeartbeatEvent& value);
 std::ostream& operator<<(std::ostream& stream, const HeartbeatAckEvent& value);
 std::ostream& operator<<(std::ostream& stream, const ReadyEvent& value);
 std::ostream& operator<<(std::ostream& stream, const GatewayStatusEvent& value);
 std::ostream& operator<<(std::ostream& stream, const ReferenceDataEvent& value);
 std::ostream& operator<<(std::ostream& stream, const MarketStatusEvent& value);
 std::ostream& operator<<(std::ostream& stream, const MarketByPriceEvent& value);
+std::ostream& operator<<(std::ostream& stream, const TradeUpdateEvent& value);
+std::ostream& operator<<(std::ostream& stream, const CreateOrderEvent& value);
+std::ostream& operator<<(std::ostream& stream, const CreateOrderAckEvent& value);
+std::ostream& operator<<(std::ostream& stream, const ModifyOrderEvent& value);
+std::ostream& operator<<(std::ostream& stream, const ModifyOrderAckEvent& value);
+std::ostream& operator<<(std::ostream& stream, const CancelOrderEvent& value);
+std::ostream& operator<<(std::ostream& stream, const CancelOrderAckEvent& value);
 std::ostream& operator<<(std::ostream& stream, const TradeSummaryEvent& value);
 std::ostream& operator<<(std::ostream& stream, const OrderUpdateEvent& value);
-std::ostream& operator<<(std::ostream& stream, const TradeUpdateEvent& value);
-std::ostream& operator<<(std::ostream& stream, const CreateOrderAckEvent& value);
-std::ostream& operator<<(std::ostream& stream, const ModifyOrderAckEvent& value);
-std::ostream& operator<<(std::ostream& stream, const CancelOrderAckEvent& value);
-std::ostream& operator<<(std::ostream& stream, const CreateOrder& value);
-std::ostream& operator<<(std::ostream& stream, const ModifyOrder& value);
-std::ostream& operator<<(std::ostream& stream, const CancelOrder& value);
-std::ostream& operator<<(std::ostream& stream, const RequestInfo& value);
-std::ostream& operator<<(std::ostream& stream, const HandshakeRequest& value);
-std::ostream& operator<<(std::ostream& stream, const HeartbeatRequest& value);
-std::ostream& operator<<(std::ostream& stream, const CreateOrderRequest& value);
-std::ostream& operator<<(std::ostream& stream, const ModifyOrderRequest& value);
-std::ostream& operator<<(std::ostream& stream, const CancelOrderRequest& value);
+std::ostream& operator<<(std::ostream& stream, const PositionUpdateEvent& value);
 
 }  // namespace common
 }  // namespace quinclas

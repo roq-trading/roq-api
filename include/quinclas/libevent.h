@@ -287,9 +287,14 @@ class Buffer final {
     if (evbuffer_drain(_evbuffer, length) < 0)
       throw RuntimeError("evbuffer_drain");
   }
-  void add(const void *data, size_t datlen) {
+  void expand(size_t datlen) {
+    if (evbuffer_expand(_evbuffer, datlen) < 0)
+      throw RuntimeError("evbuffer_expand");
+  }
+  size_t add(const void *data, size_t datlen) {
     if (evbuffer_add(_evbuffer, data, datlen) < 0)
       throw RuntimeError("evbuffer_add");
+    return datlen;
   }
   template<typename... Args>
   void printf(const char* fmt, Args... args) {

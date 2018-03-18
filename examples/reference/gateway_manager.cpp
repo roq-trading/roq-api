@@ -21,8 +21,9 @@ GatewayManager::GatewayManager(
 // event handlers
 
 void GatewayManager::on(const TimerEvent& event) {
-  _order_manager.on(event);
-  check(event.message_info);
+  // FIXME(thraneh): re-enable time-check
+  // _order_manager.on(event);
+  // check(event.message_info);
 }
 
 void GatewayManager::on(const quinclas::common::ConnectionStatusEvent& event) {
@@ -102,11 +103,14 @@ void GatewayManager::on(const TradeUpdateEvent& event) {
   check(event.message_info);
 }
 
+void GatewayManager::on(const quinclas::common::PositionUpdateEvent& event) {
+}
+
 // state management
 
 void GatewayManager::check(const quinclas::common::MessageInfo& message_info) {
   // consistency check
-  auto current_time = message_info.enqueue_time;
+  auto current_time = message_info.client_receive_time;
   LOG_IF(FATAL, _last_update_time < current_time) << "Wrong sequencing!";
   _last_update_time = current_time;
   // we can't do anything if the gateway isn't functional

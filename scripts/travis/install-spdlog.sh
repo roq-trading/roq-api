@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -ex
+rm -rf spdlog-master.zip
 wget --content-disposition https://codeload.github.com/gabime/spdlog/zip/master
 unzip spdlog-master.zip
 cd spdlog-master

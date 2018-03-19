@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -ex
-wget --content-disposition https://codeload.github.com/graeme-hill/crossguid/zip/master
-unzip crossguid.zip
-cd crossguid-master
+rm -rf flatbuffers-master.zip
+wget --content-disposition https://codeload.github.com/google/flatbuffers/zip/master
+unzip flatbuffers-master.zip
+cd flatbuffers-master
 cmake -DCMAKE_BUILD_TYPE=Release .
 make -j2
 sudo make install

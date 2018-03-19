@@ -23,12 +23,13 @@ void Strategy::on(const TimerEvent& event) {
   // However, do not rely on the accuracy or frequency of the timer!
 
   // Example:
-  LOG(INFO) << "TimerEvent={"
-      "current_utc_time=" << event.utc_time <<
-      "}";
+  LOG(INFO) << "TimerEvent={}";
 }
 
 void Strategy::on(const quinclas::common::ConnectionStatusEvent& event) {
+  if (event.connection_status != ConnectionStatus::Connected) {
+    _market_data_ready = _order_management_ready = false;
+  }
 }
 
 void Strategy::on(const BatchBeginEvent&) {
@@ -59,11 +60,17 @@ void Strategy::on(const GatewayStatusEvent& event) {
 
   // Example:
   const auto& gateway_status = event.gateway_status;
-  // Check if we're ready to trade.
-  bool market_data_ready = gateway_status.market_data == GatewayState::Ready;
-  bool order_management_ready = gateway_status.order_management == GatewayState::Ready;
+  // Check the status of each channel -- market data and order management.
+  // Note! We currently expose the name of the gateway internal channel.
+  // This is done because we do not yet know how many potential channels
+  // a gateway may have. We may replace the name with an enum later on!
+  if (std::strcmp(gateway_status.name, "MDUser") == 0) {
+    _market_data_ready = gateway_status.status == GatewayState::Ready;
+  } else if (std::strcmp(gateway_status.name, "Trader") == 0) {
+    _order_management_ready = gateway_status.status == GatewayState::Ready;
+  }
   // Return if not ready yet.
-  if (!(market_data_ready && order_management_ready))
+  if (!(_market_data_ready && _order_management_ready))
     return;
   // Construct a create-order request.
   CreateOrder create_order {

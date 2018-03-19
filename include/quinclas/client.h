@@ -98,8 +98,6 @@ struct Gateways final {
   }
 };
 
-const size_t QUEUE_LENGTH = 65536;
-
 // Controller
 template <typename T>
 class Controller final {
@@ -127,18 +125,18 @@ class Controller final {
   // Dispatcher
   class Dispatcher final : public common::Strategy::Dispatcher {
     // Gateway
-    class Gateway final : public common::Client {
+    class Gateway final : public common::EventHandler {
      public:
       Gateway(const std::string& name, const Connection& connection,
               common::Strategy& strategy, libevent::Base& base,
-              common::Queue& queue, common::Encoder& encoder,
+              common::Buffer& buffer, common::Encoder<uint64_t>& encoder,
               Statistics& statistics,
               std::unordered_set<Gateway *>& callbacks,
               std::string& uuid)
           : _name(name), _connection(connection), _strategy(strategy),
-            _base(base), _queue(queue), _encoder(encoder),
+            _base(base), _buffer(buffer), _encoder(encoder),
             _statistics(statistics),
-            _event_dispatcher(*this, strategy),  // HANS -- change !!!
+            _event_dispatcher(*this),
             _event_decoder(_event_dispatcher),
             _callbacks(callbacks), _state(Disconnected),
             _retries(0), _retry_timer(0),
@@ -159,18 +157,17 @@ class Controller final {
             LOG(FATAL) << "Should never get here!";
         }
       }
-      void send(common::message_t message, bool internal) {
+      void send(common::Queue& queue, bool internal) {
         if (_state < Connected) {
           LOG(FATAL) << "[" << _name << "] Not connected. Unable to send the request";
         } else if (!internal && _state < Ready) {
           LOG(FATAL) << "[" << _name << "] Not ready. Unable to send the request";
         }
-        std::vector<common::message_t> messages { message };
         auto is_cached = false;
-        _writer.write(_buffer, messages, is_cached);
+        _writer.write(_write_buffer, queue, is_cached);
         try {
-          _buffer_event->write(_buffer);
-          ++_statistics.messages_sent;
+          _buffer_event->write(_write_buffer);
+          _statistics.messages_sent += queue.size();
         } catch (std::exception& e) {  // TODO(thraneh): use libevent::RuntimeError
           LOG(WARNING) << "[" << _name << "] Caught exception, what=\"" << e.what() << "\"";
           write_failed();
@@ -221,9 +218,9 @@ class Controller final {
           .password = _connection.get_password().c_str(),
           .subscriptions = {},  // TODO(thraneh): how to get from the strategy?
         };
-        auto message = _encoder.encode(handshake);
-        send(message, true);
-        _queue.reset();
+        common::Queue queue(_buffer);
+        _encoder.encode(queue, handshake);
+        send(queue, true);
       }
       void connection_failed() {
         if (_state >= Connected) {
@@ -262,7 +259,8 @@ class Controller final {
       }
       void reset_buffers() {
         _buffer_event.release();
-        _buffer.drain(_buffer.length());
+        _read_buffer.drain(_read_buffer.length());
+        _write_buffer.drain(_write_buffer.length());
         _event_decoder.reset();
       }
       void schedule_async_callback() {
@@ -289,14 +287,26 @@ class Controller final {
           connection_failed();
       }
       void on_read() {
-        _buffer_event->read(_buffer);
-        auto messages = _event_decoder.dispatch(_buffer, _name.c_str());  // HANS
+        _buffer_event->read(_read_buffer);
+        auto messages = _event_decoder.dispatch(_read_buffer, _name.c_str());
         if (messages)
           _statistics.messages_received += messages;
       }
 
      protected:
+      void on(const common::BatchBeginEvent& event) final {
+        VLOG(2) << "[" << _name << "] BatchBeginEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::BatchEndEvent& event) final {
+        VLOG(2) << "[" << _name << "] BatchEndEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::HandshakeEvent& event) final {
+        LOG(FATAL) << "[" << _name << "] HandshakeEvent " << event;
+      }
       void on(const common::HandshakeAckEvent& event) final {
+        LOG(INFO) << "[" << _name << "] HandshakeAckEvent " << event;
         const auto& handshake_ack = event.handshake_ack;
         if (handshake_ack.failure) {
           LOG(ERROR) << "[" << _name << "] "
@@ -307,12 +317,76 @@ class Controller final {
         LOG(INFO) << "[" << _name << "] Communication channel has been created";
         _state = Ready;
       }
+      void on(const common::HeartbeatEvent& event) final {
+        LOG(FATAL) << "[" << _name << "] HeartbeatEvent " << event;
+      }
       void on(const common::HeartbeatAckEvent& event) final {
-        auto now = std::chrono::system_clock::now();
+        VLOG(1) << "[" << _name << "] HeartbeatAckEvent " << event;
+        const auto& heartbeat_ack = event.heartbeat_ack;
+        std::chrono::steady_clock::time_point start(
+            std::chrono::duration_cast<std::chrono::steady_clock::duration>(
+                std::chrono::microseconds(heartbeat_ack.opaque)));
         auto latency = std::chrono::duration_cast<std::chrono::microseconds>(
-            now - event.heartbeat_ack.opaque).count();
+            std::chrono::steady_clock::now() - start).count();
         // TODO(thraneh): record statistics
-        VLOG(1) << "[" << _name << "] Latency = " << latency << " usecs (round-trip)";
+        VLOG(2) << "[" << _name << "] Latency = " << latency << " usecs (round-trip)";
+      }
+      void on(const common::ReadyEvent& event) final {
+        VLOG(1) << "[" << _name << "] ReadyEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::GatewayStatusEvent& event) final {
+        VLOG(1) << "[" << _name << "] GatewayStatusEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::ReferenceDataEvent& event) final {
+        VLOG(1) << "[" << _name << "] ReferenceDataEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::MarketStatusEvent& event) final {
+        VLOG(1) << "[" << _name << "] MarketStatusEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::MarketByPriceEvent& event) final {
+        VLOG(1) << "[" << _name << "] MarketByPriceEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::TradeSummaryEvent& event) final {
+        VLOG(1) << "[" << _name << "] TradeSummaryEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::CreateOrderEvent& event) final {
+        LOG(FATAL) << "[" << _name << "] CreateOrderEvent " << event;
+      }
+      void on(const common::CreateOrderAckEvent& event) final {
+        VLOG(1) << "[" << _name << "] CreateOrderAckEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::ModifyOrderEvent& event) final {
+        LOG(FATAL) << "[" << _name << "] ModifyOrderEvent " << event;
+      }
+      void on(const common::ModifyOrderAckEvent& event) final {
+        VLOG(1) << "[" << _name << "] ModifyOrderAckEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::CancelOrderEvent& event) final {
+        LOG(FATAL) << "[" << _name << "] CancelOrderEvent " << event;
+      }
+      void on(const common::CancelOrderAckEvent& event) final {
+        VLOG(1) << "[" << _name << "] CancelOrderAckEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::OrderUpdateEvent& event) final {
+        VLOG(1) << "[" << _name << "] OrderUpdateEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::TradeUpdateEvent& event) final {
+        VLOG(1) << "[" << _name << "] TradeUpdateEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const common::PositionUpdateEvent& event) final {
+        VLOG(1) << "[" << _name << "] PositionUpdateEvent " << event;
+        _strategy.on(event);
       }
 
      private:
@@ -325,13 +399,14 @@ class Controller final {
       const Connection& _connection;
       common::Strategy& _strategy;
       libevent::Base& _base;
-      common::Queue& _queue;
-      common::Encoder& _encoder;
+      common::Buffer& _buffer;
+      common::Encoder<uint64_t>& _encoder;
       Statistics& _statistics;
-      common::ClientEventDispatcher _event_dispatcher;  // HANS
-      common::Decoder<decltype(_event_dispatcher)> _event_decoder;  // HANS
+      common::EventDispatcher _event_dispatcher;
+      common::Decoder<decltype(_event_dispatcher)> _event_decoder;
       std::unique_ptr<libevent::BufferEvent> _buffer_event;
-      libevent::Buffer _buffer;
+      libevent::Buffer _read_buffer;
+      libevent::Buffer _write_buffer;
       common::Writer _writer;
       std::unordered_set<Gateway *>& _callbacks;
       enum {
@@ -352,13 +427,12 @@ class Controller final {
     explicit Dispatcher(const gateways_t& gateways, Args&&... args)
         : _strategy(*this, std::forward<Args>(args)...),  // request handler, then whatever the strategy needs
           _timer(_base, EV_PERSIST, [this](){ on_timer(); }),
-          _next_refresh(std::chrono::system_clock::now() + std::chrono::seconds(1)),
+          _next_refresh(std::chrono::steady_clock::now() + std::chrono::seconds(1)),
           _next_statistics(_next_refresh),
-          _queue(QUEUE_LENGTH), _encoder(_queue),
           _uuid(xg::newGuid()) {
       for (const auto& iter : gateways) {
         _gateways.emplace_back(iter.first,
-            iter.second, _strategy, _base, _queue, _encoder, _statistics, _callbacks, _uuid);
+            iter.second, _strategy, _base, _buffer, _encoder, _statistics, _callbacks, _uuid);
         Gateway& gateway = _gateways.back();
         _gateways_by_name[iter.first] = &gateway;
         _callbacks.insert(&gateway);
@@ -373,29 +447,29 @@ class Controller final {
     void send(const common::CreateOrder& create_order, const std::string& gateway) override {
       auto iter = _gateways_by_name.find(gateway);
       if (iter != _gateways_by_name.end()) {
-        auto message = _encoder.encode(create_order);
-        (*iter).second->send(message, false);
-        _queue.reset();
+        common::Queue queue(_buffer);
+        _encoder.encode(queue, create_order);
+        (*iter).second->send(queue, false);
       }
     }
     void send(const common::ModifyOrder& modify_order, const std::string& gateway) override {
       auto iter = _gateways_by_name.find(gateway);
       if (iter != _gateways_by_name.end()) {
-        auto message = _encoder.encode(modify_order);
-        (*iter).second->send(message, false);
-        _queue.reset();
+        common::Queue queue(_buffer);
+        _encoder.encode(queue, modify_order);
+        (*iter).second->send(queue, false);
       }
     }
     void send(const common::CancelOrder& cancel_order, const std::string& gateway) override {
       auto iter = _gateways_by_name.find(gateway);
       if (iter != _gateways_by_name.end()) {
-        auto message = _encoder.encode(cancel_order);
-        (*iter).second->send(message, false);
-        _queue.reset();
+        common::Queue queue(_buffer);
+        _encoder.encode(queue, cancel_order);
+        (*iter).second->send(queue, false);
       }
     }
     void on_timer() {
-      auto now = std::chrono::system_clock::now();
+      auto now = std::chrono::steady_clock::now();
       if (refresh(now)) {
         remove_zombie_connections();
         send_heartbeat(now);
@@ -403,12 +477,10 @@ class Controller final {
       if (statistics(now)) {
         write_statistics();
       }
-      common::TimerEvent timer_event {
-        .utc_time = std::chrono::system_clock::now(),
-      };
+      common::TimerEvent timer_event {};
       static_cast<common::Strategy&>(_strategy).on(timer_event);
     }
-    bool refresh(const std::chrono::system_clock::time_point now) {
+    bool refresh(const std::chrono::steady_clock::time_point now) {
       if (now < _next_refresh)
         return false;
       while (true) {
@@ -429,17 +501,20 @@ class Controller final {
           _callbacks.erase(iter);
       }
     }
-    void send_heartbeat(std::chrono::system_clock::time_point now) {
+    void send_heartbeat(std::chrono::steady_clock::time_point now) {
+      auto opaque =
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              now.time_since_epoch()).count();
       common::Heartbeat heartbeat {
-        .opaque = std::chrono::time_point_cast<common::duration_t>(now),
+        .opaque = opaque,
       };
-      auto message = _encoder.encode(heartbeat);
+      common::Queue queue(_buffer);
+      _encoder.encode(queue, heartbeat);
       for (auto& iter : _gateways)
         if (iter.ready())
-          iter.send(message, false);
-      _queue.reset();
+          iter.send(queue, false);
     }
-    bool statistics(std::chrono::system_clock::time_point now) {
+    bool statistics(std::chrono::steady_clock::time_point now) {
       if (now < _next_statistics)
         return false;
       while (true) {
@@ -471,10 +546,10 @@ class Controller final {
     std::list<Gateway> _gateways;
     std::unordered_map<std::string, Gateway *> _gateways_by_name;
     std::unordered_set<Gateway *> _callbacks;
-    std::chrono::system_clock::time_point _next_refresh;
-    std::chrono::system_clock::time_point _next_statistics;
-    common::Queue _queue;
-    common::Encoder _encoder;
+    std::chrono::steady_clock::time_point _next_refresh;
+    std::chrono::steady_clock::time_point _next_statistics;
+    common::Buffer _buffer;
+    common::Encoder<uint64_t> _encoder;
     std::string _uuid;
   };  // Dispatcher
 

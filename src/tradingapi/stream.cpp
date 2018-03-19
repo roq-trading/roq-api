@@ -113,8 +113,8 @@ std::ostream& operator<<(std::ostream& stream, const HeartbeatAck& value) {
 
 std::ostream& operator<<(std::ostream& stream, const GatewayStatus& value) {
   return stream << "{"
-    "market_data=" << value.market_data << ", "
-    "order_management=" << value.order_management <<
+    "name=\"" << value.name << "\", "
+    "status=" << value.status <<
     "}";
 }
 
@@ -290,6 +290,18 @@ std::ostream& operator<<(std::ostream& stream, const ConnectionStatusEvent& valu
   return stream << "{"
     "source=\"" << value.source << "\", "
     "connection_status=" << value.connection_status <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const BatchBeginEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const BatchEndEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info <<
     "}";
 }
 

@@ -47,6 +47,8 @@ class Strategy final : public quinclas::common::Strategy {
  private:
   quinclas::common::Strategy::Dispatcher& _dispatcher;
   const uint32_t _ticks_to_trade;
+  bool _market_data_ready = false;
+  bool _order_management_ready = false;
 };
 
 }  // namespace strategy

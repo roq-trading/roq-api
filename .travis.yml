@@ -9,6 +9,7 @@ script:
 before_install: scripts/travis/prepare-ubuntu.sh
 install:
  - scripts/travis/install-libunwind.sh
+ - scripts/travis/install-crossguid.sh
  - scripts/travis/install-spdlog.sh
  - scripts/travis/install-glog.sh
  - scripts/travis/install-gflags.sh

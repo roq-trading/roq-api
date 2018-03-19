@@ -42,70 +42,123 @@ const size_t HEADER_LENGTH = 22;
 const uint8_t HEADER_MAGIC[] = { 0x20, 0x18 };
 const uint8_t HEADER_FLAGS_IS_CACHED = 0x01;
 
-// queue
+// buffer
 
-class Queue final {
+class Buffer final {
  public:
-  explicit Queue(const size_t length) : _buffer(length) {}
+  explicit Buffer(const size_t length = 65536) : _buffer(length) {}
   void reset() {
     _offset = 0;
   }
-  message_t append(const void* data, const size_t length) {
-    if (_buffer.size() <= (_offset + length))
+  message_t append(message_t message) {
+    if (_buffer.size() <= (_offset + message.second))
       throw std::runtime_error("Buffer overflow");
     auto begin = &_buffer[_offset];
-    std::memcpy(begin, data, length);
-    _offset += length;
-    return message_t { begin, length };
+    std::memcpy(begin, message.first, message.second);
+    message_t result { begin, message.second };
+    _offset += message.second;
+    return result;
   }
+
+ private:
+  Buffer(Buffer&) = delete;
+  Buffer operator=(Buffer&) = delete;
+
  private:
   std::vector<uint8_t> _buffer;
   size_t _offset = 0;
 };
 
-// encoder
+// queue (will auto-reset the underlying buffer)
 
-class Encoder final {
+class Queue final {
  public:
-  explicit Encoder(Queue& queue) : _queue(queue) {}
-  // HANS -- also externally provided time !!!
-  template <typename T>
-  message_t encode(const T& event) {
-    SourceInfo source_info {
-        .seqno = ++_seqno,
-        .create_time = std::chrono::system_clock::now(),
-    };
-    _fbb.Clear();
-    _fbb.Finish(convert2(_fbb, source_info, event));
-    return _queue.append(_fbb.GetBufferPointer(), _fbb.GetSize());
+  explicit Queue(Buffer& buffer) : _buffer(buffer) {}
+  ~Queue() {
+    _buffer.reset();
+  }
+  message_t push(message_t message) {
+    auto result = _buffer.append(message);
+    _messages.push_back(result);
+    return result;
+  }
+  bool empty() const {
+    return _messages.empty();
+  }
+  size_t size() const {
+    return _messages.size();
+  }
+  const std::vector<message_t> get() const {
+    return _messages;
   }
 
  private:
-  Queue& _queue;
+  Queue(Queue&) = delete;
+  Queue operator=(Queue&) = delete;
+
+ private:
+  Buffer& _buffer;
+  std::vector<message_t> _messages;
+};
+
+// encoder
+
+// TODO(thraneh): consider specialization {uint64_t, std::atomic<uint64_t>}
+template <typename S>
+class Encoder final {
+ public:
+  Encoder() {}
+  template <typename T>
+  message_t encode(
+      Queue& queue,
+      const T& event) {
+    return encode(queue, event, std::chrono::system_clock::now());
+  }
+  template <typename T>
+  message_t encode(
+      Queue& queue,
+      const T& event,
+      std::chrono::system_clock::time_point now) {
+    SourceInfo source_info {
+        .seqno = ++_seqno,  // barrier when S is std::atomic<uint64_t>
+        .create_time = now,
+    };
+    _fbb.Clear();
+    _fbb.Finish(convert2(_fbb, source_info, event));
+    return queue.push(message_t { _fbb.GetBufferPointer(), _fbb.GetSize() });
+  }
+
+ private:
+  Encoder(Encoder&) = delete;
+  Encoder operator=(Encoder&) = delete;
+
+ private:
+  S _seqno = {0};
   flatbuffers::FlatBufferBuilder _fbb;
-  uint64_t _seqno = 0;
 };
 
 // writer
 
 class Writer final {
  public:
-  void write(
-      libevent::Buffer& buffer,
-      const std::vector<message_t>& messages,
-      bool is_cached) {
+  Writer() {}
+  void write(libevent::Buffer& buffer, const Queue& queue, bool is_cached) {
+    LOG_IF(FATAL, queue.empty()) << "Don't try to write if there's nothing to write!";
     ++_seqno;
+    const auto& messages = queue.get();
     Header header = { .message_count = messages.size() };
     for (const auto& iter : messages)
       header.total_length += 2 + iter.second;
     if (std::numeric_limits<uint8_t>::max() < header.message_count)
-      std::abort();  // FIXME(thraneh): throw exception
+      LOG(FATAL) << "Message count exceeds maximum";  // FIXME(thraneh): throw exception
     if (std::numeric_limits<uint16_t>::max() < header.total_length)
-      std::abort();  // FIXME(thraneh): throw exception
+      LOG(FATAL) << "Total length exceeds maximum";  // FIXME(thraneh): throw exception
     buffer.expand(HEADER_LENGTH + header.total_length);
     size_t bytes = 0;
     bytes += buffer.add(HEADER_MAGIC, sizeof(HEADER_MAGIC));
     uint16_t total_length = static_cast<uint16_t>(header.total_length);
+    if (total_length == 0)
+      LOG(FATAL) << "Total length can't be zero";  // FIXME(thraneh): throw exception
     bytes += buffer.add(&total_length, sizeof(total_length));
     uint8_t message_count = static_cast<uint8_t>(header.message_count);
     bytes += buffer.add(&message_count, sizeof(message_count));
@@ -118,13 +171,19 @@ class Writer final {
     assert(bytes == HEADER_LENGTH);
     for (const auto& iter : messages) {
       if (std::numeric_limits<uint16_t>::max() < iter.second)
-        std::abort();  // FIXME(thraneh): throw exception
+        LOG(FATAL) << "Message length exceeds maximum";  // FIXME(thraneh): throw exception
       uint16_t length = static_cast<uint16_t>(iter.second);
+      if (length == 0)
+        LOG(FATAL) << "Message size can't be zero";  // FIXME(thraneh): throw exception
       bytes += buffer.add(&length, sizeof(length));
       bytes += buffer.add(iter.first, iter.second);
     }
     assert(bytes == (HEADER_LENGTH + header.total_length));
   }
+
+ private:
+  Writer(Writer&) = delete;
+  Writer operator=(Writer&) = delete;
 
  private:
   uint64_t _seqno = 0;
@@ -144,17 +203,18 @@ class Decoder final {
   }
   size_t dispatch(libevent::Buffer& buffer, const std::string& name) {
     size_t messages = 0;
+    auto receive_time = std::chrono::system_clock::now();
     while (true) {
       if (_header.total_length == 0) {  // header
         auto data = buffer.pullup(HEADER_LENGTH);
         if (data == nullptr)
           return messages;
         if (data[0] != HEADER_MAGIC[0] || data[1] != HEADER_MAGIC[1])
-          std::abort();  // FIXME(thraneh): throw exception
+          LOG(FATAL) << "Incorrect header magic";  // FIXME(thraneh): throw exception
         uint16_t total_length;
         std::memcpy(&total_length, data + 2, 2);
         if (total_length == 0)
-          std::abort();  // FIXME(thraneh): throw exception
+          LOG(FATAL) << "Total length can't be zero";  // FIXME(thraneh): throw exception
         uint8_t message_count = data[4];
         bool is_cached = (data[5] & HEADER_FLAGS_IS_CACHED) != 0;
         uint64_t seqno, send_time;
@@ -166,7 +226,7 @@ class Decoder final {
         _batch_info.seqno = seqno;
         _batch_info.send_time = uint64_to_time_point(send_time);
         _batch_info.is_cached = is_cached;
-        _receive_time = std::chrono::system_clock::now();
+        _receive_time = receive_time;
         _is_first = true;
         buffer.drain(HEADER_LENGTH);
       } else if (_header.message_count == 0) {  // skip-frame
@@ -182,7 +242,7 @@ class Decoder final {
         uint16_t message_length;
         std::memcpy(&message_length, data, 2);
         if (message_length == 0)
-          std::abort();  // FIXME(thraneh): throw exception
+          LOG(FATAL) << "Message length can't be zero";  // FIXME(thraneh): throw exception
         _message_length = message_length;
         buffer.drain(2);
       } else {
@@ -260,13 +320,13 @@ inline common::HandshakeAck convert(const schema::HandshakeAck *value) {
 
 inline common::Heartbeat convert(const schema::Heartbeat *value) {
   return common::Heartbeat {
-    .opaque = uint64_to_time_point(value->opaque()),
+    .opaque = value->opaque(),
   };
 }
 
 inline common::HeartbeatAck convert(const schema::HeartbeatAck *value) {
   return common::HeartbeatAck {
-    .opaque = uint64_to_time_point(value->opaque()),
+    .opaque = value->opaque(),
   };
 }
 
@@ -276,8 +336,8 @@ inline common::Ready convert(const schema::Ready *value) {
 
 inline common::GatewayStatus convert(const schema::GatewayStatus *value) {
   return common::GatewayStatus {
-    .market_data = value->market_data(),
-    .order_management = value->order_management(),
+    .name = value->name()->c_str(),
+    .status = value->status(),
   };
 }
 
@@ -483,14 +543,14 @@ inline flatbuffers::Offset<schema::Heartbeat>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::Heartbeat& value) {
   return schema::CreateHeartbeat(
     fbb,
-    time_point_to_uint64(value.opaque));
+    value.opaque);
 }
 
 inline flatbuffers::Offset<schema::HeartbeatAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatAck& value) {
   return schema::CreateHeartbeatAck(
     fbb,
-    time_point_to_uint64(value.opaque));
+    value.opaque);
 }
 
 inline flatbuffers::Offset<schema::Ready>
@@ -502,8 +562,8 @@ inline flatbuffers::Offset<schema::GatewayStatus>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatus& value) {
   return schema::CreateGatewayStatus(
     fbb,
-    value.market_data,
-    value.order_management);
+    fbb.CreateString(value.name),
+    value.status);
 }
 
 inline flatbuffers::Offset<schema::MarketByPrice>
@@ -675,7 +735,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::PositionUpdate& value
 }
 
 
-// encode (event2)
+// encode (event)
 
 inline flatbuffers::Offset<schema::Event> convert2(
     flatbuffers::FlatBufferBuilder& fbb,
@@ -885,13 +945,38 @@ inline flatbuffers::Offset<schema::Event> convert2(
       convert(fbb, position_update).Union());
 }
 
+// handler
+
+class EventHandler {
+ public:
+  virtual void on(const BatchBeginEvent&) = 0;
+  virtual void on(const BatchEndEvent&) = 0;
+  virtual void on(const HandshakeEvent&) = 0;
+  virtual void on(const HandshakeAckEvent&) = 0;
+  virtual void on(const HeartbeatEvent&) = 0;
+  virtual void on(const HeartbeatAckEvent&) = 0;
+  virtual void on(const ReadyEvent&) = 0;
+  virtual void on(const GatewayStatusEvent&) = 0;
+  virtual void on(const ReferenceDataEvent&) = 0;
+  virtual void on(const MarketStatusEvent&) = 0;
+  virtual void on(const MarketByPriceEvent&) = 0;
+  virtual void on(const TradeSummaryEvent&) = 0;
+  virtual void on(const CreateOrderEvent&) = 0;
+  virtual void on(const CreateOrderAckEvent&) = 0;
+  virtual void on(const ModifyOrderEvent&) = 0;
+  virtual void on(const ModifyOrderAckEvent&) = 0;
+  virtual void on(const CancelOrderEvent&) = 0;
+  virtual void on(const CancelOrderAckEvent&) = 0;
+  virtual void on(const OrderUpdateEvent&) = 0;
+  virtual void on(const TradeUpdateEvent&) = 0;
+  virtual void on(const PositionUpdateEvent&) = 0;
+};
+
 // dispatch
 
-// HANS -- make this generic -- let the user decide on filtering
-class ClientEventDispatcher final {
+class EventDispatcher final {
  public:
-  ClientEventDispatcher(Client& client, Strategy& strategy)
-      : _client(client), _strategy(strategy) {}
+  explicit EventDispatcher(EventHandler& handler) : _handler(handler) {}
   void dispatch(
       const void *buffer, const size_t length,
       const char *source, const BatchInfo& batch_info,
@@ -906,121 +991,145 @@ class ClientEventDispatcher final {
         .routing_latency = receive_time - batch_info.send_time,
         .is_cached = batch_info.is_cached,
         .is_last = is_last,
-        .channel = 0
+        .channel = 0,
     };
     if (is_first)
-      _strategy.on(BatchBeginEvent { .message_info = message_info });
+      _handler.on(BatchBeginEvent { .message_info = message_info });
     auto type = item.event_data_type();
     switch (type) {
       case schema::EventData::Handshake: {
-        LOG(WARNING) << "Unexpected Handshake";
+        auto handshake = convert(item.event_data_as_Handshake());
+        HandshakeEvent event {
+          .message_info = message_info,
+          .handshake = handshake,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::HandshakeAck: {
         auto handshake_ack = convert(item.event_data_as_HandshakeAck());
         HandshakeAckEvent event {
           .message_info = message_info,
-          .handshake_ack = handshake_ack
+          .handshake_ack = handshake_ack,
         };
-        VLOG(1) << "HandshakeAckEvent " << event;
-        _client.on(event);
+        _handler.on(event);
         break;
       }
       case schema::EventData::Heartbeat: {
-        LOG(WARNING) << "Unexpected Heartbeat";
+        auto heartbeat = convert(item.event_data_as_Heartbeat());
+        HeartbeatEvent event {
+          .message_info = message_info,
+          .heartbeat = heartbeat,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::HeartbeatAck: {
         auto heartbeat_ack = convert(item.event_data_as_HeartbeatAck());
         HeartbeatAckEvent event {
           .message_info = message_info,
-          .heartbeat_ack = heartbeat_ack};
-        VLOG(1) << "HeartbeatAckEvent " << event;
-        _client.on(event);
+          .heartbeat_ack = heartbeat_ack,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::Ready: {
         auto ready = convert(item.event_data_as_Ready());
         ReadyEvent event {
           .message_info = message_info,
-          .ready = ready};
-        VLOG(1) << "ReadyEvent " << event;
-        _strategy.on(event);
+          .ready = ready,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::GatewayStatus: {
         auto gateway_status = convert(item.event_data_as_GatewayStatus());
         GatewayStatusEvent event {
           .message_info = message_info,
-          .gateway_status = gateway_status};
-        VLOG(1) << "GatewayStatusEvent " << event;
-        _strategy.on(event);
+          .gateway_status = gateway_status,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::ReferenceData: {
         auto reference_data = convert(item.event_data_as_ReferenceData());
         ReferenceDataEvent event {
           .message_info = message_info,
-          .reference_data = reference_data};
-        VLOG(1) << "ReferenceDataEvent " << event;
-        _strategy.on(event);
+          .reference_data = reference_data,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::MarketStatus: {
         auto market_status = convert(item.event_data_as_MarketStatus());
         MarketStatusEvent event {
           .message_info = message_info,
-          .market_status = market_status};
-        VLOG(1) << "MarketStatusEvent " << event;
-        _strategy.on(event);
+          .market_status = market_status,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::MarketByPrice: {
         auto market_by_price = convert(item.event_data_as_MarketByPrice());
         MarketByPriceEvent event {
           .message_info = message_info,
-          .market_by_price = market_by_price};
-        VLOG(1) << "MarketByPriceEvent " << event;
-        _strategy.on(event);
+          .market_by_price = market_by_price,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::TradeSummary: {
         auto trade_summary = convert(item.event_data_as_TradeSummary());
         TradeSummaryEvent event {
           .message_info = message_info,
-          .trade_summary = trade_summary};
-        VLOG(1) << "TradeSummaryEvent " << event;
-        _strategy.on(event);
+          .trade_summary = trade_summary,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::CreateOrder: {
-        LOG(WARNING) << "Unexpected CreateOrder";
+        auto create_order = convert(item.event_data_as_CreateOrder());
+        CreateOrderEvent event {
+          .message_info = message_info,
+          .create_order = create_order,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::CreateOrderAck: {
         auto create_order_ack = convert(item.event_data_as_CreateOrderAck());
         CreateOrderAckEvent event {
           .message_info = message_info,
-          .create_order_ack = create_order_ack};
-        VLOG(1) << "CreateOrderAck " << event;
-        _strategy.on(event);
+          .create_order_ack = create_order_ack,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::ModifyOrder: {
-        LOG(WARNING) << "Unexpected ModifyOrder";
+        auto modify_order = convert(item.event_data_as_ModifyOrder());
+        ModifyOrderEvent event {
+          .message_info = message_info,
+          .modify_order = modify_order,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::ModifyOrderAck: {
         auto modify_order_ack = convert(item.event_data_as_ModifyOrderAck());
         ModifyOrderAckEvent event {
           .message_info = message_info,
-          .modify_order_ack = modify_order_ack};
-        VLOG(1) << "ModifyOrderAck " << event;
-        _strategy.on(event);
+          .modify_order_ack = modify_order_ack,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::CancelOrder: {
-        LOG(WARNING) << "Unexpected CancelOrder";
+        auto cancel_order = convert(item.event_data_as_CancelOrder());
+        CancelOrderEvent event {
+          .message_info = message_info,
+          .cancel_order = cancel_order,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::CancelOrderAck: {
@@ -1028,35 +1137,34 @@ class ClientEventDispatcher final {
         CancelOrderAckEvent event {
           .message_info = message_info,
           .cancel_order_ack = cancel_order_ack};
-        VLOG(1) << "CancelOrderAck " << event;
-        _strategy.on(event);
+        _handler.on(event);
         break;
       }
       case schema::EventData::OrderUpdate: {
         auto order_update = convert(item.event_data_as_OrderUpdate());
         OrderUpdateEvent event {
           .message_info = message_info,
-          .order_update = order_update};
-        VLOG(1) << "OrderUpdateEvent " << event;
-        _strategy.on(event);
+          .order_update = order_update,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::TradeUpdate: {
         auto trade_update = convert(item.event_data_as_TradeUpdate());
         TradeUpdateEvent event {
           .message_info = message_info,
-          .trade_update = trade_update};
-        VLOG(1) << "TradeUpdateEvent " << event;
-        _strategy.on(event);
+          .trade_update = trade_update,
+        };
+        _handler.on(event);
         break;
       }
       case schema::EventData::PositionUpdate: {
         auto position_update = convert(item.event_data_as_PositionUpdate());
         PositionUpdateEvent event {
           .message_info = message_info,
-          .position_update = position_update};
-        VLOG(1) << "TradeUpdateEvent " << event;
-        _strategy.on(event);
+          .position_update = position_update,
+        };
+        _handler.on(event);
         break;
       }
       default: {
@@ -1064,17 +1172,16 @@ class ClientEventDispatcher final {
       }
     }
     if (is_last)
-      _strategy.on(BatchEndEvent { .message_info = message_info });
+      _handler.on(BatchEndEvent { .message_info = message_info });
   }
 
  private:
-  ClientEventDispatcher() = delete;
-  ClientEventDispatcher(ClientEventDispatcher&) = delete;
-  ClientEventDispatcher& operator=(ClientEventDispatcher&) = delete;
+  EventDispatcher() = delete;
+  EventDispatcher(EventDispatcher&) = delete;
+  EventDispatcher& operator=(EventDispatcher&) = delete;
 
  private:
-  Client& _client;
-  Strategy& _strategy;
+  EventHandler& _handler;
   flatbuffers::FlatBufferBuilder _flat_buffer_builder;
 };
 

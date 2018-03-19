@@ -27,19 +27,19 @@ table HandshakeAck {
 }
 
 table Heartbeat {
-  opaque:ulong;
+  opaque:long;
 }
 
 table HeartbeatAck {
-  opaque:ulong;
+  opaque:long;
 }
 
 table Ready {
 }
 
 table GatewayStatus {
-  market_data:common.GatewayState;
-  order_management:common.GatewayState;
+  name:string;
+  status:common.GatewayState;
 }
 
 struct Layer {

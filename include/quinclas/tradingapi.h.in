@@ -116,7 +116,7 @@ struct HandshakeAck {
  * sequence has completed successfully.
  */
 struct Heartbeat {
-  time_point_t opaque;  ///< Opaque value (timestamp).
+  int64_t opaque;  ///< Opaque value.
 };
 
 /**
@@ -126,7 +126,7 @@ struct Heartbeat {
  * allowing it to monitor communication round-trip latency.
  */
 struct HeartbeatAck {
-  time_point_t opaque;  ///< Opaque value (returned).
+  int64_t opaque;  ///< Opaque value (returned).
 };
 
 /**
@@ -146,8 +146,8 @@ struct Ready {};
  * Gateway status.
  */
 struct GatewayStatus {
-  GatewayState market_data;       ///< Status of the market data sub-channel.
-  GatewayState order_management;  ///< Status of the order management sub-channel.
+  const char *name;     ///< Name of the channel, e.g. MDUser or Trader
+  GatewayState status;  ///< Status of the channel.
 };
 
 /**
@@ -340,9 +340,7 @@ struct PositionUpdate {
 /**
  * Timer event. (INTERNAL)
  */
-struct TimerEvent {
-  time_point_t utc_time;
-};
+struct TimerEvent {};
 
 /**
  * Connection event. (INTERNAL)
@@ -527,15 +525,6 @@ struct PositionUpdateEvent {
 };
 
 /**
- * Client interface. (INTERNAL)
- */
-class Client {
- public:
-  virtual void on(const HandshakeAckEvent&) = 0;  ///< Handshake ack event handler.
-  virtual void on(const HeartbeatAckEvent&) = 0;  ///< Heartbeat ack event handler.
-};
-
-/**
  * Strategy interface.
  */
 class Strategy {
@@ -634,6 +623,8 @@ std::ostream& operator<<(std::ostream& stream, const MessageInfo& value);
 
 std::ostream& operator<<(std::ostream& stream, const ConnectionStatusEvent& value);
 
+std::ostream& operator<<(std::ostream& stream, const BatchBeginEvent& value);
+std::ostream& operator<<(std::ostream& stream, const BatchEndEvent& value);
 std::ostream& operator<<(std::ostream& stream, const HandshakeEvent& value);
 std::ostream& operator<<(std::ostream& stream, const HandshakeAckEvent& value);
 std::ostream& operator<<(std::ostream& stream, const HeartbeatEvent& value);

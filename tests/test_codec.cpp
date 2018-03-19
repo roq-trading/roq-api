@@ -17,6 +17,10 @@ static std::uniform_int_distribution<uint32_t> random_generator_uint32;
 static uint32_t rand_uint32() {
   return random_generator_uint32(random_engine);
 }
+static std::uniform_int_distribution<int64_t> random_generator_int64;
+static int64_t rand_int64() {
+  return random_generator_int64(random_engine);
+}
 static std::uniform_int_distribution<uint64_t> random_generator_uint64;
 static uint64_t rand_uint64() {
   return random_generator_uint64(random_engine);
@@ -99,12 +103,12 @@ inline common::HandshakeAck CreateRandomHandshakeAck() {
 }
 inline common::Heartbeat CreateRandomHeartbeat() {
   return common::Heartbeat {
-    .opaque = rand_time_point(),
+    .opaque = rand_int64(),
   };
 }
 inline common::HeartbeatAck CreateRandomHeartbeatAck() {
   return common::HeartbeatAck {
-    .opaque = rand_time_point(),
+    .opaque = rand_int64(),
   };
 }
 inline common::Ready CreateRandomReady() {
@@ -112,8 +116,8 @@ inline common::Ready CreateRandomReady() {
 }
 inline common::GatewayStatus CreateRandomGatewayStatus() {
   return common::GatewayStatus {
-    .market_data = rand_gateway_state(),
-    .order_management = rand_gateway_state(),
+    .name = NAME[rand_uint32() % NAME_LENGTH],
+    .status = rand_gateway_state(),
   };
 }
 inline common::MarketByPrice CreateRandomMarketByPrice() {
@@ -298,10 +302,11 @@ void compare(const common::Heartbeat& lhs, const common::Heartbeat& rhs) {
 void compare(const common::HeartbeatAck& lhs, const common::HeartbeatAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
-void compare(const common::Ready& lhs, const common::Ready& rhs) {}
+void compare(const common::Ready& lhs, const common::Ready& rhs) {
+}
 void compare(const common::GatewayStatus& lhs, const common::GatewayStatus& rhs) {
-  EXPECT_EQ(lhs.market_data, rhs.market_data);
-  EXPECT_EQ(lhs.order_management, rhs.order_management);
+  EXPECT_STREQ(lhs.name, rhs.name);
+  EXPECT_EQ(lhs.status, rhs.status);
 }
 void compare(const common::MarketByPrice& lhs, const common::MarketByPrice& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);

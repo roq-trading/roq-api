@@ -27,8 +27,10 @@ void GatewayManager::on(const TimerEvent& event) {
 }
 
 void GatewayManager::on(const quinclas::common::ConnectionStatusEvent& event) {
+  if (event.connection_status != ConnectionStatus::Connected) {
+    _market_data_ready = _order_manager_ready = false;
+  }
 }
-
 
 void GatewayManager::on(const BatchBeginEvent&) {
 }
@@ -41,8 +43,15 @@ void GatewayManager::on(const ReadyEvent&) {
 
 void GatewayManager::on(const GatewayStatusEvent& event) {
   const auto& gateway_status = event.gateway_status;
-  _order_manager_ready = gateway_status.order_management == GatewayState::Ready;
-  _market_data_ready = gateway_status.market_data == GatewayState::Ready;
+  // Check the status of each channel -- market data and order management.
+  // Note! We currently expose the name of the gateway internal channel.
+  // This is done because we do not yet know how many potential channels
+  // a gateway may have. We may replace the name with an enum later on!
+  if (std::strcmp(gateway_status.name, "MDUser") == 0) {
+    _market_data_ready = gateway_status.status == GatewayState::Ready;
+  } else if (std::strcmp(gateway_status.name, "Trader") == 0) {
+    _order_manager_ready = gateway_status.status == GatewayState::Ready;
+  }
   check(event.message_info);
 }
 

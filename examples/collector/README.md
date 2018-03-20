@@ -21,13 +21,13 @@ Fields
 
 For example, to collect market data from the Femas API
 
-	./example-collector --local-address /var/tmp/femasapi.sock
+	./example-collector --gateways test:1234@/var/tmp/femasapi.sock
 
 ## How do I debug?
 
 On Linux
 
-	libtool --mode=execute gdb --args ./example-collector --local-address /var/tmp/femasapi.sock
+	libtool --mode=execute gdb --args ./example-collector --gateways test:1234@/var/tmp/femasapi.sock
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
 is a good place to get started with debugging.

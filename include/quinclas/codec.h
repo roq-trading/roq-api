@@ -91,6 +91,10 @@ class Queue final {
   const std::vector<message_t> get() const {
     return _messages;
   }
+  void reset() {
+    _messages.clear();
+    _buffer.reset();
+  }
 
  private:
   Queue(Queue&) = delete;

@@ -424,6 +424,15 @@ class Controller final {
       std::string _uuid;
     };  // Gateway
 
+   private:
+    static std::string create_uuid() {
+#if defined(HAVE_CROSSGUID)
+      return xg::newGuid();
+#else
+      return "NO_CROSSGUID_LIB";
+#endif
+    }
+
    public:
     template <typename... Args>
     explicit Dispatcher(const gateways_t& gateways, Args&&... args)
@@ -431,11 +440,7 @@ class Controller final {
           _timer(_base, EV_PERSIST, [this](){ on_timer(); }),
           _next_refresh(std::chrono::steady_clock::now() + std::chrono::seconds(1)),
           _next_statistics(_next_refresh),
-#if defined(HAVE_CROSSGUID)
-          _uuid(xg::newGuid()) {
-#else
-          _uuid("NO_CROSSGUID_LIB") {
-#endif
+          _uuid(create_uuid()) {
       for (const auto& iter : gateways) {
         _gateways.emplace_back(iter.first,
             iter.second, _strategy, _base, _buffer, _encoder, _statistics, _callbacks, _uuid);

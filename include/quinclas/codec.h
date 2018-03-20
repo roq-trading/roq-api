@@ -178,7 +178,7 @@ class Writer final {
       bytes += buffer.add(&length, sizeof(length));
       bytes += buffer.add(iter.first, iter.second);
     }
-    assert(bytes == (HEADER_LENGTH + header.total_length));
+    LOG_IF(FATAL, bytes != (HEADER_LENGTH + header.total_length)) << "Internal error!";
   }
 
  private:

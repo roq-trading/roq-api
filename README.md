@@ -59,7 +59,7 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 ## Building
 
     ./autogen.sh
-    ./configure [--prefix=$PREFIX]
+    ./configure [--prefix=$PREFIX] [--enable-examples]
     make
     make install
 

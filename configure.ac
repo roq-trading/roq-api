@@ -149,6 +149,12 @@ PKG_CHECK_MODULES([UCL], [libucl], [], [
   AC_SUBST([UCL_LIBS], [-lucl])
 ])
 
+# Optionally enable examples.
+AC_ARG_ENABLE([examples], [
+  AC_HELP_STRING([--enable-examples], [build examples])
+], [], [enable_examples=no])
+AM_CONDITIONAL([ENABLE_EXAMPLES], [test "$enable_examples" = yes])
+
 # Initialize googletest.
 AC_CONFIG_SUBDIRS([googletest/googletest])
 AC_SUBST([GTEST_DIR], ['${top_builddir}/googletest/googletest'])

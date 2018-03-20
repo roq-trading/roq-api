@@ -168,7 +168,12 @@ table TradeUpdate {
 table PositionUpdate {
   exchange:string;
   instrument:string;
+  trade_direction:common.TradeDirection;
   position:double;
+  position_yesterday:double;
+  frozen_position:double;
+  frozen_closing:double;
+  frozen_closing_yesterday:double;
 }
 
 union EventData {

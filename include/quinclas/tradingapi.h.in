@@ -323,14 +323,19 @@ struct TradeUpdate {
   time_point_t trade_time;         ///< Trade time
 };
 
-
 /**
  * Position update.
  */
 struct PositionUpdate {
   const char *exchange;            ///< Exchange name
   const char *instrument;          ///< Instrument name
+  TradeDirection trade_direction;  ///< Trade direction
   double position;                 ///< Position.
+  // FIXME(thraneh): experimental
+  double position_yesterday;
+  double frozen_position;
+  double frozen_closing;
+  double frozen_closing_yesterday;
 };
 
 

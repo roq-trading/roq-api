@@ -258,7 +258,12 @@ inline common::PositionUpdate CreateRandomPositionUpdate() {
   return common::PositionUpdate {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .trade_direction = rand_trade_direction(),
     .position = rand_double(),
+    .position_yesterday = rand_double(),
+    .frozen_position = rand_double(),
+    .frozen_closing = rand_double(),
+    .frozen_closing_yesterday = rand_double(),
   };
 }
 }  // namespace
@@ -420,7 +425,12 @@ void compare(const common::TradeUpdate& lhs, const common::TradeUpdate& rhs) {
 void compare(const common::PositionUpdate& lhs, const common::PositionUpdate& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.position, rhs.position);
+  EXPECT_EQ(lhs.position_yesterday, rhs.position_yesterday);
+  EXPECT_EQ(lhs.frozen_position, rhs.frozen_position);
+  EXPECT_EQ(lhs.frozen_closing, rhs.frozen_closing);
+  EXPECT_EQ(lhs.frozen_closing_yesterday, rhs.frozen_closing_yesterday);
 }
 }  // namespace
 

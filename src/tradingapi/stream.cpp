@@ -269,7 +269,12 @@ std::ostream& operator<<(std::ostream& stream, const PositionUpdate& value) {
   return stream << "{"
     "exchange=\"" << value.exchange << "\", "
     "instrument=\"" << value.instrument << "\", "
-    "position=" << Number(value.position) <<
+    "trade_direction=" << value.trade_direction << ", "
+    "position=" << Number(value.position) << ", "
+    "position_yesterday=" << Number(value.position_yesterday) << ", "
+    "frozen_position=" << Number(value.frozen_position) << ", "
+    "frozen_closing=" << Number(value.frozen_closing) << ", "
+    "frozen_closing_yesterday=" << Number(value.frozen_closing_yesterday) <<
     "}";
 }
 

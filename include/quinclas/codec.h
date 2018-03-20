@@ -499,7 +499,12 @@ inline common::PositionUpdate convert(const schema::PositionUpdate *value) {
   return common::PositionUpdate {
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
+    .trade_direction = value->trade_direction(),
     .position = value->position(),
+    .position_yesterday = value->position_yesterday(),
+    .frozen_position = value->frozen_position(),
+    .frozen_closing = value->frozen_closing(),
+    .frozen_closing_yesterday = value->frozen_closing_yesterday(),
   };
 }
 
@@ -731,7 +736,12 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::PositionUpdate& value
     fbb,
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.instrument),
-    value.position);
+    value.trade_direction,
+    value.position,
+    value.position_yesterday,
+    value.frozen_position,
+    value.frozen_closing,
+    value.frozen_closing_yesterday);
 }
 
 

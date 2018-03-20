@@ -108,7 +108,7 @@ Here is an example of how to set up your own Conda environment, install a packag
     conda install -y quinclas-tradingapi
 
     # you should now be able to run an example, like this
-    example-strategy --local-address /var/tmp/gateway.sock
+    example-strategy --gateways femasapi=test:1234@/var/tmp/femasapi.sock
 
 Of course, you will likely be interested in developing your own strategies.
 

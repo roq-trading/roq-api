@@ -13,13 +13,13 @@ Sends an order when both of these conditions are met
 
 For example, to execute the strategy using the Femas API
 
-	./example-strategy --local-address /var/tmp/femasapi.sock
+	./example-strategy --gateways femasapi=test:1234@/var/tmp/femasapi.sock
 
 ## How do I debug?
 
 On Linux
 
-	libtool --mode=execute gdb --args ./example-strategy --local-address /var/tmp/femasapi.sock
+	libtool --mode=execute gdb --args ./example-strategy --gateways femasapi=test:1234@/var/tmp/femasapi.sock
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
 is a good place to get started with debugging.

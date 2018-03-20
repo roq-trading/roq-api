@@ -18,7 +18,9 @@
 #include <unordered_set>
 #include <vector>
 
+#if defined(HAVE_CROSSGUID)
 #include <crossguid/guid.hpp>
+#endif
 
 namespace quinclas {
 namespace client {
@@ -429,7 +431,11 @@ class Controller final {
           _timer(_base, EV_PERSIST, [this](){ on_timer(); }),
           _next_refresh(std::chrono::steady_clock::now() + std::chrono::seconds(1)),
           _next_statistics(_next_refresh),
+#if defined(HAVE_CROSSGUID)
           _uuid(xg::newGuid()) {
+#else
+          _uuid("NO_CROSSGUID_LIB") {
+#endif
       for (const auto& iter : gateways) {
         _gateways.emplace_back(iter.first,
             iter.second, _strategy, _base, _buffer, _encoder, _statistics, _callbacks, _uuid);

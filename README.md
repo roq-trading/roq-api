@@ -87,13 +87,13 @@ Third-party dependencies (including open sourced solutions) have been packaged b
 Here is an example of how to set up your own Conda environment, install a package, and execute a binary.
 
     # download the installer
-    wget -c http://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
+    wget -c http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
     # install miniconda to your home directory
-    bash Miniconda2-latest-Linux-x86_64.sh -b -p ~/miniconda2
+    bash Miniconda2-latest-Linux-x86_64.sh -b -p ~/miniconda3
 
     # activate the root environment
-    source ~/miniconda2/bin/activate
+    source ~/miniconda3/bin/activate
 
     # add the quinclas package channel
     conda config --add channels http://quinclas.com/dist/conda/unstable

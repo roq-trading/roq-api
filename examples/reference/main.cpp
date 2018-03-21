@@ -21,7 +21,7 @@ DEFINE_string(mode, "",
 DEFINE_string(gateways, "",
     "List of gateway connection details. "
     "Comma separated. "
-    "For example: \"femas=unix:/var/tmp/femasapi.sock\".");
+    "For example: \"femas=user:password@:/var/tmp/femasapi.sock\".");
 
 DEFINE_string(simulation_file, "",
     "Simulation file (path)");

@@ -20,5 +20,12 @@ example_collector_CPPFLAGS = \
 	$(LIBEVENT_CFLAGS) \
 	$(LIBUNWIND_CFLAGS) \
 	$(SPDLOG_CFLAGS)
-example_collector_SOURCES = collector.cpp main.cpp
-EXTRA_example_collector_SOURCES = collector.h
+example_collector_SOURCES = \
+	collector.cpp \
+	csv_reader.cpp \
+	generator.cpp \
+	main.cpp
+EXTRA_example_collector_SOURCES = \
+	collector.h \
+	csv_reader.h \
+	generator.h

@@ -21,13 +21,15 @@ Fields
 
 For example, to collect market data from the Femas API
 
-	./example-collector --gateways femasapi=test:1234@/var/tmp/femasapi.sock
+	./example-collector --mode simulation --simulation-file USTP_Multi_20180223.csv
+	./example-collector --mode-trading --gateways femasapi=test:1234@/var/tmp/femasapi.sock
 
 ## How do I debug?
 
 On Linux
 
-	libtool --mode=execute gdb --args ./example-collector --gateways femasapi=test:1234@/var/tmp/femasapi.sock
+	libtool --mode=execute gdb --args ./example-collector --mode simulation --simulation-file USTP_Multi_20180223.csv
+	libtool --mode=execute gdb --args ./example-collector --mode-trading --gateways femasapi=test:1234@/var/tmp/femasapi.sock
 
 This [link](https://www.gnu.org/software/libtool/manual/html_node/Debugging-executables.html)
 is a good place to get started with debugging.

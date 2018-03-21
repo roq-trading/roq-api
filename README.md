@@ -90,7 +90,7 @@ Here is an example of how to set up your own Conda environment, install a packag
     wget -c http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
     # install miniconda to your home directory
-    bash Miniconda2-latest-Linux-x86_64.sh -b -p ~/miniconda3
+    bash Miniconda3-latest-Linux-x86_64.sh -b -p ~/miniconda3
 
     # activate the root environment
     source ~/miniconda3/bin/activate

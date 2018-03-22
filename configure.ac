@@ -59,7 +59,14 @@ PKG_CHECK_MODULES([CROSSGUID], [crossguid], [], [
     [
       AC_SUBST([CROSSGUID_CFLAGS])
       AC_DEFINE([HAVE_CROSSGUID], 1)
-      AC_SUBST([CROSSGUID_LIBS], ['-lcrossguid -luuid'])
+      case $host_os in
+      darwin* )
+        AC_SUBST([CROSSGUID_LIBS], ['-lcrossguid -framework CoreFoundation'])
+        ;;
+      * )
+        AC_SUBST([CROSSGUID_LIBS], ['-lcrossguid -luuid'])
+        ;;
+      esac
     ],
     [
      AC_MSG_WARN([unable to find crossguid header files])

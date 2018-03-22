@@ -14,7 +14,7 @@ AC_CONFIG_FILES([
  include/quinclas/Makefile
  src/Makefile
  src/tradingapi/Makefile
- tests/Makefile
+ test/Makefile
  examples/Makefile
  examples/strategy/Makefile
  examples/collector/Makefile
@@ -163,8 +163,8 @@ AC_ARG_ENABLE([examples], [
 AM_CONDITIONAL([ENABLE_EXAMPLES], [test "$enable_examples" = yes])
 
 # Initialize googletest.
-AC_CONFIG_SUBDIRS([googletest/googletest])
-AC_SUBST([GTEST_DIR], ['${top_builddir}/googletest/googletest'])
+AC_CONFIG_SUBDIRS([third_party/googletest/googletest])
+AC_SUBST([GTEST_DIR], ['${top_builddir}/third_party/googletest/googletest'])
 AC_SUBST([GTEST_CFLAGS], ['-I${GTEST_DIR}/include'])
 AC_SUBST([GTEST_LIBS], ['${GTEST_DIR}/lib/libgtest.la ${GTEST_DIR}/lib/libgtest_main.la'])
 

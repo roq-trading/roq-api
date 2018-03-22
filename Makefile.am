@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = . include src tests
+SUBDIRS = . include src test
 
 if ENABLE_EXAMPLES
 SUBDIRS += examples
@@ -17,7 +17,7 @@ check-local:
 .PHONY: lint
 
 lint:
-	cpplint --linelength=120 --recursive include/ src/ tests/ examples/
+	cpplint --linelength=120 --recursive include/ src/ test/ examples/
 
 cppcheck:
 	cppcheck --language=c++ --std=c++11 include/ examples/

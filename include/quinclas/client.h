@@ -157,6 +157,7 @@ class Controller final {
             return reset();
           default:
             LOG(FATAL) << "Should never get here!";
+            std::abort();  // FIXME(thraneh): avoid compiler warnings until LOG(FATAL) has been fixed
         }
       }
       void send(common::Queue& queue, bool internal) {

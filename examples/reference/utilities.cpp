@@ -25,6 +25,7 @@ double sign(const quinclas::common::TradeDirection direction) {
       return -1.0;
     default:
       LOG(FATAL) << "Received unknown trade direction!";
+      std::abort();  // FIXME(thraneh): avoid compiler warnings until LOG(FATAL) has been fixed
   }
 }
 

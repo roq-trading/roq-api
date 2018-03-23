@@ -23,7 +23,7 @@ class Collector final : public quinclas::common::Strategy {
     std::string instrument;
     quinclas::common::time_point_t exchange_time;
     quinclas::common::time_point_t receive_time;
-    quinclas::common::Layer top_of_book = {};
+    quinclas::common::Layer depth[5] = {};
     double price = 0.0;
     double volume = 0.0;
     double turnover = 0.0;

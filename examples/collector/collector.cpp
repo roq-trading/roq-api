@@ -14,6 +14,9 @@ namespace examples {
 namespace collector {
 
 namespace {
+const char *MISSING = "NaN";
+const char *UPDATE_NAME = "USTP_L2";
+const char *UPDATE_TYPE = "1";
 const char *DELIMITER = ",";
 const char *TIME_FORMAT = "%E4Y-%m-%dT%H:%M:%E6S";
 const auto TIME_ZONE = cctz::utc_time_zone();
@@ -48,11 +51,13 @@ Collector::State& Collector::get(const std::string& instrument) {
 void Collector::State::update(
     const quinclas::common::MarketByPriceEvent& event) {
   exchange_time = event.market_by_price.exchange_time;
-  receive_time = event.message_info.client_receive_time;
-  std::memcpy(
-      &top_of_book,
-      &event.market_by_price.depth[0],
-      sizeof(top_of_book));
+  receive_time = event.message_info.source_create_time;
+  for (size_t i = 0; i < sizeof(depth) / sizeof(depth[0]); ++i) {
+    std::memcpy(
+        &depth[i],
+        &event.market_by_price.depth[i],
+        sizeof(depth[i]));
+  }
 }
 
 void Collector::State::update(
@@ -66,16 +71,44 @@ void Collector::State::update(
 
 std::ostream& operator<<(std::ostream& stream, Collector::State& state) {
   return stream <<
+    state.instrument << DELIMITER <<
     state.exchange_time << DELIMITER <<
     state.receive_time << DELIMITER <<
-    state.instrument << DELIMITER <<
-    state.top_of_book.bid_price << DELIMITER <<
-    state.top_of_book.bid_quantity << DELIMITER <<
-    state.top_of_book.ask_price << DELIMITER <<
-    state.top_of_book.ask_quantity << DELIMITER <<
+    state.depth[0].ask_price << DELIMITER <<
+    state.depth[0].ask_quantity << DELIMITER <<
+    state.depth[0].bid_price << DELIMITER <<
+    state.depth[0].bid_quantity << DELIMITER <<
+    state.depth[1].ask_price << DELIMITER <<
+    state.depth[1].ask_quantity << DELIMITER <<
+    state.depth[1].bid_price << DELIMITER <<
+    state.depth[1].bid_quantity << DELIMITER <<
+    state.depth[2].ask_price << DELIMITER <<
+    state.depth[2].ask_quantity << DELIMITER <<
+    state.depth[2].bid_price << DELIMITER <<
+    state.depth[2].bid_quantity << DELIMITER <<
+    state.depth[3].ask_price << DELIMITER <<
+    state.depth[3].ask_quantity << DELIMITER <<
+    state.depth[3].bid_price << DELIMITER <<
+    state.depth[3].bid_quantity << DELIMITER <<
+    state.depth[4].ask_price << DELIMITER <<
+    state.depth[4].ask_quantity << DELIMITER <<
+    state.depth[4].bid_price << DELIMITER <<
+    state.depth[4].bid_quantity << DELIMITER <<
+    MISSING << DELIMITER <<  // high price
     state.price << DELIMITER <<
+    MISSING << DELIMITER <<  // low price
+    MISSING << DELIMITER <<  // lower limit price
+    MISSING << DELIMITER <<  // upper limit price
+    MISSING << DELIMITER <<  // low price
+    MISSING << DELIMITER <<  // open interest
+    MISSING << DELIMITER <<  // open price
+    MISSING << DELIMITER <<  // pre-close price
+    MISSING << DELIMITER <<  // pre-open price
+    MISSING << DELIMITER <<  // pre-settlement price
+    state.turnover << DELIMITER <<
     state.volume << DELIMITER <<
-    state.turnover;
+    UPDATE_NAME << DELIMITER <<
+    UPDATE_TYPE;
 }
 
 }  // namespace collector

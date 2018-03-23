@@ -1,4 +1,4 @@
-m4_include(scripts/m4/ax_cxx_compile_stdcxx.m4)  # https://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx.html
+m4_include(m4/ax_cxx_compile_stdcxx.m4)  # https://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx.html
 
 AC_INIT([Quinclas TradingAPI],
         [0.1],
@@ -6,7 +6,7 @@ AC_INIT([Quinclas TradingAPI],
         [quinclas-tradingapi])
 
 AC_PREREQ([2.59])
-AC_CONFIG_MACRO_DIR([scripts/m4])
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_FILES([
  Makefile

@@ -296,6 +296,9 @@ inline common::SourceInfo convert(const schema::SourceInfo *value) {
 inline common::Handshake convert(const schema::Handshake *value) {
   common::Handshake result {
     .api_version = value->api_version()->c_str(),
+    .application = value->application()->c_str(),
+    .hostname = value->hostname()->c_str(),
+    .pid = value->pid(),
     .uuid = value->uuid()->c_str(),
     .login = value->login()->c_str(),
     .password = value->password()->c_str(),
@@ -311,6 +314,10 @@ inline common::Handshake convert(const schema::Handshake *value) {
 
 inline common::HandshakeAck convert(const schema::HandshakeAck *value) {
   return common::HandshakeAck {
+    .api_version = value->api_version()->c_str(),
+    .application = value->application()->c_str(),
+    .hostname = value->hostname()->c_str(),
+    .pid = value->pid(),
     .failure = value->failure(),
     .failure_reason = value->failure_reason()->c_str(),
     .server_uuid = value->server_uuid()->c_str(),
@@ -528,6 +535,9 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const common::Handshake& value) {
   return schema::CreateHandshake(
     fbb,
     fbb.CreateString(value.api_version),
+    fbb.CreateString(value.application),
+    fbb.CreateString(value.hostname),
+    value.pid,
     fbb.CreateString(value.uuid),
     fbb.CreateString(value.login),
     fbb.CreateString(value.password),
@@ -538,6 +548,10 @@ inline flatbuffers::Offset<schema::HandshakeAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const common::HandshakeAck& value) {
   return schema::CreateHandshakeAck(
     fbb,
+    fbb.CreateString(value.api_version),
+    fbb.CreateString(value.application),
+    fbb.CreateString(value.hostname),
+    value.pid,
     value.failure,
     fbb.CreateString(value.failure_reason),
     fbb.CreateString(value.server_uuid),

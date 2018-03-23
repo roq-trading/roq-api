@@ -79,6 +79,9 @@ std::ostream& operator<<(std::ostream& stream, const Layer& value) {
 std::ostream& operator<<(std::ostream& stream, const Handshake& value) {
   return stream << "{"
     "api_version=\"" << value.api_version << "\", "
+    "application=\"" << value.application << "\", "
+    "hostname=\"" << value.hostname << "\", "
+    "pid=" << value.pid << ", "
     "uuid=\"" << value.uuid << "\", "
     "login=\"" << value.login << "\", "
     "password=\"***\", "
@@ -88,6 +91,10 @@ std::ostream& operator<<(std::ostream& stream, const Handshake& value) {
 
 std::ostream& operator<<(std::ostream& stream, const HandshakeAck& value) {
   return stream << "{"
+    "api_version=\"" << value.api_version << "\", "
+    "application=\"" << value.application << "\", "
+    "hostname=\"" << value.hostname << "\", "
+    "pid=" << value.pid << ", "
     "failure=" << (value.failure ? "true" : "false") << ", "
     "failure_reason=\"" << value.failure_reason << "\", "
     "server_uuid=\"" << value.server_uuid << "\", "

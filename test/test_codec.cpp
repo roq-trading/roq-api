@@ -83,6 +83,9 @@ inline common::SourceInfo CreateRandomSourceInfo() {
 inline common::Handshake CreateRandomHandshake() {
   return common::Handshake {
     .api_version = NAME[rand_uint32() % NAME_LENGTH],
+    .application = NAME[rand_uint32() % NAME_LENGTH],
+    .hostname = NAME[rand_uint32() % NAME_LENGTH],
+    .pid = rand_uint32(),
     .uuid = NAME[rand_uint32() % NAME_LENGTH],
     .login = NAME[rand_uint32() % NAME_LENGTH],
     .password = NAME[rand_uint32() % NAME_LENGTH],
@@ -91,6 +94,10 @@ inline common::Handshake CreateRandomHandshake() {
 }
 inline common::HandshakeAck CreateRandomHandshakeAck() {
   return common::HandshakeAck {
+    .api_version = NAME[rand_uint32() % NAME_LENGTH],
+    .application = NAME[rand_uint32() % NAME_LENGTH],
+    .hostname = NAME[rand_uint32() % NAME_LENGTH],
+    .pid = rand_uint32(),
     .failure = rand_bool(),
     .failure_reason = NAME[rand_uint32() % NAME_LENGTH],
     .server_uuid = NAME[rand_uint32() % NAME_LENGTH],
@@ -286,12 +293,19 @@ void compare(const common::SourceInfo& lhs, const common::SourceInfo& rhs) {
 }
 void compare(const common::Handshake& lhs, const common::Handshake& rhs) {
   EXPECT_STREQ(lhs.api_version, rhs.api_version);
+  EXPECT_STREQ(lhs.application, rhs.application);
+  EXPECT_STREQ(lhs.hostname, rhs.hostname);
+  EXPECT_EQ(lhs.pid, rhs.pid);
   EXPECT_STREQ(lhs.uuid, rhs.uuid);
   EXPECT_STREQ(lhs.login, rhs.login);
   EXPECT_STREQ(lhs.password, rhs.password);
   // TODO(thraneh): subscriptions
 }
 void compare(const common::HandshakeAck& lhs, const common::HandshakeAck& rhs) {
+  EXPECT_STREQ(lhs.api_version, rhs.api_version);
+  EXPECT_STREQ(lhs.application, rhs.application);
+  EXPECT_STREQ(lhs.hostname, rhs.hostname);
+  EXPECT_EQ(lhs.pid, rhs.pid);
   EXPECT_EQ(lhs.failure, rhs.failure);
   EXPECT_STREQ(lhs.failure_reason, rhs.failure_reason);
   EXPECT_STREQ(lhs.server_uuid, rhs.server_uuid);

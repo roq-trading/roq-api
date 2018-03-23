@@ -5,6 +5,7 @@
 #include <quinclas/codec.h>
 #include <quinclas/libevent.h>
 #include <quinclas/logging.h>
+#include <quinclas/platform.h>
 #include <quinclas/tradingapi.h>
 
 #include <algorithm>
@@ -214,8 +215,13 @@ class Controller final {
         VLOG(1) << "[" << _name << "] ConnectionStatusEvent " << event;
         _strategy.on(event);
         ++_statistics.connections_succeeded;
+        auto application = platform::get_program();
+        auto hostname = platform::get_hostname();
         common::Handshake handshake {
           .api_version = QUINCLAS_VERSION,
+          .application = application.c_str(),  // TODO(thraneh): controller argument
+          .hostname = hostname.c_str(),
+          .pid = static_cast<uint32_t>(platform::get_pid()),
           .uuid = _uuid.c_str(),
           .login = _connection.get_user().c_str(),
           .password = _connection.get_password().c_str(),

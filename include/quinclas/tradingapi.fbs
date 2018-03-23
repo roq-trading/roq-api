@@ -9,6 +9,9 @@ table SourceInfo {
 
 table Handshake {
   api_version:string;
+  application:string;
+  hostname:string;
+  pid:uint;
   uuid:string;
   login:string;
   password:string;
@@ -16,6 +19,10 @@ table Handshake {
 }
 
 table HandshakeAck {
+  api_version:string;
+  application:string;
+  hostname:string;
+  pid:uint;
   failure:bool;
   failure_reason:string;
   server_uuid:string;

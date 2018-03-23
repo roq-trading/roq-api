@@ -75,6 +75,9 @@ struct MessageInfo {
  */
 struct Handshake {
   const char *api_version;  ///< QUINCLAS_VERSION
+  const char *application;  ///< Application descriptive name.
+  const char *hostname;     ///< Descriptive hostname.
+  uint32_t pid;             ///< Process identifier.
   const char *uuid;         ///< GUID uniquely identifying the client process.
   const char *login;        ///< Login name.
   const char *password;     ///< Login password.
@@ -96,6 +99,10 @@ struct Handshake {
  * ready message has been received.
  */
 struct HandshakeAck {
+  const char *api_version;      ///< QUINCLAS_VERSION
+  const char *application;      ///< Application descriptive name.
+  const char *hostname;         ///< Descriptive hostname.
+  uint32_t pid;                 ///< Process identifier.
   bool failure;                 ///< Handshake failure?
   const char *failure_reason;   ///< Reason for the failure.
   const char *server_uuid;      ///< GUID uniquely identifying the source process.

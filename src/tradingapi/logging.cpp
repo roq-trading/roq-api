@@ -8,16 +8,11 @@
 #include <cxxabi.h>
 #include <signal.h>
 
-#if defined(__linux__)
-#elif defined(__APPLE__)
-#include <mach-o/dyld.h>
-#include <libgen.h>
-#include <sys/syslimits.h>
-#endif
-
 #include <cctz/time_zone.h>
 // FIXME(thraneh): only do this when configure has detected spdlog
 #include <spdlog/spdlog.h>
+
+#include <quinclas/platform.h>
 
 #include <chrono>
 #include <fstream>
@@ -25,39 +20,6 @@
 #include <iostream>
 
 namespace {
-
-// TODO(thraneh): cross-platform, e.g. SO1023306
-static std::string get_program() {
-#if defined(__linux__)
-  std::ifstream comm("/proc/self/comm");
-  std::string name;
-  std::getline(comm, name);
-  return name;
-#elif defined(__APPLE__)
-  char buffer[PATH_MAX];
-  uint32_t size = sizeof(buffer);
-  if (_NSGetExecutablePath(buffer, &size) == 0)
-    return basename(buffer);
-  else
-    return "<program>";
-#else
-#error "Don't know how to find program name"
-#endif
-}
-
-static std::string get_hostname() {
-  char buffer[256];  // gethostname(2)
-  if (gethostname(buffer, sizeof(buffer)) < 0)
-    return "<hostname>";
-  return buffer;
-}
-
-static std::string get_username() {
-  char buffer[33];  // SF294121
-  if (getlogin_r(buffer, sizeof(buffer)) != 0)
-    return "<username>";
-  return buffer;
-}
 
 static std::string get_date_time() {
   return cctz::format(
@@ -155,7 +117,7 @@ spdlog::logger *spdlog_logger = nullptr;
 }  // namespace detail
 
 std::string Logger::get_argv0() {
-  return get_program();
+  return platform::get_program();
 }
 
 #if !defined(QUINCLAS_GLOG)
@@ -164,9 +126,9 @@ std::string Logger::get_filename() {
   auto log_dir = std::getenv("GLOG_log_dir");
   if (isatty(fileno(stdin)) && (log_dir == nullptr || strlen(log_dir) == 0))
       return "";
-  auto program = get_program();
-  auto hostname = get_hostname();
-  auto username = get_username();
+  auto program = platform::get_program();
+  auto hostname = platform::get_hostname();
+  auto username = platform::get_username();
   auto date_time = get_date_time();
   // glog uses <program>.<hostname>.<user>.log.<severity>.<date>.<time>.<pid>
   std::stringstream buffer;

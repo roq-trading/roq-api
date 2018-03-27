@@ -14,7 +14,7 @@ namespace examples {
 namespace collector {
 
 namespace {
-const char *MISSING = "NaN";
+const char *MISSING = "nan";
 const char *UPDATE_NAME = "USTP_L2";
 const char *UPDATE_TYPE = "1";
 const char *DELIMITER = ",";

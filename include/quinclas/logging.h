@@ -65,6 +65,7 @@ extern spdlog::logger *spdlog_logger;
 // FIXME(thraneh): SO26888805 [[noreturn]]
 #define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){  \
     ::quinclas::logging::detail::spdlog_logger->critical(message); \
+    ::quinclas::logging::detail::spdlog_logger->flush(); \
     std::abort(); })
 #else
 #define LOG_INFO(logger) RAW_LOG(logger, [](const char *message){  \
@@ -75,7 +76,8 @@ extern spdlog::logger *spdlog_logger;
     std::cerr << "E " << message; })
 // FIXME(thraneh): SO26888805 [[noreturn]]
 #define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){  \
-    std::cerr << "F " << message; std::abort(); })
+    std::cerr << "F " << message; \
+    std::abort(); })
 #endif
 #define LOG(level) LOG_ ## level(::quinclas::logging::detail::LogMessage)
 #define LOG_IF(level, condition) \
@@ -204,7 +206,10 @@ class Logger {
     google::ShutdownGoogleLogging();
 #elif defined(QUINCLAS_SPDLOG)
     // note! not thread-safe
-    ::quinclas::logging::detail::spdlog_logger = nullptr;
+    if (::quinclas::logging::detail::spdlog_logger) {
+      ::quinclas::logging::detail::spdlog_logger->flush();
+      ::quinclas::logging::detail::spdlog_logger = nullptr;
+    }
     spdlog::drop_all();
 #else
 #endif

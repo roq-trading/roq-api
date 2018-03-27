@@ -9,6 +9,8 @@
 #include "collector/collector.h"
 #include "collector/generator.h"
 
+#include <signal.h>
+
 DEFINE_string(mode, "",
     "Mode of operation (trading|simulation)");
 

@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <signal.h>
+
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
 #include <event2/dns.h>
@@ -86,6 +88,7 @@ class Base final {
   Base() : _base(event_base_new()) {
     if (_base == nullptr)
       throw RuntimeError("event_base_new");
+    signal(SIGPIPE, SIG_IGN);  // common enough to place here
   }
   ~Base() {
     if (_base != nullptr)

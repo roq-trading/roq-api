@@ -11,8 +11,8 @@
 #include <event2/http.h>
 #include <event2/listener.h>
 
-#include <quinclas/logging.h>
-#include <quinclas/net.h>
+#include <roq/logging.h>
+#include <roq/net.h>
 
 #include <chrono>
 #include <cstring>
@@ -20,7 +20,7 @@
 #include <string>
 #include <utility>
 
-namespace quinclas {
+namespace roq {
 namespace libevent {
 
 // generic utilities
@@ -586,4 +586,4 @@ class HTTP final {
 };
 
 }  // namespace libevent
-}  // namespace quinclas
+}  // namespace roq

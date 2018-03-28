@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <quinclas/tradingapi.h>
+#include <roq/api.h>
 
 #include <chrono>
 #include <list>
@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 
-namespace quinclas {
+namespace roq {
 namespace simulation {
 
 // Generator
@@ -92,4 +92,4 @@ class Controller final {
 };  // Controller
 
 }  // namespace simulation
-}  // namespace quinclas
+}  // namespace roq

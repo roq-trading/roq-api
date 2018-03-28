@@ -13,7 +13,7 @@
 #include <fstream>
 #include <string>
 
-namespace quinclas {
+namespace roq {
 namespace platform {
 
 inline pid_t get_pid() {
@@ -54,4 +54,4 @@ inline std::string get_program() {
 }
 
 }  // namespace platform
-}  // namespace quinclas
+}  // namespace roq

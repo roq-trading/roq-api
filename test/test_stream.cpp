@@ -3,12 +3,12 @@
 #include <gtest/gtest.h>
 #include <limits>
 #include <sstream>
-#include "quinclas/tradingapi.h"
+#include "roq/api.h"
 
-using namespace quinclas;  // NOLINT
+using namespace roq;  // NOLINT
 
 TEST(stream, double_conversion_1) {
-  quinclas::common::Layer layer = {
+  common::Layer layer = {
       1.234,
       1234.0,
       1.234e10,
@@ -22,7 +22,7 @@ TEST(stream, double_conversion_1) {
 }
 
 TEST(stream, double_conversion_2) {
-  quinclas::common::Layer layer = {
+  common::Layer layer = {
       0.0,
       -0.0,
       std::numeric_limits<double>::quiet_NaN(),

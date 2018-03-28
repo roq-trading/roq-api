@@ -1,9 +1,9 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "reference/gateway_manager.h"
-#include <quinclas/logging.h>
+#include <roq/logging.h>
 
-using namespace quinclas::common;  // NOLINT
+using namespace roq::common;  // NOLINT
 
 namespace examples {
 namespace reference {
@@ -11,7 +11,7 @@ namespace reference {
 // constructor
 
 GatewayManager::GatewayManager(
-    quinclas::common::Strategy::Dispatcher& dispatcher,
+    roq::common::Strategy::Dispatcher& dispatcher,
     Config&& config)
     : _dispatcher(dispatcher), _config(std::move(config)),
       _risk_manager(_config, _position_manager),
@@ -26,7 +26,7 @@ void GatewayManager::on(const TimerEvent& event) {
   // check(event.message_info);
 }
 
-void GatewayManager::on(const quinclas::common::ConnectionStatusEvent& event) {
+void GatewayManager::on(const roq::common::ConnectionStatusEvent& event) {
   if (event.connection_status != ConnectionStatus::Connected) {
     _market_data_ready = _order_manager_ready = false;
   }
@@ -112,12 +112,12 @@ void GatewayManager::on(const TradeUpdateEvent& event) {
   check(event.message_info);
 }
 
-void GatewayManager::on(const quinclas::common::PositionUpdateEvent& event) {
+void GatewayManager::on(const roq::common::PositionUpdateEvent& event) {
 }
 
 // state management
 
-void GatewayManager::check(const quinclas::common::MessageInfo& message_info) {
+void GatewayManager::check(const roq::common::MessageInfo& message_info) {
   // consistency check
   auto current_time = message_info.client_receive_time;
   LOG_IF(FATAL, _last_update_time < current_time) << "Wrong sequencing!";

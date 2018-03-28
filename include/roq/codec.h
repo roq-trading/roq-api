@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include <quinclas/tradingapi.h>
-#include <quinclas/logging.h>
+#include <roq/api.h>
+#include <roq/logging.h>
 
-#include <quinclas/libevent.h>
+#include <roq/libevent.h>
 
 #include <cassert>
 
@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-namespace quinclas {
+namespace roq {
 namespace common {
 
 
@@ -1214,4 +1214,4 @@ class EventDispatcher final {
 };
 
 }  // namespace common
-}  // namespace quinclas
+}  // namespace roq

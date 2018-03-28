@@ -2,7 +2,7 @@
 
 #include "reference/config_reader.h"
 
-#include <quinclas/logging.h>
+#include <roq/logging.h>
 
 #include <fstream>
 #include <string>

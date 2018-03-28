@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include <quinclas/codec.h>
-#include <quinclas/libevent.h>
-#include <quinclas/logging.h>
-#include <quinclas/platform.h>
-#include <quinclas/tradingapi.h>
+#include <roq/api.h>
+#include <roq/codec.h>
+#include <roq/libevent.h>
+#include <roq/logging.h>
+#include <roq/platform.h>
 
 #include <algorithm>
 #include <chrono>
@@ -23,7 +23,7 @@
 #include <crossguid/guid.hpp>
 #endif
 
-namespace quinclas {
+namespace roq {
 namespace client {
 
 // Connection
@@ -218,7 +218,7 @@ class Controller final {
         auto application = platform::get_program();
         auto hostname = platform::get_hostname();
         common::Handshake handshake {
-          .api_version = QUINCLAS_VERSION,
+          .api_version = ROQ_VERSION,
           .application = application.c_str(),  // TODO(thraneh): controller argument
           .hostname = hostname.c_str(),
           .pid = static_cast<uint32_t>(platform::get_pid()),
@@ -581,4 +581,4 @@ class Controller final {
 };  // Controller
 
 }  // namespace client
-}  // namespace quinclas
+}  // namespace roq

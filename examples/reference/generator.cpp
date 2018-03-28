@@ -2,11 +2,11 @@
 
 #include "reference/generator.h"
 
-#include <quinclas/logging.h>
+#include <roq/logging.h>
 
 #include <limits>
 
-using namespace quinclas::common;  // NOLINT
+using namespace roq::common;  // NOLINT
 
 namespace examples {
 namespace reference {
@@ -35,7 +35,7 @@ std::pair<bool, std::chrono::system_clock::time_point> Generator::fetch() {
   return std::make_pair(true, _receive_time);
 }
 
-void Generator::dispatch(quinclas::common::Strategy& strategy) {
+void Generator::dispatch(roq::common::Strategy& strategy) {
   auto symbol = _csv_reader.get_string(0);
   auto exchange_time = _csv_reader.get_time_point(1, TIME_FORMAT_FILE);
   auto receive_time = _csv_reader.get_time_point(2, TIME_FORMAT_FILE);
@@ -79,7 +79,7 @@ void Generator::dispatch(quinclas::common::Strategy& strategy) {
     .price = _csv_reader.get_number(24),
     .volume = _csv_reader.get_number(34),
     .turnover = _csv_reader.get_number(33),
-    .direction = quinclas::common::TradeDirection::Undefined,
+    .direction = roq::common::TradeDirection::Undefined,
     .exchange_time = exchange_time,
     .channel = L2_TOPIC_ID,
   };

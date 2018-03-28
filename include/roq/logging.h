@@ -6,29 +6,29 @@
 // borrows heavily from what is used by glog and Easylogging++.
 
 // Define a default logger.
-#if !defined(QUINCLAS_SPDLOG) && \
-    !defined(QUINCLAS_STDLOG) && \
-    !defined(QUINCLAS_GLOG)
-#define QUINCLAS_SPDLOG
+#if !defined(ROQ_SPDLOG) && \
+    !defined(ROQ_STDLOG) && \
+    !defined(ROQ_GLOG)
+#define ROQ_SPDLOG
 #endif
 
 // Using glog (Google's logging framework).
-#if defined(QUINCLAS_GLOG)
+#if defined(ROQ_GLOG)
 #include <glog/logging.h>
 
 // Using spdlog (a lock-free asynchronous logging framework).
-#elif defined(QUINCLAS_SPDLOG)
+#elif defined(ROQ_SPDLOG)
 #include <spdlog/spdlog.h>
 
 // Fallback to stdout/stderr.
 #else
-#if !defined(QUINCLAS_STDLOG)
-#define QUINCLAS_STDLOG
+#if !defined(ROQ_STDLOG)
+#define ROQ_STDLOG
 #endif
 #endif
 
 // Always defined because we must support multiple logging backends.
-namespace quinclas {
+namespace roq {
 namespace logging {
 namespace detail {
 #define MESSAGE_BUFFER_SIZE 4096
@@ -37,35 +37,35 @@ extern bool newline;
 extern uint32_t verbosity;
 }  // namespace detail
 }  // namespace logging
-}  // namespace quinclas
+}  // namespace roq
 
 // Implement an interface supporting C++ streams.
-#if !defined(QUINCLAS_GLOG)
+#if !defined(ROQ_GLOG)
 #include <cstdlib>
 #include <cstring>
 #include <functional>
 #include <iostream>
 #include <sstream>
 #include <string>
-namespace quinclas {
+namespace roq {
 namespace logging {
 namespace detail {
 typedef std::function<void(const char *)> sink_t;
 // SO8487986
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 #define RAW_LOG(logger, sink) logger(__FILENAME__, __LINE__, sink).stream()
-#if defined(QUINCLAS_SPDLOG)
+#if defined(ROQ_SPDLOG)
 extern spdlog::logger *spdlog_logger;
 #define LOG_INFO(logger) RAW_LOG(logger, [](const char *message){ \
-    ::quinclas::logging::detail::spdlog_logger->info(message); })
+    ::roq::logging::detail::spdlog_logger->info(message); })
 #define LOG_WARNING(logger) RAW_LOG(logger, [](const char *message){  \
-    ::quinclas::logging::detail::spdlog_logger->warn(message); })
+    ::roq::logging::detail::spdlog_logger->warn(message); })
 #define LOG_ERROR(logger) RAW_LOG(logger, [](const char *message){  \
-    ::quinclas::logging::detail::spdlog_logger->error(message); })
+    ::roq::logging::detail::spdlog_logger->error(message); })
 // FIXME(thraneh): SO26888805 [[noreturn]]
 #define LOG_FATAL(logger) RAW_LOG(logger, [](const char *message){  \
-    ::quinclas::logging::detail::spdlog_logger->critical(message); \
-    ::quinclas::logging::detail::spdlog_logger->flush(); \
+    ::roq::logging::detail::spdlog_logger->critical(message); \
+    ::roq::logging::detail::spdlog_logger->flush(); \
     std::abort(); })
 #else
 #define LOG_INFO(logger) RAW_LOG(logger, [](const char *message){  \
@@ -79,15 +79,15 @@ extern spdlog::logger *spdlog_logger;
     std::cerr << "F " << message; \
     std::abort(); })
 #endif
-#define LOG(level) LOG_ ## level(::quinclas::logging::detail::LogMessage)
+#define LOG(level) LOG_ ## level(::roq::logging::detail::LogMessage)
 #define LOG_IF(level, condition) \
     !(condition) \
     ? (void)(0) \
-    : ::quinclas::logging::detail::LogMessageVoidify() & LOG(level)
-#define PLOG(level) LOG_ ## level(::quinclas::logging::detail::ErrnoLogMessage)
-#define VLOG(n) LOG_IF(INFO, (n) <= ::quinclas::logging::detail::verbosity)
+    : ::roq::logging::detail::LogMessageVoidify() & LOG(level)
+#define PLOG(level) LOG_ ## level(::roq::logging::detail::ErrnoLogMessage)
+#define VLOG(n) LOG_IF(INFO, (n) <= ::roq::logging::detail::verbosity)
 #if defined(NDEBUG)
-#define DLOG(level) RAW_LOG(::quinclas::logging::detail::NullStream, [](const char * message){})
+#define DLOG(level) RAW_LOG(::roq::logging::detail::NullStream, [](const char * message){})
 #else
 #define DLOG(level) LOG(level)
 #endif
@@ -149,7 +149,7 @@ class NullStream : public LogMessage::LogStream {
   char _buffer[2];
 };
 template <typename T>
-quinclas::logging::detail::NullStream&
+roq::logging::detail::NullStream&
 operator<<(NullStream& stream, T&) {
   return stream;
 }
@@ -159,21 +159,21 @@ class LogMessageVoidify {
 };
 }  // namespace detail
 }  // namespace logging
-}  // namespace quinclas
+}  // namespace roq
 #endif
 
-namespace quinclas {
+namespace roq {
 namespace logging {
 
 class Logger {
  public:
   static void initialize(bool stacktrace = true) {
-#if defined(QUINCLAS_GLOG)
+#if defined(ROQ_GLOG)
     auto argv0 = get_argv0();
     google::InitGoogleLogging(argv0.c_str());
     if (stacktrace)
       google::InstallFailureSignalHandler();
-#elif defined(QUINCLAS_SPDLOG)
+#elif defined(ROQ_SPDLOG)
     detail::newline = false;
     auto filename = get_filename();
     auto console = filename.empty();
@@ -190,36 +190,36 @@ class Logger {
     logger->set_pattern("%L%m%d %T.%f %t %v");  // same as glog
     logger->flush_on(spdlog::level::warn);
     // note! spdlog keeps a reference
-    ::quinclas::logging::detail::spdlog_logger = logger.get();
+    ::roq::logging::detail::spdlog_logger = logger.get();
     auto verbosity = std::getenv("GLOG_v");
     if (verbosity != nullptr && strlen(verbosity) > 0)
       detail::verbosity = std::atoi(verbosity);
 #else
 #endif
-#if !defined(QUINCLAS_GLOG)
+#if !defined(ROQ_GLOG)
     if (stacktrace)
       install_failure_signal_handler();
 #endif
   }
   static void shutdown() {
-#if defined(QUINCLAS_GLOG)
+#if defined(ROQ_GLOG)
     google::ShutdownGoogleLogging();
-#elif defined(QUINCLAS_SPDLOG)
+#elif defined(ROQ_SPDLOG)
     // note! not thread-safe
-    if (::quinclas::logging::detail::spdlog_logger) {
-      ::quinclas::logging::detail::spdlog_logger->flush();
-      ::quinclas::logging::detail::spdlog_logger = nullptr;
+    if (::roq::logging::detail::spdlog_logger) {
+      ::roq::logging::detail::spdlog_logger->flush();
+      ::roq::logging::detail::spdlog_logger = nullptr;
     }
     spdlog::drop_all();
 #else
 #endif
   }
   static std::string get_argv0();
-#if !defined(QUINCLAS_GLOG)
+#if !defined(ROQ_GLOG)
   static std::string get_filename();
   static void install_failure_signal_handler();
 #endif
 };
 
 }  // namespace logging
-}  // namespace quinclas
+}  // namespace roq

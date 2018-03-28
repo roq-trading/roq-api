@@ -1,9 +1,9 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include <gtest/gtest.h>
-#include "quinclas/client.h"
+#include "roq/client.h"
 
-using namespace quinclas;  // NOLINT
+using namespace roq;  // NOLINT
 
 TEST(connection_string, simple_failure_0) {
   EXPECT_THROW(

@@ -1,14 +1,14 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "reference/exposure.h"
-#include <quinclas/logging.h>
+#include <roq/logging.h>
 #include <cassert>
 #include "reference/utilities.h"
 
 namespace examples {
 namespace reference {
 
-void Exposure::update(update_t type, quinclas::common::TradeDirection direction,
+void Exposure::update(update_t type, roq::common::TradeDirection direction,
                       double quantity) {
   auto& exposure = get_exposure(direction);
   switch (type) {
@@ -40,7 +40,7 @@ void Exposure::update(update_t type, quinclas::common::TradeDirection direction,
   }
 }
 
-double Exposure::get(quinclas::common::TradeDirection direction) const {
+double Exposure::get(roq::common::TradeDirection direction) const {
   const auto& exposure = get_exposure(direction);
   auto result = exposure.created - exposure.filled - exposure.cancelled - exposure.rejected;
   LOG_IF(FATAL, is_less_than_or_equal(0.0, result)) <<
@@ -48,24 +48,24 @@ double Exposure::get(quinclas::common::TradeDirection direction) const {
   return result;
 }
 
-Exposure::exposure_t& Exposure::get_exposure(quinclas::common::TradeDirection direction) {
+Exposure::exposure_t& Exposure::get_exposure(roq::common::TradeDirection direction) {
   switch (direction) {
-    case quinclas::common::TradeDirection::Undefined:
+    case roq::common::TradeDirection::Undefined:
       LOG(FATAL) << "Unexpected direction";
-    case quinclas::common::TradeDirection::Buy:
+    case roq::common::TradeDirection::Buy:
       return _bid;
-    case quinclas::common::TradeDirection::Sell:
+    case roq::common::TradeDirection::Sell:
       return _offer;
   }
 }
 
-const Exposure::exposure_t& Exposure::get_exposure(quinclas::common::TradeDirection direction) const {
+const Exposure::exposure_t& Exposure::get_exposure(roq::common::TradeDirection direction) const {
   switch (direction) {
-    case quinclas::common::TradeDirection::Undefined:
+    case roq::common::TradeDirection::Undefined:
       LOG(FATAL) << "Unexpected direction";
-    case quinclas::common::TradeDirection::Buy:
+    case roq::common::TradeDirection::Buy:
       return _bid;
-    case quinclas::common::TradeDirection::Sell:
+    case roq::common::TradeDirection::Sell:
       return _offer;
   }
 }

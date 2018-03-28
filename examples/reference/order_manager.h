@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <quinclas/tradingapi.h>
+#include <roq/api.h>
 #include <list>
 #include <unordered_map>
 #include <utility>
@@ -20,7 +20,7 @@ class OrderManager final {
  public:
   // constructor
   OrderManager(const Config& config, const RiskManager& risk_manager,
-               quinclas::common::Strategy::Dispatcher& dispatcher);
+               roq::common::Strategy::Dispatcher& dispatcher);
 
   // create order (convenience)
   uint32_t buy(const char *order_template, double quantity,
@@ -29,23 +29,23 @@ class OrderManager final {
                 double limit_price);
 
   // event handlers
-  void on(const quinclas::common::TimerEvent& event);
-  void on(const quinclas::common::CreateOrderAckEvent& event);
-  void on(const quinclas::common::ModifyOrderAckEvent& event);
-  void on(const quinclas::common::CancelOrderAckEvent& event);
-  void on(const quinclas::common::OrderUpdateEvent& order_update);
+  void on(const roq::common::TimerEvent& event);
+  void on(const roq::common::CreateOrderAckEvent& event);
+  void on(const roq::common::ModifyOrderAckEvent& event);
+  void on(const roq::common::CancelOrderAckEvent& event);
+  void on(const roq::common::OrderUpdateEvent& order_update);
 
  private:
   uint32_t create_order(const char *order_template,
-                        quinclas::common::TradeDirection direction,
+                        roq::common::TradeDirection direction,
                         double quantity, double limit_price);
   void add_timeout_check(uint32_t order_id);
-  void check(const quinclas::common::MessageInfo& message_info);
+  void check(const roq::common::MessageInfo& message_info);
 
  private:
   const Config& _config;
   const RiskManager& _risk_manager;
-  quinclas::common::Strategy::Dispatcher& _dispatcher;
+  roq::common::Strategy::Dispatcher& _dispatcher;
   // consistency check
   time_point_t _last_update_time;
   // order management

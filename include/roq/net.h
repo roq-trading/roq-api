@@ -10,13 +10,13 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#include <quinclas/logging.h>
+#include <roq/logging.h>
 
 #include <cstring>
 #include <string>
 #include <utility>
 
-namespace quinclas {
+namespace roq {
 namespace net {
 
 class RuntimeError : public std::exception {
@@ -210,4 +210,4 @@ class SocketPair final {
 };
 
 }  // namespace net
-}  // namespace quinclas
+}  // namespace roq

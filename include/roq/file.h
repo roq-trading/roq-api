@@ -9,7 +9,7 @@
 #include <string>
 #include <system_error>
 
-namespace quinclas {
+namespace roq {
 namespace file {
 
 // note! close to posix, *not* trying to mirror any c++ standard library
@@ -64,4 +64,4 @@ class File final {
 };
 
 }  // namespace file
-}  // namespace quinclas
+}  // namespace roq

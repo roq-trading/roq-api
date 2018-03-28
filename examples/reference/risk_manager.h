@@ -12,7 +12,7 @@ namespace reference {
 class RiskManager final {
  public:
   RiskManager(const Config& config, const PositionManager& position_manager);
-  bool can_trade(const std::string& instrument, quinclas::common::TradeDirection direction,
+  bool can_trade(const std::string& instrument, roq::common::TradeDirection direction,
                  double quantity, double existing_exposure) const;
   bool is_above_limit(const std::string& instrument) const;
 

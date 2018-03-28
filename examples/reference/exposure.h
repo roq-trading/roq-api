@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <quinclas/tradingapi.h>
+#include <roq/api.h>
 
 namespace examples {
 namespace reference {
@@ -11,9 +11,9 @@ namespace reference {
 class Exposure {
  public:
   typedef enum { Create, Fill, Cancel, Reject } update_t;
-  void update(update_t type, quinclas::common::TradeDirection direction,
+  void update(update_t type, roq::common::TradeDirection direction,
               double quantity);
-  double get(quinclas::common::TradeDirection direction) const;
+  double get(roq::common::TradeDirection direction) const;
 
  private:
   typedef struct {
@@ -24,8 +24,8 @@ class Exposure {
   } exposure_t;
   exposure_t _bid;
   exposure_t _offer;
-  exposure_t& get_exposure(quinclas::common::TradeDirection direction);
-  const exposure_t& get_exposure(quinclas::common::TradeDirection direction) const;
+  exposure_t& get_exposure(roq::common::TradeDirection direction);
+  const exposure_t& get_exposure(roq::common::TradeDirection direction) const;
 };
 
 }  // namespace reference

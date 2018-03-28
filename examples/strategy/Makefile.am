@@ -1,6 +1,6 @@
 bin_PROGRAMS = example-strategy
 example_strategy_LDFLAGS = \
-	$(top_builddir)/src/tradingapi/libquinclas-tradingapi.la \
+	$(top_builddir)/src/api/libroq-api.la \
 	$(CCTZ_LIBS) \
 	$(CROSSGUID_LIBS) \
 	$(DOUBLE_CONVERSION_LIBS) \
@@ -10,7 +10,7 @@ example_strategy_LDFLAGS = \
 	$(LIBUNWIND_LIBS) \
 	$(SPDLOG_LIBS)
 example_strategy_CPPFLAGS = \
-	-DQUINCLAS_SPDLOG \
+	-DROQ_SPDLOG \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \
 	$(CCTZ_CFLAGS) \

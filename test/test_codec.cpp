@@ -3,10 +3,10 @@
 #include <gtest/gtest.h>
 #include <cstdlib>
 #include <random>
-#include "quinclas/codec.h"
+#include "roq/codec.h"
 
 using namespace flatbuffers;  // NOLINT
-using namespace quinclas;  // NOLINT
+using namespace roq;  // NOLINT
 
 const int MAX_ITERATIONS = 1000;
 

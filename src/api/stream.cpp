@@ -5,9 +5,9 @@
 
 #include <cmath>
 
-#include "quinclas/tradingapi.h"
+#include "roq/api.h"
 
-namespace quinclas {
+namespace roq {
 namespace common {
 
 namespace {
@@ -450,4 +450,4 @@ std::ostream& operator<<(std::ostream& stream, const PositionUpdateEvent& value)
 }
 
 }  // namespace common
-}  // namespace quinclas
+}  // namespace roq

@@ -1,1 +1,1 @@
-SUBDIRS=quinclas
+SUBDIRS = roq

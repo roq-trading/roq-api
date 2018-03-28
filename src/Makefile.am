@@ -1,1 +1,1 @@
-SUBDIRS = tradingapi
+SUBDIRS = api

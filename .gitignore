@@ -25,10 +25,10 @@ build-aux/
 *.log
 *.trs
 
-quinclas-tradingapi.pc
-include/quinclas/tradingapi.h
-include/quinclas/quinclas
-test/tradingapi-tests
+roq-api.pc
+include/roq/api.h
+include/roq/roq
+test/api-tests
 examples/strategy/example-strategy
 examples/collector/example-collector
 examples/reference/reference-strategy

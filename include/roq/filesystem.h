@@ -8,7 +8,7 @@
 #include <string>
 #include <system_error>
 
-namespace quinclas {
+namespace roq {
 namespace filesystem {
 
 // note! many of the functions implemented here use exceptions
@@ -68,4 +68,4 @@ inline void remove(const std::string& path) {
 }
 
 }  // namespace filesystem
-}  // namespace quinclas
+}  // namespace roq

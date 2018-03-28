@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <quinclas/tradingapi_generated.h>
+#include <roq/api_generated.h>
 
 #include <chrono>
 #include <ostream>
@@ -13,9 +13,9 @@
 /**
  * API version.
  */
-#define QUINCLAS_VERSION "@PACKAGE_VERSION@"
+#define ROQ_VERSION "@PACKAGE_VERSION@"
 
-namespace quinclas {
+namespace roq {
 namespace common {
 
 /**
@@ -74,7 +74,7 @@ struct MessageInfo {
  * Sent by the client immediately following successful connection.
  */
 struct Handshake {
-  const char *api_version;  ///< QUINCLAS_VERSION
+  const char *api_version;  ///< ROQ_VERSION
   const char *application;  ///< Application descriptive name.
   const char *hostname;     ///< Descriptive hostname.
   uint32_t pid;             ///< Process identifier.
@@ -99,7 +99,7 @@ struct Handshake {
  * ready message has been received.
  */
 struct HandshakeAck {
-  const char *api_version;      ///< QUINCLAS_VERSION
+  const char *api_version;      ///< ROQ_VERSION
   const char *application;      ///< Application descriptive name.
   const char *hostname;         ///< Descriptive hostname.
   uint32_t pid;                 ///< Process identifier.
@@ -658,4 +658,4 @@ std::ostream& operator<<(std::ostream& stream, const OrderUpdateEvent& value);
 std::ostream& operator<<(std::ostream& stream, const PositionUpdateEvent& value);
 
 }  // namespace common
-}  // namespace quinclas
+}  // namespace roq

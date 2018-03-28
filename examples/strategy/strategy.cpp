@@ -2,12 +2,12 @@
 
 #include "strategy/strategy.h"
 
-#include <quinclas/logging.h>
+#include <roq/logging.h>
 #include <limits>
 #include <string>
 
 // Convenience (and not liked by cpplint).
-using namespace quinclas::common;  // NOLINT
+using namespace roq::common;  // NOLINT
 
 namespace examples {
 namespace strategy {
@@ -26,7 +26,7 @@ void Strategy::on(const TimerEvent& event) {
   LOG(INFO) << "TimerEvent={}";
 }
 
-void Strategy::on(const quinclas::common::ConnectionStatusEvent& event) {
+void Strategy::on(const ConnectionStatusEvent& event) {
   if (event.connection_status != ConnectionStatus::Connected) {
     _market_data_ready = _order_management_ready = false;
   }
@@ -44,7 +44,7 @@ void Strategy::on(const BatchEndEvent&) {
   // This message indicates the ending of such a batch.
 }
 
-void Strategy::on(const quinclas::common::ReadyEvent&) {
+void Strategy::on(const ReadyEvent&) {
 }
 
 void Strategy::on(const GatewayStatusEvent& event) {
@@ -251,7 +251,7 @@ void Strategy::on(const TradeUpdateEvent& event) {
   double price = trade_update.price;
 }
 
-void Strategy::on(const quinclas::common::PositionUpdateEvent& event) {
+void Strategy::on(const PositionUpdateEvent& event) {
   LOG(INFO) << "PositionUpdateEvent=" << event;
 }
 

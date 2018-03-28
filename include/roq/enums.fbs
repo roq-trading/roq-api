@@ -1,4 +1,4 @@
-namespace quinclas.common;
+namespace roq.common;
 
 /// Connection status.
 enum ConnectionStatus:byte {

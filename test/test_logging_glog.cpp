@@ -4,9 +4,9 @@
 
 #include <gtest/gtest.h>
 #include <fcntl.h>
-#include <quinclas/logging.h>
+#include <roq/logging.h>
 
-using namespace quinclas;  // NOLINT
+using namespace roq;  // NOLINT
 
 TEST(logging_glog, simple) {
   logging::Logger::initialize();

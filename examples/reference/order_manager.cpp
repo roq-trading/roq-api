@@ -1,7 +1,7 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "reference/order_manager.h"
-#include <quinclas/logging.h>
+#include <roq/logging.h>
 #include <algorithm>
 #include <limits>
 #include "reference/utilities.h"
@@ -14,7 +14,7 @@ const char *GATEWAY = "FEMAS";
 // constructor
 
 OrderManager::OrderManager(const Config& config, const RiskManager& risk_manager,
-                           quinclas::common::Strategy::Dispatcher& dispatcher)
+                           roq::common::Strategy::Dispatcher& dispatcher)
     : _config(config), _risk_manager(risk_manager), _dispatcher(dispatcher) {}
 
 
@@ -22,18 +22,18 @@ OrderManager::OrderManager(const Config& config, const RiskManager& risk_manager
 
 uint32_t OrderManager::buy(const char *order_template, double quantity,
                            double limit_price) {
-  return create_order(order_template, quinclas::common::TradeDirection::Buy,
+  return create_order(order_template, roq::common::TradeDirection::Buy,
                       quantity, limit_price);
 }
 
 uint32_t OrderManager::sell(const char *order_template, double quantity,
                             double limit_price) {
-  return create_order(order_template, quinclas::common::TradeDirection::Sell,
+  return create_order(order_template, roq::common::TradeDirection::Sell,
                       quantity, limit_price);
 }
 
 uint32_t OrderManager::create_order(const char *order_template,
-                                    quinclas::common::TradeDirection direction,
+                                    roq::common::TradeDirection direction,
                                     double quantity, double limit_price) {
   // manage exposure by direction -- we can't trade if we will breach a limit
   auto exposure = _exposure.get(direction);
@@ -44,7 +44,7 @@ uint32_t OrderManager::create_order(const char *order_template,
   // risk manager was happy, now try to send the order
   auto order_id = ++_next_order_id;
   try {
-    quinclas::common::CreateOrder create_order {
+    roq::common::CreateOrder create_order {
       .opaque         = order_id,
       .order_template = order_template,
       .exchange       = _config.exchange.c_str(),
@@ -72,11 +72,11 @@ uint32_t OrderManager::create_order(const char *order_template,
 
 // event handlers
 
-void OrderManager::on(const quinclas::common::TimerEvent& event) {
+void OrderManager::on(const roq::common::TimerEvent& event) {
   // check(event.message_info);  // FIXME(thraneh): re-enable time-check
 }
 
-void OrderManager::on(const quinclas::common::CreateOrderAckEvent& event) {
+void OrderManager::on(const roq::common::CreateOrderAckEvent& event) {
   check(event.message_info);
   const auto& create_order_ack = event.create_order_ack;
   auto order_id = create_order_ack.opaque;
@@ -97,13 +97,13 @@ void OrderManager::on(const quinclas::common::CreateOrderAckEvent& event) {
   }
 }
 
-void OrderManager::on(const quinclas::common::ModifyOrderAckEvent& event) {
+void OrderManager::on(const roq::common::ModifyOrderAckEvent& event) {
   check(event.message_info);
   // significantly more complex exposure management -- not implemented for this example
   LOG(FATAL) << "Order modifications not supported!";
 }
 
-void OrderManager::on(const quinclas::common::CancelOrderAckEvent& event) {
+void OrderManager::on(const roq::common::CancelOrderAckEvent& event) {
   check(event.message_info);
   const auto& cancel_order_ack = event.cancel_order_ack;
   auto order_id = cancel_order_ack.opaque;
@@ -121,7 +121,7 @@ void OrderManager::on(const quinclas::common::CancelOrderAckEvent& event) {
   }
 }
 
-void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
+void OrderManager::on(const roq::common::OrderUpdateEvent& event) {
   check(event.message_info);
   const auto& order_update = event.order_update;
   auto order_id = order_update.opaque;
@@ -137,12 +137,12 @@ void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
   if (has_fill)
     _exposure.update(Exposure::Fill, order.direction, fill);
   switch (order_update.status) {
-    case quinclas::common::OrderStatus::Undefined: {
+    case roq::common::OrderStatus::Undefined: {
       // this is wrong -- an (unknown? new?) enum has probably not been processed by the gateway
       LOG(FATAL) << "Unexpected order status!";
       break;
     }
-    case quinclas::common::OrderStatus::Sent: {
+    case roq::common::OrderStatus::Sent: {
       // the order has been confirmed sent by the gateway -- let's check back later (for timeout)
       if (order.state < Order::Sent) {
           order.state = Order::Sent;
@@ -150,28 +150,28 @@ void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
       }
       break;
     }
-    case quinclas::common::OrderStatus::Rejected: {
+    case roq::common::OrderStatus::Rejected: {
       // the order was rejected (could be any number of reasons)
       LOG_IF(FATAL, has_fill) << "Unexpected!";
       _exposure.update(Exposure::Reject, order.direction, order.remaining_quantity);
       _orders.erase(order_id);
       break;
     }
-    case quinclas::common::OrderStatus::Accepted: {
+    case roq::common::OrderStatus::Accepted: {
       // the order has been received by broker or exchange
       if (order.state < Order::Accepted)
         order.state = Order::Accepted;
       LOG_IF(FATAL, has_fill) << "Unexpected!";
       break;
     }
-    case quinclas::common::OrderStatus::Pending: {
+    case roq::common::OrderStatus::Pending: {
       // the order has been registered on the exchange and is currently in a pending state
       if (order.state < Order::Accepted)
         order.state = Order::Accepted;
       LOG_IF(FATAL, has_fill) << "Unexpected!";
       break;
     }
-    case quinclas::common::OrderStatus::Working: {
+    case roq::common::OrderStatus::Working: {
       // the order is currently in the queue (waiting for matching) -- could be partially filled
       if (order.state < Order::Accepted)
         order.state = Order::Accepted;
@@ -179,12 +179,12 @@ void OrderManager::on(const quinclas::common::OrderUpdateEvent& event) {
         _orders.erase(order_id);
       break;
     }
-    case quinclas::common::OrderStatus::Completed: {
+    case roq::common::OrderStatus::Completed: {
       // the order has been matched and is completely filled
       _orders.erase(order_id);
       break;
     }
-    case quinclas::common::OrderStatus::Cancelled: {
+    case roq::common::OrderStatus::Cancelled: {
       // the order has been cancelled -- could be partially filled
       _orders.erase(order_id);
       break;
@@ -198,7 +198,7 @@ void OrderManager::add_timeout_check(uint32_t order_id) {
   _timeout.emplace_back(_last_update_time + _config.order_timeout, order_id);
 }
 
-void OrderManager::check(const quinclas::common::MessageInfo& message_info) {
+void OrderManager::check(const roq::common::MessageInfo& message_info) {
   // all events contain a timestamp -- this check will catch programming mistakes
   auto current_time = message_info.client_receive_time;
   LOG_IF(FATAL, _last_update_time < current_time) << "Wrong sequencing!";

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <quinclas/simulation.h>
+#include <roq/simulation.h>
 
 #include <chrono>  // NOLINT
 #include <string>
@@ -13,12 +13,12 @@
 namespace examples {
 namespace collector {
 
-class Generator final : public quinclas::simulation::Generator {
+class Generator final : public roq::simulation::Generator {
  public:
   explicit Generator(const std::string& path);
   ~Generator();
   std::pair<bool, std::chrono::system_clock::time_point> fetch() override;
-  void dispatch(quinclas::common::Strategy& strategy) override;
+  void dispatch(roq::common::Strategy& strategy) override;
 
  private:
   CsvReader _csv_reader;

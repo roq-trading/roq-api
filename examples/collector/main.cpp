@@ -2,9 +2,9 @@
 
 #include <gflags/gflags.h>
 
-#include <quinclas/client.h>
-#include <quinclas/simulation.h>
-#include <quinclas/logging.h>
+#include <roq/client.h>
+#include <roq/simulation.h>
+#include <roq/logging.h>
 
 #include "collector/collector.h"
 #include "collector/generator.h"
@@ -24,7 +24,7 @@ using namespace examples::collector;  // NOLINT
 
 int main(int argc, char *argv[]) {
   // initialize logging library
-  quinclas::logging::Logger::initialize(true);
+  roq::logging::Logger::initialize(true);
 
   // parse command-line options
 
@@ -39,9 +39,9 @@ int main(int argc, char *argv[]) {
       std::exit(EXIT_FAILURE);
     }
 
-    auto gateways = quinclas::client::Gateways::create(FLAGS_gateways);
+    auto gateways = roq::client::Gateways::create(FLAGS_gateways);
 
-    quinclas::client::Controller<Collector>(
+    roq::client::Controller<Collector>(
         std::move(gateways)).create_and_dispatch();
 
   } else if (FLAGS_mode == "simulation") {
@@ -50,10 +50,10 @@ int main(int argc, char *argv[]) {
       std::exit(EXIT_FAILURE);
     }
 
-    std::list<std::unique_ptr<quinclas::simulation::Generator> > generators;
+    std::list<std::unique_ptr<roq::simulation::Generator> > generators;
     generators.emplace_back(new Generator(FLAGS_simulation_file));
 
-    quinclas::simulation::Controller<Collector>(
+    roq::simulation::Controller<Collector>(
         std::move(generators)).create_and_dispatch();
 
   } else {

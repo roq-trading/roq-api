@@ -2,7 +2,7 @@
 
 #define UNW_LOCAL_ONLY
 
-#include "quinclas/logging.h"
+#include "roq/logging.h"
 
 #include <libunwind.h>
 #include <cxxabi.h>
@@ -12,7 +12,7 @@
 // FIXME(thraneh): only do this when configure has detected spdlog
 #include <spdlog/spdlog.h>
 
-#include <quinclas/platform.h>
+#include <roq/platform.h>
 
 #include <chrono>
 #include <fstream>
@@ -28,7 +28,7 @@ static std::string get_date_time() {
       cctz::utc_time_zone());
 }
 
-#if !defined(QUINCLAS_GLOG)
+#if !defined(ROQ_GLOG)
 
 static char proc_name[1024];
 static const int width = (2 * sizeof(void *)) + 2;
@@ -102,7 +102,7 @@ static void termination_handler(int sig, siginfo_t *info, void *ucontext) {
 
 }  // namespace
 
-namespace quinclas {
+namespace roq {
 namespace logging {
 namespace detail {
 
@@ -120,7 +120,7 @@ std::string Logger::get_argv0() {
   return platform::get_program();
 }
 
-#if !defined(QUINCLAS_GLOG)
+#if !defined(ROQ_GLOG)
 
 std::string Logger::get_filename() {
   auto log_dir = std::getenv("GLOG_log_dir");
@@ -156,4 +156,4 @@ void Logger::install_failure_signal_handler() {
 #endif
 
 }  // namespace logging
-}  // namespace quinclas
+}  // namespace roq

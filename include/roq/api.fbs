@@ -1,6 +1,6 @@
 include "enums.fbs";
 
-namespace quinclas.schema;
+namespace roq.schema;
 
 table SourceInfo {
   seqno:ulong;

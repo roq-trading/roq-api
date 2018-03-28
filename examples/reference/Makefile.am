@@ -1,6 +1,6 @@
 bin_PROGRAMS = reference-strategy
 reference_strategy_LDFLAGS = \
-	$(top_builddir)/src/tradingapi/libquinclas-tradingapi.la \
+	$(top_builddir)/src/api/libroq-api.la \
 	$(CCTZ_LIBS) \
 	$(CROSSGUID_LIBS) \
 	$(DOUBLE_CONVERSION_LIBS) \
@@ -11,7 +11,7 @@ reference_strategy_LDFLAGS = \
 	$(SPDLOG_LIBS) \
 	$(UCL_LIBS)
 reference_strategy_CPPFLAGS = \
-	-DQUINCLAS_SPDLOG \
+	-DROQ_SPDLOG \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/examples \
 	$(CCTZ_CFLAGS) \
@@ -49,5 +49,5 @@ EXTRA_reference_strategy_SOURCES = \
   risk_manager.h \
   trading_model.h \
   utilities.h
-configdir=$(datadir)/quinclas/examples
+configdir=$(datadir)/roq/examples
 config_DATA = strategy.conf

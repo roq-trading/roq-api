@@ -1,7 +1,7 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
 #include "reference/config.h"
-#include <quinclas/logging.h>
+#include <roq/logging.h>
 #include <iomanip>
 
 namespace examples {

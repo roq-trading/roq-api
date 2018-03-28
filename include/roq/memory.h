@@ -5,9 +5,9 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 
-#include "quinclas/file.h"
+#include "roq/file.h"
 
-namespace quinclas {
+namespace roq {
 namespace memory {
 
 class Shared final {
@@ -63,4 +63,4 @@ class Map final {
 };
 
 }  // namespace memory
-}  // namespace quinclas
+}  // namespace roq

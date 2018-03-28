@@ -2,9 +2,9 @@
 
 #include <gflags/gflags.h>
 
-#include <quinclas/client.h>
-#include <quinclas/simulation.h>
-#include <quinclas/logging.h>
+#include <roq/client.h>
+#include <roq/simulation.h>
+#include <roq/logging.h>
 
 #include "reference/config_reader.h"
 #include "reference/gateway_manager.h"
@@ -29,7 +29,7 @@ DEFINE_string(simulation_file, "",
 const char *GATEWAY = "FEMAS";
 
 int main(int argc, char *argv[]) {
-  quinclas::logging::Logger::initialize(true);
+  roq::logging::Logger::initialize(true);
 
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   gflags::ShutDownCommandLineFlags();
@@ -50,9 +50,9 @@ int main(int argc, char *argv[]) {
     }
 
     // Parse connection details for all required gateways.
-    auto gateways = quinclas::client::Gateways::create(FLAGS_gateways);
+    auto gateways = roq::client::Gateways::create(FLAGS_gateways);
 
-    quinclas::client::Controller<GatewayManager>(
+    roq::client::Controller<GatewayManager>(
         std::move(gateways)).create_and_dispatch(std::move(config));
 
   } else if (FLAGS_mode == "simulation") {
@@ -61,10 +61,10 @@ int main(int argc, char *argv[]) {
       std::exit(EXIT_FAILURE);
     }
 
-    std::list<std::unique_ptr<quinclas::simulation::Generator> > generators;
+    std::list<std::unique_ptr<roq::simulation::Generator> > generators;
     generators.emplace_back(new Generator(FLAGS_simulation_file));
 
-    quinclas::simulation::Controller<GatewayManager>(
+    roq::simulation::Controller<GatewayManager>(
         std::move(generators)).create_and_dispatch(std::move(config));
 
   } else {

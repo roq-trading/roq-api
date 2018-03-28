@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include <quinclas/file.h>
-#include <quinclas/memory.h>
+#include <roq/file.h>
+#include <roq/memory.h>
 
 #include <chrono>  // NOLINT
 #include <string>
@@ -33,8 +33,8 @@ class CsvReader final {
   CsvReader& operator=(CsvReader&) = delete;
 
  private:
-  quinclas::file::File _file;
-  quinclas::memory::Map _memory_map;
+  roq::file::File _file;
+  roq::memory::Map _memory_map;
   const char *_current;
   const char *_end;
   std::vector<std::pair<const char *, size_t> > _columns;

@@ -2,8 +2,8 @@
 
 #include <gflags/gflags.h>
 
-#include <quinclas/client.h>
-#include <quinclas/logging.h>
+#include <roq/client.h>
+#include <roq/logging.h>
 
 #include "strategy/strategy.h"
 
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
   // You have different choices for the logging backend.
   // Selectable at compile-time by choosing one of
   //   QUINCLAS_GLOG, QUINCLAS_SPDLOG, QUINCLAS_STDLOG
-  quinclas::logging::Logger::initialize(true);
+  roq::logging::Logger::initialize(true);
 
   // Parse the command-line options.
   // Here we use google's gflags library.
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
   LOG(INFO) << "===== START =====";
 
   // Parse connection details for all required gateways.
-  auto gateways = quinclas::client::Gateways::create(FLAGS_gateways);
+  auto gateways = roq::client::Gateways::create(FLAGS_gateways);
 
   // The controller is a pre-defined framework for managing
   // - IPC and/or network connectivity
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
   // - Request dispatching (from your strategy to a gateway)
   // You must instantiate it with the list of gateways required by your
   // strategy implementation.
-  quinclas::client::Controller<Strategy> controller(std::move(gateways));
+  roq::client::Controller<Strategy> controller(std::move(gateways));
 
   // Your strategy configuration.
   // There's nothing special with this "configuration" -- it is only meant to

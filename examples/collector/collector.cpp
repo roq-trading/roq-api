@@ -3,12 +3,12 @@
 #include "collector/collector.h"
 
 #include <cctz/time_zone.h>
-#include <quinclas/logging.h>
+#include <roq/logging.h>
 
 #include <iostream>
 #include <limits>
 
-using namespace quinclas::common;  // NOLINT
+using namespace roq::common;  // NOLINT
 
 namespace examples {
 namespace collector {
@@ -20,7 +20,7 @@ const char *UPDATE_TYPE = "1";
 const char *DELIMITER = ",";
 const char *TIME_FORMAT = "%E4Y-%m-%dT%H:%M:%E6S";
 const auto TIME_ZONE = cctz::utc_time_zone();
-std::ostream& operator<<(std::ostream& stream, quinclas::common::time_point_t time_point) {
+std::ostream& operator<<(std::ostream& stream, time_point_t time_point) {
   return stream << cctz::format(TIME_FORMAT, time_point, TIME_ZONE);
 }
 }  // namespace
@@ -49,7 +49,7 @@ Collector::State& Collector::get(const std::string& instrument) {
 }
 
 void Collector::State::update(
-    const quinclas::common::MarketByPriceEvent& event) {
+    const MarketByPriceEvent& event) {
   exchange_time = event.market_by_price.exchange_time;
   receive_time = event.message_info.source_create_time;
   for (size_t i = 0; i < sizeof(depth) / sizeof(depth[0]); ++i) {
@@ -61,7 +61,7 @@ void Collector::State::update(
 }
 
 void Collector::State::update(
-    const quinclas::common::TradeSummaryEvent& event) {
+    const TradeSummaryEvent& event) {
   exchange_time = event.trade_summary.exchange_time;
   receive_time = event.message_info.client_receive_time;
   price = event.trade_summary.price;

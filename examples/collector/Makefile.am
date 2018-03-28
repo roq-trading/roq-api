@@ -1,6 +1,6 @@
 bin_PROGRAMS = example-collector
 example_collector_LDFLAGS = \
-	$(top_builddir)/src/api/libroq-api.la \
+	$(top_builddir)/src/api/libroq.la \
 	$(CCTZ_LIBS) \
 	$(CROSSGUID_LIBS) \
 	$(DOUBLE_CONVERSION_LIBS) \

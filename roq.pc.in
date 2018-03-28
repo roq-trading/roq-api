@@ -5,7 +5,7 @@ libdir=@libdir@
 datadir=@datarootdir@
 
 Name: @PACKAGE@
-Description: Roq API.
+Description: Roq.
 Version: @VERSION@
 Libs: -L${libdir} -l@PACKAGE@ @LIBS@
 Cflags: @CPPFLAGS@ -I${includedir}

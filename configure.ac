@@ -1,9 +1,9 @@
 m4_include(m4/ax_cxx_compile_stdcxx.m4)  # https://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx.html
 
-AC_INIT([Roq API],
+AC_INIT([Roq],
         [0.1.2],
         [thraneh@gmail.com],
-        [roq-api])
+        [roq])
 
 AC_PREREQ([2.59])
 AC_CONFIG_MACRO_DIR([m4])
@@ -21,7 +21,7 @@ AC_CONFIG_FILES([
  examples/reference/Makefile
 ])
 AC_CONFIG_FILES([include/roq/api.h])
-AC_CONFIG_FILES([roq-api.pc])
+AC_CONFIG_FILES([roq.pc])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -147,13 +147,13 @@ PKG_CHECK_MODULES([LIBEVENT], [libevent], [], [
 ])
 
 # Find libucl.
-PKG_CHECK_MODULES([UCL], [libucl], [], [
+PKG_CHECK_MODULES([LIBUCL], [libucl], [], [
   AC_CHECK_HEADER(
     [ucl.h],
-    [AC_SUBST([UCL_CFLAGS])],
-    [AC_MSG_ERROR([unable to find ucl header files])]
+    [AC_SUBST([LIBUCL_CFLAGS])],
+    [AC_MSG_ERROR([unable to find libucl header files])]
   )
-  AC_SUBST([UCL_LIBS], [-lucl])
+  AC_SUBST([LIBUCL_LIBS], [-lucl])
 ])
 
 # Optionally enable examples.

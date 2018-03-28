@@ -1,15 +1,15 @@
 bin_PROGRAMS = reference-strategy
 reference_strategy_LDFLAGS = \
-	$(top_builddir)/src/api/libroq-api.la \
+	$(top_builddir)/src/api/libroq.la \
 	$(CCTZ_LIBS) \
 	$(CROSSGUID_LIBS) \
 	$(DOUBLE_CONVERSION_LIBS) \
 	$(FLATBUFFERS_LIBS) \
 	$(GFLAGS_LIBS) \
 	$(LIBEVENT_LIBS) \
+	$(LIBUCL_LIBS) \
 	$(LIBUNWIND_LIBS) \
-	$(SPDLOG_LIBS) \
-	$(UCL_LIBS)
+	$(SPDLOG_LIBS)
 reference_strategy_CPPFLAGS = \
 	-DROQ_SPDLOG \
 	-I$(top_srcdir)/include \
@@ -19,9 +19,9 @@ reference_strategy_CPPFLAGS = \
 	$(FLATBUFFERS_CFLAGS) \
 	$(GFLAGS_CFLAGS) \
 	$(LIBEVENT_CFLAGS) \
+	$(LIBUCL_CFLAGS) \
 	$(LIBUNWIND_CFLAGS) \
-	$(SPDLOG_CFLAGS) \
-	$(UCL_CFLAGS)
+	$(SPDLOG_CFLAGS)
 reference_strategy_SOURCES = \
   config.cpp \
   config_reader.cpp \

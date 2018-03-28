@@ -1,7 +1,7 @@
 TESTS = api-tests
 check_PROGRAMS = api-tests
 api_tests_LDADD = \
-	$(top_builddir)/src/api/libroq-api.la \
+	$(top_builddir)/src/api/libroq.la \
 	$(CCTZ_LIBS) \
 	$(DOUBLE_CONVERSION_LIBS) \
 	$(GLOG_LIBS) \

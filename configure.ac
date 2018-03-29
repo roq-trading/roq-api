@@ -30,127 +30,17 @@ AC_PROG_LIBTOOL
 # Check C++ 11 support.
 AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
 
-# Find libunwind.
-PKG_CHECK_MODULES([LIBUNWIND], [libunwind], [], [
-  AC_CHECK_HEADER(
-    [libunwind.h],
-    [AC_SUBST([LIBUNWIND_CFLAGS])],
-    [AC_MSG_ERROR([unable to find libunwind header files])]
-  )
-  case $host_os in
-  darwin* )
-    AC_MSG_NOTICE([No library needed on Darwin])
-    AC_SUBST([LIBUNWIND_LIBS], [])
-    ;;
-  * )
-    AC_SUBST([LIBUNWIND_LIBS], [-lunwind])
-    ;;
-  esac
-])
-
-# Find crossguid.
-PKG_CHECK_MODULES([CROSSGUID], [crossguid], [], [
-  AC_CHECK_HEADER(
-    [crossguid/guid.hpp],
-    [
-      AC_SUBST([CROSSGUID_CFLAGS])
-      AC_DEFINE([HAVE_CROSSGUID], 1)
-      case $host_os in
-      darwin* )
-        AC_SUBST([CROSSGUID_LIBS], ['-lcrossguid -framework CoreFoundation'])
-        ;;
-      * )
-        AC_SUBST([CROSSGUID_LIBS], ['-lcrossguid -luuid'])
-        ;;
-      esac
-    ],
-    [
-     AC_MSG_WARN([unable to find crossguid header files])
-     AC_SUBST([CROSSGUID_LIBS], [])
-    ]
-  )
-])
-
-# Find spdlog.
-PKG_CHECK_MODULES([SPDLOG], [spdlog], [], [
-  AC_CHECK_HEADER(
-    [spdlog/spdlog.h],
-    [AC_SUBST([SPDLOG_CFLAGS])],
-    [AC_MSG_ERROR([unable to find spdlog header files])]
-  )
-  AC_SUBST([SPDLOG_LIBS], [])
-])
-
-# Find glog.
-PKG_CHECK_MODULES([GLOG], [libglog], [], [
-  AC_CHECK_HEADER(
-    [glog/logging.h],
-    [AC_SUBST([GLOG_CFLAGS])],
-    [AC_MSG_ERROR([unable to find glog header files])]
-  )
-  AC_SUBST([GLOG_LIBS], [-lglog])
-])
-
-# Find gflags.
-PKG_CHECK_MODULES([GFLAGS], [gflags], [], [
-  AC_CHECK_HEADER(
-    [gflags/gflags.h],
-    [AC_SUBST([GFLAGS_CFLAGS])],
-    [AC_MSG_ERROR([unable to find gflags header files])]
-  )
-  AC_SUBST([GFLAGS_LIBS], [-lgflags])
-])
-
-# Find double-conversion.
-PKG_CHECK_MODULES([DOUBLE_CONVERSION], [double-conversion], [], [
-  AC_CHECK_HEADER(
-    [double-conversion/double-conversion.h],
-    [AC_SUBST([DOUBLE_CONVERSION_CFLAGS])],
-    [AC_MSG_ERROR([unable to find double-conversion header files])]
-  )
-  AC_SUBST([DOUBLE_CONVERSION_LIBS], [-ldouble-conversion])
-])
-
-# Find cctz.
-PKG_CHECK_MODULES([CCTZ], [cctz], [], [
-  AC_CHECK_HEADER(
-    [cctz/civil_time.h],
-    [AC_SUBST([CCTZ_CFLAGS])],
-    [AC_MSG_ERROR([unable to find cctz header files])]
-  )
-  AC_SUBST([CCTZ_LIBS], [-lcctz])
-])
-
-# Find flatbuffers.
-PKG_CHECK_MODULES([FLATBUFFERS], [flatbuffers], [], [
-  AC_CHECK_HEADER(
-    [flatbuffers/flatbuffers.h],
-    [AC_SUBST([FLATBUFFERS_CFLAGS])],
-    [AC_MSG_ERROR([unable to find flatbuffers header files])]
-  )
-  AC_SUBST([FLATBUFFERS_LIBS], [-lflatbuffers])
-])
-AC_PATH_PROGS([FLATC], [flatc], [])
-
-# Find libevent.
-PKG_CHECK_MODULES([LIBEVENT], [libevent], [], [
-  AC_CHECK_HEADER(
-    [event2/event.h],
-    [AC_SUBST([LIBEVENT_CFLAGS])],
-    [AC_MSG_ERROR([unable to find libevent header files])]
-  )
-  AC_SUBST([LIBEVENT_LIBS], [-levent])
-])
-
-# Find libucl.
-PKG_CHECK_MODULES([LIBUCL], [libucl], [], [
-  AC_CHECK_HEADER(
-    [ucl.h],
-    [AC_SUBST([LIBUCL_CFLAGS])],
-    [AC_MSG_ERROR([unable to find libucl header files])]
-  )
-  AC_SUBST([LIBUCL_LIBS], [-lucl])
-])
+# Check required dependencies.
+ROQ_CHECK_LIBUNWIND
+ROQ_CHECK_CROSSGUID
+ROQ_CHECK_SPDLOG
+ROQ_CHECK_GLOG
+ROQ_CHECK_GFLAGS
+ROQ_CHECK_DOUBLE_CONVERSION
+ROQ_CHECK_CCTZ
+ROQ_CHECK_FLATBUFFERS
+ROQ_CHECK_LIBEVENT
+ROQ_CHECK_LIBUCL
 
 # Initialize googletest.
 AC_CONFIG_SUBDIRS([third_party/googletest/googletest])

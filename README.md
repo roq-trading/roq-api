@@ -52,7 +52,7 @@ Unhandled exceptions may therefore cause the client process to terminate.
 Requests will normally be forwarded from the client to the gateway.
 The client should normally receive asynchronous acknowledgement and/or updates.
 
-However, several error conditions specifically pertains to requests
+However, several error conditions specifically pertain to requests
 
 * Incorrect requests detected by the client controller should cause synchronous exceptions.
 * Disconnected (or non-ready) gateway should cause synchronous exceptions.
@@ -114,14 +114,24 @@ Reasons for choosing Conda
 Conda allows you to install the API (including the dependencies) without imposing any specific environment.
 In other words, it should work for any user on any Linux host, virtual machine or container.
 
-Roq Trading makes the following Conda repositories available
+Please refer to Conda's documentation on [how to get started](https://conda.io/docs/user-guide/getting-started.html).
+
+### Roq Trading
+
+The following Conda repositories are available from Roq Trading
 
 * <http://roq-trading.com/dist/conda/unstable>
 * <http://roq-trading.com/dist/conda/stable>
 
-Please refer to Conda's [documentation](https://conda.io/docs/user-guide/tasks/manage-channels.html) for managing channels.
+Use the unstable channel to get "latest" updates.
+Use the stable channel for controlled deployments.
+For either, you can use specific version numbers to better manage your dependencies.
 
-Our [examples](https://github.com/roq-trading/roq-samples) include specific details on how to get started with Conda.
+Please refer to Conda's documentation for [managing channels](https://conda.io/docs/user-guide/tasks/manage-channels.html)
+and for [managing packages](https://conda.io/docs/user-guide/tasks/manage-pkgs.html).
+
+Our [examples](https://github.com/roq-trading/roq-samples) include specific details on how to get started with
+Roq Trading solutions and Conda environments.
 
 
 ## Building

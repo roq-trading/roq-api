@@ -16,9 +16,9 @@ Copyright (c) 2017-2018, Hans Erik Thrane
 
 This API is a generic trading interface abstraction allowing you to
 
-* Implement your trading strategy without knowing the details of specific trading API's.
+* Implement your own trading strategy without caring about the details of specific trading API's.
 * Connect to low-latency gateways bridging between your trading strategy and specific trading API's.
-* Simulate (in-process / out-of-process) historical market data and your bespoke order-matching independently of specific trading API's.
+* Simulate (in-process or out-of-process) historical market data using your own order-matching withoug depending on specific trading API's.
 
 ### Implementation
 
@@ -28,7 +28,7 @@ This API is a generic trading interface abstraction allowing you to
      public:
       Strategy(roq::common::Strategy::Dispatcher& dispatcher, ...)
           : dispatcher(dispatcher) {
-        // the dispatcher is the request interface to e.g. order creation
+        // the dispatcher is the request interface, e.g. for order creation
       }
 
      protected:
@@ -43,28 +43,29 @@ This API is a generic trading interface abstraction allowing you to
 #### Notes
 
 Event handlers will be invoked from a single thread.
-There is no need for you to implement locking or queueing.
+There is no need for you to implement your own locking or queueing.
 
 Your event handler should handle *all* exceptions.
 The controller is not supposed to know how to handle exceptions raised by your implementation.
-Unhandled exceptions may therefore cause the process to terminate.
+Unhandled exceptions may therefore cause the client process to terminate.
 
 Requests will normally be forwarded from the client to the gateway.
-The client should normally receive asynchronous acknowledgement and updates.
+The client should normally receive asynchronous acknowledgement and/or updates.
 
-However, several error conditions are specific to requests
+However, several error conditions specifically pertains to requests
 
-* Incorrect request should immediately raise an exception.
-* Disconnected (or non-ready) gateway should immediately raise an exception.
+* Incorrect requests detected by the client controller should cause synchronous exceptions.
+* Disconnected (or non-ready) gateway should cause synchronous exceptions.
+* Gateways may use the asynchronous acknowledge event to signal further error conditions.
 * Timeouts may occur anywhere between gateway, broker and market.
 * Timeout may occur if a request is lost in transit between client and gateway (e.g. disconnect).
 
 On the last point: *The client's controller often can not assume anything if the gateway is disconnected after
 a request has been sent and before an acknowledgement has been received*.
 
-Your trading strategy implementation should therefore manage exceptions and timeouts!
+Your trading strategy implementation should therefore manage exceptions, events and timeouts!
 
-* **Never** expect requests to actually generate acknowledgements and/or updates!
+* **Never** expect a request to actually generate an acknowledgement!
 * **Always** implement internal checks (to verify current state) and deal with the timeout conditions!
 
 **It is your responsibility to implement safe order management**.

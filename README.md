@@ -13,8 +13,11 @@ Copyright (c) 2017-2018, Hans Erik Thrane
 
 ## Contact
 
-Gateways are subject to a license fee.
-Please [contact us](mailto:hans.thrane@roq-trading.com) if you are interested in a license agrement.
+You should [contact us](mailto:hans.thrane@roq-trading.com) if you want to
+
+* Obtain a gateway license key
+* Discuss a specific gateway implementation
+* Discuss bespoke solutions (consultancy)
 
 
 ## Introduction
@@ -123,29 +126,33 @@ Please refer to Conda's documentation on [how to get started](https://conda.io/d
 
 ### Roq Trading
 
-The following Conda repositories are available from Roq Trading
+#### Channels
 
-* <http://roq-trading.com/dist/conda/unstable>
-* <http://roq-trading.com/dist/conda/stable>
+The following Conda channels are available
 
-Use the unstable channel to get "latest" updates.
-Use the stable channel for controlled deployments.
+| URL                                          | Purpose                    |
+| -------------------------------------------- | -------------------------- |
+| <http://roq-trading.com/dist/conda/unstable> | If you want the "latest"   |
+| <http://roq-trading.com/dist/conda/stable>   | For controlled deployments |
+
 For either, you can use specific version numbers to better manage your dependencies.
 
 Please refer to Conda's documentation for [managing channels](https://conda.io/docs/user-guide/tasks/manage-channels.html)
 and for [managing packages](https://conda.io/docs/user-guide/tasks/manage-pkgs.html).
 
-Our [examples](https://github.com/roq-trading/roq-samples) include specific details on how to get started with
-Roq Trading solutions and Conda environments.
+Our [examples](https://github.com/roq-trading/roq-samples) include specific details on how to set up a Conda environment,
+how to install the Roq API, and how to compile your own code.
 
-The following packages are currently available
+#### Packages
 
-| Name          | Content                       | License required? |
-| ------------- | ----------------------------- | ----------------- |
-| roq           | This API                      | No                |
-| roq-samples   | Compiled examples             | No                |
-| roq-simulator | Gateway simulator             | No                |
-| roq-femasapi  | Gateway based on the FemasAPI | Yes               |
+The following packages are available
+
+| Name          | Content                                                                       | Needs license key? |
+| ------------- | ----------------------------------------------------------------------------- | ------------------ |
+| roq           | The Roq API (this repo)                                                       |                    |
+| roq-samples   | Compiled version of [roq-samples](https://github.com/roq-trading/roq-samples) |                    |
+| roq-simulator | Gateway simulator                                                             |                    |
+| roq-femasapi  | Gateway based on the FemasAPI                                                 | Yes                |
 
 
 ## Building

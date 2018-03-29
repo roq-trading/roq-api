@@ -22,9 +22,9 @@ You should [contact us](mailto:hans.thrane@roq-trading.com) if you want to
 
 ## Introduction
 
-This API is a generic trading interface abstraction allowing you to
+This API is a generic trading interface allowing you to
 
-* Implement your own trading strategy without caring about the details of specific trading API's.
+* Implement your own trading strategy without caring about the low-level details of specific trading API's.
 * Connect to low-latency gateways bridging between your trading strategy and specific trading API's.
 * Simulate (in-process or out-of-process) historical market data using your own order-matching withoug depending on specific trading API's.
 
@@ -41,7 +41,7 @@ This API is a generic trading interface abstraction allowing you to
 
      protected:
       void on(const roq::common::[...]Event& event) override {
-        // [...]Event handlers allows you to react on market data, order updates, etc.
+        // [...]Event handlers allowing you to react to market data updates, order updates, etc.
       }
 
      private:
@@ -62,19 +62,23 @@ The client should normally receive asynchronous acknowledgement and/or updates.
 
 However, several error conditions specifically pertain to requests
 
-* Incorrect requests detected by the client controller should cause synchronous exceptions.
-* Disconnected (or non-ready) gateway should cause synchronous exceptions.
+* Requests detected by the client controller to be incorrectly formed, should result in a synchronous exception.
+* Attempts to route a request to a disconnected (or non-ready) gateway should result in a synchronous exception.
 * Gateways may use the asynchronous acknowledge event to signal further error conditions.
-* Timeouts may occur anywhere between gateway, broker and market.
+* Lost messages (and timeouts) may occur anywhere along the chain formed by strategy (client), gateway, broker and market.
 * Timeout may occur if a request is lost in transit between client and gateway (e.g. disconnect).
 
-On the last point: *The client's controller often can not assume anything if the gateway is disconnected after
-a request has been sent and before an acknowledgement has been received*.
+On the last point:
+The client's controller often can not assume anything if the gateway is disconnected after
+a request has been sent and before an acknowledgement has been received.
+The gateway may or may not send the acknowledgement and/or the updates following a re-connect.
 
-Your trading strategy implementation should therefore manage exceptions, events and timeouts!
+It is the nature of an asynchronous design: Messages can be lost. Managing timeouts is the way to deal with it.
 
-* **Never** expect a request to actually generate an acknowledgement!
-* **Always** implement internal checks (to verify current state) and deal with the timeout conditions!
+Your trading strategy implementation should therefore manage exceptions, updates (events) as well as timeouts!
+
+* **Never** expect a request to generate an asynchronous acknowledgement!
+* **Always** implement internal checks to verify current state and deal with timeout conditions!
 
 **It is your responsibility to implement safe order management**.
 
@@ -108,19 +112,20 @@ Please refer to our [examples](https://github.com/roq-trading/roq-samples) for b
 
 ## Conda
 
-We *strongly* recommend using Conda for installing the API.
+We *strongly* suggest using Conda for installing the API.
 
 Reasons for choosing Conda
 
-* Works in user-space and does not require elevated (root) access.
-* Different versions can easily co-exist on the same host.
-* Library dependencies are automatically installed.
-* Versioning compatibilities are automatically managed.
-* Conda standardizes the compiler toolchain to achieve ABI compatilibity.
-* Gateway binaries are delivered as Conda packages.
+* Works in user-space and does not require elevated access rights.
+* Different binary versions can easily co-exist using Conda's environment management.
+* Package dependencies are automatically resolved.
+* Version compatibility is automatically verified.
+* Conda uses a standardized compiler toolchain to achieve ABI compatilibity.
+* Our gateways are delivered as Conda packages.
 
-Conda allows you to install the API (including the dependencies) without imposing any specific environment.
-In other words, it should work for any user on any Linux host, virtual machine or container.
+Conda allows you to install the Roq API (including dependencies) without requiring you to work within
+any specific environment.
+In other words, it will work for any user on any (Linux) host / virtual machine / container.
 
 Please refer to Conda's documentation on [how to get started](https://conda.io/docs/user-guide/getting-started.html).
 
@@ -130,10 +135,10 @@ Please refer to Conda's documentation on [how to get started](https://conda.io/d
 
 The following Conda channels are available
 
-| URL                                          | Purpose                    |
-| -------------------------------------------- | -------------------------- |
-| <http://roq-trading.com/dist/conda/unstable> | If you want the "latest"   |
-| <http://roq-trading.com/dist/conda/stable>   | For controlled deployments |
+| Purpose                 | Channel URL                                  |
+| ----------------------- | -------------------------------------------- |
+| Deployment (prod / uat) | <http://roq-trading.com/dist/conda/stable>   |
+| Just give me latest     | <http://roq-trading.com/dist/conda/unstable> |
 
 For either, you can use specific version numbers to better manage your dependencies.
 
@@ -147,12 +152,14 @@ how to install the Roq API, and how to compile your own code.
 
 The following packages are available
 
-| Name          | Content                                                                       | Needs license key? |
-| ------------- | ----------------------------------------------------------------------------- | ------------------ |
-| roq           | The Roq API (this repo)                                                       |                    |
-| roq-samples   | Compiled version of [roq-samples](https://github.com/roq-trading/roq-samples) |                    |
-| roq-simulator | Gateway simulator                                                             |                    |
-| roq-femasapi  | Gateway based on the FemasAPI                                                 | Yes                |
+| Name          | Content                                                                       | Availability |
+| ------------- | ----------------------------------------------------------------------------- | ------------ |
+| roq           | The Roq API (this repo)                                                       | Free         |
+| roq-samples   | Compiled version of [roq-samples](https://github.com/roq-trading/roq-samples) | Free         |
+| roq-simulator | Gateway simulator                                                             | Free         |
+| roq-femasapi  | Gateway based on the FemasAPI                                                 | Licensed     |
+
+For licensed software you'll have to contact us to obtain a license key.
 
 
 ## Building

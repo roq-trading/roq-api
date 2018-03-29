@@ -29,6 +29,3 @@ roq.pc
 include/roq/api.h
 include/roq/roq
 test/api-tests
-examples/strategy/example-strategy
-examples/collector/example-collector
-examples/reference/reference-strategy

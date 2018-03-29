@@ -143,7 +143,8 @@ class Controller final {
             _event_decoder(_event_dispatcher),
             _callbacks(callbacks), _state(Disconnected),
             _retries(0), _retry_timer(0),
-            _uuid(uuid) {}
+            _uuid(uuid) {
+      }
       bool ready() const {
         return _state == Ready;
       }
@@ -172,7 +173,7 @@ class Controller final {
         try {
           _buffer_event->write(_write_buffer);
           _statistics.messages_sent += queue.size();
-        } catch (std::exception& e) {  // TODO(thraneh): use libevent::RuntimeError
+        } catch (libevent::RuntimeError& e) {
           LOG(WARNING) << "[" << _name << "] Caught exception, what=\"" << e.what() << "\"";
           write_failed();
           ++_statistics.connections_failed;
@@ -189,7 +190,7 @@ class Controller final {
           connect();
           _state = Connecting;
           return true;  // remove
-        } catch (std::exception& e) {  // TODO(thraneh): use libevent::RuntimeError
+        } catch (libevent::RuntimeError& e) {
           LOG(WARNING) << "[" << _name << "] Caught exception, what=\"" << e.what() << "\"";
           reset_retry_timer();
           return false;
@@ -462,29 +463,23 @@ class Controller final {
     }
 
    private:
-    void send(const common::CreateOrder& create_order, const std::string& gateway) override {
+    template <typename R>
+    void send_helper(const R& request, const std::string& gateway) {
       auto iter = _gateways_by_name.find(gateway);
       if (iter != _gateways_by_name.end()) {
         common::Queue queue(_buffer);
-        _encoder.encode(queue, create_order);
+        _encoder.encode(queue, request);
         (*iter).second->send(queue, false);
       }
+    }
+    void send(const common::CreateOrder& create_order, const std::string& gateway) override {
+      send_helper(create_order, gateway);
     }
     void send(const common::ModifyOrder& modify_order, const std::string& gateway) override {
-      auto iter = _gateways_by_name.find(gateway);
-      if (iter != _gateways_by_name.end()) {
-        common::Queue queue(_buffer);
-        _encoder.encode(queue, modify_order);
-        (*iter).second->send(queue, false);
-      }
+      send_helper(modify_order, gateway);
     }
     void send(const common::CancelOrder& cancel_order, const std::string& gateway) override {
-      auto iter = _gateways_by_name.find(gateway);
-      if (iter != _gateways_by_name.end()) {
-        common::Queue queue(_buffer);
-        _encoder.encode(queue, cancel_order);
-        (*iter).second->send(queue, false);
-      }
+      send_helper(cancel_order, gateway);
     }
     void on_timer() {
       auto now = std::chrono::steady_clock::now();

@@ -15,18 +15,20 @@ Copyright (c) 2017-2018, Hans Erik Thrane
 
 You should [contact us](mailto:hans.thrane@roq-trading.com) if you want to
 
-* Obtain a gateway license key
-* Discuss a specific gateway implementation
-* Discuss bespoke solutions (consultancy)
+* Obtain a gateway license key.
+* Discuss a specific gateway implementation.
+* Discuss bespoke solutions, e.g. consultancy or joint-venture.
 
 
 ## Introduction
 
 This API is a generic trading interface allowing you to
 
-* Implement your own trading strategy without caring about the low-level details of specific trading API's.
-* Connect to low-latency gateways bridging between your trading strategy and specific trading API's.
-* Simulate (in-process or out-of-process) historical market data using your own order-matching withoug depending on specific trading API's.
+* Implement your own trading strategies without caring (too much) about the low-level details
+  of specific trading API's.
+* Easily connect your trading strategy to low-latency market gateways.
+* Easily simulate your trading strategy, in-process or out-of-process, using historical market
+  data and your own order-matching.
 
 ### Implementation
 
@@ -137,8 +139,8 @@ The following Conda channels are available
 
 | Purpose                 | Channel URL                                  |
 | ----------------------- | -------------------------------------------- |
-| Deployment (prod / uat) | <http://roq-trading.com/dist/conda/stable>   |
-| Just give me latest     | <http://roq-trading.com/dist/conda/unstable> |
+| For prod/uat deployment | <http://roq-trading.com/dist/conda/stable>   |
+| For development         | <http://roq-trading.com/dist/conda/unstable> |
 
 For either, you can use specific version numbers to better manage your dependencies.
 
@@ -159,7 +161,7 @@ The following packages are available
 | roq-simulator | Gateway simulator                                                             | Free         |
 | roq-femasapi  | Gateway based on the FemasAPI                                                 | Licensed     |
 
-For licensed software you'll have to contact us to obtain a license key.
+For licensed software you'll have to [contact us](mailto:hans.thrane@roq-trading.com) to obtain a license key.
 
 
 ## Building

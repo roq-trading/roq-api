@@ -14,7 +14,7 @@ Copyright (c) 2017-2018, Hans Erik Thrane
 
 ## Introduction
 
-This API is a generic abstraction allowing you to
+This API is a generic trading interface abstraction allowing you to
 
 * Implement your trading strategy without knowing the details of specific trading API's.
 * Connect to low-latency gateways bridging between your trading strategy and specific trading API's.
@@ -28,12 +28,12 @@ This API is a generic abstraction allowing you to
      public:
       Strategy(roq::common::Strategy::Dispatcher& dispatcher, ...)
           : dispatcher(dispatcher) {
-        // the Dispatcher is the interface to e.g. request order creation
+        // the dispatcher is the request interface to e.g. order creation
       }
 
      protected:
       void on(const roq::common::[...]Event& event) override {
-        // [...]Event handlers allows you to react on e.g. market data or order updates
+        // [...]Event handlers allows you to react on market data, order updates, etc.
       }
 
      private:
@@ -45,26 +45,31 @@ This API is a generic abstraction allowing you to
 Event handlers will be invoked from a single thread.
 There is no need for you to implement locking or queueing.
 
-Event handlers should handle all exceptions.
-A controller is not supposed to know how to handle exceptions raised by your implementation.
-Unhandled exceptions may cause the process to terminate.
+Your event handler should handle *all* exceptions.
+The controller is not supposed to know how to handle exceptions raised by your implementation.
+Unhandled exceptions may therefore cause the process to terminate.
 
-Requests will normally be forwarded from the dispatcher to the gateway.
-Client should then receive acknowledgement and updates.
+Requests will normally be forwarded from the client to the gateway.
+The client should normally receive asynchronous acknowledgement and updates.
 
 However, several error conditions are specific to requests
 
-* Incorrect request will immediately raise an exception.
-* Disconnected (or non-ready) gateway will immediately raise an exception.
-* Timeout may occur if a request is lost in transit between client and gateway (e.g. disconnect).
+* Incorrect request should immediately raise an exception.
+* Disconnected (or non-ready) gateway should immediately raise an exception.
 * Timeouts may occur anywhere between gateway, broker and market.
+* Timeout may occur if a request is lost in transit between client and gateway (e.g. disconnect).
 
-Your trading strategy implementation should manage exceptions and timeouts.
-(Please refer to the examples for basic checks and design patterns).
+On the last point: *The client's controller often can not assume anything if the gateway is disconnected after
+a request has been sent and before an acknowledgement has been received*.
 
-**Never** expect requests to actually generate acknowledgements and/or updates!
+Your trading strategy implementation should therefore manage exceptions and timeouts!
 
-**Always** implement internal checks (to verify current state) and deal with the timeout conditions!
+* **Never** expect requests to actually generate acknowledgements and/or updates!
+* **Always** implement internal checks (to verify current state) and deal with the timeout conditions!
+
+**It is your responsibility to implement safe order management**.
+
+Please refer to our [examples](https://github.com/roq-trading/roq-samples) for basic checks and design patterns.
 
 
 ### Live Trading
@@ -94,7 +99,7 @@ Your trading strategy implementation should manage exceptions and timeouts.
 
 ## Conda
 
-We strongly recommend using Conda for installing the API.
+We *strongly* recommend using Conda for installing the API.
 
 Reasons for choosing Conda
 
@@ -105,24 +110,28 @@ Reasons for choosing Conda
 * Conda standardizes the compiler toolchain to achieve ABI compatilibity.
 * Gateway binaries are delivered as Conda packages.
 
-The following Conda repositories are available
+Conda allows you to install the API (including the dependencies) without imposing any specific environment.
+In other words, it should work for any user on any Linux host, virtual machine or container.
+
+Roq Trading makes the following Conda repositories available
 
 * <http://roq-trading.com/dist/conda/unstable>
 * <http://roq-trading.com/dist/conda/stable>
 
-Please refer to Conda's documentation for managing channels ([link](https://conda.io/docs/user-guide/tasks/manage-channels.html)).
+Please refer to Conda's [documentation](https://conda.io/docs/user-guide/tasks/manage-channels.html) for managing channels.
 
 Our [examples](https://github.com/roq-trading/roq-samples) include specific details on how to get started with Conda.
 
 
 ## Building
 
-If you build from source, you must ensure all the dependencies listed below can be found either on the system or from `$PREFIX`.
+If you build from source, you must ensure all the dependencies (listed below) can be found either on the system or from `$PREFIX`.
 
-Finding and installing all these dependencies is no small feat.
+Finding and installing all the dependencies is no small feat.
+You may consider returning to the previous section describing the **Conda** package manager.
 You have been **warned**!
 
-Otherwise it's pretty standard
+Assuming you have all dependencies installed, it's pretty standard
 
     ./autogen.sh
     ./configure [--prefix $PREFIX]

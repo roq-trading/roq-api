@@ -11,6 +11,11 @@ Copyright (c) 2017-2018, Hans Erik Thrane
 
 [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)
 
+## Contact
+
+Gateways are subject to a license fee.
+Please [contact us](hans.thrane@roq-trading.com) if you are interested in a license agrement.
+
 
 ## Introduction
 

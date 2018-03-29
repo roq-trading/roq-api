@@ -1,31 +1,137 @@
-[![Build Status](https://travis-ci.org/quinclas/tradingapi.svg?branch=master)](https://travis-ci.org/quinclas/tradingapi)
+[![Build Status](https://travis-ci.org/quinclas/tradingapi.svg?branch=master)](https://travis-ci.org/roq-trading/roq)
 [![License: BSD](https://img.shields.io/badge/license-BSD-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Join the chat at https://gitter.im/quinclas/Lobby](https://badges.gitter.im/quinclas/Lobby.svg)](https://gitter.im/quinclas/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# Generic trading interface to broker APIs.
+# Generic trading interface
 
-Copyright (c) 2017-2018, Hans Erik Thrane.
+Copyright (c) 2017-2018, Hans Erik Thrane
+
 
 ## License
 
 [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)
 
-## Overview
 
-This repository contains open sourced APIs and tools.
+## Introduction
 
-![overview](https://github.com/quinclas/tradingapi/blob/gh-pages/_images/design.png)
+This API is a generic abstraction allowing you to
 
-## Documentation
+* Implement your trading strategy without knowing the details of specific trading API's.
+* Connect to low-latency gateways bridging between your trading strategy and specific trading API's.
+* Simulate (in-process / out-of-process) historical market data and your bespoke order-matching independently of specific trading API's.
 
-Detailed documentation can be found [here](https://quinclas.github.io/tradingapi/index.html).
+### Implementation
 
-## Platforms
+    #include <roq/api.h>
+
+    class Strategy : public roq::common::Strategy {
+     public:
+      Strategy(roq::common::Strategy::Dispatcher& dispatcher, ...)
+          : dispatcher(dispatcher) {
+        // the Dispatcher is the interface to e.g. request order creation
+      }
+
+     protected:
+      void on(const roq::common::[...]Event& event) override {
+        // [...]Event handlers allows you to react on e.g. market data or order updates
+      }
+
+     private:
+      roq::common::Strategy::Dispatcher& dispatcher;
+    };
+
+#### Notes
+
+Event handlers will be invoked from a single thread.
+There is no need for you to implement locking or queueing.
+
+Event handlers should handle all exceptions.
+A controller is not supposed to know how to handle exceptions raised by your implementation.
+Default action may be to terminate the process, if an exception leaves the event handler.
+
+Requests will normally be forwarded from the dispatcher to the gateway.
+Client will then receive an acknowledgement followed by updates.
+
+Several error conditions are specific to requests
+
+* Incorrect request will raise an exception.
+* Disconnected (or non-ready) gateway will raise an exception.
+* Timeout may occur if a request is lost in transit between client and gateway (e.g. disconnect).
+* Timeouts may occur anywhere between gateway, broker and market.
+
+Your trading strategy implementation should manage exceptions and timeouts.
+(Please refer to the examples for basic checks and design patterns).
+
+**Never** expect requests to actually generate acknowledgements and/or updates!
+
+**Always** implement internal checks (to verify current state) and deal with the timeout conditions!
+
+
+### Live Trading
+
+    #include <roq/client.h>
+  
+    // use e.g. roq::client::Gateways to create this map (details left out)
+    std::unordered_map<std::string, Connection> gateways;
+
+    // instantiate the live controller, create the strategy and dispatch
+    // note! the constructor allows you to pass further options to the strategy (see roq-samples)
+    roq::client::Controller<Strategy>(
+        std::move(gateways)).create_and_dispatch();
+
+### Simulation
+
+    #include <roq/simulation.h>
+
+    // a list of bespoke market data simulation generators (details left out)
+    std::list<std::unique_ptr<roq::simulation::Generator> > generators;
+
+    // instantiate the simulator, create the strategy and dispatch
+    // note! the constructor allows you to pass further options to the strategy (see roq-samples)
+    roq::simulation::Controller<Strategy>(
+        std::move(generators)).create_and_dispatch();
+
+
+## Conda
+
+We strongly recommend using Conda for installing the API.
+
+Reasons for choosing Conda
+
+* Works in user-space and does not require elevated (root) access.
+* Different versions can easily be co-exist on the same host.
+* Dependencies are automatically installed and managed.
+* Conda standardizes the compiler toolchain to achieve ABI compatilibity.
+* Gateway binaries are delivered as Conda packages.
+
+The following Conda repositories are available
+
+* <http://roq-trading.com/dist/conda/unstable>
+* <http://roq-trading.com/dist/conda/stable>
+
+Please refer to [roq-samples](https://github.com/roq-trading/roq-samples) on how to get started.
+
+
+## Building
+
+**Warning!**
+If you build from source, you must ensure all the dependencies listed below can be found either on the system or via `$PREFIX`.
+
+    ./autogen.sh
+    ./configure [--prefix $PREFIX]
+    make
+    make check
+    make install
+
+
+## Compatibility
+
+### Platforms
 
 * Linux
 * macOS (partial support)
 
-## Build Tools
+### Build Tools
 
 | Tool       | Version  | Purpose |
 | ---------- | -------- | ------- |
@@ -37,7 +143,7 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 | clang      | >= 3.3   | Build   |
 | cmake      | >= 2.6.4 | Test    |
 
-## Dependencies
+### Library Dependencies
 
 | Library                                                          | Version  | License                                                      | Purpose                         | Gateways | API | Examples |
 | ---------------------------------------------------------------- | -------- | ------------------------------------------------------------ | ------------------------------- |:--------:|:---:|:--------:|
@@ -54,77 +160,9 @@ Detailed documentation can be found [here](https://quinclas.github.io/tradingapi
 | [libwebsockets](https://github.com/warmcat/libwebsockets)        | >= 2.4   | [LGPL-2.1](https://opensource.org/licenses/lgpl-2.1)         | Websockets                      |     X    |     |          |
 | [rapidjson](https://github.com/Tencent/rapidjson)                | >= 1.1   | [MIT](https://opensource.org/licenses/MIT)                   | JSON parsing                    |     X    |     |          |
 | [spdlog](https://github.com/gabime/spdlog)                       | >= 0.16  | [MIT](https://opensource.org/licenses/MIT)                   | Logging                         |     X    |  X  |          |
-| [ucl](https://github.com/vstakhov/libucl)                        | >= 0.8   | [BSD-2-Clause](https://opensource.org/licenses/BSD-2-Clause) | Config-file parsing             |     X    |     |     X    |
+| [libucl](https://github.com/vstakhov/libucl)                     | >= 0.8   | [BSD-2-Clause](https://opensource.org/licenses/BSD-2-Clause) | Config-file parsing             |     X    |     |     X    |
 
-## Building
 
-    ./autogen.sh
-    ./configure [--prefix=$PREFIX] [--enable-examples]
-    make
-    make install
+## Design
 
-*If you build from source, you must ensure the dependencies listed above can be found on the system or via *`$PREFIX`.
-
-## Conda
-
-You are able to access pre-built binaries from our Conda repositories
-
-* <http://quinclas.com/dist/conda/unstable>
-* <http://quinclas.com/dist/conda/stable>
-
-*Conda makes it easy to install programs and libraries without requiring root access.
-For further details about Conda, please refer to the official documentation ([link](https://conda.io/docs/))*.
-
-Quinclas built packages are based on Conda version 5 (conda-build version 3).
-
-With version 5, Conda has made an attempt to isolate package dependencies from the host platform.
-This should (in theory) allow packages to be installed on any Linux distro.
-
-Third-party dependencies (including open sourced solutions) have been packaged by Quinclas when not available from the official anaconda repository ([link](https://github.com/AnacondaRecipes)).
-
-## Example
-
-Here is an example of how to set up your own Conda environment, install a package, and execute a binary.
-
-    # download the installer
-    wget -c http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-
-    # install miniconda to your home directory
-    bash Miniconda3-latest-Linux-x86_64.sh -b -p ~/miniconda3
-
-    # activate the root environment
-    source ~/miniconda3/bin/activate
-
-    # add the quinclas package channel
-    conda config --add channels http://quinclas.com/dist/conda/unstable
-
-    # create your environment
-    conda create -y -n my_env_name
-
-    # activate your new environment
-    source activate my_env_name
-
-    # install the quinclas tradingapi
-    conda install -y quinclas-tradingapi
-
-    # you should now be able to run an example, like this
-    example-strategy --gateways femasapi=test:1234@/var/tmp/femasapi.sock
-
-Of course, you will likely be interested in developing your own strategies.
-
-    # miniconda doesn't do this automatically
-    export PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig
-
-    # then you can find the necessary CFLAGS like this
-    pkg-config --cflags quinclas-tradingapi
-
-## Broker API's
-
-The gateways have not been open sourced.
-Pre-built binaries are available from our Conda repositories;
-
-| Gateway  | Package Name      | Access             | Market Data | Order Routing | Linux | Windows | macOS |
-| -------- | ----------------- | ------------------ | ----------- | ------------- | ----- | ------- | ----- |
-| FemasAPI | quinclas-femasapi | Chinese brokers    | Yes         | Yes           | Yes   | No      | No    |
-
-*Gateways will only work with valid license keys. Please contact us for further details*.
+![overview](https://github.com/quinclas/tradingapi/blob/gh-pages/_images/design.png)

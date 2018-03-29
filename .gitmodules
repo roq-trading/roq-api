@@ -5,3 +5,4 @@
 [submodule "roq-m4"]
 	path = m4
 	url = https://github.com/roq-trading/roq-m4
+	ignore = dirty

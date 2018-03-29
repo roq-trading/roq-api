@@ -2,3 +2,6 @@
 	path = third_party/googletest
 	url = https://github.com/google/googletest.git
 	ignore = dirty
+[submodule "roq-m4"]
+	path = m4
+	url = https://github.com/roq-trading/roq-m4

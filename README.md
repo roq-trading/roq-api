@@ -14,7 +14,7 @@ Copyright (c) 2017-2018, Hans Erik Thrane
 ## Contact
 
 Gateways are subject to a license fee.
-Please [contact us](hans.thrane@roq-trading.com) if you are interested in a license agrement.
+Please [contact us](mailto:hans.thrane@roq-trading.com) if you are interested in a license agrement.
 
 
 ## Introduction

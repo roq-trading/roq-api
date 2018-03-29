@@ -47,15 +47,15 @@ There is no need for you to implement locking or queueing.
 
 Event handlers should handle all exceptions.
 A controller is not supposed to know how to handle exceptions raised by your implementation.
-Default action may be to terminate the process, if an exception leaves the event handler.
+Unhandled exceptions may cause the process to terminate.
 
 Requests will normally be forwarded from the dispatcher to the gateway.
-Client will then receive an acknowledgement followed by updates.
+Client should then receive acknowledgement and updates.
 
-Several error conditions are specific to requests
+However, several error conditions are specific to requests
 
-* Incorrect request will raise an exception.
-* Disconnected (or non-ready) gateway will raise an exception.
+* Incorrect request will immediately raise an exception.
+* Disconnected (or non-ready) gateway will immediately raise an exception.
 * Timeout may occur if a request is lost in transit between client and gateway (e.g. disconnect).
 * Timeouts may occur anywhere between gateway, broker and market.
 
@@ -99,8 +99,9 @@ We strongly recommend using Conda for installing the API.
 Reasons for choosing Conda
 
 * Works in user-space and does not require elevated (root) access.
-* Different versions can easily be co-exist on the same host.
-* Dependencies are automatically installed and managed.
+* Different versions can easily co-exist on the same host.
+* Library dependencies are automatically installed.
+* Versioning compatibilities are automatically managed.
 * Conda standardizes the compiler toolchain to achieve ABI compatilibity.
 * Gateway binaries are delivered as Conda packages.
 
@@ -109,13 +110,19 @@ The following Conda repositories are available
 * <http://roq-trading.com/dist/conda/unstable>
 * <http://roq-trading.com/dist/conda/stable>
 
-Please refer to [roq-samples](https://github.com/roq-trading/roq-samples) on how to get started.
+Please refer to Conda's documentation for managing channels ([link](https://conda.io/docs/user-guide/tasks/manage-channels.html)).
+
+Our [examples](https://github.com/roq-trading/roq-samples) include specific details on how to get started with Conda.
 
 
 ## Building
 
-**Warning!**
-If you build from source, you must ensure all the dependencies listed below can be found either on the system or via `$PREFIX`.
+If you build from source, you must ensure all the dependencies listed below can be found either on the system or from `$PREFIX`.
+
+Finding and installing all these dependencies is no small feat.
+You have been **warned**!
+
+Otherwise it's pretty standard
 
     ./autogen.sh
     ./configure [--prefix $PREFIX]

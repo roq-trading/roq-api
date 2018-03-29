@@ -138,6 +138,15 @@ and for [managing packages](https://conda.io/docs/user-guide/tasks/manage-pkgs.h
 Our [examples](https://github.com/roq-trading/roq-samples) include specific details on how to get started with
 Roq Trading solutions and Conda environments.
 
+The following packages are currently available
+
+| Name          | Content                       | License required? |
+| ------------- | ----------------------------- | ----------------- |
+| roq           | This API                      | No                |
+| roq-samples   | Compiled examples             | No                |
+| roq-simulator | Gateway simulator             | No                |
+| roq-femasapi  | Gateway based on the FemasAPI | Yes               |
+
 
 ## Building
 

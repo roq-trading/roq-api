@@ -15,10 +15,6 @@ AC_CONFIG_FILES([
  src/Makefile
  src/api/Makefile
  test/Makefile
- examples/Makefile
- examples/strategy/Makefile
- examples/collector/Makefile
- examples/reference/Makefile
 ])
 AC_CONFIG_FILES([include/roq/api.h])
 AC_CONFIG_FILES([roq.pc])
@@ -155,12 +151,6 @@ PKG_CHECK_MODULES([LIBUCL], [libucl], [], [
   )
   AC_SUBST([LIBUCL_LIBS], [-lucl])
 ])
-
-# Optionally enable examples.
-AC_ARG_ENABLE([examples], [
-  AC_HELP_STRING([--enable-examples], [build examples])
-], [], [enable_examples=no])
-AM_CONDITIONAL([ENABLE_EXAMPLES], [test "$enable_examples" = yes])
 
 # Initialize googletest.
 AC_CONFIG_SUBDIRS([third_party/googletest/googletest])

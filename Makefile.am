@@ -1,12 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = . include src
-
-if ENABLE_EXAMPLES
-SUBDIRS += examples
-endif
-
-SUBDIRS += test
+SUBDIRS = . include src test
 
 dist_doc_DATA = LICENSE README.md ChangeLog.md
 

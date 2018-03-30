@@ -17,7 +17,7 @@ install:
  - scripts/travis/install-cctz.sh
  - scripts/travis/install-flatbuffers.sh
  - scripts/travis/install-libevent.sh
- - scripts/travis/install-ucl.sh
+ - scripts/travis/install-libucl.sh
 after_failure:
  - cat tests/test-suite.log
  - ls -ahl /usr/local/lib

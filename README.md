@@ -13,7 +13,7 @@ Copyright (c) 2017-2018, Hans Erik Thrane
 
 ## Contact
 
-You should [contact us](mailto:hans.thrane@roq-trading.com) if you want to
+You should [contact us](mailto:info@roq-trading.com) if you want to
 
 * Obtain a gateway license key.
 * Discuss a specific gateway implementation.
@@ -161,7 +161,7 @@ The following packages are available
 | roq-simulator | Gateway simulator                                                             | Free         |
 | roq-femasapi  | Gateway based on the FemasAPI                                                 | Licensed     |
 
-For licensed software you'll have to [contact us](mailto:hans.thrane@roq-trading.com) to obtain a license key.
+For licensed software you'll have to [contact us](mailto:info@roq-trading.com) to obtain a license key.
 
 
 ## Building

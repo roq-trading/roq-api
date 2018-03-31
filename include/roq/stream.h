@@ -8,7 +8,6 @@
 #include <vector>
 
 namespace roq {
-namespace common {
 
 struct Number {
   explicit Number(double value) : _value(value) {}
@@ -79,5 +78,4 @@ std::ostream& operator<<(std::ostream& stream, const TradeSummaryEvent& value);
 std::ostream& operator<<(std::ostream& stream, const OrderUpdateEvent& value);
 std::ostream& operator<<(std::ostream& stream, const PositionUpdateEvent& value);
 
-}  // namespace common
 }  // namespace roq

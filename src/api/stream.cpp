@@ -8,7 +8,6 @@
 #include "roq/stream.h"
 
 namespace roq {
-namespace common {
 
 namespace {
 const double_conversion::DoubleToStringConverter DOUBLE_CONVERTER(
@@ -449,5 +448,4 @@ std::ostream& operator<<(std::ostream& stream, const PositionUpdateEvent& value)
     "}";
 }
 
-}  // namespace common
 }  // namespace roq

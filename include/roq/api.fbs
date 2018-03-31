@@ -46,7 +46,7 @@ table Ready {
 
 table GatewayStatus {
   name:string;
-  status:common.GatewayState;
+  status:GatewayState;
 }
 
 struct Layer {
@@ -70,7 +70,7 @@ table TradeSummary {
   price:double;
   volume:double;
   turnover:double;
-  direction:common.TradeDirection;
+  direction:TradeDirection;
   exchange_time:ulong;
   channel:uint;
 }
@@ -86,7 +86,7 @@ table ReferenceData {
 table MarketStatus {
   exchange:string;
   instrument:string;
-  trading_status:common.TradingStatus;
+  trading_status:TradingStatus;
 }
 
 table CreateOrder {
@@ -94,7 +94,7 @@ table CreateOrder {
   order_template:string;
   exchange:string;
   instrument:string;
-  direction:common.TradeDirection;
+  direction:TradeDirection;
   quantity:double;
   limit_price:double;
   stop_price:double;
@@ -152,8 +152,8 @@ table OrderUpdate {
   external_order_id:string;
   exchange:string;
   instrument:string;
-  status:common.OrderStatus;
-  trade_direction:common.TradeDirection;
+  status:OrderStatus;
+  trade_direction:TradeDirection;
   remaining_quantity:double;
   traded_quantity:double;
   insert_time:ulong;
@@ -166,7 +166,7 @@ table TradeUpdate {
   external_trade_id:string;
   exchange:string;
   instrument:string;
-  trade_direction:common.TradeDirection;
+  trade_direction:TradeDirection;
   quantity:double;
   price:double;
   trade_time:ulong;
@@ -175,7 +175,7 @@ table TradeUpdate {
 table PositionUpdate {
   exchange:string;
   instrument:string;
-  trade_direction:common.TradeDirection;
+  trade_direction:TradeDirection;
   position:double;
   position_yesterday:double;
   frozen_position:double;

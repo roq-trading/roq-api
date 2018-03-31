@@ -19,7 +19,7 @@ class Generator {
   Generator() {}
   virtual ~Generator() {}
   virtual std::pair<bool, std::chrono::system_clock::time_point> fetch() = 0;
-  virtual void dispatch(common::Strategy& strategy) = 0;
+  virtual void dispatch(Strategy& strategy) = 0;
 
  private:
   Generator(Generator&) = delete;
@@ -41,7 +41,7 @@ class Controller final {
  private:
   // Dispatcher
   class Dispatcher final
-      : public common::Strategy::Dispatcher {
+      : public Strategy::Dispatcher {
    public:
     template <typename... Args>
     explicit Dispatcher(generators_t& generators, Args&&... args)
@@ -62,13 +62,13 @@ class Controller final {
     }
 
    private:
-    void send(const common::CreateOrder& create_order, const std::string& gateway) override {
+    void send(const CreateOrder& create_order, const std::string& gateway) override {
       throw std::runtime_error("This simulator doesn't support order management");
     }
-    void send(const common::ModifyOrder& modify_order, const std::string& gateway) override {
+    void send(const ModifyOrder& modify_order, const std::string& gateway) override {
       throw std::runtime_error("This simulator doesn't support order management");
     }
-    void send(const common::CancelOrder& cancel_order, const std::string& gateway) override {
+    void send(const CancelOrder& cancel_order, const std::string& gateway) override {
       throw std::runtime_error("This simulator doesn't support order management");
     }
 

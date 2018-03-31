@@ -8,7 +8,7 @@
 using namespace roq;  // NOLINT
 
 TEST(stream, double_conversion_1) {
-  common::Layer layer = {
+  Layer layer = {
       1.234,
       1234.0,
       1.234e10,
@@ -22,7 +22,7 @@ TEST(stream, double_conversion_1) {
 }
 
 TEST(stream, double_conversion_2) {
-  common::Layer layer = {
+  Layer layer = {
       0.0,
       -0.0,
       std::numeric_limits<double>::quiet_NaN(),

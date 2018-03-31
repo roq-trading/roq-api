@@ -34,20 +34,20 @@ This API is a generic trading interface allowing you to
 
     #include <roq/api.h>
 
-    class Strategy : public roq::common::Strategy {
+    class Strategy : public roq::Strategy {
      public:
-      Strategy(roq::common::Strategy::Dispatcher& dispatcher, ...)
+      Strategy(roq::Strategy::Dispatcher& dispatcher, ...)
           : dispatcher(dispatcher) {
         // the dispatcher is the request interface, e.g. for order creation
       }
 
      protected:
-      void on(const roq::common::[...]Event& event) override {
+      void on(const roq::[...]Event& event) override {
         // [...]Event handlers allowing you to react to market data updates, order updates, etc.
       }
 
      private:
-      roq::common::Strategy::Dispatcher& dispatcher;
+      roq::Strategy::Dispatcher& dispatcher;
     };
 
 #### Notes

@@ -14,8 +14,7 @@
 #include <vector>
 
 namespace roq {
-namespace common {
-
+namespace codec {
 
 // time_point utilities
 
@@ -104,6 +103,458 @@ class Queue final {
   Buffer& _buffer;
   std::vector<message_t> _messages;
 };
+
+// encode (events / low level)
+
+inline flatbuffers::Offset<schema::SourceInfo>
+convert(flatbuffers::FlatBufferBuilder& fbb, const SourceInfo& value) {
+  return schema::CreateSourceInfo(
+    fbb,
+    value.seqno,
+    time_point_to_uint64(value.create_time));
+}
+
+inline flatbuffers::Offset<schema::Handshake>
+convert(flatbuffers::FlatBufferBuilder& fbb, const Handshake& value) {
+  return schema::CreateHandshake(
+    fbb,
+    fbb.CreateString(value.api_version),
+    fbb.CreateString(value.application),
+    fbb.CreateString(value.hostname),
+    value.pid,
+    fbb.CreateString(value.uuid),
+    fbb.CreateString(value.login),
+    fbb.CreateString(value.password),
+    fbb.CreateVectorOfStrings(value.subscriptions));
+}
+
+inline flatbuffers::Offset<schema::HandshakeAck>
+convert(flatbuffers::FlatBufferBuilder& fbb, const HandshakeAck& value) {
+  return schema::CreateHandshakeAck(
+    fbb,
+    fbb.CreateString(value.api_version),
+    fbb.CreateString(value.application),
+    fbb.CreateString(value.hostname),
+    value.pid,
+    value.failure,
+    fbb.CreateString(value.failure_reason),
+    fbb.CreateString(value.server_uuid),
+    fbb.CreateString(value.server_name),
+    fbb.CreateString(value.shmem_s2c_name),
+    value.shmem_s2c_size,
+    fbb.CreateString(value.shmem_c2s_name),
+    value.shmem_c2s_size);
+}
+
+inline flatbuffers::Offset<schema::Heartbeat>
+convert(flatbuffers::FlatBufferBuilder& fbb, const Heartbeat& value) {
+  return schema::CreateHeartbeat(
+    fbb,
+    value.opaque);
+}
+
+inline flatbuffers::Offset<schema::HeartbeatAck>
+convert(flatbuffers::FlatBufferBuilder& fbb, const HeartbeatAck& value) {
+  return schema::CreateHeartbeatAck(
+    fbb,
+    value.opaque);
+}
+
+inline flatbuffers::Offset<schema::Ready>
+convert(flatbuffers::FlatBufferBuilder& fbb, const Ready& value) {
+  return schema::CreateReady(fbb);
+}
+
+inline flatbuffers::Offset<schema::GatewayStatus>
+convert(flatbuffers::FlatBufferBuilder& fbb, const GatewayStatus& value) {
+  return schema::CreateGatewayStatus(
+    fbb,
+    fbb.CreateString(value.name),
+    value.status);
+}
+
+inline flatbuffers::Offset<schema::MarketByPrice>
+convert(flatbuffers::FlatBufferBuilder& fbb, const MarketByPrice& value) {
+  std::vector<schema::Layer> depth(MAX_DEPTH);
+  for (auto i = 0; i < MAX_DEPTH; ++i)
+    depth[i] = schema::Layer(
+      value.depth[i].bid_price,
+      value.depth[i].bid_quantity,
+      value.depth[i].ask_price,
+      value.depth[i].ask_quantity);
+  return schema::CreateMarketByPrice(
+    fbb,
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument),
+    fbb.CreateVectorOfStructs(&depth[0], depth.size()),
+    time_point_to_uint64(value.exchange_time),
+    value.channel);
+}
+
+inline flatbuffers::Offset<schema::TradeSummary>
+convert(flatbuffers::FlatBufferBuilder& fbb, const TradeSummary& value) {
+  return schema::CreateTradeSummary(
+    fbb,
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument),
+    value.price,
+    value.volume,
+    value.turnover,
+    value.direction,
+    time_point_to_uint64(value.exchange_time),
+    value.channel);
+}
+
+inline flatbuffers::Offset<schema::ReferenceData>
+convert(flatbuffers::FlatBufferBuilder& fbb, const ReferenceData& value) {
+  return schema::CreateReferenceData(
+    fbb,
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument),
+    value.tick_size,
+    value.limit_up,
+    value.limit_down);
+}
+
+inline flatbuffers::Offset<schema::MarketStatus>
+convert(flatbuffers::FlatBufferBuilder& fbb, const MarketStatus& value) {
+  return schema::CreateMarketStatus(
+    fbb,
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument),
+    value.trading_status);
+}
+
+inline flatbuffers::Offset<schema::CreateOrder>
+convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrder& value) {
+  return schema::CreateCreateOrder(
+    fbb,
+    value.opaque,
+    fbb.CreateString(value.order_template),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument),
+    value.direction,
+    value.quantity,
+    value.limit_price,
+    value.stop_price);
+}
+
+inline flatbuffers::Offset<schema::CreateOrderAck>
+convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrderAck& value) {
+  return schema::CreateCreateOrderAck(
+    fbb,
+    value.opaque,
+    value.order_id,
+    value.failure,
+    fbb.CreateString(value.reason),
+    fbb.CreateString(value.order_template),
+    fbb.CreateString(value.external_order_id),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument));
+}
+
+inline flatbuffers::Offset<schema::ModifyOrder>
+convert(flatbuffers::FlatBufferBuilder& fbb, const ModifyOrder& value) {
+  return schema::CreateModifyOrder(
+    fbb,
+    value.order_id,
+    value.quantity_change,
+    value.limit_price);
+}
+
+inline flatbuffers::Offset<schema::ModifyOrderAck>
+convert(flatbuffers::FlatBufferBuilder& fbb, const ModifyOrderAck& value) {
+  return schema::CreateModifyOrderAck(
+    fbb,
+    value.opaque,
+    value.order_id,
+    value.failure,
+    fbb.CreateString(value.reason),
+    fbb.CreateString(value.order_template),
+    fbb.CreateString(value.external_order_id),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument),
+    value.quantity_change,
+    value.limit_price);
+}
+
+inline flatbuffers::Offset<schema::CancelOrder>
+convert(flatbuffers::FlatBufferBuilder& fbb, const CancelOrder& value) {
+  return schema::CreateCancelOrder(
+    fbb,
+    value.order_id);
+}
+
+inline flatbuffers::Offset<schema::CancelOrderAck>
+convert(flatbuffers::FlatBufferBuilder& fbb, const CancelOrderAck& value) {
+  return schema::CreateCancelOrderAck(
+    fbb,
+    value.opaque,
+    value.order_id,
+    value.failure,
+    fbb.CreateString(value.reason),
+    fbb.CreateString(value.order_template),
+    fbb.CreateString(value.external_order_id),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument));
+}
+
+inline flatbuffers::Offset<schema::OrderUpdate>
+convert(flatbuffers::FlatBufferBuilder& fbb, const OrderUpdate& value) {
+  return schema::CreateOrderUpdate(
+    fbb,
+    value.opaque,
+    value.order_id,
+    fbb.CreateString(value.order_template),
+    fbb.CreateString(value.external_order_id),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument),
+    value.status,
+    value.trade_direction,
+    value.remaining_quantity,
+    value.traded_quantity,
+    time_point_to_uint64(value.insert_time),
+    time_point_to_uint64(value.cancel_time));
+}
+
+inline flatbuffers::Offset<schema::TradeUpdate>
+convert(flatbuffers::FlatBufferBuilder& fbb, const TradeUpdate& value) {
+  return schema::CreateTradeUpdate(
+    fbb,
+    value.order_id,
+    fbb.CreateString(value.external_order_id),
+    fbb.CreateString(value.external_trade_id),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument),
+    value.trade_direction,
+    value.quantity,
+    value.price,
+    time_point_to_uint64(value.trade_time));
+}
+
+inline flatbuffers::Offset<schema::PositionUpdate>
+convert(flatbuffers::FlatBufferBuilder& fbb, const PositionUpdate& value) {
+  return schema::CreatePositionUpdate(
+    fbb,
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.instrument),
+    value.trade_direction,
+    value.position,
+    value.position_yesterday,
+    value.frozen_position,
+    value.frozen_closing,
+    value.frozen_closing_yesterday);
+}
+
+// encode (event)
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const Handshake& handshake) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::Handshake,
+      convert(fbb, handshake).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const HandshakeAck& handshake_ack) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::HandshakeAck,
+      convert(fbb, handshake_ack).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const Heartbeat& heartbeat) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::Heartbeat,
+      convert(fbb, heartbeat).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const HeartbeatAck& heartbeat_ack) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::HeartbeatAck,
+      convert(fbb, heartbeat_ack).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const Ready& ready) {
+  return schema::CreateEvent(fbb,
+      convert(fbb, source_info),
+      schema::EventData::Ready,
+      convert(fbb, ready).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const GatewayStatus& gateway_status) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::GatewayStatus,
+      convert(fbb, gateway_status).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const ReferenceData& reference_data) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::ReferenceData,
+      convert(fbb, reference_data).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const MarketStatus& market_status) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::MarketStatus,
+      convert(fbb, market_status).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const MarketByPrice& market_by_price) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::MarketByPrice,
+      convert(fbb, market_by_price).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const TradeSummary& trade_summary) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::TradeSummary,
+      convert(fbb, trade_summary).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const CreateOrder& create_order) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::CreateOrder,
+      convert(fbb, create_order).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const CreateOrderAck& create_order_ack) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::CreateOrderAck,
+      convert(fbb, create_order_ack).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const ModifyOrder& modify_order) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::ModifyOrder,
+      convert(fbb, modify_order).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const ModifyOrderAck& modify_order_ack) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::ModifyOrderAck,
+      convert(fbb, modify_order_ack).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const CancelOrder& cancel_order) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::CancelOrder,
+      convert(fbb, cancel_order).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const CancelOrderAck& cancel_order_ack) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::CancelOrderAck,
+      convert(fbb, cancel_order_ack).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const OrderUpdate& order_update) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::OrderUpdate,
+      convert(fbb, order_update).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const TradeUpdate& trade_update) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::TradeUpdate,
+      convert(fbb, trade_update).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const PositionUpdate& position_update) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::PositionUpdate,
+      convert(fbb, position_update).Union());
+}
 
 // encoder
 
@@ -286,15 +737,15 @@ class Decoder final {
 
 // decode (events / low level)
 
-inline common::SourceInfo convert(const schema::SourceInfo *value) {
-  return common::SourceInfo {
+inline SourceInfo convert(const schema::SourceInfo *value) {
+  return SourceInfo {
     .seqno = value->seqno(),
     .create_time = uint64_to_time_point(value->create_time()),
   };
 }
 
-inline common::Handshake convert(const schema::Handshake *value) {
-  common::Handshake result {
+inline Handshake convert(const schema::Handshake *value) {
+  Handshake result {
     .api_version = value->api_version()->c_str(),
     .application = value->application()->c_str(),
     .hostname = value->hostname()->c_str(),
@@ -312,8 +763,8 @@ inline common::Handshake convert(const schema::Handshake *value) {
   return result;
 }
 
-inline common::HandshakeAck convert(const schema::HandshakeAck *value) {
-  return common::HandshakeAck {
+inline HandshakeAck convert(const schema::HandshakeAck *value) {
+  return HandshakeAck {
     .api_version = value->api_version()->c_str(),
     .application = value->application()->c_str(),
     .hostname = value->hostname()->c_str(),
@@ -329,31 +780,31 @@ inline common::HandshakeAck convert(const schema::HandshakeAck *value) {
   };
 }
 
-inline common::Heartbeat convert(const schema::Heartbeat *value) {
-  return common::Heartbeat {
+inline Heartbeat convert(const schema::Heartbeat *value) {
+  return Heartbeat {
     .opaque = value->opaque(),
   };
 }
 
-inline common::HeartbeatAck convert(const schema::HeartbeatAck *value) {
-  return common::HeartbeatAck {
+inline HeartbeatAck convert(const schema::HeartbeatAck *value) {
+  return HeartbeatAck {
     .opaque = value->opaque(),
   };
 }
 
-inline common::Ready convert(const schema::Ready *value) {
-  return common::Ready {};
+inline Ready convert(const schema::Ready *value) {
+  return Ready {};
 }
 
-inline common::GatewayStatus convert(const schema::GatewayStatus *value) {
-  return common::GatewayStatus {
+inline GatewayStatus convert(const schema::GatewayStatus *value) {
+  return GatewayStatus {
     .name = value->name()->c_str(),
     .status = value->status(),
   };
 }
 
-inline common::Layer convert(const schema::Layer *value) {
-  return common::Layer {
+inline Layer convert(const schema::Layer *value) {
+  return Layer {
     .bid_price = value->bid_price(),
     .bid_quantity = value->bid_quantity(),
     .ask_price = value->ask_price(),
@@ -361,14 +812,14 @@ inline common::Layer convert(const schema::Layer *value) {
   };
 }
 
-inline common::MarketByPrice convert(const schema::MarketByPrice *value) {
-  common::MarketByPrice res {
+inline MarketByPrice convert(const schema::MarketByPrice *value) {
+  MarketByPrice res {
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
   };
   const flatbuffers::Vector<const schema::Layer *> *depth = value->depth();
-  assert(depth->Length() == common::MAX_DEPTH);
-  for (auto i = 0; i < common::MAX_DEPTH; ++i) {
+  assert(depth->Length() == MAX_DEPTH);
+  for (auto i = 0; i < MAX_DEPTH; ++i) {
     res.depth[i] = convert((*depth)[i]);
   }
   res.exchange_time = uint64_to_time_point(value->exchange_time());
@@ -376,8 +827,8 @@ inline common::MarketByPrice convert(const schema::MarketByPrice *value) {
   return res;
 }
 
-inline common::TradeSummary convert(const schema::TradeSummary *value) {
-  return common::TradeSummary {
+inline TradeSummary convert(const schema::TradeSummary *value) {
+  return TradeSummary {
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
     .price = value->price(),
@@ -389,8 +840,8 @@ inline common::TradeSummary convert(const schema::TradeSummary *value) {
   };
 }
 
-inline common::ReferenceData convert(const schema::ReferenceData *value) {
-  return common::ReferenceData {
+inline ReferenceData convert(const schema::ReferenceData *value) {
+  return ReferenceData {
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
     .tick_size = value->tick_size(),
@@ -399,16 +850,16 @@ inline common::ReferenceData convert(const schema::ReferenceData *value) {
   };
 }
 
-inline common::MarketStatus convert(const schema::MarketStatus *value) {
-  return common::MarketStatus {
+inline MarketStatus convert(const schema::MarketStatus *value) {
+  return MarketStatus {
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
     .trading_status = value->trading_status(),
   };
 }
 
-inline common::CreateOrder convert(const schema::CreateOrder *value) {
-  return common::CreateOrder {
+inline CreateOrder convert(const schema::CreateOrder *value) {
+  return CreateOrder {
     .opaque = value->opaque(),
     .order_template = value->order_template()->c_str(),
     .exchange = value->exchange()->c_str(),
@@ -420,8 +871,8 @@ inline common::CreateOrder convert(const schema::CreateOrder *value) {
   };
 }
 
-inline common::CreateOrderAck convert(const schema::CreateOrderAck *value) {
-  return common::CreateOrderAck {
+inline CreateOrderAck convert(const schema::CreateOrderAck *value) {
+  return CreateOrderAck {
     .opaque = value->opaque(),
     .order_id = value->order_id(),
     .failure = value->failure(),
@@ -433,16 +884,16 @@ inline common::CreateOrderAck convert(const schema::CreateOrderAck *value) {
   };
 }
 
-inline common::ModifyOrder convert(const schema::ModifyOrder *value) {
-  return common::ModifyOrder {
+inline ModifyOrder convert(const schema::ModifyOrder *value) {
+  return ModifyOrder {
     .order_id = value->order_id(),
     .quantity_change = value->quantity_change(),
     .limit_price = value->limit_price(),
   };
 }
 
-inline common::ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
-  return common::ModifyOrderAck {
+inline ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
+  return ModifyOrderAck {
     .opaque = value->opaque(),
     .order_id = value->order_id(),
     .failure = value->failure(),
@@ -456,14 +907,14 @@ inline common::ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
   };
 }
 
-inline common::CancelOrder convert(const schema::CancelOrder *value) {
-  return common::CancelOrder {
+inline CancelOrder convert(const schema::CancelOrder *value) {
+  return CancelOrder {
     .order_id = value->order_id(),
   };
 }
 
-inline common::CancelOrderAck convert(const schema::CancelOrderAck *value) {
-  return common::CancelOrderAck {
+inline CancelOrderAck convert(const schema::CancelOrderAck *value) {
+  return CancelOrderAck {
     .opaque = value->opaque(),
     .order_id = value->order_id(),
     .failure = value->failure(),
@@ -475,8 +926,8 @@ inline common::CancelOrderAck convert(const schema::CancelOrderAck *value) {
   };
 }
 
-inline common::OrderUpdate convert(const schema::OrderUpdate *value) {
-  return common::OrderUpdate {
+inline OrderUpdate convert(const schema::OrderUpdate *value) {
+  return OrderUpdate {
     .opaque = value->opaque(),
     .order_id = value->order_id(),
     .order_template = value->order_template()->c_str(),
@@ -492,8 +943,8 @@ inline common::OrderUpdate convert(const schema::OrderUpdate *value) {
   };
 }
 
-inline common::TradeUpdate convert(const schema::TradeUpdate *value) {
-  return common::TradeUpdate {
+inline TradeUpdate convert(const schema::TradeUpdate *value) {
+  return TradeUpdate {
     .order_id = value->order_id(),
     .external_order_id = value->external_order_id()->c_str(),
     .external_trade_id = value->external_trade_id()->c_str(),
@@ -506,8 +957,8 @@ inline common::TradeUpdate convert(const schema::TradeUpdate *value) {
   };
 }
 
-inline common::PositionUpdate convert(const schema::PositionUpdate *value) {
-  return common::PositionUpdate {
+inline PositionUpdate convert(const schema::PositionUpdate *value) {
+  return PositionUpdate {
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
     .trade_direction = value->trade_direction(),
@@ -519,459 +970,6 @@ inline common::PositionUpdate convert(const schema::PositionUpdate *value) {
   };
 }
 
-
-// encode (events / low level)
-
-inline flatbuffers::Offset<schema::SourceInfo>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::SourceInfo& value) {
-  return schema::CreateSourceInfo(
-    fbb,
-    value.seqno,
-    time_point_to_uint64(value.create_time));
-}
-
-inline flatbuffers::Offset<schema::Handshake>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::Handshake& value) {
-  return schema::CreateHandshake(
-    fbb,
-    fbb.CreateString(value.api_version),
-    fbb.CreateString(value.application),
-    fbb.CreateString(value.hostname),
-    value.pid,
-    fbb.CreateString(value.uuid),
-    fbb.CreateString(value.login),
-    fbb.CreateString(value.password),
-    fbb.CreateVectorOfStrings(value.subscriptions));
-}
-
-inline flatbuffers::Offset<schema::HandshakeAck>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::HandshakeAck& value) {
-  return schema::CreateHandshakeAck(
-    fbb,
-    fbb.CreateString(value.api_version),
-    fbb.CreateString(value.application),
-    fbb.CreateString(value.hostname),
-    value.pid,
-    value.failure,
-    fbb.CreateString(value.failure_reason),
-    fbb.CreateString(value.server_uuid),
-    fbb.CreateString(value.server_name),
-    fbb.CreateString(value.shmem_s2c_name),
-    value.shmem_s2c_size,
-    fbb.CreateString(value.shmem_c2s_name),
-    value.shmem_c2s_size);
-}
-
-inline flatbuffers::Offset<schema::Heartbeat>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::Heartbeat& value) {
-  return schema::CreateHeartbeat(
-    fbb,
-    value.opaque);
-}
-
-inline flatbuffers::Offset<schema::HeartbeatAck>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::HeartbeatAck& value) {
-  return schema::CreateHeartbeatAck(
-    fbb,
-    value.opaque);
-}
-
-inline flatbuffers::Offset<schema::Ready>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::Ready& value) {
-  return schema::CreateReady(fbb);
-}
-
-inline flatbuffers::Offset<schema::GatewayStatus>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::GatewayStatus& value) {
-  return schema::CreateGatewayStatus(
-    fbb,
-    fbb.CreateString(value.name),
-    value.status);
-}
-
-inline flatbuffers::Offset<schema::MarketByPrice>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketByPrice& value) {
-  std::vector<schema::Layer> depth(MAX_DEPTH);
-  for (auto i = 0; i < MAX_DEPTH; ++i)
-    depth[i] = schema::Layer(
-      value.depth[i].bid_price,
-      value.depth[i].bid_quantity,
-      value.depth[i].ask_price,
-      value.depth[i].ask_quantity);
-  return schema::CreateMarketByPrice(
-    fbb,
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    fbb.CreateVectorOfStructs(&depth[0], depth.size()),
-    time_point_to_uint64(value.exchange_time),
-    value.channel);
-}
-
-inline flatbuffers::Offset<schema::TradeSummary>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeSummary& value) {
-  return schema::CreateTradeSummary(
-    fbb,
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    value.price,
-    value.volume,
-    value.turnover,
-    value.direction,
-    time_point_to_uint64(value.exchange_time),
-    value.channel);
-}
-
-inline flatbuffers::Offset<schema::ReferenceData>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::ReferenceData& value) {
-  return schema::CreateReferenceData(
-    fbb,
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    value.tick_size,
-    value.limit_up,
-    value.limit_down);
-}
-
-inline flatbuffers::Offset<schema::MarketStatus>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::MarketStatus& value) {
-  return schema::CreateMarketStatus(
-    fbb,
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    value.trading_status);
-}
-
-inline flatbuffers::Offset<schema::CreateOrder>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrder& value) {
-  return schema::CreateCreateOrder(
-    fbb,
-    value.opaque,
-    fbb.CreateString(value.order_template),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    value.direction,
-    value.quantity,
-    value.limit_price,
-    value.stop_price);
-}
-
-inline flatbuffers::Offset<schema::CreateOrderAck>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::CreateOrderAck& value) {
-  return schema::CreateCreateOrderAck(
-    fbb,
-    value.opaque,
-    value.order_id,
-    value.failure,
-    fbb.CreateString(value.reason),
-    fbb.CreateString(value.order_template),
-    fbb.CreateString(value.external_order_id),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument));
-}
-
-inline flatbuffers::Offset<schema::ModifyOrder>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrder& value) {
-  return schema::CreateModifyOrder(
-    fbb,
-    value.order_id,
-    value.quantity_change,
-    value.limit_price);
-}
-
-inline flatbuffers::Offset<schema::ModifyOrderAck>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::ModifyOrderAck& value) {
-  return schema::CreateModifyOrderAck(
-    fbb,
-    value.opaque,
-    value.order_id,
-    value.failure,
-    fbb.CreateString(value.reason),
-    fbb.CreateString(value.order_template),
-    fbb.CreateString(value.external_order_id),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    value.quantity_change,
-    value.limit_price);
-}
-
-inline flatbuffers::Offset<schema::CancelOrder>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrder& value) {
-  return schema::CreateCancelOrder(
-    fbb,
-    value.order_id);
-}
-
-inline flatbuffers::Offset<schema::CancelOrderAck>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::CancelOrderAck& value) {
-  return schema::CreateCancelOrderAck(
-    fbb,
-    value.opaque,
-    value.order_id,
-    value.failure,
-    fbb.CreateString(value.reason),
-    fbb.CreateString(value.order_template),
-    fbb.CreateString(value.external_order_id),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument));
-}
-
-inline flatbuffers::Offset<schema::OrderUpdate>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::OrderUpdate& value) {
-  return schema::CreateOrderUpdate(
-    fbb,
-    value.opaque,
-    value.order_id,
-    fbb.CreateString(value.order_template),
-    fbb.CreateString(value.external_order_id),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    value.status,
-    value.trade_direction,
-    value.remaining_quantity,
-    value.traded_quantity,
-    time_point_to_uint64(value.insert_time),
-    time_point_to_uint64(value.cancel_time));
-}
-
-inline flatbuffers::Offset<schema::TradeUpdate>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::TradeUpdate& value) {
-  return schema::CreateTradeUpdate(
-    fbb,
-    value.order_id,
-    fbb.CreateString(value.external_order_id),
-    fbb.CreateString(value.external_trade_id),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    value.trade_direction,
-    value.quantity,
-    value.price,
-    time_point_to_uint64(value.trade_time));
-}
-
-inline flatbuffers::Offset<schema::PositionUpdate>
-convert(flatbuffers::FlatBufferBuilder& fbb, const common::PositionUpdate& value) {
-  return schema::CreatePositionUpdate(
-    fbb,
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    value.trade_direction,
-    value.position,
-    value.position_yesterday,
-    value.frozen_position,
-    value.frozen_closing,
-    value.frozen_closing_yesterday);
-}
-
-
-// encode (event)
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::Handshake& handshake) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::Handshake,
-      convert(fbb, handshake).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::HandshakeAck& handshake_ack) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::HandshakeAck,
-      convert(fbb, handshake_ack).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::Heartbeat& heartbeat) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::Heartbeat,
-      convert(fbb, heartbeat).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::HeartbeatAck& heartbeat_ack) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::HeartbeatAck,
-      convert(fbb, heartbeat_ack).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::Ready& ready) {
-  return schema::CreateEvent(fbb,
-      convert(fbb, source_info),
-      schema::EventData::Ready,
-      convert(fbb, ready).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::GatewayStatus& gateway_status) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::GatewayStatus,
-      convert(fbb, gateway_status).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::ReferenceData& reference_data) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::ReferenceData,
-      convert(fbb, reference_data).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::MarketStatus& market_status) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::MarketStatus,
-      convert(fbb, market_status).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::MarketByPrice& market_by_price) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::MarketByPrice,
-      convert(fbb, market_by_price).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::TradeSummary& trade_summary) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::TradeSummary,
-      convert(fbb, trade_summary).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::CreateOrder& create_order) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::CreateOrder,
-      convert(fbb, create_order).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::CreateOrderAck& create_order_ack) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::CreateOrderAck,
-      convert(fbb, create_order_ack).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::ModifyOrder& modify_order) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::ModifyOrder,
-      convert(fbb, modify_order).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::ModifyOrderAck& modify_order_ack) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::ModifyOrderAck,
-      convert(fbb, modify_order_ack).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::CancelOrder& cancel_order) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::CancelOrder,
-      convert(fbb, cancel_order).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::CancelOrderAck& cancel_order_ack) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::CancelOrderAck,
-      convert(fbb, cancel_order_ack).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::OrderUpdate& order_update) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::OrderUpdate,
-      convert(fbb, order_update).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::TradeUpdate& trade_update) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::TradeUpdate,
-      convert(fbb, trade_update).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const common::SourceInfo& source_info,
-    const common::PositionUpdate& position_update) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::PositionUpdate,
-      convert(fbb, position_update).Union());
-}
 
 // handler
 
@@ -1213,5 +1211,5 @@ class EventDispatcher final {
   flatbuffers::FlatBufferBuilder _flat_buffer_builder;
 };
 
-}  // namespace common
+}  // namespace codec
 }  // namespace roq

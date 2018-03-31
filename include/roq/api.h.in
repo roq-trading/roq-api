@@ -15,7 +15,6 @@
 #define ROQ_VERSION "@PACKAGE_VERSION@"
 
 namespace roq {
-namespace common {
 
 /**
  * Constants.
@@ -586,5 +585,4 @@ class Strategy {
   virtual void on(const PositionUpdateEvent&) = 0;    ///< Position update
 };
 
-}  // namespace common
 }  // namespace roq

@@ -1,4 +1,4 @@
-namespace roq.common;
+namespace roq;
 
 /// Connection status.
 enum ConnectionStatus:byte {

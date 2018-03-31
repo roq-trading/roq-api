@@ -7,6 +7,7 @@
 #include <roq/libevent.h>
 #include <roq/logging.h>
 #include <roq/platform.h>
+#include <roq/stream.h>
 
 #include <algorithm>
 #include <chrono>

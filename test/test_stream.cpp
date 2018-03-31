@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 #include <limits>
 #include <sstream>
-#include "roq/api.h"
+#include "roq/stream.h"
 
 using namespace roq;  // NOLINT
 

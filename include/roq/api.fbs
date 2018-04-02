@@ -42,6 +42,7 @@ table HeartbeatAck {
 }
 
 table Ready {
+  max_order_id:uint;
 }
 
 table GatewayStatus {

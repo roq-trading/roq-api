@@ -162,7 +162,9 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const HeartbeatAck& value) {
 
 inline flatbuffers::Offset<schema::Ready>
 convert(flatbuffers::FlatBufferBuilder& fbb, const Ready& value) {
-  return schema::CreateReady(fbb);
+  return schema::CreateReady(
+    fbb,
+    value.max_order_id);
 }
 
 inline flatbuffers::Offset<schema::GatewayStatus>
@@ -793,7 +795,9 @@ inline HeartbeatAck convert(const schema::HeartbeatAck *value) {
 }
 
 inline Ready convert(const schema::Ready *value) {
-  return Ready {};
+  return Ready {
+    .max_order_id = value->max_order_id(),
+  };
 }
 
 inline GatewayStatus convert(const schema::GatewayStatus *value) {

@@ -123,7 +123,9 @@ inline HeartbeatAck CreateRandomHeartbeatAck() {
   };
 }
 inline Ready CreateRandomReady() {
-  return Ready {};
+  return Ready {
+    .max_order_id = rand_uint32(),
+  };
 }
 inline GatewayStatus CreateRandomGatewayStatus() {
   return GatewayStatus {
@@ -326,6 +328,7 @@ void compare(const HeartbeatAck& lhs, const HeartbeatAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
 void compare(const Ready& lhs, const Ready& rhs) {
+  EXPECT_EQ(lhs.max_order_id, rhs.max_order_id);
 }
 void compare(const GatewayStatus& lhs, const GatewayStatus& rhs) {
   EXPECT_STREQ(lhs.name, rhs.name);

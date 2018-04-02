@@ -61,7 +61,7 @@ table MarketByPrice {
   instrument:string;
   depth:[Layer];
   exchange_time:ulong;
-  channel:uint;
+  channel:ushort;
 }
 
 table TradeSummary {
@@ -72,7 +72,7 @@ table TradeSummary {
   turnover:double;
   direction:TradeDirection;
   exchange_time:ulong;
-  channel:uint;
+  channel:ushort;
 }
 
 table ReferenceData {

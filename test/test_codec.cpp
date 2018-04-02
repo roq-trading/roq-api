@@ -13,6 +13,10 @@ const int MAX_ITERATIONS = 1000;
 namespace {
 static std::random_device random_device;
 static std::mt19937_64 random_engine(random_device());
+static std::uniform_int_distribution<uint16_t> random_generator_uint16;
+static uint16_t rand_uint16() {
+  return random_generator_uint16(random_engine);
+}
 static std::uniform_int_distribution<uint32_t> random_generator_uint32;
 static uint32_t rand_uint32() {
   return random_generator_uint32(random_engine);
@@ -139,7 +143,7 @@ inline MarketByPrice CreateRandomMarketByPrice() {
     res.depth[i].ask_quantity = rand_double();
   }
   res.exchange_time = rand_time_point();
-  res.channel = rand_uint32();
+  res.channel = rand_uint16();
   return res;
 }
 inline TradeSummary CreateRandomTradeSummary() {
@@ -151,7 +155,7 @@ inline TradeSummary CreateRandomTradeSummary() {
     .turnover = rand_double(),
     .direction = rand_trade_direction(),
     .exchange_time = rand_time_point(),
-    .channel = rand_uint32(),
+    .channel = rand_uint16(),
   };
 }
 inline ReferenceData CreateRandomReferenceData() {

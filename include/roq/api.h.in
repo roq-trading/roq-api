@@ -64,7 +64,7 @@ struct MessageInfo {
   bool is_cached;                    ///< Is this update event cached (by the source)?
   bool is_last;                      ///< Is this update event the last of the batch?
   // FIXME(thraneh): experimental
-  uint32_t channel;
+  uint16_t channel;
 };
 
 /**
@@ -177,7 +177,7 @@ struct MarketByPrice {
   Layer depth[MAX_DEPTH];      ///< Layers
   time_point_t exchange_time;  ///< Exchange time-stamp
   // FIXME(thraneh): experimental
-  uint32_t channel;
+  uint16_t channel;
 };
 
 /**
@@ -192,7 +192,7 @@ struct TradeSummary {
   TradeDirection direction;    ///< Direction
   time_point_t exchange_time;  ///< Exchange time-stamp
   // FIXME(thraneh): experimental
-  uint32_t channel;
+  uint16_t channel;
 };
 
 /**

@@ -470,7 +470,7 @@ class Controller final {
       auto iter = _gateways_by_name.find(gateway);
       if (iter != _gateways_by_name.end()) {
         codec::Queue queue(_buffer);
-        _encoder.encode( queue, request);
+        _encoder.encode(queue, request);
         (*iter).second->send(queue, false);
       }
     }

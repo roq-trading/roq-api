@@ -560,11 +560,12 @@ inline flatbuffers::Offset<schema::Event> convert2(
 
 // encoder
 
-// TODO(thraneh): consider specialization {uint64_t, std::atomic<uint64_t>}
-template <typename S>
 class Encoder final {
  public:
-  Encoder() {}
+  explicit Encoder(
+      std::atomic<uint64_t>& seqno,
+      flatbuffers::FlatBufferBuilder& fbb)
+      : _seqno(seqno), _fbb(fbb) {}
   template <typename T>
   message_t encode(
       Queue& queue,
@@ -577,7 +578,7 @@ class Encoder final {
       const T& event,
       std::chrono::system_clock::time_point now) {
     SourceInfo source_info {
-        .seqno = ++_seqno,  // barrier when S is std::atomic<uint64_t>
+        .seqno = ++_seqno,  // TODO(thraneh): full barrier here, maybe acquire?
         .create_time = now,
     };
     _fbb.Clear();
@@ -590,8 +591,8 @@ class Encoder final {
   Encoder operator=(Encoder&) = delete;
 
  private:
-  S _seqno = {0};
-  flatbuffers::FlatBufferBuilder _fbb;
+  std::atomic<uint64_t>& _seqno;
+  flatbuffers::FlatBufferBuilder& _fbb;
 };
 
 // writer

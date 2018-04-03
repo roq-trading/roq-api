@@ -133,7 +133,7 @@ class Controller final {
      public:
       Gateway(const std::string& name, const Connection& connection,
               Strategy& strategy, libevent::Base& base,
-              codec::Buffer& buffer, codec::Encoder<uint64_t>& encoder,
+              codec::Buffer& buffer, codec::Encoder& encoder,
               Statistics& statistics,
               std::unordered_set<Gateway *>& callbacks,
               std::string& uuid)
@@ -411,7 +411,7 @@ class Controller final {
       Strategy& _strategy;
       libevent::Base& _base;
       codec::Buffer& _buffer;
-      codec::Encoder<uint64_t>& _encoder;
+      codec::Encoder& _encoder;
       Statistics& _statistics;
       codec::EventDispatcher _event_dispatcher;
       codec::Decoder<decltype(_event_dispatcher)> _event_decoder;
@@ -449,6 +449,7 @@ class Controller final {
           _timer(_base, EV_PERSIST, [this](){ on_timer(); }),
           _next_refresh(std::chrono::steady_clock::now() + std::chrono::seconds(1)),
           _next_statistics(_next_refresh),
+          _encoder(_seqno, _fbb),
           _uuid(create_uuid()) {
       for (const auto& iter : gateways) {
         _gateways.emplace_back(iter.first,
@@ -469,7 +470,7 @@ class Controller final {
       auto iter = _gateways_by_name.find(gateway);
       if (iter != _gateways_by_name.end()) {
         codec::Queue queue(_buffer);
-        _encoder.encode(queue, request);
+        _encoder.encode( queue, request);
         (*iter).second->send(queue, false);
       }
     }
@@ -563,7 +564,9 @@ class Controller final {
     std::chrono::steady_clock::time_point _next_refresh;
     std::chrono::steady_clock::time_point _next_statistics;
     codec::Buffer _buffer;
-    codec::Encoder<uint64_t> _encoder;
+    std::atomic<uint64_t> _seqno = {0};
+    flatbuffers::FlatBufferBuilder _fbb;
+    codec::Encoder _encoder;
     std::string _uuid;
   };  // Dispatcher
 

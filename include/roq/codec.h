@@ -61,7 +61,7 @@ class Buffer final {
 
  private:
   Buffer(Buffer&) = delete;
-  Buffer operator=(Buffer&) = delete;
+  void operator=(Buffer&) = delete;
 
  private:
   std::vector<uint8_t> _buffer;
@@ -94,10 +94,16 @@ class Queue final {
     _messages.clear();
     _buffer.reset();
   }
+  message_t to_payload() const {
+    size_t length = 0;
+    for (const auto& iter : _messages)
+      length += iter.second;
+    return std::make_pair(_messages[0].first, length);
+  }
 
  private:
   Queue(Queue&) = delete;
-  Queue operator=(Queue&) = delete;
+  void operator=(Queue&) = delete;
 
  private:
   Buffer& _buffer;
@@ -588,7 +594,7 @@ class Encoder final {
 
  private:
   Encoder(Encoder&) = delete;
-  Encoder operator=(Encoder&) = delete;
+  void operator=(Encoder&) = delete;
 
  private:
   std::atomic<uint64_t>& _seqno;
@@ -601,43 +607,58 @@ class Writer final {
  public:
   Writer() {}
   void write(libevent::Buffer& buffer, const Queue& queue, bool from_cache) {
-    LOG_IF(FATAL, queue.empty()) << "Don't try to write if there's nothing to write!";
-    ++_seqno;
+    // payload length + validate
     const auto& messages = queue.get();
-    Header header = {};
-    for (const auto& iter : messages)
-      header.total_length += 2 + iter.second;
-    if (std::numeric_limits<uint16_t>::max() < header.total_length)
-      LOG(FATAL) << "Total length exceeds maximum";  // FIXME(thraneh): throw exception
-    buffer.expand(HEADER_LENGTH + header.total_length);
-    size_t bytes = 0;
-    bytes += buffer.add(HEADER_MAGIC, sizeof(HEADER_MAGIC));
-    uint16_t total_length = static_cast<uint16_t>(header.total_length);
-    if (total_length == 0)
-      LOG(FATAL) << "Total length can't be zero";  // FIXME(thraneh): throw exception
-    bytes += buffer.add(&total_length, sizeof(total_length));
-    uint8_t flags = (from_cache ? HEADER_FLAGS_FROM_CACHE : 0);
-    bytes += buffer.add(&flags, sizeof(flags));
-    bytes += buffer.add(&_seqno, sizeof(_seqno));
-    uint64_t send_time = time_point_to_uint64(
-        std::chrono::system_clock::now());
-    bytes += buffer.add(&send_time, sizeof(send_time));
-    assert(bytes == HEADER_LENGTH);
+    size_t payload_length = 0;
     for (const auto& iter : messages) {
-      if (std::numeric_limits<uint16_t>::max() < iter.second)
-        LOG(FATAL) << "Message length exceeds maximum";  // FIXME(thraneh): throw exception
+      LOG_IF(FATAL, iter.second == 0) << "Message length can't be zero";
+      LOG_IF(FATAL, std::numeric_limits<uint16_t>::max() < iter.second) <<
+          "Message length exceeds maximum";
+      payload_length += 2 + iter.second;
+    }
+    // header
+    write_header(buffer, from_cache, payload_length);
+    // payload
+    size_t bytes = 0;
+    for (const auto& iter : messages) {
       uint16_t length = static_cast<uint16_t>(iter.second);
-      if (length == 0)
-        LOG(FATAL) << "Message size can't be zero";  // FIXME(thraneh): throw exception
       bytes += buffer.add(&length, sizeof(length));
       bytes += buffer.add(iter.first, iter.second);
     }
-    LOG_IF(FATAL, bytes != (HEADER_LENGTH + header.total_length)) << "Internal error!";
+    LOG_IF(FATAL, bytes != payload_length) << "Internal error";
+  }
+  void write(libevent::Buffer& buffer, const message_t& payload, bool from_cache) {
+    write_header(buffer, from_cache, payload.second);
+    buffer.add(payload.first, payload.second);
+  }
+
+ private:
+  void write_header(libevent::Buffer& buffer, bool from_cache, size_t payload_length) {
+    // validate
+    LOG_IF(FATAL, payload_length == 0) << "Payload length can't be zero";
+    LOG_IF(FATAL, std::numeric_limits<uint16_t>::max() < payload_length) <<
+        "Total length exceeds maximum";
+    // fields
+    uint16_t length = static_cast<uint16_t>(payload_length);
+    uint8_t flags = (from_cache ? HEADER_FLAGS_FROM_CACHE : 0);
+    uint64_t send_time = time_point_to_uint64(
+        std::chrono::system_clock::now());
+    ++_seqno;
+    // reserve buffer space
+    buffer.expand(HEADER_LENGTH + payload_length);
+    // write
+    size_t bytes = 0;
+    bytes += buffer.add(HEADER_MAGIC, sizeof(HEADER_MAGIC));
+    bytes += buffer.add(&length, sizeof(length));
+    bytes += buffer.add(&flags, sizeof(flags));
+    bytes += buffer.add(&_seqno, sizeof(_seqno));
+    bytes += buffer.add(&send_time, sizeof(send_time));
+    LOG_IF(FATAL, bytes != HEADER_LENGTH) << "Internal error";
   }
 
  private:
   Writer(Writer&) = delete;
-  Writer operator=(Writer&) = delete;
+  void operator=(Writer&) = delete;
 
  private:
   uint64_t _seqno = 0;
@@ -650,94 +671,97 @@ class Decoder final {
  public:
   explicit Decoder(Dispatcher& dispatcher) : _dispatcher(dispatcher) {}
   void reset() {
-    std::memset(&_header, 0, sizeof(_header));
-    std::memset(&_batch_info, 0, sizeof(_batch_info));
-    _message_length = 0;
-    _is_first = false;
+    _payload_length = 0;  // not necessary to reset any other fields
   }
   size_t dispatch(libevent::Buffer& buffer, const std::string& name) {
     size_t messages = 0;
+    // note!
+    // receive time recorded when we're first told data has become available
+    // try to avoid measuring the time spent on internal dispatching
     auto receive_time = std::chrono::system_clock::now();
     while (true) {
-      if (_header.total_length == 0) {  // header
+      if (_payload_length == 0) {  // header
         auto data = buffer.pullup(HEADER_LENGTH);
         if (data == nullptr)
           return messages;
-        if (data[0] != HEADER_MAGIC[0] || data[1] != HEADER_MAGIC[1])
-          LOG(FATAL) << "Incorrect header magic";  // FIXME(thraneh): throw exception
-        uint16_t total_length;
-        std::memcpy(&total_length, data + 2, 2);
-        if (total_length == 0)
-          LOG(FATAL) << "Total length can't be zero";  // FIXME(thraneh): throw exception
-        bool from_cache = (data[4] & HEADER_FLAGS_FROM_CACHE) != 0;
-        bool skip = (data[4] & HEADER_FLAGS_SKIP) != 0;
-        uint64_t seqno, send_time;
+        // validate
+        LOG_IF(FATAL, data[0] != HEADER_MAGIC[0] ||
+                      data[1] != HEADER_MAGIC[1]) << "Internal error";
+        uint16_t payload_length;
+        std::memcpy(&payload_length, data + 2, 2);
+        uint8_t flags = data[4];
+        bool from_cache = (flags & HEADER_FLAGS_FROM_CACHE) != 0;
+        bool skip = (flags & HEADER_FLAGS_SKIP) != 0;
+        uint64_t seqno;
         std::memcpy(&seqno, data + 5, 8);
+        uint64_t send_time;
         std::memcpy(&send_time, data + 13, 8);
+        // validate
+        LOG_IF(FATAL, payload_length == 0) << "Internal error";
         // assign
-        _header.total_length = total_length;
+        _payload_length = payload_length;
         _batch_info.seqno = seqno;
         _batch_info.send_time = uint64_to_time_point(send_time);
         _batch_info.from_cache = from_cache;
         _receive_time = receive_time;
         _skip = skip;
-        _remaining_bytes = total_length;
         _is_first = true;
+        // drain from buffer
         buffer.drain(HEADER_LENGTH);
       } else if (_skip) {
-        auto data = buffer.pullup(_header.total_length);
+        auto data = buffer.pullup(_payload_length);
         if (data == nullptr)
           return messages;
-        buffer.drain(_header.total_length);
-        std::memset(&_header, 0, sizeof(_header));
+        buffer.drain(_payload_length);
+        _payload_length = 0;
       } else if (_message_length == 0) {  // length(message)
         auto data = buffer.pullup(2);
         if (data == nullptr)
           return messages;
-        LOG_IF(FATAL, _remaining_bytes < 2) << "Internal error";
-        _remaining_bytes -= 2;
+        LOG_IF(FATAL, _payload_length < 2) << "Internal error";
+        _payload_length -= 2;
         uint16_t message_length;
         std::memcpy(&message_length, data, 2);
-        if (message_length == 0)
-          LOG(FATAL) << "Message length can't be zero";  // FIXME(thraneh): throw exception
+        LOG_IF(FATAL, message_length == 0) << "Internal error";
         _message_length = message_length;
         buffer.drain(2);
       } else {
-        assert(_message_length > 0);
+        LOG_IF(FATAL, _message_length == 0) << "Internal error";
         auto data = buffer.pullup(_message_length);
         if (data == nullptr)
           return messages;
-        LOG_IF(FATAL, _remaining_bytes < _message_length) << "Internal error";
-        _remaining_bytes -= _message_length;
-        auto is_last = _remaining_bytes == 0;
+        LOG_IF(FATAL, _payload_length < _message_length) << "Internal error";
+        _payload_length -= _message_length;
+        auto is_last = _payload_length == 0;
         _dispatcher.dispatch(
-            data, _message_length, name.c_str(),
-            _batch_info, _is_first, is_last,
+            data,
+            _message_length,
+            name.c_str(),
+            _batch_info,
+            _is_first,
+            is_last,
             _receive_time);
         buffer.drain(_message_length);
         ++messages;
         _message_length = 0;
         _is_first = false;
-        if (is_last) {
-          std::memset(&_header, 0, sizeof(_header));
-          _receive_time = {};
-        }
+        if (is_last)
+          _payload_length = 0;
       }
     }
   }
 
  private:
   Decoder(Decoder&) = delete;
-  Decoder& operator=(Decoder&) = delete;
+  void operator=(Decoder&) = delete;
 
  private:
   Dispatcher& _dispatcher;
-  Header _header = {};
+  uint16_t _payload_length = 0;
   BatchInfo _batch_info = {};
   time_point_t _receive_time;
   bool _skip = false;
   size_t _message_length = 0;
-  size_t _remaining_bytes = 0;
   bool _is_first = false;
 };
 
@@ -1210,9 +1234,8 @@ class EventDispatcher final {
   }
 
  private:
-  EventDispatcher() = delete;
   EventDispatcher(EventDispatcher&) = delete;
-  EventDispatcher& operator=(EventDispatcher&) = delete;
+  void operator=(EventDispatcher&) = delete;
 
  private:
   EventHandler& _handler;

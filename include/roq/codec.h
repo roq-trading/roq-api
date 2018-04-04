@@ -694,7 +694,7 @@ class Decoder final {
         auto data = buffer.pullup(2);
         if (data == nullptr)
           return messages;
-        LOG_IF(FATAL, _remaining_bytes < 2) << "Internal error " << _remaining_bytes ;
+        LOG_IF(FATAL, _remaining_bytes < 2) << "Internal error";
         _remaining_bytes -= 2;
         uint16_t message_length;
         std::memcpy(&message_length, data, 2);
@@ -707,7 +707,7 @@ class Decoder final {
         auto data = buffer.pullup(_message_length);
         if (data == nullptr)
           return messages;
-        LOG_IF(FATAL, _remaining_bytes < _message_length) << "Internal error " << _remaining_bytes << " " << _message_length;
+        LOG_IF(FATAL, _remaining_bytes < _message_length) << "Internal error";
         _remaining_bytes -= _message_length;
         auto is_last = _remaining_bytes == 0;
         _dispatcher.dispatch(

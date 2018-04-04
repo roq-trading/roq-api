@@ -33,13 +33,13 @@ inline time_point_t uint64_to_time_point(uint64_t microseconds) {
 // header
 
 struct Header final {
-  size_t message_count;
   size_t total_length;
 };
 
-const size_t HEADER_LENGTH = 22;
+const size_t HEADER_LENGTH = 21;
 const uint8_t HEADER_MAGIC[] = { 0x20, 0x18 };
-const uint8_t HEADER_FLAGS_IS_CACHED = 0x01;
+const uint8_t HEADER_FLAGS_FROM_CACHE = 0x01;
+const uint8_t HEADER_FLAGS_SKIP = 0x02;
 
 // buffer
 
@@ -600,15 +600,13 @@ class Encoder final {
 class Writer final {
  public:
   Writer() {}
-  void write(libevent::Buffer& buffer, const Queue& queue, bool is_cached) {
+  void write(libevent::Buffer& buffer, const Queue& queue, bool from_cache) {
     LOG_IF(FATAL, queue.empty()) << "Don't try to write if there's nothing to write!";
     ++_seqno;
     const auto& messages = queue.get();
-    Header header = { .message_count = messages.size() };
+    Header header = {};
     for (const auto& iter : messages)
       header.total_length += 2 + iter.second;
-    if (std::numeric_limits<uint8_t>::max() < header.message_count)
-      LOG(FATAL) << "Message count exceeds maximum";  // FIXME(thraneh): throw exception
     if (std::numeric_limits<uint16_t>::max() < header.total_length)
       LOG(FATAL) << "Total length exceeds maximum";  // FIXME(thraneh): throw exception
     buffer.expand(HEADER_LENGTH + header.total_length);
@@ -618,9 +616,7 @@ class Writer final {
     if (total_length == 0)
       LOG(FATAL) << "Total length can't be zero";  // FIXME(thraneh): throw exception
     bytes += buffer.add(&total_length, sizeof(total_length));
-    uint8_t message_count = static_cast<uint8_t>(header.message_count);
-    bytes += buffer.add(&message_count, sizeof(message_count));
-    uint8_t flags = (is_cached ? HEADER_FLAGS_IS_CACHED : 0);
+    uint8_t flags = (from_cache ? HEADER_FLAGS_FROM_CACHE : 0);
     bytes += buffer.add(&flags, sizeof(flags));
     bytes += buffer.add(&_seqno, sizeof(_seqno));
     uint64_t send_time = time_point_to_uint64(
@@ -673,21 +669,22 @@ class Decoder final {
         std::memcpy(&total_length, data + 2, 2);
         if (total_length == 0)
           LOG(FATAL) << "Total length can't be zero";  // FIXME(thraneh): throw exception
-        uint8_t message_count = data[4];
-        bool is_cached = (data[5] & HEADER_FLAGS_IS_CACHED) != 0;
+        bool from_cache = (data[4] & HEADER_FLAGS_FROM_CACHE) != 0;
+        bool skip = (data[4] & HEADER_FLAGS_SKIP) != 0;
         uint64_t seqno, send_time;
-        std::memcpy(&seqno, data + 6, 8);
-        std::memcpy(&send_time, data + 14, 8);
+        std::memcpy(&seqno, data + 5, 8);
+        std::memcpy(&send_time, data + 13, 8);
         // assign
         _header.total_length = total_length;
-        _header.message_count = message_count;
         _batch_info.seqno = seqno;
         _batch_info.send_time = uint64_to_time_point(send_time);
-        _batch_info.is_cached = is_cached;
+        _batch_info.from_cache = from_cache;
         _receive_time = receive_time;
+        _skip = skip;
+        _remaining_bytes = total_length;
         _is_first = true;
         buffer.drain(HEADER_LENGTH);
-      } else if (_header.message_count == 0) {  // skip-frame
+      } else if (_skip) {
         auto data = buffer.pullup(_header.total_length);
         if (data == nullptr)
           return messages;
@@ -697,6 +694,8 @@ class Decoder final {
         auto data = buffer.pullup(2);
         if (data == nullptr)
           return messages;
+        LOG_IF(FATAL, _remaining_bytes < 2) << "Internal error " << _remaining_bytes ;
+        _remaining_bytes -= 2;
         uint16_t message_length;
         std::memcpy(&message_length, data, 2);
         if (message_length == 0)
@@ -708,7 +707,9 @@ class Decoder final {
         auto data = buffer.pullup(_message_length);
         if (data == nullptr)
           return messages;
-        auto is_last = (_header.message_count == 1);
+        LOG_IF(FATAL, _remaining_bytes < _message_length) << "Internal error " << _remaining_bytes << " " << _message_length;
+        _remaining_bytes -= _message_length;
+        auto is_last = _remaining_bytes == 0;
         _dispatcher.dispatch(
             data, _message_length, name.c_str(),
             _batch_info, _is_first, is_last,
@@ -717,7 +718,7 @@ class Decoder final {
         ++messages;
         _message_length = 0;
         _is_first = false;
-        if (0 == --_header.message_count) {
+        if (is_last) {
           std::memset(&_header, 0, sizeof(_header));
           _receive_time = {};
         }
@@ -734,7 +735,9 @@ class Decoder final {
   Header _header = {};
   BatchInfo _batch_info = {};
   time_point_t _receive_time;
+  bool _skip = false;
   size_t _message_length = 0;
+  size_t _remaining_bytes = 0;
   bool _is_first = false;
 };
 
@@ -1020,7 +1023,7 @@ class EventDispatcher final {
         .source_create_time = source_info.create_time,
         .client_receive_time = receive_time,
         .routing_latency = receive_time - batch_info.send_time,
-        .is_cached = batch_info.is_cached,
+        .from_cache = batch_info.from_cache,
         .is_last = is_last,
         .channel = 0,
     };

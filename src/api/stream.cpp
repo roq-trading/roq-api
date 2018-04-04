@@ -292,7 +292,7 @@ std::ostream& operator<<(std::ostream& stream, const MessageInfo& value) {
     "source_create_time=" << value.source_create_time << ", "
     "client_receive_time=" << value.client_receive_time << ", "
     "routing_latency=" << routing_latency << ", "
-    "is_cached=" << (value.is_cached ? "true" : "false") << ", "
+    "from_cache=" << (value.from_cache ? "true" : "false") << ", "
     "is_last=" << (value.is_last ? "true" : "false") <<
     "}";
 }

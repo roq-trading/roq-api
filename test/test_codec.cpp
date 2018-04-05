@@ -122,8 +122,12 @@ inline HeartbeatAck CreateRandomHeartbeatAck() {
     .opaque = rand_int64(),
   };
 }
-inline Ready CreateRandomReady() {
-  return Ready {
+inline DownloadBegin CreateRandomDownloadBegin() {
+  return DownloadBegin {
+  };
+}
+inline DownloadEnd CreateRandomDownloadEnd() {
+  return DownloadEnd {
     .max_order_id = rand_uint32(),
   };
 }
@@ -327,7 +331,7 @@ void compare(const Heartbeat& lhs, const Heartbeat& rhs) {
 void compare(const HeartbeatAck& lhs, const HeartbeatAck& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);
 }
-void compare(const Ready& lhs, const Ready& rhs) {
+void compare(const DownloadEnd& lhs, const DownloadEnd& rhs) {
   EXPECT_EQ(lhs.max_order_id, rhs.max_order_id);
 }
 void compare(const GatewayStatus& lhs, const GatewayStatus& rhs) {
@@ -582,7 +586,7 @@ TEST(flatbuffers, ready_event) {
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
     auto source_source_info = CreateRandomSourceInfo();
-    auto source_ready = CreateRandomReady();
+    auto source_ready = CreateRandomDownloadEnd();
     // serialize using flatbuffers
     fbb.Finish(codec::convert2(
           fbb,
@@ -594,8 +598,8 @@ TEST(flatbuffers, ready_event) {
     // deserialize using flatbuffers
     auto root = GetRoot<schema::Event>(&buffer[0]);
     auto target_source_info = codec::convert(root->source_info());
-    EXPECT_EQ(root->event_data_type(), schema::EventData::Ready);
-    auto target_ready = codec::convert(root->event_data_as_Ready());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::DownloadEnd);
+    auto target_ready = codec::convert(root->event_data_as_DownloadEnd());
     // validate
     compare(target_source_info, source_source_info);
     compare(target_ready, source_ready);

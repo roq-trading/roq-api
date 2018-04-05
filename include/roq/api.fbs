@@ -41,7 +41,10 @@ table HeartbeatAck {
   opaque:long;
 }
 
-table Ready {
+table DownloadBegin {
+}
+
+table DownloadEnd {
   max_order_id:uint;
 }
 
@@ -189,7 +192,8 @@ union EventData {
   HandshakeAck,
   Heartbeat,
   HeartbeatAck,
-  Ready,
+  DownloadBegin,
+  DownloadEnd,
   GatewayStatus,
   ReferenceData,
   MarketStatus,

@@ -135,13 +135,20 @@ struct HeartbeatAck {
 };
 
 /**
- * Ready.
- * Sent by the server when it has completed the initial
- * download phase.
- * Client is allowed to send requests only after having
- * received the ready event.
+ * DownloadBegin.
+ * Server sends this event when initiates a download.
+ * Client is not allowed to send any requests until it has
+ * received the DownloadEnd event.
  */
-struct Ready {
+struct DownloadBegin {
+};
+
+/**
+ * DownloadEnd.
+ * Servers sends this event when it has completed a download.
+ * Client is again allowed to send requests.
+ */
+struct DownloadEnd {
   uint32_t max_order_id;  ///< Maximum order id.
 };
 
@@ -417,11 +424,19 @@ struct HeartbeatAckEvent {
 };
 
 /**
- * Ready event.
+ * DownloadBegin event.
  */
-struct ReadyEvent {
+struct DownloadBeginEvent {
   const MessageInfo& message_info;
-  const Ready& ready;
+  const DownloadBegin& download_begin;
+};
+
+/**
+ * DownloadEnd event.
+ */
+struct DownloadEndEvent {
+  const MessageInfo& message_info;
+  const DownloadEnd& download_end;
 };
 
 /**
@@ -573,7 +588,8 @@ class Strategy {
   virtual void on(const ConnectionStatusEvent&) = 0;  ///< The connection status has changed (internal notification)
   virtual void on(const BatchBeginEvent&) = 0;        ///< Batch begin
   virtual void on(const BatchEndEvent&) = 0;          ///< Batch end
-  virtual void on(const ReadyEvent&) = 0;             ///< Ready event handler.
+  virtual void on(const DownloadBeginEvent&) = 0;     ///< Download begin
+  virtual void on(const DownloadEndEvent&) = 0;       ///< Download end
   virtual void on(const GatewayStatusEvent&) = 0;     ///< The gateway's connection or login status has changed
   virtual void on(const ReferenceDataEvent&) = 0;     ///< Reference data update for an instrument
   virtual void on(const MarketStatusEvent&) = 0;      ///< Market status update for an instrument

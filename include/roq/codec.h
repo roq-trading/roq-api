@@ -94,12 +94,6 @@ class Queue final {
     _messages.clear();
     _buffer.reset();
   }
-  message_t to_payload() const {
-    size_t length = 0;
-    for (const auto& iter : _messages)
-      length += iter.second;
-    return std::make_pair(_messages[0].first, length);
-  }
 
  private:
   Queue(Queue&) = delete;
@@ -166,9 +160,15 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const HeartbeatAck& value) {
     value.opaque);
 }
 
-inline flatbuffers::Offset<schema::Ready>
-convert(flatbuffers::FlatBufferBuilder& fbb, const Ready& value) {
-  return schema::CreateReady(
+inline flatbuffers::Offset<schema::DownloadBegin>
+convert(flatbuffers::FlatBufferBuilder& fbb, const DownloadBegin& value) {
+  return schema::CreateDownloadBegin(
+    fbb);
+}
+
+inline flatbuffers::Offset<schema::DownloadEnd>
+convert(flatbuffers::FlatBufferBuilder& fbb, const DownloadEnd& value) {
+  return schema::CreateDownloadEnd(
     fbb,
     value.max_order_id);
 }
@@ -403,11 +403,21 @@ inline flatbuffers::Offset<schema::Event> convert2(
 inline flatbuffers::Offset<schema::Event> convert2(
     flatbuffers::FlatBufferBuilder& fbb,
     const SourceInfo& source_info,
-    const Ready& ready) {
+    const DownloadBegin& download_begin) {
   return schema::CreateEvent(fbb,
       convert(fbb, source_info),
-      schema::EventData::Ready,
-      convert(fbb, ready).Union());
+      schema::EventData::DownloadBegin,
+      convert(fbb, download_begin).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const DownloadEnd& download_end) {
+  return schema::CreateEvent(fbb,
+      convert(fbb, source_info),
+      schema::EventData::DownloadEnd,
+      convert(fbb, download_end).Union());
 }
 
 inline flatbuffers::Offset<schema::Event> convert2(
@@ -822,8 +832,13 @@ inline HeartbeatAck convert(const schema::HeartbeatAck *value) {
   };
 }
 
-inline Ready convert(const schema::Ready *value) {
-  return Ready {
+inline DownloadBegin convert(const schema::DownloadBegin *value) {
+  return DownloadBegin {
+  };
+}
+
+inline DownloadEnd convert(const schema::DownloadEnd *value) {
+  return DownloadEnd {
     .max_order_id = value->max_order_id(),
   };
 }
@@ -1013,7 +1028,8 @@ class EventHandler {
   virtual void on(const HandshakeAckEvent&) = 0;
   virtual void on(const HeartbeatEvent&) = 0;
   virtual void on(const HeartbeatAckEvent&) = 0;
-  virtual void on(const ReadyEvent&) = 0;
+  virtual void on(const DownloadBeginEvent&) = 0;
+  virtual void on(const DownloadEndEvent&) = 0;
   virtual void on(const GatewayStatusEvent&) = 0;
   virtual void on(const ReferenceDataEvent&) = 0;
   virtual void on(const MarketStatusEvent&) = 0;
@@ -1091,11 +1107,20 @@ class EventDispatcher final {
         _handler.on(event);
         break;
       }
-      case schema::EventData::Ready: {
-        auto ready = convert(item.event_data_as_Ready());
-        ReadyEvent event {
+      case schema::EventData::DownloadBegin: {
+        auto download_begin = convert(item.event_data_as_DownloadBegin());
+        DownloadBeginEvent event {
           .message_info = message_info,
-          .ready = ready,
+          .download_begin = download_begin,
+        };
+        _handler.on(event);
+        break;
+      }
+      case schema::EventData::DownloadEnd: {
+        auto download_end = convert(item.event_data_as_DownloadEnd());
+        DownloadEndEvent event {
+          .message_info = message_info,
+          .download_end = download_end,
         };
         _handler.on(event);
         break;

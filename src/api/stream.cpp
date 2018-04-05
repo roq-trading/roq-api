@@ -117,6 +117,16 @@ std::ostream& operator<<(std::ostream& stream, const HeartbeatAck& value) {
     "}";
 }
 
+std::ostream& operator<<(std::ostream& stream, const DownloadBegin& value) {
+  return stream << "{}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const DownloadEnd& value) {
+  return stream << "{"
+    "max_order_id=" << value.max_order_id <<
+    "}";
+}
+
 std::ostream& operator<<(std::ostream& stream, const GatewayStatus& value) {
   return stream << "{"
     "name=\"" << value.name << "\", "
@@ -344,9 +354,17 @@ std::ostream& operator<<(std::ostream& stream, const HeartbeatAckEvent& value) {
     "}";
 }
 
-std::ostream& operator<<(std::ostream& stream, const ReadyEvent& value) {
+std::ostream& operator<<(std::ostream& stream, const DownloadBeginEvent& value) {
   return stream << "{"
-    "message_info=" << value.message_info <<
+    "message_info=" << value.message_info << ", "
+    "download_begin_event=" << value.download_begin <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const DownloadEndEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "download_end_event=" << value.download_end <<
     "}";
 }
 

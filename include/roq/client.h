@@ -342,8 +342,12 @@ class Controller final {
         // TODO(thraneh): record statistics
         VLOG(2) << "[" << _name << "] Latency = " << latency << " usecs (round-trip)";
       }
-      void on(const ReadyEvent& event) final {
-        VLOG(1) << "[" << _name << "] ReadyEvent " << event;
+      void on(const DownloadBeginEvent& event) final {
+        VLOG(1) << "[" << _name << "] DownloadBeginEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const DownloadEndEvent& event) final {
+        VLOG(1) << "[" << _name << "] DownloadEndEvent " << event;
         _strategy.on(event);
       }
       void on(const GatewayStatusEvent& event) final {
@@ -425,6 +429,7 @@ class Controller final {
         Connecting,
         Connected,
         Handshaking,
+        // Downloading,  // HANS
         Ready,
         Failed
       } _state;

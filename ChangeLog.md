@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 * New `DownloadBegin` event.
+* Exception classes.
 
 ### Fixed
 * Race condition for message encoding.

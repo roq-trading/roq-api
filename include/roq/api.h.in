@@ -603,4 +603,29 @@ class Strategy {
   virtual void on(const PositionUpdateEvent&) = 0;    ///< Position update
 };
 
+/**
+ * Exception.
+ */
+class Exception : public std::exception {};
+
+/**
+ * NotConnected.
+ */
+class NotConnected final : public Exception {
+ public:
+  const char *what() const noexcept override {
+    return "Not connected.";
+  }
+};
+
+/**
+ * NotReady.
+ */
+class NotReady final : public Exception {
+ public:
+  const char *what() const noexcept override {
+    return "Not ready.";
+  }
+};
+
 }  // namespace roq

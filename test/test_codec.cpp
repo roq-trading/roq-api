@@ -182,7 +182,7 @@ inline MarketStatus CreateRandomMarketStatus() {
 }
 inline CreateOrder CreateRandomCreateOrder() {
   return CreateOrder {
-    .opaque = rand_uint32(),
+    .order_id = rand_uint32(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
@@ -194,14 +194,14 @@ inline CreateOrder CreateRandomCreateOrder() {
 }
 inline CreateOrderAck CreateRandomCreateOrderAck() {
   return CreateOrderAck {
-    .opaque = rand_uint32(),
     .order_id = rand_uint32(),
     .failure = rand_bool(),
     .reason = NAME[rand_uint32() % NAME_LENGTH],
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
-    .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .order_local_id = rand_uint32(),
+    .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
 inline ModifyOrder CreateRandomModifyOrder() {
@@ -213,16 +213,16 @@ inline ModifyOrder CreateRandomModifyOrder() {
 }
 inline ModifyOrderAck CreateRandomModifyOrderAck() {
   return ModifyOrderAck {
-    .opaque = rand_uint32(),
     .order_id = rand_uint32(),
     .failure = rand_bool(),
     .reason = NAME[rand_uint32() % NAME_LENGTH],
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
-    .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
     .quantity_change = rand_double(),
     .limit_price = rand_double(),
+    .order_local_id = rand_uint32(),
+    .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
 inline CancelOrder CreateRandomCancelOrder() {
@@ -232,43 +232,46 @@ inline CancelOrder CreateRandomCancelOrder() {
 }
 inline CancelOrderAck CreateRandomCancelOrderAck() {
   return CancelOrderAck {
-    .opaque = rand_uint32(),
     .order_id = rand_uint32(),
     .failure = rand_bool(),
     .reason = NAME[rand_uint32() % NAME_LENGTH],
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
-    .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .order_local_id = rand_uint32(),
+    .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
 inline OrderUpdate CreateRandomOrderUpdate() {
   return OrderUpdate {
-    .opaque = rand_uint32(),
     .order_id = rand_uint32(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
-    .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
-    .status = rand_order_status(),
+    .order_status = rand_order_status(),
     .trade_direction = rand_trade_direction(),
     .remaining_quantity = rand_double(),
     .traded_quantity = rand_double(),
     .insert_time = rand_time_point(),
     .cancel_time = rand_time_point(),
+    .order_local_id = rand_uint32(),
+    .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
 inline TradeUpdate CreateRandomTradeUpdate() {
   return TradeUpdate {
+    .trade_id = rand_uint32(),
     .order_id = rand_uint32(),
-    .external_order_id = NAME[rand_uint32() % NAME_LENGTH],
-    .external_trade_id = NAME[rand_uint32() % NAME_LENGTH],
+    .order_template = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .instrument = NAME[rand_uint32() % NAME_LENGTH],
     .trade_direction = rand_trade_direction(),
     .quantity = rand_double(),
     .price = rand_double(),
     .trade_time = rand_time_point(),
+    .order_local_id = rand_uint32(),
+    .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
+    .trade_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
 inline PositionUpdate CreateRandomPositionUpdate() {
@@ -373,7 +376,7 @@ void compare(const MarketStatus& lhs, const MarketStatus& rhs) {
   EXPECT_EQ(lhs.trading_status, rhs.trading_status);
 }
 void compare(const CreateOrder& lhs, const CreateOrder& rhs) {
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
@@ -383,14 +386,14 @@ void compare(const CreateOrder& lhs, const CreateOrder& rhs) {
   EXPECT_EQ(lhs.stop_price, rhs.stop_price);
 }
 void compare(const CreateOrderAck& lhs, const CreateOrderAck& rhs) {
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_EQ(lhs.failure, rhs.failure);
   EXPECT_STREQ(lhs.reason, rhs.reason);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
-  EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
+  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }
 void compare(const ModifyOrder& lhs, const ModifyOrder& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
@@ -398,54 +401,57 @@ void compare(const ModifyOrder& lhs, const ModifyOrder& rhs) {
   EXPECT_EQ(lhs.limit_price, rhs.limit_price);
 }
 void compare(const ModifyOrderAck& lhs, const ModifyOrderAck& rhs) {
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_EQ(lhs.failure, rhs.failure);
   EXPECT_STREQ(lhs.reason, rhs.reason);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
-  EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
   EXPECT_EQ(lhs.quantity_change, rhs.quantity_change);
   EXPECT_EQ(lhs.limit_price, rhs.limit_price);
+  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
+  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }
 void compare(const CancelOrder& lhs, const CancelOrder& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
 }
 void compare(const CancelOrderAck& lhs, const CancelOrderAck& rhs) {
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_EQ(lhs.failure, rhs.failure);
   EXPECT_STREQ(lhs.reason, rhs.reason);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
-  EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
+  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }
 void compare(const OrderUpdate& lhs, const OrderUpdate& rhs) {
-  EXPECT_EQ(lhs.opaque, rhs.opaque);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
-  EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
-  EXPECT_EQ(lhs.status, rhs.status);
+  EXPECT_EQ(lhs.order_status, rhs.order_status);
   EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.remaining_quantity, rhs.remaining_quantity);
   EXPECT_EQ(lhs.traded_quantity, rhs.traded_quantity);
   compare(lhs.insert_time, rhs.insert_time);
   compare(lhs.cancel_time, rhs.cancel_time);
+  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
+  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }
 void compare(const TradeUpdate& lhs, const TradeUpdate& rhs) {
+  EXPECT_EQ(lhs.trade_id, rhs.trade_id);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_STREQ(lhs.external_order_id, rhs.external_order_id);
-  EXPECT_STREQ(lhs.external_trade_id, rhs.external_trade_id);
+  EXPECT_STREQ(lhs.order_template, rhs.order_template);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.instrument, rhs.instrument);
   EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.quantity, rhs.quantity);
   EXPECT_EQ(lhs.price, rhs.price);
   compare(lhs.trade_time, rhs.trade_time);
+  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
+  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
+  EXPECT_STREQ(lhs.trade_external_id, rhs.trade_external_id);
 }
 void compare(const PositionUpdate& lhs, const PositionUpdate& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);

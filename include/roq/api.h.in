@@ -228,113 +228,110 @@ struct MarketStatus {
  * Create order.
  */
 struct CreateOrder {
-  const uint32_t opaque;           ///< Opaque (user) value
-  const char *order_template;      ///< Order template name
-  const char *exchange;            ///< Exchange name
-  const char *instrument;          ///< Instrument name
-  const TradeDirection direction;  ///< Trade direction
-  const double quantity;           ///< Desired quantity
-  const double limit_price;        ///< Limit price
-  const double stop_price;         ///< Stop price
+  uint32_t order_id;           ///< User's order identifier.
+  const char *order_template;  ///< Order template name.
+  const char *exchange;        ///< Exchange name.
+  const char *instrument;      ///< Instrument name.
+  TradeDirection direction;    ///< Trade direction.
+  double quantity;             ///< Quantity.
+  double limit_price;          ///< Limit price.
+  double stop_price;           ///< Optional stop price.
 };
 
 /**
  * Response to create order
  */
 struct CreateOrderAck {
-  uint32_t opaque;                ///< User provided opaque value  FIXME(thraneh): review naming
-  uint32_t order_id;              ///< Order id (as known by the gateway).
+  uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
-  // following fields may or may not be populated
   const char *order_template;     ///< Order template
-  const char *external_order_id;  ///< External order id.
   const char *exchange;           ///< Exchange name
   const char *instrument;         ///< Instrument name
+  uint32_t order_local_id;        ///< Gateway order identifier.
+  const char *order_external_id;  ///< External order identifier.
 };
 
 /**
  * Modify order.
  */
 struct ModifyOrder {
-  uint32_t order_id;             ///< Order id (as known by the gateway).
-  const double quantity_change;  ///< Desired quantity change
-  const double limit_price;      ///< Limit price
+  uint32_t order_id;       ///< User's order identifier.
+  double quantity_change;  ///< Desired quantity change
+  double limit_price;      ///< Limit price
 };
 
 /**
  * Response to modify order
  */
 struct ModifyOrderAck {
-  uint32_t opaque;                ///< User provided opaque value  FIXME(thraneh): review naming
-  uint32_t order_id;              ///< Order id (as known by the gateway).
+  uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
-  // following fields may or may not be populated
   const char *order_template;     ///< Order template
-  const char *external_order_id;  ///< External order id.
   const char *exchange;           ///< Exchange name
   const char *instrument;         ///< Instrument name
   double quantity_change;         ///< Quantity change.
   double limit_price;             ///< Limit price.
+  uint32_t order_local_id;        ///< Gateway order identifier.
+  const char *order_external_id;  ///< External order identifier.
 };
 
 /**
  * Cancel order.
  */
 struct CancelOrder {
-  uint32_t order_id;  ///< Order id (as known by the gateway).
+  uint32_t order_id;  ///< User provided order identifier.
 };
 
 /**
  * Response to cancel order
  */
 struct CancelOrderAck {
-  uint32_t opaque;                ///< User provided opaque value  FIXME(thraneh): review naming
-  uint32_t order_id;              ///< Order id (as known by the gateway).
+  uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
-  // following fields may or may not be populated
   const char *order_template;     ///< Order template
-  const char *external_order_id;  ///< External order id.
   const char *exchange;           ///< Exchange name
   const char *instrument;         ///< Instrument name
+  uint32_t order_local_id;        ///< Gateway order identifier.
+  const char *order_external_id;  ///< External order identifier.
 };
 
 /**
  * Order update.
  */
 struct OrderUpdate {
-  uint32_t opaque;                 ///< User provided opaque value  FIXME(thraneh): review naming
-  uint32_t order_id;               ///< Order id (as known by the gateway).
+  uint32_t order_id;               ///< User's order identifier.
   const char *order_template;      ///< Order template
-  const char *external_order_id;   ///< External order id.
   const char *exchange;            ///< Exchange name
   const char *instrument;          ///< Instrument name
-  OrderStatus status;              ///< Order status
+  OrderStatus order_status;        ///< Order status
   TradeDirection trade_direction;  ///< Trade direction
   double remaining_quantity;       ///< Remaining (unfilled) quantity
   double traded_quantity;          ///< Traded (filled) quantity
   time_point_t insert_time;        ///< Order insertion time
   time_point_t cancel_time;        ///< Order cancellation time
+  uint32_t order_local_id;         ///< Gateway order identifier.
+  const char *order_external_id;   ///< External order identifier.
 };
 
 /**
  * Trade update.
- * Note! User's custom field is often not available for trade updates.
- * The opaque pass-through value (from the order) is therefore not
- * represented here.
  */
 struct TradeUpdate {
-  uint32_t order_id;               ///< Order id (as known by the gateway).
-  const char *external_order_id;   ///< External order id.
-  const char *external_trade_id;   ///< External trade identifier
+  uint32_t trade_id;               ///< Trade identifier.
+  uint32_t order_id;               ///< User's order identifier.
+  const char *order_template;      ///< Order template
   const char *exchange;            ///< Exchange name
   const char *instrument;          ///< Instrument name
   TradeDirection trade_direction;  ///< Trade direction
   double quantity;                 ///< Trade quantity
   double price;                    ///< Trade price
   time_point_t trade_time;         ///< Trade time
+  uint32_t order_local_id;         ///< Gateway order identifier.
+  const char *order_external_id;   ///< External order identifier.
+  const char *trade_external_id;   ///< External trade identifier
 };
 
 /**

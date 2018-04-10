@@ -94,7 +94,7 @@ table MarketStatus {
 }
 
 table CreateOrder {
-  opaque:uint;
+  order_id:uint;
   order_template:string;
   exchange:string;
   instrument:string;
@@ -105,14 +105,14 @@ table CreateOrder {
 }
 
 table CreateOrderAck {
-  opaque:uint;
   order_id:uint;
   failure:bool;
   reason:string;
   order_template:string;
-  external_order_id:string;
   exchange:string;
   instrument:string;
+  order_local_id:uint;
+  order_external_id:string;
 }
 
 table ModifyOrder {
@@ -122,16 +122,16 @@ table ModifyOrder {
 }
 
 table ModifyOrderAck {
-  opaque:uint;
   order_id:uint;
   failure:bool;
   reason:string;
   order_template:string;
-  external_order_id:string;
   exchange:string;
   instrument:string;
   quantity_change:double;
   limit_price:double;
+  order_local_id:uint;
+  order_external_id:string;
 }
 
 table CancelOrder {
@@ -139,41 +139,44 @@ table CancelOrder {
 }
 
 table CancelOrderAck {
-  opaque:uint;
   order_id:uint;
   failure:bool;
   reason:string;
   order_template:string;
-  external_order_id:string;
   exchange:string;
   instrument:string;
+  order_local_id:uint;
+  order_external_id:string;
 }
 
 table OrderUpdate {
-  opaque:uint;
   order_id:uint;
   order_template:string;
-  external_order_id:string;
   exchange:string;
   instrument:string;
-  status:OrderStatus;
+  order_status:OrderStatus;
   trade_direction:TradeDirection;
   remaining_quantity:double;
   traded_quantity:double;
   insert_time:ulong;
   cancel_time:ulong;
+  order_local_id:uint;
+  order_external_id:string;
 }
 
 table TradeUpdate {
+  trade_id:uint;
   order_id:uint;
-  external_order_id:string;
-  external_trade_id:string;
+  order_template:string;
   exchange:string;
   instrument:string;
   trade_direction:TradeDirection;
   quantity:double;
   price:double;
   trade_time:ulong;
+  order_local_id:uint;
+  order_external_id:string;
+  trade_external_id:string;
 }
 
 table PositionUpdate {

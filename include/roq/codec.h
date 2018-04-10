@@ -237,7 +237,7 @@ inline flatbuffers::Offset<schema::CreateOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrder& value) {
   return schema::CreateCreateOrder(
     fbb,
-    value.opaque,
+    value.order_id,
     fbb.CreateString(value.order_template),
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.instrument),
@@ -251,14 +251,14 @@ inline flatbuffers::Offset<schema::CreateOrderAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrderAck& value) {
   return schema::CreateCreateOrderAck(
     fbb,
-    value.opaque,
     value.order_id,
     value.failure,
     fbb.CreateString(value.reason),
     fbb.CreateString(value.order_template),
-    fbb.CreateString(value.external_order_id),
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument));
+    fbb.CreateString(value.instrument),
+    value.order_local_id,
+    fbb.CreateString(value.order_external_id));
 }
 
 inline flatbuffers::Offset<schema::ModifyOrder>
@@ -274,16 +274,16 @@ inline flatbuffers::Offset<schema::ModifyOrderAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const ModifyOrderAck& value) {
   return schema::CreateModifyOrderAck(
     fbb,
-    value.opaque,
     value.order_id,
     value.failure,
     fbb.CreateString(value.reason),
     fbb.CreateString(value.order_template),
-    fbb.CreateString(value.external_order_id),
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.instrument),
     value.quantity_change,
-    value.limit_price);
+    value.limit_price,
+    value.order_local_id,
+    fbb.CreateString(value.order_external_id));
 }
 
 inline flatbuffers::Offset<schema::CancelOrder>
@@ -297,47 +297,50 @@ inline flatbuffers::Offset<schema::CancelOrderAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const CancelOrderAck& value) {
   return schema::CreateCancelOrderAck(
     fbb,
-    value.opaque,
     value.order_id,
     value.failure,
     fbb.CreateString(value.reason),
     fbb.CreateString(value.order_template),
-    fbb.CreateString(value.external_order_id),
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument));
+    fbb.CreateString(value.instrument),
+    value.order_local_id,
+    fbb.CreateString(value.order_external_id));
 }
 
 inline flatbuffers::Offset<schema::OrderUpdate>
 convert(flatbuffers::FlatBufferBuilder& fbb, const OrderUpdate& value) {
   return schema::CreateOrderUpdate(
     fbb,
-    value.opaque,
     value.order_id,
     fbb.CreateString(value.order_template),
-    fbb.CreateString(value.external_order_id),
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.instrument),
-    value.status,
+    value.order_status,
     value.trade_direction,
     value.remaining_quantity,
     value.traded_quantity,
     time_point_to_uint64(value.insert_time),
-    time_point_to_uint64(value.cancel_time));
+    time_point_to_uint64(value.cancel_time),
+    value.order_local_id,
+    fbb.CreateString(value.order_external_id));
 }
 
 inline flatbuffers::Offset<schema::TradeUpdate>
 convert(flatbuffers::FlatBufferBuilder& fbb, const TradeUpdate& value) {
   return schema::CreateTradeUpdate(
     fbb,
+    value.trade_id,
     value.order_id,
-    fbb.CreateString(value.external_order_id),
-    fbb.CreateString(value.external_trade_id),
+    fbb.CreateString(value.order_template),
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.instrument),
     value.trade_direction,
     value.quantity,
     value.price,
-    time_point_to_uint64(value.trade_time));
+    time_point_to_uint64(value.trade_time),
+    value.order_local_id,
+    fbb.CreateString(value.order_external_id),
+    fbb.CreateString(value.trade_external_id));
 }
 
 inline flatbuffers::Offset<schema::PositionUpdate>
@@ -907,7 +910,7 @@ inline MarketStatus convert(const schema::MarketStatus *value) {
 
 inline CreateOrder convert(const schema::CreateOrder *value) {
   return CreateOrder {
-    .opaque = value->opaque(),
+    .order_id = value->order_id(),
     .order_template = value->order_template()->c_str(),
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
@@ -920,14 +923,14 @@ inline CreateOrder convert(const schema::CreateOrder *value) {
 
 inline CreateOrderAck convert(const schema::CreateOrderAck *value) {
   return CreateOrderAck {
-    .opaque = value->opaque(),
     .order_id = value->order_id(),
     .failure = value->failure(),
     .reason = value->reason()->c_str(),
     .order_template = value->order_template()->c_str(),
-    .external_order_id = value->external_order_id()->c_str(),
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
+    .order_local_id = value->order_local_id(),
+    .order_external_id = value->order_external_id()->c_str(),
   };
 }
 
@@ -941,16 +944,16 @@ inline ModifyOrder convert(const schema::ModifyOrder *value) {
 
 inline ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
   return ModifyOrderAck {
-    .opaque = value->opaque(),
     .order_id = value->order_id(),
     .failure = value->failure(),
     .reason = value->reason()->c_str(),
     .order_template = value->order_template()->c_str(),
-    .external_order_id = value->external_order_id()->c_str(),
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
     .quantity_change = value->quantity_change(),
     .limit_price = value->limit_price(),
+    .order_local_id = value->order_local_id(),
+    .order_external_id = value->order_external_id()->c_str(),
   };
 }
 
@@ -962,45 +965,48 @@ inline CancelOrder convert(const schema::CancelOrder *value) {
 
 inline CancelOrderAck convert(const schema::CancelOrderAck *value) {
   return CancelOrderAck {
-    .opaque = value->opaque(),
     .order_id = value->order_id(),
     .failure = value->failure(),
     .reason = value->reason()->c_str(),
     .order_template = value->order_template()->c_str(),
-    .external_order_id = value->external_order_id()->c_str(),
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
+    .order_local_id = value->order_local_id(),
+    .order_external_id = value->order_external_id()->c_str(),
   };
 }
 
 inline OrderUpdate convert(const schema::OrderUpdate *value) {
   return OrderUpdate {
-    .opaque = value->opaque(),
     .order_id = value->order_id(),
     .order_template = value->order_template()->c_str(),
-    .external_order_id = value->external_order_id()->c_str(),
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
-    .status = value->status(),
+    .order_status = value->order_status(),
     .trade_direction = value->trade_direction(),
     .remaining_quantity = value->remaining_quantity(),
     .traded_quantity = value->traded_quantity(),
     .insert_time = uint64_to_time_point(value->insert_time()),
     .cancel_time = uint64_to_time_point(value->cancel_time()),
+    .order_local_id = value->order_local_id(),
+    .order_external_id = value->order_external_id()->c_str(),
   };
 }
 
 inline TradeUpdate convert(const schema::TradeUpdate *value) {
   return TradeUpdate {
+    .trade_id = value->trade_id(),
     .order_id = value->order_id(),
-    .external_order_id = value->external_order_id()->c_str(),
-    .external_trade_id = value->external_trade_id()->c_str(),
+    .order_template = value->order_template()->c_str(),
     .exchange = value->exchange()->c_str(),
     .instrument = value->instrument()->c_str(),
     .trade_direction = value->trade_direction(),
     .quantity = value->quantity(),
     .price = value->price(),
     .trade_time = uint64_to_time_point(value->trade_time()),
+    .order_local_id = value->order_local_id(),
+    .order_external_id = value->order_external_id()->c_str(),
+    .trade_external_id = value->trade_external_id()->c_str(),
   };
 }
 

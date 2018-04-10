@@ -184,7 +184,7 @@ std::ostream& operator<<(std::ostream& stream, const TradeSummary& value) {
 
 std::ostream& operator<<(std::ostream& stream, const CreateOrder& value) {
   return stream << "{"
-    "opaque=" << value.opaque << ", "
+    "order_id=" << value.order_id << ", "
     "order_template=\"" << value.order_template << "\", "
     "exchange=\"" << value.exchange << "\", "
     "instrument=\"" << value.instrument << "\", "
@@ -197,14 +197,14 @@ std::ostream& operator<<(std::ostream& stream, const CreateOrder& value) {
 
 std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value) {
   return stream << "{"
-    "opaque=" << value.opaque << ", "
     "order_id=" << value.order_id << ", "
     "failure=" << (value.failure ? "true" : "false") << ", "
     "reason=\"" << value.reason << "\", "
     "order_template=\"" << value.order_template << "\", "
-    "external_order_id=\"" << value.external_order_id << "\", "
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\""
+    "instrument=\"" << value.instrument << "\", "
+    "order_local_id=" << value.order_local_id << ", "
+    "order_external_id=\"" << value.order_external_id << "\""
     "}";
 }
 
@@ -218,16 +218,16 @@ std::ostream& operator<<(std::ostream& stream, const ModifyOrder& value) {
 
 std::ostream& operator<<(std::ostream& stream, const ModifyOrderAck& value) {
   return stream << "{"
-    "opaque=" << value.opaque << ", "
     "order_id=" << value.order_id << ", "
     "failure=" << (value.failure ? "true" : "false") << ", "
     "reason=\"" << value.reason << "\", "
     "order_template=\"" << value.order_template << "\", "
-    "external_order_id=\"" << value.external_order_id << "\", "
     "exchange=\"" << value.exchange << "\", "
     "instrument=\"" << value.instrument << "\", "
     "quantity_change=" << Number(value.quantity_change) << ", "
-    "limit_price=" << Number(value.limit_price) <<
+    "limit_price=" << Number(value.limit_price) << ", "
+    "order_local_id=" << value.order_local_id << ", "
+    "order_external_id=\"" << value.order_external_id << "\""
     "}";
 }
 
@@ -239,45 +239,48 @@ std::ostream& operator<<(std::ostream& stream, const CancelOrder& value) {
 
 std::ostream& operator<<(std::ostream& stream, const CancelOrderAck& value) {
   return stream << "{"
-    "opaque=" << value.opaque << ", "
     "order_id=" << value.order_id << ", "
     "failure=" << (value.failure ? "true" : "false") << ", "
     "reason=\"" << value.reason << "\", "
     "order_template=\"" << value.order_template << "\", "
-    "external_order_id=\"" << value.external_order_id << "\", "
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\""
+    "instrument=\"" << value.instrument << "\", "
+    "order_local_id=" << value.order_local_id << ", "
+    "order_external_id=\"" << value.order_external_id << "\""
     "}";
 }
 
 std::ostream& operator<<(std::ostream& stream, const OrderUpdate& value) {
   return stream << "{"
-    "opaque=" << value.opaque << ", "
     "order_id=" << value.order_id << ", "
     "order_template=\"" << value.order_template << "\", "
-    "external_order_id=\"" << value.external_order_id << "\", "
     "exchange=\"" << value.exchange << "\", "
     "instrument=\"" << value.instrument << "\", "
-    "status=" << value.status << ", "
+    "order_status=" << value.order_status << ", "
     "trade_direction=" << value.trade_direction << ", "
     "remaining_quantity=" << Number(value.remaining_quantity) << ", "
     "traded_quantity=" << Number(value.traded_quantity) << ", "
     "insert_time=" << value.insert_time << ", "
-    "cancel_time=" << value.cancel_time <<
+    "cancel_time=" << value.cancel_time << ", "
+    "order_local_id=" << value.order_local_id << ", "
+    "order_external_id=\"" << value.order_external_id << "\""
     "}";
 }
 
 std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value) {
   return stream << "{"
+    "trade_id=" << value.trade_id << ", "
     "order_id=" << value.order_id << ", "
-    "external_order_id=\"" << value.external_order_id << "\", "
-    "external_trade_id=\"" << value.external_trade_id << "\", "
+    "order_template=\"" << value.order_template << "\", "
     "exchange=\"" << value.exchange << "\", "
     "instrument=\"" << value.instrument << "\", "
     "trade_direction=" << value.trade_direction << ", "
     "quantity=" << Number(value.quantity) << ", "
     "price=" << Number(value.price) << ", "
-    "trade_time=" << value.trade_time <<
+    "trade_time=" << value.trade_time << ", "
+    "order_local_id=" << value.order_local_id << ", "
+    "order_external_id=\"" << value.order_external_id << "\", "
+    "trade_external_id=\"" << value.trade_external_id << "\""
     "}";
 }
 

@@ -63,13 +63,13 @@ class Controller final {
 
    private:
     void send(const CreateOrder& create_order, const std::string& gateway) override {
-      throw std::runtime_error("This simulator doesn't support order management");
+      // throw std::runtime_error("This simulator doesn't support order management");
     }
     void send(const ModifyOrder& modify_order, const std::string& gateway) override {
-      throw std::runtime_error("This simulator doesn't support order management");
+      // throw std::runtime_error("This simulator doesn't support order management");
     }
     void send(const CancelOrder& cancel_order, const std::string& gateway) override {
-      throw std::runtime_error("This simulator doesn't support order management");
+      // throw std::runtime_error("This simulator doesn't support order management");
     }
 
    private:

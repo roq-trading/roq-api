@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
   The encoding buffer is now external to `codec::Encoder`.
 
 ### Changed
+* Changed all order and trade related templates to better reflect the intention of each field.
 * Changed `Ready` to include `max_order_id` (highest order id previously used by the client).
 * Changed `MarketByPrice` and `TradeSummary` field `channel` to `uint16_t`.
 * Renamed `MessageInfo` field `is_cache` to `from_cache`.

@@ -185,7 +185,7 @@ std::ostream& operator<<(std::ostream& stream, const TradeSummary& value) {
 std::ostream& operator<<(std::ostream& stream, const CreateOrder& value) {
   return stream << "{"
     "opaque=" << value.opaque << ", "
-    "order_template=" << value.order_template << ", "
+    "order_template=\"" << value.order_template << "\", "
     "exchange=\"" << value.exchange << "\", "
     "instrument=\"" << value.instrument << "\", "
     "direction=" << value.direction << ", "

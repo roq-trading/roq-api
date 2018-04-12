@@ -200,9 +200,6 @@ std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value) {
     "order_id=" << value.order_id << ", "
     "failure=" << (value.failure ? "true" : "false") << ", "
     "reason=\"" << value.reason << "\", "
-    "order_template=\"" << value.order_template << "\", "
-    "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
     "order_local_id=" << value.order_local_id << ", "
     "order_external_id=\"" << value.order_external_id << "\""
     "}";
@@ -221,11 +218,6 @@ std::ostream& operator<<(std::ostream& stream, const ModifyOrderAck& value) {
     "order_id=" << value.order_id << ", "
     "failure=" << (value.failure ? "true" : "false") << ", "
     "reason=\"" << value.reason << "\", "
-    "order_template=\"" << value.order_template << "\", "
-    "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
-    "quantity_change=" << Number(value.quantity_change) << ", "
-    "limit_price=" << Number(value.limit_price) << ", "
     "order_local_id=" << value.order_local_id << ", "
     "order_external_id=\"" << value.order_external_id << "\""
     "}";
@@ -242,9 +234,6 @@ std::ostream& operator<<(std::ostream& stream, const CancelOrderAck& value) {
     "order_id=" << value.order_id << ", "
     "failure=" << (value.failure ? "true" : "false") << ", "
     "reason=\"" << value.reason << "\", "
-    "order_template=\"" << value.order_template << "\", "
-    "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
     "order_local_id=" << value.order_local_id << ", "
     "order_external_id=\"" << value.order_external_id << "\""
     "}";

@@ -254,9 +254,6 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrderAck& value) {
     value.order_id,
     value.failure,
     fbb.CreateString(value.reason),
-    fbb.CreateString(value.order_template),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
     value.order_local_id,
     fbb.CreateString(value.order_external_id));
 }
@@ -277,11 +274,6 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const ModifyOrderAck& value) {
     value.order_id,
     value.failure,
     fbb.CreateString(value.reason),
-    fbb.CreateString(value.order_template),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
-    value.quantity_change,
-    value.limit_price,
     value.order_local_id,
     fbb.CreateString(value.order_external_id));
 }
@@ -300,9 +292,6 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const CancelOrderAck& value) {
     value.order_id,
     value.failure,
     fbb.CreateString(value.reason),
-    fbb.CreateString(value.order_template),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
     value.order_local_id,
     fbb.CreateString(value.order_external_id));
 }
@@ -926,9 +915,6 @@ inline CreateOrderAck convert(const schema::CreateOrderAck *value) {
     .order_id = value->order_id(),
     .failure = value->failure(),
     .reason = value->reason()->c_str(),
-    .order_template = value->order_template()->c_str(),
-    .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
     .order_local_id = value->order_local_id(),
     .order_external_id = value->order_external_id()->c_str(),
   };
@@ -947,11 +933,6 @@ inline ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
     .order_id = value->order_id(),
     .failure = value->failure(),
     .reason = value->reason()->c_str(),
-    .order_template = value->order_template()->c_str(),
-    .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
-    .quantity_change = value->quantity_change(),
-    .limit_price = value->limit_price(),
     .order_local_id = value->order_local_id(),
     .order_external_id = value->order_external_id()->c_str(),
   };
@@ -968,9 +949,6 @@ inline CancelOrderAck convert(const schema::CancelOrderAck *value) {
     .order_id = value->order_id(),
     .failure = value->failure(),
     .reason = value->reason()->c_str(),
-    .order_template = value->order_template()->c_str(),
-    .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
     .order_local_id = value->order_local_id(),
     .order_external_id = value->order_external_id()->c_str(),
   };

@@ -197,9 +197,6 @@ inline CreateOrderAck CreateRandomCreateOrderAck() {
     .order_id = rand_uint32(),
     .failure = rand_bool(),
     .reason = NAME[rand_uint32() % NAME_LENGTH],
-    .order_template = NAME[rand_uint32() % NAME_LENGTH],
-    .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
     .order_local_id = rand_uint32(),
     .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
@@ -216,11 +213,6 @@ inline ModifyOrderAck CreateRandomModifyOrderAck() {
     .order_id = rand_uint32(),
     .failure = rand_bool(),
     .reason = NAME[rand_uint32() % NAME_LENGTH],
-    .order_template = NAME[rand_uint32() % NAME_LENGTH],
-    .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
-    .quantity_change = rand_double(),
-    .limit_price = rand_double(),
     .order_local_id = rand_uint32(),
     .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
@@ -235,9 +227,6 @@ inline CancelOrderAck CreateRandomCancelOrderAck() {
     .order_id = rand_uint32(),
     .failure = rand_bool(),
     .reason = NAME[rand_uint32() % NAME_LENGTH],
-    .order_template = NAME[rand_uint32() % NAME_LENGTH],
-    .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
     .order_local_id = rand_uint32(),
     .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
@@ -389,9 +378,6 @@ void compare(const CreateOrderAck& lhs, const CreateOrderAck& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_EQ(lhs.failure, rhs.failure);
   EXPECT_STREQ(lhs.reason, rhs.reason);
-  EXPECT_STREQ(lhs.order_template, rhs.order_template);
-  EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
   EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
   EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }
@@ -404,11 +390,6 @@ void compare(const ModifyOrderAck& lhs, const ModifyOrderAck& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_EQ(lhs.failure, rhs.failure);
   EXPECT_STREQ(lhs.reason, rhs.reason);
-  EXPECT_STREQ(lhs.order_template, rhs.order_template);
-  EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
-  EXPECT_EQ(lhs.quantity_change, rhs.quantity_change);
-  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
   EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
   EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }
@@ -419,9 +400,6 @@ void compare(const CancelOrderAck& lhs, const CancelOrderAck& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_EQ(lhs.failure, rhs.failure);
   EXPECT_STREQ(lhs.reason, rhs.reason);
-  EXPECT_STREQ(lhs.order_template, rhs.order_template);
-  EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
   EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
   EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }

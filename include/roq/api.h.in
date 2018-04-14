@@ -245,6 +245,8 @@ struct CreateOrderAck {
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
+  const char *exchange;           ///< Exchange name.
+  const char *instrument;         ///< Instrument name.
   // ... for debugging
   uint32_t order_local_id;        ///< Gateway order identifier.
   const char *order_external_id;  ///< External order identifier.
@@ -266,6 +268,8 @@ struct ModifyOrderAck {
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
+  const char *exchange;           ///< Exchange name.
+  const char *instrument;         ///< Instrument name.
   // ... for debugging
   uint32_t order_local_id;        ///< Gateway order identifier.
   const char *order_external_id;  ///< External order identifier.
@@ -285,6 +289,8 @@ struct CancelOrderAck {
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
+  const char *exchange;           ///< Exchange name.
+  const char *instrument;         ///< Instrument name.
   // ... for debugging
   uint32_t order_local_id;        ///< Gateway order identifier.
   const char *order_external_id;  ///< External order identifier.

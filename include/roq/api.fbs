@@ -108,6 +108,8 @@ table CreateOrderAck {
   order_id:uint;
   failure:bool;
   reason:string;
+  exchange:string;
+  instrument:string;
   order_local_id:uint;
   order_external_id:string;
 }
@@ -122,6 +124,8 @@ table ModifyOrderAck {
   order_id:uint;
   failure:bool;
   reason:string;
+  exchange:string;
+  instrument:string;
   order_local_id:uint;
   order_external_id:string;
 }
@@ -134,6 +138,8 @@ table CancelOrderAck {
   order_id:uint;
   failure:bool;
   reason:string;
+  exchange:string;
+  instrument:string;
   order_local_id:uint;
   order_external_id:string;
 }

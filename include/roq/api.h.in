@@ -5,6 +5,7 @@
 #include <roq/api_generated.h>
 
 #include <chrono>
+#include <map>
 #include <string>
 #include <utility>
 #include <vector>
@@ -579,6 +580,10 @@ class Strategy {
     virtual void send(const CancelOrder& cancel_order, const std::string& gateway) = 0;
   };
   virtual ~Strategy() = default;
+  typedef std::vector<std::string> instruments_t;
+  typedef std::map<std::string, instruments_t> exchanges_t;
+  typedef std::map<std::string, exchanges_t> subscriptions_t;
+  virtual const subscriptions_t& get_subscriptions() const = 0;
   virtual void on(const TimerEvent&) = 0;             ///< Timer (internal notification, do *not* rely on accuracy!)
   virtual void on(const ConnectionStatusEvent&) = 0;  ///< The connection status has changed (internal notification)
   virtual void on(const BatchBeginEvent&) = 0;        ///< Batch begin

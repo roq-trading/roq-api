@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 * `DownloadBegin` event.
 * Exception classes.
+* Subscriptions.
+* Basic simulation of gateway download and order management.
 
 ### Fixed
 * Race condition for message encoding.

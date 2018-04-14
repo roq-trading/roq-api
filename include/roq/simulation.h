@@ -48,6 +48,7 @@ class Controller final {
         : _generators(generators),
           _strategy(*this, std::forward<Args>(args)...) {}
     void dispatch() {
+      initialize();
       // TODO(thraneh): interleave multiple generators
       for (auto& iter : _generators) {
         while (true) {
@@ -62,14 +63,185 @@ class Controller final {
     }
 
    private:
+    void initialize() {
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      const auto& subscriptions = strategy.get_subscriptions();
+      for (const auto& iter_1 : subscriptions) {
+        const auto& gateway = iter_1.first.c_str();
+        const auto& tmp_1 = iter_1.second;
+        download_begin_event(gateway);
+        gateway_status(gateway, "MDUser");  // FIXME(thraneh): clean up!
+        gateway_status(gateway, "Trader");  // FIXME(thraneh): clean up!
+        for (const auto& iter_2 : tmp_1) {
+          const auto& exchange = iter_2.first.c_str();
+          const auto& tmp_2 = iter_2.second;
+          for (const auto& iter_3 : tmp_2) {
+            auto instrument = iter_3.c_str();
+            market_status(gateway, exchange, instrument);
+          }
+        }
+        download_end_event(gateway);
+      }
+    }
+    void download_begin_event(const char *gateway) {
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      MessageInfo message_info { .source = gateway };
+      DownloadBegin download_begin {};
+      strategy.on(DownloadBeginEvent {
+          .message_info = message_info,
+          .download_begin = download_begin
+          });
+    }
+    void download_end_event(const char *gateway) {
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      MessageInfo message_info { .source = gateway };
+      DownloadEnd download_end {};
+      strategy.on(DownloadEndEvent {
+          .message_info = message_info,
+          .download_end = download_end
+          });
+    }
+    void gateway_status(const char *gateway, const char *name) {
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      MessageInfo message_info { .source = gateway };
+      GatewayStatus gateway_status {
+        .name = name,
+        .status = GatewayState::Ready,
+      };
+      strategy.on(GatewayStatusEvent {
+          .message_info = message_info,
+          .gateway_status = gateway_status
+          });
+    }
+    void market_status(
+        const char *gateway,
+        const char *exchange,
+        const char *instrument) {
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      MessageInfo message_info { .source = gateway };
+      MarketStatus market_status {
+        .exchange = exchange,
+        .instrument = instrument,
+        .trading_status = TradingStatus::Open,
+      };
+      strategy.on(MarketStatusEvent {
+          .message_info = message_info,
+          .market_status = market_status
+          });
+    }
+
+   private:
     void send(const CreateOrder& create_order, const std::string& gateway) override {
-      // throw std::runtime_error("This simulator doesn't support order management");
+      // FIXME(thraneh): validate + enqueue
+      create_order_ack(create_order, gateway.c_str());
+      order_update(create_order, gateway.c_str());
+      trade_update(create_order, gateway.c_str());
     }
     void send(const ModifyOrder& modify_order, const std::string& gateway) override {
-      // throw std::runtime_error("This simulator doesn't support order management");
+      // FIXME(thraneh): validate + enqueue
+      modify_order_ack(modify_order, gateway.c_str());
     }
     void send(const CancelOrder& cancel_order, const std::string& gateway) override {
-      // throw std::runtime_error("This simulator doesn't support order management");
+      // FIXME(thraneh): validate + enqueue
+      cancel_order_ack(cancel_order, gateway.c_str());
+    }
+    void create_order_ack(const CreateOrder& create_order, const char *gateway) {
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      MessageInfo message_info { .source = gateway };
+      CreateOrderAck create_order_ack {
+        .order_id = create_order.order_id,
+        .failure = false,
+        .reason = "",
+        .exchange = create_order.exchange,
+        .instrument = create_order.instrument,
+        .order_local_id = 0,
+        .order_external_id = "",
+      };
+      strategy.on(CreateOrderAckEvent {
+          .message_info = message_info,
+          .create_order_ack = create_order_ack
+          });
+    }
+    void modify_order_ack(const ModifyOrder& modify_order, const char *gateway) {
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      MessageInfo message_info { .source = gateway };
+      ModifyOrderAck modify_order_ack {
+        .order_id = modify_order.order_id,
+        .failure = true,
+        .reason = "NO_SUPPORT",
+        .exchange = "",
+        .instrument = "",
+        .order_local_id = 0,
+        .order_external_id = "",
+      };
+      strategy.on(ModifyOrderAckEvent {
+          .message_info = message_info,
+          .modify_order_ack = modify_order_ack
+          });
+    }
+    void cancel_order_ack(const CancelOrder& cancel_order, const char *gateway) {
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      MessageInfo message_info { .source = gateway };
+      CancelOrderAck cancel_order_ack {
+        .order_id = cancel_order.order_id,
+        .failure = true,
+        .reason = "NO_SUPPORT",
+        .exchange = "",
+        .instrument = "",
+        .order_local_id = 0,
+        .order_external_id = "",
+      };
+      strategy.on(CancelOrderAckEvent {
+          .message_info = message_info,
+          .cancel_order_ack = cancel_order_ack
+          });
+    }
+    void order_update(const CreateOrder& create_order, const char *gateway) {
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      MessageInfo message_info { .source = gateway };
+      OrderUpdate order_update {
+        .order_id = create_order.order_id,
+        .order_template = create_order.order_template,
+        .exchange = create_order.exchange,
+        .instrument = create_order.instrument,
+        .order_status = OrderStatus::Completed,
+        .trade_direction = create_order.direction,
+        .remaining_quantity = 0.0,
+        .traded_quantity = create_order.quantity,
+        .insert_time = std::chrono::time_point_cast<duration_t>(
+            std::chrono::system_clock::time_point()),
+        .cancel_time = std::chrono::time_point_cast<duration_t>(
+            std::chrono::system_clock::time_point()),
+        .order_local_id = 0,
+        .order_external_id = "",
+      };
+      strategy.on(OrderUpdateEvent {
+          .message_info = message_info,
+          .order_update = order_update
+          });
+    }
+    void trade_update(const CreateOrder& create_order, const char *gateway) {
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      MessageInfo message_info { .source = gateway };
+      TradeUpdate trade_update {
+        .trade_id = create_order.order_id,
+        .order_id = create_order.order_id,
+        .order_template = create_order.order_template,
+        .exchange = create_order.exchange,
+        .instrument = create_order.instrument,
+        .trade_direction = create_order.direction,
+        .quantity = 0.0,
+        .price = create_order.limit_price,
+        .trade_time = std::chrono::time_point_cast<duration_t>(
+            std::chrono::system_clock::time_point()),
+        .order_local_id = 0,
+        .order_external_id = "",
+        .trade_external_id = "",
+      };
+      strategy.on(TradeUpdateEvent {
+          .message_info = message_info,
+          .trade_update = trade_update
+          });
     }
 
    private:

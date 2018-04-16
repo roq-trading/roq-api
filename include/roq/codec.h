@@ -193,7 +193,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const MarketByPrice& value) {
   return schema::CreateMarketByPrice(
     fbb,
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
+    fbb.CreateString(value.symbol),
     fbb.CreateVectorOfStructs(&depth[0], depth.size()),
     time_point_to_uint64(value.exchange_time),
     value.channel);
@@ -204,7 +204,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const TradeSummary& value) {
   return schema::CreateTradeSummary(
     fbb,
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
+    fbb.CreateString(value.symbol),
     value.price,
     value.volume,
     value.turnover,
@@ -218,7 +218,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const ReferenceData& value) {
   return schema::CreateReferenceData(
     fbb,
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
+    fbb.CreateString(value.symbol),
     value.tick_size,
     value.limit_up,
     value.limit_down);
@@ -229,7 +229,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const MarketStatus& value) {
   return schema::CreateMarketStatus(
     fbb,
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
+    fbb.CreateString(value.symbol),
     value.trading_status);
 }
 
@@ -240,7 +240,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrder& value) {
     value.order_id,
     fbb.CreateString(value.order_template),
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
+    fbb.CreateString(value.symbol),
     value.direction,
     value.quantity,
     value.limit_price,
@@ -303,7 +303,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const OrderUpdate& value) {
     value.order_id,
     fbb.CreateString(value.order_template),
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
+    fbb.CreateString(value.symbol),
     value.order_status,
     value.trade_direction,
     value.remaining_quantity,
@@ -322,7 +322,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const TradeUpdate& value) {
     value.order_id,
     fbb.CreateString(value.order_template),
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
+    fbb.CreateString(value.symbol),
     value.trade_direction,
     value.quantity,
     value.price,
@@ -337,7 +337,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const PositionUpdate& value) {
   return schema::CreatePositionUpdate(
     fbb,
     fbb.CreateString(value.exchange),
-    fbb.CreateString(value.instrument),
+    fbb.CreateString(value.symbol),
     value.trade_direction,
     value.position,
     value.position_yesterday,
@@ -854,7 +854,7 @@ inline Layer convert(const schema::Layer *value) {
 inline MarketByPrice convert(const schema::MarketByPrice *value) {
   MarketByPrice res {
     .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
+    .symbol = value->symbol()->c_str(),
   };
   const flatbuffers::Vector<const schema::Layer *> *depth = value->depth();
   assert(depth->Length() == MAX_DEPTH);
@@ -869,7 +869,7 @@ inline MarketByPrice convert(const schema::MarketByPrice *value) {
 inline TradeSummary convert(const schema::TradeSummary *value) {
   return TradeSummary {
     .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
+    .symbol = value->symbol()->c_str(),
     .price = value->price(),
     .volume = value->volume(),
     .turnover = value->turnover(),
@@ -882,7 +882,7 @@ inline TradeSummary convert(const schema::TradeSummary *value) {
 inline ReferenceData convert(const schema::ReferenceData *value) {
   return ReferenceData {
     .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
+    .symbol = value->symbol()->c_str(),
     .tick_size = value->tick_size(),
     .limit_up = value->limit_up(),
     .limit_down = value->limit_down(),
@@ -892,7 +892,7 @@ inline ReferenceData convert(const schema::ReferenceData *value) {
 inline MarketStatus convert(const schema::MarketStatus *value) {
   return MarketStatus {
     .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
+    .symbol = value->symbol()->c_str(),
     .trading_status = value->trading_status(),
   };
 }
@@ -902,7 +902,7 @@ inline CreateOrder convert(const schema::CreateOrder *value) {
     .order_id = value->order_id(),
     .order_template = value->order_template()->c_str(),
     .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
+    .symbol = value->symbol()->c_str(),
     .direction = value->direction(),
     .quantity = value->quantity(),
     .limit_price = value->limit_price(),
@@ -959,7 +959,7 @@ inline OrderUpdate convert(const schema::OrderUpdate *value) {
     .order_id = value->order_id(),
     .order_template = value->order_template()->c_str(),
     .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
+    .symbol = value->symbol()->c_str(),
     .order_status = value->order_status(),
     .trade_direction = value->trade_direction(),
     .remaining_quantity = value->remaining_quantity(),
@@ -977,7 +977,7 @@ inline TradeUpdate convert(const schema::TradeUpdate *value) {
     .order_id = value->order_id(),
     .order_template = value->order_template()->c_str(),
     .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
+    .symbol = value->symbol()->c_str(),
     .trade_direction = value->trade_direction(),
     .quantity = value->quantity(),
     .price = value->price(),
@@ -991,7 +991,7 @@ inline TradeUpdate convert(const schema::TradeUpdate *value) {
 inline PositionUpdate convert(const schema::PositionUpdate *value) {
   return PositionUpdate {
     .exchange = value->exchange()->c_str(),
-    .instrument = value->instrument()->c_str(),
+    .symbol = value->symbol()->c_str(),
     .trade_direction = value->trade_direction(),
     .position = value->position(),
     .position_yesterday = value->position_yesterday(),

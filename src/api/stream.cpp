@@ -137,7 +137,7 @@ std::ostream& operator<<(std::ostream& stream, const GatewayStatus& value) {
 std::ostream& operator<<(std::ostream& stream, const ReferenceData& value) {
   return stream << "{"
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
+    "symbol=\"" << value.symbol << "\", "
     "tick_size=" << Number(value.tick_size) << ", "
     "limit_up=" << Number(value.limit_up) << ", "
     "limit_down=" << Number(value.limit_down) <<
@@ -147,7 +147,7 @@ std::ostream& operator<<(std::ostream& stream, const ReferenceData& value) {
 std::ostream& operator<<(std::ostream& stream, const MarketStatus& value) {
   return stream << "{"
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
+    "symbol=\"" << value.symbol << "\", "
     "trading_status=" << value.trading_status <<
     "}";
 }
@@ -155,7 +155,7 @@ std::ostream& operator<<(std::ostream& stream, const MarketStatus& value) {
 std::ostream& operator<<(std::ostream& stream, const MarketByPrice& value) {
   stream << "{"
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
+    "symbol=\"" << value.symbol << "\", "
     "layers=[";
   const size_t length = sizeof(value.depth) / sizeof(value.depth[0]);
   for (size_t index = 0; index < length; ++index) {
@@ -172,7 +172,7 @@ std::ostream& operator<<(std::ostream& stream, const MarketByPrice& value) {
 std::ostream& operator<<(std::ostream& stream, const TradeSummary& value) {
   return stream << "{"
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
+    "symbol=\"" << value.symbol << "\", "
     "price=" << Number(value.price) << ", "
     "volume=" << Number(value.volume) << ", "
     "turnover=" << Number(value.turnover) << ", "
@@ -187,7 +187,7 @@ std::ostream& operator<<(std::ostream& stream, const CreateOrder& value) {
     "order_id=" << value.order_id << ", "
     "order_template=\"" << value.order_template << "\", "
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
+    "symbol=\"" << value.symbol << "\", "
     "direction=" << value.direction << ", "
     "quantity=" << Number(value.quantity) << ", "
     "limit_price=" << Number(value.limit_price) << ", "
@@ -244,7 +244,7 @@ std::ostream& operator<<(std::ostream& stream, const OrderUpdate& value) {
     "order_id=" << value.order_id << ", "
     "order_template=\"" << value.order_template << "\", "
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
+    "symbol=\"" << value.symbol << "\", "
     "order_status=" << value.order_status << ", "
     "trade_direction=" << value.trade_direction << ", "
     "remaining_quantity=" << Number(value.remaining_quantity) << ", "
@@ -262,7 +262,7 @@ std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value) {
     "order_id=" << value.order_id << ", "
     "order_template=\"" << value.order_template << "\", "
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
+    "symbol=\"" << value.symbol << "\", "
     "trade_direction=" << value.trade_direction << ", "
     "quantity=" << Number(value.quantity) << ", "
     "price=" << Number(value.price) << ", "
@@ -276,7 +276,7 @@ std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value) {
 std::ostream& operator<<(std::ostream& stream, const PositionUpdate& value) {
   return stream << "{"
     "exchange=\"" << value.exchange << "\", "
-    "instrument=\"" << value.instrument << "\", "
+    "symbol=\"" << value.symbol << "\", "
     "trade_direction=" << value.trade_direction << ", "
     "position=" << Number(value.position) << ", "
     "position_yesterday=" << Number(value.position_yesterday) << ", "

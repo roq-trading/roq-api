@@ -62,7 +62,7 @@ struct Layer {
 
 table MarketByPrice {
   exchange:string;
-  instrument:string;
+  symbol:string;
   depth:[Layer];
   exchange_time:ulong;
   channel:ushort;
@@ -70,7 +70,7 @@ table MarketByPrice {
 
 table TradeSummary {
   exchange:string;
-  instrument:string;
+  symbol:string;
   price:double;
   volume:double;
   turnover:double;
@@ -81,7 +81,7 @@ table TradeSummary {
 
 table ReferenceData {
   exchange:string;
-  instrument:string;
+  symbol:string;
   tick_size:double;
   limit_up:double;
   limit_down:double;
@@ -89,7 +89,7 @@ table ReferenceData {
 
 table MarketStatus {
   exchange:string;
-  instrument:string;
+  symbol:string;
   trading_status:TradingStatus;
 }
 
@@ -97,7 +97,7 @@ table CreateOrder {
   order_id:uint;
   order_template:string;
   exchange:string;
-  instrument:string;
+  symbol:string;
   direction:TradeDirection;
   quantity:double;
   limit_price:double;
@@ -142,7 +142,7 @@ table OrderUpdate {
   order_id:uint;
   order_template:string;
   exchange:string;
-  instrument:string;
+  symbol:string;
   order_status:OrderStatus;
   trade_direction:TradeDirection;
   remaining_quantity:double;
@@ -158,7 +158,7 @@ table TradeUpdate {
   order_id:uint;
   order_template:string;
   exchange:string;
-  instrument:string;
+  symbol:string;
   trade_direction:TradeDirection;
   quantity:double;
   price:double;
@@ -170,7 +170,7 @@ table TradeUpdate {
 
 table PositionUpdate {
   exchange:string;
-  instrument:string;
+  symbol:string;
   trade_direction:TradeDirection;
   position:double;
   position_yesterday:double;

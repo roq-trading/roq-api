@@ -140,7 +140,7 @@ inline GatewayStatus CreateRandomGatewayStatus() {
 inline MarketByPrice CreateRandomMarketByPrice() {
   MarketByPrice res {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
   };
   for (auto i = 0; i < MAX_DEPTH; ++i) {
     res.depth[i].bid_price = rand_double();
@@ -155,7 +155,7 @@ inline MarketByPrice CreateRandomMarketByPrice() {
 inline TradeSummary CreateRandomTradeSummary() {
   return TradeSummary {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .price = rand_double(),
     .volume = rand_double(),
     .turnover = rand_double(),
@@ -167,7 +167,7 @@ inline TradeSummary CreateRandomTradeSummary() {
 inline ReferenceData CreateRandomReferenceData() {
   return ReferenceData {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .tick_size = rand_double(),
     .limit_up = rand_double(),
     .limit_down = rand_double(),
@@ -176,7 +176,7 @@ inline ReferenceData CreateRandomReferenceData() {
 inline MarketStatus CreateRandomMarketStatus() {
   return MarketStatus {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .trading_status = rand_trading_status(),
   };
 }
@@ -185,7 +185,7 @@ inline CreateOrder CreateRandomCreateOrder() {
     .order_id = rand_uint32(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .direction = rand_trade_direction(),
     .quantity = rand_double(),
     .limit_price = rand_double(),
@@ -236,7 +236,7 @@ inline OrderUpdate CreateRandomOrderUpdate() {
     .order_id = rand_uint32(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .order_status = rand_order_status(),
     .trade_direction = rand_trade_direction(),
     .remaining_quantity = rand_double(),
@@ -253,7 +253,7 @@ inline TradeUpdate CreateRandomTradeUpdate() {
     .order_id = rand_uint32(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .trade_direction = rand_trade_direction(),
     .quantity = rand_double(),
     .price = rand_double(),
@@ -266,7 +266,7 @@ inline TradeUpdate CreateRandomTradeUpdate() {
 inline PositionUpdate CreateRandomPositionUpdate() {
   return PositionUpdate {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .instrument = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .trade_direction = rand_trade_direction(),
     .position = rand_double(),
     .position_yesterday = rand_double(),
@@ -332,7 +332,7 @@ void compare(const GatewayStatus& lhs, const GatewayStatus& rhs) {
 }
 void compare(const MarketByPrice& lhs, const MarketByPrice& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_STREQ(lhs.symbol, rhs.symbol);
   for (auto i = 0; i < MAX_DEPTH; ++i) {
     EXPECT_EQ(lhs.depth[i].bid_price, rhs.depth[i].bid_price);
     EXPECT_EQ(lhs.depth[i].bid_quantity, rhs.depth[i].bid_quantity);
@@ -344,7 +344,7 @@ void compare(const MarketByPrice& lhs, const MarketByPrice& rhs) {
 }
 void compare(const TradeSummary& lhs, const TradeSummary& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.price, rhs.price);
   EXPECT_EQ(lhs.volume, rhs.volume);
   EXPECT_EQ(lhs.turnover, rhs.turnover);
@@ -354,21 +354,21 @@ void compare(const TradeSummary& lhs, const TradeSummary& rhs) {
 }
 void compare(const ReferenceData& lhs, const ReferenceData& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.tick_size, rhs.tick_size);
   EXPECT_EQ(lhs.limit_up, rhs.limit_up);
   EXPECT_EQ(lhs.limit_down, rhs.limit_down);
 }
 void compare(const MarketStatus& lhs, const MarketStatus& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.trading_status, rhs.trading_status);
 }
 void compare(const CreateOrder& lhs, const CreateOrder& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.direction, rhs.direction);
   EXPECT_EQ(lhs.quantity, rhs.quantity);
   EXPECT_EQ(lhs.limit_price, rhs.limit_price);
@@ -407,7 +407,7 @@ void compare(const OrderUpdate& lhs, const OrderUpdate& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.order_status, rhs.order_status);
   EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.remaining_quantity, rhs.remaining_quantity);
@@ -422,7 +422,7 @@ void compare(const TradeUpdate& lhs, const TradeUpdate& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.quantity, rhs.quantity);
   EXPECT_EQ(lhs.price, rhs.price);
@@ -433,7 +433,7 @@ void compare(const TradeUpdate& lhs, const TradeUpdate& rhs) {
 }
 void compare(const PositionUpdate& lhs, const PositionUpdate& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
-  EXPECT_STREQ(lhs.instrument, rhs.instrument);
+  EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
   EXPECT_EQ(lhs.position, rhs.position);
   EXPECT_EQ(lhs.position_yesterday, rhs.position_yesterday);

@@ -76,8 +76,8 @@ class Controller final {
           const auto& exchange = iter_2.first.c_str();
           const auto& tmp_2 = iter_2.second;
           for (const auto& iter_3 : tmp_2) {
-            auto instrument = iter_3.c_str();
-            market_status(gateway, exchange, instrument);
+            auto symbol = iter_3.c_str();
+            market_status(gateway, exchange, symbol);
           }
         }
         download_end_event(gateway);
@@ -116,12 +116,12 @@ class Controller final {
     void market_status(
         const char *gateway,
         const char *exchange,
-        const char *instrument) {
+        const char *symbol) {
       auto& strategy = static_cast<Strategy&>(_strategy);
       MessageInfo message_info { .source = gateway };
       MarketStatus market_status {
         .exchange = exchange,
-        .instrument = instrument,
+        .symbol = symbol,
         .trading_status = TradingStatus::Open,
       };
       strategy.on(MarketStatusEvent {
@@ -197,7 +197,7 @@ class Controller final {
         .order_id = create_order.order_id,
         .order_template = create_order.order_template,
         .exchange = create_order.exchange,
-        .instrument = create_order.instrument,
+        .symbol = create_order.symbol,
         .order_status = OrderStatus::Completed,
         .trade_direction = create_order.direction,
         .remaining_quantity = 0.0,
@@ -222,7 +222,7 @@ class Controller final {
         .order_id = create_order.order_id,
         .order_template = create_order.order_template,
         .exchange = create_order.exchange,
-        .instrument = create_order.instrument,
+        .symbol = create_order.symbol,
         .trade_direction = create_order.direction,
         .quantity = 0.0,
         .price = create_order.limit_price,

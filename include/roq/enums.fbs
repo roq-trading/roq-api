@@ -15,6 +15,16 @@ enum GatewayState:byte {
   LoggedOut = 4
 }
 
+/// Trading status.
+enum TradingStatus:byte {
+  ///< Undefined
+  Undefined = 0,
+  ///< Market is not open for trading
+  Closed = 1,
+  ///< Market is open for trading
+  Open = 2
+}
+
 /// Trade direction.
 enum TradeDirection:byte {
   ///< Undefined
@@ -25,14 +35,18 @@ enum TradeDirection:byte {
   Sell = 2
 }
 
-/// Trading status.
-enum TradingStatus:byte {
+/// Time in force.
+enum TimeInForce:byte {
   ///< Undefined
   Undefined = 0,
-  ///< Market is not open for trading
-  Closed = 1,
-  ///< Market is open for trading
-  Open = 2
+  ///< FOK (fill or kill)
+  FOK = 1,
+  ///< IOC (immediate or cancel)
+  IOC = 2,
+  ///< GFD (good for day)
+  GFD = 3,
+  ///< GTC (good till canceled)
+  GTC = 4
 }
 
 /// Order status.

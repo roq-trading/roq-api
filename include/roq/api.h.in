@@ -183,7 +183,7 @@ struct Layer {
  */
 struct MarketByPrice {
   const char *exchange;        ///< Exchange name
-  const char *instrument;      ///< Instrument name
+  const char *symbol;          ///< Symbol name
   Layer depth[MAX_DEPTH];      ///< Layers
   time_point_t exchange_time;  ///< Exchange time-stamp
   // FIXME(thraneh): experimental
@@ -195,7 +195,7 @@ struct MarketByPrice {
  */
 struct TradeSummary {
   const char *exchange;        ///< Exchange name
-  const char *instrument;      ///< Instrument name
+  const char *symbol;          ///< Symbol name
   double price;                ///< Price
   double volume;               ///< Volume
   double turnover;             ///< Turnover
@@ -210,7 +210,7 @@ struct TradeSummary {
  */
 struct ReferenceData {
   const char *exchange;    ///< Exchange name
-  const char *instrument;  ///< Instrument name
+  const char *symbol;      ///< Symbol name
   double tick_size;        ///< Tick size (price increments)
   double limit_up;         ///< Price limit-up
   double limit_down;       ///< Price limit-down
@@ -221,7 +221,7 @@ struct ReferenceData {
  */
 struct MarketStatus {
   const char *exchange;          ///< Exchange name
-  const char *instrument;        ///< Instrument name
+  const char *symbol;            ///< Symbol name
   TradingStatus trading_status;  ///< Market status
 };
 
@@ -232,7 +232,7 @@ struct CreateOrder {
   uint32_t order_id;           ///< User's order identifier.
   const char *order_template;  ///< Order template name.
   const char *exchange;        ///< Exchange name.
-  const char *instrument;      ///< Instrument name.
+  const char *symbol;          ///< Symbol name
   TradeDirection direction;    ///< Trade direction.
   double quantity;             ///< Quantity.
   double limit_price;          ///< Limit price.
@@ -299,7 +299,7 @@ struct OrderUpdate {
   uint32_t order_id;               ///< User's order identifier.
   const char *order_template;      ///< Order template
   const char *exchange;            ///< Exchange name
-  const char *instrument;          ///< Instrument name
+  const char *symbol;              ///< Symbol name
   OrderStatus order_status;        ///< Order status
   TradeDirection trade_direction;  ///< Trade direction
   double remaining_quantity;       ///< Remaining (unfilled) quantity
@@ -319,7 +319,7 @@ struct TradeUpdate {
   uint32_t order_id;               ///< User's order identifier.
   const char *order_template;      ///< Order template
   const char *exchange;            ///< Exchange name
-  const char *instrument;          ///< Instrument name
+  const char *symbol;              ///< Symbol name
   TradeDirection trade_direction;  ///< Trade direction
   double quantity;                 ///< Trade quantity
   double price;                    ///< Trade price
@@ -335,7 +335,7 @@ struct TradeUpdate {
  */
 struct PositionUpdate {
   const char *exchange;            ///< Exchange name
-  const char *instrument;          ///< Instrument name
+  const char *symbol;              ///< Symbol name
   TradeDirection trade_direction;  ///< Trade direction
   double position;                 ///< Position.
   // FIXME(thraneh): experimental
@@ -578,8 +578,8 @@ class Strategy {
     virtual void send(const CancelOrder& cancel_order, const std::string& gateway) = 0;
   };
   virtual ~Strategy() = default;
-  typedef std::vector<std::string> instruments_t;
-  typedef std::map<std::string, instruments_t> exchanges_t;
+  typedef std::vector<std::string> symbols_t;
+  typedef std::map<std::string, symbols_t> exchanges_t;
   typedef std::map<std::string, exchanges_t> subscriptions_t;
   virtual const subscriptions_t& get_subscriptions() const = 0;
   virtual void on(const TimerEvent&) = 0;             ///< Timer (internal notification, do *not* rely on accuracy!)
@@ -589,10 +589,10 @@ class Strategy {
   virtual void on(const DownloadBeginEvent&) = 0;     ///< Download begin
   virtual void on(const DownloadEndEvent&) = 0;       ///< Download end
   virtual void on(const GatewayStatusEvent&) = 0;     ///< The gateway's connection or login status has changed
-  virtual void on(const ReferenceDataEvent&) = 0;     ///< Reference data update for an instrument
-  virtual void on(const MarketStatusEvent&) = 0;      ///< Market status update for an instrument
-  virtual void on(const MarketByPriceEvent&) = 0;     ///< Market-by-price update for an instrument
-  virtual void on(const TradeSummaryEvent&) = 0;      ///< Trade summary update for an instrument
+  virtual void on(const ReferenceDataEvent&) = 0;     ///< Reference data update for a symbol
+  virtual void on(const MarketStatusEvent&) = 0;      ///< Market status update for a symbol
+  virtual void on(const MarketByPriceEvent&) = 0;     ///< Market-by-price update for a symbol
+  virtual void on(const TradeSummaryEvent&) = 0;      ///< Trade summary update for a symbol
   virtual void on(const CreateOrderAckEvent&) = 0;    ///< Response to a create order request
   virtual void on(const ModifyOrderAckEvent&) = 0;    ///< Response to a modify order request
   virtual void on(const CancelOrderAckEvent&) = 0;    ///< Response to a cancel order request

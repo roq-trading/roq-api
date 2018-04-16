@@ -152,7 +152,6 @@ struct DownloadEnd {
   uint32_t max_order_id;  ///< Maximum order id.
 };
 
-
 /**
  * Gateway status.
  */

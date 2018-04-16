@@ -3,6 +3,7 @@
 #pragma once
 
 #include <fcntl.h>
+#include <libgen.h>
 #include <unistd.h>
 
 #include <string>
@@ -24,6 +25,10 @@ inline void access(const char *path, int mode) {
 inline void remove(const char *path) {
   if (::unlink(path) != 0)
     throw std::system_error(errno, std::system_category());
+}
+inline std::string dirname(const char *path) {
+  std::string buffer(path);
+  return ::dirname(&buffer.at(0));
 }
 }  // namespace detail
 
@@ -65,6 +70,16 @@ inline void remove(const char *path) {
 
 inline void remove(const std::string& path) {
   detail::remove(path.c_str());
+}
+
+// dirname
+
+inline std::string dirname(const char *path) {
+  return detail::dirname(path);
+}
+
+inline std::string dirname(const std::string& path) {
+  return dirname(path.c_str());
 }
 
 }  // namespace filesystem

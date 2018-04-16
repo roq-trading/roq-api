@@ -152,8 +152,6 @@ class Controller final {
         .order_id = create_order.order_id,
         .failure = false,
         .reason = "",
-        .exchange = create_order.exchange,
-        .instrument = create_order.instrument,
         .order_local_id = 0,
         .order_external_id = "",
       };
@@ -168,9 +166,7 @@ class Controller final {
       ModifyOrderAck modify_order_ack {
         .order_id = modify_order.order_id,
         .failure = true,
-        .reason = "NO_SUPPORT",
-        .exchange = "",
-        .instrument = "",
+        .reason = "NOT_SUPPORTED",
         .order_local_id = 0,
         .order_external_id = "",
       };
@@ -185,9 +181,7 @@ class Controller final {
       CancelOrderAck cancel_order_ack {
         .order_id = cancel_order.order_id,
         .failure = true,
-        .reason = "NO_SUPPORT",
-        .exchange = "",
-        .instrument = "",
+        .reason = "NOT_SUPPORTED",
         .order_local_id = 0,
         .order_external_id = "",
       };

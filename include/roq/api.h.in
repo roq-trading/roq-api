@@ -237,6 +237,7 @@ struct CreateOrder {
   double quantity;             ///< Quantity.
   double limit_price;          ///< Limit price.
   double stop_price;           ///< Optional stop price.
+  // HANS + time in force + account
 };
 
 /**
@@ -246,8 +247,6 @@ struct CreateOrderAck {
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
-  const char *exchange;           ///< Exchange name.
-  const char *instrument;         ///< Instrument name.
   // ... for debugging
   uint32_t order_local_id;        ///< Gateway order identifier.
   const char *order_external_id;  ///< External order identifier.
@@ -269,8 +268,6 @@ struct ModifyOrderAck {
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
-  const char *exchange;           ///< Exchange name.
-  const char *instrument;         ///< Instrument name.
   // ... for debugging
   uint32_t order_local_id;        ///< Gateway order identifier.
   const char *order_external_id;  ///< External order identifier.
@@ -290,8 +287,6 @@ struct CancelOrderAck {
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
-  const char *exchange;           ///< Exchange name.
-  const char *instrument;         ///< Instrument name.
   // ... for debugging
   uint32_t order_local_id;        ///< Gateway order identifier.
   const char *order_external_id;  ///< External order identifier.
@@ -313,6 +308,7 @@ struct OrderUpdate {
   time_point_t cancel_time;        ///< Order cancellation time
   uint32_t order_local_id;         ///< Gateway order identifier.
   const char *order_external_id;   ///< External order identifier.
+  // HANS + time in force + account
 };
 
 /**
@@ -331,6 +327,7 @@ struct TradeUpdate {
   uint32_t order_local_id;         ///< Gateway order identifier.
   const char *order_external_id;   ///< External order identifier.
   const char *trade_external_id;   ///< External trade identifier
+  // HANS + account
 };
 
 /**
@@ -346,6 +343,7 @@ struct PositionUpdate {
   double frozen_position;
   double frozen_closing;
   double frozen_closing_yesterday;
+  // HANS + account
 };
 
 
@@ -627,5 +625,34 @@ class NotReady final : public Exception {
     return "Not ready.";
   }
 };
+
+/**
+ * OrderNotLive
+ */
+class OrderNotLive final : public Exception {
+ public:
+  const char *what() const noexcept override {
+    return "Order not live.";
+  }
+};
+
+/**
+ * Utilities.
+ */
+
+inline bool is_order_live(roq::OrderStatus status) {
+  switch (status) {
+    case OrderStatus::Sent:
+    case OrderStatus::Accepted:
+    case OrderStatus::Pending:
+    case OrderStatus::Working:
+      return true;
+    case OrderStatus::Undefined:
+    case OrderStatus::Rejected:
+    case OrderStatus::Completed:
+    case OrderStatus::Cancelled:
+      return false;
+  }
+}
 
 }  // namespace roq

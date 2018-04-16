@@ -64,8 +64,7 @@ struct MessageInfo {
   duration_t routing_latency;        ///< Routing latency (from source to client).
   bool from_cache;                   ///< True if the message originates from the cache.
   bool is_last;                      ///< Is this update event the last of the batch?
-  // FIXME(thraneh): experimental
-  uint16_t channel;
+  uint16_t channel;                  ///< Channel.
 };
 
 /**
@@ -154,9 +153,6 @@ struct DownloadEnd {
 };
 
 
-// ---------------
-
-
 /**
  * Gateway status.
  */
@@ -179,15 +175,14 @@ struct Layer {
 };
 
 /**
- * Market depth (aggregated view of an order book).
+ * Market by price (aggregated view of an order book, L1 or L2).
  */
 struct MarketByPrice {
   const char *exchange;        ///< Exchange name
   const char *symbol;          ///< Symbol name
   Layer depth[MAX_DEPTH];      ///< Layers
   time_point_t exchange_time;  ///< Exchange time-stamp
-  // FIXME(thraneh): experimental
-  uint16_t channel;
+  uint16_t channel;            ///< Channel
 };
 
 /**
@@ -199,10 +194,9 @@ struct TradeSummary {
   double price;                ///< Price
   double volume;               ///< Volume
   double turnover;             ///< Turnover
-  TradeDirection direction;    ///< Direction
+  Side side;                   ///< Side
   time_point_t exchange_time;  ///< Exchange time-stamp
-  // FIXME(thraneh): experimental
-  uint16_t channel;
+  uint16_t channel;            ///< Channel
 };
 
 /**
@@ -226,18 +220,85 @@ struct MarketStatus {
 };
 
 /**
+ * Position update.
+ */
+struct PositionUpdate {
+  const char *account;             ///< Client account
+  const char *exchange;            ///< Exchange name
+  const char *symbol;              ///< Symbol name
+  Side side;                       ///< Side
+  double position;                 ///< Position.
+  uint32_t last_order_id;          ///< Last order id included.
+};
+
+/**
+ * Order update.
+ */
+struct OrderUpdate {
+  uint32_t order_id;               ///< User's order identifier.
+  const char *account;             ///< Client account.
+  const char *exchange;            ///< Exchange name
+  const char *symbol;              ///< Symbol name
+  OrderStatus order_status;        ///< Order status
+  Side side;                       ///< Side
+  double remaining_quantity;       ///< Remaining (unfilled) quantity
+  double traded_quantity;          ///< Traded (filled) quantity
+  const char *order_template;      ///< Order template
+  time_point_t insert_time;        ///< Order insertion time
+  time_point_t cancel_time;        ///< Order cancellation time
+  uint32_t order_local_id;         ///< Gateway order identifier.
+  const char *order_external_id;   ///< External order identifier.
+};
+
+/**
+ * Trade update.
+ */
+struct TradeUpdate {
+  uint32_t trade_id;               ///< Trade identifier.
+  uint32_t order_id;               ///< User's order identifier.
+  const char *account;             ///< Client account.
+  const char *exchange;            ///< Exchange name
+  const char *symbol;              ///< Symbol name
+  Side side;                       ///< Side
+  double quantity;                 ///< Trade quantity
+  double price;                    ///< Trade price
+  const char *order_template;      ///< Order template
+  time_point_t trade_time;         ///< Trade time
+  uint32_t order_local_id;         ///< Gateway order identifier.
+  const char *order_external_id;   ///< External order identifier.
+  const char *trade_external_id;   ///< External trade identifier
+};
+
+/**
  * Create order.
  */
 struct CreateOrder {
   uint32_t order_id;           ///< User's order identifier.
-  const char *order_template;  ///< Order template name.
+  const char *account;         ///< Client account.
   const char *exchange;        ///< Exchange name.
   const char *symbol;          ///< Symbol name
-  TradeDirection direction;    ///< Trade direction.
+  Side side;                   ///< Side
   double quantity;             ///< Quantity.
+  OrderType order_type;        ///< Order type.
   double limit_price;          ///< Limit price.
-  double stop_price;           ///< Optional stop price.
-  // HANS + time in force + account
+  TimeInForce time_in_force;   ///< Time in force.
+  const char *order_template;  ///< Order template name.
+};
+
+/**
+ * Modify order.
+ */
+struct ModifyOrder {
+  uint32_t order_id;       ///< User's order identifier.
+  double quantity_change;  ///< Desired quantity change
+  double limit_price;      ///< Limit price
+};
+
+/**
+ * Cancel order.
+ */
+struct CancelOrder {
+  uint32_t order_id;  ///< User provided order identifier.
 };
 
 /**
@@ -253,15 +314,6 @@ struct CreateOrderAck {
 };
 
 /**
- * Modify order.
- */
-struct ModifyOrder {
-  uint32_t order_id;       ///< User's order identifier.
-  double quantity_change;  ///< Desired quantity change
-  double limit_price;      ///< Limit price
-};
-
-/**
  * Response to modify order
  */
 struct ModifyOrderAck {
@@ -271,13 +323,6 @@ struct ModifyOrderAck {
   // ... for debugging
   uint32_t order_local_id;        ///< Gateway order identifier.
   const char *order_external_id;  ///< External order identifier.
-};
-
-/**
- * Cancel order.
- */
-struct CancelOrder {
-  uint32_t order_id;  ///< User provided order identifier.
 };
 
 /**
@@ -293,64 +338,6 @@ struct CancelOrderAck {
 };
 
 /**
- * Order update.
- */
-struct OrderUpdate {
-  uint32_t order_id;               ///< User's order identifier.
-  const char *order_template;      ///< Order template
-  const char *exchange;            ///< Exchange name
-  const char *symbol;              ///< Symbol name
-  OrderStatus order_status;        ///< Order status
-  TradeDirection trade_direction;  ///< Trade direction
-  double remaining_quantity;       ///< Remaining (unfilled) quantity
-  double traded_quantity;          ///< Traded (filled) quantity
-  time_point_t insert_time;        ///< Order insertion time
-  time_point_t cancel_time;        ///< Order cancellation time
-  uint32_t order_local_id;         ///< Gateway order identifier.
-  const char *order_external_id;   ///< External order identifier.
-  // HANS + time in force + account
-};
-
-/**
- * Trade update.
- */
-struct TradeUpdate {
-  uint32_t trade_id;               ///< Trade identifier.
-  uint32_t order_id;               ///< User's order identifier.
-  const char *order_template;      ///< Order template
-  const char *exchange;            ///< Exchange name
-  const char *symbol;              ///< Symbol name
-  TradeDirection trade_direction;  ///< Trade direction
-  double quantity;                 ///< Trade quantity
-  double price;                    ///< Trade price
-  time_point_t trade_time;         ///< Trade time
-  uint32_t order_local_id;         ///< Gateway order identifier.
-  const char *order_external_id;   ///< External order identifier.
-  const char *trade_external_id;   ///< External trade identifier
-  // HANS + account
-};
-
-/**
- * Position update.
- */
-struct PositionUpdate {
-  const char *exchange;            ///< Exchange name
-  const char *symbol;              ///< Symbol name
-  TradeDirection trade_direction;  ///< Trade direction
-  double position;                 ///< Position.
-  // FIXME(thraneh): experimental
-  double position_yesterday;
-  double frozen_position;
-  double frozen_closing;
-  double frozen_closing_yesterday;
-  // HANS + account
-};
-
-
-// ---------------
-
-
-/**
  * Timer event. (INTERNAL)
  */
 struct TimerEvent {};
@@ -362,10 +349,6 @@ struct ConnectionStatusEvent {
   const char *source;
   ConnectionStatus connection_status;
 };
-
-
-// ---------------
-
 
 /**
  * Batch begin event.
@@ -380,10 +363,6 @@ struct BatchBeginEvent {
 struct BatchEndEvent {
   const MessageInfo& message_info;
 };
-
-
-// ---------------
-
 
 /*
  * Handshake request. (INTERNAL)
@@ -473,52 +452,12 @@ struct TradeSummaryEvent {
   const TradeSummary& trade_summary;
 };
 
-/*
- * Create order request. (INTERNAL)
- */
-struct CreateOrderEvent {
-  const MessageInfo& message_info;
-  const CreateOrder& create_order;
-};
-
 /**
- * Create order ack event.
+ * Position update event.
  */
-struct CreateOrderAckEvent {
+struct PositionUpdateEvent {
   const MessageInfo& message_info;
-  const CreateOrderAck& create_order_ack;
-};
-
-/*
- * Modify order request. (INTERNAL)
- */
-struct ModifyOrderEvent {
-  const MessageInfo& message_info;
-  const ModifyOrder& modify_order;
-};
-
-/**
- * Modify order ack event.
- */
-struct ModifyOrderAckEvent {
-  const MessageInfo& message_info;
-  const ModifyOrderAck& modify_order_ack;
-};
-
-/*
- * Cancel order request. (INTERNAL)
- */
-struct CancelOrderEvent {
-  const MessageInfo& message_info;
-  const CancelOrder& cancel_order;
-};
-
-/**
- * Cancel order ack event.
- */
-struct CancelOrderAckEvent {
-  const MessageInfo& message_info;
-  const CancelOrderAck& cancel_order_ack;
+  const PositionUpdate& position_update;
 };
 
 /**
@@ -537,12 +476,52 @@ struct TradeUpdateEvent {
   const TradeUpdate& trade_update;
 };
 
-/**
- * Position update event.
+/*
+ * Create order request. (INTERNAL)
  */
-struct PositionUpdateEvent {
+struct CreateOrderEvent {
   const MessageInfo& message_info;
-  const PositionUpdate& position_update;
+  const CreateOrder& create_order;
+};
+
+/*
+ * Modify order request. (INTERNAL)
+ */
+struct ModifyOrderEvent {
+  const MessageInfo& message_info;
+  const ModifyOrder& modify_order;
+};
+
+/*
+ * Cancel order request. (INTERNAL)
+ */
+struct CancelOrderEvent {
+  const MessageInfo& message_info;
+  const CancelOrder& cancel_order;
+};
+
+/**
+ * Create order ack event.
+ */
+struct CreateOrderAckEvent {
+  const MessageInfo& message_info;
+  const CreateOrderAck& create_order_ack;
+};
+
+/**
+ * Modify order ack event.
+ */
+struct ModifyOrderAckEvent {
+  const MessageInfo& message_info;
+  const ModifyOrderAck& modify_order_ack;
+};
+
+/**
+ * Cancel order ack event.
+ */
+struct CancelOrderAckEvent {
+  const MessageInfo& message_info;
+  const CancelOrderAck& cancel_order_ack;
 };
 
 /**
@@ -593,12 +572,12 @@ class Strategy {
   virtual void on(const MarketStatusEvent&) = 0;      ///< Market status update for a symbol
   virtual void on(const MarketByPriceEvent&) = 0;     ///< Market-by-price update for a symbol
   virtual void on(const TradeSummaryEvent&) = 0;      ///< Trade summary update for a symbol
+  virtual void on(const PositionUpdateEvent&) = 0;    ///< Position update
+  virtual void on(const OrderUpdateEvent&) = 0;       ///< New order, or order details have been updated
+  virtual void on(const TradeUpdateEvent&) = 0;       ///< New trade, or trade details have been updated
   virtual void on(const CreateOrderAckEvent&) = 0;    ///< Response to a create order request
   virtual void on(const ModifyOrderAckEvent&) = 0;    ///< Response to a modify order request
   virtual void on(const CancelOrderAckEvent&) = 0;    ///< Response to a cancel order request
-  virtual void on(const OrderUpdateEvent&) = 0;       ///< New order, or order details have been updated
-  virtual void on(const TradeUpdateEvent&) = 0;       ///< New trade, or trade details have been updated
-  virtual void on(const PositionUpdateEvent&) = 0;    ///< Position update
 };
 
 /**

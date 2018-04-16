@@ -25,14 +25,24 @@ enum TradingStatus:byte {
   Open = 2
 }
 
-/// Trade direction.
-enum TradeDirection:byte {
+/// Side.
+enum Side:byte {
   ///< Undefined
   Undefined = 0,
   ///< Buy
   Buy = 1,
   ///< Sell
   Sell = 2
+}
+
+/// Order type.
+enum OrderType:byte {
+  ///< Undefined
+  Undefined = 0,
+  ///< Market
+  Market = 1,
+  ///< Limit
+  Limit = 2
 }
 
 /// Time in force.

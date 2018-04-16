@@ -195,13 +195,14 @@ class Controller final {
       MessageInfo message_info { .source = gateway };
       OrderUpdate order_update {
         .order_id = create_order.order_id,
-        .order_template = create_order.order_template,
+        .account = create_order.account,
         .exchange = create_order.exchange,
         .symbol = create_order.symbol,
         .order_status = OrderStatus::Completed,
-        .trade_direction = create_order.direction,
+        .side = create_order.side,
         .remaining_quantity = 0.0,
         .traded_quantity = create_order.quantity,
+        .order_template = create_order.order_template,
         .insert_time = std::chrono::time_point_cast<duration_t>(
             std::chrono::system_clock::time_point()),
         .cancel_time = std::chrono::time_point_cast<duration_t>(
@@ -220,12 +221,13 @@ class Controller final {
       TradeUpdate trade_update {
         .trade_id = create_order.order_id,
         .order_id = create_order.order_id,
-        .order_template = create_order.order_template,
+        .account = create_order.account,
         .exchange = create_order.exchange,
         .symbol = create_order.symbol,
-        .trade_direction = create_order.direction,
+        .side = create_order.side,
         .quantity = 0.0,
         .price = create_order.limit_price,
+        .order_template = create_order.order_template,
         .trade_time = std::chrono::time_point_cast<duration_t>(
             std::chrono::system_clock::time_point()),
         .order_local_id = 0,

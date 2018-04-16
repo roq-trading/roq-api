@@ -56,8 +56,14 @@ namespace {
 static GatewayState rand_gateway_state() {
   return static_cast<GatewayState>(rand_uint32() % static_cast<uint32_t>(GatewayState::MAX));
 }
-static TradeDirection rand_trade_direction() {
-  return static_cast<TradeDirection>(rand_uint32() % static_cast<uint32_t>(TradeDirection::MAX));
+static Side rand_side() {
+  return static_cast<Side>(rand_uint32() % static_cast<uint32_t>(Side::MAX));
+}
+static OrderType rand_order_type() {
+  return static_cast<OrderType>(rand_uint32() % static_cast<uint32_t>(OrderType::MAX));
+}
+static TimeInForce rand_time_in_force() {
+  return static_cast<TimeInForce>(rand_uint32() % static_cast<uint32_t>(TimeInForce::MAX));
 }
 static TradingStatus rand_trading_status() {
   return static_cast<TradingStatus>(rand_uint32() % static_cast<uint32_t>(TradingStatus::MAX));
@@ -159,7 +165,7 @@ inline TradeSummary CreateRandomTradeSummary() {
     .price = rand_double(),
     .volume = rand_double(),
     .turnover = rand_double(),
-    .direction = rand_trade_direction(),
+    .side = rand_side(),
     .exchange_time = rand_time_point(),
     .channel = rand_uint16(),
   };
@@ -180,16 +186,74 @@ inline MarketStatus CreateRandomMarketStatus() {
     .trading_status = rand_trading_status(),
   };
 }
+inline PositionUpdate CreateRandomPositionUpdate() {
+  return PositionUpdate {
+    .account = NAME[rand_uint32() % NAME_LENGTH],
+    .exchange = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
+    .side = rand_side(),
+    .position = rand_double(),
+    .last_order_id = rand_uint32(),
+  };
+}
+inline OrderUpdate CreateRandomOrderUpdate() {
+  return OrderUpdate {
+    .order_id = rand_uint32(),
+    .account = NAME[rand_uint32() % NAME_LENGTH],
+    .exchange = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
+    .order_status = rand_order_status(),
+    .side = rand_side(),
+    .remaining_quantity = rand_double(),
+    .traded_quantity = rand_double(),
+    .order_template = NAME[rand_uint32() % NAME_LENGTH],
+    .insert_time = rand_time_point(),
+    .cancel_time = rand_time_point(),
+    .order_local_id = rand_uint32(),
+    .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
+  };
+}
+inline TradeUpdate CreateRandomTradeUpdate() {
+  return TradeUpdate {
+    .trade_id = rand_uint32(),
+    .order_id = rand_uint32(),
+    .account = NAME[rand_uint32() % NAME_LENGTH],
+    .exchange = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
+    .side = rand_side(),
+    .quantity = rand_double(),
+    .price = rand_double(),
+    .order_template = NAME[rand_uint32() % NAME_LENGTH],
+    .trade_time = rand_time_point(),
+    .order_local_id = rand_uint32(),
+    .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
+    .trade_external_id = NAME[rand_uint32() % NAME_LENGTH],
+  };
+}
 inline CreateOrder CreateRandomCreateOrder() {
   return CreateOrder {
     .order_id = rand_uint32(),
-    .order_template = NAME[rand_uint32() % NAME_LENGTH],
+    .account = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .symbol = NAME[rand_uint32() % NAME_LENGTH],
-    .direction = rand_trade_direction(),
+    .side = rand_side(),
     .quantity = rand_double(),
+    .order_type = rand_order_type(),
     .limit_price = rand_double(),
-    .stop_price = rand_double(),
+    .time_in_force = rand_time_in_force(),
+    .order_template = NAME[rand_uint32() % NAME_LENGTH],
+  };
+}
+inline ModifyOrder CreateRandomModifyOrder() {
+  return ModifyOrder {
+    .order_id = rand_uint32(),
+    .quantity_change = rand_double(),
+    .limit_price = rand_double(),
+  };
+}
+inline CancelOrder CreateRandomCancelOrder() {
+  return CancelOrder {
+    .order_id = rand_uint32(),
   };
 }
 inline CreateOrderAck CreateRandomCreateOrderAck() {
@@ -201,13 +265,6 @@ inline CreateOrderAck CreateRandomCreateOrderAck() {
     .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
-inline ModifyOrder CreateRandomModifyOrder() {
-  return ModifyOrder {
-    .order_id = rand_uint32(),
-    .quantity_change = rand_double(),
-    .limit_price = rand_double(),
-  };
-}
 inline ModifyOrderAck CreateRandomModifyOrderAck() {
   return ModifyOrderAck {
     .order_id = rand_uint32(),
@@ -217,11 +274,6 @@ inline ModifyOrderAck CreateRandomModifyOrderAck() {
     .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
-inline CancelOrder CreateRandomCancelOrder() {
-  return CancelOrder {
-    .order_id = rand_uint32(),
-  };
-}
 inline CancelOrderAck CreateRandomCancelOrderAck() {
   return CancelOrderAck {
     .order_id = rand_uint32(),
@@ -229,50 +281,6 @@ inline CancelOrderAck CreateRandomCancelOrderAck() {
     .reason = NAME[rand_uint32() % NAME_LENGTH],
     .order_local_id = rand_uint32(),
     .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
-  };
-}
-inline OrderUpdate CreateRandomOrderUpdate() {
-  return OrderUpdate {
-    .order_id = rand_uint32(),
-    .order_template = NAME[rand_uint32() % NAME_LENGTH],
-    .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .symbol = NAME[rand_uint32() % NAME_LENGTH],
-    .order_status = rand_order_status(),
-    .trade_direction = rand_trade_direction(),
-    .remaining_quantity = rand_double(),
-    .traded_quantity = rand_double(),
-    .insert_time = rand_time_point(),
-    .cancel_time = rand_time_point(),
-    .order_local_id = rand_uint32(),
-    .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
-  };
-}
-inline TradeUpdate CreateRandomTradeUpdate() {
-  return TradeUpdate {
-    .trade_id = rand_uint32(),
-    .order_id = rand_uint32(),
-    .order_template = NAME[rand_uint32() % NAME_LENGTH],
-    .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .symbol = NAME[rand_uint32() % NAME_LENGTH],
-    .trade_direction = rand_trade_direction(),
-    .quantity = rand_double(),
-    .price = rand_double(),
-    .trade_time = rand_time_point(),
-    .order_local_id = rand_uint32(),
-    .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
-    .trade_external_id = NAME[rand_uint32() % NAME_LENGTH],
-  };
-}
-inline PositionUpdate CreateRandomPositionUpdate() {
-  return PositionUpdate {
-    .exchange = NAME[rand_uint32() % NAME_LENGTH],
-    .symbol = NAME[rand_uint32() % NAME_LENGTH],
-    .trade_direction = rand_trade_direction(),
-    .position = rand_double(),
-    .position_yesterday = rand_double(),
-    .frozen_position = rand_double(),
-    .frozen_closing = rand_double(),
-    .frozen_closing_yesterday = rand_double(),
   };
 }
 }  // namespace
@@ -348,7 +356,7 @@ void compare(const TradeSummary& lhs, const TradeSummary& rhs) {
   EXPECT_EQ(lhs.price, rhs.price);
   EXPECT_EQ(lhs.volume, rhs.volume);
   EXPECT_EQ(lhs.turnover, rhs.turnover);
-  EXPECT_EQ(lhs.direction, rhs.direction);
+  EXPECT_EQ(lhs.side, rhs.side);
   compare(lhs.exchange_time, rhs.exchange_time);
   EXPECT_EQ(lhs.channel, rhs.channel);
 }
@@ -364,54 +372,24 @@ void compare(const MarketStatus& lhs, const MarketStatus& rhs) {
   EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.trading_status, rhs.trading_status);
 }
-void compare(const CreateOrder& lhs, const CreateOrder& rhs) {
-  EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_STREQ(lhs.order_template, rhs.order_template);
+void compare(const PositionUpdate& lhs, const PositionUpdate& rhs) {
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.symbol, rhs.symbol);
-  EXPECT_EQ(lhs.direction, rhs.direction);
-  EXPECT_EQ(lhs.quantity, rhs.quantity);
-  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
-  EXPECT_EQ(lhs.stop_price, rhs.stop_price);
-}
-void compare(const CreateOrderAck& lhs, const CreateOrderAck& rhs) {
-  EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_EQ(lhs.failure, rhs.failure);
-  EXPECT_STREQ(lhs.reason, rhs.reason);
-  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
-  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
-}
-void compare(const ModifyOrder& lhs, const ModifyOrder& rhs) {
-  EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_EQ(lhs.quantity_change, rhs.quantity_change);
-  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
-}
-void compare(const ModifyOrderAck& lhs, const ModifyOrderAck& rhs) {
-  EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_EQ(lhs.failure, rhs.failure);
-  EXPECT_STREQ(lhs.reason, rhs.reason);
-  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
-  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
-}
-void compare(const CancelOrder& lhs, const CancelOrder& rhs) {
-  EXPECT_EQ(lhs.order_id, rhs.order_id);
-}
-void compare(const CancelOrderAck& lhs, const CancelOrderAck& rhs) {
-  EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_EQ(lhs.failure, rhs.failure);
-  EXPECT_STREQ(lhs.reason, rhs.reason);
-  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
-  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
+  EXPECT_EQ(lhs.side, rhs.side);
+  EXPECT_EQ(lhs.position, rhs.position);
+  EXPECT_EQ(lhs.last_order_id, rhs.last_order_id);
 }
 void compare(const OrderUpdate& lhs, const OrderUpdate& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_STREQ(lhs.order_template, rhs.order_template);
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.order_status, rhs.order_status);
-  EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
+  EXPECT_EQ(lhs.side, rhs.side);
   EXPECT_EQ(lhs.remaining_quantity, rhs.remaining_quantity);
   EXPECT_EQ(lhs.traded_quantity, rhs.traded_quantity);
+  EXPECT_STREQ(lhs.order_template, rhs.order_template);
   compare(lhs.insert_time, rhs.insert_time);
   compare(lhs.cancel_time, rhs.cancel_time);
   EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
@@ -420,26 +398,58 @@ void compare(const OrderUpdate& lhs, const OrderUpdate& rhs) {
 void compare(const TradeUpdate& lhs, const TradeUpdate& rhs) {
   EXPECT_EQ(lhs.trade_id, rhs.trade_id);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_STREQ(lhs.order_template, rhs.order_template);
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.symbol, rhs.symbol);
-  EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
+  EXPECT_EQ(lhs.side, rhs.side);
   EXPECT_EQ(lhs.quantity, rhs.quantity);
   EXPECT_EQ(lhs.price, rhs.price);
+  EXPECT_STREQ(lhs.order_template, rhs.order_template);
   compare(lhs.trade_time, rhs.trade_time);
   EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
   EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
   EXPECT_STREQ(lhs.trade_external_id, rhs.trade_external_id);
 }
-void compare(const PositionUpdate& lhs, const PositionUpdate& rhs) {
+void compare(const CreateOrder& lhs, const CreateOrder& rhs) {
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.symbol, rhs.symbol);
-  EXPECT_EQ(lhs.trade_direction, rhs.trade_direction);
-  EXPECT_EQ(lhs.position, rhs.position);
-  EXPECT_EQ(lhs.position_yesterday, rhs.position_yesterday);
-  EXPECT_EQ(lhs.frozen_position, rhs.frozen_position);
-  EXPECT_EQ(lhs.frozen_closing, rhs.frozen_closing);
-  EXPECT_EQ(lhs.frozen_closing_yesterday, rhs.frozen_closing_yesterday);
+  EXPECT_EQ(lhs.side, rhs.side);
+  EXPECT_EQ(lhs.quantity, rhs.quantity);
+  EXPECT_EQ(lhs.order_type, rhs.order_type);
+  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
+  EXPECT_EQ(lhs.time_in_force, rhs.time_in_force);
+  EXPECT_STREQ(lhs.order_template, rhs.order_template);
+}
+void compare(const ModifyOrder& lhs, const ModifyOrder& rhs) {
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.quantity_change, rhs.quantity_change);
+  EXPECT_EQ(lhs.limit_price, rhs.limit_price);
+}
+void compare(const CancelOrder& lhs, const CancelOrder& rhs) {
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+}
+void compare(const CreateOrderAck& lhs, const CreateOrderAck& rhs) {
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.failure, rhs.failure);
+  EXPECT_STREQ(lhs.reason, rhs.reason);
+  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
+  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
+}
+void compare(const ModifyOrderAck& lhs, const ModifyOrderAck& rhs) {
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.failure, rhs.failure);
+  EXPECT_STREQ(lhs.reason, rhs.reason);
+  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
+  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
+}
+void compare(const CancelOrderAck& lhs, const CancelOrderAck& rhs) {
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
+  EXPECT_EQ(lhs.failure, rhs.failure);
+  EXPECT_STREQ(lhs.reason, rhs.reason);
+  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
+  EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }
 }  // namespace
 

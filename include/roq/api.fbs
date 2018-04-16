@@ -74,7 +74,7 @@ table TradeSummary {
   price:double;
   volume:double;
   turnover:double;
-  direction:TradeDirection;
+  side:Side;
   exchange_time:ulong;
   channel:ushort;
 }
@@ -93,29 +93,68 @@ table MarketStatus {
   trading_status:TradingStatus;
 }
 
-table CreateOrder {
-  order_id:uint;
-  order_template:string;
+table PositionUpdate {
+  account:string;
   exchange:string;
   symbol:string;
-  direction:TradeDirection;
-  quantity:double;
-  limit_price:double;
-  stop_price:double;
+  side:Side;
+  position:double;
+  last_order_id:uint;
 }
 
-table CreateOrderAck {
+table OrderUpdate {
   order_id:uint;
-  failure:bool;
-  reason:string;
+  account:string;
+  exchange:string;
+  symbol:string;
+  order_status:OrderStatus;
+  side:Side;
+  remaining_quantity:double;
+  traded_quantity:double;
+  order_template:string;
+  insert_time:ulong;
+  cancel_time:ulong;
   order_local_id:uint;
   order_external_id:string;
+}
+
+table TradeUpdate {
+  trade_id:uint;
+  order_id:uint;
+  account:string;
+  exchange:string;
+  symbol:string;
+  side:Side;
+  quantity:double;
+  price:double;
+  order_template:string;
+  trade_time:ulong;
+  order_local_id:uint;
+  order_external_id:string;
+  trade_external_id:string;
+}
+
+table CreateOrder {
+  order_id:uint;
+  account:string;
+  exchange:string;
+  symbol:string;
+  side:Side;
+  quantity:double;
+  order_type:OrderType;
+  limit_price:double;
+  time_in_force:TimeInForce;
+  order_template:string;
 }
 
 table ModifyOrder {
   order_id:uint;
   quantity_change:double;
   limit_price:double;
+}
+
+table CancelOrder {
+  order_id:uint;
 }
 
 table ModifyOrderAck {
@@ -126,8 +165,12 @@ table ModifyOrderAck {
   order_external_id:string;
 }
 
-table CancelOrder {
+table CreateOrderAck {
   order_id:uint;
+  failure:bool;
+  reason:string;
+  order_local_id:uint;
+  order_external_id:string;
 }
 
 table CancelOrderAck {
@@ -138,47 +181,6 @@ table CancelOrderAck {
   order_external_id:string;
 }
 
-table OrderUpdate {
-  order_id:uint;
-  order_template:string;
-  exchange:string;
-  symbol:string;
-  order_status:OrderStatus;
-  trade_direction:TradeDirection;
-  remaining_quantity:double;
-  traded_quantity:double;
-  insert_time:ulong;
-  cancel_time:ulong;
-  order_local_id:uint;
-  order_external_id:string;
-}
-
-table TradeUpdate {
-  trade_id:uint;
-  order_id:uint;
-  order_template:string;
-  exchange:string;
-  symbol:string;
-  trade_direction:TradeDirection;
-  quantity:double;
-  price:double;
-  trade_time:ulong;
-  order_local_id:uint;
-  order_external_id:string;
-  trade_external_id:string;
-}
-
-table PositionUpdate {
-  exchange:string;
-  symbol:string;
-  trade_direction:TradeDirection;
-  position:double;
-  position_yesterday:double;
-  frozen_position:double;
-  frozen_closing:double;
-  frozen_closing_yesterday:double;
-}
-
 union EventData {
   Handshake,
   HandshakeAck,
@@ -187,19 +189,19 @@ union EventData {
   DownloadBegin,
   DownloadEnd,
   GatewayStatus,
-  ReferenceData,
-  MarketStatus,
   MarketByPrice,
   TradeSummary,
-  CreateOrder,
-  CreateOrderAck,
-  ModifyOrder,
-  ModifyOrderAck,
-  CancelOrder,
-  CancelOrderAck,
+  ReferenceData,
+  MarketStatus,
+  PositionUpdate,
   OrderUpdate,
   TradeUpdate,
-  PositionUpdate,
+  CreateOrder,
+  ModifyOrder,
+  CancelOrder,
+  CreateOrderAck,
+  ModifyOrderAck,
+  CancelOrderAck,
 }
 
 table Event {

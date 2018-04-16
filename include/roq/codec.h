@@ -208,7 +208,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const TradeSummary& value) {
     value.price,
     value.volume,
     value.turnover,
-    value.direction,
+    value.side,
     time_point_to_uint64(value.exchange_time),
     value.channel);
 }
@@ -233,18 +233,86 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const MarketStatus& value) {
     value.trading_status);
 }
 
+inline flatbuffers::Offset<schema::PositionUpdate>
+convert(flatbuffers::FlatBufferBuilder& fbb, const PositionUpdate& value) {
+  return schema::CreatePositionUpdate(
+    fbb,
+    fbb.CreateString(value.account),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.symbol),
+    value.side,
+    value.position,
+    value.last_order_id);
+}
+
+inline flatbuffers::Offset<schema::OrderUpdate>
+convert(flatbuffers::FlatBufferBuilder& fbb, const OrderUpdate& value) {
+  return schema::CreateOrderUpdate(
+    fbb,
+    value.order_id,
+    fbb.CreateString(value.account),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.symbol),
+    value.order_status,
+    value.side,
+    value.remaining_quantity,
+    value.traded_quantity,
+    fbb.CreateString(value.order_template),
+    time_point_to_uint64(value.insert_time),
+    time_point_to_uint64(value.cancel_time),
+    value.order_local_id,
+    fbb.CreateString(value.order_external_id));
+}
+
+inline flatbuffers::Offset<schema::TradeUpdate>
+convert(flatbuffers::FlatBufferBuilder& fbb, const TradeUpdate& value) {
+  return schema::CreateTradeUpdate(
+    fbb,
+    value.trade_id,
+    value.order_id,
+    fbb.CreateString(value.account),
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.symbol),
+    value.side,
+    value.quantity,
+    value.price,
+    fbb.CreateString(value.order_template),
+    time_point_to_uint64(value.trade_time),
+    value.order_local_id,
+    fbb.CreateString(value.order_external_id),
+    fbb.CreateString(value.trade_external_id));
+}
+
 inline flatbuffers::Offset<schema::CreateOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrder& value) {
   return schema::CreateCreateOrder(
     fbb,
     value.order_id,
-    fbb.CreateString(value.order_template),
+    fbb.CreateString(value.account),
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.symbol),
-    value.direction,
+    value.side,
     value.quantity,
+    value.order_type,
     value.limit_price,
-    value.stop_price);
+    value.time_in_force,
+    fbb.CreateString(value.order_template));
+}
+
+inline flatbuffers::Offset<schema::ModifyOrder>
+convert(flatbuffers::FlatBufferBuilder& fbb, const ModifyOrder& value) {
+  return schema::CreateModifyOrder(
+    fbb,
+    value.order_id,
+    value.quantity_change,
+    value.limit_price);
+}
+
+inline flatbuffers::Offset<schema::CancelOrder>
+convert(flatbuffers::FlatBufferBuilder& fbb, const CancelOrder& value) {
+  return schema::CreateCancelOrder(
+    fbb,
+    value.order_id);
 }
 
 inline flatbuffers::Offset<schema::CreateOrderAck>
@@ -258,15 +326,6 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrderAck& value) {
     fbb.CreateString(value.order_external_id));
 }
 
-inline flatbuffers::Offset<schema::ModifyOrder>
-convert(flatbuffers::FlatBufferBuilder& fbb, const ModifyOrder& value) {
-  return schema::CreateModifyOrder(
-    fbb,
-    value.order_id,
-    value.quantity_change,
-    value.limit_price);
-}
-
 inline flatbuffers::Offset<schema::ModifyOrderAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const ModifyOrderAck& value) {
   return schema::CreateModifyOrderAck(
@@ -278,13 +337,6 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const ModifyOrderAck& value) {
     fbb.CreateString(value.order_external_id));
 }
 
-inline flatbuffers::Offset<schema::CancelOrder>
-convert(flatbuffers::FlatBufferBuilder& fbb, const CancelOrder& value) {
-  return schema::CreateCancelOrder(
-    fbb,
-    value.order_id);
-}
-
 inline flatbuffers::Offset<schema::CancelOrderAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const CancelOrderAck& value) {
   return schema::CreateCancelOrderAck(
@@ -294,56 +346,6 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const CancelOrderAck& value) {
     fbb.CreateString(value.reason),
     value.order_local_id,
     fbb.CreateString(value.order_external_id));
-}
-
-inline flatbuffers::Offset<schema::OrderUpdate>
-convert(flatbuffers::FlatBufferBuilder& fbb, const OrderUpdate& value) {
-  return schema::CreateOrderUpdate(
-    fbb,
-    value.order_id,
-    fbb.CreateString(value.order_template),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.symbol),
-    value.order_status,
-    value.trade_direction,
-    value.remaining_quantity,
-    value.traded_quantity,
-    time_point_to_uint64(value.insert_time),
-    time_point_to_uint64(value.cancel_time),
-    value.order_local_id,
-    fbb.CreateString(value.order_external_id));
-}
-
-inline flatbuffers::Offset<schema::TradeUpdate>
-convert(flatbuffers::FlatBufferBuilder& fbb, const TradeUpdate& value) {
-  return schema::CreateTradeUpdate(
-    fbb,
-    value.trade_id,
-    value.order_id,
-    fbb.CreateString(value.order_template),
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.symbol),
-    value.trade_direction,
-    value.quantity,
-    value.price,
-    time_point_to_uint64(value.trade_time),
-    value.order_local_id,
-    fbb.CreateString(value.order_external_id),
-    fbb.CreateString(value.trade_external_id));
-}
-
-inline flatbuffers::Offset<schema::PositionUpdate>
-convert(flatbuffers::FlatBufferBuilder& fbb, const PositionUpdate& value) {
-  return schema::CreatePositionUpdate(
-    fbb,
-    fbb.CreateString(value.exchange),
-    fbb.CreateString(value.symbol),
-    value.trade_direction,
-    value.position,
-    value.position_yesterday,
-    value.frozen_position,
-    value.frozen_closing,
-    value.frozen_closing_yesterday);
 }
 
 // encode (event)
@@ -426,28 +428,6 @@ inline flatbuffers::Offset<schema::Event> convert2(
 inline flatbuffers::Offset<schema::Event> convert2(
     flatbuffers::FlatBufferBuilder& fbb,
     const SourceInfo& source_info,
-    const ReferenceData& reference_data) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::ReferenceData,
-      convert(fbb, reference_data).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const SourceInfo& source_info,
-    const MarketStatus& market_status) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::MarketStatus,
-      convert(fbb, market_status).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const SourceInfo& source_info,
     const MarketByPrice& market_by_price) {
   return schema::CreateEvent(
       fbb,
@@ -470,67 +450,34 @@ inline flatbuffers::Offset<schema::Event> convert2(
 inline flatbuffers::Offset<schema::Event> convert2(
     flatbuffers::FlatBufferBuilder& fbb,
     const SourceInfo& source_info,
-    const CreateOrder& create_order) {
+    const ReferenceData& reference_data) {
   return schema::CreateEvent(
       fbb,
       convert(fbb, source_info),
-      schema::EventData::CreateOrder,
-      convert(fbb, create_order).Union());
+      schema::EventData::ReferenceData,
+      convert(fbb, reference_data).Union());
 }
 
 inline flatbuffers::Offset<schema::Event> convert2(
     flatbuffers::FlatBufferBuilder& fbb,
     const SourceInfo& source_info,
-    const CreateOrderAck& create_order_ack) {
+    const MarketStatus& market_status) {
   return schema::CreateEvent(
       fbb,
       convert(fbb, source_info),
-      schema::EventData::CreateOrderAck,
-      convert(fbb, create_order_ack).Union());
+      schema::EventData::MarketStatus,
+      convert(fbb, market_status).Union());
 }
 
 inline flatbuffers::Offset<schema::Event> convert2(
     flatbuffers::FlatBufferBuilder& fbb,
     const SourceInfo& source_info,
-    const ModifyOrder& modify_order) {
+    const PositionUpdate& position_update) {
   return schema::CreateEvent(
       fbb,
       convert(fbb, source_info),
-      schema::EventData::ModifyOrder,
-      convert(fbb, modify_order).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const SourceInfo& source_info,
-    const ModifyOrderAck& modify_order_ack) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::ModifyOrderAck,
-      convert(fbb, modify_order_ack).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const SourceInfo& source_info,
-    const CancelOrder& cancel_order) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::CancelOrder,
-      convert(fbb, cancel_order).Union());
-}
-
-inline flatbuffers::Offset<schema::Event> convert2(
-    flatbuffers::FlatBufferBuilder& fbb,
-    const SourceInfo& source_info,
-    const CancelOrderAck& cancel_order_ack) {
-  return schema::CreateEvent(
-      fbb,
-      convert(fbb, source_info),
-      schema::EventData::CancelOrderAck,
-      convert(fbb, cancel_order_ack).Union());
+      schema::EventData::PositionUpdate,
+      convert(fbb, position_update).Union());
 }
 
 inline flatbuffers::Offset<schema::Event> convert2(
@@ -558,12 +505,67 @@ inline flatbuffers::Offset<schema::Event> convert2(
 inline flatbuffers::Offset<schema::Event> convert2(
     flatbuffers::FlatBufferBuilder& fbb,
     const SourceInfo& source_info,
-    const PositionUpdate& position_update) {
+    const CreateOrder& create_order) {
   return schema::CreateEvent(
       fbb,
       convert(fbb, source_info),
-      schema::EventData::PositionUpdate,
-      convert(fbb, position_update).Union());
+      schema::EventData::CreateOrder,
+      convert(fbb, create_order).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const ModifyOrder& modify_order) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::ModifyOrder,
+      convert(fbb, modify_order).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const CancelOrder& cancel_order) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::CancelOrder,
+      convert(fbb, cancel_order).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const CreateOrderAck& create_order_ack) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::CreateOrderAck,
+      convert(fbb, create_order_ack).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const ModifyOrderAck& modify_order_ack) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::ModifyOrderAck,
+      convert(fbb, modify_order_ack).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const CancelOrderAck& cancel_order_ack) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::CancelOrderAck,
+      convert(fbb, cancel_order_ack).Union());
 }
 
 // encoder
@@ -873,7 +875,7 @@ inline TradeSummary convert(const schema::TradeSummary *value) {
     .price = value->price(),
     .volume = value->volume(),
     .turnover = value->turnover(),
-    .direction = value->direction(),
+    .side = value->side(),
     .exchange_time = uint64_to_time_point(value->exchange_time()),
     .channel = value->channel(),
   };
@@ -897,16 +899,78 @@ inline MarketStatus convert(const schema::MarketStatus *value) {
   };
 }
 
+inline PositionUpdate convert(const schema::PositionUpdate *value) {
+  return PositionUpdate {
+    .account = value->account()->c_str(),
+    .exchange = value->exchange()->c_str(),
+    .symbol = value->symbol()->c_str(),
+    .side = value->side(),
+    .position = value->position(),
+    .last_order_id = value->last_order_id(),
+  };
+}
+inline OrderUpdate convert(const schema::OrderUpdate *value) {
+  return OrderUpdate {
+    .order_id = value->order_id(),
+    .account = value->account()->c_str(),
+    .exchange = value->exchange()->c_str(),
+    .symbol = value->symbol()->c_str(),
+    .order_status = value->order_status(),
+    .side = value->side(),
+    .remaining_quantity = value->remaining_quantity(),
+    .traded_quantity = value->traded_quantity(),
+    .order_template = value->order_template()->c_str(),
+    .insert_time = uint64_to_time_point(value->insert_time()),
+    .cancel_time = uint64_to_time_point(value->cancel_time()),
+    .order_local_id = value->order_local_id(),
+    .order_external_id = value->order_external_id()->c_str(),
+  };
+}
+
+inline TradeUpdate convert(const schema::TradeUpdate *value) {
+  return TradeUpdate {
+    .trade_id = value->trade_id(),
+    .order_id = value->order_id(),
+    .account = value->account()->c_str(),
+    .exchange = value->exchange()->c_str(),
+    .symbol = value->symbol()->c_str(),
+    .side = value->side(),
+    .quantity = value->quantity(),
+    .price = value->price(),
+    .order_template = value->order_template()->c_str(),
+    .trade_time = uint64_to_time_point(value->trade_time()),
+    .order_local_id = value->order_local_id(),
+    .order_external_id = value->order_external_id()->c_str(),
+    .trade_external_id = value->trade_external_id()->c_str(),
+  };
+}
+
 inline CreateOrder convert(const schema::CreateOrder *value) {
   return CreateOrder {
     .order_id = value->order_id(),
-    .order_template = value->order_template()->c_str(),
+    .account = value->account()->c_str(),
     .exchange = value->exchange()->c_str(),
     .symbol = value->symbol()->c_str(),
-    .direction = value->direction(),
+    .side = value->side(),
     .quantity = value->quantity(),
+    .order_type = value->order_type(),
     .limit_price = value->limit_price(),
-    .stop_price = value->stop_price(),
+    .time_in_force = value->time_in_force(),
+    .order_template = value->order_template()->c_str(),
+  };
+}
+
+inline ModifyOrder convert(const schema::ModifyOrder *value) {
+  return ModifyOrder {
+    .order_id = value->order_id(),
+    .quantity_change = value->quantity_change(),
+    .limit_price = value->limit_price(),
+  };
+}
+
+inline CancelOrder convert(const schema::CancelOrder *value) {
+  return CancelOrder {
+    .order_id = value->order_id(),
   };
 }
 
@@ -920,14 +984,6 @@ inline CreateOrderAck convert(const schema::CreateOrderAck *value) {
   };
 }
 
-inline ModifyOrder convert(const schema::ModifyOrder *value) {
-  return ModifyOrder {
-    .order_id = value->order_id(),
-    .quantity_change = value->quantity_change(),
-    .limit_price = value->limit_price(),
-  };
-}
-
 inline ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
   return ModifyOrderAck {
     .order_id = value->order_id(),
@@ -938,12 +994,6 @@ inline ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
   };
 }
 
-inline CancelOrder convert(const schema::CancelOrder *value) {
-  return CancelOrder {
-    .order_id = value->order_id(),
-  };
-}
-
 inline CancelOrderAck convert(const schema::CancelOrderAck *value) {
   return CancelOrderAck {
     .order_id = value->order_id(),
@@ -951,53 +1001,6 @@ inline CancelOrderAck convert(const schema::CancelOrderAck *value) {
     .reason = value->reason()->c_str(),
     .order_local_id = value->order_local_id(),
     .order_external_id = value->order_external_id()->c_str(),
-  };
-}
-
-inline OrderUpdate convert(const schema::OrderUpdate *value) {
-  return OrderUpdate {
-    .order_id = value->order_id(),
-    .order_template = value->order_template()->c_str(),
-    .exchange = value->exchange()->c_str(),
-    .symbol = value->symbol()->c_str(),
-    .order_status = value->order_status(),
-    .trade_direction = value->trade_direction(),
-    .remaining_quantity = value->remaining_quantity(),
-    .traded_quantity = value->traded_quantity(),
-    .insert_time = uint64_to_time_point(value->insert_time()),
-    .cancel_time = uint64_to_time_point(value->cancel_time()),
-    .order_local_id = value->order_local_id(),
-    .order_external_id = value->order_external_id()->c_str(),
-  };
-}
-
-inline TradeUpdate convert(const schema::TradeUpdate *value) {
-  return TradeUpdate {
-    .trade_id = value->trade_id(),
-    .order_id = value->order_id(),
-    .order_template = value->order_template()->c_str(),
-    .exchange = value->exchange()->c_str(),
-    .symbol = value->symbol()->c_str(),
-    .trade_direction = value->trade_direction(),
-    .quantity = value->quantity(),
-    .price = value->price(),
-    .trade_time = uint64_to_time_point(value->trade_time()),
-    .order_local_id = value->order_local_id(),
-    .order_external_id = value->order_external_id()->c_str(),
-    .trade_external_id = value->trade_external_id()->c_str(),
-  };
-}
-
-inline PositionUpdate convert(const schema::PositionUpdate *value) {
-  return PositionUpdate {
-    .exchange = value->exchange()->c_str(),
-    .symbol = value->symbol()->c_str(),
-    .trade_direction = value->trade_direction(),
-    .position = value->position(),
-    .position_yesterday = value->position_yesterday(),
-    .frozen_position = value->frozen_position(),
-    .frozen_closing = value->frozen_closing(),
-    .frozen_closing_yesterday = value->frozen_closing_yesterday(),
   };
 }
 
@@ -1015,19 +1018,19 @@ class EventHandler {
   virtual void on(const DownloadBeginEvent&) = 0;
   virtual void on(const DownloadEndEvent&) = 0;
   virtual void on(const GatewayStatusEvent&) = 0;
-  virtual void on(const ReferenceDataEvent&) = 0;
-  virtual void on(const MarketStatusEvent&) = 0;
   virtual void on(const MarketByPriceEvent&) = 0;
   virtual void on(const TradeSummaryEvent&) = 0;
-  virtual void on(const CreateOrderEvent&) = 0;
-  virtual void on(const CreateOrderAckEvent&) = 0;
-  virtual void on(const ModifyOrderEvent&) = 0;
-  virtual void on(const ModifyOrderAckEvent&) = 0;
-  virtual void on(const CancelOrderEvent&) = 0;
-  virtual void on(const CancelOrderAckEvent&) = 0;
+  virtual void on(const ReferenceDataEvent&) = 0;
+  virtual void on(const MarketStatusEvent&) = 0;
+  virtual void on(const PositionUpdateEvent&) = 0;
   virtual void on(const OrderUpdateEvent&) = 0;
   virtual void on(const TradeUpdateEvent&) = 0;
-  virtual void on(const PositionUpdateEvent&) = 0;
+  virtual void on(const CreateOrderEvent&) = 0;
+  virtual void on(const ModifyOrderEvent&) = 0;
+  virtual void on(const CancelOrderEvent&) = 0;
+  virtual void on(const CreateOrderAckEvent&) = 0;
+  virtual void on(const ModifyOrderAckEvent&) = 0;
+  virtual void on(const CancelOrderAckEvent&) = 0;
 };
 
 // dispatch
@@ -1118,24 +1121,6 @@ class EventDispatcher final {
         _handler.on(event);
         break;
       }
-      case schema::EventData::ReferenceData: {
-        auto reference_data = convert(item.event_data_as_ReferenceData());
-        ReferenceDataEvent event {
-          .message_info = message_info,
-          .reference_data = reference_data,
-        };
-        _handler.on(event);
-        break;
-      }
-      case schema::EventData::MarketStatus: {
-        auto market_status = convert(item.event_data_as_MarketStatus());
-        MarketStatusEvent event {
-          .message_info = message_info,
-          .market_status = market_status,
-        };
-        _handler.on(event);
-        break;
-      }
       case schema::EventData::MarketByPrice: {
         auto market_by_price = convert(item.event_data_as_MarketByPrice());
         MarketByPriceEvent event {
@@ -1154,56 +1139,30 @@ class EventDispatcher final {
         _handler.on(event);
         break;
       }
-      case schema::EventData::CreateOrder: {
-        auto create_order = convert(item.event_data_as_CreateOrder());
-        CreateOrderEvent event {
+      case schema::EventData::ReferenceData: {
+        auto reference_data = convert(item.event_data_as_ReferenceData());
+        ReferenceDataEvent event {
           .message_info = message_info,
-          .create_order = create_order,
+          .reference_data = reference_data,
         };
         _handler.on(event);
         break;
       }
-      case schema::EventData::CreateOrderAck: {
-        auto create_order_ack = convert(item.event_data_as_CreateOrderAck());
-        CreateOrderAckEvent event {
+      case schema::EventData::MarketStatus: {
+        auto market_status = convert(item.event_data_as_MarketStatus());
+        MarketStatusEvent event {
           .message_info = message_info,
-          .create_order_ack = create_order_ack,
+          .market_status = market_status,
         };
         _handler.on(event);
         break;
       }
-      case schema::EventData::ModifyOrder: {
-        auto modify_order = convert(item.event_data_as_ModifyOrder());
-        ModifyOrderEvent event {
+      case schema::EventData::PositionUpdate: {
+        auto position_update = convert(item.event_data_as_PositionUpdate());
+        PositionUpdateEvent event {
           .message_info = message_info,
-          .modify_order = modify_order,
+          .position_update = position_update,
         };
-        _handler.on(event);
-        break;
-      }
-      case schema::EventData::ModifyOrderAck: {
-        auto modify_order_ack = convert(item.event_data_as_ModifyOrderAck());
-        ModifyOrderAckEvent event {
-          .message_info = message_info,
-          .modify_order_ack = modify_order_ack,
-        };
-        _handler.on(event);
-        break;
-      }
-      case schema::EventData::CancelOrder: {
-        auto cancel_order = convert(item.event_data_as_CancelOrder());
-        CancelOrderEvent event {
-          .message_info = message_info,
-          .cancel_order = cancel_order,
-        };
-        _handler.on(event);
-        break;
-      }
-      case schema::EventData::CancelOrderAck: {
-        auto cancel_order_ack = convert(item.event_data_as_CancelOrderAck());
-        CancelOrderAckEvent event {
-          .message_info = message_info,
-          .cancel_order_ack = cancel_order_ack};
         _handler.on(event);
         break;
       }
@@ -1225,12 +1184,56 @@ class EventDispatcher final {
         _handler.on(event);
         break;
       }
-      case schema::EventData::PositionUpdate: {
-        auto position_update = convert(item.event_data_as_PositionUpdate());
-        PositionUpdateEvent event {
+      case schema::EventData::CreateOrder: {
+        auto create_order = convert(item.event_data_as_CreateOrder());
+        CreateOrderEvent event {
           .message_info = message_info,
-          .position_update = position_update,
+          .create_order = create_order,
         };
+        _handler.on(event);
+        break;
+      }
+      case schema::EventData::ModifyOrder: {
+        auto modify_order = convert(item.event_data_as_ModifyOrder());
+        ModifyOrderEvent event {
+          .message_info = message_info,
+          .modify_order = modify_order,
+        };
+        _handler.on(event);
+        break;
+      }
+      case schema::EventData::CancelOrder: {
+        auto cancel_order = convert(item.event_data_as_CancelOrder());
+        CancelOrderEvent event {
+          .message_info = message_info,
+          .cancel_order = cancel_order,
+        };
+        _handler.on(event);
+        break;
+      }
+      case schema::EventData::CreateOrderAck: {
+        auto create_order_ack = convert(item.event_data_as_CreateOrderAck());
+        CreateOrderAckEvent event {
+          .message_info = message_info,
+          .create_order_ack = create_order_ack,
+        };
+        _handler.on(event);
+        break;
+      }
+      case schema::EventData::ModifyOrderAck: {
+        auto modify_order_ack = convert(item.event_data_as_ModifyOrderAck());
+        ModifyOrderAckEvent event {
+          .message_info = message_info,
+          .modify_order_ack = modify_order_ack,
+        };
+        _handler.on(event);
+        break;
+      }
+      case schema::EventData::CancelOrderAck: {
+        auto cancel_order_ack = convert(item.event_data_as_CancelOrderAck());
+        CancelOrderAckEvent event {
+          .message_info = message_info,
+          .cancel_order_ack = cancel_order_ack};
         _handler.on(event);
         break;
       }

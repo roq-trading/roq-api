@@ -31,6 +31,7 @@ std::ostream& operator<<(std::ostream& stream, const GatewayState value);
 std::ostream& operator<<(std::ostream& stream, const Side value);
 std::ostream& operator<<(std::ostream& stream, const OrderType value);
 std::ostream& operator<<(std::ostream& stream, const TimeInForce value);
+std::ostream& operator<<(std::ostream& stream, const PositionEffect value);
 std::ostream& operator<<(std::ostream& stream, const TradingStatus value);
 std::ostream& operator<<(std::ostream& stream, const OrderStatus value);
 std::ostream& operator<<(std::ostream& stream, const Layer& value);

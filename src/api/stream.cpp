@@ -60,6 +60,10 @@ std::ostream& operator<<(std::ostream& stream, const TimeInForce value) {
   return stream << EnumNameTimeInForce(value);
 }
 
+std::ostream& operator<<(std::ostream& stream, const PositionEffect value) {
+  return stream << EnumNamePositionEffect(value);
+}
+
 std::ostream& operator<<(std::ostream& stream, const TradingStatus value) {
   return stream << EnumNameTradingStatus(value);
 }
@@ -212,6 +216,7 @@ std::ostream& operator<<(std::ostream& stream, const OrderUpdate& value) {
     "side=" << value.side << ", "
     "remaining_quantity=" << Number(value.remaining_quantity) << ", "
     "traded_quantity=" << Number(value.traded_quantity) << ", "
+    "position_effect=" << value.position_effect << ", "
     "order_template=\"" << value.order_template << "\", "
     "insert_time=" << value.insert_time << ", "
     "cancel_time=" << value.cancel_time << ", "
@@ -230,6 +235,7 @@ std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value) {
     "side=" << value.side << ", "
     "quantity=" << Number(value.quantity) << ", "
     "price=" << Number(value.price) << ", "
+    "position_effect=" << value.position_effect << ", "
     "order_template=\"" << value.order_template << "\", "
     "trade_time=" << value.trade_time << ", "
     "order_local_id=" << value.order_local_id << ", "
@@ -249,6 +255,7 @@ std::ostream& operator<<(std::ostream& stream, const CreateOrder& value) {
     "order_type=" << value.order_type << ", "
     "limit_price=" << Number(value.limit_price) << ", "
     "time_in_force=" << value.time_in_force << ", "
+    "position_effect=" << value.position_effect << ", "
     "order_template=\"" << value.order_template << "\""
     "}";
 }

@@ -112,6 +112,7 @@ table OrderUpdate {
   side:Side;
   remaining_quantity:double;
   traded_quantity:double;
+  position_effect:PositionEffect;
   order_template:string;
   insert_time:ulong;
   cancel_time:ulong;
@@ -128,6 +129,7 @@ table TradeUpdate {
   side:Side;
   quantity:double;
   price:double;
+  position_effect:PositionEffect;
   order_template:string;
   trade_time:ulong;
   order_local_id:uint;
@@ -145,6 +147,7 @@ table CreateOrder {
   order_type:OrderType;
   limit_price:double;
   time_in_force:TimeInForce;
+  position_effect:PositionEffect;
   order_template:string;
 }
 

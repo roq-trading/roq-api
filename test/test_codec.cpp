@@ -65,6 +65,9 @@ static OrderType rand_order_type() {
 static TimeInForce rand_time_in_force() {
   return static_cast<TimeInForce>(rand_uint32() % static_cast<uint32_t>(TimeInForce::MAX));
 }
+static PositionEffect rand_position_effect() {
+  return static_cast<PositionEffect>(rand_uint32() % static_cast<uint32_t>(PositionEffect::MAX));
+}
 static TradingStatus rand_trading_status() {
   return static_cast<TradingStatus>(rand_uint32() % static_cast<uint32_t>(TradingStatus::MAX));
 }
@@ -207,6 +210,7 @@ inline OrderUpdate CreateRandomOrderUpdate() {
     .side = rand_side(),
     .remaining_quantity = rand_double(),
     .traded_quantity = rand_double(),
+    .position_effect = rand_position_effect(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
     .insert_time = rand_time_point(),
     .cancel_time = rand_time_point(),
@@ -224,6 +228,7 @@ inline TradeUpdate CreateRandomTradeUpdate() {
     .side = rand_side(),
     .quantity = rand_double(),
     .price = rand_double(),
+    .position_effect = rand_position_effect(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
     .trade_time = rand_time_point(),
     .order_local_id = rand_uint32(),
@@ -242,6 +247,7 @@ inline CreateOrder CreateRandomCreateOrder() {
     .order_type = rand_order_type(),
     .limit_price = rand_double(),
     .time_in_force = rand_time_in_force(),
+    .position_effect = rand_position_effect(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
@@ -391,6 +397,7 @@ void compare(const OrderUpdate& lhs, const OrderUpdate& rhs) {
   EXPECT_EQ(lhs.side, rhs.side);
   EXPECT_EQ(lhs.remaining_quantity, rhs.remaining_quantity);
   EXPECT_EQ(lhs.traded_quantity, rhs.traded_quantity);
+  EXPECT_EQ(lhs.position_effect, rhs.position_effect);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
   compare(lhs.insert_time, rhs.insert_time);
   compare(lhs.cancel_time, rhs.cancel_time);
@@ -406,6 +413,7 @@ void compare(const TradeUpdate& lhs, const TradeUpdate& rhs) {
   EXPECT_EQ(lhs.side, rhs.side);
   EXPECT_EQ(lhs.quantity, rhs.quantity);
   EXPECT_EQ(lhs.price, rhs.price);
+  EXPECT_EQ(lhs.position_effect, rhs.position_effect);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
   compare(lhs.trade_time, rhs.trade_time);
   EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
@@ -422,6 +430,7 @@ void compare(const CreateOrder& lhs, const CreateOrder& rhs) {
   EXPECT_EQ(lhs.order_type, rhs.order_type);
   EXPECT_EQ(lhs.limit_price, rhs.limit_price);
   EXPECT_EQ(lhs.time_in_force, rhs.time_in_force);
+  EXPECT_EQ(lhs.position_effect, rhs.position_effect);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
 }
 void compare(const ModifyOrder& lhs, const ModifyOrder& rhs) {

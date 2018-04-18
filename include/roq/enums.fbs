@@ -59,6 +59,16 @@ enum TimeInForce:byte {
   GTC = 4
 }
 
+/// Position effect.
+enum PositionEffect:byte {
+  ///< Undefined
+  Undefined = 0,
+  ///< Open
+  Open = 1,
+  ///< Close
+  Close = 2
+}
+
 /// Order status.
 enum OrderStatus:byte {
   Undefined = 0,

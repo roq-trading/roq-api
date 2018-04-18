@@ -202,6 +202,7 @@ class Controller final {
         .side = create_order.side,
         .remaining_quantity = 0.0,
         .traded_quantity = create_order.quantity,
+        .position_effect = create_order.position_effect,
         .order_template = create_order.order_template,
         .insert_time = std::chrono::time_point_cast<duration_t>(
             std::chrono::system_clock::time_point()),
@@ -227,6 +228,7 @@ class Controller final {
         .side = create_order.side,
         .quantity = 0.0,
         .price = create_order.limit_price,
+        .position_effect = create_order.position_effect,
         .order_template = create_order.order_template,
         .trade_time = std::chrono::time_point_cast<duration_t>(
             std::chrono::system_clock::time_point()),

@@ -258,6 +258,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const OrderUpdate& value) {
     value.side,
     value.remaining_quantity,
     value.traded_quantity,
+    value.position_effect,
     fbb.CreateString(value.order_template),
     time_point_to_uint64(value.insert_time),
     time_point_to_uint64(value.cancel_time),
@@ -277,6 +278,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const TradeUpdate& value) {
     value.side,
     value.quantity,
     value.price,
+    value.position_effect,
     fbb.CreateString(value.order_template),
     time_point_to_uint64(value.trade_time),
     value.order_local_id,
@@ -297,6 +299,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrder& value) {
     value.order_type,
     value.limit_price,
     value.time_in_force,
+    value.position_effect,
     fbb.CreateString(value.order_template));
 }
 
@@ -921,6 +924,7 @@ inline OrderUpdate convert(const schema::OrderUpdate *value) {
     .side = value->side(),
     .remaining_quantity = value->remaining_quantity(),
     .traded_quantity = value->traded_quantity(),
+    .position_effect = value->position_effect(),
     .order_template = value->order_template()->c_str(),
     .insert_time = uint64_to_time_point(value->insert_time()),
     .cancel_time = uint64_to_time_point(value->cancel_time()),
@@ -939,6 +943,7 @@ inline TradeUpdate convert(const schema::TradeUpdate *value) {
     .side = value->side(),
     .quantity = value->quantity(),
     .price = value->price(),
+    .position_effect = value->position_effect(),
     .order_template = value->order_template()->c_str(),
     .trade_time = uint64_to_time_point(value->trade_time()),
     .order_local_id = value->order_local_id(),
@@ -958,6 +963,7 @@ inline CreateOrder convert(const schema::CreateOrder *value) {
     .order_type = value->order_type(),
     .limit_price = value->limit_price(),
     .time_in_force = value->time_in_force(),
+    .position_effect = value->position_effect(),
     .order_template = value->order_template()->c_str(),
   };
 }

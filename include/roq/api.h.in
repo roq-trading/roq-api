@@ -243,6 +243,7 @@ struct OrderUpdate {
   Side side;                       ///< Side
   double remaining_quantity;       ///< Remaining (unfilled) quantity
   double traded_quantity;          ///< Traded (filled) quantity
+  PositionEffect position_effect;  ///< Position effect
   const char *order_template;      ///< Order template
   time_point_t insert_time;        ///< Order insertion time
   time_point_t cancel_time;        ///< Order cancellation time
@@ -262,6 +263,7 @@ struct TradeUpdate {
   Side side;                       ///< Side
   double quantity;                 ///< Trade quantity
   double price;                    ///< Trade price
+  PositionEffect position_effect;  ///< Position effect
   const char *order_template;      ///< Order template
   time_point_t trade_time;         ///< Trade time
   uint32_t order_local_id;         ///< Gateway order identifier.
@@ -273,16 +275,17 @@ struct TradeUpdate {
  * Create order.
  */
 struct CreateOrder {
-  uint32_t order_id;           ///< User's order identifier.
-  const char *account;         ///< Client account.
-  const char *exchange;        ///< Exchange name.
-  const char *symbol;          ///< Symbol name
-  Side side;                   ///< Side
-  double quantity;             ///< Quantity.
-  OrderType order_type;        ///< Order type.
-  double limit_price;          ///< Limit price.
-  TimeInForce time_in_force;   ///< Time in force.
-  const char *order_template;  ///< Order template name.
+  uint32_t order_id;               ///< User's order identifier.
+  const char *account;             ///< Client account.
+  const char *exchange;            ///< Exchange name.
+  const char *symbol;              ///< Symbol name
+  Side side;                       ///< Side
+  double quantity;                 ///< Quantity.
+  OrderType order_type;            ///< Order type.
+  double limit_price;              ///< Limit price.
+  TimeInForce time_in_force;       ///< Time in force.
+  PositionEffect position_effect;  ///< Position effect.
+  const char *order_template;      ///< Order template name.
 };
 
 /**

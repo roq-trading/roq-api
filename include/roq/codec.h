@@ -242,7 +242,8 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const PositionUpdate& value) {
     fbb.CreateString(value.symbol),
     value.side,
     value.position,
-    value.last_order_id);
+    value.last_order_id,
+    value.yesterday);
 }
 
 inline flatbuffers::Offset<schema::OrderUpdate>
@@ -907,6 +908,7 @@ inline PositionUpdate convert(const schema::PositionUpdate *value) {
     .side = value->side(),
     .position = value->position(),
     .last_order_id = value->last_order_id(),
+    .yesterday = value->yesterday()
   };
 }
 inline OrderUpdate convert(const schema::OrderUpdate *value) {

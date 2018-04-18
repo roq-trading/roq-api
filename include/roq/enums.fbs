@@ -75,5 +75,5 @@ enum OrderStatus:byte {
   ///< Order has been completed
   Completed = 6,
   ///< Order has been cancelled (by user, gateway or exchange)
-  Cancelled = 7
+  Canceled = 7
 }

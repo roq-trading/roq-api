@@ -194,6 +194,7 @@ inline PositionUpdate CreateRandomPositionUpdate() {
     .side = rand_side(),
     .position = rand_double(),
     .last_order_id = rand_uint32(),
+    .yesterday = rand_double(),
   };
 }
 inline OrderUpdate CreateRandomOrderUpdate() {
@@ -379,6 +380,7 @@ void compare(const PositionUpdate& lhs, const PositionUpdate& rhs) {
   EXPECT_EQ(lhs.side, rhs.side);
   EXPECT_EQ(lhs.position, rhs.position);
   EXPECT_EQ(lhs.last_order_id, rhs.last_order_id);
+  EXPECT_EQ(lhs.yesterday, rhs.yesterday);
 }
 void compare(const OrderUpdate& lhs, const OrderUpdate& rhs) {
   EXPECT_EQ(lhs.order_id, rhs.order_id);

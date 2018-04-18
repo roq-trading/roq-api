@@ -226,8 +226,9 @@ struct PositionUpdate {
   const char *exchange;            ///< Exchange name
   const char *symbol;              ///< Symbol name
   Side side;                       ///< Side
-  double position;                 ///< Position.
-  uint32_t last_order_id;          ///< Last order id included.
+  double position;                 ///< Current position.
+  uint32_t last_order_id;          ///< Last order included.
+  double yesterday;
 };
 
 /**
@@ -628,7 +629,7 @@ inline bool is_order_live(roq::OrderStatus status) {
     case OrderStatus::Undefined:
     case OrderStatus::Rejected:
     case OrderStatus::Completed:
-    case OrderStatus::Cancelled:
+    case OrderStatus::Canceled:
       return false;
   }
 }

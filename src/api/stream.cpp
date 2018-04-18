@@ -197,7 +197,8 @@ std::ostream& operator<<(std::ostream& stream, const PositionUpdate& value) {
     "symbol=\"" << value.symbol << "\", "
     "side=" << value.side << ", "
     "position=" << Number(value.position) << ", "
-    "last_order_id=" << value.last_order_id <<
+    "last_order_id=" << value.last_order_id << ", "
+    "yesterday=" << Number(value.yesterday) <<
     "}";
 }
 

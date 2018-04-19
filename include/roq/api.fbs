@@ -99,8 +99,9 @@ table PositionUpdate {
   symbol:string;
   side:Side;
   position:double;
-  last_order_id:uint;
   yesterday:double;
+  last_order_id:uint;
+  last_trade_id:uint;
 }
 
 table OrderUpdate {

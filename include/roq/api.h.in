@@ -227,8 +227,9 @@ struct PositionUpdate {
   const char *symbol;              ///< Symbol name
   Side side;                       ///< Side
   double position;                 ///< Current position.
+  double yesterday;                ///< Position as of yesterday.
   uint32_t last_order_id;          ///< Last order included.
-  double yesterday;
+  uint32_t last_trade_id;          ///< Last trade included.
 };
 
 /**

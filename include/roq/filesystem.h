@@ -6,6 +6,8 @@
 #include <libgen.h>
 #include <unistd.h>
 
+#include <sys/param.h>
+
 #include <string>
 #include <system_error>
 
@@ -28,7 +30,30 @@ inline void remove(const char *path) {
 }
 inline std::string dirname(const char *path) {
   std::string buffer(path);
-  return ::dirname(&buffer.at(0));
+  auto result = ::dirname(&buffer.at(0));
+  return std::string(result);
+}
+inline std::string basename(const char *path) {
+#ifdef __APPLE__
+  auto result = ::basename(path);
+#else
+  std::string buffer(path);
+  auto result = ::basename(&buffer.at(0));
+#endif
+  if (result == nullptr)
+    throw std::system_error(errno, std::system_category());
+  return std::string(result);
+}
+inline std::string getcwd() {
+  char buffer[MAXPATHLEN];
+  auto result = ::getcwd(buffer, sizeof(buffer));
+  if (result == nullptr)
+    throw std::system_error(errno, std::system_category());
+  return std::string(result);
+}
+inline void chdir(const char *path) {
+  if (::chdir(path) != 0)
+    throw std::system_error(errno, std::system_category());
 }
 }  // namespace detail
 
@@ -80,6 +105,32 @@ inline std::string dirname(const char *path) {
 
 inline std::string dirname(const std::string& path) {
   return dirname(path.c_str());
+}
+
+// basename
+
+inline std::string basename(const char *path) {
+  return detail::basename(path);
+}
+
+inline std::string basename(const std::string& path) {
+  return basename(path.c_str());
+}
+
+// getcwd
+
+inline std::string getcwd() {
+  return detail::getcwd();
+}
+
+// chdir
+
+inline void chdir(const char *path) {
+  detail::chdir(path);
+}
+
+inline void chdir(const std::string& path) {
+  chdir(path.c_str());
 }
 
 }  // namespace filesystem

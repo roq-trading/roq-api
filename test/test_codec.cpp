@@ -56,6 +56,9 @@ namespace {
 static GatewayState rand_gateway_state() {
   return static_cast<GatewayState>(rand_uint32() % static_cast<uint32_t>(GatewayState::MAX));
 }
+static AccountState rand_account_state() {
+  return static_cast<AccountState>(rand_uint32() % static_cast<uint32_t>(AccountState::MAX));
+}
 static Side rand_side() {
   return static_cast<Side>(rand_uint32() % static_cast<uint32_t>(Side::MAX));
 }
@@ -133,10 +136,12 @@ inline HeartbeatAck CreateRandomHeartbeatAck() {
 }
 inline DownloadBegin CreateRandomDownloadBegin() {
   return DownloadBegin {
+    .account = NAME[rand_uint32() % NAME_LENGTH],
   };
 }
 inline DownloadEnd CreateRandomDownloadEnd() {
   return DownloadEnd {
+    .account = NAME[rand_uint32() % NAME_LENGTH],
     .max_order_id = rand_uint32(),
   };
 }
@@ -144,6 +149,12 @@ inline GatewayStatus CreateRandomGatewayStatus() {
   return GatewayStatus {
     .name = NAME[rand_uint32() % NAME_LENGTH],
     .status = rand_gateway_state(),
+  };
+}
+inline AccountStatus CreateRandomAccountStatus() {
+  return AccountStatus {
+    .account = NAME[rand_uint32() % NAME_LENGTH],
+    .status = rand_account_state(),
   };
 }
 inline MarketByPrice CreateRandomMarketByPrice() {
@@ -344,6 +355,10 @@ void compare(const DownloadEnd& lhs, const DownloadEnd& rhs) {
 }
 void compare(const GatewayStatus& lhs, const GatewayStatus& rhs) {
   EXPECT_STREQ(lhs.name, rhs.name);
+  EXPECT_EQ(lhs.status, rhs.status);
+}
+void compare(const AccountStatus& lhs, const AccountStatus& rhs) {
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_EQ(lhs.status, rhs.status);
 }
 void compare(const MarketByPrice& lhs, const MarketByPrice& rhs) {
@@ -638,6 +653,34 @@ TEST(flatbuffers, gateway_status_event) {
     // validate
     compare(target_source_info, source_source_info);
     compare(target_gateway_status, source_gateway_status);
+  }
+}
+
+TEST(flatbuffers, account_status_event) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // event (source)
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_account_status = CreateRandomAccountStatus();
+    // serialize using flatbuffers
+    fbb.Finish(codec::convert2(
+          fbb,
+          source_source_info,
+          source_account_status));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = codec::convert(root->source_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::AccountStatus);
+    auto target_account_status = codec::convert(root->event_data_as_AccountStatus());
+    // validate
+    compare(target_source_info, source_source_info);
+    compare(target_account_status, source_account_status);
   }
 }
 

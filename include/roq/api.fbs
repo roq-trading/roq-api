@@ -42,15 +42,22 @@ table HeartbeatAck {
 }
 
 table DownloadBegin {
+  account:string;
 }
 
 table DownloadEnd {
+  account:string;
   max_order_id:uint;
 }
 
 table GatewayStatus {
   name:string;
   status:GatewayState;
+}
+
+table AccountStatus {
+  account:string;
+  status:AccountState;
 }
 
 struct Layer {
@@ -194,6 +201,7 @@ union EventData {
   DownloadBegin,
   DownloadEnd,
   GatewayStatus,
+  AccountStatus,
   MarketByPrice,
   TradeSummary,
   ReferenceData,

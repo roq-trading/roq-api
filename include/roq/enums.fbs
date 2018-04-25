@@ -15,6 +15,15 @@ enum GatewayState:byte {
   LoggedOut = 4
 }
 
+/// Account state.
+enum AccountState:byte {
+  Undefined = 0,
+  LoginSent = 1,
+  Downloading = 2,
+  Ready = 3,
+  LoggedOut = 4
+}
+
 /// Trading status.
 enum TradingStatus:byte {
   ///< Undefined

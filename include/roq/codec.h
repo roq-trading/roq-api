@@ -163,13 +163,15 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const HeartbeatAck& value) {
 inline flatbuffers::Offset<schema::DownloadBegin>
 convert(flatbuffers::FlatBufferBuilder& fbb, const DownloadBegin& value) {
   return schema::CreateDownloadBegin(
-    fbb);
+    fbb,
+    fbb.CreateString(value.account));
 }
 
 inline flatbuffers::Offset<schema::DownloadEnd>
 convert(flatbuffers::FlatBufferBuilder& fbb, const DownloadEnd& value) {
   return schema::CreateDownloadEnd(
     fbb,
+    fbb.CreateString(value.account),
     value.max_order_id);
 }
 
@@ -178,6 +180,14 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const GatewayStatus& value) {
   return schema::CreateGatewayStatus(
     fbb,
     fbb.CreateString(value.name),
+    value.status);
+}
+
+inline flatbuffers::Offset<schema::AccountStatus>
+convert(flatbuffers::FlatBufferBuilder& fbb, const AccountStatus& value) {
+  return schema::CreateAccountStatus(
+    fbb,
+    fbb.CreateString(value.account),
     value.status);
 }
 
@@ -428,6 +438,17 @@ inline flatbuffers::Offset<schema::Event> convert2(
       convert(fbb, source_info),
       schema::EventData::GatewayStatus,
       convert(fbb, gateway_status).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const AccountStatus& account_status) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::AccountStatus,
+      convert(fbb, account_status).Union());
 }
 
 inline flatbuffers::Offset<schema::Event> convert2(
@@ -833,11 +854,13 @@ inline HeartbeatAck convert(const schema::HeartbeatAck *value) {
 
 inline DownloadBegin convert(const schema::DownloadBegin *value) {
   return DownloadBegin {
+    .account = value->account()->c_str(),
   };
 }
 
 inline DownloadEnd convert(const schema::DownloadEnd *value) {
   return DownloadEnd {
+    .account = value->account()->c_str(),
     .max_order_id = value->max_order_id(),
   };
 }
@@ -845,6 +868,13 @@ inline DownloadEnd convert(const schema::DownloadEnd *value) {
 inline GatewayStatus convert(const schema::GatewayStatus *value) {
   return GatewayStatus {
     .name = value->name()->c_str(),
+    .status = value->status(),
+  };
+}
+
+inline AccountStatus convert(const schema::AccountStatus *value) {
+  return AccountStatus {
+    .account = value->account()->c_str(),
     .status = value->status(),
   };
 }
@@ -1028,6 +1058,7 @@ class EventHandler {
   virtual void on(const DownloadBeginEvent&) = 0;
   virtual void on(const DownloadEndEvent&) = 0;
   virtual void on(const GatewayStatusEvent&) = 0;
+  virtual void on(const AccountStatusEvent&) = 0;
   virtual void on(const MarketByPriceEvent&) = 0;
   virtual void on(const TradeSummaryEvent&) = 0;
   virtual void on(const ReferenceDataEvent&) = 0;
@@ -1127,6 +1158,15 @@ class EventDispatcher final {
         GatewayStatusEvent event {
           .message_info = message_info,
           .gateway_status = gateway_status,
+        };
+        _handler.on(event);
+        break;
+      }
+      case schema::EventData::AccountStatus: {
+        auto account_status = convert(item.event_data_as_AccountStatus());
+        AccountStatusEvent event {
+          .message_info = message_info,
+          .account_status = account_status,
         };
         _handler.on(event);
         break;

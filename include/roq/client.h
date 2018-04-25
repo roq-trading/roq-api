@@ -354,6 +354,10 @@ class Controller final {
         VLOG(1) << "[" << _name << "] GatewayStatusEvent " << event;
         _strategy.on(event);
       }
+      void on(const AccountStatusEvent& event) final {
+        VLOG(1) << "[" << _name << "] AccountStatusEvent " << event;
+        _strategy.on(event);
+      }
       void on(const ReferenceDataEvent& event) final {
         VLOG(1) << "[" << _name << "] ReferenceDataEvent " << event;
         _strategy.on(event);

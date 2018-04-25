@@ -137,18 +137,20 @@ struct HeartbeatAck {
 /**
  * DownloadBegin.
  * Server sends this event when initiates a download.
- * Client is not allowed to send any requests until it has
- * received the DownloadEnd event.
+ * Client is not allowed to send any account requests until
+ * it has received the DownloadEnd event.
  */
 struct DownloadBegin {
+  const char *account;  ///< Client account.
 };
 
 /**
  * DownloadEnd.
- * Servers sends this event when it has completed a download.
+ * Server sends this event when it has completed a download.
  * Client is again allowed to send requests.
  */
 struct DownloadEnd {
+  const char *account;    ///< Client account.
   uint32_t max_order_id;  ///< Maximum order id.
 };
 
@@ -158,6 +160,14 @@ struct DownloadEnd {
 struct GatewayStatus {
   const char *name;     ///< Name of the channel, e.g. MDUser or Trader
   GatewayState status;  ///< Status of the channel.
+};
+
+/**
+ * Account status.
+ */
+struct AccountStatus {
+  const char *account;  ///< Client acocunt.
+  AccountState status;  ///< Login status.
 };
 
 /**
@@ -425,6 +435,14 @@ struct GatewayStatusEvent {
 };
 
 /**
+ * Account status update event.
+ */
+struct AccountStatusEvent {
+  const MessageInfo& message_info;
+  const AccountStatus& account_status;
+};
+
+/**
  * Reference data update event.
  */
 struct ReferenceDataEvent {
@@ -572,6 +590,7 @@ class Strategy {
   virtual void on(const DownloadBeginEvent&) = 0;     ///< Download begin
   virtual void on(const DownloadEndEvent&) = 0;       ///< Download end
   virtual void on(const GatewayStatusEvent&) = 0;     ///< The gateway's connection or login status has changed
+  virtual void on(const AccountStatusEvent&) = 0;     ///< The account's login status has changed
   virtual void on(const ReferenceDataEvent&) = 0;     ///< Reference data update for a symbol
   virtual void on(const MarketStatusEvent&) = 0;      ///< Market status update for a symbol
   virtual void on(const MarketByPriceEvent&) = 0;     ///< Market-by-price update for a symbol

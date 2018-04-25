@@ -16,6 +16,7 @@ const double_conversion::DoubleToStringConverter DOUBLE_CONVERTER(
 );
 const char *TIME_FORMAT = "%E4Y-%m-%dT%H:%M:%E6S";
 const auto TIME_ZONE = cctz::utc_time_zone();
+const char *PASSWORD = "<hidden>";
 }
 
 std::ostream& operator<<(std::ostream& stream, const Number value) {
@@ -46,6 +47,10 @@ std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value) {
 
 std::ostream& operator<<(std::ostream& stream, const GatewayState value) {
   return stream << EnumNameGatewayState(value);
+}
+
+std::ostream& operator<<(std::ostream& stream, const AccountState value) {
+  return stream << EnumNameAccountState(value);
 }
 
 std::ostream& operator<<(std::ostream& stream, const Side value) {
@@ -95,7 +100,7 @@ std::ostream& operator<<(std::ostream& stream, const Handshake& value) {
     "pid=" << value.pid << ", "
     "uuid=\"" << value.uuid << "\", "
     "login=\"" << value.login << "\", "
-    "password=\"***\", "
+    "password=" << PASSWORD << ", "
     "subscriptions=" << Vector<decltype(value.subscriptions)::value_type>(value.subscriptions) <<
     "}";
 }
@@ -142,6 +147,13 @@ std::ostream& operator<<(std::ostream& stream, const DownloadEnd& value) {
 std::ostream& operator<<(std::ostream& stream, const GatewayStatus& value) {
   return stream << "{"
     "name=\"" << value.name << "\", "
+    "status=" << value.status <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const AccountStatus& value) {
+  return stream << "{"
+    "account=\"" << value.account << "\", "
     "status=" << value.status <<
     "}";
 }
@@ -383,6 +395,13 @@ std::ostream& operator<<(std::ostream& stream, const GatewayStatusEvent& value) 
   return stream << "{"
     "message_info=" << value.message_info << ", "
     "gateway_status=" << value.gateway_status <<
+    "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const AccountStatusEvent& value) {
+  return stream << "{"
+    "message_info=" << value.message_info << ", "
+    "account_status=" << value.account_status <<
     "}";
 }
 

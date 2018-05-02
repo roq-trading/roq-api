@@ -246,8 +246,8 @@ struct PositionUpdate {
  * Order update.
  */
 struct OrderUpdate {
-  uint32_t order_id;               ///< User's order identifier.
   const char *account;             ///< Client account.
+  uint32_t order_id;               ///< User's order identifier.
   const char *exchange;            ///< Exchange name
   const char *symbol;              ///< Symbol name
   OrderStatus order_status;        ///< Order status
@@ -266,9 +266,9 @@ struct OrderUpdate {
  * Trade update.
  */
 struct TradeUpdate {
+  const char *account;             ///< Client account.
   uint32_t trade_id;               ///< Trade identifier.
   uint32_t order_id;               ///< User's order identifier.
-  const char *account;             ///< Client account.
   const char *exchange;            ///< Exchange name
   const char *symbol;              ///< Symbol name
   Side side;                       ///< Side
@@ -286,8 +286,8 @@ struct TradeUpdate {
  * Create order.
  */
 struct CreateOrder {
-  uint32_t order_id;               ///< User's order identifier.
   const char *account;             ///< Client account.
+  uint32_t order_id;               ///< User's order identifier.
   const char *exchange;            ///< Exchange name.
   const char *symbol;              ///< Symbol name
   Side side;                       ///< Side
@@ -303,6 +303,7 @@ struct CreateOrder {
  * Modify order.
  */
 struct ModifyOrder {
+  const char *account;     ///< Client account.
   uint32_t order_id;       ///< User's order identifier.
   double quantity_change;  ///< Desired quantity change
   double limit_price;      ///< Limit price
@@ -312,13 +313,15 @@ struct ModifyOrder {
  * Cancel order.
  */
 struct CancelOrder {
-  uint32_t order_id;  ///< User provided order identifier.
+  const char *account;  ///< Client account.
+  uint32_t order_id;    ///< User provided order identifier.
 };
 
 /**
  * Response to create order
  */
 struct CreateOrderAck {
+  const char *account;            ///< Client account.
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
@@ -331,6 +334,7 @@ struct CreateOrderAck {
  * Response to modify order
  */
 struct ModifyOrderAck {
+  const char *account;            ///< Client account.
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).
@@ -343,6 +347,7 @@ struct ModifyOrderAck {
  * Response to cancel order
  */
 struct CancelOrderAck {
+  const char *account;            ///< Client account.
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
   const char *reason;             ///< Reason (if failure).

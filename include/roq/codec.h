@@ -261,8 +261,8 @@ inline flatbuffers::Offset<schema::OrderUpdate>
 convert(flatbuffers::FlatBufferBuilder& fbb, const OrderUpdate& value) {
   return schema::CreateOrderUpdate(
     fbb,
-    value.order_id,
     fbb.CreateString(value.account),
+    value.order_id,
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.symbol),
     value.order_status,
@@ -281,9 +281,9 @@ inline flatbuffers::Offset<schema::TradeUpdate>
 convert(flatbuffers::FlatBufferBuilder& fbb, const TradeUpdate& value) {
   return schema::CreateTradeUpdate(
     fbb,
+    fbb.CreateString(value.account),
     value.trade_id,
     value.order_id,
-    fbb.CreateString(value.account),
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.symbol),
     value.side,
@@ -301,8 +301,8 @@ inline flatbuffers::Offset<schema::CreateOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrder& value) {
   return schema::CreateCreateOrder(
     fbb,
-    value.order_id,
     fbb.CreateString(value.account),
+    value.order_id,
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.symbol),
     value.side,
@@ -318,6 +318,7 @@ inline flatbuffers::Offset<schema::ModifyOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const ModifyOrder& value) {
   return schema::CreateModifyOrder(
     fbb,
+    fbb.CreateString(value.account),
     value.order_id,
     value.quantity_change,
     value.limit_price);
@@ -327,6 +328,7 @@ inline flatbuffers::Offset<schema::CancelOrder>
 convert(flatbuffers::FlatBufferBuilder& fbb, const CancelOrder& value) {
   return schema::CreateCancelOrder(
     fbb,
+    fbb.CreateString(value.account),
     value.order_id);
 }
 
@@ -334,6 +336,7 @@ inline flatbuffers::Offset<schema::CreateOrderAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const CreateOrderAck& value) {
   return schema::CreateCreateOrderAck(
     fbb,
+    fbb.CreateString(value.account),
     value.order_id,
     value.failure,
     fbb.CreateString(value.reason),
@@ -345,6 +348,7 @@ inline flatbuffers::Offset<schema::ModifyOrderAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const ModifyOrderAck& value) {
   return schema::CreateModifyOrderAck(
     fbb,
+    fbb.CreateString(value.account),
     value.order_id,
     value.failure,
     fbb.CreateString(value.reason),
@@ -356,6 +360,7 @@ inline flatbuffers::Offset<schema::CancelOrderAck>
 convert(flatbuffers::FlatBufferBuilder& fbb, const CancelOrderAck& value) {
   return schema::CreateCancelOrderAck(
     fbb,
+    fbb.CreateString(value.account),
     value.order_id,
     value.failure,
     fbb.CreateString(value.reason),
@@ -948,8 +953,8 @@ inline PositionUpdate convert(const schema::PositionUpdate *value) {
 }
 inline OrderUpdate convert(const schema::OrderUpdate *value) {
   return OrderUpdate {
-    .order_id = value->order_id(),
     .account = value->account()->c_str(),
+    .order_id = value->order_id(),
     .exchange = value->exchange()->c_str(),
     .symbol = value->symbol()->c_str(),
     .order_status = value->order_status(),
@@ -967,9 +972,9 @@ inline OrderUpdate convert(const schema::OrderUpdate *value) {
 
 inline TradeUpdate convert(const schema::TradeUpdate *value) {
   return TradeUpdate {
+    .account = value->account()->c_str(),
     .trade_id = value->trade_id(),
     .order_id = value->order_id(),
-    .account = value->account()->c_str(),
     .exchange = value->exchange()->c_str(),
     .symbol = value->symbol()->c_str(),
     .side = value->side(),
@@ -986,8 +991,8 @@ inline TradeUpdate convert(const schema::TradeUpdate *value) {
 
 inline CreateOrder convert(const schema::CreateOrder *value) {
   return CreateOrder {
-    .order_id = value->order_id(),
     .account = value->account()->c_str(),
+    .order_id = value->order_id(),
     .exchange = value->exchange()->c_str(),
     .symbol = value->symbol()->c_str(),
     .side = value->side(),
@@ -1002,6 +1007,7 @@ inline CreateOrder convert(const schema::CreateOrder *value) {
 
 inline ModifyOrder convert(const schema::ModifyOrder *value) {
   return ModifyOrder {
+    .account = value->account()->c_str(),
     .order_id = value->order_id(),
     .quantity_change = value->quantity_change(),
     .limit_price = value->limit_price(),
@@ -1010,12 +1016,14 @@ inline ModifyOrder convert(const schema::ModifyOrder *value) {
 
 inline CancelOrder convert(const schema::CancelOrder *value) {
   return CancelOrder {
+    .account = value->account()->c_str(),
     .order_id = value->order_id(),
   };
 }
 
 inline CreateOrderAck convert(const schema::CreateOrderAck *value) {
   return CreateOrderAck {
+    .account = value->account()->c_str(),
     .order_id = value->order_id(),
     .failure = value->failure(),
     .reason = value->reason()->c_str(),
@@ -1026,6 +1034,7 @@ inline CreateOrderAck convert(const schema::CreateOrderAck *value) {
 
 inline ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
   return ModifyOrderAck {
+    .account = value->account()->c_str(),
     .order_id = value->order_id(),
     .failure = value->failure(),
     .reason = value->reason()->c_str(),
@@ -1036,6 +1045,7 @@ inline ModifyOrderAck convert(const schema::ModifyOrderAck *value) {
 
 inline CancelOrderAck convert(const schema::CancelOrderAck *value) {
   return CancelOrderAck {
+    .account = value->account()->c_str(),
     .order_id = value->order_id(),
     .failure = value->failure(),
     .reason = value->reason()->c_str(),

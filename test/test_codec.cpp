@@ -214,8 +214,8 @@ inline PositionUpdate CreateRandomPositionUpdate() {
 }
 inline OrderUpdate CreateRandomOrderUpdate() {
   return OrderUpdate {
-    .order_id = rand_uint32(),
     .account = NAME[rand_uint32() % NAME_LENGTH],
+    .order_id = rand_uint32(),
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .order_status = rand_order_status(),
@@ -232,9 +232,9 @@ inline OrderUpdate CreateRandomOrderUpdate() {
 }
 inline TradeUpdate CreateRandomTradeUpdate() {
   return TradeUpdate {
+    .account = NAME[rand_uint32() % NAME_LENGTH],
     .trade_id = rand_uint32(),
     .order_id = rand_uint32(),
-    .account = NAME[rand_uint32() % NAME_LENGTH],
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .side = rand_side(),
@@ -250,8 +250,8 @@ inline TradeUpdate CreateRandomTradeUpdate() {
 }
 inline CreateOrder CreateRandomCreateOrder() {
   return CreateOrder {
-    .order_id = rand_uint32(),
     .account = NAME[rand_uint32() % NAME_LENGTH],
+    .order_id = rand_uint32(),
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
     .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .side = rand_side(),
@@ -265,6 +265,7 @@ inline CreateOrder CreateRandomCreateOrder() {
 }
 inline ModifyOrder CreateRandomModifyOrder() {
   return ModifyOrder {
+    .account = NAME[rand_uint32() % NAME_LENGTH],
     .order_id = rand_uint32(),
     .quantity_change = rand_double(),
     .limit_price = rand_double(),
@@ -272,11 +273,13 @@ inline ModifyOrder CreateRandomModifyOrder() {
 }
 inline CancelOrder CreateRandomCancelOrder() {
   return CancelOrder {
+    .account = NAME[rand_uint32() % NAME_LENGTH],
     .order_id = rand_uint32(),
   };
 }
 inline CreateOrderAck CreateRandomCreateOrderAck() {
   return CreateOrderAck {
+    .account = NAME[rand_uint32() % NAME_LENGTH],
     .order_id = rand_uint32(),
     .failure = rand_bool(),
     .reason = NAME[rand_uint32() % NAME_LENGTH],
@@ -286,6 +289,7 @@ inline CreateOrderAck CreateRandomCreateOrderAck() {
 }
 inline ModifyOrderAck CreateRandomModifyOrderAck() {
   return ModifyOrderAck {
+    .account = NAME[rand_uint32() % NAME_LENGTH],
     .order_id = rand_uint32(),
     .failure = rand_bool(),
     .reason = NAME[rand_uint32() % NAME_LENGTH],
@@ -295,6 +299,7 @@ inline ModifyOrderAck CreateRandomModifyOrderAck() {
 }
 inline CancelOrderAck CreateRandomCancelOrderAck() {
   return CancelOrderAck {
+    .account = NAME[rand_uint32() % NAME_LENGTH],
     .order_id = rand_uint32(),
     .failure = rand_bool(),
     .reason = NAME[rand_uint32() % NAME_LENGTH],
@@ -406,8 +411,8 @@ void compare(const PositionUpdate& lhs, const PositionUpdate& rhs) {
   EXPECT_EQ(lhs.last_trade_id, rhs.last_trade_id);
 }
 void compare(const OrderUpdate& lhs, const OrderUpdate& rhs) {
-  EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_STREQ(lhs.account, rhs.account);
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.order_status, rhs.order_status);
@@ -422,9 +427,9 @@ void compare(const OrderUpdate& lhs, const OrderUpdate& rhs) {
   EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }
 void compare(const TradeUpdate& lhs, const TradeUpdate& rhs) {
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_EQ(lhs.trade_id, rhs.trade_id);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
-  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.side, rhs.side);
@@ -438,8 +443,8 @@ void compare(const TradeUpdate& lhs, const TradeUpdate& rhs) {
   EXPECT_STREQ(lhs.trade_external_id, rhs.trade_external_id);
 }
 void compare(const CreateOrder& lhs, const CreateOrder& rhs) {
-  EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_STREQ(lhs.account, rhs.account);
+  EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.side, rhs.side);
@@ -451,14 +456,17 @@ void compare(const CreateOrder& lhs, const CreateOrder& rhs) {
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
 }
 void compare(const ModifyOrder& lhs, const ModifyOrder& rhs) {
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_EQ(lhs.quantity_change, rhs.quantity_change);
   EXPECT_EQ(lhs.limit_price, rhs.limit_price);
 }
 void compare(const CancelOrder& lhs, const CancelOrder& rhs) {
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
 }
 void compare(const CreateOrderAck& lhs, const CreateOrderAck& rhs) {
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_EQ(lhs.failure, rhs.failure);
   EXPECT_STREQ(lhs.reason, rhs.reason);
@@ -466,6 +474,7 @@ void compare(const CreateOrderAck& lhs, const CreateOrderAck& rhs) {
   EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }
 void compare(const ModifyOrderAck& lhs, const ModifyOrderAck& rhs) {
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_EQ(lhs.failure, rhs.failure);
   EXPECT_STREQ(lhs.reason, rhs.reason);
@@ -473,6 +482,7 @@ void compare(const ModifyOrderAck& lhs, const ModifyOrderAck& rhs) {
   EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
 }
 void compare(const CancelOrderAck& lhs, const CancelOrderAck& rhs) {
+  EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_EQ(lhs.order_id, rhs.order_id);
   EXPECT_EQ(lhs.failure, rhs.failure);
   EXPECT_STREQ(lhs.reason, rhs.reason);

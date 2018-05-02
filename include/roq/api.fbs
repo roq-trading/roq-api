@@ -112,8 +112,8 @@ table PositionUpdate {
 }
 
 table OrderUpdate {
-  order_id:uint;
   account:string;
+  order_id:uint;
   exchange:string;
   symbol:string;
   order_status:OrderStatus;
@@ -129,9 +129,9 @@ table OrderUpdate {
 }
 
 table TradeUpdate {
+  account:string;
   trade_id:uint;
   order_id:uint;
-  account:string;
   exchange:string;
   symbol:string;
   side:Side;
@@ -146,8 +146,8 @@ table TradeUpdate {
 }
 
 table CreateOrder {
-  order_id:uint;
   account:string;
+  order_id:uint;
   exchange:string;
   symbol:string;
   side:Side;
@@ -160,16 +160,19 @@ table CreateOrder {
 }
 
 table ModifyOrder {
+  account:string;
   order_id:uint;
   quantity_change:double;
   limit_price:double;
 }
 
 table CancelOrder {
+  account:string;
   order_id:uint;
 }
 
 table ModifyOrderAck {
+  account:string;
   order_id:uint;
   failure:bool;
   reason:string;
@@ -178,6 +181,7 @@ table ModifyOrderAck {
 }
 
 table CreateOrderAck {
+  account:string;
   order_id:uint;
   failure:bool;
   reason:string;
@@ -186,6 +190,7 @@ table CreateOrderAck {
 }
 
 table CancelOrderAck {
+  account:string;
   order_id:uint;
   failure:bool;
   reason:string;

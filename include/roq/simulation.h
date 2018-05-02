@@ -149,6 +149,7 @@ class Controller final {
       auto& strategy = static_cast<Strategy&>(_strategy);
       MessageInfo message_info { .source = gateway };
       CreateOrderAck create_order_ack {
+        .account = create_order.account,
         .order_id = create_order.order_id,
         .failure = false,
         .reason = "",
@@ -164,6 +165,7 @@ class Controller final {
       auto& strategy = static_cast<Strategy&>(_strategy);
       MessageInfo message_info { .source = gateway };
       ModifyOrderAck modify_order_ack {
+        .account = modify_order.account,
         .order_id = modify_order.order_id,
         .failure = true,
         .reason = "NOT_SUPPORTED",
@@ -179,6 +181,7 @@ class Controller final {
       auto& strategy = static_cast<Strategy&>(_strategy);
       MessageInfo message_info { .source = gateway };
       CancelOrderAck cancel_order_ack {
+        .account = cancel_order.account,
         .order_id = cancel_order.order_id,
         .failure = true,
         .reason = "NOT_SUPPORTED",
@@ -194,8 +197,8 @@ class Controller final {
       auto& strategy = static_cast<Strategy&>(_strategy);
       MessageInfo message_info { .source = gateway };
       OrderUpdate order_update {
-        .order_id = create_order.order_id,
         .account = create_order.account,
+        .order_id = create_order.order_id,
         .exchange = create_order.exchange,
         .symbol = create_order.symbol,
         .order_status = OrderStatus::Completed,
@@ -220,9 +223,9 @@ class Controller final {
       auto& strategy = static_cast<Strategy&>(_strategy);
       MessageInfo message_info { .source = gateway };
       TradeUpdate trade_update {
+        .account = create_order.account,
         .trade_id = create_order.order_id,
         .order_id = create_order.order_id,
-        .account = create_order.account,
         .exchange = create_order.exchange,
         .symbol = create_order.symbol,
         .side = create_order.side,

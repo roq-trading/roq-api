@@ -221,8 +221,8 @@ std::ostream& operator<<(std::ostream& stream, const PositionUpdate& value) {
 
 std::ostream& operator<<(std::ostream& stream, const OrderUpdate& value) {
   return stream << "{"
-    "order_id=" << value.order_id << ", "
     "account=\"" << value.account << "\", "
+    "order_id=" << value.order_id << ", "
     "exchange=\"" << value.exchange << "\", "
     "symbol=\"" << value.symbol << "\", "
     "order_status=" << value.order_status << ", "
@@ -240,9 +240,9 @@ std::ostream& operator<<(std::ostream& stream, const OrderUpdate& value) {
 
 std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value) {
   return stream << "{"
+    "account=\"" << value.account << "\", "
     "trade_id=" << value.trade_id << ", "
     "order_id=" << value.order_id << ", "
-    "account=\"" << value.account << "\", "
     "exchange=\"" << value.exchange << "\", "
     "symbol=\"" << value.symbol << "\", "
     "side=" << value.side << ", "
@@ -259,8 +259,8 @@ std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value) {
 
 std::ostream& operator<<(std::ostream& stream, const CreateOrder& value) {
   return stream << "{"
-    "order_id=" << value.order_id << ", "
     "account=\"" << value.account << "\", "
+    "order_id=" << value.order_id << ", "
     "exchange=\"" << value.exchange << "\", "
     "symbol=\"" << value.symbol << "\", "
     "side=" << value.side << ", "
@@ -275,6 +275,7 @@ std::ostream& operator<<(std::ostream& stream, const CreateOrder& value) {
 
 std::ostream& operator<<(std::ostream& stream, const ModifyOrder& value) {
   return stream << "{"
+    "account=\"" << value.account << "\", "
     "order_id=" << value.order_id <<
     "quantity_change=" << Number(value.quantity_change) << ", "
     "limit_price=" << Number(value.limit_price) <<
@@ -283,12 +284,14 @@ std::ostream& operator<<(std::ostream& stream, const ModifyOrder& value) {
 
 std::ostream& operator<<(std::ostream& stream, const CancelOrder& value) {
   return stream << "{"
+    "account=\"" << value.account << "\", "
     "order_id=" << value.order_id <<
     "}";
 }
 
 std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value) {
   return stream << "{"
+    "account=\"" << value.account << "\", "
     "order_id=" << value.order_id << ", "
     "failure=" << (value.failure ? "true" : "false") << ", "
     "reason=\"" << value.reason << "\", "
@@ -299,6 +302,7 @@ std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value) {
 
 std::ostream& operator<<(std::ostream& stream, const ModifyOrderAck& value) {
   return stream << "{"
+    "account=\"" << value.account << "\", "
     "order_id=" << value.order_id << ", "
     "failure=" << (value.failure ? "true" : "false") << ", "
     "reason=\"" << value.reason << "\", "
@@ -309,6 +313,7 @@ std::ostream& operator<<(std::ostream& stream, const ModifyOrderAck& value) {
 
 std::ostream& operator<<(std::ostream& stream, const CancelOrderAck& value) {
   return stream << "{"
+    "account=\"" << value.account << "\", "
     "order_id=" << value.order_id << ", "
     "failure=" << (value.failure ? "true" : "false") << ", "
     "reason=\"" << value.reason << "\", "

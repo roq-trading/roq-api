@@ -191,6 +191,7 @@ inline ReferenceData CreateRandomReferenceData() {
     .tick_size = rand_double(),
     .limit_up = rand_double(),
     .limit_down = rand_double(),
+    .multiplier = rand_double(),
   };
 }
 inline MarketStatus CreateRandomMarketStatus() {
@@ -394,6 +395,7 @@ void compare(const ReferenceData& lhs, const ReferenceData& rhs) {
   EXPECT_EQ(lhs.tick_size, rhs.tick_size);
   EXPECT_EQ(lhs.limit_up, rhs.limit_up);
   EXPECT_EQ(lhs.limit_down, rhs.limit_down);
+  EXPECT_EQ(lhs.multiplier, rhs.multiplier);
 }
 void compare(const MarketStatus& lhs, const MarketStatus& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);

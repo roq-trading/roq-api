@@ -231,7 +231,8 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const ReferenceData& value) {
     fbb.CreateString(value.symbol),
     value.tick_size,
     value.limit_up,
-    value.limit_down);
+    value.limit_down,
+    value.multiplier);
 }
 
 inline flatbuffers::Offset<schema::MarketStatus>
@@ -928,6 +929,7 @@ inline ReferenceData convert(const schema::ReferenceData *value) {
     .tick_size = value->tick_size(),
     .limit_up = value->limit_up(),
     .limit_down = value->limit_down(),
+    .multiplier = value->multiplier(),
   };
 }
 

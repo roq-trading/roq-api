@@ -194,7 +194,8 @@ std::ostream& operator<<(std::ostream& stream, const ReferenceData& value) {
     "symbol=\"" << value.symbol << "\", "
     "tick_size=" << Number(value.tick_size) << ", "
     "limit_up=" << Number(value.limit_up) << ", "
-    "limit_down=" << Number(value.limit_down) <<
+    "limit_down=" << Number(value.limit_down) << ", "
+    "multiplier=" << Number(value.multiplier) <<
     "}";
 }
 

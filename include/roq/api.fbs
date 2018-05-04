@@ -92,6 +92,7 @@ table ReferenceData {
   tick_size:double;
   limit_up:double;
   limit_down:double;
+  multiplier:double;
 }
 
 table MarketStatus {

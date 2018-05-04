@@ -195,7 +195,7 @@ class Socket final {
  private:
   Socket() = delete;
   Socket(Socket const&) = delete;
-  Socket& operator=(const Socket&) = delete;
+  void operator=(const Socket&) = delete;
   int _fd;
 };
 

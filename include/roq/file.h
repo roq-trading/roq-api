@@ -58,8 +58,8 @@ class File final {
   }
 
  private:
-  File(File&) = delete;
-  File& operator=(File&) = delete;
+  File(const File&) = delete;
+  void operator=(const File&) = delete;
   int _fd;
 };
 

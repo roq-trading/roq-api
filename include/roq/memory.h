@@ -29,8 +29,8 @@ class Shared final {
   }
 
  private:
-  Shared(Shared&) = delete;
-  Shared& operator=(Shared&) = delete;
+  Shared(const Shared&) = delete;
+  void operator=(const Shared&) = delete;
   int _fd;
 };
 
@@ -56,8 +56,8 @@ class Map final {
   size_t length() const { return _length; }
 
  private:
-  Map(Map&) = delete;
-  Map& operator=(Map&) = delete;
+  Map(const Map&) = delete;
+  void operator=(const Map&) = delete;
   size_t _length;
   void *_data;
 };

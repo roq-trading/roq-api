@@ -217,6 +217,7 @@ struct ReferenceData final {
   double tick_size;        ///< Tick size (price increments)
   double limit_up;         ///< Price limit-up
   double limit_down;       ///< Price limit-down
+  double multiplier;       ///< Multiplier
 };
 
 /**

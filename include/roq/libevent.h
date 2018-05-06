@@ -124,7 +124,7 @@ class Base final {
 
  private:
   Base(const Base&) = delete;
-  Base& operator=(const Base&) = delete;
+  void operator=(const Base&) = delete;
 
  private:
   struct event_base *_base;
@@ -163,7 +163,7 @@ class DNSBase final {
  private:
   DNSBase() = delete;
   DNSBase(const DNSBase&) = delete;
-  DNSBase& operator=(const DNSBase&) = delete;
+  void operator=(const DNSBase&) = delete;
 
  private:
   struct evdns_base *_evdns_base;
@@ -213,7 +213,7 @@ class Timer final {
  private:
   Timer() = delete;
   Timer(Timer const&) = delete;
-  Timer& operator=(Timer const&) = delete;
+  void operator=(Timer const&) = delete;
 
  private:
   handler_t _handler;
@@ -250,7 +250,7 @@ class Signal final {
  private:
   Signal() = delete;
   Signal(Signal const&) = delete;
-  Signal& operator=(Signal const&) = delete;
+  void operator=(Signal const&) = delete;
 
  private:
   handler_t _handler;
@@ -308,7 +308,7 @@ class Buffer final {
 
  private:
   Buffer(const Buffer&) = delete;
-  Buffer& operator=(const Buffer&) = delete;
+  void operator=(const Buffer&) = delete;
 
  private:
   struct evbuffer *_evbuffer;
@@ -426,7 +426,7 @@ class BufferEvent final {
  private:
   BufferEvent() = delete;
   BufferEvent(const BufferEvent&) = delete;
-  BufferEvent& operator=(const BufferEvent&) = delete;
+  void operator=(const BufferEvent&) = delete;
 
  private:
   struct bufferevent *_bufferevent;
@@ -475,7 +475,7 @@ class Listener final {
  private:
   Listener() = delete;
   Listener(const Listener&) = delete;
-  Listener& operator=(const Listener&) = delete;
+  void operator=(const Listener&) = delete;
 
  private:
   struct event_base *_base;
@@ -523,7 +523,7 @@ class HTTPRequest final {
  private:
   HTTPRequest() = delete;
   HTTPRequest(const HTTPRequest&) = delete;
-  HTTPRequest& operator=(const HTTPRequest&) = delete;
+  void operator=(const HTTPRequest&) = delete;
 
  private:
   struct evhttp_request *_evhttp_request;
@@ -578,7 +578,7 @@ class HTTP final {
  private:
   HTTP() = delete;
   HTTP(const HTTP&) = delete;
-  HTTP& operator=(const HTTP&) = delete;
+  void operator=(const HTTP&) = delete;
 
  private:
   struct evhttp *_evhttp;

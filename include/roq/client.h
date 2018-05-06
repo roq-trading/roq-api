@@ -410,8 +410,8 @@ class Controller final {
 
      private:
       Gateway() = delete;
-      Gateway(Gateway&) = delete;
-      Gateway& operator=(Gateway&) = delete;
+      Gateway(const Gateway&) = delete;
+      void operator=(const Gateway&) = delete;
 
      private:
       const std::string _name;
@@ -559,8 +559,8 @@ class Controller final {
 
    private:
     Dispatcher() = delete;
-    Dispatcher(Dispatcher&) = delete;
-    Dispatcher& operator=(Dispatcher&) = delete;
+    Dispatcher(const Dispatcher&) = delete;
+    void operator=(const Dispatcher&) = delete;
 
    private:
     T _strategy;
@@ -581,8 +581,8 @@ class Controller final {
 
  private:
   Controller() = delete;
-  Controller(Controller&) = delete;
-  Controller& operator=(Controller&) = delete;
+  Controller(const Controller&) = delete;
+  void operator=(const Controller&) = delete;
 
  private:
   gateways_t _gateways;

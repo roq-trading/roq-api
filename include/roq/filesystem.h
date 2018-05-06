@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include <sys/param.h>
+#include <sys/stat.h>
 
 #include <string>
 #include <system_error>
@@ -53,6 +54,10 @@ inline std::string getcwd() {
 }
 inline void chdir(const char *path) {
   if (::chdir(path) != 0)
+    throw std::system_error(errno, std::system_category());
+}
+inline void mkdir(const char *path, int mode) {
+  if (::mkdir(path, mode) != 0)
     throw std::system_error(errno, std::system_category());
 }
 }  // namespace detail
@@ -131,6 +136,16 @@ inline void chdir(const char *path) {
 
 inline void chdir(const std::string& path) {
   chdir(path.c_str());
+}
+
+// mkdir
+
+inline void mkdir(const char *path, int mode) {
+  detail::mkdir(path, mode);
+}
+
+inline void mkdir(const std::string& path, int mode) {
+  mkdir(path.c_str(), mode);
 }
 
 }  // namespace filesystem

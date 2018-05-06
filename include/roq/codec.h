@@ -60,8 +60,8 @@ class Buffer final {
   }
 
  private:
-  Buffer(Buffer&) = delete;
-  void operator=(Buffer&) = delete;
+  Buffer(const Buffer&) = delete;
+  void operator=(const Buffer&) = delete;
 
  private:
   std::vector<uint8_t> _buffer;
@@ -96,8 +96,8 @@ class Queue final {
   }
 
  private:
-  Queue(Queue&) = delete;
-  void operator=(Queue&) = delete;
+  Queue(const Queue&) = delete;
+  void operator=(const Queue&) = delete;
 
  private:
   Buffer& _buffer;
@@ -231,7 +231,8 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const ReferenceData& value) {
     fbb.CreateString(value.symbol),
     value.tick_size,
     value.limit_up,
-    value.limit_down);
+    value.limit_down,
+    value.multiplier);
 }
 
 inline flatbuffers::Offset<schema::MarketStatus>
@@ -628,8 +629,8 @@ class Encoder final {
   }
 
  private:
-  Encoder(Encoder&) = delete;
-  void operator=(Encoder&) = delete;
+  Encoder(const Encoder&) = delete;
+  void operator=(const Encoder&) = delete;
 
  private:
   std::atomic<uint64_t>& _seqno;
@@ -692,8 +693,8 @@ class Writer final {
   }
 
  private:
-  Writer(Writer&) = delete;
-  void operator=(Writer&) = delete;
+  Writer(const Writer&) = delete;
+  void operator=(const Writer&) = delete;
 
  private:
   uint64_t _seqno = 0;
@@ -787,8 +788,8 @@ class Decoder final {
   }
 
  private:
-  Decoder(Decoder&) = delete;
-  void operator=(Decoder&) = delete;
+  Decoder(const Decoder&) = delete;
+  void operator=(const Decoder&) = delete;
 
  private:
   Dispatcher& _dispatcher;
@@ -928,6 +929,7 @@ inline ReferenceData convert(const schema::ReferenceData *value) {
     .tick_size = value->tick_size(),
     .limit_up = value->limit_up(),
     .limit_down = value->limit_down(),
+    .multiplier = value->multiplier(),
   };
 }
 
@@ -1306,8 +1308,8 @@ class EventDispatcher final {
   }
 
  private:
-  EventDispatcher(EventDispatcher&) = delete;
-  void operator=(EventDispatcher&) = delete;
+  EventDispatcher(const EventDispatcher&) = delete;
+  void operator=(const EventDispatcher&) = delete;
 
  private:
   EventHandler& _handler;

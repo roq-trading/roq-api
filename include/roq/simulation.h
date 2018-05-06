@@ -22,8 +22,8 @@ class Generator {
   virtual void dispatch(Strategy& strategy) = 0;
 
  private:
-  Generator(Generator&) = delete;
-  Generator& operator=(Generator&) = delete;
+  Generator(const Generator&) = delete;
+  void operator=(const Generator&) = delete;
 };
 
 // Controller
@@ -248,7 +248,7 @@ class Controller final {
    private:
     Dispatcher() = delete;
     Dispatcher(const Dispatcher&) = delete;
-    Dispatcher& operator=(const Dispatcher&) = delete;
+    void operator=(const Dispatcher&) = delete;
 
    private:
     T _strategy;
@@ -258,7 +258,7 @@ class Controller final {
  private:
   Controller() = delete;
   Controller(const Controller&) = delete;
-  Controller& operator=(const Controller&) = delete;
+  void operator=(const Controller&) = delete;
 
  private:
   generators_t _generators;

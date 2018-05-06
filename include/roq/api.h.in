@@ -37,7 +37,7 @@ typedef std::pair<const void *, size_t> message_t;
  * BatchInfo. (INTERNAL)
  * Used by the communication layer to frame a set of events.
  */
-struct BatchInfo {
+struct BatchInfo final {
   uint64_t seqno;          ///< Sequence number specific to the client's connection.
   time_point_t send_time;  ///< Time when the batch was sent.
   bool from_cache;         ///< True if the batch originates from the cache.
@@ -47,7 +47,7 @@ struct BatchInfo {
  * SourceInfo. (INTERNAL)
  * Information useful for correlating update events.
  */
-struct SourceInfo {
+struct SourceInfo final {
   uint64_t seqno;            ///< Sequence number created by the source.
   time_point_t create_time;  ///< Time at which the source received or created the event.
 };
@@ -57,7 +57,7 @@ struct SourceInfo {
  * Information allowing the client to identify the origin and age of
  * the information associated with an update event.
  */
-struct MessageInfo {
+struct MessageInfo final {
   const char *source;                ///< Client's own name for the source.
   time_point_t source_create_time;   ///< Source's create time (perhaps a receive time).
   time_point_t client_receive_time;  ///< Client's receive time.
@@ -71,7 +71,7 @@ struct MessageInfo {
  * Handshake. (INTERNAL)
  * Sent by the client immediately following successful connection.
  */
-struct Handshake {
+struct Handshake final {
   const char *api_version;  ///< ROQ_VERSION
   const char *application;  ///< Application descriptive name.
   const char *hostname;     ///< Descriptive hostname.
@@ -96,7 +96,7 @@ struct Handshake {
  * The client is only allowed to send requests after the
  * ready message has been received.
  */
-struct HandshakeAck {
+struct HandshakeAck final {
   const char *api_version;      ///< ROQ_VERSION
   const char *application;      ///< Application descriptive name.
   const char *hostname;         ///< Descriptive hostname.
@@ -120,7 +120,7 @@ struct HandshakeAck {
  * Heartbeat messages are only allowed after the handshake
  * sequence has completed successfully.
  */
-struct Heartbeat {
+struct Heartbeat final {
   int64_t opaque;  ///< Opaque value.
 };
 
@@ -130,7 +130,7 @@ struct Heartbeat {
  * The opaque (time-point) value is returned to the client
  * allowing it to monitor communication round-trip latency.
  */
-struct HeartbeatAck {
+struct HeartbeatAck final {
   int64_t opaque;  ///< Opaque value (returned).
 };
 
@@ -140,7 +140,7 @@ struct HeartbeatAck {
  * Client is not allowed to send any account requests until
  * it has received the DownloadEnd event.
  */
-struct DownloadBegin {
+struct DownloadBegin final {
   const char *account;  ///< Client account.
 };
 
@@ -149,7 +149,7 @@ struct DownloadBegin {
  * Server sends this event when it has completed a download.
  * Client is again allowed to send requests.
  */
-struct DownloadEnd {
+struct DownloadEnd final {
   const char *account;    ///< Client account.
   uint32_t max_order_id;  ///< Maximum order id.
 };
@@ -157,7 +157,7 @@ struct DownloadEnd {
 /**
  * Gateway status.
  */
-struct GatewayStatus {
+struct GatewayStatus final {
   const char *name;     ///< Name of the channel, e.g. MDUser or Trader
   GatewayState status;  ///< Status of the channel.
 };
@@ -165,7 +165,7 @@ struct GatewayStatus {
 /**
  * Account status.
  */
-struct AccountStatus {
+struct AccountStatus final {
   const char *account;  ///< Client acocunt.
   AccountState status;  ///< Login status.
 };
@@ -176,7 +176,7 @@ struct AccountStatus {
  * The layer represents an aggregated by-price view of all
  * resting orders.
  */
-struct Layer {
+struct Layer final {
   double bid_price;     // Bid price.
   double bid_quantity;  // Bid quantity.
   double ask_price;     // Ask price.
@@ -186,7 +186,7 @@ struct Layer {
 /**
  * Market by price (aggregated view of an order book, L1 or L2).
  */
-struct MarketByPrice {
+struct MarketByPrice final {
   const char *exchange;        ///< Exchange name
   const char *symbol;          ///< Symbol name
   Layer depth[MAX_DEPTH];      ///< Layers
@@ -197,7 +197,7 @@ struct MarketByPrice {
 /**
  * Trade summary.
  */
-struct TradeSummary {
+struct TradeSummary final {
   const char *exchange;        ///< Exchange name
   const char *symbol;          ///< Symbol name
   double price;                ///< Price
@@ -211,7 +211,7 @@ struct TradeSummary {
 /**
  * Reference data.
  */
-struct ReferenceData {
+struct ReferenceData final {
   const char *exchange;    ///< Exchange name
   const char *symbol;      ///< Symbol name
   double tick_size;        ///< Tick size (price increments)
@@ -222,7 +222,7 @@ struct ReferenceData {
 /**
  * Market status.
  */
-struct MarketStatus {
+struct MarketStatus final {
   const char *exchange;          ///< Exchange name
   const char *symbol;            ///< Symbol name
   TradingStatus trading_status;  ///< Market status
@@ -231,7 +231,7 @@ struct MarketStatus {
 /**
  * Position update.
  */
-struct PositionUpdate {
+struct PositionUpdate final {
   const char *account;             ///< Client account
   const char *exchange;            ///< Exchange name
   const char *symbol;              ///< Symbol name
@@ -245,7 +245,7 @@ struct PositionUpdate {
 /**
  * Order update.
  */
-struct OrderUpdate {
+struct OrderUpdate final {
   const char *account;             ///< Client account.
   uint32_t order_id;               ///< User's order identifier.
   const char *exchange;            ///< Exchange name
@@ -265,7 +265,7 @@ struct OrderUpdate {
 /**
  * Trade update.
  */
-struct TradeUpdate {
+struct TradeUpdate final {
   const char *account;             ///< Client account.
   uint32_t trade_id;               ///< Trade identifier.
   uint32_t order_id;               ///< User's order identifier.
@@ -285,7 +285,7 @@ struct TradeUpdate {
 /**
  * Create order.
  */
-struct CreateOrder {
+struct CreateOrder final {
   const char *account;             ///< Client account.
   uint32_t order_id;               ///< User's order identifier.
   const char *exchange;            ///< Exchange name.
@@ -302,7 +302,7 @@ struct CreateOrder {
 /**
  * Modify order.
  */
-struct ModifyOrder {
+struct ModifyOrder final {
   const char *account;     ///< Client account.
   uint32_t order_id;       ///< User's order identifier.
   double quantity_change;  ///< Desired quantity change
@@ -312,7 +312,7 @@ struct ModifyOrder {
 /**
  * Cancel order.
  */
-struct CancelOrder {
+struct CancelOrder final {
   const char *account;  ///< Client account.
   uint32_t order_id;    ///< User provided order identifier.
 };
@@ -320,7 +320,7 @@ struct CancelOrder {
 /**
  * Response to create order
  */
-struct CreateOrderAck {
+struct CreateOrderAck final {
   const char *account;            ///< Client account.
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
@@ -333,7 +333,7 @@ struct CreateOrderAck {
 /**
  * Response to modify order
  */
-struct ModifyOrderAck {
+struct ModifyOrderAck final {
   const char *account;            ///< Client account.
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
@@ -346,7 +346,7 @@ struct ModifyOrderAck {
 /**
  * Response to cancel order
  */
-struct CancelOrderAck {
+struct CancelOrderAck final {
   const char *account;            ///< Client account.
   uint32_t order_id;              ///< User's order identifier.
   bool failure;                   ///< Failure?
@@ -359,12 +359,12 @@ struct CancelOrderAck {
 /**
  * Timer event. (INTERNAL)
  */
-struct TimerEvent {};
+struct TimerEvent final {};
 
 /**
  * Connection event. (INTERNAL)
  */
-struct ConnectionStatusEvent {
+struct ConnectionStatusEvent final {
   const char *source;
   ConnectionStatus connection_status;
 };
@@ -372,21 +372,21 @@ struct ConnectionStatusEvent {
 /**
  * Batch begin event.
  */
-struct BatchBeginEvent {
+struct BatchBeginEvent final {
   const MessageInfo& message_info;
 };
 
 /**
  * Batch end event.
  */
-struct BatchEndEvent {
+struct BatchEndEvent final {
   const MessageInfo& message_info;
 };
 
 /*
  * Handshake request. (INTERNAL)
  */
-struct HandshakeEvent {
+struct HandshakeEvent final {
   const MessageInfo& message_info;
   const Handshake& handshake;
 };
@@ -394,7 +394,7 @@ struct HandshakeEvent {
 /**
  * Handshake ack event. (INTERNAL)
  */
-struct HandshakeAckEvent {
+struct HandshakeAckEvent final {
   const MessageInfo& message_info;
   const HandshakeAck& handshake_ack;
 };
@@ -402,7 +402,7 @@ struct HandshakeAckEvent {
 /*
  * Heartbeat request. (INTERNAL)
  */
-struct HeartbeatEvent {
+struct HeartbeatEvent final {
   const MessageInfo& message_info;
   const Heartbeat& heartbeat;
 };
@@ -410,7 +410,7 @@ struct HeartbeatEvent {
 /**
  * Heartbeat ack event. (INTERNAL)
  */
-struct HeartbeatAckEvent {
+struct HeartbeatAckEvent final {
   const MessageInfo& message_info;
   const HeartbeatAck& heartbeat_ack;
 };
@@ -418,7 +418,7 @@ struct HeartbeatAckEvent {
 /**
  * DownloadBegin event.
  */
-struct DownloadBeginEvent {
+struct DownloadBeginEvent final {
   const MessageInfo& message_info;
   const DownloadBegin& download_begin;
 };
@@ -426,7 +426,7 @@ struct DownloadBeginEvent {
 /**
  * DownloadEnd event.
  */
-struct DownloadEndEvent {
+struct DownloadEndEvent final {
   const MessageInfo& message_info;
   const DownloadEnd& download_end;
 };
@@ -434,7 +434,7 @@ struct DownloadEndEvent {
 /**
  * Gateway status update event.
  */
-struct GatewayStatusEvent {
+struct GatewayStatusEvent final {
   const MessageInfo& message_info;
   const GatewayStatus& gateway_status;
 };
@@ -442,7 +442,7 @@ struct GatewayStatusEvent {
 /**
  * Account status update event.
  */
-struct AccountStatusEvent {
+struct AccountStatusEvent final {
   const MessageInfo& message_info;
   const AccountStatus& account_status;
 };
@@ -450,7 +450,7 @@ struct AccountStatusEvent {
 /**
  * Reference data update event.
  */
-struct ReferenceDataEvent {
+struct ReferenceDataEvent final {
   const MessageInfo& message_info;
   const ReferenceData& reference_data;
 };
@@ -458,7 +458,7 @@ struct ReferenceDataEvent {
 /**
  * Market status update event.
  */
-struct MarketStatusEvent {
+struct MarketStatusEvent final {
   const MessageInfo& message_info;
   const MarketStatus& market_status;
 };
@@ -466,7 +466,7 @@ struct MarketStatusEvent {
 /**
  * Market depth update event.
  */
-struct MarketByPriceEvent {
+struct MarketByPriceEvent final {
   const MessageInfo& message_info;
   const MarketByPrice& market_by_price;
 };
@@ -474,7 +474,7 @@ struct MarketByPriceEvent {
 /**
  * Trade summary update event.
  */
-struct TradeSummaryEvent {
+struct TradeSummaryEvent final {
   const MessageInfo& message_info;
   const TradeSummary& trade_summary;
 };
@@ -482,7 +482,7 @@ struct TradeSummaryEvent {
 /**
  * Position update event.
  */
-struct PositionUpdateEvent {
+struct PositionUpdateEvent final {
   const MessageInfo& message_info;
   const PositionUpdate& position_update;
 };
@@ -490,7 +490,7 @@ struct PositionUpdateEvent {
 /**
  * Order update event.
  */
-struct OrderUpdateEvent {
+struct OrderUpdateEvent final {
   const MessageInfo& message_info;
   const OrderUpdate& order_update;
 };
@@ -498,7 +498,7 @@ struct OrderUpdateEvent {
 /**
  * Trade update event.
  */
-struct TradeUpdateEvent {
+struct TradeUpdateEvent final {
   const MessageInfo& message_info;
   const TradeUpdate& trade_update;
 };
@@ -506,7 +506,7 @@ struct TradeUpdateEvent {
 /*
  * Create order request. (INTERNAL)
  */
-struct CreateOrderEvent {
+struct CreateOrderEvent final {
   const MessageInfo& message_info;
   const CreateOrder& create_order;
 };
@@ -514,7 +514,7 @@ struct CreateOrderEvent {
 /*
  * Modify order request. (INTERNAL)
  */
-struct ModifyOrderEvent {
+struct ModifyOrderEvent final {
   const MessageInfo& message_info;
   const ModifyOrder& modify_order;
 };
@@ -522,7 +522,7 @@ struct ModifyOrderEvent {
 /*
  * Cancel order request. (INTERNAL)
  */
-struct CancelOrderEvent {
+struct CancelOrderEvent final {
   const MessageInfo& message_info;
   const CancelOrder& cancel_order;
 };
@@ -530,7 +530,7 @@ struct CancelOrderEvent {
 /**
  * Create order ack event.
  */
-struct CreateOrderAckEvent {
+struct CreateOrderAckEvent final {
   const MessageInfo& message_info;
   const CreateOrderAck& create_order_ack;
 };
@@ -538,7 +538,7 @@ struct CreateOrderAckEvent {
 /**
  * Modify order ack event.
  */
-struct ModifyOrderAckEvent {
+struct ModifyOrderAckEvent final {
   const MessageInfo& message_info;
   const ModifyOrderAck& modify_order_ack;
 };
@@ -546,7 +546,7 @@ struct ModifyOrderAckEvent {
 /**
  * Cancel order ack event.
  */
-struct CancelOrderAckEvent {
+struct CancelOrderAckEvent final {
   const MessageInfo& message_info;
   const CancelOrderAck& cancel_order_ack;
 };

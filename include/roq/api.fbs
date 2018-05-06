@@ -50,14 +50,13 @@ table DownloadEnd {
   max_order_id:uint;
 }
 
-table GatewayStatus {
-  name:string;
-  status:GatewayState;
+table MarketDataStatus {
+  status:GatewayStatus;
 }
 
-table AccountStatus {
+table OrderManagerStatus {
   account:string;
-  status:AccountState;
+  status:GatewayStatus;
 }
 
 struct Layer {
@@ -206,8 +205,8 @@ union EventData {
   HeartbeatAck,
   DownloadBegin,
   DownloadEnd,
-  GatewayStatus,
-  AccountStatus,
+  MarketDataStatus,
+  OrderManagerStatus,
   MarketByPrice,
   TradeSummary,
   ReferenceData,

@@ -45,12 +45,8 @@ std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value) {
   return stream << EnumNameConnectionStatus(value);
 }
 
-std::ostream& operator<<(std::ostream& stream, const GatewayState value) {
-  return stream << EnumNameGatewayState(value);
-}
-
-std::ostream& operator<<(std::ostream& stream, const AccountState value) {
-  return stream << EnumNameAccountState(value);
+std::ostream& operator<<(std::ostream& stream, const GatewayStatus value) {
+  return stream << EnumNameGatewayStatus(value);
 }
 
 std::ostream& operator<<(std::ostream& stream, const Side value) {
@@ -144,14 +140,13 @@ std::ostream& operator<<(std::ostream& stream, const DownloadEnd& value) {
     "}";
 }
 
-std::ostream& operator<<(std::ostream& stream, const GatewayStatus& value) {
+std::ostream& operator<<(std::ostream& stream, const MarketDataStatus& value) {
   return stream << "{"
-    "name=\"" << value.name << "\", "
     "status=" << value.status <<
     "}";
 }
 
-std::ostream& operator<<(std::ostream& stream, const AccountStatus& value) {
+std::ostream& operator<<(std::ostream& stream, const OrderManagerStatus& value) {
   return stream << "{"
     "account=\"" << value.account << "\", "
     "status=" << value.status <<
@@ -397,17 +392,17 @@ std::ostream& operator<<(std::ostream& stream, const DownloadEndEvent& value) {
     "}";
 }
 
-std::ostream& operator<<(std::ostream& stream, const GatewayStatusEvent& value) {
+std::ostream& operator<<(std::ostream& stream, const MarketDataStatusEvent& value) {
   return stream << "{"
     "message_info=" << value.message_info << ", "
-    "gateway_status=" << value.gateway_status <<
+    "market_data_status=" << value.market_data_status <<
     "}";
 }
 
-std::ostream& operator<<(std::ostream& stream, const AccountStatusEvent& value) {
+std::ostream& operator<<(std::ostream& stream, const OrderManagerStatusEvent& value) {
   return stream << "{"
     "message_info=" << value.message_info << ", "
-    "account_status=" << value.account_status <<
+    "order_manager_status=" << value.order_manager_status <<
     "}";
 }
 

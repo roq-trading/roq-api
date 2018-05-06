@@ -350,12 +350,12 @@ class Controller final {
         VLOG(1) << "[" << _name << "] DownloadEndEvent " << event;
         _strategy.on(event);
       }
-      void on(const GatewayStatusEvent& event) final {
-        VLOG(1) << "[" << _name << "] GatewayStatusEvent " << event;
+      void on(const MarketDataStatusEvent& event) final {
+        VLOG(1) << "[" << _name << "] MarketDataStatusEvent " << event;
         _strategy.on(event);
       }
-      void on(const AccountStatusEvent& event) final {
-        VLOG(1) << "[" << _name << "] AccountStatusEvent " << event;
+      void on(const OrderManagerStatusEvent& event) final {
+        VLOG(1) << "[" << _name << "] OrderManagerStatusEvent " << event;
         _strategy.on(event);
       }
       void on(const ReferenceDataEvent& event) final {

@@ -155,19 +155,18 @@ struct DownloadEnd final {
 };
 
 /**
- * Gateway status.
+ * Market data status.
  */
-struct GatewayStatus final {
-  const char *name;     ///< Name of the channel, e.g. MDUser or Trader
-  GatewayState status;  ///< Status of the channel.
+struct MarketDataStatus final {
+  GatewayStatus status;  ///< Status.
 };
 
 /**
- * Account status.
+ * Order manager status.
  */
-struct AccountStatus final {
-  const char *account;  ///< Client acocunt.
-  AccountState status;  ///< Login status.
+struct OrderManagerStatus final {
+  const char *account;  ///< Client account.
+  GatewayStatus status;  ///< Status.
 };
 
 /**
@@ -433,19 +432,19 @@ struct DownloadEndEvent final {
 };
 
 /**
- * Gateway status update event.
+ * Market data status update event.
  */
-struct GatewayStatusEvent final {
+struct MarketDataStatusEvent final {
   const MessageInfo& message_info;
-  const GatewayStatus& gateway_status;
+  const MarketDataStatus& market_data_status;
 };
 
 /**
- * Account status update event.
+ * Order manager status update event.
  */
-struct AccountStatusEvent final {
+struct OrderManagerStatusEvent final {
   const MessageInfo& message_info;
-  const AccountStatus& account_status;
+  const OrderManagerStatus& order_manager_status;
 };
 
 /**
@@ -589,24 +588,24 @@ class Strategy {
   typedef std::map<std::string, symbols_t> exchanges_t;
   typedef std::map<std::string, exchanges_t> subscriptions_t;
   virtual const subscriptions_t& get_subscriptions() const = 0;
-  virtual void on(const TimerEvent&) = 0;             ///< Timer (internal notification, do *not* rely on accuracy!)
-  virtual void on(const ConnectionStatusEvent&) = 0;  ///< The connection status has changed (internal notification)
-  virtual void on(const BatchBeginEvent&) = 0;        ///< Batch begin
-  virtual void on(const BatchEndEvent&) = 0;          ///< Batch end
-  virtual void on(const DownloadBeginEvent&) = 0;     ///< Download begin
-  virtual void on(const DownloadEndEvent&) = 0;       ///< Download end
-  virtual void on(const GatewayStatusEvent&) = 0;     ///< The gateway's connection or login status has changed
-  virtual void on(const AccountStatusEvent&) = 0;     ///< The account's login status has changed
-  virtual void on(const ReferenceDataEvent&) = 0;     ///< Reference data update for a symbol
-  virtual void on(const MarketStatusEvent&) = 0;      ///< Market status update for a symbol
-  virtual void on(const MarketByPriceEvent&) = 0;     ///< Market-by-price update for a symbol
-  virtual void on(const TradeSummaryEvent&) = 0;      ///< Trade summary update for a symbol
-  virtual void on(const PositionUpdateEvent&) = 0;    ///< Position update
-  virtual void on(const OrderUpdateEvent&) = 0;       ///< New order, or order details have been updated
-  virtual void on(const TradeUpdateEvent&) = 0;       ///< New trade, or trade details have been updated
-  virtual void on(const CreateOrderAckEvent&) = 0;    ///< Response to a create order request
-  virtual void on(const ModifyOrderAckEvent&) = 0;    ///< Response to a modify order request
-  virtual void on(const CancelOrderAckEvent&) = 0;    ///< Response to a cancel order request
+  virtual void on(const TimerEvent&) = 0;               ///< Timer (internal notification, do *not* rely on accuracy!)
+  virtual void on(const ConnectionStatusEvent&) = 0;    ///< The connection status has changed (internal notification)
+  virtual void on(const BatchBeginEvent&) = 0;          ///< Batch begin
+  virtual void on(const BatchEndEvent&) = 0;            ///< Batch end
+  virtual void on(const MarketDataStatusEvent&) = 0;    ///< Connection or login status has changed
+  virtual void on(const OrderManagerStatusEvent&) = 0;  ///< Connection or login status has changed
+  virtual void on(const DownloadBeginEvent&) = 0;       ///< Download begin
+  virtual void on(const DownloadEndEvent&) = 0;         ///< Download end
+  virtual void on(const ReferenceDataEvent&) = 0;       ///< Reference data update for a symbol
+  virtual void on(const MarketStatusEvent&) = 0;        ///< Market status update for a symbol
+  virtual void on(const MarketByPriceEvent&) = 0;       ///< Market-by-price update for a symbol
+  virtual void on(const TradeSummaryEvent&) = 0;        ///< Trade summary update for a symbol
+  virtual void on(const PositionUpdateEvent&) = 0;      ///< Position update
+  virtual void on(const OrderUpdateEvent&) = 0;         ///< New order, or order details have been updated
+  virtual void on(const TradeUpdateEvent&) = 0;         ///< New trade, or trade details have been updated
+  virtual void on(const CreateOrderAckEvent&) = 0;      ///< Response to a create order request
+  virtual void on(const ModifyOrderAckEvent&) = 0;      ///< Response to a modify order request
+  virtual void on(const CancelOrderAckEvent&) = 0;      ///< Response to a cancel order request
 };
 
 /**

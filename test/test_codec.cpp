@@ -53,11 +53,8 @@ static const size_t NAME_LENGTH = sizeof(NAME) / sizeof(NAME[0]);
 }  // namespace
 
 namespace {
-static GatewayState rand_gateway_state() {
-  return static_cast<GatewayState>(rand_uint32() % static_cast<uint32_t>(GatewayState::MAX));
-}
-static AccountState rand_account_state() {
-  return static_cast<AccountState>(rand_uint32() % static_cast<uint32_t>(AccountState::MAX));
+static GatewayStatus rand_gateway_status() {
+  return static_cast<GatewayStatus>(rand_uint32() % static_cast<uint32_t>(GatewayStatus::MAX));
 }
 static Side rand_side() {
   return static_cast<Side>(rand_uint32() % static_cast<uint32_t>(Side::MAX));
@@ -145,16 +142,15 @@ inline DownloadEnd CreateRandomDownloadEnd() {
     .max_order_id = rand_uint32(),
   };
 }
-inline GatewayStatus CreateRandomGatewayStatus() {
-  return GatewayStatus {
-    .name = NAME[rand_uint32() % NAME_LENGTH],
-    .status = rand_gateway_state(),
+inline MarketDataStatus CreateRandomMarketDataStatus() {
+  return MarketDataStatus {
+    .status = rand_gateway_status(),
   };
 }
-inline AccountStatus CreateRandomAccountStatus() {
-  return AccountStatus {
+inline OrderManagerStatus CreateRandomOrderManagerStatus() {
+  return OrderManagerStatus {
     .account = NAME[rand_uint32() % NAME_LENGTH],
-    .status = rand_account_state(),
+    .status = rand_gateway_status(),
   };
 }
 inline MarketByPrice CreateRandomMarketByPrice() {
@@ -359,11 +355,10 @@ void compare(const HeartbeatAck& lhs, const HeartbeatAck& rhs) {
 void compare(const DownloadEnd& lhs, const DownloadEnd& rhs) {
   EXPECT_EQ(lhs.max_order_id, rhs.max_order_id);
 }
-void compare(const GatewayStatus& lhs, const GatewayStatus& rhs) {
-  EXPECT_STREQ(lhs.name, rhs.name);
+void compare(const MarketDataStatus& lhs, const MarketDataStatus& rhs) {
   EXPECT_EQ(lhs.status, rhs.status);
 }
-void compare(const AccountStatus& lhs, const AccountStatus& rhs) {
+void compare(const OrderManagerStatus& lhs, const OrderManagerStatus& rhs) {
   EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_EQ(lhs.status, rhs.status);
 }
@@ -640,7 +635,7 @@ TEST(flatbuffers, ready_event) {
   }
 }
 
-TEST(flatbuffers, gateway_status_event) {
+TEST(flatbuffers, market_data_status_event) {
   FlatBufferBuilder fbb;
   for (auto i = 0; i < MAX_ITERATIONS; ++i) {
     // reset
@@ -648,27 +643,27 @@ TEST(flatbuffers, gateway_status_event) {
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
     auto source_source_info = CreateRandomSourceInfo();
-    auto source_gateway_status = CreateRandomGatewayStatus();
+    auto source_market_data_status = CreateRandomMarketDataStatus();
     // serialize using flatbuffers
     fbb.Finish(codec::convert2(
           fbb,
           source_source_info,
-          source_gateway_status));
+          source_market_data_status));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
     std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
     auto root = GetRoot<schema::Event>(&buffer[0]);
     auto target_source_info = codec::convert(root->source_info());
-    EXPECT_EQ(root->event_data_type(), schema::EventData::GatewayStatus);
-    auto target_gateway_status = codec::convert(root->event_data_as_GatewayStatus());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::MarketDataStatus);
+    auto target_market_data_status = codec::convert(root->event_data_as_MarketDataStatus());
     // validate
     compare(target_source_info, source_source_info);
-    compare(target_gateway_status, source_gateway_status);
+    compare(target_market_data_status, source_market_data_status);
   }
 }
 
-TEST(flatbuffers, account_status_event) {
+TEST(flatbuffers, order_manager_status_event) {
   FlatBufferBuilder fbb;
   for (auto i = 0; i < MAX_ITERATIONS; ++i) {
     // reset
@@ -676,23 +671,23 @@ TEST(flatbuffers, account_status_event) {
     EXPECT_EQ(fbb.GetSize(), 0);
     // event (source)
     auto source_source_info = CreateRandomSourceInfo();
-    auto source_account_status = CreateRandomAccountStatus();
+    auto source_order_manager_status = CreateRandomOrderManagerStatus();
     // serialize using flatbuffers
     fbb.Finish(codec::convert2(
           fbb,
           source_source_info,
-          source_account_status));
+          source_order_manager_status));
     EXPECT_GT(fbb.GetSize(), 0);
     // copy of the buffer (just making sure...)
     std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
     // deserialize using flatbuffers
     auto root = GetRoot<schema::Event>(&buffer[0]);
     auto target_source_info = codec::convert(root->source_info());
-    EXPECT_EQ(root->event_data_type(), schema::EventData::AccountStatus);
-    auto target_account_status = codec::convert(root->event_data_as_AccountStatus());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::OrderManagerStatus);
+    auto target_order_manager_status = codec::convert(root->event_data_as_OrderManagerStatus());
     // validate
     compare(target_source_info, source_source_info);
-    compare(target_account_status, source_account_status);
+    compare(target_order_manager_status, source_order_manager_status);
   }
 }
 

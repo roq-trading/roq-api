@@ -6,18 +6,9 @@ enum ConnectionStatus:byte {
   Connected = 1
 }
 
-/// Gateway state.
-enum GatewayState:byte {
+/// Gateway status.
+enum GatewayStatus:byte {
   Disconnected = 0,
-  LoginSent = 1,
-  Downloading = 2,
-  Ready = 3,
-  LoggedOut = 4
-}
-
-/// Account state.
-enum AccountState:byte {
-  Undefined = 0,
   LoginSent = 1,
   Downloading = 2,
   Ready = 3,

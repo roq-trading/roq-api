@@ -104,13 +104,12 @@ class Controller final {
     void gateway_status(const char *gateway, const char *name) {
       auto& strategy = static_cast<Strategy&>(_strategy);
       MessageInfo message_info { .source = gateway };
-      GatewayStatus gateway_status {
-        .name = name,
-        .status = GatewayState::Ready,
+      MarketDataStatus market_data_status {
+        .status = GatewayStatus::Ready,
       };
-      strategy.on(GatewayStatusEvent {
+      strategy.on(MarketDataStatusEvent {
           .message_info = message_info,
-          .gateway_status = gateway_status
+          .market_data_status = market_data_status
           });
     }
     void market_status(

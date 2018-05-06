@@ -175,17 +175,16 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const DownloadEnd& value) {
     value.max_order_id);
 }
 
-inline flatbuffers::Offset<schema::GatewayStatus>
-convert(flatbuffers::FlatBufferBuilder& fbb, const GatewayStatus& value) {
-  return schema::CreateGatewayStatus(
+inline flatbuffers::Offset<schema::MarketDataStatus>
+convert(flatbuffers::FlatBufferBuilder& fbb, const MarketDataStatus& value) {
+  return schema::CreateMarketDataStatus(
     fbb,
-    fbb.CreateString(value.name),
     value.status);
 }
 
-inline flatbuffers::Offset<schema::AccountStatus>
-convert(flatbuffers::FlatBufferBuilder& fbb, const AccountStatus& value) {
-  return schema::CreateAccountStatus(
+inline flatbuffers::Offset<schema::OrderManagerStatus>
+convert(flatbuffers::FlatBufferBuilder& fbb, const OrderManagerStatus& value) {
+  return schema::CreateOrderManagerStatus(
     fbb,
     fbb.CreateString(value.account),
     value.status);
@@ -438,23 +437,23 @@ inline flatbuffers::Offset<schema::Event> convert2(
 inline flatbuffers::Offset<schema::Event> convert2(
     flatbuffers::FlatBufferBuilder& fbb,
     const SourceInfo& source_info,
-    const GatewayStatus& gateway_status) {
+    const MarketDataStatus& market_data_status) {
   return schema::CreateEvent(
       fbb,
       convert(fbb, source_info),
-      schema::EventData::GatewayStatus,
-      convert(fbb, gateway_status).Union());
+      schema::EventData::MarketDataStatus,
+      convert(fbb, market_data_status).Union());
 }
 
 inline flatbuffers::Offset<schema::Event> convert2(
     flatbuffers::FlatBufferBuilder& fbb,
     const SourceInfo& source_info,
-    const AccountStatus& account_status) {
+    const OrderManagerStatus& order_manager_status) {
   return schema::CreateEvent(
       fbb,
       convert(fbb, source_info),
-      schema::EventData::AccountStatus,
-      convert(fbb, account_status).Union());
+      schema::EventData::OrderManagerStatus,
+      convert(fbb, order_manager_status).Union());
 }
 
 inline flatbuffers::Offset<schema::Event> convert2(
@@ -871,15 +870,14 @@ inline DownloadEnd convert(const schema::DownloadEnd *value) {
   };
 }
 
-inline GatewayStatus convert(const schema::GatewayStatus *value) {
-  return GatewayStatus {
-    .name = value->name()->c_str(),
+inline MarketDataStatus convert(const schema::MarketDataStatus *value) {
+  return MarketDataStatus {
     .status = value->status(),
   };
 }
 
-inline AccountStatus convert(const schema::AccountStatus *value) {
-  return AccountStatus {
+inline OrderManagerStatus convert(const schema::OrderManagerStatus *value) {
+  return OrderManagerStatus {
     .account = value->account()->c_str(),
     .status = value->status(),
   };
@@ -1069,8 +1067,8 @@ class EventHandler {
   virtual void on(const HeartbeatAckEvent&) = 0;
   virtual void on(const DownloadBeginEvent&) = 0;
   virtual void on(const DownloadEndEvent&) = 0;
-  virtual void on(const GatewayStatusEvent&) = 0;
-  virtual void on(const AccountStatusEvent&) = 0;
+  virtual void on(const MarketDataStatusEvent&) = 0;
+  virtual void on(const OrderManagerStatusEvent&) = 0;
   virtual void on(const MarketByPriceEvent&) = 0;
   virtual void on(const TradeSummaryEvent&) = 0;
   virtual void on(const ReferenceDataEvent&) = 0;
@@ -1165,20 +1163,20 @@ class EventDispatcher final {
         _handler.on(event);
         break;
       }
-      case schema::EventData::GatewayStatus: {
-        auto gateway_status = convert(item.event_data_as_GatewayStatus());
-        GatewayStatusEvent event {
+      case schema::EventData::MarketDataStatus: {
+        auto market_data_status = convert(item.event_data_as_MarketDataStatus());
+        MarketDataStatusEvent event {
           .message_info = message_info,
-          .gateway_status = gateway_status,
+          .market_data_status = market_data_status,
         };
         _handler.on(event);
         break;
       }
-      case schema::EventData::AccountStatus: {
-        auto account_status = convert(item.event_data_as_AccountStatus());
-        AccountStatusEvent event {
+      case schema::EventData::OrderManagerStatus: {
+        auto order_manager_status = convert(item.event_data_as_OrderManagerStatus());
+        OrderManagerStatusEvent event {
           .message_info = message_info,
-          .account_status = account_status,
+          .order_manager_status = order_manager_status,
         };
         _handler.on(event);
         break;

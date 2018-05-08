@@ -38,7 +38,6 @@ struct Header final {
 
 const size_t HEADER_LENGTH = 21;
 const uint8_t HEADER_MAGIC[] = { 0x20, 0x18 };
-const uint8_t HEADER_FLAGS_FROM_CACHE = 0x01;
 const uint8_t HEADER_FLAGS_SKIP = 0x02;
 
 // buffer
@@ -641,7 +640,7 @@ class Encoder final {
 class Writer final {
  public:
   Writer() {}
-  void write(libevent::Buffer& buffer, const Queue& queue, bool from_cache) {
+  void write(libevent::Buffer& buffer, const Queue& queue) {
     // payload length + validate
     const auto& messages = queue.get();
     size_t payload_length = 0;
@@ -652,7 +651,7 @@ class Writer final {
       payload_length += 2 + iter.second;
     }
     // header
-    write_header(buffer, from_cache, payload_length);
+    write_header(buffer, payload_length);
     // payload
     size_t bytes = 0;
     for (const auto& iter : messages) {
@@ -662,20 +661,20 @@ class Writer final {
     }
     LOG_IF(FATAL, bytes != payload_length) << "Internal error";
   }
-  void write(libevent::Buffer& buffer, const message_t& payload, bool from_cache) {
-    write_header(buffer, from_cache, payload.second);
+  void write(libevent::Buffer& buffer, const message_t& payload) {
+    write_header(buffer, payload.second);
     buffer.add(payload.first, payload.second);
   }
 
  private:
-  void write_header(libevent::Buffer& buffer, bool from_cache, size_t payload_length) {
+  void write_header(libevent::Buffer& buffer, size_t payload_length) {
     // validate
     LOG_IF(FATAL, payload_length == 0) << "Payload length can't be zero";
     LOG_IF(FATAL, std::numeric_limits<uint16_t>::max() < payload_length) <<
         "Total length exceeds maximum";
     // fields
     uint16_t length = static_cast<uint16_t>(payload_length);
-    uint8_t flags = (from_cache ? HEADER_FLAGS_FROM_CACHE : 0);
+    uint8_t flags = 0;
     uint64_t send_time = time_point_to_uint64(
         std::chrono::system_clock::now());
     ++_seqno;
@@ -725,7 +724,6 @@ class Decoder final {
         uint16_t payload_length;
         std::memcpy(&payload_length, data + 2, 2);
         uint8_t flags = data[4];
-        bool from_cache = (flags & HEADER_FLAGS_FROM_CACHE) != 0;
         bool skip = (flags & HEADER_FLAGS_SKIP) != 0;
         uint64_t seqno;
         std::memcpy(&seqno, data + 5, 8);
@@ -737,7 +735,7 @@ class Decoder final {
         _payload_length = payload_length;
         _batch_info.seqno = seqno;
         _batch_info.send_time = uint64_to_time_point(send_time);
-        _batch_info.from_cache = from_cache;
+        _batch_info.from_cache = false;  // TODO(thraneh): review usage
         _receive_time = receive_time;
         _skip = skip;
         _is_first = true;

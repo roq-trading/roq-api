@@ -169,8 +169,7 @@ class Controller final {
         } else if (!internal && _state < Ready) {
           LOG(FATAL) << "[" << _name << "] Not ready. Unable to send the request";
         }
-        auto from_cache = false;
-        _writer.write(_write_buffer, queue, from_cache);
+        _writer.write(_write_buffer, queue);
         try {
           _buffer_event->write(_write_buffer);
           _statistics.messages_sent += queue.size();

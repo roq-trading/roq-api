@@ -131,11 +131,14 @@ std::ostream& operator<<(std::ostream& stream, const HeartbeatAck& value) {
 }
 
 std::ostream& operator<<(std::ostream& stream, const DownloadBegin& value) {
-  return stream << "{}";
+  return stream << "{"
+    "account=\"" << value.account << "\""
+    "}";
 }
 
 std::ostream& operator<<(std::ostream& stream, const DownloadEnd& value) {
   return stream << "{"
+    "account=\"" << value.account << "\", "
     "max_order_id=" << value.max_order_id <<
     "}";
 }

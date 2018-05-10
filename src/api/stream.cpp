@@ -384,14 +384,14 @@ std::ostream& operator<<(std::ostream& stream, const HeartbeatAckEvent& value) {
 std::ostream& operator<<(std::ostream& stream, const DownloadBeginEvent& value) {
   return stream << "{"
     "message_info=" << value.message_info << ", "
-    "download_begin_event=" << value.download_begin <<
+    "download_begin=" << value.download_begin <<
     "}";
 }
 
 std::ostream& operator<<(std::ostream& stream, const DownloadEndEvent& value) {
   return stream << "{"
     "message_info=" << value.message_info << ", "
-    "download_end_event=" << value.download_end <<
+    "download_end=" << value.download_end <<
     "}";
 }
 

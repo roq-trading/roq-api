@@ -35,12 +35,8 @@ inline std::string dirname(const char *path) {
   return std::string(result);
 }
 inline std::string basename(const char *path) {
-#ifdef __APPLE__
-  auto result = ::basename(path);
-#else
   std::string buffer(path);
   auto result = ::basename(&buffer.at(0));
-#endif
   if (result == nullptr)
     throw std::system_error(errno, std::system_category());
   return std::string(result);

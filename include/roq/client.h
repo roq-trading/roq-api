@@ -480,6 +480,8 @@ class Controller final {
         codec::Queue queue(_buffer);
         _encoder.encode(queue, request);
         (*iter).second->send(queue, false);
+      } else {
+        LOG(WARNING) << "Unknown gateway=\"" << gateway << "\"";
       }
     }
     void send(const CreateOrder& create_order, const std::string& gateway) override {

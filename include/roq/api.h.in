@@ -238,7 +238,7 @@ struct PositionUpdate final {
   Side side;                       ///< Side
   double position;                 ///< Current position.
   double yesterday;                ///< Position as of yesterday.
-  uint32_t last_order_id;          ///< Last order included.
+  uint32_t last_order_local_id;    ///< Last order included.
   uint32_t last_trade_id;          ///< Last trade included.
 };
 
@@ -277,7 +277,6 @@ struct TradeUpdate final {
   PositionEffect position_effect;  ///< Position effect
   const char *order_template;      ///< Order template
   time_point_t trade_time;         ///< Trade time
-  uint32_t order_local_id;         ///< Gateway order identifier.
   const char *order_external_id;   ///< External order identifier.
   const char *trade_external_id;   ///< External trade identifier
 };

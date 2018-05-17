@@ -205,7 +205,7 @@ inline PositionUpdate CreateRandomPositionUpdate() {
     .side = rand_side(),
     .position = rand_double(),
     .yesterday = rand_double(),
-    .last_order_id = rand_uint32(),
+    .last_order_local_id = rand_uint32(),
     .last_trade_id = rand_uint32(),
   };
 }
@@ -240,7 +240,6 @@ inline TradeUpdate CreateRandomTradeUpdate() {
     .position_effect = rand_position_effect(),
     .order_template = NAME[rand_uint32() % NAME_LENGTH],
     .trade_time = rand_time_point(),
-    .order_local_id = rand_uint32(),
     .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
     .trade_external_id = NAME[rand_uint32() % NAME_LENGTH],
   };
@@ -404,7 +403,7 @@ void compare(const PositionUpdate& lhs, const PositionUpdate& rhs) {
   EXPECT_EQ(lhs.side, rhs.side);
   EXPECT_EQ(lhs.position, rhs.position);
   EXPECT_EQ(lhs.yesterday, rhs.yesterday);
-  EXPECT_EQ(lhs.last_order_id, rhs.last_order_id);
+  EXPECT_EQ(lhs.last_order_local_id, rhs.last_order_local_id);
   EXPECT_EQ(lhs.last_trade_id, rhs.last_trade_id);
 }
 void compare(const OrderUpdate& lhs, const OrderUpdate& rhs) {
@@ -435,7 +434,6 @@ void compare(const TradeUpdate& lhs, const TradeUpdate& rhs) {
   EXPECT_EQ(lhs.position_effect, rhs.position_effect);
   EXPECT_STREQ(lhs.order_template, rhs.order_template);
   compare(lhs.trade_time, rhs.trade_time);
-  EXPECT_EQ(lhs.order_local_id, rhs.order_local_id);
   EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
   EXPECT_STREQ(lhs.trade_external_id, rhs.trade_external_id);
 }

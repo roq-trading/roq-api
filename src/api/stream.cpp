@@ -213,7 +213,7 @@ std::ostream& operator<<(std::ostream& stream, const PositionUpdate& value) {
     "side=" << value.side << ", "
     "position=" << Number(value.position) << ", "
     "yesterday=" << Number(value.yesterday) << ", "
-    "last_order_id=" << value.last_order_id << ", "
+    "last_order_local_id=" << value.last_order_local_id << ", "
     "last_trade_id=" << value.last_trade_id <<
     "}";
 }
@@ -250,7 +250,6 @@ std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value) {
     "position_effect=" << value.position_effect << ", "
     "order_template=\"" << value.order_template << "\", "
     "trade_time=" << value.trade_time << ", "
-    "order_local_id=" << value.order_local_id << ", "
     "order_external_id=\"" << value.order_external_id << "\", "
     "trade_external_id=\"" << value.trade_external_id << "\""
     "}";

@@ -234,7 +234,6 @@ class Controller final {
         .order_template = create_order.order_template,
         .trade_time = std::chrono::time_point_cast<duration_t>(
             std::chrono::system_clock::time_point()),
-        .order_local_id = 0,
         .order_external_id = "",
         .trade_external_id = "",
       };

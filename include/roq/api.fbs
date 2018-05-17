@@ -107,7 +107,7 @@ table PositionUpdate {
   side:Side;
   position:double;
   yesterday:double;
-  last_order_id:uint;
+  last_order_local_id:uint;
   last_trade_id:uint;
 }
 
@@ -140,7 +140,6 @@ table TradeUpdate {
   position_effect:PositionEffect;
   order_template:string;
   trade_time:ulong;
-  order_local_id:uint;
   order_external_id:string;
   trade_external_id:string;
 }

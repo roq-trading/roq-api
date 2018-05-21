@@ -331,7 +331,7 @@ class Controller final {
         LOG(FATAL) << "[" << _name << "] HeartbeatEvent " << event;
       }
       void on(const HeartbeatAckEvent& event) final {
-        VLOG(1) << "[" << _name << "] HeartbeatAckEvent " << event;
+        VLOG(2) << "[" << _name << "] HeartbeatAckEvent " << event;
         const auto& heartbeat_ack = event.heartbeat_ack;
         std::chrono::steady_clock::time_point start(
             std::chrono::duration_cast<std::chrono::steady_clock::duration>(

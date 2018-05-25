@@ -74,14 +74,11 @@ static TradingStatus rand_trading_status() {
 static OrderStatus rand_order_status() {
   return static_cast<OrderStatus>(rand_uint32() % static_cast<uint32_t>(OrderStatus::MAX));
 }
-static std::vector<std::string> rand_vector_string(size_t max_length = 100) {
+static std::unordered_set<std::string> rand_set_string(size_t max_length = 100) {
+  std::unordered_set<std::string> result;
   auto length = rand_uint32() % max_length;
-  std::vector<std::string> result(length);
-  if (length != 0) {
-    result.resize(length);
-    for (auto i = 0; i < length; ++i)
-      result[i] = NAME[rand_uint32() % NAME_LENGTH];
-  }
+  for (auto i = 0; i < length; ++i)
+    result.emplace(NAME[rand_uint32() % NAME_LENGTH]);
   return result;
 }
 }  // namespace
@@ -102,8 +99,8 @@ inline Handshake CreateRandomHandshake() {
     .uuid = NAME[rand_uint32() % NAME_LENGTH],
     .login = NAME[rand_uint32() % NAME_LENGTH],
     .password = NAME[rand_uint32() % NAME_LENGTH],
-    .subscriptions = rand_vector_string(),
-    .accounts = rand_vector_string(),
+    .symbols = rand_set_string(),
+    .accounts = rand_set_string(),
   };
 }
 inline HandshakeAck CreateRandomHandshakeAck() {
@@ -319,11 +316,13 @@ void compare(time_point_t lhs, time_point_t rhs) {
   EXPECT_EQ(lhs_adj, rhs_adj);
 }
 void compare(
-    const std::vector<std::string>& lhs,
-    const std::vector<std::string>& rhs) {
+    const std::unordered_set<std::string>& lhs,
+    const std::unordered_set<std::string>& rhs) {
   EXPECT_EQ(lhs.size(), rhs.size());
-  for (auto i = 0; i < lhs.size(); ++i)
-    EXPECT_EQ(lhs[i], rhs[i]);
+  for (const auto& iter : lhs) {
+    auto match = rhs.find(iter);
+    EXPECT_TRUE(match != rhs.end());
+  }
 }
 void compare(const SourceInfo& lhs, const SourceInfo& rhs) {
   EXPECT_EQ(lhs.seqno, rhs.seqno);
@@ -337,7 +336,7 @@ void compare(const Handshake& lhs, const Handshake& rhs) {
   EXPECT_STREQ(lhs.uuid, rhs.uuid);
   EXPECT_STREQ(lhs.login, rhs.login);
   EXPECT_STREQ(lhs.password, rhs.password);
-  compare(lhs.subscriptions, rhs.subscriptions);
+  compare(lhs.symbols, rhs.symbols);
   compare(lhs.accounts, rhs.accounts);
 }
 void compare(const HandshakeAck& lhs, const HandshakeAck& rhs) {

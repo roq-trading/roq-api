@@ -8,7 +8,8 @@
 #include <map>
 #include <string>
 #include <utility>
-#include <vector>
+#include <unordered_map>
+#include <unordered_set>
 
 /**
  * API version.
@@ -72,16 +73,15 @@ struct MessageInfo final {
  * Sent by the client immediately following successful connection.
  */
 struct Handshake final {
-  const char *api_version;  ///< ROQ_VERSION
-  const char *application;  ///< Application descriptive name.
-  const char *hostname;     ///< Descriptive hostname.
-  uint32_t pid;             ///< Process identifier.
-  const char *uuid;         ///< GUID uniquely identifying the client process.
-  const char *login;        ///< Login name.
-  const char *password;     ///< Login password.
-  // FIXME(thraneh): experimental
-  std::vector<std::string> subscriptions;
-  std::vector<std::string> accounts;
+  const char *api_version;                   ///< ROQ_VERSION
+  const char *application;                   ///< Application descriptive name.
+  const char *hostname;                      ///< Descriptive hostname.
+  uint32_t pid;                              ///< Process identifier.
+  const char *uuid;                          ///< GUID uniquely identifying the client process.
+  const char *login;                         ///< Login name.
+  const char *password;                      ///< Login password.
+  std::unordered_set<std::string> symbols;   ///< Symbols.
+  std::unordered_set<std::string> accounts;  ///< Accounts.
 };
 
 /**
@@ -552,6 +552,20 @@ struct CancelOrderAckEvent final {
 };
 
 /**
+ * Subscription.
+ */
+struct Subscription final {
+  std::unordered_set<std::string> accounts;
+  std::unordered_map<std::string,
+    std::unordered_set<std::string> > symbols_by_exchange;
+};
+
+/**
+ * Subscriptions (by gateway).
+ */
+typedef std::unordered_map<std::string, Subscription> Subscriptions;
+
+/**
  * Strategy interface.
  */
 class Strategy {
@@ -584,29 +598,25 @@ class Strategy {
     virtual void send(const CancelOrder& cancel_order, const std::string& gateway) = 0;
   };
   virtual ~Strategy() = default;
-  typedef std::vector<std::string> symbols_t;
-  typedef std::map<std::string, symbols_t> exchanges_t;
-  typedef std::map<std::string, exchanges_t> subscriptions_t;
-  virtual const subscriptions_t& get_subscriptions() const = 0;
-  virtual const std::vector<std::string>& get_accounts() const = 0;
-  virtual void on(const TimerEvent&) = 0;               ///< Timer (internal notification, do *not* rely on accuracy!)
-  virtual void on(const ConnectionStatusEvent&) = 0;    ///< The connection status has changed (internal notification)
-  virtual void on(const BatchBeginEvent&) = 0;          ///< Batch begin
-  virtual void on(const BatchEndEvent&) = 0;            ///< Batch end
-  virtual void on(const MarketDataStatusEvent&) = 0;    ///< Connection or login status has changed
-  virtual void on(const OrderManagerStatusEvent&) = 0;  ///< Connection or login status has changed
-  virtual void on(const DownloadBeginEvent&) = 0;       ///< Download begin
-  virtual void on(const DownloadEndEvent&) = 0;         ///< Download end
-  virtual void on(const ReferenceDataEvent&) = 0;       ///< Reference data update for a symbol
-  virtual void on(const MarketStatusEvent&) = 0;        ///< Market status update for a symbol
-  virtual void on(const MarketByPriceEvent&) = 0;       ///< Market-by-price update for a symbol
-  virtual void on(const TradeSummaryEvent&) = 0;        ///< Trade summary update for a symbol
-  virtual void on(const PositionUpdateEvent&) = 0;      ///< Position update
-  virtual void on(const OrderUpdateEvent&) = 0;         ///< New order, or order details have been updated
-  virtual void on(const TradeUpdateEvent&) = 0;         ///< New trade, or trade details have been updated
-  virtual void on(const CreateOrderAckEvent&) = 0;      ///< Response to a create order request
-  virtual void on(const ModifyOrderAckEvent&) = 0;      ///< Response to a modify order request
-  virtual void on(const CancelOrderAckEvent&) = 0;      ///< Response to a cancel order request
+  virtual const Subscriptions& get_subscriptions() const = 0;  ///< Subscriptions
+  virtual void on(const TimerEvent&) = 0;                      ///< Timer (internal notification, do *not* rely on accuracy!)
+  virtual void on(const ConnectionStatusEvent&) = 0;           ///< The connection status has changed (internal notification)
+  virtual void on(const BatchBeginEvent&) = 0;                 ///< Batch begin
+  virtual void on(const BatchEndEvent&) = 0;                   ///< Batch end
+  virtual void on(const MarketDataStatusEvent&) = 0;           ///< Connection or login status has changed
+  virtual void on(const OrderManagerStatusEvent&) = 0;         ///< Connection or login status has changed
+  virtual void on(const DownloadBeginEvent&) = 0;              ///< Download begin
+  virtual void on(const DownloadEndEvent&) = 0;                ///< Download end
+  virtual void on(const ReferenceDataEvent&) = 0;              ///< Reference data update for a symbol
+  virtual void on(const MarketStatusEvent&) = 0;               ///< Market status update for a symbol
+  virtual void on(const MarketByPriceEvent&) = 0;              ///< Market-by-price update for a symbol
+  virtual void on(const TradeSummaryEvent&) = 0;               ///< Trade summary update for a symbol
+  virtual void on(const PositionUpdateEvent&) = 0;             ///< Position update
+  virtual void on(const OrderUpdateEvent&) = 0;                ///< New order, or order details have been updated
+  virtual void on(const TradeUpdateEvent&) = 0;                ///< New trade, or trade details have been updated
+  virtual void on(const CreateOrderAckEvent&) = 0;             ///< Response to a create order request
+  virtual void on(const ModifyOrderAckEvent&) = 0;             ///< Response to a modify order request
+  virtual void on(const CancelOrderAckEvent&) = 0;             ///< Response to a cancel order request
 };
 
 /**

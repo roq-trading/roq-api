@@ -20,11 +20,20 @@ struct Vector {
   const std::vector<T>& _value;
 };
 
+template <typename T>
+struct Set {
+  explicit Set(const std::unordered_set<T>& value) : _value(value) {}
+  const std::unordered_set<T>& _value;
+};
+
 std::ostream& operator<<(std::ostream& stream, time_point_t value);
 std::ostream& operator<<(std::ostream& stream, const Number value);
 
 template <typename T>
 std::ostream& operator<<(std::ostream& stream, const Vector<T> value);
+
+template <typename T>
+std::ostream& operator<<(std::ostream& stream, const Set<T> value);
 
 std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value);
 std::ostream& operator<<(std::ostream& stream, const GatewayStatus value);

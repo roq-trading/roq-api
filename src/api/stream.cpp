@@ -54,6 +54,32 @@ std::ostream& operator<<(std::ostream& stream, const Vector<std::string> value) 
   return stream << "]";
 }
 
+template <typename T>
+std::ostream& operator<<(std::ostream& stream, const Set<T> value) {
+  stream << "[";
+  bool insert_delimiter = false;
+  for (const auto& iter : value._value) {
+    if (insert_delimiter)
+      stream << ", ";
+    stream << iter;
+    insert_delimiter = true;
+  }
+  return stream << "]";
+}
+
+template <>
+std::ostream& operator<<(std::ostream& stream, const Set<std::string> value) {
+  stream << "[";
+  bool insert_delimiter = false;
+  for (const auto& iter : value._value) {
+    if (insert_delimiter)
+      stream << ", ";
+    stream << "\"" << iter << "\"";
+    insert_delimiter = true;
+  }
+  return stream << "]";
+}
+
 std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value) {
   return stream << EnumNameConnectionStatus(value);
 }
@@ -110,8 +136,8 @@ std::ostream& operator<<(std::ostream& stream, const Handshake& value) {
     "uuid=\"" << value.uuid << "\", "
     "login=\"" << value.login << "\", "
     "password=" << PASSWORD << ", "
-    "subscriptions=" << Vector<decltype(value.subscriptions)::value_type>(value.subscriptions) << ", "
-    "accounts=" << Vector<decltype(value.accounts)::value_type>(value.accounts) <<
+    "symbols=" << Set<decltype(value.symbols)::value_type>(value.symbols) << ", "
+    "accounts=" << Set<decltype(value.accounts)::value_type>(value.accounts) <<
     "}";
 }
 

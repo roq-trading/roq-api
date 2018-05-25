@@ -226,9 +226,16 @@ class Controller final {
           .uuid = _uuid.c_str(),
           .login = _connection.get_user().c_str(),
           .password = _connection.get_password().c_str(),
-          .subscriptions = {},  // TODO(thraneh): how to get from the strategy?
-          .accounts = _strategy.get_accounts(),
         };
+        const auto& subscriptions = _strategy.get_subscriptions();
+        const auto iter = subscriptions.find(_name);
+        if (iter != subscriptions.end()) {
+          const auto& subscription = (*iter).second;
+          for (const auto& symbols : subscription.symbols_by_exchange)
+            for (const auto& symbol : symbols.second)
+              handshake.symbols.emplace(symbol);
+          handshake.accounts = subscription.accounts;
+        }
         codec::Queue queue(_buffer);
         _encoder.encode(queue, handshake);
         send(queue, true);

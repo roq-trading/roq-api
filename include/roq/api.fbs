@@ -15,7 +15,7 @@ table Handshake {
   uuid:string;
   login:string;
   password:string;
-  subscriptions:[string];
+  symbols:[string];
   accounts:[string];
 }
 

@@ -250,8 +250,8 @@ class Controller final {
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
     Dispatcher(
-      _generators,
       _gateway,
+      _generators,
       std::forward<Args>(args)...).dispatch();
   }
 
@@ -264,11 +264,12 @@ class Controller final {
    public:
     template <typename... Args>
     explicit Dispatcher(
+        const std::string& name,
         generators_t& generators,
-        const std::string& gateway,
         Args&&... args)
-        : _generators(generators),
-          _matcher(*this, gateway),
+        : _name(name),
+          _generators(generators),
+          _matcher(*this, name),
           _strategy(*this, std::forward<Args>(args)...) {}
     void dispatch() {
       initialize();
@@ -289,51 +290,60 @@ class Controller final {
     void initialize() {
       auto& strategy = static_cast<Strategy&>(_strategy);
       const auto& subscriptions = strategy.get_subscriptions();
-      for (const auto& iter_1 : subscriptions) {
-        const auto& gateway = iter_1.first.c_str();
-        const auto& tmp_1 = iter_1.second;
-        download_begin_event(gateway);
-        gateway_status(gateway, "MDUser");  // FIXME(thraneh): clean up!
-        gateway_status(gateway, "Trader");  // FIXME(thraneh): clean up!
-        for (const auto& iter_2 : tmp_1) {
-          const auto& exchange = iter_2.first.c_str();
-          const auto& tmp_2 = iter_2.second;
-          for (const auto& iter_3 : tmp_2) {
-            auto symbol = iter_3.c_str();
+      // download per gateway ...
+      for (const auto& iter : subscriptions) {
+        const auto& gateway = iter.first;
+        const auto& subscription = iter.second;
+        // ... reference data
+        download_begin_event(gateway, "");
+        for (const auto& symbols : subscription.symbols_by_exchange) {
+          const auto& exchange = symbols.first;
+          for (const auto& symbol : symbols.second)
             market_status(gateway, exchange, symbol);
-          }
         }
-        download_end_event(gateway);
+        download_end_event(gateway, "");
+        // ... accounts (order manager)
+        for (const auto& account : subscription.accounts) {
+          order_manager_status(gateway, account);
+        }
+        // ... market data
+        market_data_status(gateway);
       }
     }
-    void download_begin_event(const char *gateway) {
-      auto& strategy = static_cast<Strategy&>(_strategy);
+    void download_begin_event(
+        const std::string& gateway,
+        const std::string& account) {
       auto message_info = MessageInfo {
-        .source = gateway
+        .source = gateway.c_str(),
       };
-      auto download_begin = DownloadBegin {};
+      auto download_begin = DownloadBegin {
+        .account = account.c_str(),
+      };
       auto event = DownloadBeginEvent {
         .message_info = message_info,
         .download_begin = download_begin
       };
       static_cast<Strategy&>(_strategy).on(event);
     }
-    void download_end_event(const char *gateway) {
-      auto& strategy = static_cast<Strategy&>(_strategy);
+    void download_end_event(
+        const std::string& gateway,
+        const std::string& account) {
       auto message_info = MessageInfo {
-        .source = gateway
+        .source = gateway.c_str(),
       };
-      auto download_end = DownloadEnd {};
+      auto download_end = DownloadEnd {
+        .account = account.c_str(),
+      };
       auto event = DownloadEndEvent {
         .message_info = message_info,
         .download_end = download_end
       };
       static_cast<Strategy&>(_strategy).on(event);
     }
-    void gateway_status(const char *gateway, const char *name) {
-      auto& strategy = static_cast<Strategy&>(_strategy);
+    void market_data_status(
+        const std::string& gateway) {
       auto message_info = MessageInfo {
-        .source = gateway
+        .source = gateway.c_str(),
       };
       auto market_data_status = MarketDataStatus {
         .status = GatewayStatus::Ready,
@@ -344,17 +354,32 @@ class Controller final {
       };
       static_cast<Strategy&>(_strategy).on(event);
     }
-    void market_status(
-        const char *gateway,
-        const char *exchange,
-        const char *symbol) {
-      auto& strategy = static_cast<Strategy&>(_strategy);
+    void order_manager_status(
+        const std::string& gateway,
+        const std::string& account) {
       auto message_info = MessageInfo {
-        .source = gateway
+        .source = gateway.c_str(),
+      };
+      auto order_manager_status = OrderManagerStatus {
+        .account = account.c_str(),
+        .status = GatewayStatus::Ready,
+      };
+      auto event = OrderManagerStatusEvent {
+        .message_info = message_info,
+        .order_manager_status = order_manager_status
+      };
+      static_cast<Strategy&>(_strategy).on(event);
+    }
+    void market_status(
+        const std::string& gateway,
+        const std::string& exchange,
+        const std::string& symbol) {
+      auto message_info = MessageInfo {
+        .source = gateway.c_str(),
       };
       auto market_status = MarketStatus {
-        .exchange = exchange,
-        .symbol = symbol,
+        .exchange = exchange.c_str(),
+        .symbol = symbol.c_str(),
         .trading_status = TradingStatus::Open,
       };
       auto event = MarketStatusEvent {
@@ -416,6 +441,7 @@ class Controller final {
     void operator=(const Dispatcher&) = delete;
 
    private:
+    const std::string _name;
     T _strategy;
     generators_t& _generators;
     M _matcher;

@@ -30,6 +30,21 @@ inline time_point_t uint64_to_time_point(uint64_t microseconds) {
   return time_point_t(duration);
 }
 
+// vector utilities
+
+inline flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String> > >
+create_vector_of_string(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const std::unordered_set<std::string>& value) {
+  std::vector<std::string> tmp;
+  if (!value.empty()) {
+    tmp.reserve(value.size());
+    for (const auto& iter : value)
+      tmp.emplace_back(iter);
+  }
+  return fbb.CreateVectorOfStrings(tmp);
+}
+
 // header
 
 struct Header final {
@@ -124,8 +139,8 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const Handshake& value) {
     fbb.CreateString(value.uuid),
     fbb.CreateString(value.login),
     fbb.CreateString(value.password),
-    fbb.CreateVectorOfStrings(value.subscriptions),
-    fbb.CreateVectorOfStrings(value.accounts));
+    create_vector_of_string(fbb, value.symbols),
+    create_vector_of_string(fbb, value.accounts));
 }
 
 inline flatbuffers::Offset<schema::HandshakeAck>
@@ -817,18 +832,12 @@ inline Handshake convert(const schema::Handshake *value) {
     .login = value->login()->c_str(),
     .password = value->password()->c_str(),
   };
-  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String> > *subscriptions = value->subscriptions();
-  auto length_subscriptions = subscriptions->Length();
-  result.subscriptions.reserve(length_subscriptions);
-  for (auto i = 0; i < length_subscriptions; ++i) {
-    result.subscriptions.push_back((*subscriptions)[i]->c_str());
-  }
-  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String> > *accounts = value->accounts();
-  auto length_accounts = accounts->Length();
-  result.accounts.reserve(length_accounts);
-  for (auto i = 0; i < length_accounts; ++i) {
-    result.accounts.push_back((*accounts)[i]->c_str());
-  }
+  const auto& symbols = *(value->symbols());
+  for (auto i = 0; i < symbols.Length(); ++i)
+    result.symbols.emplace(symbols[i]->c_str());
+  const auto& accounts = *(value->accounts());
+  for (auto i = 0; i < accounts.Length(); ++i)
+    result.accounts.emplace(accounts[i]->c_str());
   return result;
 }
 

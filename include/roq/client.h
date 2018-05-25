@@ -227,6 +227,7 @@ class Controller final {
           .login = _connection.get_user().c_str(),
           .password = _connection.get_password().c_str(),
           .subscriptions = {},  // TODO(thraneh): how to get from the strategy?
+          .accounts = _strategy.get_accounts(),
         };
         codec::Queue queue(_buffer);
         _encoder.encode(queue, handshake);

@@ -103,6 +103,7 @@ inline Handshake CreateRandomHandshake() {
     .login = NAME[rand_uint32() % NAME_LENGTH],
     .password = NAME[rand_uint32() % NAME_LENGTH],
     .subscriptions = rand_vector_string(),
+    .accounts = rand_vector_string(),
   };
 }
 inline HandshakeAck CreateRandomHandshakeAck() {
@@ -317,6 +318,13 @@ void compare(time_point_t lhs, time_point_t rhs) {
       codec::time_point_to_uint64(rhs));
   EXPECT_EQ(lhs_adj, rhs_adj);
 }
+void compare(
+    const std::vector<std::string>& lhs,
+    const std::vector<std::string>& rhs) {
+  EXPECT_EQ(lhs.size(), rhs.size());
+  for (auto i = 0; i < lhs.size(); ++i)
+    EXPECT_EQ(lhs[i], rhs[i]);
+}
 void compare(const SourceInfo& lhs, const SourceInfo& rhs) {
   EXPECT_EQ(lhs.seqno, rhs.seqno);
   compare(lhs.create_time, rhs.create_time);
@@ -329,7 +337,8 @@ void compare(const Handshake& lhs, const Handshake& rhs) {
   EXPECT_STREQ(lhs.uuid, rhs.uuid);
   EXPECT_STREQ(lhs.login, rhs.login);
   EXPECT_STREQ(lhs.password, rhs.password);
-  // TODO(thraneh): subscriptions
+  compare(lhs.subscriptions, rhs.subscriptions);
+  compare(lhs.accounts, rhs.accounts);
 }
 void compare(const HandshakeAck& lhs, const HandshakeAck& rhs) {
   EXPECT_STREQ(lhs.api_version, rhs.api_version);

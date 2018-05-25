@@ -81,6 +81,7 @@ struct Handshake final {
   const char *password;     ///< Login password.
   // FIXME(thraneh): experimental
   std::vector<std::string> subscriptions;
+  std::vector<std::string> accounts;
 };
 
 /**
@@ -587,6 +588,7 @@ class Strategy {
   typedef std::map<std::string, symbols_t> exchanges_t;
   typedef std::map<std::string, exchanges_t> subscriptions_t;
   virtual const subscriptions_t& get_subscriptions() const = 0;
+  virtual const std::vector<std::string>& get_accounts() const = 0;
   virtual void on(const TimerEvent&) = 0;               ///< Timer (internal notification, do *not* rely on accuracy!)
   virtual void on(const ConnectionStatusEvent&) = 0;    ///< The connection status has changed (internal notification)
   virtual void on(const BatchBeginEvent&) = 0;          ///< Batch begin

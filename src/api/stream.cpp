@@ -41,6 +41,19 @@ std::ostream& operator<<(std::ostream& stream, const Vector<T> value) {
   return stream << "]";
 }
 
+template <>
+std::ostream& operator<<(std::ostream& stream, const Vector<std::string> value) {
+  stream << "[";
+  bool insert_delimiter = false;
+  for (const auto& iter : value._value) {
+    if (insert_delimiter)
+      stream << ", ";
+    stream << "\"" << iter << "\"";
+    insert_delimiter = true;
+  }
+  return stream << "]";
+}
+
 std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value) {
   return stream << EnumNameConnectionStatus(value);
 }
@@ -97,7 +110,8 @@ std::ostream& operator<<(std::ostream& stream, const Handshake& value) {
     "uuid=\"" << value.uuid << "\", "
     "login=\"" << value.login << "\", "
     "password=" << PASSWORD << ", "
-    "subscriptions=" << Vector<decltype(value.subscriptions)::value_type>(value.subscriptions) <<
+    "subscriptions=" << Vector<decltype(value.subscriptions)::value_type>(value.subscriptions) << ", "
+    "accounts=" << Vector<decltype(value.accounts)::value_type>(value.accounts) <<
     "}";
 }
 

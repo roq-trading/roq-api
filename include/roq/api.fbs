@@ -16,6 +16,7 @@ table Handshake {
   login:string;
   password:string;
   subscriptions:[string];
+  accounts:[string];
 }
 
 table HandshakeAck {

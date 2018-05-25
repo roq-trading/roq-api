@@ -599,8 +599,8 @@ class Strategy {
   };
   virtual ~Strategy() = default;
   virtual const Subscriptions& get_subscriptions() const = 0;  ///< Subscriptions
-  virtual void on(const TimerEvent&) = 0;                      ///< Timer (internal notification, do *not* rely on accuracy!)
-  virtual void on(const ConnectionStatusEvent&) = 0;           ///< The connection status has changed (internal notification)
+  virtual void on(const TimerEvent&) = 0;                      ///< Timer
+  virtual void on(const ConnectionStatusEvent&) = 0;           ///< The connection status has changed
   virtual void on(const BatchBeginEvent&) = 0;                 ///< Batch begin
   virtual void on(const BatchEndEvent&) = 0;                   ///< Batch end
   virtual void on(const MarketDataStatusEvent&) = 0;           ///< Connection or login status has changed

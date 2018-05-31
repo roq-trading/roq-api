@@ -34,9 +34,14 @@ namespace client {
 //   tcp   address=hostname:port
 class Connection final {
  public:
-  Connection(const std::string& address,
-      const std::string& user, const std::string& password)
-      : _address(address), _user(user), _password(password) {}
+  Connection(
+      const std::string& address,
+      const std::string& user,
+      const std::string& password)
+      : _address(address),
+        _user(user),
+        _password(password) {
+  }
   static Connection create(const std::string& connection_string) {
     size_t offset = 0;
     std::string user, password;
@@ -61,7 +66,7 @@ class Connection final {
       if (colon != std::string::npos)
         throw std::runtime_error("Expected hostname:port");
       std::string hostname(connection_string, offset, colon - offset);
-      auto port = atoi(connection_string.data() + colon + 1);
+      auto port = std::atoi(connection_string.data() + colon + 1);
       throw std::runtime_error("Not implemented");
     }
   }
@@ -131,26 +136,39 @@ class Controller final {
     // Gateway
     class Gateway final : public codec::EventHandler {
      public:
-      Gateway(const std::string& name, const Connection& connection,
-              Strategy& strategy, libevent::Base& base,
-              codec::Buffer& buffer, codec::Encoder& encoder,
-              Statistics& statistics,
-              std::unordered_set<Gateway *>& callbacks,
-              std::string& uuid)
-          : _name(name), _connection(connection), _strategy(strategy),
-            _base(base), _buffer(buffer), _encoder(encoder),
+      Gateway(
+          const std::string& name,
+          const Connection& connection,
+          codec::Protocol& protocol,
+          Strategy& strategy,
+          libevent::Base& base,
+          codec::Buffer& buffer,
+          codec::Encoder& encoder,
+          Statistics& statistics,
+          std::unordered_set<Gateway *>& callbacks,
+          std::string& uuid)
+          : _name(name),
+            _connection(connection),
+            _protocol(protocol),
+            _strategy(strategy),
+            _base(base),
+            _buffer(buffer),
+            _encoder(encoder),
             _statistics(statistics),
             _event_dispatcher(*this),
             _event_decoder(_event_dispatcher),
-            _callbacks(callbacks), _state(Disconnected),
-            _retries(0), _retry_timer(0),
+            _callbacks(callbacks),
+            _state(Disconnected),
+            _retries(0),
+            _retry_timer(0),
             _uuid(uuid) {
       }
       bool ready() const {
         return _state == Ready;
       }
       bool refresh() {
-        LOG_IF(FATAL, _retry_timer < 0) << "Retry timer should never become negative";
+        LOG_IF(FATAL, _retry_timer < 0) <<
+          "Retry timer should never become negative";
         if (_retry_timer > 0 && 0 != --_retry_timer)
           return false;
         switch (_state) {
@@ -165,33 +183,42 @@ class Controller final {
       }
       void send(codec::Queue& queue, bool internal) {
         if (_state < Connected) {
-          LOG(FATAL) << "[" << _name << "] Not connected. Unable to send the request";
+          LOG(FATAL) << "[" << _name << "] "
+            "Not connected. Unable to send the request";
         } else if (!internal && _state < Ready) {
-          LOG(FATAL) << "[" << _name << "] Not ready. Unable to send the request";
+          LOG(FATAL) << "[" << _name << "] "
+            "Not ready. Unable to send the request";
         }
         _writer.write(_write_buffer, queue);
+        send();
+        _statistics.messages_sent += queue.size();
+      }
+      void send() {
         try {
           _buffer_event->write(_write_buffer);
-          _statistics.messages_sent += queue.size();
         } catch (libevent::RuntimeError& e) {
-          LOG(WARNING) << "[" << _name << "] Caught exception, what=\"" << e.what() << "\"";
+          LOG(WARNING) << "[" << _name << "] "
+            "Caught exception, what=\"" << e.what() << "\"";
           write_failed();
           ++_statistics.connections_failed;
-          LOG(WARNING) << "[" << _name << "] Failed write attempt. Unable to send the request";
+          LOG(WARNING) << "[" << _name << "] "
+            "Failed write attempt. Unable to send the request";
           throw std::runtime_error("Unable to send the request");
         }
       }
 
      private:
       bool try_connect() {
-        LOG(INFO) << "[" << _name << "] Connecting to " << _connection.get_address().to_string();
+        LOG(INFO) << "[" << _name << "] Connecting to " <<
+          _connection.get_address().to_string();
         increment_retries();
         try {
           connect();
           _state = Connecting;
           return true;  // remove
         } catch (libevent::RuntimeError& e) {
-          LOG(WARNING) << "[" << _name << "] Caught exception, what=\"" << e.what() << "\"";
+          LOG(WARNING) << "[" << _name << "] "
+            "Caught exception, what=\"" << e.what() << "\"";
           reset_retry_timer();
           return false;
         }
@@ -216,6 +243,10 @@ class Controller final {
         VLOG(1) << "[" << _name << "] ConnectionStatusEvent " << event;
         _strategy.on(event);
         ++_statistics.connections_succeeded;
+        // stream is initialized using our magic protocol header
+        _protocol.write(_write_buffer);
+        send();
+        // immediately followed by a handhshake
         auto application = platform::get_program();
         auto hostname = platform::get_hostname();
         Handshake handshake {
@@ -248,10 +279,12 @@ class Controller final {
           .source = _name.c_str(),
             .connection_status = ConnectionStatus::Disconnected,
           };
-          VLOG(1) << "[" << _name << "] ConnectionStatusEvent " << event;
+          VLOG(1) << "[" << _name << "] "
+            "ConnectionStatusEvent " << event;
           _strategy.on(event);
         } else {
-          LOG(INFO) << "[" << _name << "] Connection attempt " << _retries << " failed";
+          LOG(INFO) << "[" << _name << "] "
+            "Connection attempt " << _retries << " failed";
         }
         _state = Failed;
         schedule_async_callback();
@@ -273,13 +306,15 @@ class Controller final {
       void reset_retry_timer() {
         const int delay[8] = { 1, 1, 1, 2, 2, 5, 5, 10 };
         _retry_timer = delay[std::min(_retries, static_cast<int>((sizeof(delay) / sizeof(delay[0])) - 1))];
-        LOG(INFO) << "[" << _name << "] Retrying in " << _retry_timer << " second(s)";
+        LOG(INFO) << "[" << _name << "] "
+          "Retrying in " << _retry_timer << " second(s)";
       }
       void reset_buffers() {
         _buffer_event.release();
         _read_buffer.drain(_read_buffer.length());
         _write_buffer.drain(_write_buffer.length());
         _event_decoder.reset();
+        _ready = false;
       }
       void schedule_async_callback() {
         _callbacks.insert(this);
@@ -306,6 +341,13 @@ class Controller final {
       }
       void on_read() {
         _buffer_event->read(_read_buffer);
+        if (!_ready) {
+          if (_read_buffer.length() < _protocol.size())
+            return;
+          if (!_protocol.verify(_read_buffer))
+            throw std::runtime_error("Incompatible protocol");
+          _ready = true;
+        }
         auto messages = _event_decoder.dispatch(_read_buffer, _name.c_str());
         if (messages)
           _statistics.messages_received += messages;
@@ -332,7 +374,8 @@ class Controller final {
             "Terminating now!";
           std::exit(EXIT_FAILURE);
         }
-        LOG(INFO) << "[" << _name << "] Communication channel has been created";
+        LOG(INFO) << "[" << _name << "] "
+          "Communication channel has been created";
         _state = Ready;
       }
       void on(const HeartbeatEvent& event) final {
@@ -347,7 +390,8 @@ class Controller final {
         auto latency = std::chrono::duration_cast<std::chrono::microseconds>(
             std::chrono::steady_clock::now() - start).count();
         // TODO(thraneh): record statistics
-        VLOG(2) << "[" << _name << "] Latency = " << latency << " usecs (round-trip)";
+        VLOG(2) << "[" << _name << "] "
+          "Latency = " << latency << " usecs (round-trip)";
       }
       void on(const DownloadBeginEvent& event) final {
         VLOG(1) << "[" << _name << "] DownloadBeginEvent " << event;
@@ -424,6 +468,7 @@ class Controller final {
       const std::string _name;
       const Connection& _connection;
       Strategy& _strategy;
+      codec::Protocol& _protocol;
       libevent::Base& _base;
       codec::Buffer& _buffer;
       codec::Encoder& _encoder;
@@ -440,13 +485,13 @@ class Controller final {
         Connecting,
         Connected,
         Handshaking,
-        // Downloading,  // HANS
         Ready,
         Failed
       } _state;
       int _retries;
       int _retry_timer;
       std::string _uuid;
+      bool _ready = false;
     };  // Gateway
 
    private:
@@ -460,7 +505,9 @@ class Controller final {
 
    public:
     template <typename... Args>
-    explicit Dispatcher(const gateways_t& gateways, Args&&... args)
+    explicit Dispatcher(
+        const gateways_t& gateways,
+        Args&&... args)
         : _strategy(*this, std::forward<Args>(args)...),  // request handler, then whatever the strategy needs
           _timer(_base, EV_PERSIST, [this](){ on_timer(); }),
           _next_refresh(std::chrono::steady_clock::now() + std::chrono::seconds(1)),
@@ -468,8 +515,17 @@ class Controller final {
           _encoder(_seqno, _fbb),
           _uuid(create_uuid()) {
       for (const auto& iter : gateways) {
-        _gateways.emplace_back(iter.first,
-            iter.second, _strategy, _base, _buffer, _encoder, _statistics, _callbacks, _uuid);
+        _gateways.emplace_back(
+            iter.first,
+            iter.second,
+            _protocol,
+            _strategy,
+            _base,
+            _buffer,
+            _encoder,
+            _statistics,
+            _callbacks,
+            _uuid);
         Gateway& gateway = _gateways.back();
         _gateways_by_name[iter.first] = &gateway;
         _callbacks.insert(&gateway);
@@ -492,13 +548,19 @@ class Controller final {
         LOG(WARNING) << "Unknown gateway=\"" << gateway << "\"";
       }
     }
-    void send(const CreateOrder& create_order, const std::string& gateway) override {
+    void send(
+        const CreateOrder& create_order,
+        const std::string& gateway) override {
       send_helper(create_order, gateway);
     }
-    void send(const ModifyOrder& modify_order, const std::string& gateway) override {
+    void send(
+        const ModifyOrder& modify_order,
+        const std::string& gateway) override {
       send_helper(modify_order, gateway);
     }
-    void send(const CancelOrder& cancel_order, const std::string& gateway) override {
+    void send(
+        const CancelOrder& cancel_order,
+        const std::string& gateway) override {
       send_helper(cancel_order, gateway);
     }
     void on_timer() {
@@ -572,6 +634,7 @@ class Controller final {
     void operator=(const Dispatcher&) = delete;
 
    private:
+    codec::Protocol _protocol;
     T _strategy;
     libevent::Base _base;
     libevent::Timer _timer;

@@ -4,6 +4,7 @@
 
 #include <roq/api.h>
 #include <roq/logging.h>
+#include <roq/utils.h>
 
 #include <roq/libevent.h>
 
@@ -44,6 +45,39 @@ create_vector_of_string(
   }
   return fbb.CreateVectorOfStrings(tmp);
 }
+
+// initialize stream protocol
+
+class Protocol final {
+ public:
+  Protocol() {
+    auto version = utils::Version(ROQ_VERSION);
+    _data[0] = 0x17;
+    _data[1] = 0x91;
+    _data[2] = version.major();
+    _data[3] = version.minor();
+  }
+  size_t size() const { return sizeof(_data); }
+  bool verify(libevent::Buffer& buffer) {
+    auto data = buffer.pullup(sizeof(_data));
+    // only call when enough data is ready
+    LOG_IF(FATAL, data == nullptr) << "Internal error";
+    bool result = std::memcmp(data, _data, sizeof(_data));
+    buffer.drain(sizeof(_data));
+    if (result == 0) {
+      return true;
+    } else {
+      LOG(WARNING) << "Incompatible protocol";
+      return false;
+    }
+  }
+  void write(libevent::Buffer& buffer) {
+    buffer.add(_data, sizeof(_data));
+  }
+
+ private:
+  uint8_t _data[4];
+};
 
 // header
 

@@ -101,6 +101,9 @@ inline Handshake CreateRandomHandshake() {
     .password = NAME[rand_uint32() % NAME_LENGTH],
     .symbols = rand_set_string(),
     .accounts = rand_set_string(),
+    .shmem_name = NAME[rand_uint32() % NAME_LENGTH],
+    .shmem_size = rand_uint32(),
+    .shmem_index = rand_uint32(),
   };
 }
 inline HandshakeAck CreateRandomHandshakeAck() {
@@ -113,10 +116,9 @@ inline HandshakeAck CreateRandomHandshakeAck() {
     .failure_reason = NAME[rand_uint32() % NAME_LENGTH],
     .server_uuid = NAME[rand_uint32() % NAME_LENGTH],
     .server_name = NAME[rand_uint32() % NAME_LENGTH],
-    .shmem_s2c_name = NAME[rand_uint32() % NAME_LENGTH],
-    .shmem_s2c_size = rand_uint32(),
-    .shmem_c2s_name = NAME[rand_uint32() % NAME_LENGTH],
-    .shmem_c2s_size = rand_uint32(),
+    .shmem_name = NAME[rand_uint32() % NAME_LENGTH],
+    .shmem_size = rand_uint32(),
+    .shmem_index = rand_uint32(),
   };
 }
 inline Heartbeat CreateRandomHeartbeat() {
@@ -338,6 +340,9 @@ void compare(const Handshake& lhs, const Handshake& rhs) {
   EXPECT_STREQ(lhs.password, rhs.password);
   compare(lhs.symbols, rhs.symbols);
   compare(lhs.accounts, rhs.accounts);
+  EXPECT_STREQ(lhs.shmem_name, rhs.shmem_name);
+  EXPECT_EQ(lhs.shmem_size, rhs.shmem_size);
+  EXPECT_EQ(lhs.shmem_index, rhs.shmem_index);
 }
 void compare(const HandshakeAck& lhs, const HandshakeAck& rhs) {
   EXPECT_STREQ(lhs.api_version, rhs.api_version);
@@ -348,10 +353,9 @@ void compare(const HandshakeAck& lhs, const HandshakeAck& rhs) {
   EXPECT_STREQ(lhs.failure_reason, rhs.failure_reason);
   EXPECT_STREQ(lhs.server_uuid, rhs.server_uuid);
   EXPECT_STREQ(lhs.server_name, rhs.server_name);
-  EXPECT_STREQ(lhs.shmem_s2c_name, rhs.shmem_s2c_name);
-  EXPECT_EQ(lhs.shmem_s2c_size, rhs.shmem_s2c_size);
-  EXPECT_STREQ(lhs.shmem_c2s_name, rhs.shmem_c2s_name);
-  EXPECT_EQ(lhs.shmem_c2s_size, rhs.shmem_c2s_size);
+  EXPECT_STREQ(lhs.shmem_name, rhs.shmem_name);
+  EXPECT_EQ(lhs.shmem_size, rhs.shmem_size);
+  EXPECT_EQ(lhs.shmem_index, rhs.shmem_index);
 }
 void compare(const Heartbeat& lhs, const Heartbeat& rhs) {
   EXPECT_EQ(lhs.opaque, rhs.opaque);

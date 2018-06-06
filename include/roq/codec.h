@@ -174,7 +174,10 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const Handshake& value) {
     fbb.CreateString(value.login),
     fbb.CreateString(value.password),
     create_vector_of_string(fbb, value.symbols),
-    create_vector_of_string(fbb, value.accounts));
+    create_vector_of_string(fbb, value.accounts),
+    fbb.CreateString(value.shmem_name),
+    value.shmem_size,
+    value.shmem_index);
 }
 
 inline flatbuffers::Offset<schema::HandshakeAck>
@@ -189,10 +192,9 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const HandshakeAck& value) {
     fbb.CreateString(value.failure_reason),
     fbb.CreateString(value.server_uuid),
     fbb.CreateString(value.server_name),
-    fbb.CreateString(value.shmem_s2c_name),
-    value.shmem_s2c_size,
-    fbb.CreateString(value.shmem_c2s_name),
-    value.shmem_c2s_size);
+    fbb.CreateString(value.shmem_name),
+    value.shmem_size,
+    value.shmem_index);
 }
 
 inline flatbuffers::Offset<schema::Heartbeat>
@@ -865,6 +867,11 @@ inline Handshake convert(const schema::Handshake *value) {
     .uuid = value->uuid()->c_str(),
     .login = value->login()->c_str(),
     .password = value->password()->c_str(),
+    .symbols = std::unordered_set<std::string>(),
+    .accounts = std::unordered_set<std::string>(),
+    .shmem_name = value->shmem_name()->c_str(),
+    .shmem_size = value->shmem_size(),
+    .shmem_index = value->shmem_index(),
   };
   const auto& symbols = *(value->symbols());
   for (auto i = 0; i < symbols.Length(); ++i)
@@ -885,10 +892,9 @@ inline HandshakeAck convert(const schema::HandshakeAck *value) {
     .failure_reason = value->failure_reason()->c_str(),
     .server_uuid = value->server_uuid()->c_str(),
     .server_name = value->server_name()->c_str(),
-    .shmem_s2c_name = value->shmem_s2c_name()->c_str(),
-    .shmem_s2c_size = value->shmem_s2c_size(),
-    .shmem_c2s_name = value->shmem_c2s_name()->c_str(),
-    .shmem_c2s_size = value->shmem_c2s_size(),
+    .shmem_name = value->shmem_name()->c_str(),
+    .shmem_size = value->shmem_size(),
+    .shmem_index = value->shmem_index(),
   };
 }
 

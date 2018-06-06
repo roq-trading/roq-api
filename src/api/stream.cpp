@@ -137,7 +137,10 @@ std::ostream& operator<<(std::ostream& stream, const Handshake& value) {
     "login=\"" << value.login << "\", "
     "password=" << PASSWORD << ", "
     "symbols=" << Set<decltype(value.symbols)::value_type>(value.symbols) << ", "
-    "accounts=" << Set<decltype(value.accounts)::value_type>(value.accounts) <<
+    "accounts=" << Set<decltype(value.accounts)::value_type>(value.accounts) << ", "
+    "shmem_name=\"" << value.shmem_name << "\", "
+    "shmem_size=" << value.shmem_size << ", "
+    "shmem_index=" << value.shmem_index <<
     "}";
 }
 
@@ -151,10 +154,9 @@ std::ostream& operator<<(std::ostream& stream, const HandshakeAck& value) {
     "failure_reason=\"" << value.failure_reason << "\", "
     "server_uuid=\"" << value.server_uuid << "\", "
     "server_name=\"" << value.server_name << "\", "
-    "shmem_s2c_name=\"" << value.shmem_s2c_name << "\", "
-    "shmem_s2c_size=" << value.shmem_s2c_size << ", "
-    "shmem_c2s_name=\"" << value.shmem_c2s_name << "\", "
-    "shmem_c2s_size=" << value.shmem_c2s_size <<
+    "shmem_name=\"" << value.shmem_name << "\", "
+    "shmem_size=" << value.shmem_size << ", "
+    "shmem_index=" << value.shmem_index <<
     "}";
 }
 

@@ -17,6 +17,9 @@ table Handshake {
   password:string;
   symbols:[string];
   accounts:[string];
+  shmem_name:string;
+  shmem_size:uint;
+  shmem_index:uint;
 }
 
 table HandshakeAck {
@@ -28,10 +31,9 @@ table HandshakeAck {
   failure_reason:string;
   server_uuid:string;
   server_name:string;
-  shmem_s2c_name:string;
-  shmem_s2c_size:uint;
-  shmem_c2s_name:string;
-  shmem_c2s_size:uint;
+  shmem_name:string;
+  shmem_size:uint;
+  shmem_index:uint;
 }
 
 table Heartbeat {

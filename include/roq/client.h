@@ -267,6 +267,7 @@ class Controller final {
               handshake.symbols.emplace(symbol);
           handshake.accounts = subscription.accounts;
         }
+        handshake.shmem_name = "";
         codec::Queue queue(_buffer);
         _encoder.encode(queue, handshake);
         send(queue, true);

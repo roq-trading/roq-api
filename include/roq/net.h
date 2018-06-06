@@ -191,6 +191,12 @@ class Socket final {
   ssize_t writev(const struct iovec *iov, int iovcnt) {
     return ::writev(_fd, iov, iovcnt);
   }
+  ssize_t sendmsg(const struct msghdr *message, int flags) {
+    return ::sendmsg(_fd, message, flags);
+  }
+  ssize_t recvmsg(struct msghdr *message, int flags) {
+    return ::recvmsg(_fd, message, flags);
+  }
 
  private:
   Socket() = delete;

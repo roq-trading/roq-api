@@ -188,10 +188,11 @@ class Timer final {
   }
   template <typename T>
   void add(const T duration) {
-    const auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(duration);
+    auto microseconds = std::chrono::duration_cast<
+      std::chrono::microseconds>(duration).count();
     struct timeval timeval = {
-      .tv_sec = static_cast<time_t>(microseconds.count() / 1000000),
-      .tv_usec = static_cast<suseconds_t>(microseconds.count() % 1000000),
+      .tv_sec = static_cast<time_t>(microseconds / 1000000),
+      .tv_usec = static_cast<suseconds_t>(microseconds % 1000000),
     };
     if (event_add(_event, &timeval) < 0)
       throw RuntimeError("event_add");

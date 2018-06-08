@@ -26,7 +26,10 @@ AC_PROG_CXX
 AC_LANG([C++])
 AC_PROG_LIBTOOL
 
-AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
+AX_CXX_COMPILE_STDCXX([17], [noext], [optional])
+AS_IF([ test "x$have_cxx17" != "xno"],
+      [AX_CXX_COMPILE_STDCXX([11], [noext], [mandatory])],
+      [])
 
 ROQ_CHECK_LIBUNWIND
 ROQ_CHECK_CROSSGUID

@@ -4,6 +4,16 @@
 
 #include <string>
 
+// avoid warnings when using gcc 7.x
+
+#ifdef major
+#undef major
+#endif
+
+#ifdef minor
+#undef minor
+#endif
+
 namespace roq {
 namespace utils {
 

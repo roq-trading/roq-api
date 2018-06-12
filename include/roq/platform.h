@@ -66,5 +66,9 @@ inline std::string get_program() {
 #endif
 }
 
+inline size_t get_page_size() {
+  return getpagesize();
+}
+
 }  // namespace platform
 }  // namespace roq

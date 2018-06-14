@@ -56,5 +56,4 @@ AS_IF(
 AM_CONDITIONAL([ENABLE_BENCHMARK],
 	       [test "$enable_benchmark" = "yes"])
 
-
 AC_OUTPUT

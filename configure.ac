@@ -41,4 +41,20 @@ ROQ_CHECK_LIBUCL
 
 ROQ_CHECK_GTEST([third_party/googletest])
 
+AC_ARG_ENABLE([benchmark],
+	      AS_HELP_STRING([--enable-benchmark], [Enable benchmark]),
+	      [],
+	      [enable_urls=no])
+
+AS_IF([test "x$enable_benchmark" = "xyes"],
+      [AC_CONFIG_FILES([bench/Makefile])])
+
+AS_IF(
+  [test "x$enable_benchmark" = "xyes"],
+  [ROQ_CHECK_BENCHMARK])
+
+AM_CONDITIONAL([ENABLE_BENCHMARK],
+	       [test "$enable_benchmark" = "yes"])
+
+
 AC_OUTPUT

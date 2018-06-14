@@ -1,5 +1,4 @@
-TESTS = api-benchmark
-check_PROGRAMS = api-benchmark
+bin_PROGRAMS = api-benchmark
 api_benchmark_LDADD = \
 	$(top_builddir)/src/api/libroq.la \
 	$(BENCHMARK_LIBS)  \

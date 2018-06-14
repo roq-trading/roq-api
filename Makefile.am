@@ -17,7 +17,7 @@ check-local:
 .PHONY: lint
 
 lint:
-	cpplint --linelength=120 --recursive include/ src/ test/
+	cpplint --linelength=120 --recursive include/ src/ test/ bench/
 
 cppcheck:
 	cppcheck --language=c++ --std=c++11 include/

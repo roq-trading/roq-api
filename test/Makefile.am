@@ -1,6 +1,6 @@
-TESTS = api-tests
-check_PROGRAMS = api-tests
-api_tests_LDADD = \
+TESTS = roq-api-test
+check_PROGRAMS = roq-api-test
+roq_api_test_LDADD = \
 	$(top_builddir)/src/api/libroq.la \
 	$(CCTZ_LIBS) \
 	$(DOUBLE_CONVERSION_LIBS) \
@@ -8,9 +8,21 @@ api_tests_LDADD = \
 	$(GTEST_LIBS) \
 	$(SPDLOG_LIBS) \
 	$(LIBUNWIND_LIBS)
-api_tests_CPPFLAGS = $(GTEST_CFLAGS) $(CCTZ_CFLAGS) -I$(top_srcdir)/include
-nodist_api_tests_SOURCES = \
-	test_connection_string.cpp test_gateways.cpp \
-	test_codec.cpp test_logging.cpp test_stream.cpp \
-	test_logging_glog.cpp test_logging_spdlog.cpp \
+roq_api_test_CPPFLAGS = \
+	-I$(top_srcdir)/include \
+	$(GTEST_CFLAGS) \
+	$(CCTZ_CFLAGS) \
+	$(DOUBLE_CONVERSION_CFLAGS) \
+	$(GLOG_CFLAGS) \
+	$(GTEST_CFLAGS) \
+	$(SPDLOG_CFLAGS) \
+	$(LIBUNWIND_CFLAGS)
+nodist_roq_api_test_SOURCES = \
+	test_codec.cpp \
+	test_connection_string.cpp \
+	test_gateways.cpp \
+	test_logging.cpp \
+	test_logging_glog.cpp \
+	test_logging_spdlog.cpp \
+	test_stream.cpp \
 	main.cpp

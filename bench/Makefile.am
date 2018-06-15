@@ -1,11 +1,18 @@
-bin_PROGRAMS = api-benchmark
-api_benchmark_LDADD = \
+TESTS = roq-api-bench
+check_PROGRAMS = roq-api-bench
+roq_api_bench_LDADD = \
 	$(top_builddir)/src/api/libroq.la \
+	$(CCTZ_LIBS) \
+	$(DOUBLE_CONVERSION_LIBS) \
+	$(LIBUNWIND_LIBS) \
 	$(BENCHMARK_LIBS)  \
 	-lpthread
-api_benchmark_CFLAGS = -pthread
-api_benchmark_CPPFLAGS = \
+roq_api_bench_CFLAGS = -pthread
+roq_api_bench_CPPFLAGS = \
 	-I$(top_builddir)/src \
+	$(CCTZ_CFLAGS) \
+	$(DOUBLE_CONVERSION_CFLAGS) \
+	$(LIBUNWIND_CFLAGS) \
 	$(BENCHMARK_CFLAGS)
-nodist_api_benchmark_SOURCES = \
+nodist_roq_api_bench_SOURCES = \
 	main.cpp

@@ -28,5 +28,5 @@ build-aux/
 roq.pc
 include/roq/api.h
 include/roq/roq
-test/api-tests
-bench/api-benchmark
+test/roq-api-test
+bench/roq-api-bench

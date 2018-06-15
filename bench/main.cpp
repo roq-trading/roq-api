@@ -7,6 +7,18 @@
 #include <roq/stream.h>
 
 namespace {
+inline roq::MessageInfo create_message_info(
+    std::chrono::system_clock::time_point now) {
+  return roq::MessageInfo {
+    .source = "femas",
+    .source_create_time = now,
+    .client_receive_time = now,
+    .routing_latency = std::chrono::milliseconds(1),
+    .from_cache = false,
+    .is_last = true,
+    .channel = 1234,
+  };
+}
 inline roq::SourceInfo create_source_info(
     std::chrono::system_clock::time_point now) {
   return roq::SourceInfo {
@@ -71,16 +83,51 @@ BENCHMARK_DEFINE_F(EncodeFixture, BM_CreateOrderEvent_Encode)(
 }
 BENCHMARK_REGISTER_F(EncodeFixture, BM_CreateOrderEvent_Encode);
 
-// BM_CreateOrder_Stream
-void BM_CreateOrder_Stream(
+// BM_StringStream_Create
+void BM_StringStream_Create(
     benchmark::State& state) {
   for (auto _ : state) {
-    auto create_order = create_create_order();
     std::stringstream ss;
-    ss << create_order;
     auto str = ss.str();
   }
 }
-BENCHMARK(BM_CreateOrder_Stream);
+BENCHMARK(BM_StringStream_Create);
+
+// StreamFixture
+class StreamFixture : public ::benchmark::Fixture {
+ protected:
+  std::stringstream _ss;
+  // externalize the access to system resources
+  std::chrono::system_clock::time_point _now = std::chrono::system_clock::now();
+};
+
+// BM_CreateOrder_Stream
+BENCHMARK_DEFINE_F(StreamFixture, BM_CreateOrder_Stream)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto create_order = create_create_order();
+    _ss.str("");
+    _ss << create_order;
+    auto str = _ss.str();
+  }
+}
+BENCHMARK_REGISTER_F(StreamFixture, BM_CreateOrder_Stream);
+
+// BM_CreateOrder_Stream
+BENCHMARK_DEFINE_F(StreamFixture, BM_CreateOrderEvent_Stream)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto message_info = create_message_info(_now);
+    auto create_order = create_create_order();
+    auto create_order_event = roq::CreateOrderEvent {
+        .message_info = message_info,
+        .create_order = create_order
+    };
+    _ss.str("");
+    _ss << create_order_event;
+    auto str = _ss.str();
+  }
+}
+BENCHMARK_REGISTER_F(StreamFixture, BM_CreateOrderEvent_Stream);
 
 BENCHMARK_MAIN();

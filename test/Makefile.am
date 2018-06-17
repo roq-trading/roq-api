@@ -2,8 +2,6 @@ TESTS = roq-api-test
 check_PROGRAMS = roq-api-test
 roq_api_test_LDADD = \
 	$(top_builddir)/src/api/libroq.la \
-	$(CCTZ_LIBS) \
-	$(DOUBLE_CONVERSION_LIBS) \
 	$(GLOG_LIBS) \
 	$(GTEST_LIBS) \
 	$(SPDLOG_LIBS) \
@@ -11,8 +9,6 @@ roq_api_test_LDADD = \
 roq_api_test_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	$(GTEST_CFLAGS) \
-	$(CCTZ_CFLAGS) \
-	$(DOUBLE_CONVERSION_CFLAGS) \
 	$(GLOG_CFLAGS) \
 	$(GTEST_CFLAGS) \
 	$(SPDLOG_CFLAGS) \

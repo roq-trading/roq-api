@@ -8,24 +8,24 @@
 #include <cxxabi.h>
 #include <signal.h>
 
-#include <cctz/time_zone.h>
 // FIXME(thraneh): only do this when configure has detected spdlog
 #include <spdlog/spdlog.h>
-
-#include <roq/platform.h>
 
 #include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 
+#include "roq/platform.h"
+#include "roq/stream.h"
+
+
 namespace {
 
-static std::string get_date_time() {
-  return cctz::format(
-      "%E4Y%m%d-%H%M%S",
-      std::chrono::system_clock::now(),
-      cctz::utc_time_zone());
+static roq::stream::details::TimePointStr<
+  std::chrono::system_clock::time_point> get_date_time() {
+  auto now = std::chrono::system_clock::now();
+  return roq::stream::details::TimePointStr<decltype(now)>(now);
 }
 
 #if !defined(ROQ_GLOG)
@@ -135,7 +135,7 @@ std::string Logger::get_filename() {
   buffer << log_dir << "/" << program << "."
          << hostname << "." << username << ".log";
   auto base = buffer.str();
-  buffer << "." << date_time << "." << getpid();
+  buffer << "." << date_time.c_str() << "." << getpid();
   auto result = buffer.str();
   // best effort
   unlink(base.c_str());

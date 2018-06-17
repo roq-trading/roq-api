@@ -2,9 +2,9 @@
 
 #include <benchmark/benchmark.h>
 
-#include <roq/api.h>
-#include <roq/codec.h>
-#include <roq/stream.h>
+#include "roq/api.h"
+#include "roq/codec.h"
+#include "roq/stream.h"
 
 namespace {
 inline roq::MessageInfo create_message_info(
@@ -101,6 +101,18 @@ class StreamFixture : public ::benchmark::Fixture {
   std::chrono::system_clock::time_point _now = std::chrono::system_clock::now();
 };
 
+// BM_MessageInfo_Stream
+BENCHMARK_DEFINE_F(StreamFixture, BM_MessageInfo_Stream)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto message_info = create_message_info(_now);
+    _ss.str("");
+    _ss << message_info;
+    auto str = _ss.str();
+  }
+}
+BENCHMARK_REGISTER_F(StreamFixture, BM_MessageInfo_Stream);
+
 // BM_CreateOrder_Stream
 BENCHMARK_DEFINE_F(StreamFixture, BM_CreateOrder_Stream)(
     benchmark::State& state) {
@@ -129,5 +141,46 @@ BENCHMARK_DEFINE_F(StreamFixture, BM_CreateOrderEvent_Stream)(
   }
 }
 BENCHMARK_REGISTER_F(StreamFixture, BM_CreateOrderEvent_Stream);
+
+/*
+class FormatFixture : public ::benchmark::Fixture {
+ protected:
+  fmt::memory_buffer _buffer;
+  roq::CreateOrder value = create_create_order();
+};
+// BM_XXX
+BENCHMARK_DEFINE_F(FormatFixture, BM_XXX)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    fmt::format_to(_buffer,
+        "{{"
+        "account=\"{}\", "
+        "order_id={}, "
+        "exchange=\"{}\", "
+        "symbol=\"{}\", "
+        "side={}, "
+        "quantity={}, "
+        "order_type={}, "
+        "limit_price={}, "
+        "time_in_force={}, "
+        "position_effect={}, "
+        "order_template=\"{}\""
+        "}}",
+        value.account,
+        value.order_id,
+        value.exchange,
+        value.symbol,
+        EnumNameSide(value.side),
+        value.quantity,
+        EnumNameOrderType(value.order_type),
+        value.limit_price,
+        EnumNameTimeInForce(value.time_in_force),
+        EnumNamePositionEffect(value.position_effect),
+        value.order_template);
+    auto xxx = _buffer.data();
+  }
+}
+BENCHMARK_REGISTER_F(FormatFixture, BM_XXX);
+*/
 
 BENCHMARK_MAIN();

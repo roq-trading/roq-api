@@ -7,7 +7,7 @@
 
 using namespace roq;  // NOLINT
 
-TEST(stream, double_conversion_1) {
+TEST(stream, layer_1) {
   Layer layer = {
       1.234,
       1234.0,
@@ -18,10 +18,10 @@ TEST(stream, double_conversion_1) {
   ss << layer;
   auto s = ss.str();
   EXPECT_STREQ(s.c_str(),
-      "{bid_price=1.234, bid_quantity=1234, ask_price=12340000000, ask_quantity=-12340000000}");
+      "{bid_price=1.234, bid_quantity=1234, ask_price=1.234e+10, ask_quantity=-1.234e+10}");
 }
 
-TEST(stream, double_conversion_2) {
+TEST(stream, layer_2) {
   Layer layer = {
       0.0,
       -0.0,
@@ -32,5 +32,5 @@ TEST(stream, double_conversion_2) {
   ss << layer;
   auto s = ss.str();
   EXPECT_STREQ(s.c_str(),
-      "{bid_price=0, bid_quantity=0, ask_price=, ask_quantity=}");
+      "{bid_price=0, bid_quantity=-0, ask_price=nan, ask_quantity=inf}");
 }

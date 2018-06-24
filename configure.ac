@@ -29,13 +29,9 @@ AC_PROG_LIBTOOL
 ROQ_CHECK_STDCXX
 
 ROQ_CHECK_LIBUNWIND
-# ROQ_CHECK_FMT
 ROQ_CHECK_CROSSGUID
 ROQ_CHECK_SPDLOG
-ROQ_CHECK_GLOG
 ROQ_CHECK_GFLAGS
-# ROQ_CHECK_DOUBLE_CONVERSION
-# ROQ_CHECK_CCTZ
 ROQ_CHECK_FLATBUFFERS
 ROQ_CHECK_LIBEVENT
 ROQ_CHECK_LIBUCL
@@ -48,7 +44,7 @@ AC_ARG_ENABLE([benchmark],
 	      [enable_urls=no])
 
 AS_IF([test "x$enable_benchmark" = "xyes"],
-      [AC_CONFIG_FILES([bench/Makefile])])
+      [AC_CONFIG_FILES([src/benchmark/Makefile])])
 
 AS_IF(
   [test "x$enable_benchmark" = "xyes"],

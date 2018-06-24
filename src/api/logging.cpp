@@ -8,7 +8,6 @@
 #include <cxxabi.h>
 #include <signal.h>
 
-// FIXME(thraneh): only do this when configure has detected spdlog
 #include <spdlog/spdlog.h>
 
 #include <chrono>
@@ -27,8 +26,6 @@ static roq::stream::details::TimePointStr<
   auto now = std::chrono::system_clock::now();
   return roq::stream::details::TimePointStr<decltype(now)>(now);
 }
-
-#if !defined(ROQ_GLOG)
 
 static char proc_name[1024];
 static const int width = (2 * sizeof(void *)) + 2;
@@ -98,37 +95,22 @@ static void termination_handler(int sig, siginfo_t *info, void *ucontext) {
   invoke_default_signal_handler(sig);
 }
 
-#endif
-
-}  // namespace
-
-namespace roq {
-namespace logging {
-namespace detail {
-
-thread_local char message_buffer_raw[MESSAGE_BUFFER_SIZE];
-thread_local char *message_buffer = message_buffer_raw;
-
-bool newline = true;
-uint32_t verbosity = 0;
-
-spdlog::logger *spdlog_logger = nullptr;
-
-}  // namespace detail
-
-std::string Logger::get_argv0() {
-  return platform::get_program();
+static std::string get_argv0() {
+  return roq::platform::get_program();
 }
 
-#if !defined(ROQ_GLOG)
-
-std::string Logger::get_filename() {
-  auto log_dir = std::getenv("GLOG_log_dir");
-  if (isatty(fileno(stdin)) && (log_dir == nullptr || strlen(log_dir) == 0))
-      return "";
-  auto program = platform::get_program();
-  auto hostname = platform::get_hostname();
-  auto username = platform::get_username();
+static std::string get_filename(const char *log_dir) {
+  if (log_dir == nullptr) {
+    log_dir = std::getenv("ROQ_log_dir");
+    if (log_dir == nullptr)
+      log_dir = std::getenv("GLOG_log_dir");  // backwards compatibility
+    if (isatty(fileno(stdin)) &&
+        (log_dir == nullptr || strlen(log_dir) == 0))
+        return "";
+  }
+  auto program = roq::platform::get_program();
+  auto hostname = roq::platform::get_hostname();
+  auto username = roq::platform::get_username();
   auto date_time = get_date_time();
   // glog uses <program>.<hostname>.<user>.log.<severity>.<date>.<time>.<pid>
   std::stringstream buffer;
@@ -144,7 +126,7 @@ std::string Logger::get_filename() {
   return result;
 }
 
-void Logger::install_failure_signal_handler() {
+static void install_failure_signal_handler() {
   struct sigaction sa = {};
   sa.sa_sigaction = termination_handler;
   sa.sa_flags = SA_SIGINFO;
@@ -153,7 +135,65 @@ void Logger::install_failure_signal_handler() {
   sigaction(SIGSEGV, &sa, nullptr);
 }
 
-#endif
+}  // namespace
+
+namespace roq {
+namespace logging {
+namespace detail {
+
+thread_local char message_buffer_raw[MESSAGE_BUFFER_SIZE];
+thread_local char *message_buffer = message_buffer_raw;
+
+bool append_newline = true;
+int verbosity = 0;
+
+spdlog::logger *spdlog_logger = nullptr;
+
+}  // namespace detail
+
+void Logger::initialize(bool stacktrace, const char *log_dir) {
+  detail::append_newline = false;
+  auto filename = get_filename(log_dir);
+  auto console = filename.empty();
+  if (!console)
+    spdlog::set_async_mode(
+        8192,
+        spdlog::async_overflow_policy::discard_log_msg,
+        nullptr,
+        std::chrono::seconds(3),
+        nullptr);
+  auto logger = console ?
+                spdlog::stdout_logger_st("spdlog") :
+                spdlog::basic_logger_st("spdlog", filename);
+  // matching spdlog pattern to glog
+  // - %L = level (I=INFO|W=WARN|E=ERROR|C=CRITICAL)
+  // - %m = month (MM)
+  // - %d = day (DD)
+  // - %T = time (HH:MM:SS)
+  // - %f = fraction (microseconds)
+  // - %t = thread (int)
+  // - %v = message
+  logger->set_pattern("%L%m%d %T.%f %t %v");
+  logger->flush_on(spdlog::level::warn);
+  // note! spdlog uses reference count
+  ::roq::logging::detail::spdlog_logger = logger.get();
+  auto verbosity = std::getenv("ROQ_v");
+  if (verbosity == nullptr)
+    verbosity = std::getenv("GLOG_v");  // backwards compatibility
+  if (verbosity != nullptr && strlen(verbosity) > 0)
+    detail::verbosity = std::atoi(verbosity);
+  if (stacktrace)
+    install_failure_signal_handler();
+}
+
+void Logger::shutdown() {
+  // note! not thread-safe
+  if (::roq::logging::detail::spdlog_logger) {
+    ::roq::logging::detail::spdlog_logger->flush();
+    ::roq::logging::detail::spdlog_logger = nullptr;
+  }
+  spdlog::drop_all();
+}
 
 }  // namespace logging
 }  // namespace roq

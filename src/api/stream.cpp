@@ -8,6 +8,7 @@
 
 #define STACK_BUFFER_SIZE 4096
 #define FLOAT_REPR ".8g"  // include 1/256th
+#define PASSWORD "<hidden>"
 
 namespace roq {
 
@@ -85,7 +86,7 @@ Writer& write(Writer& writer, const Handshake& value) {
     "pid=%" PRIu32 ", "
     "uuid=\"%s\", "
     "login=\"%s\", "
-    "password=<hidden>, "
+    "password=" PASSWORD ", "
     "symbols={";
   writer.printf(
       FORMAT_1,
@@ -944,13 +945,6 @@ std::ostream& operator<<(std::ostream& stream, const TradingStatus value) {
 
 std::ostream& operator<<(std::ostream& stream, const OrderStatus value) {
   return stream << EnumNameOrderStatus(value);
-}
-
-std::ostream& operator<<(std::ostream& stream, time_point_t time_point) {
-  if (0 == time_point.time_since_epoch().count())
-    return stream;
-  return stream << stream::details::TimePointStr<
-      decltype(time_point)>(time_point).c_str();
 }
 
 // Layer

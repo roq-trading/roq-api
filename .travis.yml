@@ -11,9 +11,7 @@ install:
  - scripts/travis/install-libunwind.sh
  - scripts/travis/install-crossguid.sh
  - scripts/travis/install-spdlog.sh
- - scripts/travis/install-glog.sh
  - scripts/travis/install-gflags.sh
- - scripts/travis/install-double-conversion.sh
  - scripts/travis/install-cctz.sh
  - scripts/travis/install-flatbuffers.sh
  - scripts/travis/install-libevent.sh

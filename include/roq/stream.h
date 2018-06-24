@@ -26,6 +26,7 @@ class BasicBufferWriter {
   BasicBufferWriter(const BasicBufferWriter&) = delete;
   void operator=(const BasicBufferWriter&) = delete;
   BasicBufferWriter& printf(const char *format, ...) {
+      // TODO(thraneh): __attribute__((format(printf, 1, 2))) {
     va_list vargs;
     va_start(vargs, format);
     auto res = ::vsnprintf(_pointer, _length, format, vargs);
@@ -43,32 +44,32 @@ class BasicBufferWriter {
     return write(*this, value);  // this function must exist
   }
   char *finish() {
-    *_pointer = '\0';
-    _pointer = nullptr;  // further actions will fail
-    return _failed ? nullptr : _begin;
+    if (!_failed) {
+      *_pointer = '\0';
+      _pointer = nullptr;  // further actions will fail
+      return _begin;
+    } else {
+      throw std::runtime_error("Print to buffer failed");
+    }
   }
   void finish(std::string& string) {
-    auto begin = finish();
-    if (begin == nullptr)
-      throw std::runtime_error("Print to buffer failed");
-    string.assign(begin);
+    string.assign(finish());
   }
   std::ostream& finish(std::ostream& stream) {
-    auto begin = finish();
-    if (begin == nullptr)
-      throw std::runtime_error("Print to buffer failed");
-    return stream << begin;
+    stream << finish();
   }
 
  private:
   template <typename Res>
   void advance(Res res) {
-    if (res < 0) {
-      _failed = true;
+    if (res > 0 && res < _length) {
+      _pointer += res;
+      _length -= res;
     } else {
-      auto distance = std::min(_length, static_cast<size_t>(res));
-      _length -= distance;
-      _pointer += distance;
+      // TODO(thraneh): consider failing early instead...
+      _pointer = nullptr;
+      _length = 0;
+      _failed = true;
     }
   }
 
@@ -143,8 +144,6 @@ struct Set {
   explicit Set(const std::unordered_set<T>& value) : _value(value) {}
   const std::unordered_set<T>& _value;
 };
-
-std::ostream& operator<<(std::ostream& stream, time_point_t value);
 
 template <typename T>
 std::ostream& operator<<(std::ostream& stream, const Vector<T> value);

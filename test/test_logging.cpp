@@ -1,14 +1,12 @@
 /* Copyright (c) 2017-2018, Hans Erik Thrane */
 
-#define QUINCLAS_STDLOG
-
 #include <gtest/gtest.h>
 #include <fcntl.h>
 #include "roq/logging.h"
 
 using namespace roq;  // NOLINT
 
-TEST(logging, simple) {
+TEST(logging_spdlog, simple) {
   logging::Logger::initialize();
   LOG(INFO) << "test";
   LOG(WARNING) << "test";

@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cinttypes>
 #include <iomanip>
 #include <iostream>
 #include <list>

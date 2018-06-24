@@ -240,7 +240,7 @@ class Controller final {
           .source = _name.c_str(),
           .connection_status = ConnectionStatus::Connected,
         };
-        VLOG(1) << "[" << _name << "] ConnectionStatusEvent " << event;
+        VLOG(2) << "[" << _name << "] ConnectionStatusEvent " << event;
         _strategy.on(event);
         ++_statistics.connections_succeeded;
         // stream is initialized using our magic protocol header
@@ -280,7 +280,7 @@ class Controller final {
           .source = _name.c_str(),
             .connection_status = ConnectionStatus::Disconnected,
           };
-          VLOG(1) << "[" << _name << "] "
+          VLOG(2) << "[" << _name << "] "
             "ConnectionStatusEvent " << event;
           _strategy.on(event);
         } else {
@@ -356,11 +356,11 @@ class Controller final {
 
      protected:
       void on(const BatchBeginEvent& event) final {
-        VLOG(2) << "[" << _name << "] BatchBeginEvent " << event;
+        VLOG(4) << "[" << _name << "] BatchBeginEvent " << event;
         _strategy.on(event);
       }
       void on(const BatchEndEvent& event) final {
-        VLOG(2) << "[" << _name << "] BatchEndEvent " << event;
+        VLOG(4) << "[" << _name << "] BatchEndEvent " << event;
         _strategy.on(event);
       }
       void on(const HandshakeEvent& event) final {
@@ -383,7 +383,7 @@ class Controller final {
         LOG(FATAL) << "[" << _name << "] HeartbeatEvent " << event;
       }
       void on(const HeartbeatAckEvent& event) final {
-        VLOG(2) << "[" << _name << "] HeartbeatAckEvent " << event;
+        VLOG(4) << "[" << _name << "] HeartbeatAckEvent " << event;
         const auto& heartbeat_ack = event.heartbeat_ack;
         std::chrono::steady_clock::time_point start(
             std::chrono::duration_cast<std::chrono::steady_clock::duration>(
@@ -391,39 +391,39 @@ class Controller final {
         auto latency = std::chrono::duration_cast<std::chrono::microseconds>(
             std::chrono::steady_clock::now() - start).count();
         // TODO(thraneh): record statistics
-        VLOG(2) << "[" << _name << "] "
+        VLOG(4) << "[" << _name << "] "
           "Latency = " << latency << " usecs (round-trip)";
       }
       void on(const DownloadBeginEvent& event) final {
-        VLOG(1) << "[" << _name << "] DownloadBeginEvent " << event;
+        VLOG(2) << "[" << _name << "] DownloadBeginEvent " << event;
         _strategy.on(event);
       }
       void on(const DownloadEndEvent& event) final {
-        VLOG(1) << "[" << _name << "] DownloadEndEvent " << event;
+        VLOG(2) << "[" << _name << "] DownloadEndEvent " << event;
         _strategy.on(event);
       }
       void on(const MarketDataStatusEvent& event) final {
-        VLOG(1) << "[" << _name << "] MarketDataStatusEvent " << event;
+        VLOG(2) << "[" << _name << "] MarketDataStatusEvent " << event;
         _strategy.on(event);
       }
       void on(const OrderManagerStatusEvent& event) final {
-        VLOG(1) << "[" << _name << "] OrderManagerStatusEvent " << event;
+        VLOG(2) << "[" << _name << "] OrderManagerStatusEvent " << event;
         _strategy.on(event);
       }
       void on(const ReferenceDataEvent& event) final {
-        VLOG(1) << "[" << _name << "] ReferenceDataEvent " << event;
+        VLOG(3) << "[" << _name << "] ReferenceDataEvent " << event;
         _strategy.on(event);
       }
       void on(const MarketStatusEvent& event) final {
-        VLOG(1) << "[" << _name << "] MarketStatusEvent " << event;
+        VLOG(3) << "[" << _name << "] MarketStatusEvent " << event;
         _strategy.on(event);
       }
       void on(const MarketByPriceEvent& event) final {
-        VLOG(1) << "[" << _name << "] MarketByPriceEvent " << event;
+        VLOG(3) << "[" << _name << "] MarketByPriceEvent " << event;
         _strategy.on(event);
       }
       void on(const TradeSummaryEvent& event) final {
-        VLOG(1) << "[" << _name << "] TradeSummaryEvent " << event;
+        VLOG(3) << "[" << _name << "] TradeSummaryEvent " << event;
         _strategy.on(event);
       }
       void on(const CreateOrderEvent& event) final {
@@ -621,12 +621,19 @@ class Controller final {
     }
     void write_statistics() {
       std::cout << std::flush;
-      LOG(INFO) << "Statistics("
-        "messages_sent=" << _statistics.messages_sent << ", "
-        "messages_received=" << _statistics.messages_received << ", "
-        "connections_succeeded=" << _statistics.connections_succeeded << ", "
-        "connections_failed=" << _statistics.connections_failed <<
-        ")";
+      stream::details::StackWriter<128> writer;
+      auto message = writer.printf(
+        "Statistics("
+        "messages_sent=%" PRIu64 ", "
+        "messages_received=%" PRIu64 ", "
+        "connections_succeeded=%" PRIu64 ", "
+        "connections_failed=%" PRIu64
+        ")",
+        _statistics.messages_sent,
+        _statistics.messages_received,
+        _statistics.connections_succeeded,
+        _statistics.connections_failed).finish();
+      VLOG(2) << message;
     }
 
    private:

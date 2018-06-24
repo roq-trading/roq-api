@@ -206,15 +206,11 @@ Assuming you have all dependencies installed, it's pretty standard
 | ---------------------------------------------------------------- | -------- | ------------------------------------------------------------ | ------------------------------- |:--------:|:---:|:--------:|
 | [cctz](https://github.com/google/cctz)                           | >= 2.1   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Time-zone conversion            |     X    |  X  |     X    |
 | [crossguid](https://github.com/graeme-hill/crossguid)            | >= 0.2   | [MIT](https://opensource.org/licenses/MIT)                   | UUID                            |     X    |  X  |     X    |
-| [double-conversion](https://github.com/google/double-conversion) | >= 3.0   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Number conversion               |     X    |  X  |     X    |
 | [flatbuffers](https://github.com/google/flatbuffers)             | >= 1.7   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Communication protocol          |     X    |  X  |     X    |
 | [gflags](https://github.com/gflags/gflags)                       | >= 2.2   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Command-line options            |     X    |     |     X    |
-| [glog](https://github.com/google/glog)                           | >= 0.3.5 | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Logging                         |          |  X  |     X    |
 | [googletest](https://github.com/google/googletest)               | >= 1.8   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Testing                         |     X    |  X  |          |
-| [gperftools](https://github.com/gperftools/gperftools)           | >= 2.6   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Memory management               |     X    |     |          |
 | [libevent](https://github.com/libevent/libevent)                 | >= 2.1   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Async event processing          |     X    |  X  |     X    |
 | [libunwind](https://github.com/libunwind/libunwind)              | >= 1.2   | [MIT](https://opensource.org/licenses/MIT)                   | Stack trace                     |     X    |     |     X    |
-| [libwebsockets](https://github.com/warmcat/libwebsockets)        | >= 2.4   | [LGPL-2.1](https://opensource.org/licenses/lgpl-2.1)         | Websockets                      |     X    |     |          |
 | [rapidjson](https://github.com/Tencent/rapidjson)                | >= 1.1   | [MIT](https://opensource.org/licenses/MIT)                   | JSON parsing                    |     X    |     |          |
 | [spdlog](https://github.com/gabime/spdlog)                       | >= 0.16  | [MIT](https://opensource.org/licenses/MIT)                   | Logging                         |     X    |  X  |          |
 | [libucl](https://github.com/vstakhov/libucl)                     | >= 0.8   | [BSD-2-Clause](https://opensource.org/licenses/BSD-2-Clause) | Config-file parsing             |     X    |     |     X    |

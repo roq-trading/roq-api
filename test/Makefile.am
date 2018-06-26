@@ -16,4 +16,5 @@ nodist_roq_api_test_SOURCES = \
 	test_gateways.cpp \
 	test_logging.cpp \
 	test_stream.cpp \
+	test_utils.cpp \
 	main.cpp

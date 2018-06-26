@@ -184,6 +184,37 @@ void Logger::initialize(bool stacktrace, const char *log_dir) {
     detail::verbosity = std::atoi(verbosity);
   if (stacktrace)
     install_failure_signal_handler();
+
+  // HANS -- experimenting
+  auto now = std::chrono::system_clock::now();
+  auto next = std::chrono::system_clock::time_point();
+  if (next <= now) {
+    // update next + get month + day
+  }
+  auto microseconds = std::chrono::time_point_cast<
+    std::chrono::microseconds>(now).time_since_epoch().count();
+  auto seconds = (microseconds / 1000000) % 86400;
+
+  // TODO(thraneh): re-arrange so we can parallelise operations
+  char time_str[9];
+  time_str[8] = '\0';
+  time_str[7] = '0' + (seconds % 10);
+  seconds /= 10;
+  time_str[6] = '0' + (seconds % 6);
+  seconds /= 6;
+  time_str[5] = ':';
+  time_str[4] = '0' + (seconds % 10);
+  seconds /= 10;
+  time_str[3] = '0' + (seconds % 6);
+  seconds /= 6;
+  time_str[2] = ':';
+  time_str[1] = '0' + (seconds % 10);
+  seconds /= 10;
+  time_str[0] = '0' + seconds;
+
+  auto fraction = static_cast<uint32_t>(microseconds % 1000000);
+  auto tid = std::this_thread::get_id();
+  // cache str-tid
 }
 
 void Logger::shutdown() {

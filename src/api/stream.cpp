@@ -16,6 +16,8 @@ typedef stream::details::StackWriter<STACK_BUFFER_SIZE> Writer;
 
 namespace stream {
 
+// FIXME(thraneh): this only works if we drop thread_local from cached_time_str
+// --> in which case it's too dangerous to explicitly call warm_cache()
 void warm_cache() {
   auto time_point = std::chrono::system_clock::from_time_t(0);
   auto one_second = std::chrono::seconds(1);

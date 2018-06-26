@@ -6,6 +6,8 @@
 #include "roq/codec.h"
 #include "roq/stream.h"
 
+#include "roq/utils.h"
+
 namespace {
 inline roq::MessageInfo create_message_info(
     std::chrono::system_clock::time_point now) {
@@ -214,9 +216,37 @@ class DecodeFixture
   void on(const roq::CancelOrderAckEvent&) override { ++_count; }
 };
 
+// date
 
+void BM_Date_Print(
+    benchmark::State& state) {
+  std::vector<char> buffer(11);
+  int J = 0;
+  for (auto _ : state) {
+    roq::utils::JulianDayNumber::printf(
+      &buffer.at(0),
+      buffer.size(),
+      ++J);
+    std::string(buffer);
+  }
+}
+BENCHMARK(BM_Date_Print);
 
+// date-time
 
+void BM_DateTime_Print(
+    benchmark::State& state) {
+  std::vector<char> buffer(27);
+  int J = 0;
+  for (auto _ : state) {
+    roq::utils::DateTime::printf(
+      &buffer.at(0),
+      buffer.size(),
+      static_cast<uint64_t>(++J) * 1000000 * 86400);
+    std::string(buffer);
+  }
+}
+BENCHMARK(BM_DateTime_Print);
 
 // stringstream
 

@@ -23,6 +23,7 @@ class BasicBufferWriter {
       : _begin(buffer),
         _pointer(buffer) {
   }
+  BasicBufferWriter() = delete;
   BasicBufferWriter(const BasicBufferWriter&) = delete;
   void operator=(const BasicBufferWriter&) = delete;
   BasicBufferWriter& printf(const char *format, ...) {
@@ -47,6 +48,7 @@ class BasicBufferWriter {
     if (!_failed) {
       *_pointer = '\0';
       _pointer = nullptr;  // further actions will fail
+      _length = 0;
       return _begin;
     } else {
       throw std::runtime_error("Print to buffer failed");

@@ -278,15 +278,26 @@ class Controller final {
         while (true) {
           auto res = iter->fetch();
           if (res.first) {
+            generate_timer_events(res.second);
             iter->dispatch(*this);
           } else {
-            return;
+            return;  // finished
           }
         }
       }
     }
 
    private:
+    void generate_timer_events(
+        std::chrono::system_clock::time_point next) {
+      if (_next_timer == std::chrono::system_clock::time_point())
+        _next_timer = next;
+      auto& strategy = static_cast<Strategy&>(_strategy);
+      while (_next_timer <= next) {
+        strategy.on(TimerEvent{});
+        _next_timer += std::chrono::seconds(1);
+      }
+    }
     void initialize() {
       auto& strategy = static_cast<Strategy&>(_strategy);
       const auto& subscriptions = strategy.get_subscriptions();
@@ -444,6 +455,7 @@ class Controller final {
     const std::string _name;
     T _strategy;
     generators_t& _generators;
+    std::chrono::system_clock::time_point _next_timer;
     M _matcher;
   };  // Dispatcher
 

@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #if defined(__linux__)
+#include <linux/limits.h>
 #include <sys/types.h>
 #include <pwd.h>
 #endif
@@ -48,22 +49,22 @@ inline std::string get_username() {
   return "<username?>";
 }
 
-// TODO(thraneh): cross-platform, e.g. SO1023306
 inline std::string get_program() {
+// SO1023306
 #if defined(__linux__)
-  std::ifstream comm("/proc/self/comm");
-  std::string name;
-  std::getline(comm, name);
-  return name;
+  char buffer[PATH_MAX];
+  auto res = readlink("/proc/self/exe", buffer, sizeof(buffer));
+  if (res >= 0)
+    return basename(buffer);
 #elif defined(__APPLE__)
   char buffer[PATH_MAX];
   uint32_t size = sizeof(buffer);
   if (_NSGetExecutablePath(buffer, &size) == 0)
     return basename(buffer);
-  return "<program?>";
 #else
 #error "Don't know how to find program name"
 #endif
+  return "<program?>";
 }
 
 inline size_t get_page_size() {

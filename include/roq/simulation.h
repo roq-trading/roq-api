@@ -8,6 +8,7 @@
 #include <list>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
 #include <utility>
 
 namespace roq {
@@ -43,6 +44,7 @@ class Matcher {
     virtual void on(const CancelOrderAckEvent&) = 0;
     virtual void on(const OrderUpdateEvent&) = 0;
     virtual void on(const TradeUpdateEvent&) = 0;
+    virtual void on(const PositionUpdateEvent&) = 0;
   };
   Matcher(Dispatcher& dispatcher, const std::string& name)
       : _dispatcher(dispatcher),
@@ -117,6 +119,16 @@ class Matcher {
     };
     _dispatcher.on(event);
   }
+  void send(const PositionUpdate& position_update) {
+    auto message_info = MessageInfo {
+      .source = _name.c_str()
+    };
+    auto event = PositionUpdateEvent {
+      .message_info = message_info,
+      .position_update = position_update
+    };
+    _dispatcher.on(event);
+  }
 };
 
 // NoMatcher
@@ -165,9 +177,32 @@ class SimpleMatcher final : public Matcher {
   void on(const TradeSummaryEvent& event) override {
   }
   void on(const CreateOrder& create_order) override {
+    auto account = create_order.account;
+    auto order_id = create_order.order_id;
+    switch (create_order.side) {
+      case Side::Buy:
+      case Side::Sell:
+        break;
+      default: {
+        auto create_order_ack = CreateOrderAck {
+          .account = account,
+          .order_id = order_id,
+          .failure = true,
+          .reason = "Invalid side",
+          .order_local_id = 0,
+          .order_external_id = "",
+        };
+        send(create_order_ack);
+        return;
+      }
+    }
+    auto exchange = create_order.exchange;
+    auto symbol = create_order.symbol;
+    auto side = create_order.side;
+    auto quantity = create_order.quantity;
     auto create_order_ack = CreateOrderAck {
-      .account = create_order.account,
-      .order_id = create_order.order_id,
+      .account = account,
+      .order_id = order_id,
       .failure = false,
       .reason = "",
       .order_local_id = 0,
@@ -175,14 +210,14 @@ class SimpleMatcher final : public Matcher {
     };
     send(create_order_ack);
     auto order_update = OrderUpdate {
-      .account = create_order.account,
-      .order_id = create_order.order_id,
-      .exchange = create_order.exchange,
-      .symbol = create_order.symbol,
+      .account = account,
+      .order_id = order_id,
+      .exchange = exchange,
+      .symbol = symbol,
       .order_status = OrderStatus::Completed,
-      .side = create_order.side,
+      .side = side,
       .remaining_quantity = 0.0,
-      .traded_quantity = create_order.quantity,
+      .traded_quantity = quantity,
       .position_effect = create_order.position_effect,
       .order_template = create_order.order_template,
       .insert_time = std::chrono::time_point_cast<duration_t>(
@@ -194,12 +229,12 @@ class SimpleMatcher final : public Matcher {
     };
     send(order_update);
     auto trade_update = TradeUpdate {
-      .account = create_order.account,
-      .trade_id = create_order.order_id,
-      .order_id = create_order.order_id,
-      .exchange = create_order.exchange,
-      .symbol = create_order.symbol,
-      .side = create_order.side,
+      .account = account,
+      .trade_id = order_id,
+      .order_id = order_id,
+      .exchange = exchange,
+      .symbol = symbol,
+      .side = side,
       .quantity = 0.0,
       .price = create_order.limit_price,
       .position_effect = create_order.position_effect,
@@ -210,6 +245,19 @@ class SimpleMatcher final : public Matcher {
       .trade_external_id = "",
     };
     send(trade_update);
+    auto& position = _positions[account][exchange][symbol][side];
+    position += quantity;
+    auto position_update = PositionUpdate {
+        .account = account,
+        .exchange = exchange,
+        .symbol = symbol,
+        .side = side,
+        .position = position,
+        .yesterday = 0.0,
+        .last_order_local_id = order_id,
+        .last_trade_id = order_id,
+    };
+    send(position_update);
   }
   void on(const ModifyOrder& modify_order) override {
     auto modify_order_ack = ModifyOrderAck {
@@ -233,6 +281,20 @@ class SimpleMatcher final : public Matcher {
     };
     send(cancel_order_ack);
   }
+
+ private:
+  // TODO(thraneh): drop this work-around when moving to C++17
+  // SO18837857
+  struct EnumHash {
+    template <typename T>
+    std::size_t operator()(T t) const {
+      return static_cast<std::size_t>(t);
+    }
+  };
+  std::unordered_map<std::string,                   // account
+    std::unordered_map<std::string,                 // exchange
+      std::unordered_map<std::string,               // symbol
+        std::unordered_map<Side, double, EnumHash> > > > _positions;
 };
 
 // Controller
@@ -316,6 +378,23 @@ class Controller final {
         // ... accounts (order manager)
         for (const auto& account : subscription.accounts) {
           order_manager_status(gateway, account);
+          for (const auto& symbols : subscription.symbols_by_exchange) {
+            const auto& exchange = symbols.first;
+            for (const auto& symbol : symbols.second) {
+              position_update(
+                  gateway,
+                  account,
+                  exchange,
+                  symbol,
+                  Side::Buy);
+              position_update(
+                  gateway,
+                  account,
+                  exchange,
+                  symbol,
+                  Side::Sell);
+            }
+          }
         }
         // ... market data
         market_data_status(gateway);
@@ -399,6 +478,32 @@ class Controller final {
       };
       static_cast<Strategy&>(_strategy).on(event);
     }
+    // TODO(thraneh): matcher should probably own all position updates
+    void position_update(
+        const std::string& gateway,
+        const std::string& account,
+        const std::string& exchange,
+        const std::string& symbol,
+        Side side) {
+      auto message_info = MessageInfo {
+        .source = gateway.c_str(),
+      };
+      auto position_update = PositionUpdate {
+        .account = account.c_str(),
+        .exchange = exchange.c_str(),
+        .symbol = symbol.c_str(),
+        .side = side,
+        .position = 0.0,
+        .yesterday = 0.0,
+        .last_order_local_id = 0,
+        .last_trade_id = 0,
+      };
+      auto event = PositionUpdateEvent {
+        .message_info = message_info,
+        .position_update = position_update
+      };
+      static_cast<Strategy&>(_strategy).on(event);
+    }
 
    private:
     void on(const BatchBeginEvent& event) override {
@@ -432,6 +537,9 @@ class Controller final {
       static_cast<Strategy&>(_strategy).on(event);
     }
     void on(const TradeUpdateEvent& event) override {
+      static_cast<Strategy&>(_strategy).on(event);
+    }
+    void on(const PositionUpdateEvent& event) override {
       static_cast<Strategy&>(_strategy).on(event);
     }
 

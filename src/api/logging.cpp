@@ -10,6 +10,7 @@
 
 #include <spdlog/spdlog.h>
 
+#include <algorithm>
 #include <chrono>
 #include <fstream>
 #include <iomanip>
@@ -111,7 +112,15 @@ static std::string get_filename(const char *log_dir) {
   auto program = roq::platform::get_program();
   auto hostname = roq::platform::get_hostname();
   auto username = roq::platform::get_username();
-  auto date_time = get_date_time();
+  // FIXME(thraneh): we need a generic non-optimized date-time formatter
+  std::string date_time = get_date_time().c_str();
+  date_time.erase(
+      std::remove(date_time.begin(), date_time.end(), '-'),
+      date_time.end());
+  date_time.erase(
+      std::remove(date_time.begin(), date_time.end(), ':'),
+      date_time.end());
+  std::replace(date_time.begin(), date_time.end(), 'T', '-');
   // glog uses <program>.<hostname>.<user>.log.<severity>.<date>.<time>.<pid>
   std::stringstream buffer;
   buffer << log_dir << "/" << program << "."
@@ -184,37 +193,6 @@ void Logger::initialize(bool stacktrace, const char *log_dir) {
     detail::verbosity = std::atoi(verbosity);
   if (stacktrace)
     install_failure_signal_handler();
-
-  // HANS -- experimenting
-  auto now = std::chrono::system_clock::now();
-  auto next = std::chrono::system_clock::time_point();
-  if (next <= now) {
-    // update next + get month + day
-  }
-  auto microseconds = std::chrono::time_point_cast<
-    std::chrono::microseconds>(now).time_since_epoch().count();
-  auto seconds = (microseconds / 1000000) % 86400;
-
-  // TODO(thraneh): re-arrange so we can parallelise operations
-  char time_str[9];
-  time_str[8] = '\0';
-  time_str[7] = '0' + (seconds % 10);
-  seconds /= 10;
-  time_str[6] = '0' + (seconds % 6);
-  seconds /= 6;
-  time_str[5] = ':';
-  time_str[4] = '0' + (seconds % 10);
-  seconds /= 10;
-  time_str[3] = '0' + (seconds % 6);
-  seconds /= 6;
-  time_str[2] = ':';
-  time_str[1] = '0' + (seconds % 10);
-  seconds /= 10;
-  time_str[0] = '0' + seconds;
-
-  auto fraction = static_cast<uint32_t>(microseconds % 1000000);
-  auto tid = std::this_thread::get_id();
-  // cache str-tid
 }
 
 void Logger::shutdown() {

@@ -51,7 +51,7 @@ BasicTimePointStr::BasicTimePointStr(uint64_t microseconds) {
   }
   BasicBufferWriter<sizeof(_result)> writer(_result);
   writer.printf(
-      "%s%s%" PRIu64,
+      "%s%s%06" PRIu64,
       date_str.c_str(),
       time_str.c_str(),
       fraction).finish();

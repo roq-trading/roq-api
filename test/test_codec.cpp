@@ -153,6 +153,33 @@ inline OrderManagerStatus CreateRandomOrderManagerStatus() {
     .status = rand_gateway_status(),
   };
 }
+inline SessionStatistics CreateRandomSessionStatistics() {
+  return SessionStatistics {
+    .exchange = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
+    .pre_open_interest = rand_double(),
+    .pre_settlement_price = rand_double(),
+    .pre_close_price = rand_double(),
+    .highest_traded_price = rand_double(),
+    .lowest_traded_price = rand_double(),
+    .upper_limit_price = rand_double(),
+    .lower_limit_price = rand_double(),
+    .exchange_time = rand_time_point(),
+    .channel = rand_uint16(),
+  };
+}
+inline DailyStatistics CreateRandomDailyStatistics() {
+  return DailyStatistics {
+    .exchange = NAME[rand_uint32() % NAME_LENGTH],
+    .symbol = NAME[rand_uint32() % NAME_LENGTH],
+    .open_price = rand_double(),
+    .settlement_price = rand_double(),
+    .close_price = rand_double(),
+    .open_interest = rand_double(),
+    .exchange_time = rand_time_point(),
+    .channel = rand_uint16(),
+  };
+}
 inline MarketByPrice CreateRandomMarketByPrice() {
   MarketByPrice res {
     .exchange = NAME[rand_uint32() % NAME_LENGTH],
@@ -164,6 +191,8 @@ inline MarketByPrice CreateRandomMarketByPrice() {
     res.depth[i].ask_price = rand_double();
     res.depth[i].ask_quantity = rand_double();
   }
+  res.total_bid_volume = rand_double();
+  res.total_ask_volume = rand_double();
   res.exchange_time = rand_time_point();
   res.channel = rand_uint16();
   return res;
@@ -373,6 +402,29 @@ void compare(const OrderManagerStatus& lhs, const OrderManagerStatus& rhs) {
   EXPECT_STREQ(lhs.account, rhs.account);
   EXPECT_EQ(lhs.status, rhs.status);
 }
+void compare(const SessionStatistics& lhs, const SessionStatistics& rhs) {
+  EXPECT_STREQ(lhs.exchange, rhs.exchange);
+  EXPECT_STREQ(lhs.symbol, rhs.symbol);
+  EXPECT_EQ(lhs.pre_open_interest, rhs.pre_open_interest);
+  EXPECT_EQ(lhs.pre_settlement_price, rhs.pre_settlement_price);
+  EXPECT_EQ(lhs.pre_close_price, rhs.pre_close_price);
+  EXPECT_EQ(lhs.highest_traded_price, rhs.highest_traded_price);
+  EXPECT_EQ(lhs.lowest_traded_price, rhs.lowest_traded_price);
+  EXPECT_EQ(lhs.upper_limit_price, rhs.upper_limit_price);
+  EXPECT_EQ(lhs.lower_limit_price, rhs.lower_limit_price);
+  compare(lhs.exchange_time, rhs.exchange_time);
+  EXPECT_EQ(lhs.channel, rhs.channel);
+}
+void compare(const DailyStatistics& lhs, const DailyStatistics& rhs) {
+  EXPECT_STREQ(lhs.exchange, rhs.exchange);
+  EXPECT_STREQ(lhs.symbol, rhs.symbol);
+  EXPECT_EQ(lhs.open_price, rhs.open_price);
+  EXPECT_EQ(lhs.settlement_price, rhs.settlement_price);
+  EXPECT_EQ(lhs.close_price, rhs.close_price);
+  EXPECT_EQ(lhs.open_interest, rhs.open_interest);
+  compare(lhs.exchange_time, rhs.exchange_time);
+  EXPECT_EQ(lhs.channel, rhs.channel);
+}
 void compare(const MarketByPrice& lhs, const MarketByPrice& rhs) {
   EXPECT_STREQ(lhs.exchange, rhs.exchange);
   EXPECT_STREQ(lhs.symbol, rhs.symbol);
@@ -382,6 +434,8 @@ void compare(const MarketByPrice& lhs, const MarketByPrice& rhs) {
     EXPECT_EQ(lhs.depth[i].ask_price, rhs.depth[i].ask_price);
     EXPECT_EQ(lhs.depth[i].ask_quantity, rhs.depth[i].ask_quantity);
   }
+  EXPECT_EQ(lhs.total_bid_volume, rhs.total_bid_volume);
+  EXPECT_EQ(lhs.total_ask_volume, rhs.total_ask_volume);
   compare(lhs.exchange_time, rhs.exchange_time);
   EXPECT_EQ(lhs.channel, rhs.channel);
 }
@@ -698,6 +752,62 @@ TEST(flatbuffers, order_manager_status_event) {
     // validate
     compare(target_source_info, source_source_info);
     compare(target_order_manager_status, source_order_manager_status);
+  }
+}
+
+TEST(flatbuffers, session_statistics_event) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // event (source)
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_session_statistics = CreateRandomSessionStatistics();
+    // serialize using flatbuffers
+    fbb.Finish(codec::convert2(
+          fbb,
+          source_source_info,
+          source_session_statistics));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = codec::convert(root->source_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::SessionStatistics);
+    auto target_session_statistics = codec::convert(root->event_data_as_SessionStatistics());
+    // validate
+    compare(target_source_info, source_source_info);
+    compare(target_session_statistics, source_session_statistics);
+  }
+}
+
+TEST(flatbuffers, daily_statistics_event) {
+  FlatBufferBuilder fbb;
+  for (auto i = 0; i < MAX_ITERATIONS; ++i) {
+    // reset
+    fbb.Clear();  // doesn't de-allocate
+    EXPECT_EQ(fbb.GetSize(), 0);
+    // event (source)
+    auto source_source_info = CreateRandomSourceInfo();
+    auto source_daily_statistics = CreateRandomDailyStatistics();
+    // serialize using flatbuffers
+    fbb.Finish(codec::convert2(
+          fbb,
+          source_source_info,
+          source_daily_statistics));
+    EXPECT_GT(fbb.GetSize(), 0);
+    // copy of the buffer (just making sure...)
+    std::vector<uint8_t> buffer(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
+    // deserialize using flatbuffers
+    auto root = GetRoot<schema::Event>(&buffer[0]);
+    auto target_source_info = codec::convert(root->source_info());
+    EXPECT_EQ(root->event_data_type(), schema::EventData::DailyStatistics);
+    auto target_daily_statistics = codec::convert(root->event_data_as_DailyStatistics());
+    // validate
+    compare(target_source_info, source_source_info);
+    compare(target_daily_statistics, source_daily_statistics);
   }
 }
 

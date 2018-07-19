@@ -21,6 +21,35 @@ inline roq::MessageInfo create_message_info(
     .channel = 1234,
   };
 }
+inline roq::SessionStatistics create_session_statistics(
+    std::chrono::system_clock::time_point now) {
+  return roq::SessionStatistics {
+    .exchange = "CFFEX",
+    .symbol = "IC1806",
+    .pre_open_interest = 123.45,
+    .pre_settlement_price = 123.45,
+    .pre_close_price = 123.45,
+    .highest_traded_price = 123.45,
+    .lowest_traded_price = 123.45,
+    .upper_limit_price = 123.45,
+    .lower_limit_price = 123.45,
+    .exchange_time = now,
+    .channel = 1234,
+  };
+}
+inline roq::DailyStatistics create_daily_statistics(
+    std::chrono::system_clock::time_point now) {
+  return roq::DailyStatistics {
+    .exchange = "CFFEX",
+    .symbol = "IC1806",
+    .open_price = 123.45,
+    .settlement_price = 123.45,
+    .close_price = 123.45,
+    .open_interest = 123.45,
+    .exchange_time = now,
+    .channel = 1234,
+  };
+}
 inline roq::MarketByPrice create_market_by_price() {
   auto result = roq::MarketByPrice {
     .exchange = "CFFEX",
@@ -33,6 +62,8 @@ inline roq::MarketByPrice create_market_by_price() {
     layer.ask_price = static_cast<double>(i * 4 + 2) + 0.3;
     layer.ask_price = static_cast<double>(i * 4 + 3) + 0.4;
   }
+  result.total_bid_volume = 123.45;
+  result.total_ask_volume = 123.45;
   result.channel = 1234;
   return result;
 }
@@ -201,6 +232,8 @@ class DecodeFixture
   void on(const roq::DownloadEndEvent&) override { ++_count; }
   void on(const roq::MarketDataStatusEvent&) override { ++_count; }
   void on(const roq::OrderManagerStatusEvent&) override { ++_count; }
+  void on(const roq::SessionStatisticsEvent&) override { ++_count; }
+  void on(const roq::DailyStatisticsEvent&) override { ++_count; }
   void on(const roq::MarketByPriceEvent&) override { ++_count; }
   void on(const roq::TradeSummaryEvent&) override { ++_count; }
   void on(const roq::ReferenceDataEvent&) override { ++_count; }
@@ -325,6 +358,62 @@ BENCHMARK_DEFINE_F(PrintFixture, BM_MessageInfo_Print)(
   }
 }
 BENCHMARK_REGISTER_F(PrintFixture, BM_MessageInfo_Print);
+
+
+// SessionStatistics
+
+BENCHMARK_DEFINE_F(EncodeFixture, BM_SessionStatistics_Encode)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto session_statistics = create_session_statistics(_now);
+    _fbb.Clear();
+    _fbb.Finish(
+        roq::codec::convert(
+            _fbb,
+            session_statistics));
+  }
+}
+BENCHMARK_REGISTER_F(EncodeFixture, BM_SessionStatistics_Encode);
+
+
+BENCHMARK_DEFINE_F(PrintFixture, BM_SessionStatistics_Print)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto session_statistics = create_session_statistics(_now);
+    _ss.str("");
+    _ss << session_statistics;
+    auto str = _ss.str();
+  }
+}
+BENCHMARK_REGISTER_F(PrintFixture, BM_SessionStatistics_Print);
+
+
+// DailyStatistics
+
+BENCHMARK_DEFINE_F(EncodeFixture, BM_DailyStatistics_Encode)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto daily_statistics = create_daily_statistics(_now);
+    _fbb.Clear();
+    _fbb.Finish(
+        roq::codec::convert(
+            _fbb,
+            daily_statistics));
+  }
+}
+BENCHMARK_REGISTER_F(EncodeFixture, BM_DailyStatistics_Encode);
+
+
+BENCHMARK_DEFINE_F(PrintFixture, BM_DailyStatistics_Print)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto daily_statistics = create_daily_statistics(_now);
+    _ss.str("");
+    _ss << daily_statistics;
+    auto str = _ss.str();
+  }
+}
+BENCHMARK_REGISTER_F(PrintFixture, BM_DailyStatistics_Print);
 
 
 // MarketByPrice
@@ -542,6 +631,132 @@ BENCHMARK_DEFINE_F(PrintFixture, BM_CreateOrder_Print)(
   }
 }
 BENCHMARK_REGISTER_F(PrintFixture, BM_CreateOrder_Print);
+
+
+// SessionStatisticsEvent
+
+BENCHMARK_DEFINE_F(EncodeFixture, BM_SessionStatisticsEvent_Encode)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto source_info = create_source_info(_now);
+    auto session_statistics = create_session_statistics(_now);
+    _fbb.Clear();
+    _fbb.Finish(
+        roq::codec::convert2(
+            _fbb,
+            source_info,
+            session_statistics));
+  }
+}
+BENCHMARK_REGISTER_F(EncodeFixture, BM_SessionStatisticsEvent_Encode);
+
+// HANS -- need a templated fixture (lambda functions to create/decode)
+BENCHMARK_DEFINE_F(DecodeFixture, BM_SessionStatisticsEvent_Decode)(
+    benchmark::State& state) {
+  // encode (outside loop)
+  auto source_info = create_source_info(_now);
+  auto session_statistics = create_session_statistics(_now);
+  _fbb.Finish(
+      roq::codec::convert2(
+          _fbb,
+          source_info,
+          session_statistics));
+  auto buffer = _fbb.GetBufferPointer();
+  auto length = _fbb.GetSize();
+  roq::codec::EventDispatcher dispatcher(*this);
+  // decode
+  for (auto _ : state) {
+    dispatcher.dispatch(
+        buffer,
+        length,
+        _source,
+        _batch_info,
+        _is_first,
+        _is_last,
+        _receive_time);
+  }
+  assert(handler._count > 0);
+}
+BENCHMARK_REGISTER_F(DecodeFixture, BM_SessionStatisticsEvent_Decode);
+
+BENCHMARK_DEFINE_F(PrintFixture, BM_SessionStatisticsEvent_Print)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto message_info = create_message_info(_now);
+    auto session_statistics = create_session_statistics(_now);
+    auto session_statistics_event = roq::SessionStatisticsEvent {
+        .message_info = message_info,
+        .session_statistics = session_statistics
+    };
+    _ss.str("");
+    _ss << session_statistics_event;
+    auto str = _ss.str();
+  }
+}
+BENCHMARK_REGISTER_F(PrintFixture, BM_SessionStatisticsEvent_Print);
+
+
+// DailyStatisticsEvent
+
+BENCHMARK_DEFINE_F(EncodeFixture, BM_DailyStatisticsEvent_Encode)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto source_info = create_source_info(_now);
+    auto daily_statistics = create_daily_statistics(_now);
+    _fbb.Clear();
+    _fbb.Finish(
+        roq::codec::convert2(
+            _fbb,
+            source_info,
+            daily_statistics));
+  }
+}
+BENCHMARK_REGISTER_F(EncodeFixture, BM_DailyStatisticsEvent_Encode);
+
+// HANS -- need a templated fixture (lambda functions to create/decode)
+BENCHMARK_DEFINE_F(DecodeFixture, BM_DailyStatisticsEvent_Decode)(
+    benchmark::State& state) {
+  // encode (outside loop)
+  auto source_info = create_source_info(_now);
+  auto daily_statistics = create_daily_statistics(_now);
+  _fbb.Finish(
+      roq::codec::convert2(
+          _fbb,
+          source_info,
+          daily_statistics));
+  auto buffer = _fbb.GetBufferPointer();
+  auto length = _fbb.GetSize();
+  roq::codec::EventDispatcher dispatcher(*this);
+  // decode
+  for (auto _ : state) {
+    dispatcher.dispatch(
+        buffer,
+        length,
+        _source,
+        _batch_info,
+        _is_first,
+        _is_last,
+        _receive_time);
+  }
+  assert(handler._count > 0);
+}
+BENCHMARK_REGISTER_F(DecodeFixture, BM_DailyStatisticsEvent_Decode);
+
+BENCHMARK_DEFINE_F(PrintFixture, BM_DailyStatisticsEvent_Print)(
+    benchmark::State& state) {
+  for (auto _ : state) {
+    auto message_info = create_message_info(_now);
+    auto daily_statistics = create_daily_statistics(_now);
+    auto daily_statistics_event = roq::DailyStatisticsEvent {
+        .message_info = message_info,
+        .daily_statistics = daily_statistics
+    };
+    _ss.str("");
+    _ss << daily_statistics_event;
+    auto str = _ss.str();
+  }
+}
+BENCHMARK_REGISTER_F(PrintFixture, BM_DailyStatisticsEvent_Print);
 
 
 // MarketByPriceEvent

@@ -241,6 +241,37 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const OrderManagerStatus& value) {
     value.status);
 }
 
+inline flatbuffers::Offset<schema::SessionStatistics>
+convert(flatbuffers::FlatBufferBuilder& fbb, const SessionStatistics& value) {
+  return schema::CreateSessionStatistics(
+    fbb,
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.symbol),
+    value.pre_open_interest,
+    value.pre_settlement_price,
+    value.pre_close_price,
+    value.highest_traded_price,
+    value.lowest_traded_price,
+    value.upper_limit_price,
+    value.lower_limit_price,
+    time_point_to_uint64(value.exchange_time),
+    value.channel);
+}
+
+inline flatbuffers::Offset<schema::DailyStatistics>
+convert(flatbuffers::FlatBufferBuilder& fbb, const DailyStatistics& value) {
+  return schema::CreateDailyStatistics(
+    fbb,
+    fbb.CreateString(value.exchange),
+    fbb.CreateString(value.symbol),
+    value.open_price,
+    value.settlement_price,
+    value.close_price,
+    value.open_interest,
+    time_point_to_uint64(value.exchange_time),
+    value.channel);
+}
+
 inline flatbuffers::Offset<schema::MarketByPrice>
 convert(flatbuffers::FlatBufferBuilder& fbb, const MarketByPrice& value) {
   std::vector<schema::Layer> depth(MAX_DEPTH);
@@ -255,6 +286,8 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const MarketByPrice& value) {
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.symbol),
     fbb.CreateVectorOfStructs(&depth[0], depth.size()),
+    value.total_bid_volume,
+    value.total_ask_volume,
     time_point_to_uint64(value.exchange_time),
     value.channel);
 }
@@ -504,6 +537,28 @@ inline flatbuffers::Offset<schema::Event> convert2(
       convert(fbb, source_info),
       schema::EventData::OrderManagerStatus,
       convert(fbb, order_manager_status).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const SessionStatistics& session_statistics) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::SessionStatistics,
+      convert(fbb, session_statistics).Union());
+}
+
+inline flatbuffers::Offset<schema::Event> convert2(
+    flatbuffers::FlatBufferBuilder& fbb,
+    const SourceInfo& source_info,
+    const DailyStatistics& daily_statistics) {
+  return schema::CreateEvent(
+      fbb,
+      convert(fbb, source_info),
+      schema::EventData::DailyStatistics,
+      convert(fbb, daily_statistics).Union());
 }
 
 inline flatbuffers::Offset<schema::Event> convert2(
@@ -936,6 +991,35 @@ inline OrderManagerStatus convert(const schema::OrderManagerStatus *value) {
   };
 }
 
+inline SessionStatistics convert(const schema::SessionStatistics *value) {
+  return SessionStatistics {
+    .exchange = value->exchange()->c_str(),
+    .symbol = value->symbol()->c_str(),
+    .pre_open_interest = value->pre_open_interest(),
+    .pre_settlement_price = value->pre_settlement_price(),
+    .pre_close_price = value->pre_close_price(),
+    .highest_traded_price = value->highest_traded_price(),
+    .lowest_traded_price = value->lowest_traded_price(),
+    .upper_limit_price = value->upper_limit_price(),
+    .lower_limit_price = value->lower_limit_price(),
+    .exchange_time = uint64_to_time_point(value->exchange_time()),
+    .channel = value->channel(),
+  };
+}
+
+inline DailyStatistics convert(const schema::DailyStatistics *value) {
+  return DailyStatistics {
+    .exchange = value->exchange()->c_str(),
+    .symbol = value->symbol()->c_str(),
+    .open_price = value->open_price(),
+    .settlement_price = value->settlement_price(),
+    .close_price = value->close_price(),
+    .open_interest = value->open_interest(),
+    .exchange_time = uint64_to_time_point(value->exchange_time()),
+    .channel = value->channel(),
+  };
+}
+
 inline Layer convert(const schema::Layer *value) {
   return Layer {
     .bid_price = value->bid_price(),
@@ -955,6 +1039,8 @@ inline MarketByPrice convert(const schema::MarketByPrice *value) {
   for (auto i = 0; i < MAX_DEPTH; ++i) {
     res.depth[i] = convert((*depth)[i]);
   }
+  res.total_bid_volume = value->total_bid_volume();
+  res.total_ask_volume = value->total_ask_volume();
   res.exchange_time = uint64_to_time_point(value->exchange_time());
   res.channel = value->channel();
   return res;
@@ -1121,6 +1207,8 @@ class EventHandler {
   virtual void on(const DownloadEndEvent&) = 0;
   virtual void on(const MarketDataStatusEvent&) = 0;
   virtual void on(const OrderManagerStatusEvent&) = 0;
+  virtual void on(const SessionStatisticsEvent&) = 0;
+  virtual void on(const DailyStatisticsEvent&) = 0;
   virtual void on(const MarketByPriceEvent&) = 0;
   virtual void on(const TradeSummaryEvent&) = 0;
   virtual void on(const ReferenceDataEvent&) = 0;
@@ -1229,6 +1317,24 @@ class EventDispatcher final {
         OrderManagerStatusEvent event {
           .message_info = message_info,
           .order_manager_status = order_manager_status,
+        };
+        _handler.on(event);
+        break;
+      }
+      case schema::EventData::SessionStatistics: {
+        auto session_statistics = convert(item.event_data_as_SessionStatistics());
+        SessionStatisticsEvent event {
+          .message_info = message_info,
+          .session_statistics = session_statistics,
+        };
+        _handler.on(event);
+        break;
+      }
+      case schema::EventData::DailyStatistics: {
+        auto daily_statistics = convert(item.event_data_as_DailyStatistics());
+        DailyStatisticsEvent event {
+          .message_info = message_info,
+          .daily_statistics = daily_statistics,
         };
         _handler.on(event);
         break;

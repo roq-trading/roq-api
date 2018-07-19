@@ -21,6 +21,8 @@ class Generator {
    public:
     virtual void on(const BatchBeginEvent& event) = 0;
     virtual void on(const BatchEndEvent& event) = 0;
+    virtual void on(const SessionStatisticsEvent& event) = 0;
+    virtual void on(const DailyStatisticsEvent& event) = 0;
     virtual void on(const MarketByPriceEvent& event) = 0;
     virtual void on(const TradeSummaryEvent& event) = 0;
   };
@@ -54,6 +56,8 @@ class Matcher {
   // TODO(thraneh): add timer + next_update
   virtual void on(const BatchBeginEvent& event) = 0;
   virtual void on(const BatchEndEvent& event) = 0;
+  virtual void on(const SessionStatisticsEvent& event) = 0;
+  virtual void on(const DailyStatisticsEvent& event) = 0;
   virtual void on(const MarketByPriceEvent& event) = 0;
   virtual void on(const TradeSummaryEvent& event) = 0;
   virtual void on(const CreateOrder& create_order) = 0;
@@ -143,6 +147,10 @@ class NoMatcher final : public Matcher {
   }
   void on(const BatchEndEvent& event) override {
   }
+  void on(const SessionStatisticsEvent& event) override {
+  }
+  void on(const DailyStatisticsEvent& event) override {
+  }
   void on(const MarketByPriceEvent& event) override {
   }
   void on(const TradeSummaryEvent& event) override {
@@ -171,6 +179,10 @@ class SimpleMatcher final : public Matcher {
   void on(const BatchBeginEvent& event) override {
   }
   void on(const BatchEndEvent& event) override {
+  }
+  void on(const SessionStatisticsEvent& event) override {
+  }
+  void on(const DailyStatisticsEvent& event) override {
   }
   void on(const MarketByPriceEvent& event) override {
   }
@@ -511,6 +523,14 @@ class Controller final {
       static_cast<Strategy&>(_strategy).on(event);
     }
     void on(const BatchEndEvent& event) override {
+      _matcher.on(event);
+      static_cast<Strategy&>(_strategy).on(event);
+    }
+    void on(const SessionStatisticsEvent& event) override {
+      _matcher.on(event);
+      static_cast<Strategy&>(_strategy).on(event);
+    }
+    void on(const DailyStatisticsEvent& event) override {
       _matcher.on(event);
       static_cast<Strategy&>(_strategy).on(event);
     }

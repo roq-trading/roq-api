@@ -62,6 +62,31 @@ table OrderManagerStatus {
   status:GatewayStatus;
 }
 
+table SessionStatistics {
+  exchange:string;
+  symbol:string;
+  pre_open_interest:double;
+  pre_settlement_price:double;
+  pre_close_price:double;
+  highest_traded_price:double;
+  lowest_traded_price:double;
+  upper_limit_price:double;
+  lower_limit_price:double;
+  exchange_time:ulong;
+  channel:ushort;
+}
+
+table DailyStatistics {
+  exchange:string;
+  symbol:string;
+  open_price:double;
+  settlement_price:double;
+  close_price:double;
+  open_interest:double;
+  exchange_time:ulong;
+  channel:ushort;
+}
+
 struct Layer {
   bid_price:double;
   bid_quantity:double;
@@ -73,6 +98,8 @@ table MarketByPrice {
   exchange:string;
   symbol:string;
   depth:[Layer];
+  total_bid_volume:double;
+  total_ask_volume:double;
   exchange_time:ulong;
   channel:ushort;
 }
@@ -209,6 +236,8 @@ union EventData {
   DownloadEnd,
   MarketDataStatus,
   OrderManagerStatus,
+  SessionStatistics,
+  DailyStatistics,
   MarketByPrice,
   TradeSummary,
   ReferenceData,

@@ -243,6 +243,64 @@ Writer& write(Writer& writer, const OrderManagerStatus& value) {
       EnumNameGatewayStatus(value.status));
 }
 
+template<typename Writer>
+Writer& write(Writer& writer, const SessionStatistics& value) {
+  TimePointStr<decltype(value.exchange_time)> exchange_time(value.exchange_time);
+  const char *FORMAT =
+    "{"
+    "exchange=\"%s\", "
+    "symbol=\"%s\", "
+    "pre_open_interest=%" FLOAT_REPR ", "
+    "pre_settlement_price=%" FLOAT_REPR ", "
+    "pre_close_price=%" FLOAT_REPR ", "
+    "highest_traded_price=%" FLOAT_REPR ", "
+    "lowest_traded_price=%" FLOAT_REPR ", "
+    "upper_limit_price=%" FLOAT_REPR ", "
+    "lower_limit_price=%" FLOAT_REPR ", "
+    "exchange_time=%s, "
+    "channel=%" PRIu16
+    "}";
+  return writer.printf(
+      FORMAT,
+      value.exchange,
+      value.symbol,
+      value.pre_open_interest,
+      value.pre_settlement_price,
+      value.pre_close_price,
+      value.highest_traded_price,
+      value.lowest_traded_price,
+      value.upper_limit_price,
+      value.lower_limit_price,
+      exchange_time.c_str(),
+      value.channel);
+}
+
+template<typename Writer>
+Writer& write(Writer& writer, const DailyStatistics& value) {
+  TimePointStr<decltype(value.exchange_time)> exchange_time(value.exchange_time);
+  const char *FORMAT =
+    "{"
+    "exchange=\"%s\", "
+    "symbol=\"%s\", "
+    "open_price=%" FLOAT_REPR ", "
+    "settlement_price=%" FLOAT_REPR ", "
+    "close_price=%" FLOAT_REPR ", "
+    "open_interest=%" FLOAT_REPR ", "
+    "exchange_time=%s, "
+    "channel=%" PRIu16
+    "}";
+  return writer.printf(
+      FORMAT,
+      value.exchange,
+      value.symbol,
+      value.open_price,
+      value.settlement_price,
+      value.close_price,
+      value.open_interest,
+      exchange_time.c_str(),
+      value.channel);
+}
+
 // MarketByPrice
 
 template<typename Writer>
@@ -265,6 +323,8 @@ Writer& write(Writer& writer, const MarketByPrice& value) {
   }
   const char *FORMAT_2 =
     "], "
+    "total_bid_volume=%" FLOAT_REPR ", "
+    "total_ask_volume=%" FLOAT_REPR ", "
     "exchange_time=%s, "
     "channel=%" PRIu16
     "}";
@@ -728,6 +788,26 @@ Writer& write(Writer& writer, const OrderManagerStatusEvent& value) {
 }
 
 template <typename Writer>
+Writer& write(Writer& writer, const SessionStatisticsEvent& value) {
+  return writer
+    .printf("{message_info=")
+    .print(value.message_info)
+    .printf(", session_statistics=")
+    .print(value.session_statistics)
+    .printf("}");
+}
+
+template <typename Writer>
+Writer& write(Writer& writer, const DailyStatisticsEvent& value) {
+  return writer
+    .printf("{message_info=")
+    .print(value.message_info)
+    .printf(", daily_statistics=")
+    .print(value.daily_statistics)
+    .printf("}");
+}
+
+template <typename Writer>
 Writer& write(Writer& writer, const MarketByPriceEvent& value) {
   return writer
     .printf("{message_info=")
@@ -1012,6 +1092,20 @@ std::ostream& operator<<(std::ostream& stream, const OrderManagerStatus& value) 
   return writer.print(value).finish(stream);
 }
 
+// SessionStatistics
+
+std::ostream& operator<<(std::ostream& stream, const SessionStatistics& value) {
+  Writer writer;
+  return writer.print(value).finish(stream);
+}
+
+// DailyStatistics
+
+std::ostream& operator<<(std::ostream& stream, const DailyStatistics& value) {
+  Writer writer;
+  return writer.print(value).finish(stream);
+}
+
 // MarketByPrice
 
 std::ostream& operator<<(std::ostream& stream, const MarketByPrice& value) {
@@ -1183,6 +1277,20 @@ std::ostream& operator<<(std::ostream& stream, const MarketDataStatusEvent& valu
 // OrderManagerStatusEvent
 
 std::ostream& operator<<(std::ostream& stream, const OrderManagerStatusEvent& value) {
+  Writer writer;
+  return writer.print(value).finish(stream);
+}
+
+// SessionStatisticsEvent
+
+std::ostream& operator<<(std::ostream& stream, const SessionStatisticsEvent& value) {
+  Writer writer;
+  return writer.print(value).finish(stream);
+}
+
+// DailyStatisticsEvent
+
+std::ostream& operator<<(std::ostream& stream, const DailyStatisticsEvent& value) {
   Writer writer;
   return writer.print(value).finish(stream);
 }

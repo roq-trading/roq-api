@@ -419,6 +419,14 @@ class Controller final {
         VLOG(3) << "[" << _name << "] MarketStatusEvent " << event;
         _strategy.on(event);
       }
+      void on(const SessionStatisticsEvent& event) final {
+        VLOG(3) << "[" << _name << "] SessionStatisticsEvent " << event;
+        _strategy.on(event);
+      }
+      void on(const DailyStatisticsEvent& event) final {
+        VLOG(3) << "[" << _name << "] DailyStatisticsEvent " << event;
+        _strategy.on(event);
+      }
       void on(const MarketByPriceEvent& event) final {
         VLOG(3) << "[" << _name << "] MarketByPriceEvent " << event;
         _strategy.on(event);

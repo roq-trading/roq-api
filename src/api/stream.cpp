@@ -104,7 +104,7 @@ Writer& write(Writer& writer, const Handshake& value) {
       first = false;
       writer.printf(", ");
     }
-    writer.printf("\"%s\"", iter);
+    writer.printf("\"%s\"", iter.c_str());
   }
   writer.printf("}, accounts={");
   first = true;
@@ -113,7 +113,7 @@ Writer& write(Writer& writer, const Handshake& value) {
       first = false;
       writer.printf(", ");
     }
-    writer.printf("\"%s\"", iter);
+    writer.printf("\"%s\"", iter.c_str());
   }
   const char *FORMAT_2 =
     "}, "

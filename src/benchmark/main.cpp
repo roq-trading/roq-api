@@ -675,7 +675,7 @@ BENCHMARK_DEFINE_F(DecodeFixture, BM_SessionStatisticsEvent_Decode)(
         _is_last,
         _receive_time);
   }
-  assert(handler._count > 0);
+  assert(_count > 0);
 }
 BENCHMARK_REGISTER_F(DecodeFixture, BM_SessionStatisticsEvent_Decode);
 
@@ -738,7 +738,7 @@ BENCHMARK_DEFINE_F(DecodeFixture, BM_DailyStatisticsEvent_Decode)(
         _is_last,
         _receive_time);
   }
-  assert(handler._count > 0);
+  assert(_count > 0);
 }
 BENCHMARK_REGISTER_F(DecodeFixture, BM_DailyStatisticsEvent_Decode);
 
@@ -801,7 +801,7 @@ BENCHMARK_DEFINE_F(DecodeFixture, BM_MarketByPriceEvent_Decode)(
         _is_last,
         _receive_time);
   }
-  assert(handler._count > 0);
+  assert(_count > 0);
 }
 BENCHMARK_REGISTER_F(DecodeFixture, BM_MarketByPriceEvent_Decode);
 
@@ -864,7 +864,7 @@ BENCHMARK_DEFINE_F(DecodeFixture, BM_TradeSummaryEvent_Decode)(
         _is_last,
         _receive_time);
   }
-  assert(handler._count > 0);
+  assert(_count > 0);
 }
 BENCHMARK_REGISTER_F(DecodeFixture, BM_TradeSummaryEvent_Decode);
 
@@ -927,7 +927,7 @@ BENCHMARK_DEFINE_F(DecodeFixture, BM_ReferenceDataEvent_Decode)(
         _is_last,
         _receive_time);
   }
-  assert(handler._count > 0);
+  assert(_count > 0);
 }
 BENCHMARK_REGISTER_F(DecodeFixture, BM_ReferenceDataEvent_Decode);
 
@@ -990,7 +990,7 @@ BENCHMARK_DEFINE_F(DecodeFixture, BM_MarketStatusEvent_Decode)(
         _is_last,
         _receive_time);
   }
-  assert(handler._count > 0);
+  assert(_count > 0);
 }
 BENCHMARK_REGISTER_F(DecodeFixture, BM_MarketStatusEvent_Decode);
 
@@ -1053,7 +1053,7 @@ BENCHMARK_DEFINE_F(DecodeFixture, BM_PositionUpdateEvent_Decode)(
         _is_last,
         _receive_time);
   }
-  assert(handler._count > 0);
+  assert(_count > 0);
 }
 BENCHMARK_REGISTER_F(DecodeFixture, BM_PositionUpdateEvent_Decode);
 
@@ -1116,7 +1116,7 @@ BENCHMARK_DEFINE_F(DecodeFixture, BM_OrderUpdateEvent_Decode)(
         _is_last,
         _receive_time);
   }
-  assert(handler._count > 0);
+  assert(_count > 0);
 }
 BENCHMARK_REGISTER_F(DecodeFixture, BM_OrderUpdateEvent_Decode);
 
@@ -1179,7 +1179,7 @@ BENCHMARK_DEFINE_F(DecodeFixture, BM_TradeUpdateEvent_Decode)(
         _is_last,
         _receive_time);
   }
-  assert(handler._count > 0);
+  assert(_count > 0);
 }
 BENCHMARK_REGISTER_F(DecodeFixture, BM_TradeUpdateEvent_Decode);
 
@@ -1242,7 +1242,7 @@ BENCHMARK_DEFINE_F(DecodeFixture, BM_CreateOrderEvent_Decode)(
         _is_last,
         _receive_time);
   }
-  assert(handler._count > 0);
+  assert(_count > 0);
 }
 BENCHMARK_REGISTER_F(DecodeFixture, BM_CreateOrderEvent_Decode);
 

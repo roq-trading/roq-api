@@ -58,7 +58,7 @@ class BasicBufferWriter {
     string.assign(finish());
   }
   std::ostream& finish(std::ostream& stream) {
-    stream << finish();
+    return stream << finish();
   }
 
  private:

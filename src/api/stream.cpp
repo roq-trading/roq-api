@@ -117,12 +117,14 @@ Writer& write(Writer& writer, const Handshake& value) {
   }
   const char *FORMAT_2 =
     "}, "
+    "client_type=%s, "
     "shmem_name=\"%s\", "
     "shmem_size=%" PRIu32 ", "
     "shmem_index=%" PRIu32
     "}";
   return writer.printf(
       FORMAT_2,
+      EnumNameClientType(value.client_type),
       value.shmem_name,
       value.shmem_size,
       value.shmem_index);

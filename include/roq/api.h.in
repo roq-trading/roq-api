@@ -82,6 +82,7 @@ struct Handshake final {
   const char *password;                      ///< Login password.
   std::unordered_set<std::string> symbols;   ///< Symbols.
   std::unordered_set<std::string> accounts;  ///< Accounts.
+  ClientType client_type;                    ///< Client type.
   const char *shmem_name;
   uint32_t shmem_size;
   uint32_t shmem_index;
@@ -669,6 +670,44 @@ class Strategy {
   virtual void on(const CreateOrderAckEvent&) = 0;             ///< Response to a create order request
   virtual void on(const ModifyOrderAckEvent&) = 0;             ///< Response to a modify order request
   virtual void on(const CancelOrderAckEvent&) = 0;             ///< Response to a cancel order request
+};
+
+/**
+ * Position manager interface.
+ */
+class PositionManager {
+ public:
+   /*
+    * Dispatcher interface.
+    */
+  class Dispatcher {
+   public:
+    /**
+     * Send PositionUpdate request.
+     *
+     * @param position_update has the position update details.
+     * @param gateway name of the destination gateway.
+     */
+    virtual void send(const PositionUpdate& position_update, const std::string& gateway) = 0;
+  };
+  virtual ~PositionManager() = default;
+  virtual const Subscriptions& get_subscriptions() const = 0;  ///< Subscriptions
+  virtual void on(const TimerEvent&) = 0;                      ///< Timer
+  virtual void on(const ConnectionStatusEvent&) = 0;           ///< The connection status has changed
+  virtual void on(const BatchBeginEvent&) = 0;                 ///< Batch begin
+  virtual void on(const BatchEndEvent&) = 0;                   ///< Batch end
+  virtual void on(const MarketDataStatusEvent&) = 0;           ///< Connection or login status has changed
+  virtual void on(const OrderManagerStatusEvent&) = 0;         ///< Connection or login status has changed
+  virtual void on(const DownloadBeginEvent&) = 0;              ///< Download begin
+  virtual void on(const DownloadEndEvent&) = 0;                ///< Download end
+  virtual void on(const ReferenceDataEvent&) = 0;              ///< Reference data update for a symbol
+  virtual void on(const MarketStatusEvent&) = 0;               ///< Market status update for a symbol
+  virtual void on(const DailyStatisticsEvent&) = 0;            ///< Daily statistics update for a symbol
+  virtual void on(const MarketByPriceEvent&) = 0;              ///< Market-by-price update for a symbol
+  virtual void on(const TradeSummaryEvent&) = 0;               ///< Trade summary update for a symbol
+  virtual void on(const PositionUpdateEvent&) = 0;             ///< Position update
+  virtual void on(const OrderUpdateEvent&) = 0;                ///< New order, or order details have been updated
+  virtual void on(const TradeUpdateEvent&) = 0;                ///< New trade, or trade details have been updated
 };
 
 /**

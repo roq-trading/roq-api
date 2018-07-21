@@ -17,6 +17,7 @@ table Handshake {
   password:string;
   symbols:[string];
   accounts:[string];
+  client_type:ClientType;
   shmem_name:string;
   shmem_size:uint;
   shmem_index:uint;

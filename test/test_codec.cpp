@@ -53,6 +53,9 @@ static const size_t NAME_LENGTH = sizeof(NAME) / sizeof(NAME[0]);
 }  // namespace
 
 namespace {
+static ClientType rand_client_type() {
+  return static_cast<ClientType>(rand_uint32() % static_cast<uint32_t>(ClientType::MAX));
+}
 static GatewayStatus rand_gateway_status() {
   return static_cast<GatewayStatus>(rand_uint32() % static_cast<uint32_t>(GatewayStatus::MAX));
 }
@@ -101,6 +104,7 @@ inline Handshake CreateRandomHandshake() {
     .password = NAME[rand_uint32() % NAME_LENGTH],
     .symbols = rand_set_string(),
     .accounts = rand_set_string(),
+    .client_type = rand_client_type(),
     .shmem_name = NAME[rand_uint32() % NAME_LENGTH],
     .shmem_size = rand_uint32(),
     .shmem_index = rand_uint32(),
@@ -369,6 +373,7 @@ void compare(const Handshake& lhs, const Handshake& rhs) {
   EXPECT_STREQ(lhs.password, rhs.password);
   compare(lhs.symbols, rhs.symbols);
   compare(lhs.accounts, rhs.accounts);
+  EXPECT_EQ(lhs.client_type, rhs.client_type);
   EXPECT_STREQ(lhs.shmem_name, rhs.shmem_name);
   EXPECT_EQ(lhs.shmem_size, rhs.shmem_size);
   EXPECT_EQ(lhs.shmem_index, rhs.shmem_index);

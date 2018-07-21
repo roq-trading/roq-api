@@ -175,6 +175,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const Handshake& value) {
     fbb.CreateString(value.password),
     create_vector_of_string(fbb, value.symbols),
     create_vector_of_string(fbb, value.accounts),
+    value.client_type,
     fbb.CreateString(value.shmem_name),
     value.shmem_size,
     value.shmem_index);
@@ -924,6 +925,7 @@ inline Handshake convert(const schema::Handshake *value) {
     .password = value->password()->c_str(),
     .symbols = std::unordered_set<std::string>(),
     .accounts = std::unordered_set<std::string>(),
+    .client_type = value->client_type(),
     .shmem_name = value->shmem_name()->c_str(),
     .shmem_size = value->shmem_size(),
     .shmem_index = value->shmem_index(),

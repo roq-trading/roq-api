@@ -332,7 +332,7 @@ class Controller final {
  private:
   // Dispatcher
   class Dispatcher final
-      : public Strategy::Dispatcher,
+      : public Client::Dispatcher,
         public Generator::Dispatcher,
         public Matcher::Dispatcher {
    public:
@@ -344,7 +344,7 @@ class Controller final {
         : _name(name),
           _generators(generators),
           _matcher(*this, name),
-          _strategy(*this, std::forward<Args>(args)...) {}
+          _client(*this, std::forward<Args>(args)...) {}
     void dispatch() {
       initialize();
       // TODO(thraneh): interleave multiple generators
@@ -366,15 +366,15 @@ class Controller final {
         std::chrono::system_clock::time_point next) {
       if (_next_timer == std::chrono::system_clock::time_point())
         _next_timer = next;
-      auto& strategy = static_cast<Strategy&>(_strategy);
+      auto& client = static_cast<Client&>(_client);
       while (_next_timer <= next) {
-        strategy.on(TimerEvent{});
+        client.on(TimerEvent{});
         _next_timer += std::chrono::seconds(1);
       }
     }
     void initialize() {
-      auto& strategy = static_cast<Strategy&>(_strategy);
-      const auto& subscriptions = strategy.get_subscriptions();
+      auto& client = static_cast<Client&>(_client);
+      const auto& subscriptions = client.get_subscriptions();
       // download per gateway ...
       for (const auto& iter : subscriptions) {
         const auto& gateway = iter.first;
@@ -425,7 +425,7 @@ class Controller final {
         .message_info = message_info,
         .download_begin = download_begin
       };
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void download_end_event(
         const std::string& gateway,
@@ -440,7 +440,7 @@ class Controller final {
         .message_info = message_info,
         .download_end = download_end
       };
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void market_data_status(
         const std::string& gateway) {
@@ -454,7 +454,7 @@ class Controller final {
         .message_info = message_info,
         .market_data_status = market_data_status
       };
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void order_manager_status(
         const std::string& gateway,
@@ -470,7 +470,7 @@ class Controller final {
         .message_info = message_info,
         .order_manager_status = order_manager_status
       };
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void market_status(
         const std::string& gateway,
@@ -488,7 +488,7 @@ class Controller final {
         .message_info = message_info,
         .market_status = market_status
       };
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     // TODO(thraneh): matcher should probably own all position updates
     void position_update(
@@ -514,53 +514,53 @@ class Controller final {
         .message_info = message_info,
         .position_update = position_update
       };
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
 
    private:
     void on(const BatchBeginEvent& event) override {
       _matcher.on(event);
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void on(const BatchEndEvent& event) override {
       _matcher.on(event);
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void on(const SessionStatisticsEvent& event) override {
       _matcher.on(event);
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void on(const DailyStatisticsEvent& event) override {
       _matcher.on(event);
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void on(const MarketByPriceEvent& event) override {
       _matcher.on(event);
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void on(const TradeSummaryEvent& event) override {
       _matcher.on(event);
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
 
    private:
     void on(const CreateOrderAckEvent& event) override {
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void on(const ModifyOrderAckEvent& event) override {
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void on(const CancelOrderAckEvent& event) override {
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void on(const OrderUpdateEvent& event) override {
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void on(const TradeUpdateEvent& event) override {
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
     void on(const PositionUpdateEvent& event) override {
-      static_cast<Strategy&>(_strategy).on(event);
+      static_cast<Client&>(_client).on(event);
     }
 
    private:
@@ -581,7 +581,7 @@ class Controller final {
 
    private:
     const std::string _name;
-    T _strategy;
+    T _client;
     generators_t& _generators;
     std::chrono::system_clock::time_point _next_timer;
     M _matcher;

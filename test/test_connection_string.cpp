@@ -2,24 +2,24 @@
 
 #include <gtest/gtest.h>
 
-#include "roq/strategy.h"
+#include "roq/client.h"
 
 using namespace roq;  // NOLINT
 
 TEST(connection_string, simple_failure_0) {
   EXPECT_THROW(
-    strategy::Connection::create(""),
+    client::Connection::create(""),
     std::runtime_error);
 }
 
 TEST(connection_string, simple_failure_1) {
   EXPECT_THROW(
-    strategy::Connection::create("i:was@here"),
+    client::Connection::create("i:was@here"),
     std::runtime_error);
 }
 
 TEST(connection_string, simple) {
-  auto connection = strategy::Connection::create("/var/tmp/xyz");
+  auto connection = client::Connection::create("/var/tmp/xyz");
   EXPECT_EQ(connection.get_user(), "");
   EXPECT_EQ(connection.get_password(), "");
   const auto& address = connection.get_address();
@@ -29,7 +29,7 @@ TEST(connection_string, simple) {
 }
 
 TEST(connection_string, simple_with_user) {
-  auto connection = strategy::Connection::create("test@/var/tmp/xyz");
+  auto connection = client::Connection::create("test@/var/tmp/xyz");
   EXPECT_EQ(connection.get_user(), "test");
   EXPECT_EQ(connection.get_password(), "");
   const auto& address = connection.get_address();
@@ -39,7 +39,7 @@ TEST(connection_string, simple_with_user) {
 }
 
 TEST(connection_string, simple_with_user_and_password) {
-  auto connection = strategy::Connection::create("test:1234@/var/tmp/xyz");
+  auto connection = client::Connection::create("test:1234@/var/tmp/xyz");
   EXPECT_EQ(connection.get_user(), "test");
   EXPECT_EQ(connection.get_password(), "1234");
   const auto& address = connection.get_address();

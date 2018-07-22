@@ -26,7 +26,7 @@
 #endif
 
 namespace roq {
-namespace position {
+namespace client {
 
 // Connection
 // parse connection string: [user[:password]@][address]
@@ -133,7 +133,7 @@ class Controller final {
 
  private:
   // Dispatcher
-  class Dispatcher final : public PositionManager::Dispatcher {
+  class Dispatcher final : public Client::Dispatcher {
     // Gateway
     class Gateway final : public codec::EventHandler {
      public:
@@ -141,7 +141,7 @@ class Controller final {
           const std::string& name,
           const Connection& connection,
           codec::Protocol& protocol,
-          PositionManager& position_manager,
+          Client& client,
           libevent::Base& base,
           codec::Buffer& buffer,
           codec::Encoder& encoder,
@@ -151,7 +151,7 @@ class Controller final {
           : _name(name),
             _connection(connection),
             _protocol(protocol),
-            _position_manager(position_manager),
+            _client(client),
             _base(base),
             _buffer(buffer),
             _encoder(encoder),
@@ -236,13 +236,13 @@ class Controller final {
         LOG(INFO) << "[" << _name << "] Connection succeeded";
         _state = Connected;
         reset_retries();
-        // notify position_manager
+        // notify client
         ConnectionStatusEvent event {
           .source = _name.c_str(),
           .connection_status = ConnectionStatus::Connected,
         };
         VLOG(2) << "[" << _name << "] ConnectionStatusEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
         ++_statistics.connections_succeeded;
         // stream is initialized using our magic protocol header
         _protocol.write(_write_buffer);
@@ -259,7 +259,7 @@ class Controller final {
           .login = _connection.get_user().c_str(),
           .password = _connection.get_password().c_str(),
         };
-        const auto& subscriptions = _position_manager.get_subscriptions();
+        const auto& subscriptions = _client.get_subscriptions();
         const auto iter = subscriptions.find(_name);
         if (iter != subscriptions.end()) {
           const auto& subscription = (*iter).second;
@@ -268,7 +268,7 @@ class Controller final {
               handshake.symbols.emplace(symbol);
           handshake.accounts = subscription.accounts;
         }
-        handshake.client_type = ClientType::PositionManager;
+        handshake.client_type = ClientType::Strategy;  // FIXME(thraneh): must be argument to constructor
         handshake.shmem_name = "";
         codec::Queue queue(_buffer);
         _encoder.encode(queue, handshake);
@@ -277,14 +277,14 @@ class Controller final {
       void connection_failed() {
         if (_state >= Connected) {
           LOG(INFO) << "[" << _name << "] Disconnected";
-          // notify position_manager
+          // notify client
           ConnectionStatusEvent event {
           .source = _name.c_str(),
             .connection_status = ConnectionStatus::Disconnected,
           };
           VLOG(2) << "[" << _name << "] "
             "ConnectionStatusEvent " << event;
-          _position_manager.on(event);
+          _client.on(event);
         } else {
           LOG(INFO) << "[" << _name << "] "
             "Connection attempt " << _retries << " failed";
@@ -359,11 +359,11 @@ class Controller final {
      protected:
       void on(const BatchBeginEvent& event) final {
         VLOG(4) << "[" << _name << "] BatchBeginEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const BatchEndEvent& event) final {
         VLOG(4) << "[" << _name << "] BatchEndEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const HandshakeEvent& event) final {
         LOG(FATAL) << "[" << _name << "] HandshakeEvent " << event;
@@ -398,72 +398,76 @@ class Controller final {
       }
       void on(const DownloadBeginEvent& event) final {
         VLOG(2) << "[" << _name << "] DownloadBeginEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const DownloadEndEvent& event) final {
         VLOG(2) << "[" << _name << "] DownloadEndEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const MarketDataStatusEvent& event) final {
         VLOG(2) << "[" << _name << "] MarketDataStatusEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const OrderManagerStatusEvent& event) final {
         VLOG(2) << "[" << _name << "] OrderManagerStatusEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const ReferenceDataEvent& event) final {
         VLOG(3) << "[" << _name << "] ReferenceDataEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const MarketStatusEvent& event) final {
         VLOG(3) << "[" << _name << "] MarketStatusEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const SessionStatisticsEvent& event) final {
-        LOG(FATAL) << "[" << _name << "] SessionStatistics " << event;
+        VLOG(3) << "[" << _name << "] SessionStatisticsEvent " << event;
+        _client.on(event);
       }
       void on(const DailyStatisticsEvent& event) final {
         VLOG(3) << "[" << _name << "] DailyStatisticsEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const MarketByPriceEvent& event) final {
         VLOG(3) << "[" << _name << "] MarketByPriceEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const TradeSummaryEvent& event) final {
         VLOG(3) << "[" << _name << "] TradeSummaryEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const CreateOrderEvent& event) final {
         LOG(FATAL) << "[" << _name << "] CreateOrderEvent " << event;
       }
       void on(const CreateOrderAckEvent& event) final {
-        LOG(FATAL) << "[" << _name << "] SessionStatistics " << event;
+        VLOG(1) << "[" << _name << "] CreateOrderAckEvent " << event;
+        _client.on(event);
       }
       void on(const ModifyOrderEvent& event) final {
         LOG(FATAL) << "[" << _name << "] ModifyOrderEvent " << event;
       }
       void on(const ModifyOrderAckEvent& event) final {
-        LOG(FATAL) << "[" << _name << "] SessionStatistics " << event;
+        VLOG(1) << "[" << _name << "] ModifyOrderAckEvent " << event;
+        _client.on(event);
       }
       void on(const CancelOrderEvent& event) final {
         LOG(FATAL) << "[" << _name << "] CancelOrderEvent " << event;
       }
       void on(const CancelOrderAckEvent& event) final {
-        LOG(FATAL) << "[" << _name << "] SessionStatistics " << event;
+        VLOG(1) << "[" << _name << "] CancelOrderAckEvent " << event;
+        _client.on(event);
       }
       void on(const OrderUpdateEvent& event) final {
         VLOG(1) << "[" << _name << "] OrderUpdateEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const TradeUpdateEvent& event) final {
         VLOG(1) << "[" << _name << "] TradeUpdateEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
       void on(const PositionUpdateEvent& event) final {
         VLOG(1) << "[" << _name << "] PositionUpdateEvent " << event;
-        _position_manager.on(event);
+        _client.on(event);
       }
 
      private:
@@ -474,7 +478,7 @@ class Controller final {
      private:
       const std::string _name;
       const Connection& _connection;
-      PositionManager& _position_manager;
+      Client& _client;
       codec::Protocol& _protocol;
       libevent::Base& _base;
       codec::Buffer& _buffer;
@@ -515,7 +519,7 @@ class Controller final {
     explicit Dispatcher(
         const gateways_t& gateways,
         Args&&... args)
-        : _position_manager(*this, std::forward<Args>(args)...),
+        : _client(*this, std::forward<Args>(args)...),
           _timer(_base, EV_PERSIST, [this](){ on_timer(); }),
           _next_refresh(std::chrono::steady_clock::now() + std::chrono::seconds(1)),
           _next_statistics(_next_refresh),
@@ -526,7 +530,7 @@ class Controller final {
             iter.first,
             iter.second,
             _protocol,
-            _position_manager,
+            _client,
             _base,
             _buffer,
             _encoder,
@@ -556,9 +560,19 @@ class Controller final {
       }
     }
     void send(
-        const PositionUpdate& position_update,
+        const CreateOrder& create_order,
         const std::string& gateway) override {
-      send_helper(position_update, gateway);
+      send_helper(create_order, gateway);
+    }
+    void send(
+        const ModifyOrder& modify_order,
+        const std::string& gateway) override {
+      send_helper(modify_order, gateway);
+    }
+    void send(
+        const CancelOrder& cancel_order,
+        const std::string& gateway) override {
+      send_helper(cancel_order, gateway);
     }
     void on_timer() {
       auto now = std::chrono::steady_clock::now();
@@ -570,7 +584,7 @@ class Controller final {
         write_statistics();
       }
       TimerEvent timer_event {};
-      static_cast<PositionManager&>(_position_manager).on(timer_event);
+      static_cast<Client&>(_client).on(timer_event);
     }
     bool refresh(const std::chrono::steady_clock::time_point now) {
       if (now < _next_refresh)
@@ -639,7 +653,7 @@ class Controller final {
 
    private:
     codec::Protocol _protocol;
-    T _position_manager;
+    T _client;
     libevent::Base _base;
     libevent::Timer _timer;
     Statistics _statistics;
@@ -664,5 +678,5 @@ class Controller final {
   gateways_t _gateways;
 };  // Controller
 
-}  // namespace position
+}  // namespace client
 }  // namespace roq

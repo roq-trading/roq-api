@@ -3,7 +3,7 @@ namespace roq;
 /// Client type.
 enum ClientType:byte {
   Strategy = 0,
-  PositionManager = 1
+  Monitor = 1
 }
 
 /// Connection status.

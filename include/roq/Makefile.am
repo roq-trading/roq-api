@@ -2,7 +2,7 @@ pkgincludedir=$(includedir)/roq
 pkginclude_HEADERS = \
 	enums_generated.h api_generated.h \
 	api.h stream.h codec.h \
-	strategy.h position.h \
+	client.h \
 	simulation.h \
 	platform.h filesystem.h file.h memory.h net.h utils.h \
 	libevent.h \

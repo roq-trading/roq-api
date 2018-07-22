@@ -2,30 +2,30 @@
 
 #include <gtest/gtest.h>
 
-#include "roq/strategy.h"
+#include "roq/client.h"
 
 using namespace roq;  // NOLINT
 
 TEST(gateways, simple_failure_1) {
   EXPECT_THROW(
-    strategy::Gateways::create(""),
+    client::Gateways::create(""),
     std::runtime_error);
 }
 
 TEST(gateways, simple_failure_2) {
   EXPECT_THROW(
-    strategy::Gateways::create("abc="),
+    client::Gateways::create("abc="),
     std::runtime_error);
 }
 
 TEST(gateways, simple_failure_3) {
   EXPECT_THROW(
-    strategy::Gateways::create("abc=def,"),
+    client::Gateways::create("abc=def,"),
     std::runtime_error);
 }
 
 TEST(gateways, simple_1) {
-  auto gateways = strategy::Gateways::create("femas=/var/tmp/xyz");
+  auto gateways = client::Gateways::create("femas=/var/tmp/xyz");
   EXPECT_EQ(gateways.size(), 1);
   const auto& iter = gateways.begin();
   const auto& name = (*iter).first;
@@ -40,7 +40,7 @@ TEST(gateways, simple_1) {
 }
 
 TEST(gateways, simple_2) {
-  auto gateways = strategy::Gateways::create(
+  auto gateways = client::Gateways::create(
       "femas=test:1234@/var/tmp/femasapi.sock,"
       "sim=/var/tmp/simulator.sock");
   EXPECT_EQ(gateways.size(), 2);

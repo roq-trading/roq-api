@@ -1,5 +1,7 @@
+AC_REVISION([m4_esyscmd_s([git describe --always --dirty --tags])])
+
 AC_INIT([roq],
-        [0.2.0],
+        m4_esyscmd_s([git describe]),
         [thraneh@gmail.com],
         [roq])
 
@@ -52,5 +54,8 @@ AS_IF(
 
 AM_CONDITIONAL([ENABLE_BENCHMARK],
 	       [test "$enable_benchmark" = "yes"])
+
+AC_SUBST([ROQ_VERSION_MAJOR], m4_esyscmd_s([git describe | sed -e 's/v\([0-9]*\)\.[0-9]*\.[0-9]*.*/\1/']))
+AC_SUBST([ROQ_VERSION_MINOR], m4_esyscmd_s([git describe | sed -e 's/v[0-9]*\.\([0-9]\)*\.[0-9]*.*/\1/']))
 
 AC_OUTPUT

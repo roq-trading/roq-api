@@ -14,7 +14,7 @@
 /**
  * API version.
  */
-#define ROQ_VERSION "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@"
+#define ROQ_VERSION "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
 
 namespace roq {
 

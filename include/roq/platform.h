@@ -54,8 +54,10 @@ inline std::string get_program() {
 #if defined(__linux__)
   char buffer[PATH_MAX];
   auto res = readlink("/proc/self/exe", buffer, sizeof(buffer));
-  if (res >= 0)
+  if (res >= 0 && res < sizeof(buffer)) {
+    buffer[res] = '\0';
     return basename(buffer);
+  }
 #elif defined(__APPLE__)
   char buffer[PATH_MAX];
   uint32_t size = sizeof(buffer);

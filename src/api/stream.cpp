@@ -102,18 +102,20 @@ Writer& write(Writer& writer, const Handshake& value) {
   for (auto& iter : value.symbols) {
     if (first) {
       first = false;
-      writer.printf(", ");
+      writer.printf("\"%s\"", iter.c_str());
+    } else {
+      writer.printf(", \"%s\"", iter.c_str());
     }
-    writer.printf("\"%s\"", iter.c_str());
   }
   writer.printf("}, accounts={");
   first = true;
   for (auto& iter : value.accounts) {
     if (first) {
       first = false;
-      writer.printf(", ");
+      writer.printf("\"%s\"", iter.c_str());
+    } else {
+      writer.printf(", \"%s\"", iter.c_str());
     }
-    writer.printf("\"%s\"", iter.c_str());
   }
   const char *FORMAT_2 =
     "}, "

@@ -5,6 +5,7 @@
 #include <roq/api_generated.h>
 
 #include <chrono>
+#include <limits>
 #include <map>
 #include <string>
 #include <utility>
@@ -724,6 +725,15 @@ inline bool is_order_live(roq::OrderStatus status) {
     case OrderStatus::Canceled:
       return false;
   }
+}
+
+inline double multiplier(roq::Side side) {
+  static double const values[] = {
+    std::numeric_limits<double>::quiet_NaN(),
+    1.0, -1.0
+  };
+  const size_t index = static_cast<int>(side);
+  return values[index];
 }
 
 }  // namespace roq

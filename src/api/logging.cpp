@@ -8,7 +8,9 @@
 #include <cxxabi.h>
 #include <signal.h>
 
-#include <spdlog/spdlog.h>
+#include <spdlog/async.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_sinks.h>
 
 #include <algorithm>
 #include <chrono>
@@ -19,6 +21,9 @@
 #include "roq/platform.h"
 #include "roq/stream.h"
 
+#define QUEUE_SIZE 1024*1024
+#define THREAD_COUNT 1
+#define FLUSH_SECONDS 3
 
 namespace {
 
@@ -164,16 +169,12 @@ void Logger::initialize(bool stacktrace, const char *log_dir) {
   detail::append_newline = false;
   auto filename = get_filename(log_dir);
   auto console = filename.empty();
-  if (!console)
-    spdlog::set_async_mode(
-        8192,
-        spdlog::async_overflow_policy::discard_log_msg,
-        nullptr,
-        std::chrono::seconds(3),
-        nullptr);
+  spdlog::init_thread_pool(QUEUE_SIZE, THREAD_COUNT);
+  spdlog::flush_every(std::chrono::seconds(FLUSH_SECONDS));
   auto logger = console ?
-                spdlog::stdout_logger_st("spdlog") :
-                spdlog::basic_logger_st("spdlog", filename);
+      spdlog::stdout_logger_st("spdlog") :
+      spdlog::basic_logger_st<spdlog::async_factory>(
+          "spdlog", filename);
   // matching spdlog pattern to glog
   // - %L = level (I=INFO|W=WARN|E=ERROR|C=CRITICAL)
   // - %m = month (MM)

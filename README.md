@@ -213,7 +213,7 @@ Assuming you have all dependencies installed, it's pretty standard
 | [libevent](https://github.com/libevent/libevent)                 | >= 2.1   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Async event processing          |
 | [libunwind](https://github.com/libunwind/libunwind)              | >= 1.2   | [MIT](https://opensource.org/licenses/MIT)                   | Stack trace                     |
 | [rapidjson](https://github.com/Tencent/rapidjson)                | >= 1.1   | [MIT](https://opensource.org/licenses/MIT)                   | JSON parsing                    |
-| [spdlog](https://github.com/gabime/spdlog)                       | >= 0.16  | [MIT](https://opensource.org/licenses/MIT)                   | Logging                         |
+| [spdlog](https://github.com/gabime/spdlog)                       | >= 1.0   | [MIT](https://opensource.org/licenses/MIT)                   | Logging                         |
 | [libucl](https://github.com/vstakhov/libucl)                     | >= 0.8   | [BSD-2-Clause](https://opensource.org/licenses/BSD-2-Clause) | Config-file parsing             |
 
 

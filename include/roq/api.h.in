@@ -274,8 +274,9 @@ struct PositionUpdate final {
   const char *symbol;              ///< Symbol name
   Side side;                       ///< Side
   double position;                 ///< Current position.
-  double yesterday;                ///< Position as of yesterday.
-  uint32_t last_order_local_id;    ///< Last order included.
+  double position_cost;            ///< Position cost.
+  double position_yesterday;       ///< Position as of yesterday.
+  double position_cost_yesterday;  ///< Position cost as of yesterday.
   uint32_t last_trade_id;          ///< Last trade included.
 };
 
@@ -316,6 +317,9 @@ struct TradeUpdate final {
   time_point_t trade_time;         ///< Trade time
   const char *order_external_id;   ///< External order identifier.
   const char *trade_external_id;   ///< External trade identifier
+  // optional
+  double position;                 ///< Current position.
+  double position_cost;            ///< Position cost.
 };
 
 /**

@@ -237,8 +237,9 @@ inline PositionUpdate CreateRandomPositionUpdate() {
     .symbol = NAME[rand_uint32() % NAME_LENGTH],
     .side = rand_side(),
     .position = rand_double(),
-    .yesterday = rand_double(),
-    .last_order_local_id = rand_uint32(),
+    .position_cost = rand_double(),
+    .position_yesterday = rand_double(),
+    .position_cost_yesterday = rand_double(),
     .last_trade_id = rand_uint32(),
   };
 }
@@ -275,6 +276,8 @@ inline TradeUpdate CreateRandomTradeUpdate() {
     .trade_time = rand_time_point(),
     .order_external_id = NAME[rand_uint32() % NAME_LENGTH],
     .trade_external_id = NAME[rand_uint32() % NAME_LENGTH],
+    .position = rand_double(),
+    .position_cost = rand_double(),
   };
 }
 inline CreateOrder CreateRandomCreateOrder() {
@@ -473,8 +476,9 @@ void compare(const PositionUpdate& lhs, const PositionUpdate& rhs) {
   EXPECT_STREQ(lhs.symbol, rhs.symbol);
   EXPECT_EQ(lhs.side, rhs.side);
   EXPECT_EQ(lhs.position, rhs.position);
-  EXPECT_EQ(lhs.yesterday, rhs.yesterday);
-  EXPECT_EQ(lhs.last_order_local_id, rhs.last_order_local_id);
+  EXPECT_EQ(lhs.position_cost, rhs.position_cost);
+  EXPECT_EQ(lhs.position_yesterday, rhs.position_yesterday);
+  EXPECT_EQ(lhs.position_cost_yesterday, rhs.position_cost_yesterday);
   EXPECT_EQ(lhs.last_trade_id, rhs.last_trade_id);
 }
 void compare(const OrderUpdate& lhs, const OrderUpdate& rhs) {
@@ -507,6 +511,8 @@ void compare(const TradeUpdate& lhs, const TradeUpdate& rhs) {
   compare(lhs.trade_time, rhs.trade_time);
   EXPECT_STREQ(lhs.order_external_id, rhs.order_external_id);
   EXPECT_STREQ(lhs.trade_external_id, rhs.trade_external_id);
+  EXPECT_EQ(lhs.position, rhs.position);
+  EXPECT_EQ(lhs.position_cost, rhs.position_cost);
 }
 void compare(const CreateOrder& lhs, const CreateOrder& rhs) {
   EXPECT_STREQ(lhs.account, rhs.account);

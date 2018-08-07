@@ -137,8 +137,9 @@ table PositionUpdate {
   symbol:string;
   side:Side;
   position:double;
-  yesterday:double;
-  last_order_local_id:uint;
+  position_cost:double;
+  position_yesterday:double;
+  position_cost_yesterday:double;
   last_trade_id:uint;
 }
 
@@ -173,6 +174,8 @@ table TradeUpdate {
   trade_time:ulong;
   order_external_id:string;
   trade_external_id:string;
+  position:double;
+  position_cost:double;
 }
 
 table CreateOrder {

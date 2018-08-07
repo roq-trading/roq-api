@@ -417,8 +417,9 @@ Writer& write(Writer& writer, const PositionUpdate& value) {
     "symbol=\"%s\", "
     "side=%s, "
     "position=%" FLOAT_REPR ", "
-    "yesterday=%" FLOAT_REPR ", "
-    "last_order_local_id=%" PRIu32 ", "
+    "position_cost=%" FLOAT_REPR ", "
+    "position_yesterday=%" FLOAT_REPR ", "
+    "position_cost_yesterday=%" FLOAT_REPR ", "
     "last_trade_id=%" PRIu32
     "}";
   return writer.printf(
@@ -428,8 +429,9 @@ Writer& write(Writer& writer, const PositionUpdate& value) {
       value.symbol,
       EnumNameSide(value.side),
       value.position,
-      value.yesterday,
-      value.last_order_local_id,
+      value.position_cost,
+      value.position_yesterday,
+      value.position_cost_yesterday,
       value.last_trade_id);
 }
 
@@ -493,7 +495,9 @@ Writer& write(Writer& writer, const TradeUpdate& value) {
     "order_template=\"%s\", "
     "trade_time=%s, "
     "order_external_id=\"%s\", "
-    "trade_external_id=\"%s\""
+    "trade_external_id=\"%s\", "
+    "position=%" FLOAT_REPR ", "
+    "position_cost=%" FLOAT_REPR
     "}";
   return writer.printf(
       FORMAT,
@@ -509,7 +513,9 @@ Writer& write(Writer& writer, const TradeUpdate& value) {
       value.order_template,
       trade_time.c_str(),
       value.order_external_id,
-      value.trade_external_id);
+      value.trade_external_id,
+      value.position,
+      value.position_cost);
 }
 
 // CreteOrder

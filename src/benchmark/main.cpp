@@ -104,8 +104,9 @@ inline roq::PositionUpdate create_position_update() {
     .symbol = "IC1806",
     .side = roq::Side::Buy,
     .position = 123.45,
-    .yesterday = 234.56,
-    .last_order_local_id = 123,
+    .position_cost = 12345,
+    .position_yesterday = 234.56,
+    .position_cost_yesterday = 23456,
     .last_trade_id = 234,
   };
 }
@@ -144,6 +145,8 @@ inline roq::TradeUpdate create_trade_update(
     .trade_time = now,
     .order_external_id = "ext1234",
     .trade_external_id = "ext2345",
+    .position = 123.45,
+    .position_cost = 12345,
   };
 }
 inline roq::SourceInfo create_source_info(

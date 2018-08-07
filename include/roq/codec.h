@@ -337,8 +337,9 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const PositionUpdate& value) {
     fbb.CreateString(value.symbol),
     value.side,
     value.position,
-    value.yesterday,
-    value.last_order_local_id,
+    value.position_cost,
+    value.position_yesterday,
+    value.position_cost_yesterday,
     value.last_trade_id);
 }
 
@@ -378,7 +379,9 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const TradeUpdate& value) {
     fbb.CreateString(value.order_template),
     time_point_to_uint64(value.trade_time),
     fbb.CreateString(value.order_external_id),
-    fbb.CreateString(value.trade_external_id));
+    fbb.CreateString(value.trade_external_id),
+    value.position,
+    value.position_cost);
 }
 
 inline flatbuffers::Offset<schema::CreateOrder>
@@ -1087,8 +1090,9 @@ inline PositionUpdate convert(const schema::PositionUpdate *value) {
     .symbol = value->symbol()->c_str(),
     .side = value->side(),
     .position = value->position(),
-    .yesterday = value->yesterday(),
-    .last_order_local_id = value->last_order_local_id(),
+    .position_cost = value->position_cost(),
+    .position_yesterday = value->position_yesterday(),
+    .position_cost_yesterday = value->position_cost_yesterday(),
     .last_trade_id = value->last_trade_id(),
   };
 }
@@ -1126,6 +1130,8 @@ inline TradeUpdate convert(const schema::TradeUpdate *value) {
     .trade_time = uint64_to_time_point(value->trade_time()),
     .order_external_id = value->order_external_id()->c_str(),
     .trade_external_id = value->trade_external_id()->c_str(),
+    .position = value->position(),
+    .position_cost = value->position_cost(),
   };
 }
 

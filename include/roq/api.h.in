@@ -42,7 +42,6 @@ typedef std::pair<void *, size_t> message_t;
 struct BatchInfo final {
   uint64_t seqno;          ///< Sequence number specific to the client's connection.
   time_point_t send_time;  ///< Time when the batch was sent.
-  bool from_cache;         ///< True if the batch originates from the cache.
 };
 
 /**
@@ -61,10 +60,10 @@ struct SourceInfo final {
  */
 struct MessageInfo final {
   const char *source;                ///< Client's own name for the source.
+  uint64_t source_seqno;             ///< Source sequence number.
   time_point_t source_create_time;   ///< Source's create time (perhaps a receive time).
   time_point_t client_receive_time;  ///< Client's receive time.
   duration_t routing_latency;        ///< Routing latency (from source to client).
-  bool from_cache;                   ///< True if the message originates from the cache.
   bool is_last;                      ///< Is this update event the last of the batch?
   uint16_t channel;                  ///< Channel.
 };
@@ -273,11 +272,11 @@ struct PositionUpdate final {
   const char *exchange;            ///< Exchange name
   const char *symbol;              ///< Symbol name
   Side side;                       ///< Side
+  uint32_t last_trade_id;          ///< Last trade included.
   double position;                 ///< Current position.
   double position_cost;            ///< Position cost.
   double position_yesterday;       ///< Position as of yesterday.
   double position_cost_yesterday;  ///< Position cost as of yesterday.
-  uint32_t last_trade_id;          ///< Last trade included.
 };
 
 /**
@@ -317,9 +316,6 @@ struct TradeUpdate final {
   time_point_t trade_time;         ///< Trade time
   const char *order_external_id;   ///< External order identifier.
   const char *trade_external_id;   ///< External trade identifier
-  // optional
-  double position;                 ///< Current position.
-  double position_cost;            ///< Position cost.
 };
 
 /**
@@ -736,6 +732,10 @@ inline double multiplier(roq::Side side) {
     std::numeric_limits<double>::quiet_NaN(),
     1.0, -1.0
   };
+  static_assert(
+      sizeof(values) / sizeof(values[0]) ==
+      (static_cast<int>(Side::MAX) - static_cast<int>(Side::MIN) + 1),
+      "Unaligned enum and lookup array");
   const size_t index = static_cast<int>(side);
   return values[index];
 }

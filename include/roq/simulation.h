@@ -255,8 +255,6 @@ class SimpleMatcher final : public Matcher {
           std::chrono::system_clock::time_point()),
       .order_external_id = "",
       .trade_external_id = "",
-      .position = 0.0,
-      .position_cost = 0.0,
     };
     send(trade_update);
     auto& position = _positions[account][exchange][symbol][side];
@@ -266,11 +264,11 @@ class SimpleMatcher final : public Matcher {
         .exchange = exchange,
         .symbol = symbol,
         .side = side,
+        .last_trade_id = order_id,
         .position = position,
         .position_cost = 0.0,
         .position_yesterday = 0.0,
         .position_cost_yesterday = 0.0,
-        .last_trade_id = order_id,
     };
     send(position_update);
   }
@@ -508,11 +506,11 @@ class Controller final {
         .exchange = exchange.c_str(),
         .symbol = symbol.c_str(),
         .side = side,
+        .last_trade_id = 0,
         .position = 0.0,
         .position_cost = 0.0,
         .position_yesterday = 0.0,
         .position_cost_yesterday = 0.0,
-        .last_trade_id = 0,
       };
       auto event = PositionUpdateEvent {
         .message_info = message_info,

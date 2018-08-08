@@ -93,7 +93,9 @@ const uint8_t HEADER_FLAGS_SKIP = 0x02;
 
 class Buffer final {
  public:
-  explicit Buffer(const size_t length = 65536) : _buffer(length) {}
+  explicit Buffer(const size_t length = 65536)
+      : _buffer(length) {
+  }
   void reset() {
     _offset = 0;
   }
@@ -120,7 +122,9 @@ class Buffer final {
 
 class Queue final {
  public:
-  explicit Queue(Buffer& buffer) : _buffer(buffer) {}
+  explicit Queue(Buffer& buffer)
+      : _buffer(buffer) {
+  }
   ~Queue() {
     _buffer.reset();
   }
@@ -336,11 +340,11 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const PositionUpdate& value) {
     fbb.CreateString(value.exchange),
     fbb.CreateString(value.symbol),
     value.side,
+    value.last_trade_id,
     value.position,
     value.position_cost,
     value.position_yesterday,
-    value.position_cost_yesterday,
-    value.last_trade_id);
+    value.position_cost_yesterday);
 }
 
 inline flatbuffers::Offset<schema::OrderUpdate>
@@ -379,9 +383,7 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const TradeUpdate& value) {
     fbb.CreateString(value.order_template),
     time_point_to_uint64(value.trade_time),
     fbb.CreateString(value.order_external_id),
-    fbb.CreateString(value.trade_external_id),
-    value.position,
-    value.position_cost);
+    fbb.CreateString(value.trade_external_id));
 }
 
 inline flatbuffers::Offset<schema::CreateOrder>
@@ -715,7 +717,9 @@ class Encoder final {
   explicit Encoder(
       std::atomic<uint64_t>& seqno,
       flatbuffers::FlatBufferBuilder& fbb)
-      : _seqno(seqno), _fbb(fbb) {}
+      : _seqno(seqno),
+        _fbb(fbb) {
+  }
   template <typename T>
   message_t encode(
       Queue& queue,
@@ -733,7 +737,10 @@ class Encoder final {
     };
     _fbb.Clear();
     _fbb.Finish(convert2(_fbb, source_info, event));
-    return queue.push(message_t { _fbb.GetBufferPointer(), _fbb.GetSize() });
+    return queue.push(message_t {
+      _fbb.GetBufferPointer(),
+      _fbb.GetSize()
+    });
   }
 
  private:
@@ -813,7 +820,9 @@ class Writer final {
 template <typename Dispatcher>
 class Decoder final {
  public:
-  explicit Decoder(Dispatcher& dispatcher) : _dispatcher(dispatcher) {}
+  explicit Decoder(Dispatcher& dispatcher)
+      : _dispatcher(dispatcher) {
+  }
   void reset() {
     _payload_length = 0;  // not necessary to reset any other fields
   }
@@ -845,7 +854,6 @@ class Decoder final {
         _payload_length = payload_length;
         _batch_info.seqno = seqno;
         _batch_info.send_time = uint64_to_time_point(send_time);
-        _batch_info.from_cache = false;  // TODO(thraneh): review usage
         _receive_time = receive_time;
         _skip = skip;
         _is_first = true;
@@ -1089,11 +1097,11 @@ inline PositionUpdate convert(const schema::PositionUpdate *value) {
     .exchange = value->exchange()->c_str(),
     .symbol = value->symbol()->c_str(),
     .side = value->side(),
+    .last_trade_id = value->last_trade_id(),
     .position = value->position(),
     .position_cost = value->position_cost(),
     .position_yesterday = value->position_yesterday(),
     .position_cost_yesterday = value->position_cost_yesterday(),
-    .last_trade_id = value->last_trade_id(),
   };
 }
 inline OrderUpdate convert(const schema::OrderUpdate *value) {
@@ -1130,8 +1138,6 @@ inline TradeUpdate convert(const schema::TradeUpdate *value) {
     .trade_time = uint64_to_time_point(value->trade_time()),
     .order_external_id = value->order_external_id()->c_str(),
     .trade_external_id = value->trade_external_id()->c_str(),
-    .position = value->position(),
-    .position_cost = value->position_cost(),
   };
 }
 
@@ -1236,25 +1242,36 @@ class EventHandler {
 
 class EventDispatcher final {
  public:
-  explicit EventDispatcher(EventHandler& handler) : _handler(handler) {}
+  explicit EventDispatcher(EventHandler& handler)
+      : _handler(handler) {
+  }
   void dispatch(
-      const void *buffer, const size_t length,
-      const char *source, const BatchInfo& batch_info,
-      bool is_first, bool is_last, time_point_t receive_time) {
+      const void *buffer,
+      const size_t length,
+      const char *source,
+      const BatchInfo& batch_info,
+      bool is_first,
+      bool is_last,
+      time_point_t receive_time) {
+    // TODO(thraneh): use flatbuffers verify facility
     auto root = flatbuffers::GetRoot<schema::Event>(buffer);  // security issue: length is not being validated
     const auto& item = *root;
     auto source_info = convert(item.source_info());
     MessageInfo message_info {
         .source = source,
+        .source_seqno = source_info.seqno,
         .source_create_time = source_info.create_time,
         .client_receive_time = receive_time,
         .routing_latency = receive_time - batch_info.send_time,
-        .from_cache = batch_info.from_cache,
         .is_last = is_last,
         .channel = 0,
     };
-    if (is_first)
-      _handler.on(BatchBeginEvent { .message_info = message_info });
+    if (is_first) {
+      BatchBeginEvent event {
+        .message_info = message_info
+      };
+      _handler.on(event);
+    }
     auto type = item.event_data_type();
     switch (type) {
       case schema::EventData::Handshake: {
@@ -1467,8 +1484,12 @@ class EventDispatcher final {
         LOG(FATAL) << "Unknown type=" << static_cast<int>(type);
       }
     }
-    if (is_last)
-      _handler.on(BatchEndEvent { .message_info = message_info });
+    if (is_last) {
+      BatchEndEvent event {
+        .message_info = message_info
+      };
+      _handler.on(event);
+    }
   }
 
  private:

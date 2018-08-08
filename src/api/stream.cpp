@@ -416,11 +416,11 @@ Writer& write(Writer& writer, const PositionUpdate& value) {
     "exchange=\"%s\", "
     "symbol=\"%s\", "
     "side=%s, "
+    "last_trade_id=%" PRIu32 ", "
     "position=%" FLOAT_REPR ", "
     "position_cost=%" FLOAT_REPR ", "
     "position_yesterday=%" FLOAT_REPR ", "
-    "position_cost_yesterday=%" FLOAT_REPR ", "
-    "last_trade_id=%" PRIu32
+    "position_cost_yesterday=%" FLOAT_REPR
     "}";
   return writer.printf(
       FORMAT,
@@ -428,11 +428,11 @@ Writer& write(Writer& writer, const PositionUpdate& value) {
       value.exchange,
       value.symbol,
       EnumNameSide(value.side),
+      value.last_trade_id,
       value.position,
       value.position_cost,
       value.position_yesterday,
-      value.position_cost_yesterday,
-      value.last_trade_id);
+      value.position_cost_yesterday);
 }
 
 // OrderUpdate
@@ -495,9 +495,7 @@ Writer& write(Writer& writer, const TradeUpdate& value) {
     "order_template=\"%s\", "
     "trade_time=%s, "
     "order_external_id=\"%s\", "
-    "trade_external_id=\"%s\", "
-    "position=%" FLOAT_REPR ", "
-    "position_cost=%" FLOAT_REPR
+    "trade_external_id=\"%s\""
     "}";
   return writer.printf(
       FORMAT,
@@ -513,9 +511,7 @@ Writer& write(Writer& writer, const TradeUpdate& value) {
       value.order_template,
       trade_time.c_str(),
       value.order_external_id,
-      value.trade_external_id,
-      value.position,
-      value.position_cost);
+      value.trade_external_id);
 }
 
 // CreteOrder
@@ -669,7 +665,6 @@ Writer& write(Writer& writer, const MessageInfo& value) {
     "source_create_time=%s, "
     "client_receive_time=%s, "
     "routing_latency=%" PRIu32 ", "
-    "from_cache=%s, "
     "is_last=%s"
     "}";
   return writer.printf(
@@ -678,7 +673,6 @@ Writer& write(Writer& writer, const MessageInfo& value) {
       source_create_time.c_str(),
       client_receive_time.c_str(),
       routing_latency,
-      value.from_cache ? "true" : "false",
       value.is_last ? "true" : "false");
 }
 

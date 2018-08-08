@@ -13,10 +13,10 @@ inline roq::MessageInfo create_message_info(
     std::chrono::system_clock::time_point now) {
   return roq::MessageInfo {
     .source = "femas",
+    .source_seqno = 1234,
     .source_create_time = now,
     .client_receive_time = now,
     .routing_latency = std::chrono::milliseconds(1),
-    .from_cache = false,
     .is_last = true,
     .channel = 1234,
   };
@@ -103,11 +103,11 @@ inline roq::PositionUpdate create_position_update() {
     .exchange = "CFFEX",
     .symbol = "IC1806",
     .side = roq::Side::Buy,
+    .last_trade_id = 234,
     .position = 123.45,
     .position_cost = 12345,
     .position_yesterday = 234.56,
     .position_cost_yesterday = 23456,
-    .last_trade_id = 234,
   };
 }
 inline roq::OrderUpdate create_order_update(
@@ -145,8 +145,6 @@ inline roq::TradeUpdate create_trade_update(
     .trade_time = now,
     .order_external_id = "ext1234",
     .trade_external_id = "ext2345",
-    .position = 123.45,
-    .position_cost = 12345,
   };
 }
 inline roq::SourceInfo create_source_info(
@@ -217,7 +215,6 @@ class DecodeFixture
   roq::BatchInfo _batch_info {
     .seqno = 1234,
     .send_time = _now,
-    .from_cache = false,
   };
   bool _is_first = false;
   bool _is_last = true;

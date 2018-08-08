@@ -351,7 +351,9 @@ class Controller final {
             throw std::runtime_error("Incompatible protocol");
           _ready = true;
         }
-        auto messages = _event_decoder.dispatch(_read_buffer, _name.c_str());
+        auto messages = _event_decoder.dispatch(
+            _read_buffer,
+            _name.c_str());
         if (messages)
           _statistics.messages_received += messages;
       }

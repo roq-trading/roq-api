@@ -384,7 +384,13 @@ class Controller final {
         _state = Ready;
       }
       void on(const HeartbeatEvent& event) final {
-        LOG(FATAL) << "[" << _name << "] HeartbeatEvent " << event;
+        VLOG(4) << "[" << _name << "] HeartbeatEvent " << event;
+        HeartbeatAck heartbeat_ack {
+          .opaque = event.heartbeat.opaque
+        };
+        codec::Queue queue(_buffer);
+        _encoder.encode(queue, heartbeat_ack);
+        send(queue, true);
       }
       void on(const HeartbeatAckEvent& event) final {
         VLOG(4) << "[" << _name << "] HeartbeatAckEvent " << event;
@@ -560,6 +566,11 @@ class Controller final {
       } else {
         LOG(WARNING) << "Unknown gateway=\"" << gateway << "\"";
       }
+    }
+    void send(
+        const HeartbeatAck& heartbeat_ack,
+        const std::string& gateway) {
+      send_helper(heartbeat_ack, gateway);
     }
     void send(
         const CreateOrder& create_order,

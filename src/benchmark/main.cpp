@@ -14,8 +14,10 @@ inline roq::MessageInfo create_message_info(
   return roq::MessageInfo {
     .source = "femas",
     .source_seqno = 1234,
-    .source_create_time = now,
     .client_receive_time = now,
+    .source_create_time = now,
+    .source_receive_time = now,
+    .origin_create_time = now,
     .routing_latency = std::chrono::milliseconds(1),
     .is_last = true,
     .channel = 1234,

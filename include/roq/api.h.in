@@ -49,8 +49,10 @@ struct BatchInfo final {
  * Information useful for correlating update events.
  */
 struct SourceInfo final {
-  uint64_t seqno;            ///< Sequence number created by the source.
-  time_point_t create_time;  ///< Time at which the source received or created the event.
+  uint64_t seqno;                    ///< Sequence number created by the source.
+  time_point_t create_time;          ///< Time at which the source created the event.
+  time_point_t receive_time;         ///< Time at which the source received the event.
+  time_point_t origin_create_time;   ///< Time at which the origin created the event.
 };
 
 /**
@@ -61,8 +63,10 @@ struct SourceInfo final {
 struct MessageInfo final {
   const char *source;                ///< Client's own name for the source.
   uint64_t source_seqno;             ///< Source sequence number.
-  time_point_t source_create_time;   ///< Source's create time (perhaps a receive time).
   time_point_t client_receive_time;  ///< Client's receive time.
+  time_point_t source_create_time;   ///< Source's create time.
+  time_point_t source_receive_time;  ///< Source's receive time.
+  time_point_t origin_create_time;   ///< Origin's receive time.
   duration_t routing_latency;        ///< Routing latency (from source to client).
   bool is_last;                      ///< Is this update event the last of the batch?
   uint16_t channel;                  ///< Channel.

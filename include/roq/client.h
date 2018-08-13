@@ -147,7 +147,8 @@ class Controller final {
           codec::Encoder& encoder,
           Statistics& statistics,
           std::unordered_set<Gateway *>& callbacks,
-          std::string& uuid)
+          std::string& uuid,
+          Dispatcher& dispatcher)
           : _name(name),
             _connection(connection),
             _protocol(protocol),
@@ -162,7 +163,8 @@ class Controller final {
             _state(Disconnected),
             _retries(0),
             _retry_timer(0),
-            _uuid(uuid) {
+            _uuid(uuid),
+            _dispatcher(dispatcher) {
       }
       bool ready() const {
         return _state == Ready;
@@ -361,11 +363,13 @@ class Controller final {
      protected:
       void on(const BatchBeginEvent& event) final {
         VLOG(4) << "[" << _name << "] BatchBeginEvent " << event;
+        _dispatcher._message_info = &event.message_info;
         _client.on(event);
       }
       void on(const BatchEndEvent& event) final {
         VLOG(4) << "[" << _name << "] BatchEndEvent " << event;
         _client.on(event);
+        _dispatcher._message_info = nullptr;
       }
       void on(const HandshakeEvent& event) final {
         LOG(FATAL) << "[" << _name << "] HandshakeEvent " << event;
@@ -511,6 +515,7 @@ class Controller final {
       int _retry_timer;
       std::string _uuid;
       bool _ready = false;
+      Dispatcher& _dispatcher;
     };  // Gateway
 
    private:
@@ -544,7 +549,8 @@ class Controller final {
             _encoder,
             _statistics,
             _callbacks,
-            _uuid);
+            _uuid,
+            *this);
         Gateway& gateway = _gateways.back();
         _gateways_by_name[iter.first] = &gateway;
         _callbacks.insert(&gateway);
@@ -561,7 +567,7 @@ class Controller final {
       auto iter = _gateways_by_name.find(gateway);
       if (iter != _gateways_by_name.end()) {
         codec::Queue queue(_buffer);
-        _encoder.encode(queue, request);
+        _encoder.encode(queue, request, _message_info);
         (*iter).second->send(queue, false);
       } else {
         LOG(WARNING) << "Unknown gateway=\"" << gateway << "\"";
@@ -680,6 +686,9 @@ class Controller final {
     flatbuffers::FlatBufferBuilder _fbb;
     codec::Encoder _encoder;
     std::string _uuid;
+
+   public:
+    MessageInfo const *_message_info = nullptr;
   };  // Dispatcher
 
  private:

@@ -657,21 +657,29 @@ Writer& write(Writer& writer, const MessageInfo& value) {
   auto routing_latency = static_cast<int32_t>(
       std::chrono::duration_cast<std::chrono::microseconds>(
           value.routing_latency).count());
-  TimePointStr<decltype(value.source_create_time)> source_create_time(value.source_create_time);
   TimePointStr<decltype(value.client_receive_time)> client_receive_time(value.client_receive_time);
+  TimePointStr<decltype(value.source_create_time)> source_create_time(value.source_create_time);
+  TimePointStr<decltype(value.source_receive_time)> source_receive_time(value.source_receive_time);
+  TimePointStr<decltype(value.origin_create_time)> origin_create_time(value.origin_create_time);
   const char *FORMAT =
     "{"
     "source=\"%s\", "
-    "source_create_time=%s, "
+    "source_seqno=%" PRIu64 ", "
     "client_receive_time=%s, "
+    "source_create_time=%s, "
+    "source_receive_time=%s, "
+    "origin_create_time=%s, "
     "routing_latency=%" PRIu32 ", "
     "is_last=%s"
     "}";
   return writer.printf(
       FORMAT,
       value.source,
-      source_create_time.c_str(),
+      value.source_seqno,
       client_receive_time.c_str(),
+      source_create_time.c_str(),
+      source_receive_time.c_str(),
+      origin_create_time.c_str(),
       routing_latency,
       value.is_last ? "true" : "false");
 }

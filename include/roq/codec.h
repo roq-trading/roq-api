@@ -163,6 +163,8 @@ convert(flatbuffers::FlatBufferBuilder& fbb, const SourceInfo& value) {
   return schema::CreateSourceInfo(
     fbb,
     value.seqno,
+    time_point_to_uint64(value.origin_create_time),
+    time_point_to_uint64(value.receive_time),
     time_point_to_uint64(value.create_time));
 }
 
@@ -723,17 +725,14 @@ class Encoder final {
   template <typename T>
   message_t encode(
       Queue& queue,
-      const T& event) {
-    return encode(queue, event, std::chrono::system_clock::now());
-  }
-  template <typename T>
-  message_t encode(
-      Queue& queue,
       const T& event,
-      std::chrono::system_clock::time_point now) {
+      MessageInfo const *message_info = nullptr) {
+    auto now = std::chrono::system_clock::now();
     SourceInfo source_info {
         .seqno = ++_seqno,  // TODO(thraneh): full barrier here, maybe acquire?
         .create_time = now,
+        .receive_time = message_info ? message_info->client_receive_time : now,
+        .origin_create_time = message_info ? message_info->source_create_time : now,
     };
     _fbb.Clear();
     _fbb.Finish(convert2(_fbb, source_info, event));
@@ -922,6 +921,8 @@ inline SourceInfo convert(const schema::SourceInfo *value) {
   return SourceInfo {
     .seqno = value->seqno(),
     .create_time = uint64_to_time_point(value->create_time()),
+    .receive_time = uint64_to_time_point(value->receive_time()),
+    .origin_create_time = uint64_to_time_point(value->origin_create_time()),
   };
 }
 
@@ -1260,8 +1261,10 @@ class EventDispatcher final {
     MessageInfo message_info {
         .source = source,
         .source_seqno = source_info.seqno,
-        .source_create_time = source_info.create_time,
         .client_receive_time = receive_time,
+        .source_create_time = source_info.create_time,
+        .source_receive_time = source_info.receive_time,
+        .origin_create_time = source_info.origin_create_time,
         .routing_latency = receive_time - batch_info.send_time,
         .is_last = is_last,
         .channel = 0,
@@ -1498,7 +1501,7 @@ class EventDispatcher final {
 
  private:
   EventHandler& _handler;
-  flatbuffers::FlatBufferBuilder _flat_buffer_builder;
+  // flatbuffers::FlatBufferBuilder _flat_buffer_builder;
 };
 
 }  // namespace codec

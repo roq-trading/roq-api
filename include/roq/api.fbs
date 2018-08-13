@@ -4,6 +4,8 @@ namespace roq.schema;
 
 table SourceInfo {
   seqno:ulong;
+  origin_create_time:ulong;
+  receive_time:ulong;
   create_time:ulong;
 }
 

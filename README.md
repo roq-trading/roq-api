@@ -137,10 +137,10 @@ Please refer to Conda's documentation on [how to get started](https://conda.io/d
 
 The following Conda channels are available
 
-| Purpose                 | Channel URL                                  |
-| ----------------------- | -------------------------------------------- |
-| For prod/uat deployment | <http://roq-trading.com/dist/conda/stable>   |
-| For development         | <http://roq-trading.com/dist/conda/unstable> |
+| Purpose                 | Channel URL                              |
+| ----------------------- | ---------------------------------------- |
+| For prod/uat deployment | <https://roq-trading.com/conda/stable>   |
+| For development         | <https://roq-trading.com/conda/unstable> |
 
 For either, you can use specific version numbers to better manage your dependencies.
 

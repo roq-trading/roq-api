@@ -11,6 +11,8 @@ channels:
   - https://roq-trading.com/conda/unstable
 EOF
 
+source miniconda/bin/activate
+
 conda install -y \
   autoconf \
   automake \
@@ -31,8 +33,6 @@ conda install -y \
   roq-oss-libucl \
   roq-oss-libunwind \
   roq-oss-spdlog
-
-source miniconda/bin/activate
 
 ./autogen.sh
 ./configure --prefix=$PREFIX

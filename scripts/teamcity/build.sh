@@ -13,7 +13,7 @@ EOF
 
 source miniconda/bin/activate
 
-conda install -y \
+conda install --quiet -y \
   autoconf \
   automake \
   libtool \

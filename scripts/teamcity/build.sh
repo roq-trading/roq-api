@@ -6,16 +6,13 @@ echo "Prepare the Conda environment..."
 
 curl -s https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh > ./miniconda.sh
 bash ./miniconda.sh -b -p miniconda -u
-
 cat > miniconda/.condarc << EOF
 channels:
   - anaconda
   - https://roq-trading.com/conda/unstable
 EOF
-
-source miniconda/bin/activate
-
-conda install --quiet -y \
+miniconda/bin/conda update --quiet --name base conda
+miniconda/bin/conda install --quiet --yes \
   autoconf \
   automake \
   libtool \
@@ -36,9 +33,12 @@ conda install --quiet -y \
   roq-oss-libunwind \
   roq-oss-spdlog
 
-echo "Build ..."
+echo "Activate the Conda environment..."
 
+source miniconda/bin/activate
 env
+
+echo "Build ..."
 
 ./autogen.sh
 ./configure --prefix=$CONDA_PREFIX

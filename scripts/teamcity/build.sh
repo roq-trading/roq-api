@@ -11,7 +11,7 @@ channels:
   - anaconda
   - https://roq-trading.com/conda/unstable
 EOF
-miniconda/bin/conda update --quiet --name base conda
+miniconda/bin/conda update --quiet --yes --name base conda
 miniconda/bin/conda install --quiet --yes \
   autoconf \
   automake \
@@ -36,12 +36,15 @@ miniconda/bin/conda install --quiet --yes \
 echo "Activate the Conda environment..."
 
 source miniconda/bin/activate
-env
+
+export LDFLAGS="$LDFLAGS -L$CONDA_PREFIX/lib"
+export CPPFLAGS="$CPPFLAGS -I$CONDA_PREFIX/include"
+export PKG_CONFIG_PATH="$CONDA_PREFIX/lib/pkgconfig"
 
 echo "Build ..."
 
 ./autogen.sh
-./configure --prefix=$CONDA_PREFIX
+./configure
 make -j4
 
 echo "Done!"

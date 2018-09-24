@@ -38,6 +38,8 @@ conda install --quiet -y \
 
 echo "Build ..."
 
+env
+
 ./autogen.sh
 ./configure --prefix=$CONDA_PREFIX
 make -j4

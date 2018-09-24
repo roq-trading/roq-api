@@ -41,10 +41,14 @@ export LDFLAGS="$LDFLAGS -L$CONDA_PREFIX/lib"
 export CPPFLAGS="$CPPFLAGS -I$CONDA_PREFIX/include"
 export PKG_CONFIG_PATH="$CONDA_PREFIX/lib/pkgconfig"
 
+env
+
 echo "Build ..."
 
 ./autogen.sh
 ./configure
 make -j4
+make check
+# make install
 
 echo "Done!"

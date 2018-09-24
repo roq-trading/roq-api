@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-set -ex
+set -e
+
+echo "Prepare the Conda environment..."
 
 curl -s https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh > ./miniconda.sh
 bash ./miniconda.sh -b -p miniconda -u
@@ -34,6 +36,10 @@ conda install --quiet -y \
   roq-oss-libunwind \
   roq-oss-spdlog
 
+echo "Build ..."
+
 ./autogen.sh
-./configure --prefix=$PREFIX
+./configure --prefix=$CONDA_PREFIX
 make -j4
+
+echo "Done!"

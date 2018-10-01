@@ -48,7 +48,7 @@ env
 echo "Build ..."
 
 ./autogen.sh
-./configure
+./configure --enable-benchmark
 make
 make check
 make dist

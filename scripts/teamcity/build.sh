@@ -2,6 +2,8 @@
 
 set -e
 
+ROQ_TRADING_CONDA_REPO="${ROQ_TRADING_CONDA_REPO:-https://roq-trading.com/conda/unstable}"
+
 echo "Prepare the Conda environment..."
 
 curl -s https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh > ./miniconda.sh
@@ -9,7 +11,7 @@ bash ./miniconda.sh -b -p miniconda -u
 cat > miniconda/.condarc << EOF
 channels:
   - anaconda
-  - https://roq-trading.com/conda/unstable
+  - $ROQ_TRADING_CONDA_REPO
 EOF
 miniconda/bin/conda update --quiet --yes --name base conda
 miniconda/bin/conda install --quiet --yes \
@@ -47,8 +49,8 @@ echo "Build ..."
 
 ./autogen.sh
 ./configure
-make -j4
+make
 make check
-# make install
+make dist
 
 echo "Done!"

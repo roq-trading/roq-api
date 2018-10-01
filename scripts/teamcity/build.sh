@@ -23,8 +23,8 @@ miniconda/bin/conda install --quiet --yes \
   gxx_linux-64 \
   patchelf \
   openssl \
-  gflags \
-  libevent \
+  roq-oss-gflags \
+  roq-oss-libevent \
   roq-oss-benchmark \
   roq-oss-cctz \
   roq-oss-crossguid \

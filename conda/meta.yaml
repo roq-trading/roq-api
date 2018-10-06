@@ -1,49 +1,38 @@
-{% set roq_build="0.2.2" %}
-{% set roq_api="0.2.2" %}
-{% set benchmark_api="1.4.1" %}
-{% set gflags_api="2.2.1" %}
-{% set libevent_api="2.1.8" %}
-{% set cctz_api="2.2" %}
-{% set crossguid_api="0.2.2" %}
-{% set flatbuffers_api="1.9.0" %}
-{% set libucl_api="0.8.1" %}
-{% set libunwind_api="1.2.1" %}
-{% set spdlog_api="1.1.0" %}
-
 package:
   name: roq-api
-  version: {{ roq_build }}
+  version: {{ environ.get('GIT_DESCRIBE_TAG', '0.0.0') }}
 
 source:
   path: ..
 
 build:
-  number: 0
   skip: True  # [win]
+  number: {{ environ.get('GIT_DESCRIBE_NUMBER', 0) }}
+  string: {{ environ.get('GIT_BUILD_STR', '0_00000000') }}
 
 requirements:
   build:
     - {{ compiler('cxx') }}
   host:
-    - roq-oss-gflags >={{ gflags_api }}
-    - roq-oss-libevent >={{ libevent_api }}
-    - roq-oss-benchmark >={{ benchmark_api }}
-    - roq-oss-cctz >={{ cctz_api }}
-    - roq-oss-crossguid >={{ crossguid_api }}
-    - roq-oss-flatbuffers >={{ flatbuffers_api }}
-    - roq-oss-libucl >={{ libucl_api }}
-    - roq-oss-libunwind >={{ libunwind_api }}  # [linux]
-    - roq-oss-spdlog >={{ spdlog_api }}
+    - roq-oss-gflags
+    - roq-oss-libevent
+    - roq-oss-benchmark
+    - roq-oss-cctz
+    - roq-oss-crossguid
+    - roq-oss-flatbuffers
+    - roq-oss-libucl
+    - roq-oss-libunwind  # [linux]
+    - roq-oss-spdlog
   run:
-    - roq-oss-gflags >={{ gflags_api }}
-    - roq-oss-libevent >={{ libevent_api }}
-    - roq-oss-benchmark >={{ benchmark_api }}
-    - roq-oss-cctz >={{ cctz_api }}
-    - roq-oss-crossguid >={{ crossguid_api }}
-    - roq-oss-flatbuffers >={{ flatbuffers_api }}
-    - roq-oss-libucl >={{ libucl_api }}
-    - roq-oss-libunwind >={{ libunwind_api }}  # [linux]
-    - roq-oss-spdlog >={{ spdlog_api }}
+    - roq-oss-gflags
+    - roq-oss-libevent
+    - roq-oss-benchmark
+    - roq-oss-cctz
+    - roq-oss-crossguid
+    - roq-oss-flatbuffers
+    - roq-oss-libucl
+    - roq-oss-libunwind  # [linux]
+    - roq-oss-spdlog
 
 about:
   home: https://github.com/roq-trading

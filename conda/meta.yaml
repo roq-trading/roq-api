@@ -15,8 +15,7 @@ package:
   version: {{ roq_build }}
 
 source:
-  git_url: https://github.com/roq-trading/roq-api
-#  path: ..
+  path: ..
 
 build:
   number: 0

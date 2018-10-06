@@ -1,7 +1,7 @@
-AC_REVISION([m4_esyscmd_s([git describe --always --dirty --tags])])
+AC_REVISION([m4_esyscmd_s([build-aux/git-version])])
 
 AC_INIT([roq],
-        m4_esyscmd_s([git describe]),
+        m4_esyscmd_s([build-aux/git-version]),
         [thraneh@gmail.com],
         [roq])
 
@@ -55,8 +55,8 @@ AS_IF(
 AM_CONDITIONAL([ENABLE_BENCHMARK],
 	       [test "$enable_benchmark" = "yes"])
 
-AC_SUBST([ROQ_VERSION_MAJOR], m4_esyscmd_s([git describe | sed -e 's/v\([0-9]*\)\.[0-9]*\.[0-9]*.*/\1/']))
-AC_SUBST([ROQ_VERSION_MINOR], m4_esyscmd_s([git describe | sed -e 's/v[0-9]*\.\([0-9]*\)\.[0-9]*.*/\1/']))
-AC_SUBST([ROQ_VERSION_PATCH], m4_esyscmd_s([git describe | sed -e 's/v[0-9]*\.[0-9]*\.\([0-9]*\).*/\1/']))
+AC_SUBST([ROQ_VERSION_MAJOR], m4_esyscmd_s([build-aux/git-version | sed -e 's/v\([0-9]*\)\.[0-9]*\.[0-9]*.*/\1/']))
+AC_SUBST([ROQ_VERSION_MINOR], m4_esyscmd_s([build-aux/git-version | sed -e 's/v[0-9]*\.\([0-9]*\)\.[0-9]*.*/\1/']))
+AC_SUBST([ROQ_VERSION_PATCH], m4_esyscmd_s([build-aux/git-version | sed -e 's/v[0-9]*\.[0-9]*\.\([0-9]*\).*/\1/']))
 
 AC_OUTPUT

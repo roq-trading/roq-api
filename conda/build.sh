@@ -2,6 +2,7 @@
 
 set -e
 
+echo $PWD
 env
 
 export CPPFLAGS="-I$PREFIX/include $CPPFLAGS"

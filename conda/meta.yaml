@@ -15,7 +15,7 @@ package:
   version: {{ roq_build }}
 
 source:
-  path: ../
+  path: ../.
 
 build:
   number: 0

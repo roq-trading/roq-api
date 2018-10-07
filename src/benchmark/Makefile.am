@@ -1,4 +1,3 @@
-TESTS = roq-api-benchmark
 bin_PROGRAMS = roq-api-benchmark
 roq_api_benchmark_LDADD = \
 	$(top_builddir)/src/api/libroq.la \

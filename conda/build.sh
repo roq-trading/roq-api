@@ -14,8 +14,5 @@ export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
   --prefix=$PREFIX \
   --enable-benchmark
 make -j${CPU_COUNT:-2}
-# FIXME(thraneh): make check doesn't work on Darwin
-if [[ $(uname -a) =~ "Linux" ]]; then
 make check
-fi
 make install

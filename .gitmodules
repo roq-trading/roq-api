@@ -6,6 +6,3 @@
 	path = m4
 	url = https://github.com/roq-trading/roq-m4
 	ignore = dirty
-[submodule "roq-scripts"]
-	path = scripts
-	url = https://github.com/roq-trading/roq-scripts

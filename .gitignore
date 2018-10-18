@@ -30,3 +30,8 @@ include/roq/api.h
 include/roq/roq/
 src/benchmark/roq-api-benchmark
 test/roq-api-test
+
+doc/xml/
+doc/html/
+doc/Doxyfile
+doc/doxygen-build.stamp

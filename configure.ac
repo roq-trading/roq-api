@@ -17,6 +17,8 @@ AC_CONFIG_FILES([
  src/Makefile
  src/api/Makefile
  test/Makefile
+ doc/Makefile
+ doc/Doxyfile
 ])
 AC_CONFIG_FILES([include/roq/api.h])
 AC_CONFIG_FILES([roq.pc])
@@ -43,7 +45,7 @@ ROQ_CHECK_GTEST([third_party/googletest])
 AC_ARG_ENABLE([benchmark],
 	      AS_HELP_STRING([--enable-benchmark], [Enable benchmark]),
 	      [],
-	      [enable_urls=no])
+	      [enable_benchmark=no])
 
 AS_IF([test "x$enable_benchmark" = "xyes"],
       [AC_CONFIG_FILES([src/benchmark/Makefile])])
@@ -53,7 +55,20 @@ AS_IF(
   [ROQ_CHECK_BENCHMARK])
 
 AM_CONDITIONAL([ENABLE_BENCHMARK],
-	       [test "$enable_benchmark" = "yes"])
+               [test "$enable_benchmark" = "yes"])
+
+AC_ARG_ENABLE([doc],
+  [AS_HELP_STRING([--disable-doc], [Do not build API documentation])],,
+  [enable_doc=yes])
+
+AS_IF([test "$enable_doc" = "yes"], [
+  AC_CHECK_PROG(HAVE_DOXYGEN, [doxygen], [yes], [no])
+  AC_CHECK_PROG(HAVE_DOT, [dot], [yes], [no])
+  ],[
+  HAVE_DOXYGEN=no
+  ])
+
+AM_CONDITIONAL([HAVE_DOXYGEN], [test "$HAVE_DOXYGEN" = "yes"])
 
 AC_SUBST([ROQ_VERSION_MAJOR], m4_esyscmd_s([build-aux/git-version | sed -e 's/^\([0-9]*\)\.[0-9]*\.[0-9]*.*/\1/']))
 AC_SUBST([ROQ_VERSION_MINOR], m4_esyscmd_s([build-aux/git-version | sed -e 's/^[0-9]*\.\([0-9]*\)\.[0-9]*.*/\1/']))

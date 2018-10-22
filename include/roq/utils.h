@@ -105,6 +105,7 @@ struct JulianDayNumber final {
   }
   static inline char *print_raw(int jdn, char *ptr) {
     auto ymd = to_calendar(jdn);
+    assert(ymd.year < 10000 && ymd.year >=0);
     return print_0_99(
       ymd.year / 100,
       print_0_99(

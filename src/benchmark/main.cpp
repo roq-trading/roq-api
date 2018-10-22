@@ -256,13 +256,14 @@ class DecodeFixture
 void BM_Date_Print(
     benchmark::State& state) {
   std::vector<char> buffer(11);
-  int J = 0;
+  auto epoch = roq::utils::JulianDayNumber::from_calendar(1970, 1, 1);
+  int offset = 0;
   for (auto _ : state) {
     roq::utils::JulianDayNumber::printf(
       &buffer.at(0),
       buffer.size(),
-      ++J);
-    std::string(buffer);
+      epoch + (++offset % 36500));
+    std::string tmp(&buffer[0]);
   }
 }
 BENCHMARK(BM_Date_Print);
@@ -272,13 +273,14 @@ BENCHMARK(BM_Date_Print);
 void BM_DateTime_Print(
     benchmark::State& state) {
   std::vector<char> buffer(27);
-  int J = 0;
+  auto epoch = roq::utils::JulianDayNumber::from_calendar(1970, 1, 1);
+  int offset = 0;
   for (auto _ : state) {
     roq::utils::DateTime::printf(
       &buffer.at(0),
       buffer.size(),
-      static_cast<uint64_t>(++J) * 1000000 * 86400);
-    std::string(buffer);
+      static_cast<uint64_t>(epoch + (++offset % 36500)) * 1000000 * 86400);
+    std::string tmp(&buffer[0]);
   }
 }
 BENCHMARK(BM_DateTime_Print);

@@ -7,7 +7,7 @@ if HAVE_DOXYGEN
 all-local: doxygen-build.stamp
 
 doxygen-build.stamp: Doxyfile
-	doxygen
+	doxygen Doxyfile
 	touch $@
 
 install-data-local:

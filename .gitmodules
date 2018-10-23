@@ -6,6 +6,3 @@
 	path = m4
 	url = https://github.com/roq-trading/roq-m4
 	ignore = dirty
-[submodule "third_party/doxygen-bootstrapped"]
-	path = third_party/doxygen-bootstrapped
-	url = https://github.com/Velron/doxygen-bootstrapped

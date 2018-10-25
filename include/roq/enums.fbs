@@ -23,31 +23,22 @@ enum GatewayStatus:byte {
 
 /// Trading status.
 enum TradingStatus:byte {
-  ///< Undefined
   Undefined = 0,
-  ///< Market is not open for trading
   Closed = 1,
-  ///< Market is open for trading
   Open = 2
 }
 
-/// Side.
+/// Trade direction.
 enum Side:byte {
-  ///< Undefined
   Undefined = 0,
-  ///< Buy
   Buy = 1,
-  ///< Sell
   Sell = 2
 }
 
 /// Order type.
 enum OrderType:byte {
-  ///< Undefined
   Undefined = 0,
-  ///< Market
   Market = 1,
-  ///< Limit
   Limit = 2
 }
 
@@ -55,41 +46,27 @@ enum OrderType:byte {
 enum TimeInForce:byte {
   ///< Undefined
   Undefined = 0,
-  ///< FOK (fill or kill)
   FOK = 1,
-  ///< IOC (immediate or cancel)
   IOC = 2,
-  ///< GFD (good for day)
   GFD = 3,
-  ///< GTC (good till canceled)
   GTC = 4
 }
 
 /// Position effect.
 enum PositionEffect:byte {
-  ///< Undefined
   Undefined = 0,
-  ///< Open
   Open = 1,
-  ///< Close
   Close = 2
 }
 
 /// Order status.
 enum OrderStatus:byte {
   Undefined = 0,
-  ///< Order was sent (from gateway)
   Sent = 1,
-  ///< Order was rejected (likely by gateway, broker or exchange)
   Rejected = 2,
-  ///< Order was accepted (by the exchange)
   Accepted = 3,
-  ///< Order is in a pending state (e.g. a stop order)
   Pending = 4,
-  ///< Order is in the queue
   Working = 5,
-  ///< Order has been completed
   Completed = 6,
-  ///< Order has been cancelled (by user, gateway or exchange)
   Canceled = 7
 }

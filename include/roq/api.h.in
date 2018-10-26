@@ -322,7 +322,7 @@ struct TradeUpdate final {
 };
 
 /**
- * Create order.
+ * Template used when submitting an order creation request.
  */
 struct CreateOrder final {
   const char *account;             ///< Alias identifying an account
@@ -644,45 +644,70 @@ struct Subscription final {
 typedef std::unordered_map<std::string, Subscription> Subscriptions;
 
 /**
- * Client interface.
+ * Interface used to bridge incoming events from a controlled
+ * environment, e.g.  * simulation or live trading, to a
+ * client implementation.
  */
 class Client {
  public:
    /*
-    * Dispatcher interface.
+    * Interface used to bridge outgoing requests from a client
+    * implementation to an implementation of asynchronous gateway
+    * routing logic.
     */
   class Dispatcher {
    public:
     /**
-     * Send CreateOrder request.
+     * Interface used to submit an order creation request.
      *
-     * @param create_order has the order creation details.
-     * @param gateway name of the destination gateway.
+     * Exceptions may be thrown, e.g. when a socket is not connected
+     * or if the client is currently receiving download information
+     * from the gateway.
+     *
+     * @param create_order Order creation details
+     * @param gateway Alias identifying the gateway
      */
     virtual void send(const CreateOrder& create_order, const std::string& gateway) = 0;
     /**
-     * Send ModifyOrder request.
+     * Interface used to submit an order modification request.
      *
-     * @param modify_order has the order modification details.
-     * @param gateway name of the destination gateway.
+     * Exceptions may be thrown, e.g. when a socket is not connected
+     * or if the client is currently receiving download information
+     * from the gateway.
+     *
+     * @param modify_order Order modification details
+     * @param gateway Alias identifying the gateway
      */
     virtual void send(const ModifyOrder& modify_order, const std::string& gateway) = 0;
     /**
-     * Send CancelOrder request.
+     * Interface used to submit an order cancellation request.
      *
-     * @param cancel_order has the order cancellation details.
-     * @param gateway name of the destination gateway.
+     * Exceptions may be thrown, e.g. when a socket is not connected
+     * or if the client is currently receiving download information
+     * from the gateway.
+     *
+     * @param cancel_order Order cancellation details
+     * @param gateway Alias identifying the gateway
      */
     virtual void send(const CancelOrder& cancel_order, const std::string& gateway) = 0;
   };
   virtual ~Client() = default;
-  virtual const Subscriptions& get_subscriptions() const = 0;  ///< Subscriptions
-  virtual void on(const TimerEvent&) = 0;                      ///< Timer
-  virtual void on(const ConnectionStatusEvent&) = 0;           ///< The connection status has changed
+  /**
+   * Used (after construction) to fetch the list of symbols required
+   * by the client implementation.
+   *
+   * Note! It is currently allowed to discover the list of subscriptions
+   * at construction time. However, having this function here doesn't feel right.
+   * We may later enforce that this discoverability must be done before the
+   * constructor is called.
+   */
+  virtual const Subscriptions& get_subscriptions() const = 0;
+  virtual void on(const TimerEvent&) = 0;                      ///< Regular timer
+  virtual void on(const ConnectionStatusEvent&) = 0;           ///< Connection status has changed (client)
   virtual void on(const BatchBeginEvent&) = 0;                 ///< Batch begin
   virtual void on(const BatchEndEvent&) = 0;                   ///< Batch end
-  virtual void on(const MarketDataStatusEvent&) = 0;           ///< Connection or login status has changed
-  virtual void on(const OrderManagerStatusEvent&) = 0;         ///< Connection or login status has changed
+  virtual void on(const MarketDataStatusEvent&) = 0;           ///< Connection status has changed (gateway)
+  virtual void on(const OrderManagerStatusEvent&) = 0;         ///< Connection status has changed (gateway)
   virtual void on(const DownloadBeginEvent&) = 0;              ///< Download begin
   virtual void on(const DownloadEndEvent&) = 0;                ///< Download end
   virtual void on(const ReferenceDataEvent&) = 0;              ///< Reference data update for a symbol
@@ -700,12 +725,12 @@ class Client {
 };
 
 /**
- * Exception.
+ * Base class for exceptions.
  */
 class Exception : public std::exception {};
 
 /**
- * NotConnected.
+ * Gateway is not currently connected.
  */
 class NotConnected final : public Exception {
  public:
@@ -715,7 +740,7 @@ class NotConnected final : public Exception {
 };
 
 /**
- * NotReady.
+ * Client and gateway has not yet reached a ready state.
  */
 class NotReady final : public Exception {
  public:
@@ -725,7 +750,7 @@ class NotReady final : public Exception {
 };
 
 /**
- * OrderNotLive
+ * Order is not live.
  */
 class OrderNotLive final : public Exception {
  public:
@@ -735,9 +760,13 @@ class OrderNotLive final : public Exception {
 };
 
 /**
- * Utilities.
+ * Derive a measure of an order's "liveness" from the order's status.
+ *
+ * @param status Order status
+ * @returns true if the order could be alive (meaning: the order
+ *          status could "progress" at a later time).
+ *          false when the order is definitely not alive
  */
-
 inline bool is_order_live(roq::OrderStatus status) {
   switch (status) {
     case OrderStatus::Sent:
@@ -753,6 +782,14 @@ inline bool is_order_live(roq::OrderStatus status) {
   }
 }
 
+/**
+ * Derive a sign multiplier from the trade direction.
+ *
+ * @param side Trade direction
+ * @returns 1.0 for roq::Side::Buy.
+ *          -1.0 for roq::Side::Sell.
+ *          Quiet NaN for anything else
+ */
 inline double multiplier(roq::Side side) {
   static double const values[] = {
     std::numeric_limits<double>::quiet_NaN(),

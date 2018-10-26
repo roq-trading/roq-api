@@ -108,7 +108,10 @@ struct Gateways final {
   }
 };
 
-// Controller
+/**
+ * Controller implementing an event loop and binding gateway connections
+ * with a client implementation.
+ */
 template <typename T>
 class Controller final {
   typedef std::unordered_map<std::string, Connection> gateways_t;
@@ -116,6 +119,18 @@ class Controller final {
  public:
   explicit Controller(const gateways_t& gateways) : _gateways(gateways) {}
   explicit Controller(gateways_t&& gateways) : _gateways(std::move(gateways)) {}
+  /**
+   * Responsible for creating and managing objects without
+   * exposing circular dependencies.
+   * The templated Client implementation will be passed args
+   * in the constructor following a reference to a dispatcher
+   * implementation.
+   *
+   * This function will not return until the process has received
+   * a termination signal.
+   *
+   * @param args Argument list
+   */
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
     const char *trace_source = "";

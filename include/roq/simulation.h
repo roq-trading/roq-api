@@ -14,21 +14,43 @@
 namespace roq {
 namespace simulation {
 
-// Generator
+/**
+ * Base class for implementing a simulated event generator.
+ */
 class Generator {
  public:
+  /**
+   * Interface used to bridge events from the generator to a simulator
+   * controlled environment.
+   * The events will most likely be forwarded to simulated matching
+   * engine and then to the client implemention.
+   */
   class Dispatcher {
    public:
-    virtual void on(const BatchBeginEvent& event) = 0;
-    virtual void on(const BatchEndEvent& event) = 0;
-    virtual void on(const SessionStatisticsEvent& event) = 0;
-    virtual void on(const DailyStatisticsEvent& event) = 0;
-    virtual void on(const MarketByPriceEvent& event) = 0;
-    virtual void on(const TradeSummaryEvent& event) = 0;
+    virtual void on(const BatchBeginEvent& event) = 0;         ///< Batch begin
+    virtual void on(const BatchEndEvent& event) = 0;           ///< Batch end
+    virtual void on(const SessionStatisticsEvent& event) = 0;  ///< Session statistics update for a symbol
+    virtual void on(const DailyStatisticsEvent& event) = 0;    ///< Daily statistics update for a symbol
+    virtual void on(const MarketByPriceEvent& event) = 0;      ///< Market by price update for a symbol
+    virtual void on(const TradeSummaryEvent& event) = 0;       ///< Trade summary update for a symbol
   };
   Generator() {}
   virtual ~Generator() {}
+  /**
+   * Used by the simulator to fetch the next available time-point.
+   *
+   * @returns The first argument of the pair should be false if the
+   *          data source has been exhausted.
+   *          The second argument will otherwise indicate the next
+   *          available time-point.
+   */
   virtual std::pair<bool, std::chrono::system_clock::time_point> fetch() = 0;
+  /**
+   * Used by the simulator to dispatch the next available set of events
+   * and then advance the internal iterator.
+   *
+   * @param dispatcher Reference to a dispatch interface
+   */
   virtual void dispatch(Dispatcher& dispatcher) = 0;
 
  private:
@@ -36,9 +58,15 @@ class Generator {
   void operator=(const Generator&) = delete;
 };
 
-// Matcher
+/**
+ * Base class for implementing a simulated matching engine.
+ */
 class Matcher {
  public:
+  /**
+   * Interface used to bridge events from the simulated matching
+   * engine to a client implementation.
+   */
   class Dispatcher {
    public:
     virtual void on(const CreateOrderAckEvent&) = 0;
@@ -54,15 +82,15 @@ class Matcher {
   }
   virtual ~Matcher() {}
   // TODO(thraneh): add timer + next_update
-  virtual void on(const BatchBeginEvent& event) = 0;
-  virtual void on(const BatchEndEvent& event) = 0;
-  virtual void on(const SessionStatisticsEvent& event) = 0;
-  virtual void on(const DailyStatisticsEvent& event) = 0;
-  virtual void on(const MarketByPriceEvent& event) = 0;
-  virtual void on(const TradeSummaryEvent& event) = 0;
-  virtual void on(const CreateOrder& create_order) = 0;
-  virtual void on(const ModifyOrder& modify_order) = 0;
-  virtual void on(const CancelOrder& cancel_order) = 0;
+  virtual void on(const BatchBeginEvent& event) = 0;         ///< Batch begin
+  virtual void on(const BatchEndEvent& event) = 0;           ///< Batch end
+  virtual void on(const SessionStatisticsEvent& event) = 0;  ///< Session statistic update event
+  virtual void on(const DailyStatisticsEvent& event) = 0;    ///< Daily statistics update event
+  virtual void on(const MarketByPriceEvent& event) = 0;      ///< Market by price update event
+  virtual void on(const TradeSummaryEvent& event) = 0;       ///< Trade summary update event
+  virtual void on(const CreateOrder& create_order) = 0;      ///< Create order event
+  virtual void on(const ModifyOrder& modify_order) = 0;      ///< Modify order event
+  virtual void on(const CancelOrder& cancel_order) = 0;      ///< Cancel order event
 
  private:
   Matcher(const Matcher&) = delete;
@@ -135,7 +163,10 @@ class Matcher {
   }
 };
 
-// NoMatcher
+/**
+ * Default matching engine throwing exception on any
+ * attempt to create, modify or cancel orders.
+ */
 class NoMatcher final : public Matcher {
  public:
   NoMatcher(
@@ -166,7 +197,13 @@ class NoMatcher final : public Matcher {
   }
 };
 
-// SimpleMatcher
+/**
+ * Simple matching engine creating an immediate (zero-latency)
+ * response to create, modify or cancel requests.
+ * No attempt to test order quantity against available liquidity.
+ * Does very basic validation on create, modify and cancel
+ * request parameters.
+ */
 class SimpleMatcher final : public Matcher {
  public:
   SimpleMatcher(
@@ -310,7 +347,10 @@ class SimpleMatcher final : public Matcher {
         std::unordered_map<Side, double, EnumHash> > > > _positions;
 };
 
-// Controller
+/**
+ * Controller implementing a single-threaded in-process simulation
+ * engine binding generators, matching engine and client implementation.
+ */
 template <typename T, typename M>
 class Controller final {
   typedef std::list<std::unique_ptr<Generator> > generators_t;
@@ -322,6 +362,18 @@ class Controller final {
       : _generators(std::move(generators)),
         _gateway(gateway) {
   }
+  /**
+   * Responsible for creating and managing objects without
+   * exposing circular dependencies.
+   * The templated Client implementation will be passed args
+   * in the constructor following a reference to a dispatcher
+   * implementation.
+   *
+   * This function will not return until all generators have
+   * been exhausted.
+   *
+   * @param args Argument list
+   */
   template <typename... Args>
   void create_and_dispatch(Args&&... args) {
     Dispatcher(

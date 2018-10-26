@@ -645,8 +645,7 @@ typedef std::unordered_map<std::string, Subscription> Subscriptions;
 
 /**
  * Interface used to bridge incoming events from a controlled
- * environment, e.g.  * simulation or live trading, to a
- * client implementation.
+ * environment (simulation or live trading) to a client implementation.
  */
 class Client {
  public:
@@ -693,21 +692,21 @@ class Client {
   };
   virtual ~Client() = default;
   /**
-   * Used (after construction) to fetch the list of symbols required
+   * Used by the controlling environment to fetch the list of symbols required
    * by the client implementation.
    *
    * Note! It is currently allowed to discover the list of subscriptions
    * at construction time. However, having this function here doesn't feel right.
-   * We may later enforce that this discoverability must be done before the
-   * constructor is called.
+   * We may later enforce that discoverability must be implemented ahead of
+   * construction time.
    */
   virtual const Subscriptions& get_subscriptions() const = 0;
   virtual void on(const TimerEvent&) = 0;                      ///< Regular timer
-  virtual void on(const ConnectionStatusEvent&) = 0;           ///< Connection status has changed (client)
+  virtual void on(const ConnectionStatusEvent&) = 0;           ///< Connection status has changed
   virtual void on(const BatchBeginEvent&) = 0;                 ///< Batch begin
   virtual void on(const BatchEndEvent&) = 0;                   ///< Batch end
-  virtual void on(const MarketDataStatusEvent&) = 0;           ///< Connection status has changed (gateway)
-  virtual void on(const OrderManagerStatusEvent&) = 0;         ///< Connection status has changed (gateway)
+  virtual void on(const MarketDataStatusEvent&) = 0;           ///< Login status has changed
+  virtual void on(const OrderManagerStatusEvent&) = 0;         ///< Login status has changed
   virtual void on(const DownloadBeginEvent&) = 0;              ///< Download begin
   virtual void on(const DownloadEndEvent&) = 0;                ///< Download end
   virtual void on(const ReferenceDataEvent&) = 0;              ///< Reference data update for a symbol
@@ -717,8 +716,8 @@ class Client {
   virtual void on(const MarketByPriceEvent&) = 0;              ///< Market-by-price update for a symbol
   virtual void on(const TradeSummaryEvent&) = 0;               ///< Trade summary update for a symbol
   virtual void on(const PositionUpdateEvent&) = 0;             ///< Position update
-  virtual void on(const OrderUpdateEvent&) = 0;                ///< New order, or order details have been updated
-  virtual void on(const TradeUpdateEvent&) = 0;                ///< New trade, or trade details have been updated
+  virtual void on(const OrderUpdateEvent&) = 0;                ///< New order, or order details, have been updated
+  virtual void on(const TradeUpdateEvent&) = 0;                ///< New trade, or trade details, have been updated
   virtual void on(const CreateOrderAckEvent&) = 0;             ///< Response to a create order request
   virtual void on(const ModifyOrderAckEvent&) = 0;             ///< Response to a modify order request
   virtual void on(const CancelOrderAckEvent&) = 0;             ///< Response to a cancel order request

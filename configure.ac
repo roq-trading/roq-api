@@ -54,20 +54,22 @@ AS_IF(
   [ROQ_CHECK_BENCHMARK])
 
 AM_CONDITIONAL([ENABLE_BENCHMARK],
-               [test "$enable_benchmark" = "yes"])
+               [test "x$enable_benchmark" = "xyes"])
 
 AC_ARG_ENABLE([doc],
-  [AS_HELP_STRING([--disable-doc], [Do not build API documentation])],,
-  [enable_doc=yes])
+  [AS_HELP_STRING([--enable-doc], [Enable documentation])],,
+  [enable_doc=no])
 
-AS_IF([test "$enable_doc" = "yes"], [
+AS_IF([test "x$enable_doc" = "xyes"], [
   AC_CHECK_PROG(HAVE_DOXYGEN, [doxygen], [yes], [no])
   AC_CHECK_PROG(HAVE_DOT, [dot], [yes], [no])
   ],[
   HAVE_DOXYGEN=no
+  HAVE_DOT=no
   ])
 
-AM_CONDITIONAL([HAVE_DOXYGEN], [test "$HAVE_DOXYGEN" = "yes"])
+AM_CONDITIONAL([ENABLE_DOC],
+	       [test "x$enable_doc" = "xyes"])
 
 AC_SUBST([ROQ_VERSION_MAJOR], m4_esyscmd_s([build-aux/git-version | sed -e 's/^\([0-9]*\)\.[0-9]*\.[0-9]*.*/\1/']))
 AC_SUBST([ROQ_VERSION_MINOR], m4_esyscmd_s([build-aux/git-version | sed -e 's/^[0-9]*\.\([0-9]*\)\.[0-9]*.*/\1/']))

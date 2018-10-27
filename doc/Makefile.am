@@ -2,8 +2,6 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = .
 
-if HAVE_DOXYGEN
-
 all-local: doxygen-build.stamp
 
 doxygen-build.stamp: Doxyfile
@@ -29,5 +27,3 @@ CLEANFILES = doxygen-build.stamp
 
 clean-local:
 	rm -rf {html,xml}
-
-endif

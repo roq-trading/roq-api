@@ -12,21 +12,12 @@
 #include <unordered_map>
 #include <unordered_set>
 
-/**
- * API version.
- */
 #define ROQ_VERSION "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
 
 namespace roq {
 
-/**
- * Constants.
- */
 const size_t MAX_DEPTH = 5;  ///< Maximum market-by-price depth
 
-/**
- * Time.
- */
 typedef std::chrono::system_clock::duration duration_t;
 typedef std::chrono::system_clock::time_point time_point_t;
 
@@ -207,7 +198,6 @@ struct DailyStatistics final {
 };
 
 /**
- * Layer.
  * A positional layer of an order book.
  * The layer represents an aggregated by-price view of all
  * resting orders.
@@ -339,7 +329,7 @@ struct CreateOrder final {
 };
 
 /**
- * Modify order.
+ * Template used when submitting an order modification request.
  */
 struct ModifyOrder final {
   const char *account;     ///< Alias identifying an account
@@ -349,7 +339,7 @@ struct ModifyOrder final {
 };
 
 /**
- * Cancel order.
+ * Template used when submitting an order cancellation request.
  */
 struct CancelOrder final {
   const char *account;  ///< Alias identifying an account
@@ -357,7 +347,7 @@ struct CancelOrder final {
 };
 
 /**
- * Response to create order
+ * Response to a create order request.
  */
 struct CreateOrderAck final {
   const char *account;            ///< Alias identifying an account
@@ -370,7 +360,7 @@ struct CreateOrderAck final {
 };
 
 /**
- * Response to modify order
+ * Response to a modify order request.
  */
 struct ModifyOrderAck final {
   const char *account;            ///< Alias identifying an account
@@ -383,7 +373,7 @@ struct ModifyOrderAck final {
 };
 
 /**
- * Response to cancel order
+ * Response to a cancel order request.
  */
 struct CancelOrderAck final {
   const char *account;            ///< Alias identifying an account

@@ -1,6 +1,3 @@
-TESTS = roq-api-test
-check_PROGRAMS = roq-api-test
-
 # SO 35998856
 check_LTLIBRARIES = libgtest.la
 libgtest_la_SOURCES = \
@@ -10,6 +7,8 @@ libgtest_la_CPPFLAGS = \
 	-I$(top_srcdir)/third_party/googletest/googletest
 libgtest_la_LDFLAGS = -pthread
 
+TESTS = roq-api-test
+check_PROGRAMS = roq-api-test
 roq_api_test_LDADD = \
 	$(top_builddir)/src/api/libroq.la \
 	libgtest.la \

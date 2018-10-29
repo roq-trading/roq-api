@@ -110,9 +110,9 @@ static std::string get_filename(const char *log_dir) {
     log_dir = std::getenv("ROQ_log_dir");
     if (log_dir == nullptr)
       log_dir = std::getenv("GLOG_log_dir");  // backwards compatibility
-    if (isatty(fileno(stdin)) &&
-        (log_dir == nullptr || strlen(log_dir) == 0))
-        return "";
+    // return early, if we still haven't found a log directory
+    if (log_dir == nullptr || strlen(log_dir) == 0)
+      return "";
   }
   auto program = roq::platform::get_program();
   auto hostname = roq::platform::get_hostname();

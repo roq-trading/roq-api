@@ -549,6 +549,14 @@ class Controller final {
         Args&&... args)
         : _client(*this, std::forward<Args>(args)...),
           _timer(_base, EV_PERSIST, [this](){ on_timer(); }),
+          _sigterm(
+              _base,
+              SIGTERM,
+              [this](int signal){ on_shutdown(signal); }),
+          _sigint(
+              _base,
+              SIGINT,
+              [this](int signal){ on_shutdown(signal); }),
           _next_refresh(std::chrono::steady_clock::now() + std::chrono::seconds(1)),
           _next_statistics(_next_refresh),
           _encoder(_seqno, _fbb),
@@ -620,6 +628,11 @@ class Controller final {
       TimerEvent timer_event {};
       static_cast<Client&>(_client).on(timer_event);
     }
+    void on_shutdown(int signal) {
+      LOG(WARNING) << "Received "
+        "signal " << signal << " (" << strsignal(signal) << ")";
+      _base.loopbreak();
+    }
     bool refresh(const std::chrono::steady_clock::time_point now) {
       if (now < _next_refresh)
         return false;
@@ -690,6 +703,8 @@ class Controller final {
     T _client;
     libevent::Base _base;
     libevent::Timer _timer;
+    libevent::Signal _sigterm;
+    libevent::Signal _sigint;
     Statistics _statistics;
     std::list<Gateway> _gateways;
     std::unordered_map<std::string, Gateway *> _gateways_by_name;

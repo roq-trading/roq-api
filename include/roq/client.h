@@ -581,6 +581,8 @@ class Controller final {
     }
     void dispatch() {
       _timer.add(std::chrono::seconds(1));
+      _sigterm.add();
+      _sigint.add();
       _base.loop(EVLOOP_NO_EXIT_ON_EMPTY);
     }
 

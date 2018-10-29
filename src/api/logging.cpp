@@ -168,13 +168,15 @@ spdlog::logger *spdlog_logger = nullptr;
 void Logger::initialize(bool stacktrace, const char *log_dir) {
   detail::append_newline = false;
   auto filename = get_filename(log_dir);
-  auto console = filename.empty();
-  spdlog::init_thread_pool(QUEUE_SIZE, THREAD_COUNT);
+  auto terminal = isatty(fileno(stdout));
+  if (filename.empty() == false)
+    spdlog::init_thread_pool(QUEUE_SIZE, THREAD_COUNT);
   spdlog::flush_every(std::chrono::seconds(FLUSH_SECONDS));
-  auto logger = console ?
-      spdlog::stdout_logger_st("spdlog") :
-      spdlog::basic_logger_st<spdlog::async_factory>(
-          "spdlog", filename);
+  auto logger = (filename.empty() == false) ?
+      spdlog::basic_logger_st<spdlog::async_factory>("spdlog", filename) :
+          (terminal ?
+              spdlog::stdout_logger_st("spdlog") :
+              spdlog::stdout_logger_st<spdlog::async_factory>("spdlog"));
   // matching spdlog pattern to glog
   // - %L = level (I=INFO|W=WARN|E=ERROR|C=CRITICAL)
   // - %m = month (MM)

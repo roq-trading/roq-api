@@ -169,6 +169,11 @@ void Logger::initialize(bool stacktrace, const char *log_dir) {
   detail::append_newline = false;
   auto filename = get_filename(log_dir);
   auto terminal = isatty(fileno(stdout));
+  if (filename.empty() == false) {
+    fprintf(stderr, "Redirecting to: %s\n", filename.c_str());
+  } else if (terminal == false) {
+    fprintf(stderr, "No terminal detected: Using async logging\n");
+  }
   if (filename.empty() == false)
     spdlog::init_thread_pool(QUEUE_SIZE, THREAD_COUNT);
   spdlog::flush_every(std::chrono::seconds(FLUSH_SECONDS));

@@ -16,8 +16,8 @@ requirements:
   build:
     - {{ compiler('cxx') }}
   host:
-    - roq-oss-gflags
-    - roq-oss-libevent
+    - gflags >=2.2
+    - libevent >=2.1
     - roq-oss-benchmark
     - roq-oss-cctz
     - roq-oss-crossguid
@@ -26,8 +26,8 @@ requirements:
     - roq-oss-libunwind  # [linux]
     - roq-oss-spdlog
   run:
-    - roq-oss-gflags
-    - roq-oss-libevent
+    - gflags >=2.2
+    - libevent >=2.1
     - roq-oss-benchmark
     - roq-oss-cctz
     - roq-oss-crossguid

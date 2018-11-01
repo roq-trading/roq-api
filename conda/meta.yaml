@@ -1,13 +1,16 @@
+{% set version = environ.get('GIT_DESCRIBE_TAG', '0.0.0') %}
+{% set number = environ.get('GIT_DESCRIBE_NUMBER', 0) %}
+
 package:
   name: roq-api
-  version: {{ environ.get('GIT_DESCRIBE_TAG', '0.0.0') }}
+  version: {{ version }}
 
 source:
   path: ..
 
 build:
   skip: True  # [win]
-  number: {{ environ.get('GIT_DESCRIBE_NUMBER', 0) }}
+  number: {{ number }}
 
 requirements:
   build:
@@ -34,7 +37,7 @@ requirements:
     - roq-oss-spdlog
 
 about:
-  home: https://github.com/roq-trading
+  home: https://roq-trading.com
   dev_url: https://github.com/roq-trading
   license: BSD-3-Clause
   license_family: BSD

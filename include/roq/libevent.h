@@ -31,7 +31,10 @@ class UnhandledException {
     try {
       throw;
     } catch (std::exception& e) {
-      LOG(FATAL) << "Unhandled exception, type=" << typeid(e).name() << ", what=" << e.what();
+      LOG(FATAL) <<
+        "Unhandled exception, "
+        "type=" << typeid(e).name() << ", "
+        "what=" << e.what();
     } catch (...) {
       LOG(FATAL) << "Unhandled exception";
     }
@@ -41,7 +44,9 @@ class UnhandledException {
 class RuntimeError : public std::exception {
  public:
   explicit RuntimeError(std::string&& what) : _what(std::move(what)) {
-    VLOG(1) << "RuntimeError, what=" << _what.c_str();
+    VLOG(1) <<
+      "RuntimeError, "
+      "what=" << _what.c_str();
   }
   const char *what() const noexcept override { return _what.c_str(); }
  private:
@@ -58,7 +63,8 @@ class Logging {
   static void setcb() {
     event_set_log_callback(error_callback);
     event_set_fatal_callback(fatal_callback);
-    LOG(INFO) << "event_get_version() = \"" << event_get_version() << "\"";
+    LOG(INFO) <<
+      "event_get_version() = \"" << event_get_version() << "\"";
   }
 
  private:
@@ -139,7 +145,9 @@ class DNSBase final {
     if (_evdns_base == nullptr)
       throw RuntimeError("evdns_base_new");
   }
-  DNSBase(Base& base, int initialize_nameservers) : DNSBase(base.get(), initialize_nameservers) {}
+  DNSBase(Base& base, int initialize_nameservers)
+      : DNSBase(base.get(), initialize_nameservers) {
+  }
   ~DNSBase() {
     if (_evdns_base != nullptr) {
       int fail_requests = 1;
@@ -327,17 +335,36 @@ class BufferEvent final {
     if (_bufferevent == nullptr)
       throw RuntimeError("bufferevent_socket_new");
   }
-  BufferEvent(Base& base, int fd, int options)
-      : BufferEvent(base.get(), fd, options) {}
-  BufferEvent(struct event_base *base, net::Socket&& socket, int options)
-      : BufferEvent(base, socket.release(), options | BEV_OPT_CLOSE_ON_FREE) {}
-  BufferEvent(Base& base, net::Socket&& socket, int options)
-      : BufferEvent(base.get(), socket.release(), options | BEV_OPT_CLOSE_ON_FREE) {}
+  BufferEvent(
+      Base& base,
+      int fd,
+      int options)
+      : BufferEvent(base.get(), fd, options) {
+  }
+  BufferEvent(
+      struct event_base *base,
+      net::Socket&& socket,
+      int options)
+      : BufferEvent(
+          base,
+          socket.release(),
+          options | BEV_OPT_CLOSE_ON_FREE) {
+  }
+  BufferEvent(
+      Base& base,
+      net::Socket&& socket,
+      int options)
+      : BufferEvent(
+          base.get(),
+          socket.release(),
+          options | BEV_OPT_CLOSE_ON_FREE) {
+  }
   ~BufferEvent() {
     if (_bufferevent != nullptr)
       bufferevent_free(_bufferevent);
   }
-  BufferEvent(BufferEvent&& rhs) : _bufferevent(rhs._bufferevent) {
+  BufferEvent(BufferEvent&& rhs)
+      : _bufferevent(rhs._bufferevent) {
     rhs._bufferevent = nullptr;
   }
   BufferEvent& operator=(BufferEvent&& rhs) {
@@ -347,16 +374,30 @@ class BufferEvent final {
     rhs._bufferevent = nullptr;
     return *this;
   }
-  struct bufferevent *get() const { return _bufferevent; }
-  void setcb(read_handler_t&& read_handler, write_handler_t&& write_handler,
-             error_handler_t&& error_handler) {
+  struct bufferevent *get() const {
+    return _bufferevent;
+  }
+  void setcb(
+      read_handler_t&& read_handler,
+      write_handler_t&& write_handler,
+      error_handler_t&& error_handler) {
     _read_handler = std::move(read_handler);
     _write_handler = std::move(write_handler);
     _error_handler = std::move(error_handler);
-    bufferevent_setcb(_bufferevent, read_callback, write_callback, error_callback, this);
+    bufferevent_setcb(
+        _bufferevent,
+        read_callback,
+        write_callback,
+        error_callback,
+        this);
   }
-  void setcb(read_handler_t&& read_handler, error_handler_t&& error_handler) {
-    setcb(std::move(read_handler), [](){}, std::move(error_handler));
+  void setcb(
+      read_handler_t&& read_handler,
+      error_handler_t&& error_handler) {
+    setcb(
+        std::move(read_handler),
+        [](){},
+        std::move(error_handler));
   }
   void enable(short events) {  // NOLINT
     bufferevent_enable(_bufferevent, events);
@@ -383,18 +424,36 @@ class BufferEvent final {
   void write(Buffer& buffer) {
     write(buffer.get());
   }
-  void connect(const struct sockaddr *address, int address_length) {
-    if (bufferevent_socket_connect(_bufferevent, address, address_length) < 0)
+  void connect(
+      const struct sockaddr *address,
+      int address_length) {
+    if (bufferevent_socket_connect(
+          _bufferevent,
+          address,
+          address_length) < 0)
       throw RuntimeError("bufferevent_socket_connect");
   }
   void connect(const net::Address& address) {
     connect(address.get(), address.size());
   }
-  void connect(struct evdns_base *dns_base, int family, const char *hostname, int port) {
-    if (bufferevent_socket_connect_hostname(_bufferevent, dns_base, family, hostname, port) < 0)
+  void connect(
+      struct evdns_base *dns_base,
+      int family,
+      const char *hostname,
+      int port) {
+    if (bufferevent_socket_connect_hostname(
+          _bufferevent,
+          dns_base,
+          family,
+          hostname,
+          port) < 0)
       throw RuntimeError("bufferevent_socket_connect_hostname");
   }
-  void connect(DNSBase& dns_base, int family, const char *hostname, int port) {
+  void connect(
+      DNSBase& dns_base,
+      int family,
+      const char *hostname,
+      int port) {
     connect(dns_base.get(), family, hostname, port);
   }
 
@@ -415,7 +474,10 @@ class BufferEvent final {
       UnhandledException::terminate();
     }
   }
-  static void error_callback(struct bufferevent *bev, short what, void *ctx) {  // NOLINT
+  static void error_callback(
+      struct bufferevent *bev,
+      short what,  // NOLINT
+      void *ctx) {
     try {
       const auto& self = *reinterpret_cast<BufferEvent*>(ctx);
       self._error_handler(what);
@@ -441,32 +503,92 @@ class BufferEvent final {
 class Listener final {
  public:
   typedef std::function<void(BufferEvent&&)> handler_t;
-  Listener(struct event_base *base, int flags, int backlog, net::Socket&& socket,
-           int create_flags, handler_t&& handler)
+  Listener(
+      struct event_base *base,
+      int flags,
+      int backlog,
+      net::Socket&& socket,
+      int create_flags,
+      handler_t&& handler)
       : _base(base),
         _socket(std::move(socket)),
-        _evconnlistener(evconnlistener_new(base, callback, this, flags, backlog, _socket.get())),
+        _evconnlistener(
+            evconnlistener_new(
+                base,
+                callback,
+                this,
+                flags,
+                backlog,
+                _socket.get())),
         _create_flags(create_flags),
         _handler(std::move(handler)) {
     if (_evconnlistener == nullptr)
       throw RuntimeError("evconnlistener_new");
-    // DCHECK_EQ(_socket.non_blocking(), true) << "socket must be non-blocking";
   }
-  Listener(Base& base, int flags, int backlog, net::Socket&& socket,
-           int create_flags, handler_t&& handler)
-      : Listener(base.get(), flags, backlog, std::move(socket),
-                 create_flags, std::move(handler)) {}
+  Listener(
+      Base& base,
+      int flags,
+      int backlog,
+      net::Socket&& socket,
+      int create_flags,
+      handler_t&& handler)
+      : Listener(
+            base.get(),
+            flags,
+            backlog,
+            std::move(socket),
+            create_flags,
+            std::move(handler)) {
+  }
+  // TODO(thraneh): interface cleanup
+  Listener(
+      Base& base,
+      int flags,
+      int backlog,
+      net::Socket&& socket)
+      : _base(base.get()),
+        _socket(std::move(socket)),
+        _evconnlistener(
+            evconnlistener_new(
+                _base,
+                nullptr,
+                nullptr,
+                flags,
+                backlog,
+                _socket.get())),
+        _create_flags(0),
+        _handler([](BufferEvent&&){}) {
+    if (_evconnlistener == nullptr)
+      throw RuntimeError("evconnlistener_new");
+  }
   ~Listener() {
     if (_evconnlistener != nullptr)
       evconnlistener_free(_evconnlistener);
   }
+  struct evconnlistener *get() {
+    return _evconnlistener;
+  }
+  struct evconnlistener *release() {
+    // FIXME(thraneh): this is not safe -- requires LEV_OPT_CLOSE_ON_FREE
+    _socket.release();
+    struct evconnlistener *res = nullptr;
+    std::swap(_evconnlistener, res);
+    return res;
+  }
 
  private:
-  static void callback(struct evconnlistener *, evutil_socket_t fd, struct sockaddr *,
-                       int socklen, void *cbarg) {
+  static void callback(
+      struct evconnlistener *,
+      evutil_socket_t fd,
+      struct sockaddr *,
+      int socklen,
+      void *cbarg) {
     try {
       const auto& self = *reinterpret_cast<Listener*>(cbarg);
-      BufferEvent buffer_event(self._base, fd, self._create_flags | BEV_OPT_CLOSE_ON_FREE);
+      BufferEvent buffer_event(
+          self._base,
+          fd,
+          self._create_flags | BEV_OPT_CLOSE_ON_FREE);
       self._handler(std::move(buffer_event));
     } catch (...) {
       UnhandledException::terminate();
@@ -517,7 +639,10 @@ class HTTPRequest final {
     send_reply(code, reason, buffer.get());
   }
   void add_header(const char *key, const char *value) {
-    if (evhttp_add_header(evhttp_request_get_output_headers(_evhttp_request), key, value) < 0)
+    if (evhttp_add_header(
+          evhttp_request_get_output_headers(_evhttp_request),
+          key,
+          value) < 0)
       throw RuntimeError("evhttp_add_header");
   }
 
@@ -545,9 +670,19 @@ class HTTP final {
     if (_evhttp != nullptr)
       evhttp_free(_evhttp);
   }
+  struct evhttp *get() { return _evhttp; }
   void bind(const char *address, uint16_t port) {
     if (evhttp_bind_socket(_evhttp, address, port) < 0)
       throw RuntimeError("evhttp_bind_socket");
+  }
+  void bind(Listener&& listener) {
+    // FIXME(thraneh): leak ??? who owns the socket (the result) ???
+    auto res = evhttp_bind_listener(
+        _evhttp,
+        listener.get());
+    if (res == nullptr)
+      throw RuntimeError("evhttp_bind_listener");
+    listener.release();  // should now be owned by evhttp
   }
   void set_allowed_methods(uint16_t methods) {  // e.g. EVHTTP_REQ_HEAD|EVHTTP_REQ_GET
     evhttp_set_allowed_methods(_evhttp, methods);
@@ -558,16 +693,25 @@ class HTTP final {
   typedef std::function<void(HTTPRequest&&)> handler_t;
   void add(handler_t&& handler) {
     _handlers.emplace_back(std::move(handler));
-    evhttp_set_gencb(_evhttp, callback, &*_handlers.rbegin());
+    evhttp_set_gencb(
+        _evhttp,
+        callback,
+        &*_handlers.rbegin());
   }
   void add(const char *path, handler_t&& handler) {
     _handlers.emplace_back(std::move(handler));
-    if (evhttp_set_cb(_evhttp, path, callback, &*_handlers.rbegin()) < 0)
+    if (evhttp_set_cb(
+          _evhttp,
+          path,
+          callback,
+          &*_handlers.rbegin()) < 0)
       throw RuntimeError("evhttp_set_cb");
   }
 
  private:
-  static void callback(struct evhttp_request *evhttp_request, void *arg) {
+  static void callback(
+      struct evhttp_request *evhttp_request,
+      void *arg) {
     try {
       HTTPRequest request(evhttp_request);
       (*reinterpret_cast<handler_t *>(arg))(std::move(request));

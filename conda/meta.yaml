@@ -11,21 +11,13 @@ source:
 build:
   skip: True  # [win]
   number: {{ number }}
+  run_exports:
+    - roq-api ={{ version }}
 
 requirements:
   build:
     - {{ compiler('cxx') }}
   host:
-    - gflags >=2.2
-    - libevent >=2.1
-    - roq-oss-benchmark
-    - roq-oss-cctz
-    - roq-oss-crossguid
-    - roq-oss-flatbuffers
-    - roq-oss-libucl
-    - roq-oss-libunwind  # [linux]
-    - roq-oss-spdlog
-  run:
     - gflags >=2.2
     - libevent >=2.1
     - roq-oss-benchmark

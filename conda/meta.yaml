@@ -1,6 +1,10 @@
 {% set version = environ.get('GIT_DESCRIBE_TAG', '0.0.0') %}
 {% set number = environ.get('GIT_DESCRIBE_NUMBER', 0) %}
 
+{% set components = version.split('.') %}
+{% set major = components[0] | int %}
+{% set minor = components[1] | int %}
+
 package:
   name: roq-api
   version: {{ version }}
@@ -12,7 +16,7 @@ build:
   skip: True  # [win]
   number: {{ number }}
   run_exports:
-    - roq-api ={{ version }}
+    - roq-api >={{ version }},<{{ major }}.{{ minor + 1 }}
 
 requirements:
   build:

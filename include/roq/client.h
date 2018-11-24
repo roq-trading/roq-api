@@ -358,7 +358,7 @@ class Controller final {
         if (busy_poll_usecs) {
 #ifdef SO_BUSY_POLL
           VLOG(1) << "SO_BUSY_POLL = " << busy_poll_usecs;
-          result.second.setsockopt<int>(
+          socket.setsockopt<int>(
               SOL_SOCKET,
               SO_BUSY_POLL,
               static_cast<int>(busy_poll_usecs));

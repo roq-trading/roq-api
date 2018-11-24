@@ -6,8 +6,19 @@
 #include <roq/codec.h>
 #include <roq/libevent.h>
 #include <roq/logging.h>
+#include <roq/options.h>
 #include <roq/platform.h>
 #include <roq/stream.h>
+
+#include <sys/socket.h>
+
+#ifdef linux
+// FIXME(thraneh): where does conda get their system headers from ???
+#ifndef SO_BUSY_POLL
+#warning "SO_BUSY_POLL is not available, using override"
+#define SO_BUSY_POLL 46
+#endif
+#endif
 
 #include <algorithm>
 #include <chrono>
@@ -343,6 +354,18 @@ class Controller final {
         auto domain = _connection.get_address().get_family();
         net::Socket socket(domain, SOCK_STREAM, 0);
         socket.non_blocking(true);
+        auto busy_poll_usecs = Options::get_busy_poll_usecs();
+        if (busy_poll_usecs) {
+#ifdef SO_BUSY_POLL
+          VLOG(1) << "SO_BUSY_POLL = " << busy_poll_usecs;
+          result.second.setsockopt<int>(
+              SOL_SOCKET,
+              SO_BUSY_POLL,
+              static_cast<int>(busy_poll_usecs));
+#else
+          LOG(WARNING) << "SO_BUSY_POLL was not available at compile time";
+#endif
+        }
         LOG_IF(FATAL, _buffer_event != nullptr) <<
             "BufferEvent should have been cleared when last connection attempt failed!";
         auto buffer_event = std::unique_ptr<libevent::BufferEvent>(

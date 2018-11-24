@@ -4,6 +4,7 @@ pkginclude_HEADERS = \
 	api.h stream.h codec.h \
 	client.h \
 	simulation.h \
+	options.h \
 	platform.h filesystem.h file.h memory.h net.h utils.h \
 	libevent.h \
 	logging.h

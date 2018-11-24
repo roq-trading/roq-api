@@ -13,12 +13,14 @@ roq_api_test_LDADD = \
 	$(top_builddir)/src/api/libroq.la \
 	libgtest.la \
 	$(SPDLOG_LIBS) \
-	$(LIBUNWIND_LIBS)
+	$(LIBUNWIND_LIBS) \
+	$(GFLAGS_LIBS)
 roq_api_test_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/third_party/googletest/googletest/include \
 	$(SPDLOG_CFLAGS) \
-	$(LIBUNWIND_CFLAGS)
+	$(LIBUNWIND_CFLAGS) \
+	$(GFLAGS_CFLAGS)
 nodist_roq_api_test_SOURCES = \
 	test_codec.cpp \
 	test_connection_string.cpp \

@@ -225,6 +225,7 @@ class Controller final {
       void send() {
         try {
           _buffer_event->write(_write_buffer);
+          _buffer_event->flush(EV_WRITE, BEV_FLUSH);
         } catch (libevent::RuntimeError& e) {
           LOG(WARNING) << "[" << _name << "] "
             "Caught exception, what=\"" << e.what() << "\"";

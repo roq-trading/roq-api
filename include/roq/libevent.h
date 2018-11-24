@@ -424,6 +424,12 @@ class BufferEvent final {
   void write(Buffer& buffer) {
     write(buffer.get());
   }
+  void flush(
+      short iotype,  // NOLINT
+      enum bufferevent_flush_mode mode) {
+    if (bufferevent_flush(_bufferevent, iotype, mode) < 0)
+      throw RuntimeError("bufferevent_flush");
+  }
   void connect(
       const struct sockaddr *address,
       int address_length) {

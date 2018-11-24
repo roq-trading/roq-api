@@ -12,7 +12,7 @@
 
 #include <sys/socket.h>
 
-#ifdef linux
+#if defined(__linux__)
 // FIXME(thraneh): where does conda get their system headers from ???
 #ifndef SO_BUSY_POLL
 #warning "SO_BUSY_POLL is not available, using override"

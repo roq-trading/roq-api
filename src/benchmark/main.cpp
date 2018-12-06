@@ -285,6 +285,38 @@ void BM_DateTime_Print(
 }
 BENCHMARK(BM_DateTime_Print);
 
+// memcpy
+
+void BM_MemCpy(
+    benchmark::State& state) {
+  std::vector<uint8_t> source(1500);
+  std::vector<uint8_t> destination(1024 * 1024 * 64);
+  size_t offset = 0;
+  for (auto _ : state) {
+    std::memcpy(&destination[offset], &source[0], source.size());
+    offset += 2048;
+    if (destination.size() <= (offset + source.size()))
+      offset = 0;
+  }
+}
+BENCHMARK(BM_MemCpy);
+
+// memmove
+
+void BM_MemMove(
+    benchmark::State& state) {
+  std::vector<uint8_t> source(1500);
+  std::vector<uint8_t> destination(1024 * 1024 * 64);
+  size_t offset = 0;
+  for (auto _ : state) {
+    std::memmove(&destination[offset], &source[0], source.size());
+    offset += 2048;
+    if (destination.size() <= (offset + source.size()))
+      offset = 0;
+  }
+}
+BENCHMARK(BM_MemMove);
+
 // stringstream
 
 void BM_StringStream_Create(

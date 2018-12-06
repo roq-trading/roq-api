@@ -287,7 +287,21 @@ BENCHMARK(BM_DateTime_Print);
 
 // memcpy
 
-void BM_MemCpy(
+void BM_MemCpy_Hot_L2(
+    benchmark::State& state) {
+  std::vector<uint8_t> source(1500);
+  std::vector<uint8_t> destination(1024 * 64);
+  size_t offset = 0;
+  for (auto _ : state) {
+    std::memcpy(&destination[offset], &source[0], source.size());
+    offset += 2048;
+    if (destination.size() <= (offset + source.size()))
+      offset = 0;
+  }
+}
+BENCHMARK(BM_MemCpy_Hot_L2);
+
+void BM_MemCpy_Cold_L2(
     benchmark::State& state) {
   std::vector<uint8_t> source(1500);
   std::vector<uint8_t> destination(1024 * 1024 * 64);
@@ -299,11 +313,25 @@ void BM_MemCpy(
       offset = 0;
   }
 }
-BENCHMARK(BM_MemCpy);
+BENCHMARK(BM_MemCpy_Cold_L2);
 
 // memmove
 
-void BM_MemMove(
+void BM_MemMove_Hot_L2(
+    benchmark::State& state) {
+  std::vector<uint8_t> source(1500);
+  std::vector<uint8_t> destination(1024 * 64);
+  size_t offset = 0;
+  for (auto _ : state) {
+    std::memmove(&destination[offset], &source[0], source.size());
+    offset += 2048;
+    if (destination.size() <= (offset + source.size()))
+      offset = 0;
+  }
+}
+BENCHMARK(BM_MemMove_Hot_L2);
+
+void BM_MemMove_Cold_L2(
     benchmark::State& state) {
   std::vector<uint8_t> source(1500);
   std::vector<uint8_t> destination(1024 * 1024 * 64);
@@ -315,7 +343,7 @@ void BM_MemMove(
       offset = 0;
   }
 }
-BENCHMARK(BM_MemMove);
+BENCHMARK(BM_MemMove_Cold_L2);
 
 // stringstream
 

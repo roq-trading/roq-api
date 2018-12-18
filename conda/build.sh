@@ -4,7 +4,7 @@ set -e
 
 env
 
-export CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
+export CPPFLAGS="-I$PREFIX/include -DNDEBUG $CPPFLAGS"
 export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
 

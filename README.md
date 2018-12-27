@@ -4,7 +4,7 @@
 
 # Generic trading interface
 
-Copyright (c) 2017-2018, Hans Erik Thrane
+Copyright (c) 2017-2019, Hans Erik Thrane
 
 
 ## License

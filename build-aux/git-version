@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [[ -z $GIT_DESCRIBE_TAG ]]; then
+  git describe 2>/dev/null || echo 0.0.0
+else
+  echo "$GIT_DESCRIBE_TAG"
+fi

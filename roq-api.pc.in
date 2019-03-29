@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+includedir=@includedir@
+libdir=@libdir@
+datadir=@datarootdir@
+
+Name: @PACKAGE@
+Description: Roq API
+Version: @VERSION@
+Libs: -L${libdir} -l@PACKAGE@ @LIBS@
+Cflags: @CPPFLAGS@ -I${includedir}

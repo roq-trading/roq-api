@@ -13,7 +13,7 @@ source:
   path: ..
 
 build:
-  skip: True  # [win]
+  skip: True  # [win and osx]
   number: {{ number }}
   run_exports:
     - roq-api >={{ version }},<{{ major }}.{{ minor + 1 }}
@@ -21,23 +21,19 @@ build:
 requirements:
   build:
     - {{ compiler('cxx') }}
+    - roq-oss-fmt
+    - roq-oss-libunwind  # [linux]
+    - roq-oss-spdlog
   host:
     - gflags >=2.2
-    - libevent >=2.1
-    - roq-oss-benchmark
-    - roq-oss-cctz
-    - roq-oss-crossguid
-    - roq-oss-flatbuffers
-    - roq-oss-libucl
+    - roq-oss-fmt
     - roq-oss-libunwind  # [linux]
     - roq-oss-spdlog
 
 about:
   home: https://roq-trading.com
   dev_url: https://github.com/roq-trading
-  license: BSD-3-Clause
-  license_family: BSD
+  license: Commercial
+  license_family: OTHER
   license_file: LICENSE
-  license_url: https://opensource.org/licenses/BSD-3-Clause
-  summary: Generic trading API.
-  description: Generic trading API.
+  summary: Roq API library

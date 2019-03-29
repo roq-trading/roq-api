@@ -22,16 +22,20 @@ build-aux/
 
 *_generated.h
 
+*.capnp.h
+*.capnp.c++
+
 *.log
 *.trs
 
-roq.pc
-include/roq/api.h
-include/roq/roq/
-src/benchmark/roq-api-benchmark
-test/roq-api-test
+roq-api.pc
 
-doc/xml/
-doc/html/
+include/roq/api.h
+
+test/roq-api-test
+benchmark/roq-api-benchmark
+
 doc/Doxyfile
 doc/doxygen-build.stamp
+doc/html
+doc/xml

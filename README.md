@@ -1,222 +1,374 @@
-[![Build Status](https://travis-ci.org/roq-trading/roq-api.svg?branch=master)](https://travis-ci.org/roq-trading/roq-api)
-[![License: BSD](https://img.shields.io/badge/license-BSD-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![Join the chat at https://gitter.im/quinclas/Lobby](https://badges.gitter.im/quinclas/Lobby.svg)](https://gitter.im/quinclas/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Roq Trading Solutions
+
+Solutions focused on development, testing and deployment of
+algorithmic trading strategies.
+
+
+## Overview
+
+Solutions
+
+* Market access
+* Simulation tools
+* Data collection
+* Consultancy
+
+Features
+
+* Programming language is C++17.
+* Standardized API for all market access.
+* Design is similar to that of
+  [microservices](https://en.wikipedia.org/wiki/Microservices).
+* Strategy implementation is single-threaded and must implement
+  asynchronous event handling.
+* Complexities are managed (connectivity, download, templates,
+  segregation, policies, timeout, positions, etc).
+* Ultra-low latency with internal round-trip response time around
+  1 microsecond (depending on hardware).
+* Samples on [GitHub](https://github.com/roq-trading/roq-samples).
+* Binaries compiled for [Conda](https://docs.conda.io).
+* Docker images published to
+  [Docker Hub](https://cloud.docker.com/u/roqtrading).
+* Ansible playbook on
+  [GitHub](https://github.com/roq-trading/roq-ansible).
+
+You can find more information on our
+[website](https://roq-trading.com) or by browsing our online
+[documentation](https://roq-trading.com/docs).
+
+
+## Who Is This For?
+
+> **PROFESSIONAL INVESTORS, ONLY!**
+> 
+> *Automated algorithmic trading is very complex and requires serious
+> investment into hardware, software, research, testing, monitoring and
+> support.
+> In all probability, it will be a loss-making activity if you don't
+> invest enough time and money towards simulation and infrastructure*.
+
+Typical requirements
+
+* 100% automation
+* Intra-day trading
+* Latency sensitive strategies
+* High Frequency Trading (HFT)
+* Market Taking
+* Market Making
+* Hedging
+* Spread Trading (relative value or multi-leg strategies)
+* Simulation of market micro-structure (probabilistic execution
+  based on order priorities)
+* Control the technology stack
+
+
+## FAQ
+
+<dl>
+<dt><strong>Why have you developed this product?</strong></dt>
+<dd>
+We see an opportunity to offer complete trading solutions for start-up
+investement firms.
+In particular, we believe we have an advantage compared to the multitude
+of existing and specialized solutions because our solution offers
+tooling from research and testing all the way to real trading.
+All the solutions are designed such that the quant and/or trader can 
+retain the control of the entire technology stack.
+</dd>
+<dt><strong>Do I have to sign a NDA to start using the product?</strong></dt>
+<dd>
+No.
+Strategy examples can be found on
+<a href="https://github.com/roq-trading/roq-samples">GitHub</a>.
+Follow the instructions there to get started with your own strategy
+implementation.
+You can use the simulators without contacting us.
+Market access is different: You can download the gateways, but you will
+need to contact us to obtain a valid license file.
+</dd>
+<dt><strong>I am not a professional investor, should I use the product?</strong></dt>
+<dd>
+Yes.
+We promote that you use our simulation tools for your research.
+Testing ideas is a good way to gain experience and perhaps you can
+later use the results to partner with a professional investment firm.
+</dd>
+<dt><strong>What markets do you support?</strong></dt>
+<dd>
+Currently CFFEX/FEMAS (including multicast market data feed).
+Work is ongoing for Shengli/REM (FPGA based solution).
+Please contact us to discuss specific requirements.
+</dd>
+<dt><strong>How do I obtain the market data needed for simulation?</strong></dt>
+<dd>
+We don't resell market data.
+You must obtain historical market data directly from the exchange or
+from third-party data vendors.
+We can help with data conversion, should that be necessary.
+</dd>
+<dt><strong>How is round-trip latency measured?</strong></dt>
+<dd>
+The design is that of microservices: Components are loosely coupled.
+We measure from event handover from NIC or FPGA to gateway, then through
+shared memory to client, internal processing of client <i>excluding user
+code</i>, back through shared memory to gateway, and finally event
+handover to NIC or FPGA.
+This round-trip latency can be less than 1 microsecond depending on
+hardware and system configuration.
+</dd>
+<dt><strong>What are the hardware requirements?</strong></dt>
+<dd>
+It depends on your use case.
+Please contact us to discuss further.
+However, the solutions are designed for ultra low latency and therefore
+using busy polling to avoid involving the kernel scheduler.
+Generally speaking: These solutions are very CPU hungry. The more cores
+you have, the better.
+</dd>
+<dt><strong>Why is there no source code for the API?</strong></dt>
+<dd>
+An earlier version actually included an open sourced client API
+implementation.
+This unfortunately introduced several support issues which lead us to
+the conclusion that all parties are better served with a well defined
+client API distributed only in binary form.
+We do however publish development examples to
+<a href="https://github.com/roq-trading/roq-samples">GitHub</a>.
+</dd>
+</dl>
 
-# Generic trading interface
 
-Copyright (c) 2017-2019, Hans Erik Thrane
+## First Steps
+
+The benchmark suite is useful for demonstrating resource requirements,
+profiling and monitoring.
 
+In particular, the following features are being demonstrated
 
-## License
+* `roq-ping` a synthetic "gateway" simulating key execution paths
+  * Broadcast market data
+  * Handle order creation requests
+  * Respond with order creation ack 
+  * Access to internal metrics
+
+* `roq-pong` a synthetic "client" simulating key execution paths
+  * Receive and process market data
+  * Optionally request order creation
+  * Access to internal metrics
+
+* `roq-benchmark` profiling the speed of key functions
+  * Message encoding/decoding
+  * String formatting (stream and format operations)
+  * Other benchmarking useful for selecting e.g. containers
+
+> Internal metrics are made available over HTTP using the
+> [Prometheus Exposition Format](https://prometheus.io/docs/instrumenting/exposition_formats/).
+
+
+### Install Miniconda
+
+> *This section will demonstrate how to install Miniconda*.
+
+A Conda environment allows you to install up-to-date binary packages
+on your development box without requiring root access.
+
+```bash
+# download the miniconda installer
+wget -N https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
-[BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)
+# install miniconda (to your home directory)
+bash Miniconda3-latest-Linux-x86_64.sh -b -u -p ~/miniconda3
 
-## Contact
+# define conda channels
+cat > ~/miniconda3/.condarc << EOF
+channels:
+  - defaults
+  - https://roq-trading.com/conda/unstable
+EOF
+```
 
-You should [contact us](mailto:info@roq-trading.com) if you want to
+### Activate Miniconda
 
-* Obtain a gateway license key.
-* Discuss a specific gateway implementation.
-* Discuss bespoke solutions, e.g. consultancy or joint-venture.
+> *This section will demonstrate how to activate your Conda environment*.
 
+This is how you activate your Conda environment
 
-## Introduction
+```bash
+source ~/miniconda3/bin/activate
+```
 
-This API is a generic trading interface allowing you to
+The following sections will assume you have already activated your
+Conda environment.
 
-* Implement your own trading strategies without caring (too much) about the low-level details
-  of specific trading API's.
-* Easily connect your trading strategy to low-latency market gateways.
-* Easily simulate your trading strategy, in-process or out-of-process, using historical market
-  data and your own order-matching.
 
-### Implementation
+### Local Testing
 
-    #include <roq/api.h>
+> *This section will demonstrate how to install the binaries
+> using Conda.*
 
-    class Strategy : public roq::Strategy {
-     public:
-      Strategy(roq::Strategy::Dispatcher& dispatcher, ...)
-          : dispatcher(dispatcher) {
-        // the dispatcher is the request interface, e.g. for order creation
-      }
+First install the benchmark suite
 
-     protected:
-      void on(const roq::[...]Event& event) override {
-        // [...]Event handlers allowing you to react to market data updates, order updates, etc.
-      }
+```bash
+conda install -y roq-benchmark
+```
 
-     private:
-      roq::Strategy::Dispatcher& dispatcher;
-    };
+You can test the speed of key functions:
 
-#### Notes
+Run the benchmark suite
 
-Event handlers will be invoked from a single thread.
-There is no need for you to implement your own locking or queueing.
+```bash
+roq-benchmark
+```
 
-Your event handler should handle *all* exceptions.
-The controller is not supposed to know how to handle exceptions raised by your implementation.
-Unhandled exceptions may therefore cause the client process to terminate.
+You should now see the profiling results
 
-Requests will normally be forwarded from the client to the gateway.
-The client should normally receive asynchronous acknowledgement and/or updates.
+![overview](assets/Benchmark.png)
 
-However, several error conditions specifically pertain to requests
+And you can simulate a real network of gateways and clients:
 
-* Requests detected by the client controller to be incorrectly formed, should result in a synchronous exception.
-* Attempts to route a request to a disconnected (or non-ready) gateway should result in a synchronous exception.
-* Gateways may use the asynchronous acknowledge event to signal further error conditions.
-* Lost messages (and timeouts) may occur anywhere along the chain formed by strategy (client), gateway, broker and market.
-* Timeout may occur if a request is lost in transit between client and gateway (e.g. disconnect).
+This is the test case
 
-On the last point:
-The client's controller often can not assume anything if the gateway is disconnected after
-a request has been sent and before an acknowledgement has been received.
-The gateway may or may not send the acknowledgement and/or the updates following a re-connect.
+![overview](assets/PingPongSimple.png)
 
-It is the nature of an asynchronous design: Messages can be lost. Managing timeouts is the way to deal with it.
+Launch the ping service
 
-Your trading strategy implementation should therefore manage exceptions, updates (events) as well as timeouts!
+```bash
+ROQ_v=1 roq-ping \
+  --name "server-1" \
+  --dispatcher-affinity 1 \
+  --market-data-affinity 2 \
+  --metrics 1234 \
+  --listen ~/ping.sock
+```
 
-* **Never** expect a request to generate an asynchronous acknowledgement!
-* **Always** implement internal checks to verify current state and deal with timeout conditions!
+Launch the pong service (from another terminal)
 
-**It is your responsibility to implement safe order management**.
+```bash
+ROQ_v=1 roq-pong \
+  --name "client-1" \
+  --dispatcher-affinity 5 \
+  --create-orders 1 \
+  --metrics 2345 \
+  ~/ping.sock
+```
 
-Please refer to our [examples](https://github.com/roq-trading/roq-samples) for basic checks and design patterns.
+> `ROQ_v=1` sets an environment variable used to specify the
+> verbosity of application logging. You may drop this part from the
+> command-line (or use `ROQ_v=0`) to only see minimal logging.
+>
+> Verbose logging can be very costly: `roq-benchmark` will give you
+> more details about the cost of each line being logged.
 
+You can now query for the metrics
 
-### Live Trading
+```bash
+wget -q -O - http://localhost:1234/metrics | less
+```
 
-    #include <roq/client.h>
-  
-    // use e.g. roq::client::Gateways to create this map (details left out)
-    std::unordered_map<std::string, Connection> gateways;
+or
 
-    // instantiate the live controller, create the strategy and dispatch
-    // note! the constructor allows you to pass further options to the strategy (see roq-samples)
-    roq::client::Controller<Strategy>(
-        std::move(gateways)).create_and_dispatch();
+```bash
+wget -q -O - http://localhost:2345/metrics | less
+```
 
-### Simulation
+You should see something like this
 
-    #include <roq/simulation.h>
+![overview](assets/Metrics.png)
 
-    // a list of bespoke market data simulation generators (details left out)
-    std::list<std::unique_ptr<roq::simulation::Generator> > generators;
 
-    // instantiate the simulator, create the strategy and dispatch
-    // note! the constructor allows you to pass further options to the strategy (see roq-samples)
-    roq::simulation::Controller<Strategy>(
-        std::move(generators)).create_and_dispatch();
+### Deploy to Server
 
+> *This section will demonstrate how to provision a server using the 
+> Ansible playbook*.
 
-## Conda
+This is the test case
 
-We *strongly* suggest using Conda for installing the API.
+![overview](assets/PingPongServer.png)
 
-Reasons for choosing Conda
+Requirements
 
-* Works in user-space and does not require elevated access rights.
-* Different binary versions can easily co-exist using Conda's environment management.
-* Package dependencies are automatically resolved.
-* Version compatibility is automatically verified.
-* Conda uses a standardized compiler toolchain to achieve ABI compatilibity.
-* Our gateways are delivered as Conda packages.
+* Physical access (not a VM)
+* At least 8 physical cores
+* Linux (CentOS/7, Ubuntu 18.04, or better)
+* An `ansible` sudo user with ssh access rights
 
-Conda allows you to install the Roq API (including dependencies) without requiring you to work within
-any specific environment.
-In other words, it will work for any user on any (Linux) host / virtual machine / container.
+For best results 
 
-Please refer to Conda's documentation on [how to get started](https://conda.io/docs/user-guide/getting-started.html).
+* Add `isolcpus=1-6` to `/proc/cmdline` and reboot the server.
+* Disable hyper-threading in the BIOS.
+* Tune your system for low latency performance,
+  e.g. `tuned-adm profile network-latency`.
 
-### Roq Trading
+The Ansible playbook includes these following steps
 
-#### Channels
+* Configure the server for low latency performance
+* Install benchmark application configurations, application launch
+  scripts and systemd service scripts
+* Install Prometheus, Grafana and Nginx (using Docker)
 
-The following Conda channels are available
+```bash
+# install git and ansible
+conda install -y git ansible-playbook
 
-| Purpose                 | Channel URL                              |
-| ----------------------- | ---------------------------------------- |
-| For prod/uat deployment | <https://roq-trading.com/conda/stable>   |
-| For development         | <https://roq-trading.com/conda/unstable> |
+# clone the playbook
+git clone https://github.com/roq-trading/roq-ansible
 
-For either, you can use specific version numbers to better manage your dependencies.
+# change into the new directory
+cd roq-ansible
 
-Please refer to Conda's documentation for [managing channels](https://conda.io/docs/user-guide/tasks/manage-channels.html)
-and for [managing packages](https://conda.io/docs/user-guide/tasks/manage-pkgs.html).
+# define your inventory (replace "x.x.x.x" with your server's network address)
+cat > server << EOF
+[SERVER]
+server ansible_host="x.x.x.x"
+[roq-benchmark]
+server
+EOF
 
-Our [examples](https://github.com/roq-trading/roq-samples) include specific details on how to set up a Conda environment,
-how to install the Roq API, and how to compile your own code.
+# run the ansible playbook
+ansible-playbook -i server site.yml --ask-become-pass
+```
 
-#### Packages
+On your server
 
-The following packages are available
+```bash
+sudo systemctl start roq-ping-1
+sudo systemctl start roq-ping-2
+sudo systemctl start roq-pong-1
+sudo systemctl start roq-pong-2
+```
 
-| Name          | Content                                                                       | Availability |
-| ------------- | ----------------------------------------------------------------------------- | ------------ |
-| roq           | The Roq API (this repo)                                                       | Free         |
-| roq-samples   | Compiled version of [roq-samples](https://github.com/roq-trading/roq-samples) | Free         |
-| roq-simulator | Gateway simulator                                                             | Free         |
-| roq-femasapi  | Gateway based on the FemasAPI                                                 | Licensed     |
+You should now see core 1-6 consume 100% CPU (if everything was
+installed correctly)
 
-For licensed software you'll have to [contact us](mailto:info@roq-trading.com) to obtain a license key.
+![overview](assets/htop.png)
 
+You can tail the logs
 
-## Building
+```bash
+sudo journalctl -f -u roq-p[io]ng-[12]*
+```
 
-If you build from source, you must ensure all the dependencies (listed below) can be found either on the system or from `$PREFIX`.
+Navigate to this URL using your favourite browser (replace `x.x.x.x`
+with your server's network address)
 
-Finding and installing all the dependencies is no small feat.
-You may consider returning to the previous section describing the **Conda** package manager.
-You have been **warned**!
+```
+http://x.x.x.x/grafana/
+```
 
-Assuming you have all dependencies installed, it's pretty standard
+Find the `roq-benchmark (ping-pong)` dashboard and you should be able
+to monitor latency distributions like this
 
-    ./autogen.sh
-    ./configure [--prefix $PREFIX]
-    make
-    make check
-    make install
+![overview](assets/Grafana.png)
 
+> These metrics are collected from an Atom C3758 8-core processor.
 
-## Compatibility
 
-### Platforms
+## Next Steps
 
-* Linux
-* macOS (partial support)
-
-### Build Tools
-
-| Tool       | Version  | Purpose |
-| ---------- | -------- | ------- |
-| autoconf   |          | Build   |
-| automake   |          | Build   |
-| libtool    |          | Build   |
-| pkg-config |          | Build   |
-| gcc        | >= 4.8.1 | Build   |
-| clang      | >= 3.3   | Build   |
-| cmake      | >= 2.6.4 | Test    |
-
-### Library Dependencies
-
-| Library                                                          | Version  | License                                                      | Purpose                         |
-| ---------------------------------------------------------------- | -------- | ------------------------------------------------------------ | ------------------------------- |
-| [benchmark](https://github.com/google/benchmark)                 | >= 1.4   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Benchmarking                    |
-| [cctz](https://github.com/google/cctz)                           | >= 2.1   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Time-zone conversion            |
-| [crossguid](https://github.com/graeme-hill/crossguid)            | >= 0.2   | [MIT](https://opensource.org/licenses/MIT)                   | UUID                            |
-| [flatbuffers](https://github.com/google/flatbuffers)             | >= 1.7   | [Apache-2.0](https://opensource.org/licenses/Apache-2.0)     | Communication protocol          |
-| [gflags](https://github.com/gflags/gflags)                       | >= 2.2   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Command-line options            |
-| [googletest](https://github.com/google/googletest)               | >= 1.8   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Testing                         |
-| [libevent](https://github.com/libevent/libevent)                 | >= 2.1   | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Async event processing          |
-| [libunwind](https://github.com/libunwind/libunwind)              | >= 1.2   | [MIT](https://opensource.org/licenses/MIT)                   | Stack trace                     |
-| [rapidjson](https://github.com/Tencent/rapidjson)                | >= 1.1   | [MIT](https://opensource.org/licenses/MIT)                   | JSON parsing                    |
-| [spdlog](https://github.com/gabime/spdlog)                       | >= 1.0   | [MIT](https://opensource.org/licenses/MIT)                   | Logging                         |
-| [libucl](https://github.com/vstakhov/libucl)                     | >= 0.8   | [BSD-2-Clause](https://opensource.org/licenses/BSD-2-Clause) | Config-file parsing             |
-
-
-## Design
-
-![overview](https://github.com/quinclas/tradingapi/blob/gh-pages/_images/design.png)
+* [Contact us](mailto:info@roq-trading.com)
+* [Roq Trading Solutions (website)](https://roq-trading.com)
+* [Online documentation](https://roq-trading.com/docs)
+* [Development examples](https://github.com/roq-trading/roq-samples)
+* [Ansible playbook](https://github.com/roq-trading/roq-ansible)
+* [Grafana dashboards](https://github.com/roq-trading/roq-grafana)
+* [Vagrant development environments](https://github.com/roq-trading/roq-vagrant)

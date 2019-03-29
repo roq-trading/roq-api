@@ -1,5 +1,1 @@
-SUBDIRS = api
-
-if ENABLE_BENCHMARK
-SUBDIRS += benchmark
-endif
+SUBDIRS = roq

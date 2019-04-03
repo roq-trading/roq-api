@@ -28,6 +28,7 @@ roq_api_test_CPPFLAGS = \
 nodist_roq_api_test_SOURCES = \
 	format.cpp \
 	logging.cpp \
+	metrics.cpp \
 	static.cpp \
 	stream.cpp \
 	main.cpp

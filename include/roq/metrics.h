@@ -10,37 +10,36 @@
 #include "roq/platform.h"
 
 namespace roq {
-namespace metrics {
 
-class Writer {
+class Metrics {
  public:
-  virtual Writer& write_type(
+  virtual Metrics& write_type(
       const std::string_view& name,
       const std::string_view& type) = 0;
   // counter + gauge
-  virtual Writer& write_simple(
+  virtual Metrics& write_simple(
       const std::string_view& name,
       const std::string_view& labels,
       double value) = 0;
   // histogram
-  virtual Writer& write_bucket(
+  virtual Metrics& write_bucket(
       const std::string_view& name,
       const std::string_view& labels,
       double quantile,
       uint64_t value) = 0;
-  virtual Writer& write_sum(
+  virtual Metrics& write_sum(
       const std::string_view& name,
       const std::string_view& labels,
       double value) = 0;
-  virtual Writer& write_count(
+  virtual Metrics& write_count(
       const std::string_view& name,
       const std::string_view& labels,
       uint64_t count) = 0;
   // finish
-  virtual Writer& finish() = 0;
+  virtual Metrics& finish() = 0;
   // utilities
   template <typename T>
-  Writer& write(const T& collector) {
+  Metrics& write(const T& collector) {
     return collector.write(*this);
   }
 };
@@ -93,12 +92,12 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
     return result;
   }
 
-  Writer& write(Writer& writer) const {
+  Metrics& write(Metrics& writer) const {
     return write(writer, _labels);
   }
 
-  Writer& write(
-      Writer& writer,
+  Metrics& write(
+      Metrics& writer,
       const std::string_view& labels) const {
     auto sum = __atomic_load_8(&_data.sum, __ATOMIC_ACQUIRE);
     auto bucket_0 = _data.bucket_0;
@@ -139,5 +138,63 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
   const std::string _labels;
 };
 
-}  // namespace metrics
+template <typename T>
+class alignas(cache_line_size()) Counter : NonCopyable {
+ public:
+  Counter(const std::string& name, const std::string& labels)
+      : _name(name),
+        _labels(labels) {
+  }
+
+  Counter& operator++() {
+    __atomic_fetch_add(&_data.value, 1, __ATOMIC_RELEASE);
+    return *this;
+  }
+
+  Metrics& write(Metrics& metrics) const {
+    auto value = __atomic_load_8(&_data.value, __ATOMIC_ACQUIRE);
+    return metrics
+      .write_type(_name, "counter")
+      .write_simple(_name, _labels, value)
+      .finish();
+  }
+
+ private:
+  struct alignas(cache_line_size()) Data final {
+    T value = 0;
+  } _data;
+  static_assert(sizeof(Data) == cache_line_size());
+  const std::string _name;
+  const std::string _labels;
+};
+template <typename T>
+class alignas(cache_line_size()) Gauge : NonCopyable {
+ public:
+  Gauge(const std::string& name, const std::string& labels)
+      : _name(name),
+        _labels(labels) {
+  }
+
+  void set(T value) {
+    __atomic_store(&_data.value, value, __ATOMIC_RELEASE);
+    return *this;
+  }
+
+  Metrics& write(Metrics& metrics) const {
+    auto value = __atomic_load_8(&_data.value, __ATOMIC_ACQUIRE);
+    return metrics
+      .write_type(_name, "gauge")
+      .write_simple(_name, _labels, value)
+      .finish();
+  }
+
+ private:
+  struct alignas(cache_line_size()) Data final {
+    T value = 0;
+  } _data;
+  static_assert(sizeof(Data) == cache_line_size());
+  const std::string _name;
+  const std::string _labels;
+};
+
 }  // namespace roq

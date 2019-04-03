@@ -5,42 +5,41 @@
 #include "roq/metrics.h"
 
 using namespace roq;  // NOLINT
-using namespace roq::metrics;  // NOLINT
 
 namespace {
-class TestWriter : public Writer {
+class Writer : public Metrics {
  protected:
-  Writer& write_type(
+  Metrics& write_type(
       const std::string_view& name,
       const std::string_view& type) override {
     return *this;
   }
-  Writer& write_simple(
+  Metrics& write_simple(
       const std::string_view& name,
       const std::string_view& labels,
       double value) override {
     return *this;
   }
-  Writer& write_bucket(
+  Metrics& write_bucket(
       const std::string_view& name,
       const std::string_view& labels,
       double quantile,
       uint64_t value) override {
     return *this;
   }
-  Writer& write_sum(
+  Metrics& write_sum(
       const std::string_view& name,
       const std::string_view& labels,
       double value) override {
     return *this;
   }
-  Writer& write_count(
+  Metrics& write_count(
       const std::string_view& name,
       const std::string_view& labels,
       uint64_t count) override {
     return *this;
   }
-  Writer& finish() override {
+  Metrics& finish() override {
     return *this;
   }
 };
@@ -49,6 +48,6 @@ class TestWriter : public Writer {
 TEST(histogram, simple) {
   Histogram<1, 2, 3, 4, 5, 6> histogram("test");
   histogram.update(3);
-  TestWriter writer;
+  Writer writer;
   writer.write(histogram);
 }

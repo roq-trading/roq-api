@@ -398,7 +398,7 @@ should now be able to monitor latency distributions like this
 * [Contact us](mailto:info@roq-trading.com)
 * [Roq Trading Solutions (website)](https://roq-trading.com)
 * [Online documentation](https://roq-trading.com/docs)
-* [Development examples](https://github.com/roq-trading/roq-samples)
+* [Development samples](https://github.com/roq-trading/roq-samples)
 * [Ansible playbook](https://github.com/roq-trading/roq-ansible)
 * [Grafana dashboards](https://github.com/roq-trading/roq-grafana)
 * [Vagrant development environments](https://github.com/roq-trading/roq-vagrant)

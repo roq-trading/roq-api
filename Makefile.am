@@ -14,4 +14,7 @@ pkgconfig_DATA = @PACKAGE@.pc
 .PHONY: lint
 
 lint:
-	cpplint --linelength=120 --recursive include/ --recursive src/ --recursive test/
+	cpplint --linelength=120 \
+		--recursive include/ \
+		--recursive src/ \
+		--recursive test/

@@ -40,7 +40,8 @@ class Metrics {
   // utilities
   template <typename T>
   Metrics& write(const T& collector) {
-    return collector.write(*this);
+    collector.write(*this);
+    return *this;
   }
 };
 
@@ -97,7 +98,7 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
   }
 
   Metrics& write(
-      Metrics& writer,
+      Metrics& metrics,
       const std::string_view& labels) const {
     auto sum = __atomic_load_8(&_data.sum, __ATOMIC_ACQUIRE);
     auto bucket_0 = _data.bucket_0;
@@ -107,7 +108,7 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
     auto bucket_4 = bucket_3 + _data.bucket_4;
     auto bucket_5 = bucket_4 + _data.bucket_5;
     auto bucket_6 = bucket_5 + _data.bucket_6;
-    return writer
+    metrics
       .write_type(_name, "histogram")
       .write_bucket(_name, labels, N0, bucket_0)
       .write_bucket(_name, labels, N1, bucket_1)
@@ -151,9 +152,9 @@ class alignas(cache_line_size()) Counter : NonCopyable {
     return *this;
   }
 
-  Metrics& write(Metrics& metrics) const {
+  void write(Metrics& metrics) const {
     auto value = __atomic_load_8(&_data.value, __ATOMIC_ACQUIRE);
-    return metrics
+    metrics
       .write_type(_name, "counter")
       .write_simple(_name, _labels, value)
       .finish();
@@ -180,9 +181,9 @@ class alignas(cache_line_size()) Gauge : NonCopyable {
     return *this;
   }
 
-  Metrics& write(Metrics& metrics) const {
+  void write(Metrics& metrics) const {
     auto value = __atomic_load_8(&_data.value, __ATOMIC_ACQUIRE);
-    return metrics
+    metrics
       .write_type(_name, "gauge")
       .write_simple(_name, _labels, value)
       .finish();

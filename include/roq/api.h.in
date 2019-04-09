@@ -657,7 +657,7 @@ class ROQ_PUBLIC Generator : NonCopyable {
  public:
   class ROQ_PUBLIC Dispatcher : NonCopyable {
    public:
-    virtual void on(const ConnectionStatusEvent&) = 0;
+    virtual void on(const ConnectionStatusEvent& event) = 0;
     virtual void on(const BatchBeginEvent& event) = 0;
     virtual void on(const BatchEndEvent& event) = 0;
     virtual void on(const SessionStatisticsEvent& event) = 0;

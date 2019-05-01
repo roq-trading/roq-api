@@ -121,6 +121,7 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
       .write_sum(_name, labels, sum)
       .write_count(_name, labels, bucket_6)
       .finish();
+    return metrics;
   }
 
  private:

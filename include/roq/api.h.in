@@ -152,7 +152,6 @@ inline const char *EnumNameOrderType(OrderType e) {
 }
 
 enum class TimeInForce : int8_t {
-  ///< Undefined
   UNDEFINED = 0,
   FOK = 1,
   IOC = 2,
@@ -630,6 +629,11 @@ class ROQ_PUBLIC NotConnected : public RuntimeError {
 
 class ROQ_PUBLIC OrderNotLive : public RuntimeError {
   using RuntimeError::RuntimeError;
+};
+
+class ROQ_PUBLIC NonMovable {
+ private:
+  NonMovable(NonMovable&&) = default;
 };
 
 class ROQ_PUBLIC NonCopyable {

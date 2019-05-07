@@ -723,4 +723,29 @@ class Matcher : NonCopyable {
   virtual void on(const CancelOrderEvent& event) = 0;
 };
 
+class Collector : NonCopyable {
+ public:
+  virtual ~Collector() {}
+
+  virtual void on(const DownloadBeginEvent& event) = 0;
+  virtual void on(const DownloadEndEvent& event) = 0;
+  virtual void on(const MarketDataStatusEvent& event) = 0;
+  virtual void on(const OrderManagerStatusEvent& event) = 0;
+  virtual void on(const ReferenceDataEvent& event) = 0;
+  virtual void on(const MarketStatusEvent& event) = 0;
+  virtual void on(const SessionStatisticsEvent& event) = 0;
+  virtual void on(const DailyStatisticsEvent& event) = 0;
+  virtual void on(const MarketByPriceEvent& event) = 0;
+  virtual void on(const TradeSummaryEvent& event) = 0;
+  virtual void on(const PositionUpdateEvent& event) = 0;
+  virtual void on(const OrderUpdateEvent& event) = 0;
+  virtual void on(const TradeUpdateEvent& event) = 0;
+  virtual void on(const CreateOrderEvent& event) = 0;
+  virtual void on(const ModifyOrderEvent& event) = 0;
+  virtual void on(const CancelOrderEvent& event) = 0;
+  virtual void on(const CreateOrderAckEvent& event) = 0;
+  virtual void on(const ModifyOrderAckEvent& event) = 0;
+  virtual void on(const CancelOrderAckEvent& event) = 0;
+};
+
 }  // namespace roq

@@ -365,6 +365,7 @@ Writer& write(Writer& writer, const OrderUpdate& value) {
     "symbol=\"%s\", "
     "order_status=%s, "
     "side=%s, "
+    "limit_price=%" FLOAT_REPR ", "
     "remaining_quantity=%" FLOAT_REPR ", "
     "traded_quantity=%" FLOAT_REPR ", "
     "position_effect=%s, "
@@ -382,6 +383,7 @@ Writer& write(Writer& writer, const OrderUpdate& value) {
       value.symbol,
       EnumNameOrderStatus(value.order_status),
       EnumNameSide(value.side),
+      value.limit_price,
       value.remaining_quantity,
       value.traded_quantity,
       EnumNamePositionEffect(value.position_effect),

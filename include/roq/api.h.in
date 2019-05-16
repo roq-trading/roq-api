@@ -354,6 +354,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   const char *symbol;
   OrderStatus order_status;
   Side side;
+  double limit_price;
   double remaining_quantity;
   double traded_quantity;
   PositionEffect position_effect;

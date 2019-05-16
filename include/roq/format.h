@@ -513,6 +513,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         "symbol=\"{}\", "
         "order_status={}, "
         "side={}, "
+        "limit_price={}, "
         "remaining_quantity={}, "
         "traded_quantity={}, "
         "position_effect={}, "
@@ -528,6 +529,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.symbol,
         value.order_status,
         value.side,
+        value.limit_price,
         value.remaining_quantity,
         value.traded_quantity,
         value.position_effect,

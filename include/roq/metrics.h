@@ -3,6 +3,8 @@
 #pragma once
 
 #include <cstdint>
+
+#include <atomic>
 #include <limits>
 #include <string>
 #include <string_view>
@@ -21,7 +23,7 @@ class Metrics {
   virtual Metrics& write_simple(
       const std::string_view& name,
       const std::string_view& labels,
-      double value) = 0;
+      const std::atomic<double>& value) = 0;
   // histogram
   virtual Metrics& write_bucket(
       const std::string_view& name,

@@ -54,7 +54,7 @@ class BasicBufferWriter : NonCopyable {
  private:
   template <typename Res>
   void advance(Res res) {
-    if (res > 0 && res < _length) {
+    if (res > 0 && static_cast<size_t>(res) < _length) {
       _pointer += res;
       _length -= res;
     } else {

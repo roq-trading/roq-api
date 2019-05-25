@@ -8,7 +8,10 @@
 
 #include "roq/stream/utility.h"
 
-#define STACK_BUFFER_SIZE 4096
+namespace {
+constexpr size_t STACK_BUFFER_SIZE = 4096;
+}  // namespace
+
 #define FLOAT_REPR ".8g"  // include 1/256th
 #define PASSWORD "<hidden>"
 
@@ -44,7 +47,7 @@ Writer& write(Writer& writer, const MessageInfo& value) {
   stream::ClockStr<decltype(value.origin_create_time)> origin_create_time(value.origin_create_time);
   const char *FORMAT =
     "{"
-    "source=%zu, "
+    "source=%d, "
     "source_name=\"%s\", "
     "source_seqno=%" PRIu64 ", "
     "receive_time=%s, "
@@ -57,7 +60,7 @@ Writer& write(Writer& writer, const MessageInfo& value) {
     "}";
   return writer.printf(
       FORMAT,
-      value.source,
+      static_cast<int>(value.source),
       value.source_name,
       value.source_seqno,
       receive_time.c_str(),
@@ -230,7 +233,7 @@ Writer& write(Writer& writer, const MarketByPrice& value) {
       FORMAT_1,
       value.exchange,
       value.symbol);
-  for (auto i = 0; i < value.bid_length; ++i) {
+  for (size_t i = 0; i < value.bid_length; ++i) {
     if (i)
       writer.printf(", ");
     write(writer, value.bid[i]);
@@ -240,7 +243,7 @@ Writer& write(Writer& writer, const MarketByPrice& value) {
     "ask=[";
   writer.printf(
       FORMAT_2);
-  for (auto i = 0; i < value.ask_length; ++i) {
+  for (size_t i = 0; i < value.ask_length; ++i) {
     if (i)
       writer.printf(", ");
     write(writer, value.ask[i]);
@@ -610,13 +613,13 @@ template <typename Writer>
 Writer& write(Writer& writer, const ConnectionStatusEvent& value) {
   const char *FORMAT =
     "{"
-    "source=%zu, "
+    "source=%d, "
     "source_name=\"%s\", "
     "connection_status=%s"
     "}";
   return writer.printf(
       FORMAT,
-      value.source,
+      static_cast<int>(value.source),
       value.source_name,
       EnumNameConnectionStatus(value.connection_status));
 }

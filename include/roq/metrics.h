@@ -61,13 +61,13 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
   }
 
   explicit Histogram(const std::string& name)
-      : _name(name),
-        _data{0} {
+      : _data{0},
+        _name(name) {
   }
   Histogram(const std::string& name, const std::string& labels)
-      : _name(name),
-        _labels(labels),
-        _data{0} {
+      : _data{0},
+        _name(name),
+        _labels(labels) {
   }
 
   inline void prefetch() {
@@ -147,7 +147,8 @@ template <typename T>
 class alignas(cache_line_size()) Counter : NonCopyable {
  public:
   Counter(const std::string& name, const std::string& labels)
-      : _name(name),
+      : _data{0},
+        _name(name),
         _labels(labels) {
   }
 
@@ -172,11 +173,13 @@ class alignas(cache_line_size()) Counter : NonCopyable {
   const std::string _name;
   const std::string _labels;
 };
+
 template <typename T>
 class alignas(cache_line_size()) Gauge : NonCopyable {
  public:
   Gauge(const std::string& name, const std::string& labels)
-      : _name(name),
+      : _data{0},
+        _name(name),
         _labels(labels) {
   }
 

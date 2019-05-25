@@ -189,7 +189,7 @@ TEST(static, simple) {
   static_assert(static_strlen(abcdef.data()) == 6);
   static_assert(static_strlen(static_string("abc").append(static_string("def")).data()) == 6);
   EXPECT_STREQ(abcdef.data(), "abcdef");
-  auto aa = static_string("abc").append(static_string(__FILE__));
+  static_string("abc").append(static_string(__FILE__));
 
   static_assert(static_basename_string("abc/def").size() == 3);
   static_assert(static_strlen(static_basename_string("abc/def").data()) == 3);

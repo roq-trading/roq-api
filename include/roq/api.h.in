@@ -234,7 +234,7 @@ inline const char *EnumNameOrderStatus(OrderStatus e) {
 // transport
 
 struct ROQ_PUBLIC MessageInfo final {
-  size_t source;
+  uint8_t source;
   const char *source_name;
   uint64_t source_seqno;
   // following using monotonic clock
@@ -460,7 +460,7 @@ struct ROQ_PUBLIC TimerEvent final {
 };
 
 struct ROQ_PUBLIC ConnectionStatusEvent final {
-  size_t source;
+  uint8_t source;
   const char *source_name;
   ConnectionStatus connection_status;
 };
@@ -679,9 +679,9 @@ class ROQ_PUBLIC Generator : NonCopyable {
 
 /* Interface used to implement order matching
  */
-class Matcher : NonCopyable {
+class ROQ_PUBLIC Matcher : NonCopyable {
  public:
-  class Dispatcher : NonCopyable {
+  class ROQ_PUBLIC Dispatcher : NonCopyable {
    public:
     virtual void on(const DownloadBeginEvent& event) = 0;
     virtual void on(const DownloadEndEvent& event) = 0;

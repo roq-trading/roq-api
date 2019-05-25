@@ -54,5 +54,5 @@ TEST(format, market_by_price) {
     .exchange_time = {}
   };
   auto xxx = fmt::format("{}", market_by_price);
-  EXPECT_GT(xxx.length(), 0);
+  EXPECT_GT(xxx.length(), size_t(0));
 }

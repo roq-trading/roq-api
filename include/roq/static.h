@@ -38,20 +38,20 @@ class static_string final {
   constexpr explicit static_string(const char(&text)[N])
       : _data{},
         _size(N - 1) {
-    for (auto i = 0; i < N; ++i)
+    for (size_t i = 0; i < N; ++i)
       _data[i] = text[i];
   }
   constexpr static_string(const char *text, size_t size)
       : _data{},
         _size(size) {
-    for (auto i = 0; i < N && i < size; ++i)
+    for (size_t i = 0; i < N && i < size; ++i)
       _data[i] = text[i];
   }
   template <size_t M>
   constexpr static_string(const static_string<M>& rhs, size_t size)
       : _data{},
         _size(size) {
-    for (auto i = 0; i < rhs.size(); ++i)
+    for (size_t i = 0; i < rhs.size(); ++i)
       _data[i] = rhs[i];
   }
 
@@ -74,14 +74,14 @@ class static_string final {
   template <size_t M>
   constexpr auto append(const static_string<M>& rhs) {
     static_string<N + M> res(*this, size() + rhs.size());
-    for (auto i = 0; i < rhs.size(); ++i)
+    for (size_t i = 0; i < rhs.size(); ++i)
       res[size() + i] = rhs[i];
     return res;
   }
 
   constexpr auto basename() const {
-    auto index = 0;
-    for (auto i = 0; i < size(); ++i)
+    size_t index = 0;
+    for (size_t i = 0; i < size(); ++i)
       if (_data[i] == '/')
         index = i;
     while (index < size() && _data[index] == '/')
@@ -103,14 +103,14 @@ class static_basename_string final {
   constexpr explicit static_basename_string(const char(&text)[N])
       : _data{},
         _size(N - 1) {
-    auto index = 0;
-    for (auto i = 0; i < N; ++i)
+    size_t index = 0;
+    for (size_t i = 0; i < N; ++i)
       if (text[i] == '/')
         index = i;
     while (index < N && text[index] == '/')
       ++index;
     _size -= index;
-    for (auto i = 0; i < (_size + 1); ++i)
+    for (size_t i = 0; i < (_size + 1); ++i)
       _data[i] = text[index + i];  // will include null terminator
   }
 
@@ -133,7 +133,7 @@ class static_basename_string final {
   template <size_t M>
   constexpr auto append(const static_string<M>& rhs) {
     static_string<N + M> res(data(), size() + rhs.size());
-    for (auto i = 0; i < rhs.size(); ++i)
+    for (size_t i = 0; i < rhs.size(); ++i)
       res[size() + i] = rhs[i];
     return res;
   }

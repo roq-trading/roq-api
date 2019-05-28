@@ -14,7 +14,7 @@ namespace unwind {
 
 namespace {
 static char proc_name[1024];
-static const int width = (2 * sizeof(void *)) + 2;
+constexpr int width = (2 * sizeof(void *)) + 2;
 }  // namespace
 
 void print_stacktrace(int signal, siginfo_t *info) {
@@ -45,7 +45,11 @@ void print_stacktrace(int signal, siginfo_t *info) {
       fprintf(stderr, "Unable to get libunwind ip register.\n");
     }
     unw_word_t offp;
-    status = unw_get_proc_name(&cursor, proc_name, sizeof(proc_name), &offp);
+    status = unw_get_proc_name(
+        &cursor,
+        proc_name,
+        sizeof(proc_name),
+        &offp);
     const char *name = "<unknown>";
     char *demangled_name = nullptr;
     if (status < 0) {
@@ -54,7 +58,11 @@ void print_stacktrace(int signal, siginfo_t *info) {
       }
     } else {
       name = proc_name;
-      demangled_name = abi::__cxa_demangle(proc_name, nullptr, nullptr, &status);
+      demangled_name = abi::__cxa_demangle(
+          proc_name,
+          nullptr,
+          nullptr,
+          &status);
       if (status == 0)
         name = demangled_name;
     }

@@ -25,7 +25,8 @@ TEST(format, subscribe) {
     }
   };
   auto xxx = fmt::format("{}", subscribe);
-  // EXPECT_EQ(xxx, "abc");
+  EXPECT_GT(xxx.length(), size_t{0});
+  EXPECT_EQ(xxx, "{accounts=[abc, test], symbols=[]}");
 }
 
 TEST(format, market_by_price) {
@@ -54,5 +55,5 @@ TEST(format, market_by_price) {
     .exchange_time = {}
   };
   auto xxx = fmt::format("{}", market_by_price);
-  EXPECT_GT(xxx.length(), size_t(0));
+  EXPECT_GT(xxx.length(), size_t{0});
 }

@@ -17,7 +17,7 @@ TEST(stream, time_point_str) {
       std::chrono::system_clock::now().time_since_epoch());
   stream::BasicTimePointStr convert(now);
   std::string xxx(convert.c_str());
-  EXPECT_GT(xxx.length(), size_t(0));
+  EXPECT_GT(xxx.length(), size_t{0});
 }
 
 // enums

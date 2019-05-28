@@ -465,8 +465,6 @@ struct ROQ_PUBLIC ConnectionStatusEvent final {
   ConnectionStatus connection_status;
 };
 
-// FIXME(thraneh): do all members (from here) have to be const?
-
 struct ROQ_PUBLIC BatchBeginEvent final {
   const MessageInfo& message_info;
 };

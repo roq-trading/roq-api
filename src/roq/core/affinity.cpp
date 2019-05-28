@@ -22,7 +22,6 @@
 
 namespace roq {
 namespace ipc {
-// namespace core {
 
 size_t get_processor_count() {
 #if defined(__APPLE__)
@@ -58,6 +57,5 @@ void set_thread_affinity(size_t processor_index) {
 #endif
 }
 
-// }  // namespace core
 }  // namespace ipc
 }  // namespace roq

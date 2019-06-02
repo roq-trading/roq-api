@@ -7,6 +7,8 @@
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 
 #define ROQ_VERSION "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
@@ -720,6 +722,33 @@ class ROQ_PUBLIC Matcher : NonCopyable {
   virtual void on(const CreateOrderEvent& event) = 0;
   virtual void on(const ModifyOrderEvent& event) = 0;
   virtual void on(const CancelOrderEvent& event) = 0;
+};
+
+struct ROQ_PUBLIC Account {
+  uint8_t id;
+  std::string name;
+  std::string user;
+  std::string password;
+  std::unordered_map<
+    std::string,
+    std::unordered_set<std::string> > symbols;
+};
+
+struct ROQ_PUBLIC User {
+  uint8_t id;
+  std::string name;
+  std::string password;
+  std::unordered_set<std::string> accounts;
+  std::unordered_map<
+    std::string,
+    std::unordered_set<std::string> > symbols;
+  struct Limits final {
+    struct CreateOrder final {
+      uint32_t max;
+      std::chrono::seconds monitor_period;
+      std::chrono::seconds ban_period;
+    } create_order;
+  } limits;
 };
 
 }  // namespace roq

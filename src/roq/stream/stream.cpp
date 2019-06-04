@@ -40,9 +40,9 @@ Writer& write(Writer& writer, const MBPUpdate& value) {
 
 template <typename Writer>
 Writer& write(Writer& writer, const MessageInfo& value) {
+  stream::ClockStr<decltype(value.receive_time_utc)> receive_time_utc(value.receive_time_utc);
   stream::ClockStr<decltype(value.receive_time)> receive_time(value.receive_time);
   stream::ClockStr<decltype(value.source_send_time)> source_send_time(value.source_send_time);
-  stream::ClockStr<decltype(value.source_create_time)> source_create_time(value.source_create_time);
   stream::ClockStr<decltype(value.source_receive_time)> source_receive_time(value.source_receive_time);
   stream::ClockStr<decltype(value.origin_create_time)> origin_create_time(value.origin_create_time);
   const char *FORMAT =
@@ -50,9 +50,9 @@ Writer& write(Writer& writer, const MessageInfo& value) {
     "source=%d, "
     "source_name=\"%s\", "
     "source_seqno=%" PRIu64 ", "
+    "receive_time_utc=%s, "
     "receive_time=%s, "
     "source_send_time=%s, "
-    "source_create_time=%s, "
     "source_receive_time=%s, "
     "origin_create_time=%s, "
     "is_last=%s, "
@@ -63,9 +63,9 @@ Writer& write(Writer& writer, const MessageInfo& value) {
       static_cast<int>(value.source),
       value.source_name,
       value.source_seqno,
+      receive_time_utc.c_str(),
       receive_time.c_str(),
       source_send_time.c_str(),
-      source_create_time.c_str(),
       source_receive_time.c_str(),
       origin_create_time.c_str(),
       value.is_last ? "true" : "false",

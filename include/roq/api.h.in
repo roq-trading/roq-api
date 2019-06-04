@@ -239,12 +239,11 @@ struct ROQ_PUBLIC MessageInfo final {
   uint8_t source;
   const char *source_name;
   uint64_t source_seqno;
-  // following using monotonic clock
-  std::chrono::nanoseconds receive_time;
-  std::chrono::nanoseconds source_send_time;
-  std::chrono::nanoseconds source_create_time;
-  std::chrono::nanoseconds source_receive_time;
-  std::chrono::nanoseconds origin_create_time;
+  std::chrono::nanoseconds receive_time_utc;  // realtime clock
+  std::chrono::nanoseconds receive_time;  // monotonic clock
+  std::chrono::nanoseconds source_send_time;  // monotonic clock
+  std::chrono::nanoseconds source_receive_time;  // monotonic clock
+  std::chrono::nanoseconds origin_create_time;  // monotonic clock
   bool is_last;
   uint64_t opaque;
 };

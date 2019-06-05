@@ -146,7 +146,7 @@ struct ROQ_PUBLIC Logger final {
 
 // Conditional logging
 #define LOG_IF(level, condition) \
-    !(condition) \
+    __builtin_expect(!(condition), true) \
     ? (void)(0) \
     : ::roq::detail::LogMessageVoidify() & LOG(level)
 

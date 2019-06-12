@@ -19,10 +19,10 @@ Features
 * Standardized market access API.
 * Design is similar to that of
   [microservices](https://en.wikipedia.org/wiki/Microservices).
-* User code (the strategy) must implement event handlers.
+* User code (your trading strategies) must implement event handlers.
 * Framework will manage complexities, e.g. threading, asynchronous messaging,
-  connectivity, download phases, order templates, segregation, policies,
-  timeout, positions, etc.
+  connectivity, download phases, order templates, trading segregation,
+  trading policies, request timeouts, positions, etc.
 * Ultra low latency with *internal* microservice tick-to-trade response time
   in less than 1 microsecond on top-end hardware.
 * Samples on [GitHub](https://github.com/roq-trading/roq-samples).
@@ -38,12 +38,11 @@ You can find more information on our
 
 ## What is it?
 
-An API required by the various Roq developed solutions to
-communicate.  
+The API required by the various Roq developed solutions.
 By itself, the API offers very little functionality:
-Mainly data structures and utilities.
+mainly data structures and utilities.
 
-This document is meant to describe high level design.
+This document is meant to describe high level design choices.
 Please refer to [roq-samples](https://github.com/roq-trading/roq-samples)
 for how to use.
 
@@ -54,8 +53,8 @@ for how to use.
 > *Automated algorithmic trading is very complex and requires serious
 > investment into hardware, software, research, testing, monitoring and
 > support.
-> In all probability, it will be a loss-making activity if you don't
-> invest enough time and money towards simulation and infrastructure*.
+> In all probability it will be a loss-making activity if you don't
+> invest enough time and money to prepare yourself for live trading*.
 
 Typical requirements
 
@@ -65,12 +64,12 @@ Typical requirements
 * High Frequency Trading (HFT)
 * Market Taking
 * Market Making
-* Hedging
+* Auto Hedging
 * Spread Trading (relative value or multi-leg strategies)
-* Execution strategies, e.g. iceberg, VWAP, etc.
-* Simulation of market micro-structure (probabilistic execution
-  based on order priorities)
-* Control the technology stack
+* Execution strategies (iceberg, VWAP, etc).
+* Simulation of market micro-structure (with probabilistic FIFO execution
+  based on order priority)
+* Full control of the technology stack
 
 
 ## FAQ
@@ -79,96 +78,104 @@ Typical requirements
 <dt><strong>Why have you developed this product?</strong></dt>
 <dd>
 We see an opportunity to offer a complete trading solution for smaller
-investement firms who can not afford the integration costs of existing
-specialized solutions.
-In particular, we believe we have an advantage because our solution offers
-all tooling from initial research and testing all the way to deployment.
-All the solutions are designed such that a quant/trader can control the
-entire technology stack.
-API's and the simulation tools are even freely available.
+investement firms.
+Our solutions offer all the relevant tooling from initial research and
+testing all the way to the deployment of fully automated trading strategies.
+Our solutions work well with popular open sourced solutions to allow our
+clients to reduce total costs.
 </dd>
-<dt><strong>Do I have to sign a NDA to start using the product?</strong></dt>
-<dd>
-Short answer: No.
-Strategy examples can be found on
+<dt><strong>Do I have to sign a contract or NDA to start using your product?</strong></dt>
+Trivial examples, demonstrating how to implement various aspects of trading
+strategies, are free and can be accessed from
 <a href="https://github.com/roq-trading/roq-samples">GitHub</a>.
-Follow the instructions there to get started with your own strategy
-implementation.
-You can use the simulators together with your own strategy without contacting us.
-However, market access is different: You can download gateways, but you will
-need to contact us to obtain a valid license file.
+You can also use the free to download simulator binaries for testing your
+own trading strategies without contacting us.
+However, ***the gateways are not free*** and will require a license file
+issued only after you have entered into a contractual license agreement
+with us.
 </dd>
-<dt><strong>I am not a professional investor, should I use the product?</strong></dt>
-<dd>
-We promote that you use our simulation tools to <i>test</i> your ideas.
-Perhaps you can later use the results to partner with a professional investment firm.
+<dt><strong>I am not a professional investor, should I use your product?</strong></dt>
+You can always use the API's and our simulation tools to <i>research</i>
+and <i/>test</i> ideas.
+However, you should partner with a professional investment firm to implement
+live trading.
 </dd>
-<dt><strong>What markets do you support?</strong></dt>
+<dt><strong>What market access do you support?</strong></dt>
 <dd>
-Currently Chinese markets:
-CFFEX/FEMAS, including the multicast market data feed.
-Work is ongoing to implement Shengli/REM, a FPGA based solution.
-Please contact us to discuss specific requirements.
+<ul>
+<li>Crypto Currencies
+<ul>
+<li>Coinbase/Pro (in progress)</li>
+<li>Deribit/API2 (in progress)</li>
+</ul>
+</li>
+<li>Chinese markets
+<ul>
+<li>CFFEX/FEMAS (ready)</li>
+<li>Shengli/REM (in progress)</li>
+</ul>
+</li>
+</ul>
 </dd>
-<dt><strong>How do I obtain the market data needed for simulation?</strong></dt>
-<dd>
-We don't resell market data.
-You must obtain historical market data directly from the exchange or
-from third-party data vendors.
+<dt><strong>How do I obtain the market data needed for historical simulation?</strong></dt>
+Preferably using the gateways to collect data.
+You are then guaranteed native support and the correct ordering of events during replay.
+It is also possible to convert third-party data sources to the internal format.
+Please contact us for further details.
 </dd>
 <dt><strong>How is tick-to-trade latency measured?</strong></dt>
 <dd>
-Remember: The design is that of microservices, i.e. loosely couple
-components.
-<i>We measure from the time a gateway receives an event from API,
-kernel or driver</i>.
-The event is then typically processed and cached by the gateway and
-then distributed using IPC to connected strategies (microservices).
-A strategy can then use IPC to send an order action request back to the
-gateway.
-<i>We measure to the time a gateway sends a request to API, kernel or
-driver</i>.
-This latency can be less than 1 microsecond on top-end hardware.
-(Remaining latency depends on topics such as colocation, network topology,
-tuning of network stack, drivers, hardware solutions, etc).
+From receiving a network packet (or an update event, if using
+third-party API) to an order action request can be forwarded to
+the network stack (or a request to the third-party API).
+We <i>do not include</i> external contributors to latency, in particular:
+network configuration, hardware configuration, kernel configuration,
+performance of required third-party API's or
+performance of specific trading strategies.
 </dd>
 <dt><strong>What are the hardware requirements?</strong></dt>
 <dd>
-It depends on your use case.
+<i>A high-end server with enough cores to support your use case</i>.
+However, it very much depends on the specific use case.
 Please contact us to discuss further.
-However, the benchmark suite demonstrates semi-realistic requirements.
 </dd>
-<dt><strong>Why is there no source code for the API?</strong></dt>
+<dt><strong>Why do you not open source the API and gateways?</strong></dt>
 <dd>
 An earlier version included an open sourced client API implementation.
-This unfortunately introduced several support issues which lead us to
+This, unfortunately, introduced recurring support issues which lead us to
 the conclusion that all parties are better served with a well defined
 client API distributed only in binary form.
-However, source code for various use cases is freely available and can
-be found on
-<a href="https://github.com/roq-trading/roq-samples">GitHub</a>.
+License and support agreements allows us to invest the ongoing maintenance
+and support of gateways.
+</dd>
+<dt><strong>What is your business model?</strong></dt>
+<ul>
+<li>License and support agreements for the gateways.</li>
+<li>Consultancy, e.g. to implement bespoke trading strategies.</li>
+<dd>
 </dd>
 </dl>
 
 
 ## First steps
 
+> Please refer to [roq-samples](https://github.com/roq-samples) if you
+> need a guide on how to get started with your own strategy implementation.
+
 The benchmark suite was developed to demonstrate resource requirements
 as well as the latency and monitoring capabilities.
-(Please refer to [roq-samples](https://github.com/roq-samples) if you
-need a guide on how to get started with your own strategy implementation).
+
+These are the relevant binaries
 
 * `roq-benchmark` is used to profile key functions
   * Message encoding/decoding
   * String formatting (stream and format operations)
   * Other benchmarking useful for selecting e.g. containers
-
 * `roq-ping` is a service used to simulate the key execution paths of a "server" (for example, a gateway)
   * Broadcast random market data (L2 with a depth of 5)
   * Handle order creation requests
   * Respond with order creation ack 
   * Access to internal metrics
-
 * `roq-pong` is a service used to simulate the key execution paths of a "client" (for example, a strategy)
   * Receive and process market data
   * Optionally request order creation
@@ -192,11 +199,12 @@ wget -N https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 # install miniconda (to your home directory)
 bash Miniconda3-latest-Linux-x86_64.sh -b -u -p ~/miniconda3
 
-# configure roq-trading as a default conda channel
+# add roq-trading unstable as a conda channel
 cat > ~/miniconda3/.condarc << EOF
 channels:
   - defaults
   - https://roq-trading.com/conda/unstable
+  - conda-forge
 EOF
 ```
 
@@ -210,8 +218,8 @@ This is how you activate your Conda environment
 source ~/miniconda3/bin/activate
 ```
 
-Note! The following sections will assume you have *already* activated your
-Conda environment.
+> Note! The following sections will assume you have *already* activated your
+> Conda environment.
 
 
 ### Install the benchmark suite
@@ -239,7 +247,7 @@ You should now see something like this
 
 ![overview](assets/Benchmark.png)
 
-And you can simulate a real network of gateways and clients:
+You can also simulate a real network of gateways and clients:
 
 This is our generic test case
 
@@ -252,13 +260,16 @@ This is our generic test case
 > typical for a live trading environment.
 > It is much more important to test for a regular mix of
 > "sleep" and "wake" patterns.
-> Oftentimes you will find that "sleep" is really bad for latency.
-> For example, cached memory may be evicted or threads may require
-> wake-up by the kernel.
+> For example, cached memory may be evicted during sleep and
+> waking a thread involves an expensive context switch.
 
 This is how to launch the ping service
 
 ```bash
+# launch the ping service
+# - dispatch thread pinned to core #1
+# - market data thread pinned to core #2
+# - metrics exposed to port 1234 (on localhost)
 ROQ_v=1 roq-ping \
   --name "server-1" \
   --dispatcher-affinity 1 \
@@ -267,39 +278,50 @@ ROQ_v=1 roq-ping \
   --listen ~/ping.sock
 ```
 
-And you should launch the pong service from another terminal
+> `ROQ_v=1` sets an environment variable used to specify the
+> verbosity of application logging. You may drop this part from the
+> command-line (or use `ROQ_v=0`) to only generate minimal logging.
+>
+> Verbose logging can be very costly, though. The previous section
+> describing `roq-benchmark` will give you more information about the
+> "cost" of typical messages being logged.
+
+Now open another terminal (same host) and activate your Miniconda environment.
+
+This is how to launch the pong service
 
 ```bash
+# launch the pong service
+# - dispatch thread pinned to core #3
+# - metrics exposed to port 1234 (on localhost)
+# - create an order request on each market data update
 ROQ_v=1 roq-pong \
   --name "client-1" \
-  --dispatcher-affinity 5 \
+  --dispatcher-affinity 3 \
   --create-orders 1 \
   --metrics 2345 \
   ~/ping.sock
 ```
 
-> `ROQ_v=1` sets an environment variable used to specify the
-> verbosity of application logging. You may drop this part from the
-> command-line (or use `ROQ_v=0`) to only see minimal logging.
->
-> Verbose logging can be very costly: `roq-benchmark` will give you
-> more details about the "cost" of typical messages being logged.
-
-You can now query for profiling metrics
+You can query for profiling metrics
 
 ```bash
+# query the ping service
 wget -q -O - http://localhost:1234/metrics | less
 ```
 
 or
 
 ```bash
+# query the pong service
 wget -q -O - http://localhost:2345/metrics | less
 ```
 
 You should see something like this
 
 ![overview](assets/Metrics.png)
+
+> Refer to [Prometheus Exposition Format](https://prometheus.io/docs/instrumenting/exposition_formats/).
 
 
 ### Test (server)
@@ -315,49 +337,69 @@ Requirements
 
 * Physical access (not a VM)
 * At least 8 physical cores
-* Linux (CentOS/7, Ubuntu 18.04, or better)
+* CentOS/7 or Ubuntu 18.04
 * An `ansible` sudo user with ssh access rights
 
-For best results 
+For better results 
 
 * Add `isolcpus=1-6` to `/proc/cmdline` and reboot the server.
 * Disable hyper-threading in the BIOS.
 * Tune your system for low latency performance,
   e.g. `tuned-adm profile network-latency`.
 
-The Ansible playbook includes these following steps
+The Ansible playbook has the following steps
 
 * Configure the server for low latency performance
 * Install benchmark application configurations, application launch
   scripts and systemd service scripts
 * Install Prometheus, Grafana and Nginx (using Docker)
 
-On your development box
+#### Step 1: Prepare your environment
+
+> You don't need this step if recent versions of git and ansible are
+> available on your system.
+
+The assumption is that you have already activated your conda
+environment (details above).
 
 ```bash
-# install git and ansible
-conda install -y git ansible-playbook
+conda install -y git ansible
+```
 
-# clone the playbook
+#### Step 2: Prepare the playbook
+
+> The assumption here is that you're running the playbook from the
+> host (`ansible_host="localhost"`) you want to provision and
+> that the ansible user (`ansible_user="ansible"`) user already
+> exists and it has been given `sudo` rights.
+
+```bash
+# clone the roq playbook
 git clone https://github.com/roq-trading/roq-ansible
 
 # change into the new directory
 cd roq-ansible
 
 # define your inventory
-# note! replace "x.x.x.x" with your server's network address
+# note! you can replace "localhost" with your server's network address
 cat > server << EOF
 [SERVER]
-server ansible_host="x.x.x.x"
-[roq-benchmark]
+server ansible_host="localhost" ansible_user="ansible" become_user="root"
+
+[roq_benchmark]
 server
 EOF
+```
 
-# run the ansible playbook
+#### Step 3: Run the playbook
+
+```bash
 ansible-playbook -i server site.yml --ask-become-pass
 ```
 
-On your server
+#### Step 4: Start the services
+
+> At this point you should log on to the host you have installed to.
 
 ```bash
 sudo systemctl start roq-ping-1
@@ -365,6 +407,8 @@ sudo systemctl start roq-ping-2
 sudo systemctl start roq-pong-1
 sudo systemctl start roq-pong-2
 ```
+
+#### Step 5: Test everything works correctly
 
 You should now see core 1-6 consume 100% CPU (if everything was
 installed correctly)
@@ -377,13 +421,15 @@ You can tail the logs
 sudo journalctl -f -u roq-p[io]ng-[12]*
 ```
 
+#### Step 5: Monitoring
+
 Navigate to this URL using your favourite browser
 
-> Replace `x.x.x.x` with your server's network address
+```
+http://localhost/grafana/
+```
 
-```
-http://x.x.x.x/grafana/
-```
+> Remember to replace `localhost` with your server's network address
 
 Find the pre-installed `roq-benchmark (ping-pong)` dashboard and you
 should now be able to monitor latency distributions like this

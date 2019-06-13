@@ -15,22 +15,22 @@ Solutions
 
 Features
 
-* Programming language is C++17.
-* Standardized market access API.
+* Programming language is C++17
+* Standardized market access API
 * Design is similar to that of
-  [microservices](https://en.wikipedia.org/wiki/Microservices).
-* User code (your trading strategies) must implement event handlers.
+  [microservices](https://en.wikipedia.org/wiki/Microservices)
+* User code (your trading strategies) must implement event handling
 * Framework will manage complexities, e.g. threading, asynchronous messaging,
   connectivity, download phases, order templates, trading segregation,
   trading policies, request timeouts, positions, etc.
 * Ultra low latency with *internal* microservice tick-to-trade response time
-  in less than 1 microsecond on top-end hardware.
-* Samples on [GitHub](https://github.com/roq-trading/roq-samples).
-* Binaries compiled for [Conda](https://docs.conda.io).
+  in less than 1 microsecond on top-end hardware
+* Samples on [GitHub](https://github.com/roq-trading/roq-samples)
+* Binaries compiled for [Conda](https://docs.conda.io)
 * Docker images published to
-  [Docker Hub](https://cloud.docker.com/u/roqtrading).
+  [Docker Hub](https://cloud.docker.com/u/roqtrading)
 * Ansible playbook on
-  [GitHub](https://github.com/roq-trading/roq-ansible).
+  [GitHub](https://github.com/roq-trading/roq-ansible)
 
 You can find more information on our
 [website](https://roq-trading.com) or by browsing our online
@@ -48,7 +48,7 @@ for how to use.
 
 ## Who is it for?
 
-> **PROFESSIONAL INVESTORS, ONLY!**
+> **PROFESSIONAL INVESTORS, ONLY**
 > 
 > *Automated algorithmic trading is very complex and requires serious
 > investment into hardware, software, research, testing, monitoring and
@@ -82,15 +82,15 @@ investement firms.
 Our solutions offer all the relevant tooling from initial research and
 testing all the way to the deployment of fully automated trading strategies.
 Our solutions work well with popular open sourced solutions to allow our
-clients to reduce total costs.
+clients to reduce total cost of ownership.
 </dd>
 <dt><strong>Do I have to sign a contract or NDA to start using your product?</strong></dt>
 Trivial examples, demonstrating how to implement various aspects of trading
 strategies, are free and can be accessed from
 <a href="https://github.com/roq-trading/roq-samples">GitHub</a>.
 You can also use the free to download simulator binaries for testing your
-own trading strategies without contacting us.
-However, ***the gateways are not free*** and will require a license file
+trading strategies without having to contact us.
+However, **the gateways are *not* free** and will require a license file
 issued only after you have entered into a contractual license agreement
 with us.
 </dd>
@@ -128,14 +128,15 @@ Please contact us for further details.
 From receiving a network packet (or an update event, if using
 third-party API) to an order action request can be forwarded to
 the network stack (or a request to the third-party API).
-We <i>do not include</i> external contributors to latency, in particular:
+We do <i>not</i> include external contributors to latency.
+In particular:
 network configuration, hardware configuration, kernel configuration,
 performance of required third-party API's or
 performance of specific trading strategies.
 </dd>
 <dt><strong>What are the hardware requirements?</strong></dt>
 <dd>
-<i>A high-end server with enough cores to support your use case</i>.
+The generic answer: <i>A high-end server with enough cores to support your use case</i>.
 However, it very much depends on the specific use case.
 Please contact us to discuss further.
 </dd>
@@ -144,14 +145,14 @@ Please contact us to discuss further.
 An earlier version included an open sourced client API implementation.
 This, unfortunately, introduced recurring support issues which lead us to
 the conclusion that all parties are better served with a well defined
-client API distributed only in binary form.
+client API only available in binary form.
 License and support agreements allows us to invest the ongoing maintenance
 and support of gateways.
 </dd>
 <dt><strong>What is your business model?</strong></dt>
 <ul>
 <li>License and support agreements for the gateways.</li>
-<li>Consultancy, e.g. to implement bespoke trading strategies.</li>
+<li>Consultancy. For example, implementation of bespoke trading strategies.</li>
 <dd>
 </dd>
 </dl>
@@ -163,7 +164,7 @@ and support of gateways.
 > need a guide on how to get started with your own strategy implementation.
 
 The benchmark suite was developed to demonstrate resource requirements
-as well as the latency and monitoring capabilities.
+as well as the performance and monitoring capabilities.
 
 These are the relevant binaries
 
@@ -171,17 +172,17 @@ These are the relevant binaries
   * Message encoding/decoding
   * String formatting (stream and format operations)
   * Other benchmarking useful for selecting e.g. containers
-* `roq-ping` is a service used to simulate the key execution paths of a "server" (for example, a gateway)
+* `roq-ping` is a service used to simulate the key execution paths of a "server"
   * Broadcast random market data (L2 with a depth of 5)
   * Handle order creation requests
   * Respond with order creation ack 
   * Access to internal metrics
-* `roq-pong` is a service used to simulate the key execution paths of a "client" (for example, a strategy)
+* `roq-pong` is a service used to simulate the key execution paths of a "client"
   * Receive and process market data
   * Optionally request order creation
   * Access to internal metrics
 
-> The services make internal profiling metrics available over HTTP using the
+> Internal profiling metrics use the
 > [Prometheus Exposition Format](https://prometheus.io/docs/instrumenting/exposition_formats/).
 
 
@@ -359,7 +360,7 @@ The Ansible playbook has the following steps
 > You don't need this step if recent versions of git and ansible are
 > available on your system.
 
-The assumption is that you have already activated your conda
+The assumption is that you have already activated your Conda
 environment (details above).
 
 ```bash

@@ -574,7 +574,7 @@ Writer& write(Writer& writer, const CancelOrderAck& value) {
 // StartEvent
 
 template <typename Writer>
-Writer& write(Writer& writer, const StartEvent& value) {
+Writer& write(Writer& writer, const StartEvent&) {
   const char *FORMAT =
     "{"
     "}";
@@ -585,7 +585,7 @@ Writer& write(Writer& writer, const StartEvent& value) {
 // StopEvent
 
 template <typename Writer>
-Writer& write(Writer& writer, const StopEvent& value) {
+Writer& write(Writer& writer, const StopEvent&) {
   const char *FORMAT =
     "{"
     "}";
@@ -845,7 +845,7 @@ Writer& write(Writer& writer, const CancelOrderAckEvent& value) {
 }
 
 template <typename Writer>
-Writer& write(Writer& writer, const CustomMessageEvent& value) {
+Writer& write(Writer& writer, const CustomMessageEvent&) {
   return writer
     .printf("{}");
 }

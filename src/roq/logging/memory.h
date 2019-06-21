@@ -24,7 +24,7 @@ struct aligned_allocator {
 #endif
     return reinterpret_cast<T *>(pointer);
   }
-  void deallocate(T *pointer, size_t size) noexcept {
+  void deallocate(T *pointer, size_t) noexcept {
     ::free(pointer);
   }
 };

@@ -40,7 +40,7 @@ static void invoke_default_signal_handler(int signal) {
   sigaction(signal, &sa, nullptr);
   kill(getpid(), signal);
 }
-static void termination_handler(int sig, siginfo_t *info, void *ucontext) {
+static void termination_handler(int sig, siginfo_t *info, void *) {
   fprintf(stderr, "*** TERMINATION HANDLER ***\n");
   unwind::print_stacktrace(sig, info);
   invoke_default_signal_handler(sig);

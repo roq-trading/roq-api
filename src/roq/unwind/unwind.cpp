@@ -17,7 +17,7 @@ static char proc_name[1024];
 constexpr int width = (2 * sizeof(void *)) + 2;
 }  // namespace
 
-void print_stacktrace(int signal, siginfo_t *info) {
+void print_stacktrace(int /*signal*/, siginfo_t *info) {
 #if defined(__linux__)
   psiginfo(info, nullptr);
 #endif

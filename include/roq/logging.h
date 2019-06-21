@@ -97,7 +97,7 @@ class ROQ_PUBLIC ErrnoLogMessage : public LogMessage {
 };  // class ErrnoLogMessage
 class ROQ_PUBLIC NullStream : public LogMessage::LogStream {
  public:
-  NullStream(const char *prefix, const sink_t& sink)
+  NullStream(const char *, const sink_t&)
       : LogMessage::LogStream(_buffer, sizeof(_buffer)) {
   }
   NullStream& stream() {

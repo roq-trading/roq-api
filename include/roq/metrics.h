@@ -61,12 +61,10 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
   }
 
   explicit Histogram(const std::string& name)
-      : _data{0},
-        _name(name) {
+      : _name(name) {
   }
   Histogram(const std::string& name, const std::string& labels)
-      : _data{0},
-        _name(name),
+      : _name(name),
         _labels(labels) {
   }
 
@@ -137,7 +135,7 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
     uint64_t bucket_4;
     uint64_t bucket_5;
     uint64_t bucket_6;
-  } _data;
+  } _data = {};
   static_assert(sizeof(Data) == cache_line_size());
   const std::string _name;
   const std::string _labels;

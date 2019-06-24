@@ -315,7 +315,7 @@ struct fmt::formatter<roq::SessionStatistics> {
         "lowest_traded_price={}, "
         "upper_limit_price={}, "
         "lower_limit_price={}, "
-        "exchange_time={}"
+        "exchange_time_utc={}"
         "}}",
         value.exchange,
         value.symbol,
@@ -326,7 +326,7 @@ struct fmt::formatter<roq::SessionStatistics> {
         value.lowest_traded_price,
         value.upper_limit_price,
         value.lower_limit_price,
-        value.exchange_time);
+        value.exchange_time_utc);
   }
 };
 
@@ -347,7 +347,7 @@ struct fmt::formatter<roq::DailyStatistics> {
         "settlement_price={}, "
         "close_price={}, "
         "open_interest={}, "
-        "exchange_time={}"
+        "exchange_time_utc={}"
         "}}",
         value.exchange,
         value.symbol,
@@ -355,7 +355,7 @@ struct fmt::formatter<roq::DailyStatistics> {
         value.settlement_price,
         value.close_price,
         value.open_interest,
-        value.exchange_time);
+        value.exchange_time_utc);
   }
 };
 
@@ -375,14 +375,14 @@ struct fmt::formatter<roq::MarketByPrice> {
         "bid=[{}], "
         "ask=[{}], "
         "snapshot={}, "
-        "exchange_time={}"
+        "exchange_time_utc={}"
         "}}",
         value.exchange,
         value.symbol,
         fmt::join(value.bid, value.bid + value.bid_length, ", "),
         fmt::join(value.ask, value.ask + value.ask_length, ", "),
         value.snapshot,
-        value.exchange_time);
+        value.exchange_time_utc);
   }
 };
 
@@ -403,7 +403,7 @@ struct fmt::formatter<roq::TradeSummary> {
         "volume={}, "
         "turnover={}, "
         "side={}, "
-        "exchange_time={}"
+        "exchange_time_utc={}"
         "}}",
         value.exchange,
         value.symbol,
@@ -411,7 +411,7 @@ struct fmt::formatter<roq::TradeSummary> {
         value.volume,
         value.turnover,
         value.side,
-        value.exchange_time);
+        value.exchange_time_utc);
   }
 };
 
@@ -518,8 +518,8 @@ struct fmt::formatter<roq::OrderUpdate> {
         "traded_quantity={}, "
         "position_effect={}, "
         "order_template=\"{}\", "
-        "insert_time={}, "
-        "cancel_time={}, "
+        "insert_time_utc={}, "
+        "cancel_time_utc={}, "
         "order_local_id={}, "
         "order_external_id=\"{}\""
         "}}",
@@ -534,8 +534,8 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.traded_quantity,
         value.position_effect,
         value.order_template,
-        value.insert_time,
-        value.cancel_time,
+        value.insert_time_utc,
+        value.cancel_time_utc,
         value.order_local_id,
         value.order_external_id);
   }
@@ -562,7 +562,7 @@ struct fmt::formatter<roq::TradeUpdate> {
         "price={}, "
         "position_effect={}, "
         "order_template=\"{}\", "
-        "trade_time={}, "
+        "trade_time_utc={}, "
         "order_external_id=\"{}\", "
         "trade_external_id=\"{}\""
         "}}",
@@ -576,7 +576,7 @@ struct fmt::formatter<roq::TradeUpdate> {
         value.price,
         value.position_effect,
         value.order_template,
-        value.trade_time,
+        value.trade_time_utc,
         value.order_external_id,
         value.trade_external_id);
   }

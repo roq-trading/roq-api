@@ -37,7 +37,15 @@ TEST(stream, connection_status) {
 TEST(stream, message_info) {
   MessageInfo message_info {
     .source = 0,
-    .source_name = "FEMAS"
+    .source_name = "FEMAS",
+    .source_seqno = 0,
+    .receive_time_utc = {},
+    .receive_time = {},
+    .source_send_time = {},
+    .source_receive_time = {},
+    .origin_create_time = {},
+    .is_last = false,
+    .opaque = 0,
   };
   std::ostringstream stream;
   stream << message_info;

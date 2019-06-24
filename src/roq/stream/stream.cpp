@@ -167,7 +167,7 @@ Writer& write(Writer& writer, const OrderManagerStatus& value) {
 
 template <typename Writer>
 Writer& write(Writer& writer, const SessionStatistics& value) {
-  stream::TimePointStr<decltype(value.exchange_time)> exchange_time(value.exchange_time);
+  stream::TimePointStr<decltype(value.exchange_time_utc)> exchange_time_utc(value.exchange_time_utc);
   const char *FORMAT =
     "{"
     "exchange=\"%s\", "
@@ -179,7 +179,7 @@ Writer& write(Writer& writer, const SessionStatistics& value) {
     "lowest_traded_price=%" FLOAT_REPR ", "
     "upper_limit_price=%" FLOAT_REPR ", "
     "lower_limit_price=%" FLOAT_REPR ", "
-    "exchange_time=%s"
+    "exchange_time_utc=%s"
     "}";
   return writer.printf(
       FORMAT,
@@ -192,12 +192,12 @@ Writer& write(Writer& writer, const SessionStatistics& value) {
       value.lowest_traded_price,
       value.upper_limit_price,
       value.lower_limit_price,
-      exchange_time.c_str());
+      exchange_time_utc.c_str());
 }
 
 template <typename Writer>
 Writer& write(Writer& writer, const DailyStatistics& value) {
-  stream::TimePointStr<decltype(value.exchange_time)> exchange_time(value.exchange_time);
+  stream::TimePointStr<decltype(value.exchange_time_utc)> exchange_time_utc(value.exchange_time_utc);
   const char *FORMAT =
     "{"
     "exchange=\"%s\", "
@@ -206,7 +206,7 @@ Writer& write(Writer& writer, const DailyStatistics& value) {
     "settlement_price=%" FLOAT_REPR ", "
     "close_price=%" FLOAT_REPR ", "
     "open_interest=%" FLOAT_REPR ", "
-    "exchange_time=%s"
+    "exchange_time_utc=%s"
     "}";
   return writer.printf(
       FORMAT,
@@ -216,14 +216,14 @@ Writer& write(Writer& writer, const DailyStatistics& value) {
       value.settlement_price,
       value.close_price,
       value.open_interest,
-      exchange_time.c_str());
+      exchange_time_utc.c_str());
 }
 
 // MarketByPrice
 
 template <typename Writer>
 Writer& write(Writer& writer, const MarketByPrice& value) {
-  stream::TimePointStr<decltype(value.exchange_time)> exchange_time(value.exchange_time);
+  stream::TimePointStr<decltype(value.exchange_time_utc)> exchange_time_utc(value.exchange_time_utc);
   const char *FORMAT_1 =
     "{"
     "exchange=\"%s\", "
@@ -251,19 +251,19 @@ Writer& write(Writer& writer, const MarketByPrice& value) {
   const char *FORMAT_3 =
     "], "
     "snapshot=%s, "
-    "exchange_time=%s"
+    "exchange_time_utc=%s"
     "}";
   return writer.printf(
       FORMAT_3,
       value.snapshot ? "true" : "false",
-      exchange_time.c_str());
+      exchange_time_utc.c_str());
 }
 
 // TradeSummary
 
 template <typename Writer>
 Writer& write(Writer& writer, const TradeSummary& value) {
-  stream::TimePointStr<decltype(value.exchange_time)> exchange_time(value.exchange_time);
+  stream::TimePointStr<decltype(value.exchange_time_utc)> exchange_time_utc(value.exchange_time_utc);
   const char *FORMAT =
     "{"
     "exchange=\"%s\", "
@@ -272,7 +272,7 @@ Writer& write(Writer& writer, const TradeSummary& value) {
     "volume=%" FLOAT_REPR ", "
     "turnover=%" FLOAT_REPR ", "
     "side=%s, "
-    "exchange_time=%s"
+    "exchange_time_utc=%s"
     "}";
   return writer.printf(
       FORMAT,
@@ -282,7 +282,7 @@ Writer& write(Writer& writer, const TradeSummary& value) {
       value.volume,
       value.turnover,
       EnumNameSide(value.side),
-      exchange_time.c_str());
+      exchange_time_utc.c_str());
 }
 
 // ReferenceData
@@ -358,8 +358,8 @@ Writer& write(Writer& writer, const PositionUpdate& value) {
 
 template <typename Writer>
 Writer& write(Writer& writer, const OrderUpdate& value) {
-  stream::TimePointStr<decltype(value.insert_time)> insert_time(value.insert_time);
-  stream::TimePointStr<decltype(value.cancel_time)> cancel_time(value.cancel_time);
+  stream::TimePointStr<decltype(value.insert_time_utc)> insert_time_utc(value.insert_time_utc);
+  stream::TimePointStr<decltype(value.cancel_time_utc)> cancel_time_utc(value.cancel_time_utc);
   const char *FORMAT =
     "{"
     "account=\"%s\", "
@@ -373,8 +373,8 @@ Writer& write(Writer& writer, const OrderUpdate& value) {
     "traded_quantity=%" FLOAT_REPR ", "
     "position_effect=%s, "
     "order_template=\"%s\", "
-    "insert_time=%s, "
-    "cancel_time=%s, "
+    "insert_time_utc=%s, "
+    "cancel_time_utc=%s, "
     "order_local_id=%" PRIu32 ", "
     "order_external_id=\"%s\""
     "}";
@@ -391,8 +391,8 @@ Writer& write(Writer& writer, const OrderUpdate& value) {
       value.traded_quantity,
       EnumNamePositionEffect(value.position_effect),
       value.order_template,
-      insert_time.c_str(),
-      cancel_time.c_str(),
+      insert_time_utc.c_str(),
+      cancel_time_utc.c_str(),
       value.order_local_id,
       value.order_external_id);
 }
@@ -401,7 +401,7 @@ Writer& write(Writer& writer, const OrderUpdate& value) {
 
 template <typename Writer>
 Writer& write(Writer& writer, const TradeUpdate& value) {
-  stream::TimePointStr<decltype(value.trade_time)> trade_time(value.trade_time);
+  stream::TimePointStr<decltype(value.trade_time_utc)> trade_time_utc(value.trade_time_utc);
   const char *FORMAT =
     "{"
     "account=\"%s\", "
@@ -414,7 +414,7 @@ Writer& write(Writer& writer, const TradeUpdate& value) {
     "price=%" FLOAT_REPR ", "
     "position_effect=%s, "
     "order_template=\"%s\", "
-    "trade_time=%s, "
+    "trade_time_utc=%s, "
     "order_external_id=\"%s\", "
     "trade_external_id=\"%s\""
     "}";
@@ -430,7 +430,7 @@ Writer& write(Writer& writer, const TradeUpdate& value) {
       value.price,
       EnumNamePositionEffect(value.position_effect),
       value.order_template,
-      trade_time.c_str(),
+      trade_time_utc.c_str(),
       value.order_external_id,
       value.trade_external_id);
 }

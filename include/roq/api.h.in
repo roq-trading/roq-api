@@ -239,7 +239,7 @@ struct ROQ_PUBLIC MessageInfo final {
   uint8_t source;
   const char *source_name;
   uint64_t source_seqno;
-  std::chrono::nanoseconds receive_time_utc;  // realtime clock
+  std::chrono::nanoseconds receive_time_utc;
   std::chrono::nanoseconds receive_time;  // monotonic clock
   std::chrono::nanoseconds source_send_time;  // monotonic clock
   std::chrono::nanoseconds source_receive_time;  // monotonic clock
@@ -278,7 +278,7 @@ struct ROQ_PUBLIC SessionStatistics final {
   double lowest_traded_price;
   double upper_limit_price;
   double lower_limit_price;
-  std::chrono::nanoseconds exchange_time;
+  std::chrono::nanoseconds exchange_time_utc;
 };
 
 struct ROQ_PUBLIC DailyStatistics final {
@@ -288,7 +288,7 @@ struct ROQ_PUBLIC DailyStatistics final {
   double settlement_price;
   double close_price;
   double open_interest;
-  std::chrono::nanoseconds exchange_time;
+  std::chrono::nanoseconds exchange_time_utc;
 };
 
 #pragma pack(push, 1)
@@ -308,7 +308,7 @@ struct ROQ_PUBLIC MarketByPrice final {
   size_t ask_length;
   const MBPUpdate *ask;
   bool snapshot;
-  std::chrono::nanoseconds exchange_time;
+  std::chrono::nanoseconds exchange_time_utc;
 };
 
 struct ROQ_PUBLIC TradeSummary final {
@@ -318,7 +318,7 @@ struct ROQ_PUBLIC TradeSummary final {
   double volume;
   double turnover;
   Side side;
-  std::chrono::nanoseconds exchange_time;
+  std::chrono::nanoseconds exchange_time_utc;
 };
 
 struct ROQ_PUBLIC ReferenceData final {
@@ -360,8 +360,8 @@ struct ROQ_PUBLIC OrderUpdate final {
   double traded_quantity;
   PositionEffect position_effect;
   const char *order_template;
-  std::chrono::nanoseconds insert_time;
-  std::chrono::nanoseconds cancel_time;
+  std::chrono::nanoseconds insert_time_utc;
+  std::chrono::nanoseconds cancel_time_utc;
   uint32_t order_local_id;
   const char *order_external_id;
 };
@@ -377,7 +377,7 @@ struct ROQ_PUBLIC TradeUpdate final {
   double price;
   PositionEffect position_effect;
   const char *order_template;
-  std::chrono::nanoseconds trade_time;
+  std::chrono::nanoseconds trade_time_utc;
   const char *order_external_id;
   const char *trade_external_id;
 };

@@ -22,7 +22,8 @@ TEST(format, subscribe) {
     .accounts = {
       "test",
       "abc"
-    }
+    },
+    .symbols_by_exchange = {}
   };
   auto xxx = fmt::format("{}", subscribe);
   EXPECT_GT(xxx.length(), size_t{0});
@@ -31,18 +32,18 @@ TEST(format, subscribe) {
 
 TEST(format, market_by_price) {
   roq::MBPUpdate bid[] = {
-    { .price = 1.0, .quantity = 2.0 },
-    { .price = 2.0, .quantity = 4.0 },
-    { .price = 3.0, .quantity = 8.0 },
-    { .price = 4.0, .quantity = 10.0 },
-    { .price = 5.0, .quantity = 12.0 },
+    { .price = 1.0, .quantity = 2.0, .action = UpdateAction::NEW, .unused = {} },
+    { .price = 2.0, .quantity = 4.0, .action = UpdateAction::NEW, .unused = {} },
+    { .price = 3.0, .quantity = 8.0, .action = UpdateAction::NEW, .unused = {} },
+    { .price = 4.0, .quantity = 10.0, .action = UpdateAction::NEW, .unused = {} },
+    { .price = 5.0, .quantity = 12.0, .action = UpdateAction::NEW, .unused = {} },
   };
   roq::MBPUpdate ask[] = {
-    { .price = 1.0, .quantity = 2.0 },
-    { .price = 2.0, .quantity = 4.0 },
-    { .price = 3.0, .quantity = 8.0 },
-    { .price = 4.0, .quantity = 10.0 },
-    { .price = 5.0, .quantity = 12.0 },
+    { .price = 1.0, .quantity = 2.0, .action = UpdateAction::NEW, .unused = {} },
+    { .price = 2.0, .quantity = 4.0, .action = UpdateAction::NEW, .unused = {} },
+    { .price = 3.0, .quantity = 8.0, .action = UpdateAction::NEW, .unused = {} },
+    { .price = 4.0, .quantity = 10.0, .action = UpdateAction::NEW, .unused = {} },
+    { .price = 5.0, .quantity = 12.0, .action = UpdateAction::NEW, .unused = {} },
   };
   roq::MarketByPrice market_by_price {
     .exchange = "CFFEX",
@@ -52,7 +53,7 @@ TEST(format, market_by_price) {
     .ask_length = std::size(ask),
     .ask = ask,
     .snapshot = true,
-    .exchange_time = {}
+    .exchange_time_utc = {}
   };
   auto xxx = fmt::format("{}", market_by_price);
   EXPECT_GT(xxx.length(), size_t{0});

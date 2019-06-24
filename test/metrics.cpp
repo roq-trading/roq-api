@@ -10,33 +10,33 @@ namespace {
 class Writer : public Metrics {
  protected:
   Metrics& write_type(
-      const std::string_view& name,
-      const std::string_view& type) override {
+      const std::string_view&,
+      const std::string_view&) override {
     return *this;
   }
   Metrics& write_simple(
-      const std::string_view& name,
-      const std::string_view& labels,
-      const std::atomic<double>& value) override {
+      const std::string_view&,
+      const std::string_view&,
+      const std::atomic<double>&) override {
     return *this;
   }
   Metrics& write_bucket(
-      const std::string_view& name,
-      const std::string_view& labels,
-      double quantile,
-      uint64_t value) override {
+      const std::string_view&,
+      const std::string_view&,
+      double,
+      uint64_t) override {
     return *this;
   }
   Metrics& write_sum(
-      const std::string_view& name,
-      const std::string_view& labels,
-      double value) override {
+      const std::string_view&,
+      const std::string_view&,
+      double) override {
     return *this;
   }
   Metrics& write_count(
-      const std::string_view& name,
-      const std::string_view& labels,
-      uint64_t count) override {
+      const std::string_view&,
+      const std::string_view&,
+      uint64_t) override {
     return *this;
   }
   Metrics& finish() override {

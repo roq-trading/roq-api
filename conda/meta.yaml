@@ -16,11 +16,15 @@ build:
   skip: True  # [win and osx]
   number: {{ number }}
   run_exports:
-    strong:
-      - roq-api >={{ version }},<{{ major }}.{{ minor + 1 }}
+    - {{ pin_subpackage('roq-oss-libunwind', max_pin='x.x') }}
 
 requirements:
   build:
+    - pkg-config  # [unix]
+    - autoconf    # [unix]
+    - automake    # [unix]
+    - libtool     # [unix]
+    - make
     - {{ compiler('cxx') }}
   host:
     - gflags >=2.2

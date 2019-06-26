@@ -22,14 +22,12 @@ build:
 requirements:
   build:
     - {{ compiler('cxx') }}
-    - roq-oss-fmt
-    - roq-oss-libunwind
-    - roq-oss-spdlog
   host:
-    - gflags >=2.2
     - roq-oss-fmt
-    - roq-oss-libunwind
+    - roq-oss-libunwind  # [linux]
     - roq-oss-spdlog
+  run:
+    - gflags >=2.2
 
 about:
   home: https://roq-trading.com

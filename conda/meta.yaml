@@ -16,7 +16,8 @@ build:
   skip: True  # [win and osx]
   number: {{ number }}
   run_exports:
-    - roq-api >={{ version }},<{{ major }}.{{ minor + 1 }}
+    strong:
+      - roq-api >={{ version }},<{{ major }}.{{ minor + 1 }}
 
 requirements:
   build:

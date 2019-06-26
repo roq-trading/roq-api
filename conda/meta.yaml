@@ -23,6 +23,7 @@ requirements:
   build:
     - {{ compiler('cxx') }}
   host:
+    - gflags >=2.2
     - roq-oss-fmt
     - roq-oss-libunwind  # [linux]
     - roq-oss-spdlog

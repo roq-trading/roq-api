@@ -15,7 +15,8 @@ set -e
 make check || EXIT_CODE=$?
 set +e
 cat test/roq-*.log
-if [ "$EXIT_CODE" -ne 0 ]; then
+if [ "$EXIT_CODE" -ne "0" ]; then
+	echo "*** FAILED TEST ***"
 	exit $EXIT_CODE
 fi
 make install-strip

@@ -17,6 +17,9 @@
 
 namespace roq {
 
+constexpr size_t ACCOUNT_NAME_MAX_LENGTH = 31;
+constexpr size_t USER_NAME_MAX_LENGTH = 31;
+
 // enums
 
 enum class ConnectionStatus : int8_t {

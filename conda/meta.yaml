@@ -29,6 +29,8 @@ requirements:
     - roq-oss-spdlog
   run:
     - gflags >=2.2
+    - roq-oss-libunwind  # [linux]
+    - roq-oss-spdlog
 
 about:
   home: https://roq-trading.com

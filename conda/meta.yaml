@@ -28,6 +28,8 @@ requirements:
     - roq-oss-fmt
     - roq-oss-libunwind  # [linux]
     - roq-oss-spdlog
+  run:
+    - gflags >=2.2
 
 about:
   home: https://roq-trading.com

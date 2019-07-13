@@ -709,11 +709,6 @@ class ROQ_PUBLIC Matcher : NonCopyable {
       Dispatcher& dispatcher,
       std::chrono::nanoseconds next) = 0;
 
-  /*
-  virtual void on(const SubscribeEvent& event) = 0;
-  virtual void on(const DownloadBeginEvent& event) = 0;
-  virtual void on(const DownloadEndEvent& event) = 0;
-  */
   virtual void on(const MarketDataStatusEvent& event) = 0;
   virtual void on(const OrderManagerStatusEvent& event) = 0;
   virtual void on(const ReferenceDataEvent& event) = 0;

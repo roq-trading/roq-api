@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <string>
 #include <utility>
 
 namespace roq {
@@ -13,6 +14,15 @@ struct is_pair : std::false_type {
 };
 template <typename T, typename U>
 struct is_pair<std::pair<T, U> > : std::true_type {
+};
+
+// is_string
+
+template <typename>
+struct is_string : std::false_type {
+};
+template <typename T>
+struct is_string<std::basic_string<T> > : std::true_type {
 };
 
 // is_iterable (SO13830158)

@@ -105,20 +105,24 @@ inline std::ostream& operator<<(
   if constexpr (is_pair<T>::value) {
     return stream << wrapper(value.v.first) << "=" << wrapper(value.v.second);
   } else {
-    if constexpr (is_iterable<T>::value) {
-      bool first = true;
-      stream << "{";
-      for (auto iter = value.v.begin(); iter != value.v.end(); ++iter) {
-        if (first) {
-          first = false;
-        } else {
-          stream << ", ";
-        }
-        stream << wrapper(*iter);
-      }
-      return stream << "}";
+    if constexpr (is_string<T>::value) {
+      return stream << "\"" << value.v << "\"";
     } else {
-      return stream << value.v;
+      if constexpr (is_iterable<T>::value) {
+        bool first = true;
+        stream << "{";
+        for (auto iter = value.v.begin(); iter != value.v.end(); ++iter) {
+          if (first) {
+            first = false;
+          } else {
+            stream << ", ";
+          }
+          stream << wrapper(*iter);
+        }
+        return stream << "}";
+      } else {
+        return stream << value.v;
+      }
     }
   }
 }

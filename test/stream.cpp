@@ -72,3 +72,22 @@ TEST(stream, market_by_price) {
   auto text = stream.str();
 }
 */
+
+TEST(stream, join_vector_int) {
+  std::ostringstream ss;
+  ss << roq::join(
+      std::vector<int> {1, 2, 3});
+  auto text = ss.str();
+  EXPECT_EQ(text, std::string("{1, 2, 3}"));
+}
+
+TEST(stream, join_vector_string) {
+  std::ostringstream ss;
+  ss << roq::join(
+      std::vector<std::string> {
+        "abc",
+        "def"
+      });
+  auto text = ss.str();
+  EXPECT_EQ(text, std::string("{\"abc\", \"def\"}"));
+}

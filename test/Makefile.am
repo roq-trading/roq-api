@@ -31,4 +31,5 @@ nodist_roq_api_test_SOURCES = \
 	metrics.cpp \
 	static.cpp \
 	stream.cpp \
+	traits.cpp \
 	main.cpp

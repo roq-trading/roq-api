@@ -102,15 +102,21 @@ template <typename T>
 inline std::ostream& operator<<(
     std::ostream& stream,
     const wrapper<T>& value) {
+  // pair
   if constexpr (is_pair<T>::value) {
     return stream << wrapper(value.v.first) << "=" << wrapper(value.v.second);
   } else {
+    // string
     if constexpr (is_string<T>::value) {
       return stream << "\"" << value.v << "\"";
     } else {
+      // iterable
       if constexpr (is_iterable<T>::value) {
         bool first = true;
-        stream << "{";
+        if constexpr (has_random_access_iterator<T>::value)
+          stream << "[";
+        else
+          stream << "{";
         for (auto iter = value.v.begin(); iter != value.v.end(); ++iter) {
           if (first) {
             first = false;
@@ -119,8 +125,12 @@ inline std::ostream& operator<<(
           }
           stream << wrapper(*iter);
         }
-        return stream << "}";
+        if constexpr (has_random_access_iterator<T>::value)
+          return stream << "]";
+        else
+          return stream << "}";
       } else {
+        // any
         return stream << value.v;
       }
     }

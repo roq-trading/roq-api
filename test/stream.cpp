@@ -3,6 +3,9 @@
 #include <gtest/gtest.h>
 
 #include <chrono>
+#include <map>
+#include <set>
+#include <string>
 
 #include "roq/stream.h"
 
@@ -78,7 +81,7 @@ TEST(stream, join_vector_int) {
   ss << roq::join(
       std::vector<int> {1, 2, 3});
   auto text = ss.str();
-  EXPECT_EQ(text, std::string("{1, 2, 3}"));
+  EXPECT_EQ(text, std::string("[1, 2, 3]"));
 }
 
 TEST(stream, join_vector_string) {
@@ -89,5 +92,65 @@ TEST(stream, join_vector_string) {
         "def"
       });
   auto text = ss.str();
+  EXPECT_EQ(text, std::string("[\"abc\", \"def\"]"));
+}
+
+TEST(stream, join_set_int) {
+  std::ostringstream ss;
+  ss << roq::join(
+      std::set<int> {1, 2, 3});
+  auto text = ss.str();
+  EXPECT_EQ(text, std::string("{1, 2, 3}"));
+}
+
+TEST(stream, join_set_string) {
+  std::ostringstream ss;
+  ss << roq::join(
+      std::set<std::string> {
+        "abc",
+        "def"
+      });
+  auto text = ss.str();
   EXPECT_EQ(text, std::string("{\"abc\", \"def\"}"));
+}
+
+TEST(stream, join_map_int_int) {
+  std::ostringstream ss;
+  ss << roq::join(
+      std::map<int, int> {{1, 10}, {2, 20}, {3, 30}});
+  auto text = ss.str();
+  EXPECT_EQ(text, std::string("{1=10, 2=20, 3=30}"));
+}
+
+TEST(stream, join_map_string_int) {
+  std::ostringstream ss;
+  ss << roq::join(
+      std::map<std::string, int> {
+        {"abc", 10},
+        {"def", 20}
+      });
+  auto text = ss.str();
+  EXPECT_EQ(text, std::string("{\"abc\"=10, \"def\"=20}"));
+}
+
+TEST(stream, join_map_int_string) {
+  std::ostringstream ss;
+  ss << roq::join(
+      std::map<int, std::string> {
+        {10, "abc"},
+        {20, "def"}
+      });
+  auto text = ss.str();
+  EXPECT_EQ(text, std::string("{10=\"abc\", 20=\"def\"}"));
+}
+
+TEST(stream, join_map_string_string) {
+  std::ostringstream ss;
+  ss << roq::join(
+      std::map<std::string, std::string> {
+        {"123", "abc"},
+        {"234", "def"}
+      });
+  auto text = ss.str();
+  EXPECT_EQ(text, std::string("{\"123\"=\"abc\", \"234\"=\"def\"}"));
 }

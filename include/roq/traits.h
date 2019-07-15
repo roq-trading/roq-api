@@ -44,4 +44,11 @@ std::false_type is_iterable_impl(...);
 template <typename T>
 using is_iterable = decltype(detail::is_iterable_impl<T>(0));
 
+// has_random_access_iterator (SO23848011)
+
+template<typename T>
+using has_random_access_iterator = std::is_base_of<
+  std::random_access_iterator_tag,
+  typename std::iterator_traits<typename T::iterator>::iterator_category>;
+
 }  // namespace roq

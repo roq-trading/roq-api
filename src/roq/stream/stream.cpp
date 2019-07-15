@@ -8,14 +8,12 @@
 
 #include "roq/stream/utility.h"
 
-namespace {
-constexpr size_t STACK_BUFFER_SIZE = 4096;
-}  // namespace
-
 #define FLOAT_REPR ".8g"  // include 1/256th
 #define PASSWORD "<hidden>"
 
 namespace roq {
+
+constexpr size_t STACK_BUFFER_SIZE = 4096;
 
 typedef StackWriter<STACK_BUFFER_SIZE> Writer;
 
@@ -867,392 +865,436 @@ Writer& write(Writer& writer, const Layer& value) {
       value.ask_quantity);
 }
 
-}  // namespace roq
-
 // enums
 
-std::ostream& operator<<(std::ostream& stream, const roq::ConnectionStatus value) {
+std::ostream& operator<<(std::ostream& stream, const ConnectionStatus value) {
   return stream << EnumNameConnectionStatus(value);
 }
 
-std::ostream& operator<<(std::ostream& stream, const roq::GatewayStatus value) {
+std::ostream& operator<<(std::ostream& stream, const GatewayStatus value) {
   return stream << EnumNameGatewayStatus(value);
 }
 
-std::ostream& operator<<(std::ostream& stream, const roq::Side value) {
+std::ostream& operator<<(std::ostream& stream, const Side value) {
   return stream << EnumNameSide(value);
 }
 
-std::ostream& operator<<(std::ostream& stream, const roq::UpdateAction value) {
+std::ostream& operator<<(std::ostream& stream, const UpdateAction value) {
   return stream << EnumNameUpdateAction(value);
 }
 
-std::ostream& operator<<(std::ostream& stream, const roq::OrderType value) {
+std::ostream& operator<<(std::ostream& stream, const OrderType value) {
   return stream << EnumNameOrderType(value);
 }
 
-std::ostream& operator<<(std::ostream& stream, const roq::TimeInForce value) {
+std::ostream& operator<<(std::ostream& stream, const TimeInForce value) {
   return stream << EnumNameTimeInForce(value);
 }
 
-std::ostream& operator<<(std::ostream& stream, const roq::PositionEffect value) {
+std::ostream& operator<<(std::ostream& stream, const PositionEffect value) {
   return stream << EnumNamePositionEffect(value);
 }
 
-std::ostream& operator<<(std::ostream& stream, const roq::TradingStatus value) {
+std::ostream& operator<<(std::ostream& stream, const TradingStatus value) {
   return stream << EnumNameTradingStatus(value);
 }
 
-std::ostream& operator<<(std::ostream& stream, const roq::OrderStatus value) {
+std::ostream& operator<<(std::ostream& stream, const OrderStatus value) {
   return stream << EnumNameOrderStatus(value);
 }
 
 // MBPUpdate
 
-std::ostream& operator<<(std::ostream& stream, const roq::MBPUpdate& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const MBPUpdate& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // MessageInfo
 
-std::ostream& operator<<(std::ostream& stream, const roq::MessageInfo& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const MessageInfo& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // Subscribe
 
-std::ostream& operator<<(std::ostream& stream, const roq::Subscribe& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const Subscribe& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // DownloadBegin
 
-std::ostream& operator<<(std::ostream& stream, const roq::DownloadBegin& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const DownloadBegin& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // DownloadEnd
 
-std::ostream& operator<<(std::ostream& stream, const roq::DownloadEnd& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const DownloadEnd& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // MarketDataStatus
 
-std::ostream& operator<<(std::ostream& stream, const roq::MarketDataStatus& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const MarketDataStatus& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // OrderManagerStatus
 
-std::ostream& operator<<(std::ostream& stream, const roq::OrderManagerStatus& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const OrderManagerStatus& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // SessionStatistics
 
-std::ostream& operator<<(std::ostream& stream, const roq::SessionStatistics& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const SessionStatistics& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // DailyStatistics
 
-std::ostream& operator<<(std::ostream& stream, const roq::DailyStatistics& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const DailyStatistics& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // MarketByPrice
 
-std::ostream& operator<<(std::ostream& stream, const roq::MarketByPrice& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const MarketByPrice& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // TradeSummary
 
-std::ostream& operator<<(std::ostream& stream, const roq::TradeSummary& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const TradeSummary& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // ReferenceData
 
-std::ostream& operator<<(std::ostream& stream, const roq::ReferenceData& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const ReferenceData& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // MarketStatus
 
-std::ostream& operator<<(std::ostream& stream, const roq::MarketStatus& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const MarketStatus& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // PositionUpdate
 
-std::ostream& operator<<(std::ostream& stream, const roq::PositionUpdate& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const PositionUpdate& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // OrderUpdate
 
-std::ostream& operator<<(std::ostream& stream, const roq::OrderUpdate& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const OrderUpdate& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // TradeUpdate
 
-std::ostream& operator<<(std::ostream& stream, const roq::TradeUpdate& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const TradeUpdate& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // CreateOrder
 
-std::ostream& operator<<(std::ostream& stream, const roq::CreateOrder& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const CreateOrder& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // ModifyOrder
 
-std::ostream& operator<<(std::ostream& stream, const roq::ModifyOrder& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const ModifyOrder& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // CancelOrder
 
-std::ostream& operator<<(std::ostream& stream, const roq::CancelOrder& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const CancelOrder& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // CreateOrderAck
 
-std::ostream& operator<<(std::ostream& stream, const roq::CreateOrderAck& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const CreateOrderAck& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // ModifyOrderAck
 
-std::ostream& operator<<(std::ostream& stream, const roq::ModifyOrderAck& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const ModifyOrderAck& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // CancelOrderAck
 
-std::ostream& operator<<(std::ostream& stream, const roq::CancelOrderAck& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const CancelOrderAck& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // StartEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::StartEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const StartEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // StopEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::StopEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const StopEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // TimerEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::TimerEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const TimerEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // ConnectionStatusEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::ConnectionStatusEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const ConnectionStatusEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // BatchBeginEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::BatchBeginEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const BatchBeginEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // BatchEndEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::BatchEndEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const BatchEndEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // SubscribeEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::SubscribeEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const SubscribeEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // DownloadBeginEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::DownloadBeginEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const DownloadBeginEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // DownloadEndEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::DownloadEndEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const DownloadEndEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // MarketDataStatusEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::MarketDataStatusEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const MarketDataStatusEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // OrderManagerStatusEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::OrderManagerStatusEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const OrderManagerStatusEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // SessionStatisticsEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::SessionStatisticsEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const SessionStatisticsEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // DailyStatisticsEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::DailyStatisticsEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const DailyStatisticsEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // MarketByPriceEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::MarketByPriceEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const MarketByPriceEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // TradeSummaryEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::TradeSummaryEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const TradeSummaryEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // ReferenceDataEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::ReferenceDataEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const ReferenceDataEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // MarketStatusEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::MarketStatusEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const MarketStatusEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // PositionUpdateEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::PositionUpdateEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const PositionUpdateEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // OrderUpdateEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::OrderUpdateEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const OrderUpdateEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // TradeUpdateEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::TradeUpdateEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const TradeUpdateEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // CreateOrderEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::CreateOrderEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const CreateOrderEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // ModifyOrderEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::ModifyOrderEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const ModifyOrderEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // CancelOrderEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::CancelOrderEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const CancelOrderEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // CreateOrderAckEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::CreateOrderAckEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const CreateOrderAckEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // ModifyOrderAckEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::ModifyOrderAckEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const ModifyOrderAckEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // CancelOrderAckEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::CancelOrderAckEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const CancelOrderAckEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // CustomMessageEvent
 
-std::ostream& operator<<(std::ostream& stream, const roq::CustomMessageEvent& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const CustomMessageEvent& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
 
 // Layer
 
-std::ostream& operator<<(std::ostream& stream, const roq::Layer& value) {
-  roq::Writer writer;
+std::ostream& operator<<(std::ostream& stream, const Layer& value) {
+  Writer writer;
   return writer.print(value).finish(stream);
 }
+
+// misc:
+
+std::ostream& operator<<(
+    std::ostream& stream,
+    const roq::User::Limits::CreateOrder& value) {
+  return stream << "{"
+    "max=" << value.max << ", "
+    "monitor_period=" << value.monitor_period.count() << "s, "
+    "ban_period=" << value.ban_period.count() << "s"
+    "}";
+}
+std::ostream& operator<<(
+    std::ostream& stream,
+    const roq::User::Limits& value) {
+  return stream << "{"
+    "create_order=" << value.create_order <<
+    "}";
+}
+
+// Account
+
+std::ostream& operator<<(std::ostream& stream, const Account& value) {
+  return stream << "{"
+    "id=" << static_cast<int>(value.id) << ", "
+    "name=\"" << value.name << "\", "
+    "user=\"" << value.user << "\", "
+    "password=" << PASSWORD << ", "
+    "symbols=" << join(value.symbols) <<
+    "}";
+}
+
+// User
+
+std::ostream& operator<<(std::ostream& stream, const User& value) {
+  return stream << "{"
+    "id=" << static_cast<int>(value.id) << ", "
+    "name=\"" << value.name << "\", "
+    "password=" << PASSWORD << ", "
+    "accounts=" << join(value.accounts) << ", "
+    "symbols=" << join(value.symbols) << ", "
+    "limits=" << value.limits <<
+    "}";
+}
+
+}  // namespace roq

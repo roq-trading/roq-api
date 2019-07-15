@@ -21,7 +21,6 @@ extern ROQ_PUBLIC thread_local std::pair<char *, size_t> message_buffer;
 extern ROQ_PUBLIC bool append_newline;
 extern ROQ_PUBLIC int verbosity;
 typedef std::function<void(const char *)> sink_t;
-// HANS -- rename
 extern ROQ_PUBLIC sink_t info;
 extern ROQ_PUBLIC sink_t warning;
 extern ROQ_PUBLIC sink_t error;

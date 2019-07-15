@@ -10,4 +10,5 @@ pkginclude_HEADERS = \
 	platform.h \
 	print.h \
 	static.h \
-	stream.h
+	stream.h \
+	traits.h

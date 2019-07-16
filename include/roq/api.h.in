@@ -294,14 +294,14 @@ struct ROQ_PUBLIC DailyStatistics final {
   std::chrono::nanoseconds exchange_time_utc;
 };
 
-#pragma pack(push, 1)
-struct ROQ_PUBLIC MBPUpdate final {
+// Note! we need a GCC attribute for alignment (alignas doesn't mix)
+struct ROQ_PUBLIC __attribute__((aligned(64))) MBPUpdate final {
   double price;
   double quantity;
   UpdateAction action;
-  uint8_t unused[7];
 };
-#pragma pack(pop)
+
+static_assert(sizeof(MBPUpdate) <= 64);
 
 struct ROQ_PUBLIC MarketByPrice final {
   const char *exchange;

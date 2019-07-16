@@ -26,6 +26,7 @@ roq_api_test_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/src
 nodist_roq_api_test_SOURCES = \
+	alignment.cpp \
 	format.cpp \
 	logging.cpp \
 	metrics.cpp \

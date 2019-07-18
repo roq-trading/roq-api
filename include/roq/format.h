@@ -7,6 +7,11 @@
 
 #include "roq/api.h"
 
+
+// NOTE!
+// we're extending the fmt namespace with formatter specializations
+// this is the recommended practice
+
 // enums
 
 template <>

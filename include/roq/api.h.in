@@ -13,7 +13,15 @@
 
 #define ROQ_VERSION "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
 
+#if defined(__GNUC__) || defined(__clang__)
 #define ROQ_PUBLIC __attribute__ ((visibility("default")))
+#define ROQ_LIKELY(x) __builtin_expect(!!(x), true)
+#define ROQ_UNLIKELY(x) __builtin_expect(!!(x), false)
+#else
+#define ROQ_PUBLIC
+#define ROQ_LIKELY(x) (x)
+#define ROQ_UNLIKELY(x) (x)
+#endif
 
 namespace roq {
 

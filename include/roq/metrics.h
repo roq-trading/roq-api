@@ -9,6 +9,7 @@
 #include <string>
 #include <string_view>
 
+#include "roq/api.h"
 #include "roq/atomic.h"
 #include "roq/platform.h"
 

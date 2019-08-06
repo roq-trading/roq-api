@@ -7,6 +7,7 @@ pkginclude_HEADERS = \
 	format.h \
 	logging.h \
 	metrics.h \
+	patterns.h \
 	platform.h \
 	print.h \
 	static.h \

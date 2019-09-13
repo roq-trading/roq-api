@@ -23,7 +23,7 @@ struct fmt::formatter<roq::ConnectionStatus> {
   template <typename T>
   auto format(const roq::ConnectionStatus value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{}",
         EnumNameConnectionStatus(value));
   }
@@ -38,7 +38,7 @@ struct fmt::formatter<roq::GatewayStatus> {
   template <typename T>
   auto format(const roq::GatewayStatus value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{}",
         EnumNameGatewayStatus(value));
   }
@@ -53,7 +53,7 @@ struct fmt::formatter<roq::Side> {
   template <typename T>
   auto format(const roq::Side value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{}",
         EnumNameSide(value));
   }
@@ -68,7 +68,7 @@ struct fmt::formatter<roq::UpdateAction> {
   template <typename T>
   auto format(const roq::UpdateAction value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{}",
         EnumNameUpdateAction(value));
   }
@@ -83,7 +83,7 @@ struct fmt::formatter<roq::OrderType> {
   template <typename T>
   auto format(const roq::OrderType value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{}",
         EnumNameOrderType(value));
   }
@@ -98,7 +98,7 @@ struct fmt::formatter<roq::TimeInForce> {
   template <typename T>
   auto format(const roq::TimeInForce value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{}",
         EnumNameTimeInForce(value));
   }
@@ -113,7 +113,7 @@ struct fmt::formatter<roq::PositionEffect> {
   template <typename T>
   auto format(const roq::PositionEffect value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{}",
         EnumNamePositionEffect(value));
   }
@@ -128,7 +128,7 @@ struct fmt::formatter<roq::TradingStatus> {
   template <typename T>
   auto format(const roq::TradingStatus value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{}",
         EnumNameTradingStatus(value));
   }
@@ -143,7 +143,7 @@ struct fmt::formatter<roq::OrderStatus> {
   template <typename T>
   auto format(const roq::OrderStatus value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{}",
         EnumNameOrderStatus(value));
   }
@@ -160,7 +160,7 @@ struct fmt::formatter<roq::MBPUpdate> {
   template <typename T>
   auto format(const roq::MBPUpdate& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "price={}, "
         "quantity={}, "
@@ -181,7 +181,7 @@ struct fmt::formatter<roq::MessageInfo> {
   template <typename T>
   auto format(const roq::MessageInfo& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "source={}, "
         "source_name=\"{}\", "
@@ -218,7 +218,7 @@ struct fmt::formatter<roq::Subscribe> {
   template <typename T>
   auto format(const roq::Subscribe& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "accounts=[{}], "
         "symbols=[]"
@@ -237,7 +237,7 @@ struct fmt::formatter<roq::DownloadBegin> {
   template <typename T>
   auto format(const roq::DownloadBegin& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\""
         "}}",
@@ -254,7 +254,7 @@ struct fmt::formatter<roq::DownloadEnd> {
   template <typename T>
   auto format(const roq::DownloadEnd& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "max_order_id={}"
@@ -273,7 +273,7 @@ struct fmt::formatter<roq::MarketDataStatus> {
   template <typename T>
   auto format(const roq::MarketDataStatus& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "status={}"
         "}}",
@@ -290,7 +290,7 @@ struct fmt::formatter<roq::OrderManagerStatus> {
   template <typename T>
   auto format(const roq::OrderManagerStatus& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "status={}"
@@ -309,7 +309,7 @@ struct fmt::formatter<roq::SessionStatistics> {
   template <typename T>
   auto format(const roq::SessionStatistics& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "exchange=\"{}\", "
         "symbol=\"{}\", "
@@ -344,7 +344,7 @@ struct fmt::formatter<roq::DailyStatistics> {
   template <typename T>
   auto format(const roq::DailyStatistics& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "exchange=\"{}\", "
         "symbol=\"{}\", "
@@ -373,7 +373,7 @@ struct fmt::formatter<roq::MarketByPrice> {
   template <typename T>
   auto format(const roq::MarketByPrice& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "exchange=\"{}\", "
         "symbol=\"{}\", "
@@ -400,7 +400,7 @@ struct fmt::formatter<roq::TradeSummary> {
   template <typename T>
   auto format(const roq::TradeSummary& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "exchange=\"{}\", "
         "symbol=\"{}\", "
@@ -429,7 +429,7 @@ struct fmt::formatter<roq::ReferenceData> {
   template <typename T>
   auto format(const roq::ReferenceData& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "exchange=\"{}\", "
         "symbol=\"{}\", "
@@ -456,7 +456,7 @@ struct fmt::formatter<roq::MarketStatus> {
   template <typename T>
   auto format(const roq::MarketStatus& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "exchange=\"{}\", "
         "symbol=\"{}\", "
@@ -477,7 +477,7 @@ struct fmt::formatter<roq::PositionUpdate> {
   template <typename T>
   auto format(const roq::PositionUpdate& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "exchange=\"{}\", "
@@ -510,7 +510,7 @@ struct fmt::formatter<roq::OrderUpdate> {
   template <typename T>
   auto format(const roq::OrderUpdate& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "order_id={}, "
@@ -555,7 +555,7 @@ struct fmt::formatter<roq::TradeUpdate> {
   template <typename T>
   auto format(const roq::TradeUpdate& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "trade_id={}, "
@@ -596,7 +596,7 @@ struct fmt::formatter<roq::CreateOrder> {
   template <typename T>
   auto format(const roq::CreateOrder& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "order_id={}, "
@@ -633,7 +633,7 @@ struct fmt::formatter<roq::ModifyOrder> {
   template <typename T>
   auto format(const roq::ModifyOrder& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "order_id={}, "
@@ -656,7 +656,7 @@ struct fmt::formatter<roq::CancelOrder> {
   template <typename T>
   auto format(const roq::CancelOrder& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "order_id={}"
@@ -675,7 +675,7 @@ struct fmt::formatter<roq::CreateOrderAck> {
   template <typename T>
   auto format(const roq::CreateOrderAck& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "order_id={}, "
@@ -702,7 +702,7 @@ struct fmt::formatter<roq::ModifyOrderAck> {
   template <typename T>
   auto format(const roq::ModifyOrderAck& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "order_id={}, "
@@ -729,7 +729,7 @@ struct fmt::formatter<roq::CancelOrderAck> {
   template <typename T>
   auto format(const roq::CancelOrderAck& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "account=\"{}\", "
         "order_id={}, "
@@ -760,7 +760,7 @@ struct fmt::formatter<roq::StartEvent> {
   template <typename T>
   auto format(const roq::StartEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "}}");
   }
@@ -775,7 +775,7 @@ struct fmt::formatter<roq::StopEvent> {
   template <typename T>
   auto format(const roq::StopEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "}}");
   }
@@ -790,7 +790,7 @@ struct fmt::formatter<roq::TimerEvent> {
   template <typename T>
   auto format(const roq::TimerEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "now={}"
         "}}",
@@ -807,7 +807,7 @@ struct fmt::formatter<roq::ConnectionStatusEvent> {
   template <typename T>
   auto format(const roq::ConnectionStatusEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "source={}, "
         "source_name=\"{}\", "
@@ -828,7 +828,7 @@ struct fmt::formatter<roq::BatchBeginEvent> {
   template <typename T>
   auto format(const roq::BatchBeginEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}"
         "}}",
@@ -845,7 +845,7 @@ struct fmt::formatter<roq::BatchEndEvent> {
   template <typename T>
   auto format(const roq::BatchEndEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}"
         "}}",
@@ -862,7 +862,7 @@ struct fmt::formatter<roq::SubscribeEvent> {
   template <typename T>
   auto format(const roq::SubscribeEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "subscribe={}, "
@@ -881,7 +881,7 @@ struct fmt::formatter<roq::DownloadBeginEvent> {
   template <typename T>
   auto format(const roq::DownloadBeginEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "download_begin={}, "
@@ -900,7 +900,7 @@ struct fmt::formatter<roq::DownloadEndEvent> {
   template <typename T>
   auto format(const roq::DownloadEndEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "download_end={}, "
@@ -919,7 +919,7 @@ struct fmt::formatter<roq::MarketDataStatusEvent> {
   template <typename T>
   auto format(const roq::MarketDataStatusEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "market_data_status={}, "
@@ -938,7 +938,7 @@ struct fmt::formatter<roq::OrderManagerStatusEvent> {
   template <typename T>
   auto format(const roq::OrderManagerStatusEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "order_manager_status={}, "
@@ -957,7 +957,7 @@ struct fmt::formatter<roq::SessionStatisticsEvent> {
   template <typename T>
   auto format(const roq::SessionStatisticsEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "session_statistics={}, "
@@ -976,7 +976,7 @@ struct fmt::formatter<roq::DailyStatisticsEvent> {
   template <typename T>
   auto format(const roq::DailyStatisticsEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "daily_statistics={}, "
@@ -995,7 +995,7 @@ struct fmt::formatter<roq::MarketByPriceEvent> {
   template <typename T>
   auto format(const roq::MarketByPriceEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "market_by_price={}, "
@@ -1014,7 +1014,7 @@ struct fmt::formatter<roq::TradeSummaryEvent> {
   template <typename T>
   auto format(const roq::TradeSummaryEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "trade_summary={}, "
@@ -1033,7 +1033,7 @@ struct fmt::formatter<roq::ReferenceDataEvent> {
   template <typename T>
   auto format(const roq::ReferenceDataEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "reference_data={}, "
@@ -1052,7 +1052,7 @@ struct fmt::formatter<roq::MarketStatusEvent> {
   template <typename T>
   auto format(const roq::MarketStatusEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "market_status={}, "
@@ -1071,7 +1071,7 @@ struct fmt::formatter<roq::PositionUpdateEvent> {
   template <typename T>
   auto format(const roq::PositionUpdateEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "position_update={}, "
@@ -1090,7 +1090,7 @@ struct fmt::formatter<roq::OrderUpdateEvent> {
   template <typename T>
   auto format(const roq::OrderUpdateEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "order_update={}, "
@@ -1109,7 +1109,7 @@ struct fmt::formatter<roq::TradeUpdateEvent> {
   template <typename T>
   auto format(const roq::TradeUpdateEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "trade_update={}, "
@@ -1128,7 +1128,7 @@ struct fmt::formatter<roq::CreateOrderEvent> {
   template <typename T>
   auto format(const roq::CreateOrderEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "create_order={}, "
@@ -1147,7 +1147,7 @@ struct fmt::formatter<roq::ModifyOrderEvent> {
   template <typename T>
   auto format(const roq::ModifyOrderEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "modify_order={}, "
@@ -1166,7 +1166,7 @@ struct fmt::formatter<roq::CancelOrderEvent> {
   template <typename T>
   auto format(const roq::CancelOrderEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "cancel_order={}, "
@@ -1185,7 +1185,7 @@ struct fmt::formatter<roq::CreateOrderAckEvent> {
   template <typename T>
   auto format(const roq::CreateOrderAckEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "create_order_ack={}, "
@@ -1204,7 +1204,7 @@ struct fmt::formatter<roq::ModifyOrderAckEvent> {
   template <typename T>
   auto format(const roq::ModifyOrderAckEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "modify_order_ack={}, "
@@ -1223,7 +1223,7 @@ struct fmt::formatter<roq::CancelOrderAckEvent> {
   template <typename T>
   auto format(const roq::CancelOrderAckEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "message_info={}, "
         "cancel_order_ack={}, "
@@ -1242,7 +1242,7 @@ struct fmt::formatter<roq::CustomMessageEvent> {
   template <typename T>
   auto format(const roq::CustomMessageEvent& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "}}");
   }
@@ -1257,7 +1257,7 @@ struct fmt::formatter<roq::Layer> {
   template <typename T>
   auto format(const roq::Layer& value, T& ctx) {
     return format_to(
-        ctx.begin(),
+        ctx.out(),
         "{{"
         "bid_price={}, "
         "bid_quantity={}, "

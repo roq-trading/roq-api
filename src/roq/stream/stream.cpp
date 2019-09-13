@@ -9,7 +9,7 @@
 #include "roq/stream/utility.h"
 
 #define FLOAT_REPR ".8g"  // include 1/256th
-#define PASSWORD "<hidden>"
+#define HIDDEN "<hidden>"
 
 namespace roq {
 
@@ -1278,8 +1278,9 @@ std::ostream& operator<<(std::ostream& stream, const Account& value) {
   return stream << "{"
     "id=" << static_cast<int>(value.id) << ", "
     "name=\"" << value.name << "\", "
-    "user=\"" << value.user << "\", "
-    "password=" << PASSWORD << ", "
+    "login=\"" << value.login << "\", "
+    "password=" << HIDDEN << ", "
+    "secret=" << HIDDEN << ", "
     "symbols=" << join(value.symbols) <<
     "}";
 }
@@ -1290,7 +1291,7 @@ std::ostream& operator<<(std::ostream& stream, const User& value) {
   return stream << "{"
     "id=" << static_cast<int>(value.id) << ", "
     "name=\"" << value.name << "\", "
-    "password=" << PASSWORD << ", "
+    "password=" << HIDDEN << ", "
     "accounts=" << join(value.accounts) << ", "
     "symbols=" << join(value.symbols) << ", "
     "limits=" << value.limits <<

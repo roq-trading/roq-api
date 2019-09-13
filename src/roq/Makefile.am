@@ -10,7 +10,7 @@ libroq_api_la_LIBADD = \
 	$(SPDLOG_LIBS) \
 	$(LIBUNWIND_LIBS) \
 	$(GFLAGS_LIBS) \
-	$(FMTLIB_LIBS)
+	$(FMT_LIBS)
 libroq_api_la_CPPFLAGS = \
 	-I$(top_builddir)/include \
 	-I$(top_srcdir)/src

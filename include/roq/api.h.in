@@ -7,6 +7,7 @@
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
@@ -25,8 +26,8 @@
 
 namespace roq {
 
-constexpr size_t ACCOUNT_NAME_MAX_LENGTH = 31;
-constexpr size_t USER_NAME_MAX_LENGTH = 31;
+constexpr auto ACCOUNT_NAME_MAX_LENGTH = size_t{31};
+constexpr auto USER_NAME_MAX_LENGTH = size_t{31};
 
 // enums
 
@@ -248,7 +249,7 @@ inline const char *EnumNameOrderStatus(OrderStatus e) {
 
 struct ROQ_PUBLIC MessageInfo final {
   uint8_t source;
-  const char *source_name;
+  std::string_view source_name;
   uint64_t source_seqno;
   std::chrono::nanoseconds receive_time_utc;
   std::chrono::nanoseconds receive_time;  // monotonic clock
@@ -262,11 +263,11 @@ struct ROQ_PUBLIC MessageInfo final {
 // messages
 
 struct ROQ_PUBLIC DownloadBegin final {
-  const char *account;
+  std::string_view account;
 };
 
 struct ROQ_PUBLIC DownloadEnd final {
-  const char *account;
+  std::string_view account;
   uint32_t max_order_id;
 };
 
@@ -275,13 +276,13 @@ struct ROQ_PUBLIC MarketDataStatus final {
 };
 
 struct ROQ_PUBLIC OrderManagerStatus final {
-  const char *account;
+  std::string_view account;
   GatewayStatus status;
 };
 
 struct ROQ_PUBLIC SessionStatistics final {
-  const char *exchange;
-  const char *symbol;
+  std::string_view exchange;
+  std::string_view symbol;
   double pre_open_interest;
   double pre_settlement_price;
   double pre_close_price;
@@ -293,8 +294,8 @@ struct ROQ_PUBLIC SessionStatistics final {
 };
 
 struct ROQ_PUBLIC DailyStatistics final {
-  const char *exchange;
-  const char *symbol;
+  std::string_view exchange;
+  std::string_view symbol;
   double open_price;
   double settlement_price;
   double close_price;
@@ -312,8 +313,8 @@ struct ROQ_PUBLIC __attribute__((aligned(64))) MBPUpdate final {
 static_assert(sizeof(MBPUpdate) <= 64);
 
 struct ROQ_PUBLIC MarketByPrice final {
-  const char *exchange;
-  const char *symbol;
+  std::string_view exchange;
+  std::string_view symbol;
   size_t bid_length;
   const MBPUpdate *bid;
   size_t ask_length;
@@ -323,8 +324,8 @@ struct ROQ_PUBLIC MarketByPrice final {
 };
 
 struct ROQ_PUBLIC TradeSummary final {
-  const char *exchange;
-  const char *symbol;
+  std::string_view exchange;
+  std::string_view symbol;
   double price;
   double volume;
   double turnover;
@@ -333,8 +334,8 @@ struct ROQ_PUBLIC TradeSummary final {
 };
 
 struct ROQ_PUBLIC ReferenceData final {
-  const char *exchange;
-  const char *symbol;
+  std::string_view exchange;
+  std::string_view symbol;
   double tick_size;
   double limit_up;
   double limit_down;
@@ -342,15 +343,15 @@ struct ROQ_PUBLIC ReferenceData final {
 };
 
 struct ROQ_PUBLIC MarketStatus final {
-  const char *exchange;
-  const char *symbol;
+  std::string_view exchange;
+  std::string_view symbol;
   TradingStatus trading_status;
 };
 
 struct ROQ_PUBLIC PositionUpdate final {
-  const char *account;
-  const char *exchange;
-  const char *symbol;
+  std::string_view account;
+  std::string_view exchange;
+  std::string_view symbol;
   Side side;
   uint32_t last_trade_id;
   double position;
@@ -360,37 +361,37 @@ struct ROQ_PUBLIC PositionUpdate final {
 };
 
 struct ROQ_PUBLIC OrderUpdate final {
-  const char *account;
+  std::string_view account;
   uint32_t order_id;
-  const char *exchange;
-  const char *symbol;
+  std::string_view exchange;
+  std::string_view symbol;
   OrderStatus order_status;
   Side side;
   double limit_price;
   double remaining_quantity;
   double traded_quantity;
   PositionEffect position_effect;
-  const char *order_template;
+  std::string_view order_template;
   std::chrono::nanoseconds insert_time_utc;
   std::chrono::nanoseconds cancel_time_utc;
   uint32_t order_local_id;
-  const char *order_external_id;
+  std::string_view order_external_id;
 };
 
 struct ROQ_PUBLIC TradeUpdate final {
-  const char *account;
+  std::string_view account;
   uint32_t trade_id;
   uint32_t order_id;
-  const char *exchange;
-  const char *symbol;
+  std::string_view exchange;
+  std::string_view symbol;
   Side side;
   double quantity;
   double price;
   PositionEffect position_effect;
-  const char *order_template;
+  std::string_view order_template;
   std::chrono::nanoseconds trade_time_utc;
-  const char *order_external_id;
-  const char *trade_external_id;
+  std::string_view order_external_id;
+  std::string_view trade_external_id;
 };
 
 struct ROQ_PUBLIC Subscribe final {
@@ -399,59 +400,59 @@ struct ROQ_PUBLIC Subscribe final {
 };
 
 struct ROQ_PUBLIC CreateOrder final {
-  const char *account;
+  std::string_view account;
   uint32_t order_id;
-  const char *exchange;
-  const char *symbol;
+  std::string_view exchange;
+  std::string_view symbol;
   Side side;
   double quantity;
   OrderType order_type;
   double limit_price;
   TimeInForce time_in_force;
   PositionEffect position_effect;
-  const char *order_template;
+  std::string_view order_template;
 };
 
 struct ROQ_PUBLIC ModifyOrder final {
-  const char *account;
+  std::string_view account;
   uint32_t order_id;
   double quantity_change;
   double limit_price;
 };
 
 struct ROQ_PUBLIC CancelOrder final {
-  const char *account;
+  std::string_view account;
   uint32_t order_id;
 };
 
 struct ROQ_PUBLIC CreateOrderAck final {
-  const char *account;
+  std::string_view account;
   uint32_t order_id;
   bool failure;
-  const char *reason;
+  std::string_view reason;
   // ... for debugging
   uint32_t order_local_id;
-  const char *order_external_id;
+  std::string_view order_external_id;
 };
 
 struct ROQ_PUBLIC ModifyOrderAck final {
-  const char *account;
+  std::string_view account;
   uint32_t order_id;
   bool failure;
-  const char *reason;
+  std::string_view reason;
   // ... for debugging
   uint32_t order_local_id;
-  const char *order_external_id;
+  std::string_view order_external_id;
 };
 
 struct ROQ_PUBLIC CancelOrderAck final {
-  const char *account;
+  std::string_view account;
   uint32_t order_id;
   bool failure;
-  const char *reason;
+  std::string_view reason;
   // ... for debugging
   uint32_t order_local_id;
-  const char *order_external_id;
+  std::string_view order_external_id;
 };
 
 struct ROQ_PUBLIC CustomMessage final {
@@ -473,7 +474,7 @@ struct ROQ_PUBLIC TimerEvent final {
 
 struct ROQ_PUBLIC ConnectionStatusEvent final {
   uint8_t source;
-  const char *source_name;
+  std::string_view source_name;
   ConnectionStatus connection_status;
 };
 

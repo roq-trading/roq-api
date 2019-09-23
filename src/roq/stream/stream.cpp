@@ -46,7 +46,7 @@ Writer& write(Writer& writer, const MessageInfo& value) {
   const char *FORMAT =
     "{"
     "source=%d, "
-    "source_name=\"%s\", "
+    "source_name=\"%.*s\", "
     "source_seqno=%" PRIu64 ", "
     "receive_time_utc=%s, "
     "receive_time=%s, "
@@ -59,7 +59,7 @@ Writer& write(Writer& writer, const MessageInfo& value) {
   return writer.printf(
       FORMAT,
       static_cast<int>(value.source),
-      value.source_name,
+      static_cast<int>(value.source_name.length()), value.source_name.data(),
       value.source_seqno,
       receive_time_utc.c_str(),
       receive_time.c_str(),
@@ -113,11 +113,11 @@ template <typename Writer>
 Writer& write(Writer& writer, const DownloadBegin& value) {
   const char *FORMAT =
     "{"
-    "account=\"%s\""
+    "account=\"%.*s\""
     "}";
   return writer.printf(
       FORMAT,
-      value.account);
+      static_cast<int>(value.account.length()), value.account.data());
 }
 
 // DownloadEnd
@@ -126,12 +126,12 @@ template <typename Writer>
 Writer& write(Writer& writer, const DownloadEnd& value) {
   const char *FORMAT =
     "{"
-    "account=\"%s\", "
+    "account=\"%.*s\", "
     "max_order_id=%" PRIu32
     "}";
   return writer.printf(
       FORMAT,
-      value.account,
+      static_cast<int>(value.account.length()), value.account.data(),
       value.max_order_id);
 }
 
@@ -154,12 +154,12 @@ template <typename Writer>
 Writer& write(Writer& writer, const OrderManagerStatus& value) {
   const char *FORMAT =
     "{"
-    "account=\"%s\", "
+    "account=\"%.*s\", "
     "status=%s"
     "}";
   return writer.printf(
       FORMAT,
-      value.account,
+      static_cast<int>(value.account.length()), value.account.data(),
       EnumNameGatewayStatus(value.status));
 }
 
@@ -168,8 +168,8 @@ Writer& write(Writer& writer, const SessionStatistics& value) {
   stream::TimePointStr<decltype(value.exchange_time_utc)> exchange_time_utc(value.exchange_time_utc);
   const char *FORMAT =
     "{"
-    "exchange=\"%s\", "
-    "symbol=\"%s\", "
+    "exchange=\"%.*s\", "
+    "symbol=\"%.*s\", "
     "pre_open_interest=%" FLOAT_REPR ", "
     "pre_settlement_price=%" FLOAT_REPR ", "
     "pre_close_price=%" FLOAT_REPR ", "
@@ -181,8 +181,8 @@ Writer& write(Writer& writer, const SessionStatistics& value) {
     "}";
   return writer.printf(
       FORMAT,
-      value.exchange,
-      value.symbol,
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data(),
       value.pre_open_interest,
       value.pre_settlement_price,
       value.pre_close_price,
@@ -198,8 +198,8 @@ Writer& write(Writer& writer, const DailyStatistics& value) {
   stream::TimePointStr<decltype(value.exchange_time_utc)> exchange_time_utc(value.exchange_time_utc);
   const char *FORMAT =
     "{"
-    "exchange=\"%s\", "
-    "symbol=\"%s\", "
+    "exchange=\"%.*s\", "
+    "symbol=\"%.*s\", "
     "open_price=%" FLOAT_REPR ", "
     "settlement_price=%" FLOAT_REPR ", "
     "close_price=%" FLOAT_REPR ", "
@@ -208,8 +208,8 @@ Writer& write(Writer& writer, const DailyStatistics& value) {
     "}";
   return writer.printf(
       FORMAT,
-      value.exchange,
-      value.symbol,
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data(),
       value.open_price,
       value.settlement_price,
       value.close_price,
@@ -224,13 +224,13 @@ Writer& write(Writer& writer, const MarketByPrice& value) {
   stream::TimePointStr<decltype(value.exchange_time_utc)> exchange_time_utc(value.exchange_time_utc);
   const char *FORMAT_1 =
     "{"
-    "exchange=\"%s\", "
-    "symbol=\"%s\", "
+    "exchange=\"%.*s\", "
+    "symbol=\"%.*s\", "
     "bid=[";
   writer.printf(
       FORMAT_1,
-      value.exchange,
-      value.symbol);
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data());
   for (size_t i = 0; i < value.bid_length; ++i) {
     if (i)
       writer.printf(", ");
@@ -264,8 +264,8 @@ Writer& write(Writer& writer, const TradeSummary& value) {
   stream::TimePointStr<decltype(value.exchange_time_utc)> exchange_time_utc(value.exchange_time_utc);
   const char *FORMAT =
     "{"
-    "exchange=\"%s\", "
-    "symbol=\"%s\", "
+    "exchange=\"%.*s\", "
+    "symbol=\"%.*s\", "
     "price=%" FLOAT_REPR ", "
     "volume=%" FLOAT_REPR ", "
     "turnover=%" FLOAT_REPR ", "
@@ -274,8 +274,8 @@ Writer& write(Writer& writer, const TradeSummary& value) {
     "}";
   return writer.printf(
       FORMAT,
-      value.exchange,
-      value.symbol,
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data(),
       value.price,
       value.volume,
       value.turnover,
@@ -289,8 +289,8 @@ template <typename Writer>
 Writer& write(Writer& writer, const ReferenceData& value) {
   const char *FORMAT =
     "{"
-    "exchange=\"%s\", "
-    "symbol=\"%s\", "
+    "exchange=\"%.*s\", "
+    "symbol=\"%.*s\", "
     "tick_size=%" FLOAT_REPR ", "
     "limit_up=%" FLOAT_REPR ", "
     "limit_down=%" FLOAT_REPR ", "
@@ -298,8 +298,8 @@ Writer& write(Writer& writer, const ReferenceData& value) {
     "}";
   return writer.printf(
       FORMAT,
-      value.exchange,
-      value.symbol,
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data(),
       value.tick_size,
       value.limit_up,
       value.limit_down,
@@ -312,14 +312,14 @@ template <typename Writer>
 Writer& write(Writer& writer, const MarketStatus& value) {
   const char *FORMAT =
     "{"
-    "exchange=\"%s\", "
-    "symbol=\"%s\", "
+    "exchange=\"%.*s\", "
+    "symbol=\"%.*s\", "
     "trading_status=%s"
     "}";
   return writer.printf(
       FORMAT,
-      value.exchange,
-      value.symbol,
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data(),
       EnumNameTradingStatus(value.trading_status));
 }
 
@@ -329,9 +329,9 @@ template <typename Writer>
 Writer& write(Writer& writer, const PositionUpdate& value) {
   const char *FORMAT =
     "{"
-    "account=\"%s\", "
-    "exchange=\"%s\", "
-    "symbol=\"%s\", "
+    "account=\"%.*s\", "
+    "exchange=\"%.*s\", "
+    "symbol=\"%.*s\", "
     "side=%s, "
     "last_trade_id=%" PRIu32 ", "
     "position=%" FLOAT_REPR ", "
@@ -341,9 +341,9 @@ Writer& write(Writer& writer, const PositionUpdate& value) {
     "}";
   return writer.printf(
       FORMAT,
-      value.account,
-      value.exchange,
-      value.symbol,
+      static_cast<int>(value.account.length()), value.account.data(),
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data(),
       EnumNameSide(value.side),
       value.last_trade_id,
       value.position,
@@ -360,39 +360,39 @@ Writer& write(Writer& writer, const OrderUpdate& value) {
   stream::TimePointStr<decltype(value.cancel_time_utc)> cancel_time_utc(value.cancel_time_utc);
   const char *FORMAT =
     "{"
-    "account=\"%s\", "
+    "account=\"%.*s\", "
     "order_id=%" PRIu32 ", "
-    "exchange=\"%s\", "
-    "symbol=\"%s\", "
+    "exchange=\"%.*s\", "
+    "symbol=\"%.*s\", "
     "order_status=%s, "
     "side=%s, "
     "limit_price=%" FLOAT_REPR ", "
     "remaining_quantity=%" FLOAT_REPR ", "
     "traded_quantity=%" FLOAT_REPR ", "
     "position_effect=%s, "
-    "order_template=\"%s\", "
+    "order_template=\"%.*s\", "
     "insert_time_utc=%s, "
     "cancel_time_utc=%s, "
     "order_local_id=%" PRIu32 ", "
-    "order_external_id=\"%s\""
+    "order_external_id=\"%.*s\""
     "}";
   return writer.printf(
       FORMAT,
-      value.account,
+      static_cast<int>(value.account.length()), value.account.data(),
       value.order_id,
-      value.exchange,
-      value.symbol,
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data(),
       EnumNameOrderStatus(value.order_status),
       EnumNameSide(value.side),
       value.limit_price,
       value.remaining_quantity,
       value.traded_quantity,
       EnumNamePositionEffect(value.position_effect),
-      value.order_template,
+      static_cast<int>(value.order_template.length()), value.order_template.data(),
       insert_time_utc.c_str(),
       cancel_time_utc.c_str(),
       value.order_local_id,
-      value.order_external_id);
+      static_cast<int>(value.order_external_id.length()), value.order_external_id.data());
 }
 
 // TradeUpdate
@@ -402,35 +402,35 @@ Writer& write(Writer& writer, const TradeUpdate& value) {
   stream::TimePointStr<decltype(value.trade_time_utc)> trade_time_utc(value.trade_time_utc);
   const char *FORMAT =
     "{"
-    "account=\"%s\", "
+    "account=\"%.*s\", "
     "trade_id=%" PRIu32 ", "
     "order_id=%" PRIu32 ", "
-    "exchange=\"%s\", "
-    "symbol=\"%s\", "
+    "exchange=\"%.*s\", "
+    "symbol=\"%.*s\", "
     "side=%s, "
     "quantity=%" FLOAT_REPR ", "
     "price=%" FLOAT_REPR ", "
     "position_effect=%s, "
-    "order_template=\"%s\", "
+    "order_template=\"%.*s\", "
     "trade_time_utc=%s, "
-    "order_external_id=\"%s\", "
-    "trade_external_id=\"%s\""
+    "order_external_id=\"%.*s\", "
+    "trade_external_id=\"%.*s\""
     "}";
   return writer.printf(
       FORMAT,
-      value.account,
+      static_cast<int>(value.account.length()), value.account.data(),
       value.trade_id,
       value.order_id,
-      value.exchange,
-      value.symbol,
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data(),
       EnumNameSide(value.side),
       value.quantity,
       value.price,
       EnumNamePositionEffect(value.position_effect),
-      value.order_template,
+      static_cast<int>(value.order_template.length()), value.order_template.data(),
       trade_time_utc.c_str(),
-      value.order_external_id,
-      value.trade_external_id);
+      static_cast<int>(value.order_external_id.length()), value.order_external_id.data(),
+      static_cast<int>(value.trade_external_id.length()), value.trade_external_id.data());
 }
 
 // CreteOrder
@@ -439,31 +439,31 @@ template <typename Writer>
 Writer& write(Writer& writer, const CreateOrder& value) {
   const char *FORMAT =
       "{"
-      "account=\"%s\", "
+      "account=\"%.*s\", "
       "order_id=%" PRIu32 ", "
-      "exchange=\"%s\", "
-      "symbol=\"%s\", "
+      "exchange=\"%.*s\", "
+      "symbol=\"%.*s\", "
       "side=%s, "
       "quantity=%" FLOAT_REPR ", "
       "order_type=%s, "
       "limit_price=%" FLOAT_REPR ", "
       "time_in_force=%s, "
       "position_effect=%s, "
-      "order_template=\"%s\""
+      "order_template=\"%.*s\""
       "}";
   return writer.printf(
       FORMAT,
-      value.account,
+      static_cast<int>(value.account.length()), value.account.data(),
       value.order_id,
-      value.exchange,
-      value.symbol,
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data(),
       EnumNameSide(value.side),
       value.quantity,
       EnumNameOrderType(value.order_type),
       value.limit_price,
       EnumNameTimeInForce(value.time_in_force),
       EnumNamePositionEffect(value.position_effect),
-      value.order_template);
+      static_cast<int>(value.order_template.length()), value.order_template.data());
 }
 
 // ModifyOrder
@@ -472,14 +472,14 @@ template <typename Writer>
 Writer& write(Writer& writer, const ModifyOrder& value) {
   const char *FORMAT =
     "{"
-    "account=\"%s\", "
+    "account=\"%.*s\", "
     "order_id=%" PRIu32 ", "
     "quantity_change=%" FLOAT_REPR ", "
     "limit_price=%" FLOAT_REPR
     "}";
   return writer.printf(
       FORMAT,
-      value.account,
+      static_cast<int>(value.account.length()), value.account.data(),
       value.order_id,
       value.quantity_change,
       value.limit_price);
@@ -491,12 +491,12 @@ template <typename Writer>
 Writer& write(Writer& writer, const CancelOrder& value) {
   const char *FORMAT =
     "{"
-    "account=\"%s\", "
+    "account=\"%.*s\", "
     "order_id=%" PRIu32
     "}";
   return writer.printf(
       FORMAT,
-      value.account,
+      static_cast<int>(value.account.length()), value.account.data(),
       value.order_id);
 }
 
@@ -506,21 +506,21 @@ template <typename Writer>
 Writer& write(Writer& writer, const CreateOrderAck& value) {
   const char *FORMAT =
     "{"
-    "account=\"%s\", "
+    "account=\"%.*s\", "
     "order_id=%" PRIu32 ", "
     "failure=%s, "
-    "reason=\"%s\", "
+    "reason=\"%.*s\", "
     "order_local_id=%" PRIu32 ", "
-    "order_external_id=\"%s\""
+    "order_external_id=\"%.*s\""
     "}";
   return writer.printf(
       FORMAT,
-      value.account,
+      static_cast<int>(value.account.length()), value.account.data(),
       value.order_id,
       value.failure ? "true" : "false",
-      value.reason,
+      static_cast<int>(value.reason.length()), value.reason.data(),
       value.order_local_id,
-      value.order_external_id);
+      static_cast<int>(value.order_external_id.length()), value.order_external_id.data());
 }
 
 // ModifyOrderAck
@@ -529,21 +529,21 @@ template <typename Writer>
 Writer& write(Writer& writer, const ModifyOrderAck& value) {
   const char *FORMAT =
     "{"
-    "account=\"%s\", "
+    "account=\"%.*s\", "
     "order_id=%" PRIu32 ", "
     "failure=%s, "
-    "reason=\"%s\", "
+    "reason=\"%.*s\", "
     "order_local_id=%" PRIu32 ", "
-    "order_external_id=\"%s\""
+    "order_external_id=\"%.*s\""
     "}";
   return writer.printf(
       FORMAT,
-      value.account,
+      static_cast<int>(value.account.length()), value.account.data(),
       value.order_id,
       value.failure ? "true" : "false",
-      value.reason,
+      static_cast<int>(value.reason.length()), value.reason.data(),
       value.order_local_id,
-      value.order_external_id);
+      static_cast<int>(value.order_external_id.length()), value.order_external_id.data());
 }
 
 // CancelOrderAck
@@ -552,21 +552,21 @@ template <typename Writer>
 Writer& write(Writer& writer, const CancelOrderAck& value) {
   const char *FORMAT =
     "{"
-    "account=\"%s\", "
+    "account=\"%.*s\", "
     "order_id=%" PRIu32 ", "
     "failure=%s, "
-    "reason=\"%s\", "
+    "reason=\"%.*s\", "
     "order_local_id=%" PRIu32 ", "
-    "order_external_id=\"%s\""
+    "order_external_id=\"%.*s\""
     "}";
   return writer.printf(
       FORMAT,
-      value.account,
+      static_cast<int>(value.account.length()), value.account.data(),
       value.order_id,
       value.failure ? "true" : "false",
-      value.reason,
+      static_cast<int>(value.reason.length()), value.reason.data(),
       value.order_local_id,
-      value.order_external_id);
+      static_cast<int>(value.order_external_id.length()), value.order_external_id.data());
 }
 
 // StartEvent
@@ -612,13 +612,13 @@ Writer& write(Writer& writer, const ConnectionStatusEvent& value) {
   const char *FORMAT =
     "{"
     "source=%d, "
-    "source_name=\"%s\", "
+    "source_name=\"%.*s\", "
     "connection_status=%s"
     "}";
   return writer.printf(
       FORMAT,
       static_cast<int>(value.source),
-      value.source_name,
+      static_cast<int>(value.source_name.length()), value.source_name.data(),
       EnumNameConnectionStatus(value.connection_status));
 }
 

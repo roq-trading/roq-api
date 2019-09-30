@@ -21,10 +21,10 @@ roq_api_test_LDADD = \
 	$(FMT_LIBS) \
 	libgtest.la
 roq_api_test_CPPFLAGS = \
-	$(PTHREAD_CFLAGS) \
-	$(GTEST_CFLAGS) \
 	-I$(top_srcdir)/include \
-	-I$(top_srcdir)/src
+	-I$(top_srcdir)/src \
+	$(PTHREAD_CFLAGS) \
+	$(GTEST_CFLAGS)
 nodist_roq_api_test_SOURCES = \
 	alignment.cpp \
 	format.cpp \

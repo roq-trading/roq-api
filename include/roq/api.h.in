@@ -673,15 +673,15 @@ class ROQ_PUBLIC Generator : NonCopyable {
  public:
   class ROQ_PUBLIC Dispatcher : NonCopyable {
    public:
-    virtual void on(const MarketDataStatusEvent& event) = 0;
-    virtual void on(const OrderManagerStatusEvent& event) = 0;
-    virtual void on(const SessionStatisticsEvent& event) = 0;
-    virtual void on(const DailyStatisticsEvent& event) = 0;
-    virtual void on(const MarketByPriceEvent& event) = 0;
-    virtual void on(const TradeSummaryEvent& event) = 0;
-    virtual void on(const ReferenceDataEvent& event) = 0;
-    virtual void on(const MarketStatusEvent& event) = 0;
-    virtual void on(const PositionUpdateEvent& event) = 0;
+    virtual void operator()(const MarketDataStatusEvent&) = 0;
+    virtual void operator()(const OrderManagerStatusEvent&) = 0;
+    virtual void operator()(const SessionStatisticsEvent&) = 0;
+    virtual void operator()(const DailyStatisticsEvent&) = 0;
+    virtual void operator()(const MarketByPriceEvent&) = 0;
+    virtual void operator()(const TradeSummaryEvent&) = 0;
+    virtual void operator()(const ReferenceDataEvent&) = 0;
+    virtual void operator()(const MarketStatusEvent&) = 0;
+    virtual void operator()(const PositionUpdateEvent&) = 0;
   };
   virtual ~Generator() {}
   virtual std::pair<bool, std::chrono::nanoseconds> fetch() = 0;
@@ -694,22 +694,22 @@ class ROQ_PUBLIC Matcher : NonCopyable {
  public:
   class ROQ_PUBLIC Dispatcher : NonCopyable {
    public:
-    virtual void on(const DownloadBeginEvent& event) = 0;
-    virtual void on(const DownloadEndEvent& event) = 0;
-    virtual void on(const MarketDataStatusEvent& event) = 0;
-    virtual void on(const OrderManagerStatusEvent& event) = 0;
-    virtual void on(const ReferenceDataEvent& event) = 0;
-    virtual void on(const MarketStatusEvent& event) = 0;
-    virtual void on(const SessionStatisticsEvent& event) = 0;
-    virtual void on(const DailyStatisticsEvent& event) = 0;
-    virtual void on(const MarketByPriceEvent& event) = 0;
-    virtual void on(const TradeSummaryEvent& event) = 0;
-    virtual void on(const PositionUpdateEvent& event) = 0;
-    virtual void on(const OrderUpdateEvent& event) = 0;
-    virtual void on(const TradeUpdateEvent& event) = 0;
-    virtual void on(const CreateOrderAckEvent& event) = 0;
-    virtual void on(const ModifyOrderAckEvent& event) = 0;
-    virtual void on(const CancelOrderAckEvent& event) = 0;
+    virtual void operator()(const DownloadBeginEvent&) = 0;
+    virtual void operator()(const DownloadEndEvent&) = 0;
+    virtual void operator()(const MarketDataStatusEvent&) = 0;
+    virtual void operator()(const OrderManagerStatusEvent&) = 0;
+    virtual void operator()(const ReferenceDataEvent&) = 0;
+    virtual void operator()(const MarketStatusEvent&) = 0;
+    virtual void operator()(const SessionStatisticsEvent&) = 0;
+    virtual void operator()(const DailyStatisticsEvent&) = 0;
+    virtual void operator()(const MarketByPriceEvent&) = 0;
+    virtual void operator()(const TradeSummaryEvent&) = 0;
+    virtual void operator()(const PositionUpdateEvent&) = 0;
+    virtual void operator()(const OrderUpdateEvent&) = 0;
+    virtual void operator()(const TradeUpdateEvent&) = 0;
+    virtual void operator()(const CreateOrderAckEvent&) = 0;
+    virtual void operator()(const ModifyOrderAckEvent&) = 0;
+    virtual void operator()(const CancelOrderAckEvent&) = 0;
   };
 
   virtual ~Matcher() {}
@@ -718,18 +718,18 @@ class ROQ_PUBLIC Matcher : NonCopyable {
       Dispatcher& dispatcher,
       std::chrono::nanoseconds next) = 0;
 
-  virtual void on(const MarketDataStatusEvent& event) = 0;
-  virtual void on(const OrderManagerStatusEvent& event) = 0;
-  virtual void on(const ReferenceDataEvent& event) = 0;
-  virtual void on(const MarketStatusEvent& event) = 0;
-  virtual void on(const SessionStatisticsEvent& event) = 0;
-  virtual void on(const DailyStatisticsEvent& event) = 0;
-  virtual void on(const MarketByPriceEvent& event) = 0;
-  virtual void on(const TradeSummaryEvent& event) = 0;
-  virtual void on(const PositionUpdateEvent& event) = 0;
-  virtual void on(const CreateOrderEvent& event) = 0;
-  virtual void on(const ModifyOrderEvent& event) = 0;
-  virtual void on(const CancelOrderEvent& event) = 0;
+  virtual void operator()(const MarketDataStatusEvent&) = 0;
+  virtual void operator()(const OrderManagerStatusEvent&) = 0;
+  virtual void operator()(const ReferenceDataEvent&) = 0;
+  virtual void operator()(const MarketStatusEvent&) = 0;
+  virtual void operator()(const SessionStatisticsEvent&) = 0;
+  virtual void operator()(const DailyStatisticsEvent&) = 0;
+  virtual void operator()(const MarketByPriceEvent&) = 0;
+  virtual void operator()(const TradeSummaryEvent&) = 0;
+  virtual void operator()(const PositionUpdateEvent&) = 0;
+  virtual void operator()(const CreateOrderEvent&) = 0;
+  virtual void operator()(const ModifyOrderEvent&) = 0;
+  virtual void operator()(const CancelOrderEvent&) = 0;
 };
 
 struct ROQ_PUBLIC Account {

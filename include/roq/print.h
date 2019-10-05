@@ -10,7 +10,7 @@
 namespace roq {
 
 template <size_t N>
-class BasicBufferWriter : NonCopyable {
+class BasicBufferWriter {
  public:
   explicit BasicBufferWriter(char *buffer)
       : _begin(buffer),
@@ -70,6 +70,10 @@ class BasicBufferWriter : NonCopyable {
   char *_pointer;
   size_t _length = N;
   bool _failed = false;
+
+  BasicBufferWriter(BasicBufferWriter&&) = delete;
+  BasicBufferWriter(const BasicBufferWriter&) = delete;
+  void operator=(const BasicBufferWriter&) = delete;
 };
 
 template <size_t N>

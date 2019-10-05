@@ -6,7 +6,7 @@
 
 namespace roq {
 
-class ROQ_PUBLIC Application : NonCopyable {
+class ROQ_PUBLIC Application {
  public:
   Application(
       int argc,
@@ -23,6 +23,10 @@ class ROQ_PUBLIC Application : NonCopyable {
  private:
   char **_argv;
   int _argc;
+
+  Application(Application&&) = delete;
+  Application(const Application&) = delete;
+  void operator=(const Application&) = delete;
 };
 
 }  // namespace roq

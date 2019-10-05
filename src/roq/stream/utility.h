@@ -10,7 +10,7 @@ namespace roq {
 namespace stream {
 
 // BasicTimePointStr
-class BasicTimePointStr : NonCopyable {
+class BasicTimePointStr {
  public:
   explicit BasicTimePointStr(std::chrono::nanoseconds nanoseconds);
   const char *c_str() const {
@@ -19,6 +19,10 @@ class BasicTimePointStr : NonCopyable {
 
  private:
   char _result[30];  // YYYY-MM-DDTHH:MM:SS.NNNNNNNNN\0
+
+  BasicTimePointStr(BasicTimePointStr&&) = delete;
+  BasicTimePointStr(const BasicTimePointStr&) = delete;
+  void operator=(const BasicTimePointStr&) = delete;
 };  // BasicTimePointStr
 
 // TimePointStr
@@ -32,7 +36,7 @@ class TimePointStr final : public BasicTimePointStr {
 };  // TimePointStr
 
 // BasicClockStr
-class BasicClockStr : NonCopyable {
+class BasicClockStr {
  public:
   explicit BasicClockStr(std::chrono::nanoseconds nanoseconds);
   const char *c_str() const {
@@ -41,6 +45,10 @@ class BasicClockStr : NonCopyable {
 
  private:
   char _result[21];  // SSSSSSSSSS.NNNNNNNNN\0
+
+  BasicClockStr(BasicClockStr&&) = delete;
+  BasicClockStr(const BasicClockStr&) = delete;
+  void operator=(const BasicClockStr&) = delete;
 };  // BasicClockStr
 
 // ClockStr

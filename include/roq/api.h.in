@@ -637,21 +637,6 @@ class ROQ_PUBLIC OrderNotLive : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
-class ROQ_PUBLIC NonMovable {
- private:
-  NonMovable(NonMovable&&) = default;
-};
-
-class ROQ_PUBLIC NonCopyable {
- public:
-  NonCopyable() = default;
-  NonCopyable(NonCopyable&&) = default;
-
- private:
-  NonCopyable(const NonCopyable&) = delete;
-  void operator=(const NonCopyable&) = delete;
-};
-
 // utilities
 
 struct ROQ_PUBLIC Layer final {
@@ -663,9 +648,9 @@ struct ROQ_PUBLIC Layer final {
 
 /* Interface used to implement an event generator.
  */
-class ROQ_PUBLIC Generator : NonCopyable {
+class ROQ_PUBLIC Generator {
  public:
-  class ROQ_PUBLIC Dispatcher : NonCopyable {
+  class ROQ_PUBLIC Dispatcher {
    public:
     virtual void operator()(const MarketDataStatusEvent&) = 0;
     virtual void operator()(const OrderManagerStatusEvent&) = 0;
@@ -677,6 +662,7 @@ class ROQ_PUBLIC Generator : NonCopyable {
     virtual void operator()(const MarketStatusEvent&) = 0;
     virtual void operator()(const PositionUpdateEvent&) = 0;
   };
+
   virtual ~Generator() {}
   virtual std::pair<bool, std::chrono::nanoseconds> fetch() = 0;
   virtual void dispatch(Dispatcher& dispatcher) = 0;
@@ -684,9 +670,9 @@ class ROQ_PUBLIC Generator : NonCopyable {
 
 /* Interface used to implement order matching
  */
-class ROQ_PUBLIC Matcher : NonCopyable {
+class ROQ_PUBLIC Matcher {
  public:
-  class ROQ_PUBLIC Dispatcher : NonCopyable {
+  class ROQ_PUBLIC Dispatcher {
    public:
     virtual void operator()(const DownloadBeginEvent&) = 0;
     virtual void operator()(const DownloadEndEvent&) = 0;

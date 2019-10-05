@@ -55,7 +55,7 @@ template <uint64_t N0,
           uint64_t N3,
           uint64_t N4,
           uint64_t N5>
-struct alignas(cache_line_size()) Histogram : NonCopyable {
+struct alignas(cache_line_size()) Histogram {
  public:
   constexpr uint64_t threshold() const {
     return N5;
@@ -68,6 +68,8 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
       : _name(name),
         _labels(labels) {
   }
+
+  Histogram(Histogram&&) = default;
 
   inline void prefetch() {
     __builtin_prefetch(&_data, 1, 3);
@@ -140,16 +142,22 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
   static_assert(sizeof(Data) == cache_line_size());
   const std::string _name;
   const std::string _labels;
+
+ private:
+  Histogram(const Histogram&) = delete;
+  void operator=(const Histogram&) = delete;
 };
 
 template <typename T>
-class alignas(cache_line_size()) Counter : NonCopyable {
+class alignas(cache_line_size()) Counter {
  public:
   Counter(const std::string& name, const std::string& labels)
       : _data{0},
         _name(name),
         _labels(labels) {
   }
+
+  Counter(Counter&&) = default;
 
   Counter& operator++() {
     __atomic_fetch_add(&_data.value, 1, __ATOMIC_RELEASE);
@@ -171,16 +179,22 @@ class alignas(cache_line_size()) Counter : NonCopyable {
   static_assert(sizeof(Data) == cache_line_size());
   const std::string _name;
   const std::string _labels;
+
+ private:
+  Counter(const Counter&) = delete;
+  void operator=(const Counter&) = delete;
 };
 
 template <typename T>
-class alignas(cache_line_size()) Gauge : NonCopyable {
+class alignas(cache_line_size()) Gauge {
  public:
   Gauge(const std::string& name, const std::string& labels)
       : _data{0},
         _name(name),
         _labels(labels) {
   }
+
+  Gauge(Gauge&&) = default;
 
   void set(T value) {
     atomic_release(&_data.value, value);
@@ -202,6 +216,10 @@ class alignas(cache_line_size()) Gauge : NonCopyable {
   static_assert(sizeof(Data) == cache_line_size());
   const std::string _name;
   const std::string _labels;
+
+ private:
+  Gauge(const Gauge&) = delete;
+  void operator=(const Gauge&) = delete;
 };
 
 }  // namespace roq

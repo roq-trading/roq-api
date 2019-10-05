@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "roq/api.h"
+#include "roq/builtins.h"
 #include "roq/static.h"
 
 // The interface borrows heavily from glog and Easylogging++
@@ -106,7 +107,7 @@ class ROQ_PUBLIC NullStream : public LogMessage::LogStream {
   char _buffer[2];
 };  // class NullStream
 template <typename T>
-roq::detail::NullStream&
+::roq::detail::NullStream&
 operator<<(NullStream& stream, T&) {
   return stream;
 }
@@ -130,8 +131,8 @@ struct ROQ_PUBLIC Logger final {
 // Raw logging itnerface
 #define RAW_LOG(logger, sink) \
   logger( \
-      roq::static_basename_string(__FILE__).append( \
-          roq::static_string(":" STRINGIFY(__LINE__) "] ")).data(), sink).stream()
+      ::roq::static_basename_string(__FILE__).append( \
+          ::roq::static_string(":" STRINGIFY(__LINE__) "] ")).data(), sink).stream()
 
 // Sink selectors
 #define LOG_INFO(logger) RAW_LOG(logger, ::roq::detail::info)
@@ -145,7 +146,7 @@ struct ROQ_PUBLIC Logger final {
 
 // Conditional logging
 #define LOG_IF(level, condition) \
-    ROQ_LIKELY(!(condition)) \
+    ::roq::likely(!(condition)) \
     ? (void)(0) \
     : ::roq::detail::LogMessageVoidify() & LOG(level)
 

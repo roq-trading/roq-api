@@ -2,7 +2,7 @@ pkgincludedir=$(includedir)/roq
 pkginclude_HEADERS = \
 	api.h \
 	application.h \
-	atomic.h \
+	builtins.h \
 	event.h \
 	format.h \
 	logging.h \

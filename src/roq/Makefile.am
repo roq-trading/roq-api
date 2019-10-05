@@ -15,4 +15,5 @@ libroq_api_la_CPPFLAGS = \
 	-I$(top_builddir)/include \
 	-I$(top_srcdir)/src
 libroq_api_la_SOURCES = \
+	builtins.cpp \
 	application.cpp

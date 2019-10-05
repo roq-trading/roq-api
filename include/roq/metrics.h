@@ -10,7 +10,7 @@
 #include <string_view>
 
 #include "roq/api.h"
-#include "roq/atomic.h"
+#include "roq/builtins.h"
 #include "roq/platform.h"
 
 namespace roq {
@@ -102,7 +102,7 @@ struct alignas(cache_line_size()) Histogram : NonCopyable {
   Metrics& write(
       Metrics& metrics,
       const std::string_view& labels) const {
-    auto sum = __atomic_load_8(&_data.sum, __ATOMIC_ACQUIRE);
+    auto sum = atomic_acquire(&_data.sum);
     auto bucket_0 = _data.bucket_0;
     auto bucket_1 = bucket_0 + _data.bucket_1;
     auto bucket_2 = bucket_1 + _data.bucket_2;
@@ -157,7 +157,7 @@ class alignas(cache_line_size()) Counter : NonCopyable {
   }
 
   void write(Metrics& metrics) const {
-    auto value = __atomic_load_8(&_data.value, __ATOMIC_ACQUIRE);
+    auto value = atomic_acquire(&_data.value);
     metrics
       .write_type(_name, "counter")
       .write_simple(_name, _labels, value)
@@ -183,12 +183,12 @@ class alignas(cache_line_size()) Gauge : NonCopyable {
   }
 
   void set(T value) {
-    __atomic_store(&_data.value, value, __ATOMIC_RELEASE);
+    atomic_release(&_data.value, value);
     return *this;
   }
 
   void write(Metrics& metrics) const {
-    auto value = __atomic_load_8(&_data.value, __ATOMIC_ACQUIRE);
+    auto value = atomic_acquire(&_data.value);
     metrics
       .write_type(_name, "gauge")
       .write_simple(_name, _labels, value)

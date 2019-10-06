@@ -128,7 +128,7 @@ struct ROQ_PUBLIC Logger final {
 #define STRINGIFY(number) STRINGIFY2(number)
 #define STRINGIFY2(number) #number
 
-// Raw logging itnerface
+// Raw logging interface
 #define RAW_LOG(logger, sink) \
   logger( \
       ::roq::static_basename_string(__FILE__).append( \

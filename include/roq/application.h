@@ -13,6 +13,9 @@ class ROQ_PUBLIC Application {
       char **argv,
       const char *description,
       const char *version = ROQ_VERSION);
+
+  Application(Application&&) = default;
+
   virtual ~Application();
 
   int run();
@@ -24,7 +27,6 @@ class ROQ_PUBLIC Application {
   char **_argv;
   int _argc;
 
-  Application(Application&&) = delete;
   Application(const Application&) = delete;
   void operator=(const Application&) = delete;
 };

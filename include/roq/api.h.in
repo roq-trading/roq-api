@@ -47,10 +47,11 @@ inline const char *EnumNameConnectionStatus(ConnectionStatus e) {
 
 enum class GatewayStatus : int8_t {
   DISCONNECTED = 0,
-  LOGIN_SENT = 1,
-  DOWNLOADING = 2,
-  READY = 3,
-  LOGGED_OUT = 4,
+  CONNECTING = 1,
+  LOGIN_SENT = 2,
+  DOWNLOADING = 3,
+  READY = 4,
+  LOGGED_OUT = 5,
   MIN = DISCONNECTED,
   MAX = LOGGED_OUT
 };
@@ -58,6 +59,7 @@ enum class GatewayStatus : int8_t {
 inline const char * const *EnumNamesGatewayStatus() {
   static const char * const names[] = {
     "DISCONNECTED",
+    "CONNECTING",
     "LOGIN_SENT",
     "DOWNLOADING",
     "READY",

@@ -742,4 +742,22 @@ struct ROQ_PUBLIC User {
   } limits;
 };
 
+// utilities
+
+inline Side invert(Side side) {
+  switch (side) {
+    case Side::BUY: return Side::SELL;
+    case Side::SELL: return Side::BUY;
+    default: return side;
+  }
+}
+
+inline int sign(Side side) {
+  switch (side) {
+    case Side::BUY: return 1;
+    case Side::SELL: return -1;
+    default: return 0;
+  }
+}
+
 }  // namespace roq

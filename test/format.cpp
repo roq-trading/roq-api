@@ -32,18 +32,18 @@ TEST(format, subscribe) {
 
 TEST(format, market_by_price) {
   roq::MBPUpdate bid[] = {
-    { .price = 1.0, .quantity = 2.0, .action = UpdateAction::NEW },
-    { .price = 2.0, .quantity = 4.0, .action = UpdateAction::NEW },
-    { .price = 3.0, .quantity = 8.0, .action = UpdateAction::NEW },
-    { .price = 4.0, .quantity = 10.0, .action = UpdateAction::NEW },
-    { .price = 5.0, .quantity = 12.0, .action = UpdateAction::NEW },
+    { .price = 1.0, .quantity = 2.0, .action = UpdateAction::NEW, .index = 0 },
+    { .price = 2.0, .quantity = 4.0, .action = UpdateAction::NEW, .index = 0 },
+    { .price = 3.0, .quantity = 8.0, .action = UpdateAction::NEW, .index = 0 },
+    { .price = 4.0, .quantity = 10.0, .action = UpdateAction::NEW, .index = 0 },
+    { .price = 5.0, .quantity = 12.0, .action = UpdateAction::NEW, .index = 0 },
   };
   roq::MBPUpdate ask[] = {
-    { .price = 1.0, .quantity = 2.0, .action = UpdateAction::NEW },
-    { .price = 2.0, .quantity = 4.0, .action = UpdateAction::NEW },
-    { .price = 3.0, .quantity = 8.0, .action = UpdateAction::NEW },
-    { .price = 4.0, .quantity = 10.0, .action = UpdateAction::NEW },
-    { .price = 5.0, .quantity = 12.0, .action = UpdateAction::NEW },
+    { .price = 1.0, .quantity = 2.0, .action = UpdateAction::NEW, .index = 0 },
+    { .price = 2.0, .quantity = 4.0, .action = UpdateAction::NEW, .index = 0 },
+    { .price = 3.0, .quantity = 8.0, .action = UpdateAction::NEW, .index = 0 },
+    { .price = 4.0, .quantity = 10.0, .action = UpdateAction::NEW, .index = 0 },
+    { .price = 5.0, .quantity = 12.0, .action = UpdateAction::NEW, .index = 0 },
   };
   roq::MarketByPrice market_by_price {
     .exchange = "CFFEX",

@@ -164,11 +164,36 @@ struct fmt::formatter<roq::MBPUpdate> {
         "{{"
         "price={}, "
         "quantity={}, "
-        "action={}"
+        "action={}, "
+        "index={}"
         "}}",
         value.price,
         value.quantity,
-        value.action);
+        value.action,
+        value.index);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trade> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::Trade& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "price={}, "
+        "quantity={}, "
+        "side={}, "
+        "trade_id={}"
+        "}}",
+        value.price,
+        value.quantity,
+        value.side,
+        value.trade_id);
   }
 };
 
@@ -404,18 +429,12 @@ struct fmt::formatter<roq::TradeSummary> {
         "{{"
         "exchange=\"{}\", "
         "symbol=\"{}\", "
-        "price={}, "
-        "volume={}, "
-        "turnover={}, "
-        "side={}, "
+        "trade=[{}], "
         "exchange_time_utc={}"
         "}}",
         value.exchange,
         value.symbol,
-        value.price,
-        value.volume,
-        value.turnover,
-        value.side,
+        fmt::join(value.trade, value.trade + value.trade_length, ", "),
         value.exchange_time_utc);
   }
 };

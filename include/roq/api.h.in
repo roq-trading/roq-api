@@ -304,6 +304,7 @@ struct ROQ_PUBLIC __attribute__((aligned(64))) MBPUpdate final {
   double price;
   double quantity;
   UpdateAction action;
+  uint32_t index;
 };
 
 static_assert(sizeof(MBPUpdate) <= 64);
@@ -319,13 +320,21 @@ struct ROQ_PUBLIC MarketByPrice final {
   std::chrono::nanoseconds exchange_time_utc;
 };
 
+// Note! we need a GCC attribute for alignment (alignas doesn't mix)
+struct ROQ_PUBLIC __attribute__((aligned(64))) Trade final {
+  double price;
+  double quantity;
+  Side side;
+  uint64_t trade_id;
+};
+
+static_assert(sizeof(Trade) <= 64);
+
 struct ROQ_PUBLIC TradeSummary final {
   std::string_view exchange;
   std::string_view symbol;
-  double price;
-  double volume;
-  double turnover;
-  Side side;
+  size_t trade_length;
+  const Trade *trade;
   std::chrono::nanoseconds exchange_time_utc;
 };
 

@@ -17,7 +17,7 @@ constexpr size_t STACK_BUFFER_SIZE = 4096;
 
 typedef StackWriter<STACK_BUFFER_SIZE> Writer;
 
-// Update
+// MBPUpdate
 
 template <typename Writer>
 Writer& write(Writer& writer, const MBPUpdate& value) {
@@ -25,13 +25,34 @@ Writer& write(Writer& writer, const MBPUpdate& value) {
     "{"
     "price=%" FLOAT_REPR ", "
     "quantity=%" FLOAT_REPR ", "
-    "action=%s"
+    "action=%s, "
+    "index=%" PRIu32
     "}";
   return writer.printf(
       FORMAT,
       value.price,
       value.quantity,
-      EnumNameUpdateAction(value.action));
+      EnumNameUpdateAction(value.action),
+      value.index);
+}
+
+// Trade
+
+template <typename Writer>
+Writer& write(Writer& writer, const Trade& value) {
+  const char *FORMAT =
+    "{"
+    "price=%" FLOAT_REPR ", "
+    "quantity=%" FLOAT_REPR ", "
+    "side=%s, "
+    "trade_id=%" PRIu64
+    "}";
+  return writer.printf(
+      FORMAT,
+      value.price,
+      value.quantity,
+      EnumNameSide(value.side),
+      value.trade_id);
 }
 
 // MessageInfo
@@ -262,24 +283,26 @@ Writer& write(Writer& writer, const MarketByPrice& value) {
 template <typename Writer>
 Writer& write(Writer& writer, const TradeSummary& value) {
   stream::TimePointStr<decltype(value.exchange_time_utc)> exchange_time_utc(value.exchange_time_utc);
-  const char *FORMAT =
+  const char *FORMAT_1 =
     "{"
     "exchange=\"%.*s\", "
     "symbol=\"%.*s\", "
-    "price=%" FLOAT_REPR ", "
-    "volume=%" FLOAT_REPR ", "
-    "turnover=%" FLOAT_REPR ", "
-    "side=%s, "
+    "trade=[";
+  writer.printf(
+      FORMAT_1,
+      static_cast<int>(value.exchange.length()), value.exchange.data(),
+      static_cast<int>(value.symbol.length()), value.symbol.data());
+  for (size_t i = 0; i < value.trade_length; ++i) {
+    if (i)
+      writer.printf(", ");
+    write(writer, value.trade[i]);
+  }
+  const char *FORMAT_2 =
+    "], "
     "exchange_time_utc=%s"
     "}";
   return writer.printf(
-      FORMAT,
-      static_cast<int>(value.exchange.length()), value.exchange.data(),
-      static_cast<int>(value.symbol.length()), value.symbol.data(),
-      value.price,
-      value.volume,
-      value.turnover,
-      EnumNameSide(value.side),
+      FORMAT_2,
       exchange_time_utc.c_str());
 }
 
@@ -906,6 +929,13 @@ std::ostream& operator<<(std::ostream& stream, const OrderStatus value) {
 // MBPUpdate
 
 std::ostream& operator<<(std::ostream& stream, const MBPUpdate& value) {
+  Writer writer;
+  return writer.print(value).finish(stream);
+}
+
+// Trade
+
+std::ostream& operator<<(std::ostream& stream, const Trade& value) {
   Writer writer;
   return writer.print(value).finish(stream);
 }

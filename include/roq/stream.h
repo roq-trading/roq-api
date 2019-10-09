@@ -25,6 +25,7 @@ ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const OrderStatus);
 // helpers
 
 ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const MBPUpdate&);
+ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const Trade&);
 ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const MessageInfo&);
 
 // messages

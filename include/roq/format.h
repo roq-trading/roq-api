@@ -456,13 +456,15 @@ struct fmt::formatter<roq::ReferenceData> {
         "limit_up={}, "
         "limit_down={}, "
         "multiplier={}, "
+        "min_trade_vol={}"
         "}}",
         value.exchange,
         value.symbol,
         value.tick_size,
         value.limit_up,
         value.limit_down,
-        value.multiplier);
+        value.multiplier,
+        value.min_trade_vol);
   }
 };
 

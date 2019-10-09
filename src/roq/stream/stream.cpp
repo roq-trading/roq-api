@@ -317,7 +317,8 @@ Writer& write(Writer& writer, const ReferenceData& value) {
     "tick_size=%" FLOAT_REPR ", "
     "limit_up=%" FLOAT_REPR ", "
     "limit_down=%" FLOAT_REPR ", "
-    "multiplier=%f "
+    "multiplier=%" FLOAT_REPR ", "
+    "min_trade_vol=%" FLOAT_REPR
     "}";
   return writer.printf(
       FORMAT,
@@ -326,7 +327,8 @@ Writer& write(Writer& writer, const ReferenceData& value) {
       value.tick_size,
       value.limit_up,
       value.limit_down,
-      value.multiplier);
+      value.multiplier,
+      value.min_trade_vol);
 }
 
 // MarketStatus

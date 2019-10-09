@@ -345,6 +345,7 @@ struct ROQ_PUBLIC ReferenceData final {
   double limit_up;
   double limit_down;
   double multiplier;
+  double min_trade_vol;
 };
 
 struct ROQ_PUBLIC MarketStatus final {

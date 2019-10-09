@@ -15,7 +15,6 @@ namespace roq {
 ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const ConnectionStatus);
 ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const GatewayStatus);
 ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const Side);
-ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const UpdateAction);
 ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const OrderType);
 ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const TimeInForce);
 ROQ_PUBLIC std::ostream& operator<<(std::ostream&, const PositionEffect);

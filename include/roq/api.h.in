@@ -119,28 +119,6 @@ inline const char *EnumNameSide(Side e) {
   return EnumNamesSide()[index];
 }
 
-enum class UpdateAction : int8_t {
-  NEW = 0,
-  CHANGE = 1,
-  DELETE = 2,
-  MIN = NEW,
-  MAX = DELETE
-};
-
-inline const char * const *EnumNamesUpdateAction() {
-  static const char * const names[] = {
-    "NEW",
-    "CHANGE",
-    "DELETE",
-  };
-  return names;
-}
-
-inline const char *EnumNameUpdateAction(UpdateAction e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesUpdateAction()[index];
-}
-
 enum class OrderType : int8_t {
   UNDEFINED = 0,
   MARKET = 1,

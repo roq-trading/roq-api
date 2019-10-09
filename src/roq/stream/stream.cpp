@@ -901,10 +901,6 @@ std::ostream& operator<<(std::ostream& stream, const Side value) {
   return stream << EnumNameSide(value);
 }
 
-std::ostream& operator<<(std::ostream& stream, const UpdateAction value) {
-  return stream << EnumNameUpdateAction(value);
-}
-
 std::ostream& operator<<(std::ostream& stream, const OrderType value) {
   return stream << EnumNameOrderType(value);
 }

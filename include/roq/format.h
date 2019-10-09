@@ -60,21 +60,6 @@ struct fmt::formatter<roq::Side> {
 };
 
 template <>
-struct fmt::formatter<roq::UpdateAction> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::UpdateAction value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{}",
-        EnumNameUpdateAction(value));
-  }
-};
-
-template <>
 struct fmt::formatter<roq::OrderType> {
   template <typename T>
   constexpr auto parse(T& ctx) {

@@ -24,16 +24,12 @@ Writer& write(Writer& writer, const MBPUpdate& value) {
   const char *FORMAT =
     "{"
     "price=%" FLOAT_REPR ", "
-    "quantity=%" FLOAT_REPR ", "
-    "action=%s, "
-    "index=%" PRIu32
+    "quantity=%" FLOAT_REPR
     "}";
   return writer.printf(
       FORMAT,
       value.price,
-      value.quantity,
-      EnumNameUpdateAction(value.action),
-      value.index);
+      value.quantity);
 }
 
 // Trade
@@ -45,14 +41,15 @@ Writer& write(Writer& writer, const Trade& value) {
     "price=%" FLOAT_REPR ", "
     "quantity=%" FLOAT_REPR ", "
     "side=%s, "
-    "trade_id=%" PRIu64
+    "trade_id=\"%.*s\""
     "}";
+  auto trade_id = get_trade_id_as_string_view(value);
   return writer.printf(
       FORMAT,
       value.price,
       value.quantity,
       EnumNameSide(value.side),
-      value.trade_id);
+      static_cast<int>(trade_id.length()), trade_id.data());
 }
 
 // MessageInfo

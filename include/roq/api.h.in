@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <cstring>
+
 #include <chrono>
 #include <map>
 #include <set>
@@ -299,15 +301,12 @@ struct ROQ_PUBLIC DailyStatistics final {
   std::chrono::nanoseconds exchange_time_utc;
 };
 
-// Note! we need a GCC attribute for alignment (alignas doesn't mix)
-struct ROQ_PUBLIC __attribute__((aligned(64))) MBPUpdate final {
+struct ROQ_PUBLIC MBPUpdate final {
   double price;
   double quantity;
-  UpdateAction action;
-  uint32_t index;
 };
 
-static_assert(sizeof(MBPUpdate) <= 64);
+static_assert(sizeof(MBPUpdate) == 16);
 
 struct ROQ_PUBLIC MarketByPrice final {
   std::string_view exchange;
@@ -320,15 +319,14 @@ struct ROQ_PUBLIC MarketByPrice final {
   std::chrono::nanoseconds exchange_time_utc;
 };
 
-// Note! we need a GCC attribute for alignment (alignas doesn't mix)
-struct ROQ_PUBLIC __attribute__((aligned(64))) Trade final {
+struct ROQ_PUBLIC Trade final {
+  Side side;
   double price;
   double quantity;
-  Side side;
-  uint64_t trade_id;
+  char trade_id[40];
 };
 
-static_assert(sizeof(Trade) <= 64);
+static_assert(sizeof(Trade) == 64);
 
 struct ROQ_PUBLIC TradeSummary final {
   std::string_view exchange;
@@ -768,6 +766,19 @@ inline int sign(Side side) {
     case Side::SELL: return -1;
     default: return 0;
   }
+}
+
+inline std::string_view get_trade_id_as_string_view(
+    const Trade& trade) {
+  auto null_ptr = std::memchr(
+      trade.trade_id,
+      '\0',
+      sizeof(trade.trade_id));
+  auto length = null_ptr
+    ? static_cast<size_t>(
+          reinterpret_cast<const char *>(null_ptr) - trade.trade_id)
+    : sizeof(trade.trade_id);
+  return std::string_view(trade.trade_id, length);
 }
 
 }  // namespace roq

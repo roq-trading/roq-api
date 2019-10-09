@@ -163,14 +163,10 @@ struct fmt::formatter<roq::MBPUpdate> {
         ctx.out(),
         "{{"
         "price={}, "
-        "quantity={}, "
-        "action={}, "
-        "index={}"
+        "quantity={}"
         "}}",
         value.price,
-        value.quantity,
-        value.action,
-        value.index);
+        value.quantity);
   }
 };
 
@@ -188,12 +184,12 @@ struct fmt::formatter<roq::Trade> {
         "price={}, "
         "quantity={}, "
         "side={}, "
-        "trade_id={}"
+        "trade_id=\"{}\""
         "}}",
         value.price,
         value.quantity,
         value.side,
-        value.trade_id);
+        get_trade_id_as_string_view(value));
   }
 };
 

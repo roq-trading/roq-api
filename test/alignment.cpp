@@ -11,5 +11,5 @@ TEST(alignment, mbp_update) {
   MBPUpdate update_1[2];
   auto offset_1 = reinterpret_cast<uint8_t *>(&update_1[1]) -
     reinterpret_cast<uint8_t *>(&update_1[0]);
-  EXPECT_EQ(offset_1, static_cast<int>(cache_line_size()));
+  EXPECT_EQ(offset_1, 16);
 }

@@ -51,7 +51,7 @@ void set_thread_affinity(size_t processor_index) {
         pthread_self(),
         sizeof(cpu_set),
         &cpu_set) != 0) {
-    PLOG(WARNING) << "pthread_setaffinity_np() failed";
+    PLOG(WARNING)("pthread_setaffinity_np() failed");
     throw std::system_error(errno, std::system_category());
   }
 #endif

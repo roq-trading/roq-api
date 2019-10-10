@@ -36,9 +36,9 @@ Application::~Application() {
 }
 
 int Application::run() {
-  LOG(INFO) << "===== START =====";
+  LOG(INFO)("===== START =====");
   auto res = main(_argc, _argv);
-  LOG(INFO) << "===== STOP =====";
+  LOG(INFO)("===== STOP =====");
   return res;
 }
 

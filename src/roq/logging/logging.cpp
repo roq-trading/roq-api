@@ -18,15 +18,17 @@
 
 #include "roq/logging/memory.h"
 
-#define MESSAGE_BUFFER_SIZE 4096
-#define QUEUE_SIZE 1024*1024
-#define THREAD_COUNT 1
-#define FLUSH_SECONDS 3
-
 namespace roq {
 
+constexpr auto MESSAGE_BUFFER_SIZE = size_t{65536};
+
+constexpr auto SPDLOG_QUEUE_SIZE = size_t{1024 * 1024};
+constexpr auto SPDLOG_THREAD_COUNT = size_t{1};
+constexpr auto SPDLOG_FLUSH_SECONDS = size_t{1};
+
 namespace detail {
-thread_local logging::page_aligned_vector<char> RAW_BUFFER(MESSAGE_BUFFER_SIZE);
+thread_local logging::page_aligned_vector<char> RAW_BUFFER(
+    MESSAGE_BUFFER_SIZE);
 thread_local std::pair<char *, size_t> message_buffer(
     &RAW_BUFFER[0],
     RAW_BUFFER.size());
@@ -62,16 +64,16 @@ static spdlog::logger *spdlog_logger = nullptr;
 namespace detail {
 bool append_newline = true;
 int verbosity = 0;
-sink_t info = [](const char *message) {
+sink_t info = [](const std::string_view& message) {
   spdlog_logger->info(message);
 };
-sink_t warning = [](const char *message) {
+sink_t warning = [](const std::string_view& message) {
   spdlog_logger->warn(message);
 };
-sink_t error = [](const char *message) {
+sink_t error = [](const std::string_view& message) {
   spdlog_logger->error(message);
 };
-sink_t critical = [](const char *message) {
+sink_t critical = [](const std::string_view& message) {
   spdlog_logger->critical(message);
   spdlog_logger->flush();
   std::abort();
@@ -85,8 +87,8 @@ void Logger::initialize(bool stacktrace) {
   if (terminal) {
     logger = spdlog::stdout_logger_st("spdlog");
   } else {
-    spdlog::init_thread_pool(QUEUE_SIZE, THREAD_COUNT);
-    spdlog::flush_every(std::chrono::seconds(FLUSH_SECONDS));
+    spdlog::init_thread_pool(SPDLOG_QUEUE_SIZE, SPDLOG_THREAD_COUNT);
+    spdlog::flush_every(std::chrono::seconds(SPDLOG_FLUSH_SECONDS));
     logger = spdlog::stdout_logger_st<spdlog::async_factory>("spdlog");
   }
   // matching spdlog pattern to glog

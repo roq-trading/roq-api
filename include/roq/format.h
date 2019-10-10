@@ -749,7 +749,22 @@ struct fmt::formatter<roq::CancelOrderAck> {
   }
 };
 
-// roq::CustomMessage
+template <>
+struct fmt::formatter<roq::CustomMessage> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::CustomMessage& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "length={}"
+        "}}",
+        value.length);
+  }
+};
 
 // events
 
@@ -760,7 +775,7 @@ struct fmt::formatter<roq::StartEvent> {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::StartEvent& value, T& ctx) {
+  auto format(const roq::StartEvent&, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
@@ -775,7 +790,7 @@ struct fmt::formatter<roq::StopEvent> {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::StopEvent& value, T& ctx) {
+  auto format(const roq::StopEvent&, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
@@ -867,7 +882,7 @@ struct fmt::formatter<roq::SubscribeEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "subscribe={}, "
+        "subscribe={}"
         "}}",
         value.message_info,
         value.subscribe);
@@ -886,7 +901,7 @@ struct fmt::formatter<roq::DownloadBeginEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "download_begin={}, "
+        "download_begin={}"
         "}}",
         value.message_info,
         value.download_begin);
@@ -905,7 +920,7 @@ struct fmt::formatter<roq::DownloadEndEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "download_end={}, "
+        "download_end={}"
         "}}",
         value.message_info,
         value.download_end);
@@ -924,7 +939,7 @@ struct fmt::formatter<roq::MarketDataStatusEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "market_data_status={}, "
+        "market_data_status={}"
         "}}",
         value.message_info,
         value.market_data_status);
@@ -943,7 +958,7 @@ struct fmt::formatter<roq::OrderManagerStatusEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "order_manager_status={}, "
+        "order_manager_status={}"
         "}}",
         value.message_info,
         value.order_manager_status);
@@ -962,7 +977,7 @@ struct fmt::formatter<roq::SessionStatisticsEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "session_statistics={}, "
+        "session_statistics={}"
         "}}",
         value.message_info,
         value.session_statistics);
@@ -981,7 +996,7 @@ struct fmt::formatter<roq::DailyStatisticsEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "daily_statistics={}, "
+        "daily_statistics={}"
         "}}",
         value.message_info,
         value.daily_statistics);
@@ -1000,7 +1015,7 @@ struct fmt::formatter<roq::MarketByPriceEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "market_by_price={}, "
+        "market_by_price={}"
         "}}",
         value.message_info,
         value.market_by_price);
@@ -1019,7 +1034,7 @@ struct fmt::formatter<roq::TradeSummaryEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "trade_summary={}, "
+        "trade_summary={}"
         "}}",
         value.message_info,
         value.trade_summary);
@@ -1038,7 +1053,7 @@ struct fmt::formatter<roq::ReferenceDataEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "reference_data={}, "
+        "reference_data={}"
         "}}",
         value.message_info,
         value.reference_data);
@@ -1057,7 +1072,7 @@ struct fmt::formatter<roq::MarketStatusEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "market_status={}, "
+        "market_status={}"
         "}}",
         value.message_info,
         value.market_status);
@@ -1076,7 +1091,7 @@ struct fmt::formatter<roq::PositionUpdateEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "position_update={}, "
+        "position_update={}"
         "}}",
         value.message_info,
         value.position_update);
@@ -1095,7 +1110,7 @@ struct fmt::formatter<roq::OrderUpdateEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "order_update={}, "
+        "order_update={}"
         "}}",
         value.message_info,
         value.order_update);
@@ -1114,7 +1129,7 @@ struct fmt::formatter<roq::TradeUpdateEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "trade_update={}, "
+        "trade_update={}"
         "}}",
         value.message_info,
         value.trade_update);
@@ -1133,7 +1148,7 @@ struct fmt::formatter<roq::CreateOrderEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "create_order={}, "
+        "create_order={}"
         "}}",
         value.message_info,
         value.create_order);
@@ -1152,7 +1167,7 @@ struct fmt::formatter<roq::ModifyOrderEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "modify_order={}, "
+        "modify_order={}"
         "}}",
         value.message_info,
         value.modify_order);
@@ -1171,7 +1186,7 @@ struct fmt::formatter<roq::CancelOrderEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "cancel_order={}, "
+        "cancel_order={}"
         "}}",
         value.message_info,
         value.cancel_order);
@@ -1190,7 +1205,7 @@ struct fmt::formatter<roq::CreateOrderAckEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "create_order_ack={}, "
+        "create_order_ack={}"
         "}}",
         value.message_info,
         value.create_order_ack);
@@ -1209,7 +1224,7 @@ struct fmt::formatter<roq::ModifyOrderAckEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "modify_order_ack={}, "
+        "modify_order_ack={}"
         "}}",
         value.message_info,
         value.modify_order_ack);
@@ -1228,7 +1243,7 @@ struct fmt::formatter<roq::CancelOrderAckEvent> {
         ctx.out(),
         "{{"
         "message_info={}, "
-        "cancel_order_ack={}, "
+        "cancel_order_ack={}"
         "}}",
         value.message_info,
         value.cancel_order_ack);
@@ -1246,7 +1261,11 @@ struct fmt::formatter<roq::CustomMessageEvent> {
     return format_to(
         ctx.out(),
         "{{"
-        "}}");
+        "message_info={}, "
+        "custom_message={}"
+        "}}",
+        value.message_info,
+        value.custom_message);
   }
 };
 
@@ -1270,5 +1289,55 @@ struct fmt::formatter<roq::Layer> {
         value.bid_quantity,
         value.ask_price,
         value.ask_quantity);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Account> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::Account& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "id={}, "
+        "name=\"{}\", "
+        "login=\"{}\", "
+        "password=***, "
+        "secret=***, "
+        "symbols=..."
+        "}}",
+        value.id,
+        value.name,
+        value.login);
+        // fmt::join(value.symbols, ", "));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::User> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::User& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "id={}, "
+        "name=\"{}\", "
+        "password=***, "
+        "accounts=[{}], "
+        "symbols=..., "
+        "limits=..."
+        "}}",
+        value.id,
+        value.name,
+        fmt::join(value.accounts, ", "));
+        // fmt::join(value.symbols, ", "));
   }
 };

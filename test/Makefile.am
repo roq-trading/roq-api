@@ -13,7 +13,6 @@ roq_api_test_LDADD = \
 	$(PTHREAD_CFLAGS) \
 	$(top_builddir)/src/roq/logging/libroq-api-logging.la \
 	$(top_builddir)/src/roq/unwind/libroq-api-unwind.la \
-	$(top_builddir)/src/roq/stream/libroq-api-stream.la \
 	$(top_builddir)/src/roq/core/libroq-api-core.la \
 	$(SPDLOG_LIBS) \
 	$(LIBUNWIND_LIBS) \
@@ -31,6 +30,5 @@ nodist_roq_api_test_SOURCES = \
 	logging.cpp \
 	metrics.cpp \
 	static.cpp \
-	stream.cpp \
 	traits.cpp \
 	main.cpp

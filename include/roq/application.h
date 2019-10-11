@@ -24,11 +24,12 @@ class ROQ_PUBLIC Application {
   virtual int main(int argc, char **argv) = 0;
 
  private:
-  char **_argv;
-  int _argc;
-
   Application(const Application&) = delete;
   void operator=(const Application&) = delete;
+
+ private:
+  char **_argv;
+  int _argc;
 };
 
 }  // namespace roq

@@ -46,8 +46,8 @@ TEST(format, market_by_price) {
     { .price = 5.0, .quantity = 12.0 },
   };
   roq::MarketByPrice market_by_price {
-    .exchange = "CFFEX",
-    .symbol = "IC1806",
+    .exchange = "deribit",
+    .symbol = "BTC-27DEC19",
     .bid_length = std::size(bid),
     .bid = bid,
     .ask_length = std::size(ask),

@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <cstdlib>
-
 #include "roq/api.h"
 
 namespace roq {

@@ -1,18 +1,21 @@
-SUBDIRS = core unwind logging
 lib_LTLIBRARIES = libroq-api.la
 libroq_api_la_LDFLAGS = \
 	-avoid-version
 libroq_api_la_LIBADD = \
-	$(top_builddir)/src/roq/logging/libroq-api-logging.la \
-	$(top_builddir)/src/roq/unwind/libroq-api-unwind.la \
-	$(top_builddir)/src/roq/core/libroq-api-core.la \
 	$(SPDLOG_LIBS) \
 	$(LIBUNWIND_LIBS) \
 	$(GFLAGS_LIBS) \
 	$(FMT_LIBS)
 libroq_api_la_CPPFLAGS = \
 	-I$(top_builddir)/include \
-	-I$(top_srcdir)/src
+	-I$(top_srcdir)/src \
+	$(FMT_CFLAGS) \
+	$(GFLAGS_CFLAGS) \
+	$(LIBUNWIND_CFLAGS) \
+	$(SPDLOG_CFLAGS)
 libroq_api_la_SOURCES = \
+	affinity.cpp \
+	application.cpp \
 	builtins.cpp \
-	application.cpp
+	logging.cpp \
+	unwind.cpp

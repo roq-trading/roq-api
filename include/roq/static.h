@@ -90,6 +90,10 @@ class static_string final {
     return static_string<N>(_data + index, size);
   }
 
+  constexpr bool compare(const std::string_view& rhs) {
+    return -rhs.compare(std::string_view(data(), size()));
+  }
+
  private:
   char _data[N];
   size_t _size;
@@ -138,9 +142,22 @@ class static_basename_string final {
     return res;
   }
 
+  constexpr bool compare(const std::string_view& rhs) {
+    return -rhs.compare(std::string_view(data(), size()));
+  }
+
  private:
   char _data[N];
   size_t _size;
 };
+
+static_assert(static_basename_string("").compare("") == 0);
+static_assert(static_basename_string("abc").compare("abc") == 0);
+static_assert(static_basename_string("abc/def").compare("def") == 0);
+static_assert(static_basename_string("abc/def/ghi").compare("ghi") == 0);
+
+static_assert(static_basename_string("abc/def")
+    .append(static_string(":123"))
+    .compare("def:123") == 0);
 
 }  // namespace roq

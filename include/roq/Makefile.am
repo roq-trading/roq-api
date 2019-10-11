@@ -9,6 +9,5 @@ pkginclude_HEADERS = \
 	metrics.h \
 	patterns.h \
 	platform.h \
-	print.h \
 	static.h \
 	traits.h

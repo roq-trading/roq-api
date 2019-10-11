@@ -14,9 +14,8 @@
 #include <chrono>
 #include <memory>
 
-#include "roq/unwind/unwind.h"
-
-#include "roq/logging/memory.h"
+#include "roq/unwind.h"
+#include "roq/memory.h"
 
 namespace roq {
 
@@ -62,26 +61,29 @@ static spdlog::logger *spdlog_logger = nullptr;
 }  // namespace
 
 namespace detail {
-bool append_newline = true;
 int verbosity = 0;
 sink_t info = [](const std::string_view& message) {
-  spdlog_logger->info(message);
+  if (likely(spdlog_logger))
+    spdlog_logger->info(message);
 };
 sink_t warning = [](const std::string_view& message) {
-  spdlog_logger->warn(message);
+  if (likely(spdlog_logger))
+    spdlog_logger->warn(message);
 };
 sink_t error = [](const std::string_view& message) {
-  spdlog_logger->error(message);
+  if (likely(spdlog_logger))
+    spdlog_logger->error(message);
 };
 sink_t critical = [](const std::string_view& message) {
-  spdlog_logger->critical(message);
-  spdlog_logger->flush();
+  if (likely(spdlog_logger)) {
+    spdlog_logger->critical(message);
+    spdlog_logger->flush();
+  }
   std::abort();
 };
 }  // namespace detail
 
 void Logger::initialize(bool stacktrace) {
-  detail::append_newline = false;
   auto terminal = ::isatty(fileno(stdout));
   std::shared_ptr<spdlog::logger> logger;
   if (terminal) {
@@ -104,7 +106,7 @@ void Logger::initialize(bool stacktrace) {
   // note! spdlog uses reference count
   spdlog_logger = logger.get();
   auto verbosity = std::getenv("ROQ_v");
-  if (verbosity != nullptr && strlen(verbosity) > 0)
+  if (verbosity != nullptr && std::strlen(verbosity) > 0)
     detail::verbosity = std::atoi(verbosity);
   if (stacktrace)
     install_failure_signal_handler();

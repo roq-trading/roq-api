@@ -16,9 +16,6 @@ AC_CONFIG_FILES([
  include/roq/Makefile
  src/Makefile
  src/roq/Makefile
- src/roq/core/Makefile
- src/roq/unwind/Makefile
- src/roq/logging/Makefile
  test/Makefile
 ])
 AC_CONFIG_FILES([include/roq/api.h])

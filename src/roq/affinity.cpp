@@ -1,6 +1,6 @@
 /* Copyright (c) 2017-2019, Hans Erik Thrane */
 
-#include "roq/core/affinity.h"
+#include "roq/affinity.h"
 
 #if defined(__linux__)
 #include <sys/sysinfo.h>

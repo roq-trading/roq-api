@@ -198,7 +198,6 @@ class alignas(cache_line_size()) Gauge {
 
   void set(T value) {
     atomic_release(&_data.value, value);
-    return *this;
   }
 
   void write(Metrics& metrics) const {

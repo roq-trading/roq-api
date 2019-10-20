@@ -61,10 +61,13 @@ struct alignas(cache_line_size()) Histogram {
     return N5;
   }
 
-  explicit Histogram(const std::string& name)
+  explicit Histogram(
+      const std::string_view& name)
       : _name(name) {
   }
-  Histogram(const std::string& name, const std::string& labels)
+  Histogram(
+      const std::string_view& name,
+      const std::string_view& labels)
       : _name(name),
         _labels(labels) {
   }
@@ -151,7 +154,9 @@ struct alignas(cache_line_size()) Histogram {
 template <typename T>
 class alignas(cache_line_size()) Counter {
  public:
-  Counter(const std::string& name, const std::string& labels)
+  Counter(
+      const std::string_view& name,
+      const std::string_view& labels)
       : _data{0},
         _name(name),
         _labels(labels) {
@@ -162,6 +167,10 @@ class alignas(cache_line_size()) Counter {
   Counter& operator++() {
     __atomic_fetch_add(&_data.value, 1, __ATOMIC_RELEASE);
     return *this;
+  }
+
+  void update(uint64_t value) {
+    atomic_release(&_data.value, value);
   }
 
   void write(Metrics& metrics) const {
@@ -188,7 +197,9 @@ class alignas(cache_line_size()) Counter {
 template <typename T>
 class alignas(cache_line_size()) Gauge {
  public:
-  Gauge(const std::string& name, const std::string& labels)
+  Gauge(
+      const std::string_view& name,
+      const std::string_view& labels)
       : _data{0},
         _name(name),
         _labels(labels) {

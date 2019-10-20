@@ -107,7 +107,7 @@ struct alignas(cache_line_size()) Histogram {
   Metrics& write(
       Metrics& metrics,
       const std::string_view& labels) const {
-    auto sum = atomic_acquire(&_data.sum);
+    auto sum = atomic_acquire(_data.sum);
     auto bucket_0 = _data.bucket_0;
     auto bucket_1 = bucket_0 + _data.bucket_1;
     auto bucket_2 = bucket_1 + _data.bucket_2;
@@ -170,11 +170,11 @@ class alignas(cache_line_size()) Counter {
   }
 
   void update(uint64_t value) {
-    atomic_release(&_data.value, value);
+    atomic_release(_data.value, value);
   }
 
   void write(Metrics& metrics) const {
-    auto value = atomic_acquire(&_data.value);
+    auto value = atomic_acquire(_data.value);
     metrics
       .write_type(_name, "counter")
       .write_simple(_name, _labels, value)
@@ -208,11 +208,11 @@ class alignas(cache_line_size()) Gauge {
   Gauge(Gauge&&) = default;
 
   void set(T value) {
-    atomic_release(&_data.value, value);
+    atomic_release(_data.value, value);
   }
 
   void write(Metrics& metrics) const {
-    auto value = atomic_acquire(&_data.value);
+    auto value = atomic_acquire(_data.value);
     metrics
       .write_type(_name, "gauge")
       .write_simple(_name, _labels, value)

@@ -349,7 +349,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   std::string_view symbol;
   OrderStatus order_status;
   Side side;
-  double limit_price;
+  double price;
   double remaining_quantity;
   double traded_quantity;
   PositionEffect position_effect;
@@ -389,7 +389,7 @@ struct ROQ_PUBLIC CreateOrder final {
   Side side;
   double quantity;
   OrderType order_type;
-  double limit_price;
+  double price;
   TimeInForce time_in_force;
   PositionEffect position_effect;
   std::string_view order_template;
@@ -398,8 +398,8 @@ struct ROQ_PUBLIC CreateOrder final {
 struct ROQ_PUBLIC ModifyOrder final {
   std::string_view account;
   uint32_t order_id;
-  double quantity_change;
-  double limit_price;
+  double quantity;  // total target quantity
+  double price;
 };
 
 struct ROQ_PUBLIC CancelOrder final {

@@ -520,7 +520,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         "symbol=\"{}\", "
         "order_status={}, "
         "side={}, "
-        "limit_price={}, "
+        "price={}, "
         "remaining_quantity={}, "
         "traded_quantity={}, "
         "position_effect={}, "
@@ -536,7 +536,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.symbol,
         value.order_status,
         value.side,
-        value.limit_price,
+        value.price,
         value.remaining_quantity,
         value.traded_quantity,
         value.position_effect,
@@ -607,7 +607,7 @@ struct fmt::formatter<roq::CreateOrder> {
         "side={}, "
         "quantity={}, "
         "order_type={}, "
-        "limit_price={}, "
+        "price={}, "
         "time_in_force={}, "
         "position_effect={}, "
         "order_template=\"{}\""
@@ -619,7 +619,7 @@ struct fmt::formatter<roq::CreateOrder> {
         value.side,
         value.quantity,
         value.order_type,
-        value.limit_price,
+        value.price,
         value.time_in_force,
         value.position_effect,
         value.order_template);
@@ -639,13 +639,13 @@ struct fmt::formatter<roq::ModifyOrder> {
         "{{"
         "account=\"{}\", "
         "order_id={}, "
-        "quantity_change={}, "
-        "limit_price={}, "
+        "quantity={}, "
+        "price={}, "
         "}}",
         value.account,
         value.order_id,
-        value.quantity_change,
-        value.limit_price);
+        value.quantity,
+        value.price);
   }
 };
 

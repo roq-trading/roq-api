@@ -24,7 +24,7 @@ class Metrics {
   virtual Metrics& write_simple(
       const std::string_view& name,
       const std::string_view& labels,
-      const std::atomic<double>& value) = 0;
+      uint64_t value) = 0;
   // histogram
   virtual Metrics& write_bucket(
       const std::string_view& name,

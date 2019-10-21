@@ -17,7 +17,7 @@ class Writer : public Metrics {
   Metrics& write_simple(
       const std::string_view&,
       const std::string_view&,
-      const std::atomic<double>&) override {
+      uint64_t) override {
     return *this;
   }
   Metrics& write_bucket(

@@ -32,8 +32,7 @@ TEST(format, subscribe) {
   EXPECT_EQ(
       xxx,
       "{accounts={\"abc\", \"test\"}, "
-      "symbols_by_exchange={abc={\"123\", \"234\"}}}");
-  // TODO(thraneh): why is the key not quoted?
+      "symbols_by_exchange={\"abc\"={\"123\", \"234\"}}}");
 }
 
 TEST(format, market_by_price) {

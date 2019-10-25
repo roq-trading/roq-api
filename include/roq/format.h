@@ -18,6 +18,63 @@
 // we're extending the fmt namespace with formatter specializations
 // this is the recommended practice
 
+// helper
+
+// TODO(thraneh): make generic
+template <>
+struct fmt::formatter<std::set<std::string> > {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const std::set<std::string>& value, T& ctx) {
+    if (value.empty())
+      return format_to(ctx.out(), "{{}}");
+    return format_to(
+        ctx.out(),
+        "{{\"{}\"}}",
+        fmt::join(value, "\", \""));
+  }
+};
+
+// TODO(thraneh): make generic
+template <>
+struct fmt::formatter<std::pair<const std::string, std::set<std::string> > > {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(
+      const std::pair<const std::string, std::set<std::string> >& value,
+      T& ctx) {
+    return format_to(
+        ctx.out(),
+        "\"{}\"={}",
+        value.first,
+        value.second);
+  }
+};
+
+// TODO(thraneh): make generic
+template <>
+struct fmt::formatter<std::map<std::string, std::set<std::string> > > {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(
+      const std::map<std::string, std::set<std::string> >& value,
+      T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{{}}}",
+        fmt::join(value.begin(), value.end(), ", "));
+  }
+};
+
 // enums
 
 template <>
@@ -220,123 +277,6 @@ struct fmt::formatter<roq::MessageInfo> {
 };
 
 // messages
-
-// TODO(thraneh): make generic
-template <>
-struct fmt::formatter<std::string> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const std::string& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "\"{}\"",
-        value);
-  }
-};
-
-// TODO(thraneh): make generic
-template <>
-struct fmt::formatter<const std::string&> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const std::string& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "\"{}\"",
-        value);
-  }
-};
-
-// TODO(thraneh): make generic
-template <>
-struct fmt::formatter<std::string_view> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const std::string_view& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "\"{}\"",
-        value);
-  }
-};
-
-// TODO(thraneh): make generic
-template <>
-struct fmt::formatter<const std::string_view&> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const std::string_view& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "\"{}\"",
-        value);
-  }
-};
-
-// TODO(thraneh): make generic
-template <>
-struct fmt::formatter<std::set<std::string> > {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const std::set<std::string>& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{{}}}",
-        fmt::join(value, ", "));
-  }
-};
-
-// TODO(thraneh): make generic
-template <>
-struct fmt::formatter<std::pair<const std::string, std::set<std::string> > > {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(
-      const std::pair<const std::string, std::set<std::string> >& value,
-      T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{}={}",
-        value.first,
-        value.second);
-  }
-};
-
-// TODO(thraneh): make generic
-template <>
-struct fmt::formatter<std::map<std::string, std::set<std::string> > > {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(
-      const std::map<std::string, std::set<std::string> >& value,
-      T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{{}}}",
-        fmt::join(value.begin(), value.end(), ", "));
-  }
-};
 
 template <>
 struct fmt::formatter<roq::Subscribe> {

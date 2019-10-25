@@ -23,11 +23,17 @@ TEST(format, subscribe) {
       "test",
       "abc"
     },
-    .symbols_by_exchange = {}
+    .symbols_by_exchange = {
+      {"abc", {"123", "234"}},
+    }
   };
   auto xxx = fmt::format("{}", subscribe);
   EXPECT_GT(xxx.length(), size_t{0});
-  EXPECT_EQ(xxx, "{accounts=[abc, test], symbols=[]}");
+  EXPECT_EQ(
+      xxx,
+      "{accounts={\"abc\", \"test\"}, "
+      "symbols_by_exchange={abc={\"123\", \"234\"}}}");
+  // TODO(thraneh): why is the key not quoted?
 }
 
 TEST(format, market_by_price) {

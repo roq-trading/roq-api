@@ -12,6 +12,11 @@ template <typename E>
 auto event_value(const E&);
 
 template <>
+inline auto event_value(const ConnectionStatusEvent& event) {
+  return event.connection_status;
+}
+
+template <>
 inline auto event_value(const DownloadBeginEvent& event) {
   return event.download_begin;
 }

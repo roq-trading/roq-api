@@ -455,8 +455,7 @@ struct ROQ_PUBLIC TimerEvent final {
 };
 
 struct ROQ_PUBLIC ConnectionStatusEvent final {
-  uint8_t source;
-  std::string_view source_name;
+  const MessageInfo& message_info;
   ConnectionStatus connection_status;
 };
 

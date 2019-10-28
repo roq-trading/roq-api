@@ -22,8 +22,25 @@
 
 namespace roq {
 
+// limits
+
 constexpr auto ACCOUNT_NAME_MAX_LENGTH = size_t{31};
 constexpr auto USER_NAME_MAX_LENGTH = size_t{31};
+
+// common error messages
+
+constexpr std::string_view LOGOUT_RESPONSE("LOGOUT_RESPONSE");
+constexpr std::string_view RESEND_NOT_SUPPORTED("RESEND_NOT_SUPPORTED");
+constexpr std::string_view GATEWAY_NOT_READY("GATEWAY_NOT_READY");
+constexpr std::string_view INVALID_ACCOUNT("INVALID_ACCOUNT");
+constexpr std::string_view INVALID_EXCHANGE("INVALID_EXCHANGE");
+constexpr std::string_view INVALID_POSITION_EFFECT("INVALID_POSITION_EFFECT");
+constexpr std::string_view INVALID_ORDER_TEMPLATE("INVALID_ORDER_TEMPLATE");
+constexpr std::string_view NETWORK_ERROR("NETWORK_ERROR");
+constexpr std::string_view UNKNOWN_ORDER_ID("UNKNOWN_ORDER_ID");
+constexpr std::string_view UNKNOWN_EXCHANGE_ORDER_ID("UNKNOWN_EXCHANGE_ORDER_ID");
+constexpr std::string_view MODIFY_ORDER_NOT_SUPPORTED("MODIFY_ORDER_NOT_SUPPORTED");
+constexpr std::string_view INVALID_ORDER_ID("INVALID_ORDER_ID");
 
 // enums
 

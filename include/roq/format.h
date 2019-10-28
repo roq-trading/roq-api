@@ -271,7 +271,7 @@ struct fmt::formatter<roq::MessageInfo> {
         value.source_send_time,
         value.source_receive_time,
         value.origin_create_time,
-        value.is_last ? "true" : "false",
+        value.is_last,
         value.opaque);
   }
 };
@@ -588,10 +588,10 @@ struct fmt::formatter<roq::OrderUpdate> {
         "traded_quantity={}, "
         "position_effect={}, "
         "order_template=\"{}\", "
-        "insert_time_utc={}, "
-        "cancel_time_utc={}, "
-        "order_local_id={}, "
-        "order_external_id=\"{}\""
+        "create_time_utc={}, "
+        "update_time_utc={}, "
+        "gateway_order_id={}, "
+        "external_order_id=\"{}\""
         "}}",
         value.account,
         value.order_id,
@@ -604,10 +604,10 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.traded_quantity,
         value.position_effect,
         value.order_template,
-        value.insert_time_utc,
-        value.cancel_time_utc,
-        value.order_local_id,
-        value.order_external_id);
+        value.create_time_utc,
+        value.update_time_utc,
+        value.gateway_order_id,
+        value.external_order_id);
   }
 };
 
@@ -632,9 +632,12 @@ struct fmt::formatter<roq::TradeUpdate> {
         "price={}, "
         "position_effect={}, "
         "order_template=\"{}\", "
-        "trade_time_utc={}, "
-        "order_external_id=\"{}\", "
-        "trade_external_id=\"{}\""
+        "create_time_utc={}, "
+        "update_time_utc={}, "
+        "gateway_order_id={}, "
+        "gateway_trade_id={}, "
+        "external_order_id=\"{}\", "
+        "external_trade_id=\"{}\""
         "}}",
         value.account,
         value.trade_id,
@@ -646,9 +649,12 @@ struct fmt::formatter<roq::TradeUpdate> {
         value.price,
         value.position_effect,
         value.order_template,
-        value.trade_time_utc,
-        value.order_external_id,
-        value.trade_external_id);
+        value.create_time_utc,
+        value.update_time_utc,
+        value.gateway_order_id,
+        value.gateway_trade_id,
+        value.external_order_id,
+        value.external_trade_id);
   }
 };
 
@@ -746,15 +752,15 @@ struct fmt::formatter<roq::CreateOrderAck> {
         "order_id={}, "
         "failure={}, "
         "reason=\"{}\", "
-        "order_local_id={}, "
-        "order_external_id=\"{}\""
+        "gateway_order_id={}, "
+        "external_order_id=\"{}\""
         "}}",
         value.account,
         value.order_id,
-        value.failure ? "true" : "false",
+        value.failure,
         value.reason,
-        value.order_local_id,
-        value.order_external_id);
+        value.gateway_order_id,
+        value.external_order_id);
   }
 };
 
@@ -773,15 +779,15 @@ struct fmt::formatter<roq::ModifyOrderAck> {
         "order_id={}, "
         "failure={}, "
         "reason=\"{}\", "
-        "order_local_id={}, "
-        "order_external_id=\"{}\""
+        "gateway_order_id={}, "
+        "external_order_id=\"{}\""
         "}}",
         value.account,
         value.order_id,
-        value.failure ? "true" : "false",
+        value.failure,
         value.reason,
-        value.order_local_id,
-        value.order_external_id);
+        value.gateway_order_id,
+        value.external_order_id);
   }
 };
 
@@ -800,15 +806,15 @@ struct fmt::formatter<roq::CancelOrderAck> {
         "order_id={}, "
         "failure={}, "
         "reason=\"{}\", "
-        "order_local_id={}, "
-        "order_external_id=\"{}\""
+        "gateway_order_id={}, "
+        "external_order_id=\"{}\""
         "}}",
         value.account,
         value.order_id,
-        value.failure ? "true" : "false",
+        value.failure,
         value.reason,
-        value.order_local_id,
-        value.order_external_id);
+        value.gateway_order_id,
+        value.external_order_id);
   }
 };
 

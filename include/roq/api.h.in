@@ -354,10 +354,11 @@ struct ROQ_PUBLIC OrderUpdate final {
   double traded_quantity;
   PositionEffect position_effect;
   std::string_view order_template;
-  std::chrono::nanoseconds insert_time_utc;
-  std::chrono::nanoseconds cancel_time_utc;
-  uint32_t order_local_id;
-  std::string_view order_external_id;
+  std::chrono::nanoseconds create_time_utc;
+  std::chrono::nanoseconds update_time_utc;
+  // debug info
+  uint32_t gateway_order_id;
+  std::string_view external_order_id;
 };
 
 struct ROQ_PUBLIC TradeUpdate final {
@@ -371,9 +372,13 @@ struct ROQ_PUBLIC TradeUpdate final {
   double price;
   PositionEffect position_effect;
   std::string_view order_template;
-  std::chrono::nanoseconds trade_time_utc;
-  std::string_view order_external_id;
-  std::string_view trade_external_id;
+  std::chrono::nanoseconds create_time_utc;
+  std::chrono::nanoseconds update_time_utc;
+  // debug info
+  uint32_t gateway_order_id;
+  uint32_t gateway_trade_id;
+  std::string_view external_order_id;
+  std::string_view external_trade_id;
 };
 
 struct ROQ_PUBLIC Subscribe final {
@@ -412,9 +417,9 @@ struct ROQ_PUBLIC CreateOrderAck final {
   uint32_t order_id;
   bool failure;
   std::string_view reason;
-  // ... for debugging
-  uint32_t order_local_id;
-  std::string_view order_external_id;
+  // debug info
+  uint32_t gateway_order_id;
+  std::string_view external_order_id;
 };
 
 struct ROQ_PUBLIC ModifyOrderAck final {
@@ -422,9 +427,9 @@ struct ROQ_PUBLIC ModifyOrderAck final {
   uint32_t order_id;
   bool failure;
   std::string_view reason;
-  // ... for debugging
-  uint32_t order_local_id;
-  std::string_view order_external_id;
+  // debug info
+  uint32_t gateway_order_id;
+  std::string_view external_order_id;
 };
 
 struct ROQ_PUBLIC CancelOrderAck final {
@@ -432,9 +437,9 @@ struct ROQ_PUBLIC CancelOrderAck final {
   uint32_t order_id;
   bool failure;
   std::string_view reason;
-  // ... for debugging
-  uint32_t order_local_id;
-  std::string_view order_external_id;
+  // debug info
+  uint32_t gateway_order_id;
+  std::string_view external_order_id;
 };
 
 struct ROQ_PUBLIC CustomMessage final {

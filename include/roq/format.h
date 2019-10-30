@@ -197,6 +197,21 @@ struct fmt::formatter<roq::OrderStatus> {
   }
 };
 
+template <>
+struct fmt::formatter<roq::RequestStatus> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::RequestStatus value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{}",
+        EnumNameRequestStatus(value));
+  }
+};
+
 // helpers
 
 template <>
@@ -738,6 +753,33 @@ struct fmt::formatter<roq::CancelOrder> {
 };
 
 template <>
+struct fmt::formatter<roq::RequestUpdate> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::RequestUpdate& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "account=\"{}\", "
+        "order_id={}, "
+        "status={}, "
+        "text=\"{}\", "
+        "gateway_order_id={}, "
+        "external_order_id=\"{}\""
+        "}}",
+        value.account,
+        value.order_id,
+        value.status,
+        value.text,
+        value.gateway_order_id,
+        value.external_order_id);
+  }
+};
+
+template <>
 struct fmt::formatter<roq::CreateOrderAck> {
   template <typename T>
   constexpr auto parse(T& ctx) {
@@ -1257,6 +1299,25 @@ struct fmt::formatter<roq::CancelOrderEvent> {
         "}}",
         value.message_info,
         value.cancel_order);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::RequestUpdateEvent> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::RequestUpdateEvent& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "message_info={}, "
+        "request_update={}"
+        "}}",
+        value.message_info,
+        value.request_update);
   }
 };
 

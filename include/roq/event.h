@@ -82,6 +82,11 @@ inline auto event_value(const TradeUpdateEvent& event) {
 }
 
 template <>
+inline auto event_value(const RequestUpdateEvent& event) {
+  return event.request_update;
+}
+
+template <>
 inline auto event_value(const CreateOrderAckEvent& event) {
   return event.create_order_ack;
 }

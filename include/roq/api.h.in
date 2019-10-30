@@ -238,6 +238,40 @@ inline const char *EnumNameOrderStatus(OrderStatus e) {
   return EnumNamesOrderStatus()[index];
 }
 
+enum class RequestStatus : int8_t {
+  CLIENT_TIMEOUT = 0,
+  GATEWAY_TIMEOUT = 1,
+  GATEWAY_FORWARDED = 2,
+  GATEWAY_REJECTED = 3,
+  BROKER_TIMEOUT = 4,
+  BROKER_FORWARDED = 5,
+  BROKER_REJECTED = 6,
+  EXCHANGE_ACCEPTED = 7,
+  EXCHANGE_REJECTED = 8,
+  MIN = CLIENT_TIMEOUT,
+  MAX = EXCHANGE_REJECTED
+};
+
+inline const char * const *EnumNamesRequestStatus() {
+  static const char * const names[] = {
+    "CLIENT_TIMEOUT",
+    "GATEWAY_TIMEOUT",
+    "GATEWAY_FORWARDED",
+    "GATEWAY_REJECTED",
+    "BROKER_TIMEOUT",
+    "BROKER_FORWARDED",
+    "BROKER_REJECTED",
+    "EXCHANGE_ACCEPTED",
+    "EXCHANGE_REJECTED",
+  };
+  return names;
+}
+
+inline const char *EnumNameRequestStatus(RequestStatus e) {
+  const size_t index = static_cast<int>(e);
+  return EnumNamesRequestStatus()[index];
+}
+
 // transport
 
 struct ROQ_PUBLIC MessageInfo final {
@@ -429,6 +463,16 @@ struct ROQ_PUBLIC CancelOrder final {
   uint32_t order_id;
 };
 
+struct ROQ_PUBLIC RequestUpdate final {
+  std::string_view account;
+  uint32_t order_id;
+  RequestStatus status;
+  std::string_view text;
+  // debug info
+  uint32_t gateway_order_id;
+  std::string_view external_order_id;
+};
+
 struct ROQ_PUBLIC CreateOrderAck final {
   std::string_view account;
   uint32_t order_id;
@@ -574,6 +618,11 @@ struct ROQ_PUBLIC CancelOrderEvent final {
   const CancelOrder& cancel_order;
 };
 
+struct ROQ_PUBLIC RequestUpdateEvent final {
+  const MessageInfo& message_info;
+  const RequestUpdate& request_update;
+};
+
 struct ROQ_PUBLIC CreateOrderAckEvent final {
   const MessageInfo& message_info;
   const CreateOrderAck& create_order_ack;
@@ -696,6 +745,7 @@ class ROQ_PUBLIC Matcher {
     virtual void operator()(const PositionUpdateEvent&) = 0;
     virtual void operator()(const OrderUpdateEvent&) = 0;
     virtual void operator()(const TradeUpdateEvent&) = 0;
+    virtual void operator()(const RequestUpdateEvent&) = 0;
     virtual void operator()(const CreateOrderAckEvent&) = 0;
     virtual void operator()(const ModifyOrderAckEvent&) = 0;
     virtual void operator()(const CancelOrderAckEvent&) = 0;
@@ -750,6 +800,25 @@ struct ROQ_PUBLIC User {
 };
 
 // utilities
+
+inline bool is_complete(const RequestStatus& status) {
+  switch (status) {
+    case RequestStatus::GATEWAY_FORWARDED:
+    case RequestStatus::BROKER_FORWARDED:
+      return false;
+    case RequestStatus::CLIENT_TIMEOUT:
+    case RequestStatus::GATEWAY_TIMEOUT:
+    case RequestStatus::GATEWAY_REJECTED:
+    case RequestStatus::BROKER_TIMEOUT:
+    case RequestStatus::BROKER_REJECTED:
+    case RequestStatus::EXCHANGE_ACCEPTED:
+    case RequestStatus::EXCHANGE_REJECTED:
+      return true;
+    default:
+      // TODO(thraneh): should throw
+      return true;
+  }
+}
 
 inline Side invert(Side side) {
   switch (side) {

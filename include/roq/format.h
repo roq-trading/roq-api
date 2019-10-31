@@ -212,6 +212,36 @@ struct fmt::formatter<roq::RequestStatus> {
   }
 };
 
+template <>
+struct fmt::formatter<roq::SecurityType> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::SecurityType value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{}",
+        EnumNameSecurityType(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::OptionType> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::OptionType value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{}",
+        EnumNameOptionType(value));
+  }
+};
+
 // helpers
 
 template <>
@@ -511,19 +541,33 @@ struct fmt::formatter<roq::ReferenceData> {
         "{{"
         "exchange=\"{}\", "
         "symbol=\"{}\", "
+        "security_type={}, "
+        "currency=\"{}\", "
+        "settlement_currency=\"{}\", "
+        "commission_currency=\"{}\", "
         "tick_size={}, "
         "limit_up={}, "
         "limit_down={}, "
         "multiplier={}, "
-        "min_trade_vol={}"
+        "min_trade_vol={}, "
+        "option_type={}, "
+        "strike_currency=\"{}\", "
+        "strike_price={}"
         "}}",
         value.exchange,
         value.symbol,
+        value.security_type,
+        value.currency,
+        value.settlement_currency,
+        value.commission_currency,
         value.tick_size,
         value.limit_up,
         value.limit_down,
         value.multiplier,
-        value.min_trade_vol);
+        value.min_trade_vol,
+        value.option_type,
+        value.strike_currency,
+        value.strike_price);
   }
 };
 
@@ -605,6 +649,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         "order_template=\"{}\", "
         "create_time_utc={}, "
         "update_time_utc={}, "
+        "commissions={}, "
         "gateway_order_id={}, "
         "external_order_id=\"{}\""
         "}}",
@@ -621,6 +666,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.order_template,
         value.create_time_utc,
         value.update_time_utc,
+        value.commissions,
         value.gateway_order_id,
         value.external_order_id);
   }
@@ -776,6 +822,27 @@ struct fmt::formatter<roq::RequestUpdate> {
         value.text,
         value.gateway_order_id,
         value.external_order_id);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::FundsUpdate> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::FundsUpdate& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "account=\"{}\", "
+        "currency=\"{}\", "
+        "balance={}"
+        "}}",
+        value.account,
+        value.currency,
+        value.balance);
   }
 };
 
@@ -1185,6 +1252,25 @@ struct fmt::formatter<roq::MarketStatusEvent> {
         "}}",
         value.message_info,
         value.market_status);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::FundsUpdateEvent> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::FundsUpdateEvent& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "message_info={}, "
+        "funds_update={}"
+        "}}",
+        value.message_info,
+        value.funds_update);
   }
 };
 

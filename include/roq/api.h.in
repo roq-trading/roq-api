@@ -272,6 +272,50 @@ inline const char *EnumNameRequestStatus(RequestStatus e) {
   return EnumNamesRequestStatus()[index];
 }
 
+enum class SecurityType : int8_t {
+  UNDEFINED = 0,
+  FX_SPOT = 1,
+  FUTURES = 2,
+  OPTION = 3,
+  MIN = UNDEFINED,
+  MAX = OPTION
+};
+
+inline const char * const *EnumNamesSecurityType() {
+  static const char * const names[] = {
+    "UNDEFINED",
+    "FX_SPOT",
+    "FUTURES",
+    "OPTION",
+  };
+  return names;
+}
+
+inline const char *EnumNameSecurityType(SecurityType e) {
+  const size_t index = static_cast<int>(e);
+  return EnumNamesSecurityType()[index];
+}
+enum class OptionType : int8_t {
+  UNDEFINED = 0,
+  CALL = 1,
+  PUT = 2,
+  MIN = UNDEFINED,
+  MAX = PUT
+};
+
+inline const char * const *EnumNamesOptionType() {
+  static const char * const names[] = {
+    "UNDEFINED",
+    "CALL",
+    "PUT",
+  };
+  return names;
+}
+
+inline const char *EnumNameOptionType(OptionType e) {
+  const size_t index = static_cast<int>(e);
+  return EnumNamesOptionType()[index];
+}
 // transport
 
 struct ROQ_PUBLIC MessageInfo final {
@@ -368,11 +412,20 @@ struct ROQ_PUBLIC TradeSummary final {
 struct ROQ_PUBLIC ReferenceData final {
   std::string_view exchange;
   std::string_view symbol;
+  SecurityType security_type;
+  std::string_view currency;
+  std::string_view settlement_currency;
+  std::string_view commission_currency;
   double tick_size;
   double limit_up;
   double limit_down;
   double multiplier;
   double min_trade_vol;
+  // futures
+  // options
+  OptionType option_type;
+  std::string_view strike_currency;
+  double strike_price;
 };
 
 struct ROQ_PUBLIC MarketStatus final {
@@ -388,6 +441,7 @@ struct ROQ_PUBLIC PositionUpdate final {
   Side side;
   uint32_t last_trade_id;
   double position;
+  // exerimental
   double position_cost;
   double position_yesterday;
   double position_cost_yesterday;
@@ -407,6 +461,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   std::string_view order_template;
   std::chrono::nanoseconds create_time_utc;
   std::chrono::nanoseconds update_time_utc;
+  double commissions;
   // debug info
   uint32_t gateway_order_id;
   std::string_view external_order_id;
@@ -471,6 +526,13 @@ struct ROQ_PUBLIC RequestUpdate final {
   // debug info
   uint32_t gateway_order_id;
   std::string_view external_order_id;
+};
+
+// experimental
+struct ROQ_PUBLIC FundsUpdate final {
+  std::string_view account;
+  std::string_view currency;
+  double balance;
 };
 
 struct ROQ_PUBLIC CreateOrderAck final {
@@ -623,6 +685,11 @@ struct ROQ_PUBLIC RequestUpdateEvent final {
   const RequestUpdate& request_update;
 };
 
+struct ROQ_PUBLIC FundsUpdateEvent final {
+  const MessageInfo& message_info;
+  const FundsUpdate& funds_update;
+};
+
 struct ROQ_PUBLIC CreateOrderAckEvent final {
   const MessageInfo& message_info;
   const CreateOrderAck& create_order_ack;
@@ -746,6 +813,7 @@ class ROQ_PUBLIC Matcher {
     virtual void operator()(const OrderUpdateEvent&) = 0;
     virtual void operator()(const TradeUpdateEvent&) = 0;
     virtual void operator()(const RequestUpdateEvent&) = 0;
+    virtual void operator()(const FundsUpdateEvent&) = 0;
     virtual void operator()(const CreateOrderAckEvent&) = 0;
     virtual void operator()(const ModifyOrderAckEvent&) = 0;
     virtual void operator()(const CancelOrderAckEvent&) = 0;

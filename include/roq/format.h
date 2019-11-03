@@ -198,6 +198,21 @@ struct fmt::formatter<roq::OrderStatus> {
 };
 
 template <>
+struct fmt::formatter<roq::RequestType> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::RequestType value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{}",
+        EnumNameRequestType(value));
+  }
+};
+
+template <>
 struct fmt::formatter<roq::RequestStatus> {
   template <typename T>
   constexpr auto parse(T& ctx) {
@@ -209,6 +224,21 @@ struct fmt::formatter<roq::RequestStatus> {
         ctx.out(),
         "{}",
         EnumNameRequestStatus(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Origin> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::Origin value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{}",
+        EnumNameOrigin(value));
   }
 };
 
@@ -239,6 +269,21 @@ struct fmt::formatter<roq::OptionType> {
         ctx.out(),
         "{}",
         EnumNameOptionType(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Error> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::Error value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{}",
+        EnumNameError(value));
   }
 };
 
@@ -415,120 +460,6 @@ struct fmt::formatter<roq::OrderManagerStatus> {
 };
 
 template <>
-struct fmt::formatter<roq::SessionStatistics> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::SessionStatistics& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "pre_open_interest={}, "
-        "pre_settlement_price={}, "
-        "pre_close_price={}, "
-        "highest_traded_price={}, "
-        "lowest_traded_price={}, "
-        "upper_limit_price={}, "
-        "lower_limit_price={}, "
-        "exchange_time_utc={}"
-        "}}",
-        value.exchange,
-        value.symbol,
-        value.pre_open_interest,
-        value.pre_settlement_price,
-        value.pre_close_price,
-        value.highest_traded_price,
-        value.lowest_traded_price,
-        value.upper_limit_price,
-        value.lower_limit_price,
-        value.exchange_time_utc);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::DailyStatistics> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::DailyStatistics& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "open_price={}, "
-        "settlement_price={}, "
-        "close_price={}, "
-        "open_interest={}, "
-        "exchange_time_utc={}"
-        "}}",
-        value.exchange,
-        value.symbol,
-        value.open_price,
-        value.settlement_price,
-        value.close_price,
-        value.open_interest,
-        value.exchange_time_utc);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::MarketByPrice> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::MarketByPrice& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "bid=[{}], "
-        "ask=[{}], "
-        "snapshot={}, "
-        "exchange_time_utc={}"
-        "}}",
-        value.exchange,
-        value.symbol,
-        fmt::join(value.bid, value.bid + value.bid_length, ", "),
-        fmt::join(value.ask, value.ask + value.ask_length, ", "),
-        value.snapshot,
-        value.exchange_time_utc);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::TradeSummary> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::TradeSummary& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "trade=[{}], "
-        "exchange_time_utc={}"
-        "}}",
-        value.exchange,
-        value.symbol,
-        fmt::join(value.trade, value.trade + value.trade_length, ", "),
-        value.exchange_time_utc);
-  }
-};
-
-template <>
 struct fmt::formatter<roq::ReferenceData> {
   template <typename T>
   constexpr auto parse(T& ctx) {
@@ -593,35 +524,228 @@ struct fmt::formatter<roq::MarketStatus> {
 };
 
 template <>
-struct fmt::formatter<roq::PositionUpdate> {
+struct fmt::formatter<roq::MarketByPrice> {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::PositionUpdate& value, T& ctx) {
+  auto format(const roq::MarketByPrice& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "exchange=\"{}\", "
+        "symbol=\"{}\", "
+        "bid=[{}], "
+        "ask=[{}], "
+        "snapshot={}, "
+        "exchange_time_utc={}"
+        "}}",
+        value.exchange,
+        value.symbol,
+        fmt::join(value.bid, value.bid + value.bid_length, ", "),
+        fmt::join(value.ask, value.ask + value.ask_length, ", "),
+        value.snapshot,
+        value.exchange_time_utc);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::TradeSummary> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::TradeSummary& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "exchange=\"{}\", "
+        "symbol=\"{}\", "
+        "trade=[{}], "
+        "exchange_time_utc={}"
+        "}}",
+        value.exchange,
+        value.symbol,
+        fmt::join(value.trade, value.trade + value.trade_length, ", "),
+        value.exchange_time_utc);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::SessionStatistics> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::SessionStatistics& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "exchange=\"{}\", "
+        "symbol=\"{}\", "
+        "pre_open_interest={}, "
+        "pre_settlement_price={}, "
+        "pre_close_price={}, "
+        "highest_traded_price={}, "
+        "lowest_traded_price={}, "
+        "upper_limit_price={}, "
+        "lower_limit_price={}, "
+        "exchange_time_utc={}"
+        "}}",
+        value.exchange,
+        value.symbol,
+        value.pre_open_interest,
+        value.pre_settlement_price,
+        value.pre_close_price,
+        value.highest_traded_price,
+        value.lowest_traded_price,
+        value.upper_limit_price,
+        value.lower_limit_price,
+        value.exchange_time_utc);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::DailyStatistics> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::DailyStatistics& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "exchange=\"{}\", "
+        "symbol=\"{}\", "
+        "open_price={}, "
+        "settlement_price={}, "
+        "close_price={}, "
+        "open_interest={}, "
+        "exchange_time_utc={}"
+        "}}",
+        value.exchange,
+        value.symbol,
+        value.open_price,
+        value.settlement_price,
+        value.close_price,
+        value.open_interest,
+        value.exchange_time_utc);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::CreateOrder> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::CreateOrder& value, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
         "account=\"{}\", "
+        "order_id={}, "
         "exchange=\"{}\", "
         "symbol=\"{}\", "
         "side={}, "
-        "last_trade_id={}, "
-        "position={}, "
-        "position_cost={}, "
-        "position_yesterday={}, "
-        "position_cost_yesterday={}"
+        "quantity={}, "
+        "order_type={}, "
+        "price={}, "
+        "time_in_force={}, "
+        "position_effect={}, "
+        "order_template=\"{}\""
         "}}",
         value.account,
+        value.order_id,
         value.exchange,
         value.symbol,
         value.side,
-        value.last_trade_id,
-        value.position,
-        value.position_cost,
-        value.position_yesterday,
-        value.position_cost_yesterday);
+        value.quantity,
+        value.order_type,
+        value.price,
+        value.time_in_force,
+        value.position_effect,
+        value.order_template);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::ModifyOrder> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::ModifyOrder& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "account=\"{}\", "
+        "order_id={}, "
+        "quantity={}, "
+        "price={}, "
+        "}}",
+        value.account,
+        value.order_id,
+        value.quantity,
+        value.price);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::CancelOrder> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::CancelOrder& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "account=\"{}\", "
+        "order_id={}"
+        "}}",
+        value.account,
+        value.order_id);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::OrderAck> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::OrderAck& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "account=\"{}\", "
+        "order_id={}, "
+        "type={}, "
+        "status={}, "
+        "origin={}, "
+        "error={}, "
+        "text=\"{}\", "
+        "gateway_order_id={}, "
+        "external_order_id=\"{}\""
+        "}}",
+        value.account,
+        value.order_id,
+        value.type,
+        value.status,
+        value.origin,
+        value.error,
+        value.text,
+        value.gateway_order_id,
+        value.external_order_id);
   }
 };
 
@@ -720,108 +844,35 @@ struct fmt::formatter<roq::TradeUpdate> {
 };
 
 template <>
-struct fmt::formatter<roq::CreateOrder> {
+struct fmt::formatter<roq::PositionUpdate> {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::CreateOrder& value, T& ctx) {
+  auto format(const roq::PositionUpdate& value, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
         "account=\"{}\", "
-        "order_id={}, "
         "exchange=\"{}\", "
         "symbol=\"{}\", "
         "side={}, "
-        "quantity={}, "
-        "order_type={}, "
-        "price={}, "
-        "time_in_force={}, "
-        "position_effect={}, "
-        "order_template=\"{}\""
+        "position={}, "
+        "last_trade_id={}, "
+        "position_cost={}, "
+        "position_yesterday={}, "
+        "position_cost_yesterday={}"
         "}}",
         value.account,
-        value.order_id,
         value.exchange,
         value.symbol,
         value.side,
-        value.quantity,
-        value.order_type,
-        value.price,
-        value.time_in_force,
-        value.position_effect,
-        value.order_template);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::ModifyOrder> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::ModifyOrder& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}, "
-        "quantity={}, "
-        "price={}, "
-        "}}",
-        value.account,
-        value.order_id,
-        value.quantity,
-        value.price);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::CancelOrder> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::CancelOrder& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}"
-        "}}",
-        value.account,
-        value.order_id);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::RequestUpdate> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::RequestUpdate& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}, "
-        "status={}, "
-        "text=\"{}\", "
-        "gateway_order_id={}, "
-        "external_order_id=\"{}\""
-        "}}",
-        value.account,
-        value.order_id,
-        value.status,
-        value.text,
-        value.gateway_order_id,
-        value.external_order_id);
+        value.position,
+        value.last_trade_id,
+        value.position_cost,
+        value.position_yesterday,
+        value.position_cost_yesterday);
   }
 };
 
@@ -838,92 +889,13 @@ struct fmt::formatter<roq::FundsUpdate> {
         "{{"
         "account=\"{}\", "
         "currency=\"{}\", "
-        "balance={}"
+        "balance={}, "
+        "hold={}"
         "}}",
         value.account,
         value.currency,
-        value.balance);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::CreateOrderAck> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::CreateOrderAck& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}, "
-        "failure={}, "
-        "reason=\"{}\", "
-        "gateway_order_id={}, "
-        "external_order_id=\"{}\""
-        "}}",
-        value.account,
-        value.order_id,
-        value.failure,
-        value.reason,
-        value.gateway_order_id,
-        value.external_order_id);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::ModifyOrderAck> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::ModifyOrderAck& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}, "
-        "failure={}, "
-        "reason=\"{}\", "
-        "gateway_order_id={}, "
-        "external_order_id=\"{}\""
-        "}}",
-        value.account,
-        value.order_id,
-        value.failure,
-        value.reason,
-        value.gateway_order_id,
-        value.external_order_id);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::CancelOrderAck> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::CancelOrderAck& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}, "
-        "failure={}, "
-        "reason=\"{}\", "
-        "gateway_order_id={}, "
-        "external_order_id=\"{}\""
-        "}}",
-        value.account,
-        value.order_id,
-        value.failure,
-        value.reason,
-        value.gateway_order_id,
-        value.external_order_id);
+        value.balance,
+        value.hold);
   }
 };
 
@@ -1142,40 +1114,40 @@ struct fmt::formatter<roq::OrderManagerStatusEvent> {
 };
 
 template <>
-struct fmt::formatter<roq::SessionStatisticsEvent> {
+struct fmt::formatter<roq::ReferenceDataEvent> {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::SessionStatisticsEvent& value, T& ctx) {
+  auto format(const roq::ReferenceDataEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
         "message_info={}, "
-        "session_statistics={}"
+        "reference_data={}"
         "}}",
         value.message_info,
-        value.session_statistics);
+        value.reference_data);
   }
 };
 
 template <>
-struct fmt::formatter<roq::DailyStatisticsEvent> {
+struct fmt::formatter<roq::MarketStatusEvent> {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::DailyStatisticsEvent& value, T& ctx) {
+  auto format(const roq::MarketStatusEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
         "message_info={}, "
-        "daily_statistics={}"
+        "market_status={}"
         "}}",
         value.message_info,
-        value.daily_statistics);
+        value.market_status);
   }
 };
 
@@ -1218,116 +1190,40 @@ struct fmt::formatter<roq::TradeSummaryEvent> {
 };
 
 template <>
-struct fmt::formatter<roq::ReferenceDataEvent> {
+struct fmt::formatter<roq::SessionStatisticsEvent> {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::ReferenceDataEvent& value, T& ctx) {
+  auto format(const roq::SessionStatisticsEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
         "message_info={}, "
-        "reference_data={}"
+        "session_statistics={}"
         "}}",
         value.message_info,
-        value.reference_data);
+        value.session_statistics);
   }
 };
 
 template <>
-struct fmt::formatter<roq::MarketStatusEvent> {
+struct fmt::formatter<roq::DailyStatisticsEvent> {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::MarketStatusEvent& value, T& ctx) {
+  auto format(const roq::DailyStatisticsEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
         "message_info={}, "
-        "market_status={}"
+        "daily_statistics={}"
         "}}",
         value.message_info,
-        value.market_status);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::FundsUpdateEvent> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::FundsUpdateEvent& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "message_info={}, "
-        "funds_update={}"
-        "}}",
-        value.message_info,
-        value.funds_update);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::PositionUpdateEvent> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::PositionUpdateEvent& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "message_info={}, "
-        "position_update={}"
-        "}}",
-        value.message_info,
-        value.position_update);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::OrderUpdateEvent> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::OrderUpdateEvent& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "message_info={}, "
-        "order_update={}"
-        "}}",
-        value.message_info,
-        value.order_update);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::TradeUpdateEvent> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::TradeUpdateEvent& value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{{"
-        "message_info={}, "
-        "trade_update={}"
-        "}}",
-        value.message_info,
-        value.trade_update);
+        value.daily_statistics);
   }
 };
 
@@ -1389,78 +1285,97 @@ struct fmt::formatter<roq::CancelOrderEvent> {
 };
 
 template <>
-struct fmt::formatter<roq::RequestUpdateEvent> {
+struct fmt::formatter<roq::OrderAckEvent> {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::RequestUpdateEvent& value, T& ctx) {
+  auto format(const roq::OrderAckEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
         "message_info={}, "
-        "request_update={}"
+        "order_ack={}"
         "}}",
         value.message_info,
-        value.request_update);
+        value.order_ack);
   }
 };
 
 template <>
-struct fmt::formatter<roq::CreateOrderAckEvent> {
+struct fmt::formatter<roq::OrderUpdateEvent> {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::CreateOrderAckEvent& value, T& ctx) {
+  auto format(const roq::OrderUpdateEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
         "message_info={}, "
-        "create_order_ack={}"
+        "order_update={}"
         "}}",
         value.message_info,
-        value.create_order_ack);
+        value.order_update);
   }
 };
 
 template <>
-struct fmt::formatter<roq::ModifyOrderAckEvent> {
+struct fmt::formatter<roq::TradeUpdateEvent> {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::ModifyOrderAckEvent& value, T& ctx) {
+  auto format(const roq::TradeUpdateEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
         "message_info={}, "
-        "modify_order_ack={}"
+        "trade_update={}"
         "}}",
         value.message_info,
-        value.modify_order_ack);
+        value.trade_update);
   }
 };
 
 template <>
-struct fmt::formatter<roq::CancelOrderAckEvent> {
+struct fmt::formatter<roq::PositionUpdateEvent> {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::CancelOrderAckEvent& value, T& ctx) {
+  auto format(const roq::PositionUpdateEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
         "{{"
         "message_info={}, "
-        "cancel_order_ack={}"
+        "position_update={}"
         "}}",
         value.message_info,
-        value.cancel_order_ack);
+        value.position_update);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::FundsUpdateEvent> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::FundsUpdateEvent& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "message_info={}, "
+        "funds_update={}"
+        "}}",
+        value.message_info,
+        value.funds_update);
   }
 };
 

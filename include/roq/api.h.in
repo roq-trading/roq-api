@@ -24,23 +24,9 @@ namespace roq {
 
 // limits
 
-constexpr auto ACCOUNT_NAME_MAX_LENGTH = size_t{31};
-constexpr auto USER_NAME_MAX_LENGTH = size_t{31};
-
-// common error messages
-
-constexpr std::string_view LOGOUT_RESPONSE("LOGOUT_RESPONSE");
-constexpr std::string_view RESEND_NOT_SUPPORTED("RESEND_NOT_SUPPORTED");
-constexpr std::string_view GATEWAY_NOT_READY("GATEWAY_NOT_READY");
-constexpr std::string_view INVALID_ACCOUNT("INVALID_ACCOUNT");
-constexpr std::string_view INVALID_EXCHANGE("INVALID_EXCHANGE");
-constexpr std::string_view INVALID_POSITION_EFFECT("INVALID_POSITION_EFFECT");
-constexpr std::string_view INVALID_ORDER_TEMPLATE("INVALID_ORDER_TEMPLATE");
-constexpr std::string_view NETWORK_ERROR("NETWORK_ERROR");
-constexpr std::string_view UNKNOWN_ORDER_ID("UNKNOWN_ORDER_ID");
-constexpr std::string_view UNKNOWN_EXCHANGE_ORDER_ID("UNKNOWN_EXCHANGE_ORDER_ID");
-constexpr std::string_view MODIFY_ORDER_NOT_SUPPORTED("MODIFY_ORDER_NOT_SUPPORTED");
-constexpr std::string_view INVALID_ORDER_ID("INVALID_ORDER_ID");
+constexpr auto MAX_ACCOUNT_NAME_LENGTH = size_t{31};
+constexpr auto MAX_USER_NAME_LENGTH = size_t{31};
+constexpr auto MAX_TRADE_ID_LENGTH = size_t{39};
 
 // enums
 
@@ -238,31 +224,43 @@ inline const char *EnumNameOrderStatus(OrderStatus e) {
   return EnumNamesOrderStatus()[index];
 }
 
+enum class RequestType : int8_t {
+  CREATE_ORDER = 0,
+  MODIFY_ORDER = 1,
+  CANCEL_ORDER = 2,
+  MIN = CREATE_ORDER,
+  MAX = CANCEL_ORDER
+};
+
+inline const char * const *EnumNamesRequestType() {
+  static const char * const names[] = {
+    "CREATE_ORDER",
+    "MODIFY_ORDER",
+    "CANCEL_ORDER",
+  };
+  return names;
+}
+
+inline const char *EnumNameRequestType(RequestType e) {
+  const size_t index = static_cast<int>(e);
+  return EnumNamesRequestType()[index];
+}
+
 enum class RequestStatus : int8_t {
-  CLIENT_TIMEOUT = 0,
-  GATEWAY_TIMEOUT = 1,
-  GATEWAY_FORWARDED = 2,
-  GATEWAY_REJECTED = 3,
-  BROKER_TIMEOUT = 4,
-  BROKER_FORWARDED = 5,
-  BROKER_REJECTED = 6,
-  EXCHANGE_ACCEPTED = 7,
-  EXCHANGE_REJECTED = 8,
-  MIN = CLIENT_TIMEOUT,
-  MAX = EXCHANGE_REJECTED
+  FORWARDED = 0,
+  ACCEPTED = 1,
+  REJECTED = 2,
+  TIMEOUT = 3,
+  MIN = FORWARDED,
+  MAX = TIMEOUT
 };
 
 inline const char * const *EnumNamesRequestStatus() {
   static const char * const names[] = {
-    "CLIENT_TIMEOUT",
-    "GATEWAY_TIMEOUT",
-    "GATEWAY_FORWARDED",
-    "GATEWAY_REJECTED",
-    "BROKER_TIMEOUT",
-    "BROKER_FORWARDED",
-    "BROKER_REJECTED",
-    "EXCHANGE_ACCEPTED",
-    "EXCHANGE_REJECTED",
+    "FORWARDED",
+    "ACCEPTED",
+    "REJECTED",
+    "TIMEOUT",
   };
   return names;
 }
@@ -270,6 +268,30 @@ inline const char * const *EnumNamesRequestStatus() {
 inline const char *EnumNameRequestStatus(RequestStatus e) {
   const size_t index = static_cast<int>(e);
   return EnumNamesRequestStatus()[index];
+}
+
+enum class Origin : int8_t {
+  CLIENT = 0,
+  GATEWAY = 1,
+  BROKER = 2,
+  EXCHANGE = 3,
+  MIN = CLIENT,
+  MAX = EXCHANGE
+};
+
+inline const char * const *EnumNamesOrigin() {
+  static const char * const names[] = {
+    "CLIENT",
+    "GATEWAY",
+    "BROKER",
+    "EXCHANGE",
+  };
+  return names;
+}
+
+inline const char *EnumNameOrigin(Origin e) {
+  const size_t index = static_cast<int>(e);
+  return EnumNamesOrigin()[index];
 }
 
 enum class SecurityType : int8_t {
@@ -316,22 +338,74 @@ inline const char *EnumNameOptionType(OptionType e) {
   const size_t index = static_cast<int>(e);
   return EnumNamesOptionType()[index];
 }
+
+enum class Error : int8_t {
+  NONE = 0,
+  UNKNOWN = 1,
+  GATEWAY_NOT_READY = 1,
+  INVALID_ACCOUNT = 2,
+  INVALID_EXCHANGE = 3,
+  INVALID_SYMBOL = 4,
+  INVALID_ORDER_TYPE = 5,
+  INVALID_TIME_IN_FORCE = 6,
+  INVALID_POSITION_EFFECT = 7,
+  INVALID_ORDER_TEMPLATE = 8,
+  NETWORK_ERROR = 9,
+  UNKNOWN_ORDER_ID = 10,
+  UNKNOWN_EXCHANGE_ORDER_ID = 11,
+  MODIFY_ORDER_NOT_SUPPORTED = 12,
+  INVALID_ORDER_ID = 13,
+  MIN = NONE,
+  MAX = INVALID_ORDER_ID
+};
+
+inline const char * const *EnumNamesError() {
+  static const char * const names[] = {
+    "NONE",
+    "UNKNOWN",
+    "GATEWAY_NOT_READY",
+    "INVALID_ACCOUNT",
+    "INVALID_EXCHANGE",
+    "INVALID_SYMBOL",
+    "INVALID_ORDER_TYPE",
+    "INVALID_TIME_IN_FORCE",
+    "INVALID_POSITION_EFFECT",
+    "INVALID_ORDER_TEMPLATE",
+    "NETWORK_ERROR",
+    "UNKNOWN_ORDER_ID",
+    "UNKNOWN_EXCHANGE_ORDER_ID",
+    "MODIFY_ORDER_NOT_SUPPORTED",
+    "INVALID_ORDER_ID",
+  };
+  return names;
+}
+
+inline const char *EnumNameError(Error e) {
+  const size_t index = static_cast<int>(e);
+  return EnumNamesError()[index];
+}
+
 // transport
 
 struct ROQ_PUBLIC MessageInfo final {
   uint8_t source;
   std::string_view source_name;
   uint64_t source_seqno;
-  std::chrono::nanoseconds receive_time_utc;
-  std::chrono::nanoseconds receive_time;  // monotonic clock
-  std::chrono::nanoseconds source_send_time;  // monotonic clock
-  std::chrono::nanoseconds source_receive_time;  // monotonic clock
-  std::chrono::nanoseconds origin_create_time;  // monotonic clock
+  std::chrono::nanoseconds receive_time_utc;     // realtime clock
+  std::chrono::nanoseconds receive_time;         // system clock
+  std::chrono::nanoseconds source_send_time;     // system clock
+  std::chrono::nanoseconds source_receive_time;  // system clock
+  std::chrono::nanoseconds origin_create_time;   // system clock
   bool is_last;
   uint64_t opaque;
 };
 
 // messages
+
+struct ROQ_PUBLIC Subscribe final {
+  std::set<std::string> accounts;
+  std::map<std::string, std::set<std::string> > symbols_by_exchange;
+};
 
 struct ROQ_PUBLIC DownloadBegin final {
   std::string_view account;
@@ -351,27 +425,27 @@ struct ROQ_PUBLIC OrderManagerStatus final {
   GatewayStatus status;
 };
 
-struct ROQ_PUBLIC SessionStatistics final {
+struct ROQ_PUBLIC ReferenceData final {
   std::string_view exchange;
   std::string_view symbol;
-  double pre_open_interest;
-  double pre_settlement_price;
-  double pre_close_price;
-  double highest_traded_price;
-  double lowest_traded_price;
-  double upper_limit_price;
-  double lower_limit_price;
-  std::chrono::nanoseconds exchange_time_utc;
+  SecurityType security_type;
+  std::string_view currency;
+  std::string_view settlement_currency;
+  std::string_view commission_currency;
+  double tick_size;
+  double limit_up;
+  double limit_down;
+  double multiplier;
+  double min_trade_vol;
+  OptionType option_type;
+  std::string_view strike_currency;
+  double strike_price;
 };
 
-struct ROQ_PUBLIC DailyStatistics final {
+struct ROQ_PUBLIC MarketStatus final {
   std::string_view exchange;
   std::string_view symbol;
-  double open_price;
-  double settlement_price;
-  double close_price;
-  double open_interest;
-  std::chrono::nanoseconds exchange_time_utc;
+  TradingStatus trading_status;
 };
 
 struct ROQ_PUBLIC MBPUpdate final {
@@ -396,7 +470,7 @@ struct ROQ_PUBLIC Trade final {
   Side side;
   double price;
   double quantity;
-  char trade_id[40];
+  char trade_id[MAX_TRADE_ID_LENGTH + 1];
 };
 
 static_assert(sizeof(Trade) == 64);
@@ -409,87 +483,27 @@ struct ROQ_PUBLIC TradeSummary final {
   std::chrono::nanoseconds exchange_time_utc;
 };
 
-struct ROQ_PUBLIC ReferenceData final {
+struct ROQ_PUBLIC SessionStatistics final {
   std::string_view exchange;
   std::string_view symbol;
-  SecurityType security_type;
-  std::string_view currency;
-  std::string_view settlement_currency;
-  std::string_view commission_currency;
-  double tick_size;
-  double limit_up;
-  double limit_down;
-  double multiplier;
-  double min_trade_vol;
-  // futures
-  // options
-  OptionType option_type;
-  std::string_view strike_currency;
-  double strike_price;
+  double pre_open_interest;
+  double pre_settlement_price;
+  double pre_close_price;
+  double highest_traded_price;
+  double lowest_traded_price;
+  double upper_limit_price;
+  double lower_limit_price;
+  std::chrono::nanoseconds exchange_time_utc;
 };
 
-struct ROQ_PUBLIC MarketStatus final {
+struct ROQ_PUBLIC DailyStatistics final {
   std::string_view exchange;
   std::string_view symbol;
-  TradingStatus trading_status;
-};
-
-struct ROQ_PUBLIC PositionUpdate final {
-  std::string_view account;
-  std::string_view exchange;
-  std::string_view symbol;
-  Side side;
-  uint32_t last_trade_id;
-  double position;
-  // exerimental
-  double position_cost;
-  double position_yesterday;
-  double position_cost_yesterday;
-};
-
-struct ROQ_PUBLIC OrderUpdate final {
-  std::string_view account;
-  uint32_t order_id;
-  std::string_view exchange;
-  std::string_view symbol;
-  OrderStatus order_status;
-  Side side;
-  double price;
-  double remaining_quantity;
-  double traded_quantity;
-  PositionEffect position_effect;
-  std::string_view order_template;
-  std::chrono::nanoseconds create_time_utc;
-  std::chrono::nanoseconds update_time_utc;
-  double commissions;
-  // debug info
-  uint32_t gateway_order_id;
-  std::string_view external_order_id;
-};
-
-struct ROQ_PUBLIC TradeUpdate final {
-  std::string_view account;
-  uint32_t trade_id;
-  uint32_t order_id;
-  std::string_view exchange;
-  std::string_view symbol;
-  Side side;
-  double quantity;
-  double price;
-  PositionEffect position_effect;
-  std::string_view order_template;
-  std::chrono::nanoseconds create_time_utc;
-  std::chrono::nanoseconds update_time_utc;
-  // debug info
-  uint32_t gateway_order_id;
-  uint32_t gateway_trade_id;
-  std::string_view external_order_id;
-  std::string_view external_trade_id;
-};
-
-struct ROQ_PUBLIC Subscribe final {
-  std::set<std::string> accounts;
-  std::map<std::string, std::set<std::string> > symbols_by_exchange;
+  double open_price;
+  double settlement_price;
+  double close_price;
+  double open_interest;
+  std::chrono::nanoseconds exchange_time_utc;
 };
 
 struct ROQ_PUBLIC CreateOrder final {
@@ -518,51 +532,75 @@ struct ROQ_PUBLIC CancelOrder final {
   uint32_t order_id;
 };
 
-struct ROQ_PUBLIC RequestUpdate final {
+struct ROQ_PUBLIC OrderAck final {
   std::string_view account;
   uint32_t order_id;
+  RequestType type;
   RequestStatus status;
+  Origin origin;
+  Error error;
   std::string_view text;
-  // debug info
   uint32_t gateway_order_id;
   std::string_view external_order_id;
 };
 
-// experimental
+struct ROQ_PUBLIC OrderUpdate final {
+  std::string_view account;
+  uint32_t order_id;
+  std::string_view exchange;
+  std::string_view symbol;
+  OrderStatus order_status;
+  Side side;
+  double price;
+  double remaining_quantity;
+  double traded_quantity;
+  PositionEffect position_effect;
+  std::string_view order_template;
+  std::chrono::nanoseconds create_time_utc;
+  std::chrono::nanoseconds update_time_utc;
+  double commissions;
+  uint32_t gateway_order_id;
+  std::string_view external_order_id;
+};
+
+struct ROQ_PUBLIC TradeUpdate final {
+  std::string_view account;
+  uint32_t trade_id;
+  uint32_t order_id;
+  std::string_view exchange;
+  std::string_view symbol;
+  Side side;
+  double quantity;
+  double price;
+  PositionEffect position_effect;
+  std::string_view order_template;
+  std::chrono::nanoseconds create_time_utc;
+  std::chrono::nanoseconds update_time_utc;
+  uint32_t gateway_order_id;
+  uint32_t gateway_trade_id;
+  std::string_view external_order_id;
+  std::string_view external_trade_id;
+};
+
+struct ROQ_PUBLIC PositionUpdate final {
+  std::string_view account;
+  std::string_view exchange;
+  std::string_view symbol;
+  Side side;
+  double position;
+  // note! experimental
+  uint32_t last_trade_id;
+  double position_cost;
+  double position_yesterday;
+  double position_cost_yesterday;
+};
+
 struct ROQ_PUBLIC FundsUpdate final {
   std::string_view account;
   std::string_view currency;
-  double balance;
-};
-
-struct ROQ_PUBLIC CreateOrderAck final {
-  std::string_view account;
-  uint32_t order_id;
-  bool failure;
-  std::string_view reason;
-  // debug info
-  uint32_t gateway_order_id;
-  std::string_view external_order_id;
-};
-
-struct ROQ_PUBLIC ModifyOrderAck final {
-  std::string_view account;
-  uint32_t order_id;
-  bool failure;
-  std::string_view reason;
-  // debug info
-  uint32_t gateway_order_id;
-  std::string_view external_order_id;
-};
-
-struct ROQ_PUBLIC CancelOrderAck final {
-  std::string_view account;
-  uint32_t order_id;
-  bool failure;
-  std::string_view reason;
-  // debug info
-  uint32_t gateway_order_id;
-  std::string_view external_order_id;
+  // note! experimental
+  double balance;  // current available balance
+  double hold;     // balance on hold due to clearing and/or settlement
 };
 
 struct ROQ_PUBLIC CustomMessage final {
@@ -625,16 +663,6 @@ struct ROQ_PUBLIC MarketStatusEvent final {
   const MarketStatus& market_status;
 };
 
-struct ROQ_PUBLIC SessionStatisticsEvent final {
-  const MessageInfo& message_info;
-  const SessionStatistics& session_statistics;
-};
-
-struct ROQ_PUBLIC DailyStatisticsEvent final {
-  const MessageInfo& message_info;
-  const DailyStatistics& daily_statistics;
-};
-
 struct ROQ_PUBLIC MarketByPriceEvent final {
   const MessageInfo& message_info;
   const MarketByPrice& market_by_price;
@@ -643,6 +671,16 @@ struct ROQ_PUBLIC MarketByPriceEvent final {
 struct ROQ_PUBLIC TradeSummaryEvent final {
   const MessageInfo& message_info;
   const TradeSummary& trade_summary;
+};
+
+struct ROQ_PUBLIC SessionStatisticsEvent final {
+  const MessageInfo& message_info;
+  const SessionStatistics& session_statistics;
+};
+
+struct ROQ_PUBLIC DailyStatisticsEvent final {
+  const MessageInfo& message_info;
+  const DailyStatistics& daily_statistics;
 };
 
 struct ROQ_PUBLIC PositionUpdateEvent final {
@@ -680,29 +718,14 @@ struct ROQ_PUBLIC CancelOrderEvent final {
   const CancelOrder& cancel_order;
 };
 
-struct ROQ_PUBLIC RequestUpdateEvent final {
+struct ROQ_PUBLIC OrderAckEvent final {
   const MessageInfo& message_info;
-  const RequestUpdate& request_update;
+  const OrderAck& order_ack;
 };
 
 struct ROQ_PUBLIC FundsUpdateEvent final {
   const MessageInfo& message_info;
   const FundsUpdate& funds_update;
-};
-
-struct ROQ_PUBLIC CreateOrderAckEvent final {
-  const MessageInfo& message_info;
-  const CreateOrderAck& create_order_ack;
-};
-
-struct ROQ_PUBLIC ModifyOrderAckEvent final {
-  const MessageInfo& message_info;
-  const ModifyOrderAck& modify_order_ack;
-};
-
-struct ROQ_PUBLIC CancelOrderAckEvent final {
-  const MessageInfo& message_info;
-  const CancelOrderAck& cancel_order_ack;
 };
 
 struct ROQ_PUBLIC CustomMessageEvent final {
@@ -717,13 +740,7 @@ class ROQ_PUBLIC Exception : public std::exception {
 
 class ROQ_PUBLIC RuntimeError : public Exception {
  public:
-  explicit RuntimeError(const char *what)
-      : _what(what) {
-  }
-  explicit RuntimeError(std::string&& what)
-      : _what(std::move(what)) {
-  }
-  explicit RuntimeError(const std::string& what)
+  explicit RuntimeError(const std::string_view& what)
       : _what(what) {
   }
   const char *what() const noexcept override {
@@ -779,13 +796,14 @@ class ROQ_PUBLIC Generator {
    public:
     virtual void operator()(const MarketDataStatusEvent&) = 0;
     virtual void operator()(const OrderManagerStatusEvent&) = 0;
-    virtual void operator()(const SessionStatisticsEvent&) = 0;
-    virtual void operator()(const DailyStatisticsEvent&) = 0;
-    virtual void operator()(const MarketByPriceEvent&) = 0;
-    virtual void operator()(const TradeSummaryEvent&) = 0;
     virtual void operator()(const ReferenceDataEvent&) = 0;
     virtual void operator()(const MarketStatusEvent&) = 0;
+    virtual void operator()(const MarketByPriceEvent&) = 0;
+    virtual void operator()(const TradeSummaryEvent&) = 0;
+    virtual void operator()(const SessionStatisticsEvent&) = 0;
+    virtual void operator()(const DailyStatisticsEvent&) = 0;
     virtual void operator()(const PositionUpdateEvent&) = 0;
+    virtual void operator()(const FundsUpdateEvent&) = 0;
   };
 
   virtual ~Generator() {}
@@ -805,18 +823,15 @@ class ROQ_PUBLIC Matcher {
     virtual void operator()(const OrderManagerStatusEvent&) = 0;
     virtual void operator()(const ReferenceDataEvent&) = 0;
     virtual void operator()(const MarketStatusEvent&) = 0;
-    virtual void operator()(const SessionStatisticsEvent&) = 0;
-    virtual void operator()(const DailyStatisticsEvent&) = 0;
     virtual void operator()(const MarketByPriceEvent&) = 0;
     virtual void operator()(const TradeSummaryEvent&) = 0;
-    virtual void operator()(const PositionUpdateEvent&) = 0;
+    virtual void operator()(const SessionStatisticsEvent&) = 0;
+    virtual void operator()(const DailyStatisticsEvent&) = 0;
+    virtual void operator()(const OrderAckEvent&) = 0;
     virtual void operator()(const OrderUpdateEvent&) = 0;
     virtual void operator()(const TradeUpdateEvent&) = 0;
-    virtual void operator()(const RequestUpdateEvent&) = 0;
+    virtual void operator()(const PositionUpdateEvent&) = 0;
     virtual void operator()(const FundsUpdateEvent&) = 0;
-    virtual void operator()(const CreateOrderAckEvent&) = 0;
-    virtual void operator()(const ModifyOrderAckEvent&) = 0;
-    virtual void operator()(const CancelOrderAckEvent&) = 0;
   };
 
   virtual ~Matcher() {}
@@ -833,10 +848,11 @@ class ROQ_PUBLIC Matcher {
   virtual void operator()(const DailyStatisticsEvent&) = 0;
   virtual void operator()(const MarketByPriceEvent&) = 0;
   virtual void operator()(const TradeSummaryEvent&) = 0;
-  virtual void operator()(const PositionUpdateEvent&) = 0;
   virtual void operator()(const CreateOrderEvent&) = 0;
   virtual void operator()(const ModifyOrderEvent&) = 0;
   virtual void operator()(const CancelOrderEvent&) = 0;
+  virtual void operator()(const PositionUpdateEvent&) = 0;
+  virtual void operator()(const FundsUpdateEvent&) = 0;
 };
 
 struct ROQ_PUBLIC Account {
@@ -871,16 +887,11 @@ struct ROQ_PUBLIC User {
 
 inline bool is_complete(const RequestStatus& status) {
   switch (status) {
-    case RequestStatus::GATEWAY_FORWARDED:
-    case RequestStatus::BROKER_FORWARDED:
+    case RequestStatus::FORWARDED:
       return false;
-    case RequestStatus::CLIENT_TIMEOUT:
-    case RequestStatus::GATEWAY_TIMEOUT:
-    case RequestStatus::GATEWAY_REJECTED:
-    case RequestStatus::BROKER_TIMEOUT:
-    case RequestStatus::BROKER_REJECTED:
-    case RequestStatus::EXCHANGE_ACCEPTED:
-    case RequestStatus::EXCHANGE_REJECTED:
+    case RequestStatus::ACCEPTED:
+    case RequestStatus::REJECTED:
+    case RequestStatus::TIMEOUT:
       return true;
     default:
       // TODO(thraneh): should throw

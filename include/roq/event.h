@@ -37,13 +37,13 @@ inline auto event_value(const OrderManagerStatusEvent& event) {
 }
 
 template <>
-inline auto event_value(const SessionStatisticsEvent& event) {
-  return event.session_statistics;
+inline auto event_value(const ReferenceDataEvent& event) {
+  return event.reference_data;
 }
 
 template <>
-inline auto event_value(const DailyStatisticsEvent& event) {
-  return event.daily_statistics;
+inline auto event_value(const MarketStatusEvent& event) {
+  return event.market_status;
 }
 
 template <>
@@ -57,18 +57,18 @@ inline auto event_value(const TradeSummaryEvent& event) {
 }
 
 template <>
-inline auto event_value(const ReferenceDataEvent& event) {
-  return event.reference_data;
+inline auto event_value(const SessionStatisticsEvent& event) {
+  return event.session_statistics;
 }
 
 template <>
-inline auto event_value(const MarketStatusEvent& event) {
-  return event.market_status;
+inline auto event_value(const DailyStatisticsEvent& event) {
+  return event.daily_statistics;
 }
 
 template <>
-inline auto event_value(const PositionUpdateEvent& event) {
-  return event.position_update;
+inline auto event_value(const OrderAckEvent& event) {
+  return event.order_ack;
 }
 
 template <>
@@ -82,28 +82,13 @@ inline auto event_value(const TradeUpdateEvent& event) {
 }
 
 template <>
-inline auto event_value(const RequestUpdateEvent& event) {
-  return event.request_update;
+inline auto event_value(const PositionUpdateEvent& event) {
+  return event.position_update;
 }
 
 template <>
 inline auto event_value(const FundsUpdateEvent& event) {
   return event.funds_update;
-}
-
-template <>
-inline auto event_value(const CreateOrderAckEvent& event) {
-  return event.create_order_ack;
-}
-
-template <>
-inline auto event_value(const ModifyOrderAckEvent& event) {
-  return event.modify_order_ack;
-}
-
-template <>
-inline auto event_value(const CancelOrderAckEvent& event) {
-  return event.cancel_order_ack;
 }
 
 template <>
@@ -122,7 +107,7 @@ inline auto create_event(
     const DownloadBeginEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .download_begin = event.download_begin
+    .download_begin = event.download_begin,
   };
 }
 
@@ -132,7 +117,7 @@ inline auto create_event(
     const DownloadEndEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .download_end = event.download_end
+    .download_end = event.download_end,
   };
 }
 
@@ -142,7 +127,7 @@ inline auto create_event(
     const MarketDataStatusEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .market_data_status = event.market_data_status
+    .market_data_status = event.market_data_status,
   };
 }
 
@@ -152,47 +137,7 @@ inline auto create_event(
     const OrderManagerStatusEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .order_manager_status = event.order_manager_status
-  };
-}
-
-template <>
-inline auto create_event(
-    const MessageInfo& message_info,
-    const SessionStatisticsEvent& event) {
-  return decltype(event) {
-    .message_info = message_info,
-    .session_statistics = event.session_statistics
-  };
-}
-
-template <>
-inline auto create_event(
-    const MessageInfo& message_info,
-    const DailyStatisticsEvent& event) {
-  return decltype(event) {
-    .message_info = message_info,
-    .daily_statistics = event.daily_statistics
-  };
-}
-
-template <>
-inline auto create_event(
-    const MessageInfo& message_info,
-    const MarketByPriceEvent& event) {
-  return decltype(event) {
-    .message_info = message_info,
-    .market_by_price = event.market_by_price
-  };
-}
-
-template <>
-inline auto create_event(
-    const MessageInfo& message_info,
-    const TradeSummaryEvent& event) {
-  return decltype(event) {
-    .message_info = message_info,
-    .trade_summary = event.trade_summary
+    .order_manager_status = event.order_manager_status,
   };
 }
 
@@ -202,7 +147,7 @@ inline auto create_event(
     const ReferenceDataEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .reference_data = event.reference_data
+    .reference_data = event.reference_data,
   };
 }
 
@@ -212,17 +157,77 @@ inline auto create_event(
     const MarketStatusEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .market_status = event.market_status
+    .market_status = event.market_status,
   };
 }
 
 template <>
 inline auto create_event(
     const MessageInfo& message_info,
-    const PositionUpdateEvent& event) {
+    const MarketByPriceEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .position_update = event.position_update
+    .market_by_price = event.market_by_price,
+  };
+}
+
+template <>
+inline auto create_event(
+    const MessageInfo& message_info,
+    const TradeSummaryEvent& event) {
+  return decltype(event) {
+    .message_info = message_info,
+    .trade_summary = event.trade_summary,
+  };
+}
+
+template <>
+inline auto create_event(
+    const MessageInfo& message_info,
+    const SessionStatisticsEvent& event) {
+  return decltype(event) {
+    .message_info = message_info,
+    .session_statistics = event.session_statistics,
+  };
+}
+
+template <>
+inline auto create_event(
+    const MessageInfo& message_info,
+    const DailyStatisticsEvent& event) {
+  return decltype(event) {
+    .message_info = message_info,
+    .daily_statistics = event.daily_statistics,
+  };
+}
+
+template <>
+inline auto create_event(
+    const MessageInfo& message_info,
+    const CreateOrderEvent& event) {
+  return decltype(event) {
+    .message_info = message_info,
+    .create_order = event.create_order,
+  };
+}
+
+template <>
+inline auto create_event(
+    const MessageInfo& message_info,
+    const ModifyOrderEvent& event) {
+  return decltype(event) {
+    .message_info = message_info,
+    .modify_order = event.modify_order,
+  };
+}
+
+template <>
+inline auto create_event(
+    const MessageInfo& message_info,
+    const CancelOrderEvent& event) {
+  return decltype(event) {
+    .message_info = message_info,
+    .cancel_order = event.cancel_order,
   };
 }
 
@@ -232,7 +237,7 @@ inline auto create_event(
     const OrderUpdateEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .order_update = event.order_update
+    .order_update = event.order_update,
   };
 }
 
@@ -242,37 +247,27 @@ inline auto create_event(
     const TradeUpdateEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .trade_update = event.trade_update
+    .trade_update = event.trade_update,
   };
 }
 
 template <>
 inline auto create_event(
     const MessageInfo& message_info,
-    const CreateOrderAckEvent& event) {
+    const PositionUpdateEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .create_order_ack = event.create_order_ack
+    .position_update = event.position_update,
   };
 }
 
 template <>
 inline auto create_event(
     const MessageInfo& message_info,
-    const ModifyOrderAckEvent& event) {
+    const FundsUpdateEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .modify_order_ack = event.modify_order_ack
-  };
-}
-
-template <>
-inline auto create_event(
-    const MessageInfo& message_info,
-    const CancelOrderAckEvent& event) {
-  return decltype(event) {
-    .message_info = message_info,
-    .cancel_order_ack = event.cancel_order_ack
+    .funds_update = event.funds_update,
   };
 }
 
@@ -282,7 +277,7 @@ inline auto create_event(
     const CustomMessageEvent& event) {
   return decltype(event) {
     .message_info = message_info,
-    .custom_message = event.custom_message
+    .custom_message = event.custom_message,
   };
 }
 

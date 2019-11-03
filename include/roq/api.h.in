@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
@@ -30,27 +31,27 @@ constexpr auto MAX_TRADE_ID_LENGTH = size_t{39};
 
 // enums
 
-enum class ConnectionStatus : int8_t {
+enum class ConnectionStatus : uint8_t {
   DISCONNECTED = 0,
   CONNECTED = 1,
   MIN = DISCONNECTED,
   MAX = CONNECTED
 };
 
-inline const char * const *EnumNamesConnectionStatus() {
-  static const char * const names[] = {
+inline auto EnumNamesConnectionStatus() {
+  static const std::string_view names[] = {
     "DISCONNECTED",
     "CONNECTED",
   };
   return names;
 }
 
-inline const char *EnumNameConnectionStatus(ConnectionStatus e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesConnectionStatus()[index];
+inline auto EnumNameConnectionStatus(ConnectionStatus e) {
+  return EnumNamesConnectionStatus()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class GatewayStatus : int8_t {
+enum class GatewayStatus : uint8_t {
   DISCONNECTED = 0,
   CONNECTING = 1,
   LOGIN_SENT = 2,
@@ -61,8 +62,8 @@ enum class GatewayStatus : int8_t {
   MAX = LOGGED_OUT
 };
 
-inline const char * const *EnumNamesGatewayStatus() {
-  static const char * const names[] = {
+inline auto EnumNamesGatewayStatus() {
+  static const std::string_view names[] = {
     "DISCONNECTED",
     "CONNECTING",
     "LOGIN_SENT",
@@ -73,12 +74,12 @@ inline const char * const *EnumNamesGatewayStatus() {
   return names;
 }
 
-inline const char *EnumNameGatewayStatus(GatewayStatus e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesGatewayStatus()[index];
+inline auto EnumNameGatewayStatus(GatewayStatus e) {
+  return EnumNamesGatewayStatus()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class TradingStatus : int8_t {
+enum class TradingStatus : uint8_t {
   UNDEFINED = 0,
   CLOSED = 1,
   OPEN = 2,
@@ -86,8 +87,8 @@ enum class TradingStatus : int8_t {
   MAX = OPEN
 };
 
-inline const char * const *EnumNamesTradingStatus() {
-  static const char * const names[] = {
+inline auto EnumNamesTradingStatus() {
+  static const std::string_view names[] = {
     "UNDEFINED",
     "CLOSED",
     "OPEN",
@@ -95,12 +96,12 @@ inline const char * const *EnumNamesTradingStatus() {
   return names;
 }
 
-inline const char *EnumNameTradingStatus(TradingStatus e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesTradingStatus()[index];
+inline auto EnumNameTradingStatus(TradingStatus e) {
+  return EnumNamesTradingStatus()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class Side : int8_t {
+enum class Side : uint8_t {
   UNDEFINED = 0,
   BUY = 1,
   SELL = 2,
@@ -108,8 +109,8 @@ enum class Side : int8_t {
   MAX = SELL
 };
 
-inline const char * const *EnumNamesSide() {
-  static const char * const names[] = {
+inline auto EnumNamesSide() {
+  static const std::string_view names[] = {
     "UNDEFINED",
     "BUY",
     "SELL",
@@ -117,12 +118,12 @@ inline const char * const *EnumNamesSide() {
   return names;
 }
 
-inline const char *EnumNameSide(Side e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesSide()[index];
+inline auto EnumNameSide(Side e) {
+  return EnumNamesSide()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class OrderType : int8_t {
+enum class OrderType : uint8_t {
   UNDEFINED = 0,
   MARKET = 1,
   LIMIT = 2,
@@ -130,8 +131,8 @@ enum class OrderType : int8_t {
   MAX = LIMIT
 };
 
-inline const char * const *EnumNamesOrderType() {
-  static const char * const names[] = {
+inline auto EnumNamesOrderType() {
+  static const std::string_view names[] = {
     "UNDEFINED",
     "MARKET",
     "LIMIT",
@@ -139,12 +140,12 @@ inline const char * const *EnumNamesOrderType() {
   return names;
 }
 
-inline const char *EnumNameOrderType(OrderType e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesOrderType()[index];
+inline auto EnumNameOrderType(OrderType e) {
+  return EnumNamesOrderType()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class TimeInForce : int8_t {
+enum class TimeInForce : uint8_t {
   UNDEFINED = 0,
   FOK = 1,
   IOC = 2,
@@ -154,8 +155,8 @@ enum class TimeInForce : int8_t {
   MAX = GTC
 };
 
-inline const char * const *EnumNamesTimeInForce() {
-  static const char * const names[] = {
+inline auto EnumNamesTimeInForce() {
+  static const std::string_view names[] = {
     "UNDEFINED",
     "FOK",
     "IOC",
@@ -165,12 +166,12 @@ inline const char * const *EnumNamesTimeInForce() {
   return names;
 }
 
-inline const char *EnumNameTimeInForce(TimeInForce e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesTimeInForce()[index];
+inline auto EnumNameTimeInForce(TimeInForce e) {
+  return EnumNamesTimeInForce()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class PositionEffect : int8_t {
+enum class PositionEffect : uint8_t {
   UNDEFINED = 0,
   OPEN = 1,
   CLOSE = 2,
@@ -178,8 +179,8 @@ enum class PositionEffect : int8_t {
   MAX = CLOSE
 };
 
-inline const char * const *EnumNamesPositionEffect() {
-  static const char * const names[] = {
+inline auto EnumNamesPositionEffect() {
+  static const std::string_view names[] = {
     "UNDEFINED",
     "OPEN",
     "CLOSE",
@@ -187,12 +188,12 @@ inline const char * const *EnumNamesPositionEffect() {
   return names;
 }
 
-inline const char *EnumNamePositionEffect(PositionEffect e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesPositionEffect()[index];
+inline auto EnumNamePositionEffect(PositionEffect e) {
+  return EnumNamesPositionEffect()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class OrderStatus : int8_t {
+enum class OrderStatus : uint8_t {
   UNDEFINED = 0,
   SENT = 1,
   REJECTED = 2,
@@ -205,8 +206,8 @@ enum class OrderStatus : int8_t {
   MAX = CANCELED
 };
 
-inline const char * const *EnumNamesOrderStatus() {
-  static const char * const names[] = {
+inline auto EnumNamesOrderStatus() {
+  static const std::string_view names[] = {
     "UNDEFINED",
     "SENT",
     "REJECTED",
@@ -219,12 +220,12 @@ inline const char * const *EnumNamesOrderStatus() {
   return names;
 }
 
-inline const char *EnumNameOrderStatus(OrderStatus e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesOrderStatus()[index];
+inline auto EnumNameOrderStatus(OrderStatus e) {
+  return EnumNamesOrderStatus()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class RequestType : int8_t {
+enum class RequestType : uint8_t {
   CREATE_ORDER = 0,
   MODIFY_ORDER = 1,
   CANCEL_ORDER = 2,
@@ -232,8 +233,8 @@ enum class RequestType : int8_t {
   MAX = CANCEL_ORDER
 };
 
-inline const char * const *EnumNamesRequestType() {
-  static const char * const names[] = {
+inline auto EnumNamesRequestType() {
+  static const std::string_view names[] = {
     "CREATE_ORDER",
     "MODIFY_ORDER",
     "CANCEL_ORDER",
@@ -241,12 +242,12 @@ inline const char * const *EnumNamesRequestType() {
   return names;
 }
 
-inline const char *EnumNameRequestType(RequestType e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesRequestType()[index];
+inline auto EnumNameRequestType(RequestType e) {
+  return EnumNamesRequestType()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class RequestStatus : int8_t {
+enum class RequestStatus : uint8_t {
   FORWARDED = 0,
   ACCEPTED = 1,
   REJECTED = 2,
@@ -255,8 +256,8 @@ enum class RequestStatus : int8_t {
   MAX = TIMEOUT
 };
 
-inline const char * const *EnumNamesRequestStatus() {
-  static const char * const names[] = {
+inline auto EnumNamesRequestStatus() {
+  static const std::string_view names[] = {
     "FORWARDED",
     "ACCEPTED",
     "REJECTED",
@@ -265,12 +266,12 @@ inline const char * const *EnumNamesRequestStatus() {
   return names;
 }
 
-inline const char *EnumNameRequestStatus(RequestStatus e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesRequestStatus()[index];
+inline auto EnumNameRequestStatus(RequestStatus e) {
+  return EnumNamesRequestStatus()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class Origin : int8_t {
+enum class Origin : uint8_t {
   CLIENT = 0,
   GATEWAY = 1,
   BROKER = 2,
@@ -279,8 +280,8 @@ enum class Origin : int8_t {
   MAX = EXCHANGE
 };
 
-inline const char * const *EnumNamesOrigin() {
-  static const char * const names[] = {
+inline auto EnumNamesOrigin() {
+  static const std::string_view names[] = {
     "CLIENT",
     "GATEWAY",
     "BROKER",
@@ -289,12 +290,12 @@ inline const char * const *EnumNamesOrigin() {
   return names;
 }
 
-inline const char *EnumNameOrigin(Origin e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesOrigin()[index];
+inline auto EnumNameOrigin(Origin e) {
+  return EnumNamesOrigin()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class SecurityType : int8_t {
+enum class SecurityType : uint8_t {
   UNDEFINED = 0,
   FX_SPOT = 1,
   FUTURES = 2,
@@ -303,8 +304,8 @@ enum class SecurityType : int8_t {
   MAX = OPTION
 };
 
-inline const char * const *EnumNamesSecurityType() {
-  static const char * const names[] = {
+inline auto EnumNamesSecurityType() {
+  static const std::string_view names[] = {
     "UNDEFINED",
     "FX_SPOT",
     "FUTURES",
@@ -313,11 +314,12 @@ inline const char * const *EnumNamesSecurityType() {
   return names;
 }
 
-inline const char *EnumNameSecurityType(SecurityType e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesSecurityType()[index];
+inline auto EnumNameSecurityType(SecurityType e) {
+  return EnumNamesSecurityType()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
-enum class OptionType : int8_t {
+
+enum class OptionType : uint8_t {
   UNDEFINED = 0,
   CALL = 1,
   PUT = 2,
@@ -325,8 +327,8 @@ enum class OptionType : int8_t {
   MAX = PUT
 };
 
-inline const char * const *EnumNamesOptionType() {
-  static const char * const names[] = {
+inline auto EnumNamesOptionType() {
+  static const std::string_view names[] = {
     "UNDEFINED",
     "CALL",
     "PUT",
@@ -334,12 +336,12 @@ inline const char * const *EnumNamesOptionType() {
   return names;
 }
 
-inline const char *EnumNameOptionType(OptionType e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesOptionType()[index];
+inline auto EnumNameOptionType(OptionType e) {
+  return EnumNamesOptionType()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class Error : int8_t {
+enum class Error : uint8_t {
   NONE = 0,
   UNKNOWN = 1,
   GATEWAY_NOT_READY = 1,
@@ -359,8 +361,8 @@ enum class Error : int8_t {
   MAX = INVALID_ORDER_ID
 };
 
-inline const char * const *EnumNamesError() {
-  static const char * const names[] = {
+inline auto EnumNamesError() {
+  static const std::string_view names[] = {
     "NONE",
     "UNKNOWN",
     "GATEWAY_NOT_READY",
@@ -380,9 +382,9 @@ inline const char * const *EnumNamesError() {
   return names;
 }
 
-inline const char *EnumNameError(Error e) {
-  const size_t index = static_cast<int>(e);
-  return EnumNamesError()[index];
+inline auto EnumNameError(Error e) {
+  return EnumNamesError()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
 // transport
@@ -401,11 +403,6 @@ struct ROQ_PUBLIC MessageInfo final {
 };
 
 // messages
-
-struct ROQ_PUBLIC Subscribe final {
-  std::set<std::string> accounts;
-  std::map<std::string, std::set<std::string> > symbols_by_exchange;
-};
 
 struct ROQ_PUBLIC DownloadBegin final {
   std::string_view account;
@@ -608,6 +605,11 @@ struct ROQ_PUBLIC CustomMessage final {
   size_t length;
 };
 
+struct ROQ_PUBLIC Subscribe final {
+  std::set<std::string> accounts;
+  std::map<std::string, std::set<std::string> > symbols_by_exchange;
+};
+
 // events
 
 struct ROQ_PUBLIC StartEvent final {
@@ -683,26 +685,6 @@ struct ROQ_PUBLIC DailyStatisticsEvent final {
   const DailyStatistics& daily_statistics;
 };
 
-struct ROQ_PUBLIC PositionUpdateEvent final {
-  const MessageInfo& message_info;
-  const PositionUpdate& position_update;
-};
-
-struct ROQ_PUBLIC OrderUpdateEvent final {
-  const MessageInfo& message_info;
-  const OrderUpdate& order_update;
-};
-
-struct ROQ_PUBLIC TradeUpdateEvent final {
-  const MessageInfo& message_info;
-  const TradeUpdate& trade_update;
-};
-
-struct ROQ_PUBLIC SubscribeEvent final {
-  const MessageInfo& message_info;
-  const Subscribe& subscribe;
-};
-
 struct ROQ_PUBLIC CreateOrderEvent final {
   const MessageInfo& message_info;
   const CreateOrder& create_order;
@@ -723,6 +705,21 @@ struct ROQ_PUBLIC OrderAckEvent final {
   const OrderAck& order_ack;
 };
 
+struct ROQ_PUBLIC OrderUpdateEvent final {
+  const MessageInfo& message_info;
+  const OrderUpdate& order_update;
+};
+
+struct ROQ_PUBLIC TradeUpdateEvent final {
+  const MessageInfo& message_info;
+  const TradeUpdate& trade_update;
+};
+
+struct ROQ_PUBLIC PositionUpdateEvent final {
+  const MessageInfo& message_info;
+  const PositionUpdate& position_update;
+};
+
 struct ROQ_PUBLIC FundsUpdateEvent final {
   const MessageInfo& message_info;
   const FundsUpdate& funds_update;
@@ -731,6 +728,11 @@ struct ROQ_PUBLIC FundsUpdateEvent final {
 struct ROQ_PUBLIC CustomMessageEvent final {
   const MessageInfo& message_info;
   const CustomMessage& custom_message;
+};
+
+struct ROQ_PUBLIC SubscribeEvent final {
+  const MessageInfo& message_info;
+  const Subscribe& subscribe;
 };
 
 // exceptions

@@ -11,8 +11,8 @@ class ROQ_PUBLIC Application {
   Application(
       int argc,
       char **argv,
-      const char *description,
-      const char *version = ROQ_VERSION);
+      const std::string_view& description,
+      const std::string_view& version = ROQ_VERSION);
 
   Application(Application&&) = default;
 

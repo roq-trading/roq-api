@@ -12,10 +12,12 @@ namespace {
 static int initialize_gflags(
     int argc,
     char ***argv,
-    const char *description,
-    const char *version) {
-  gflags::SetUsageMessage(description);
-  gflags::SetVersionString(version);
+    const std::string_view& description,
+    const std::string_view& version) {
+  assert(description.length() > 0);
+  assert(version.length() > 0);
+  gflags::SetUsageMessage(description.data());
+  gflags::SetVersionString(version.data());
   gflags::ParseCommandLineFlags(&argc, argv, true);
   gflags::ShutDownCommandLineFlags();
   return argc;
@@ -25,8 +27,8 @@ static int initialize_gflags(
 Application::Application(
     int argc,
     char **argv,
-    const char *description,
-    const char *version)
+    const std::string_view& description,
+    const std::string_view& version)
     : _argv(argv),
       _argc(initialize_gflags(argc, &_argv, description, version)) {
   Logger::initialize();

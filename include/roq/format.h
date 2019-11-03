@@ -730,8 +730,8 @@ struct fmt::formatter<roq::OrderAck> {
         "account=\"{}\", "
         "order_id={}, "
         "type={}, "
-        "status={}, "
         "origin={}, "
+        "status={}, "
         "error={}, "
         "text=\"{}\", "
         "gateway_order_id={}, "
@@ -740,8 +740,8 @@ struct fmt::formatter<roq::OrderAck> {
         value.account,
         value.order_id,
         value.type,
-        value.status,
         value.origin,
+        value.status,
         value.error,
         value.text,
         value.gateway_order_id,

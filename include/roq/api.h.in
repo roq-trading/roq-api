@@ -533,8 +533,8 @@ struct ROQ_PUBLIC OrderAck final {
   std::string_view account;
   uint32_t order_id;
   RequestType type;
-  RequestStatus status;
   Origin origin;
+  RequestStatus status;
   Error error;
   std::string_view text;
   uint32_t gateway_order_id;

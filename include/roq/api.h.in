@@ -543,6 +543,7 @@ struct ROQ_PUBLIC OrderAck final {
   std::string_view text;
   uint32_t gateway_order_id;
   std::string_view external_order_id;
+  std::string_view request_id;
 };
 
 struct ROQ_PUBLIC OrderUpdate final {

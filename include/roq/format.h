@@ -735,7 +735,8 @@ struct fmt::formatter<roq::OrderAck> {
         "error={}, "
         "text=\"{}\", "
         "gateway_order_id={}, "
-        "external_order_id=\"{}\""
+        "external_order_id=\"{}\", "
+        "request_id=\"{}\""
         "}}",
         value.account,
         value.order_id,
@@ -745,7 +746,8 @@ struct fmt::formatter<roq::OrderAck> {
         value.error,
         value.text,
         value.gateway_order_id,
-        value.external_order_id);
+        value.external_order_id,
+        value.request_id);
   }
 };
 

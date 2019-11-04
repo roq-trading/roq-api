@@ -978,7 +978,7 @@ struct fmt::formatter<roq::ConnectionStatusEvent> {
     return format_to(
         ctx.out(),
         "{{"
-        "message_info={}"
+        "message_info={}, "
         "connection_status={}"
         "}}",
         value.message_info,

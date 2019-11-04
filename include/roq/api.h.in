@@ -32,8 +32,8 @@ constexpr auto MAX_TRADE_ID_LENGTH = size_t{39};
 // enums
 
 enum class ConnectionStatus : uint8_t {
-  DISCONNECTED = 0,
-  CONNECTED = 1,
+  DISCONNECTED,
+  CONNECTED,
   MIN = DISCONNECTED,
   MAX = CONNECTED
 };
@@ -52,12 +52,12 @@ inline auto EnumNameConnectionStatus(ConnectionStatus e) {
 }
 
 enum class GatewayStatus : uint8_t {
-  DISCONNECTED = 0,
-  CONNECTING = 1,
-  LOGIN_SENT = 2,
-  DOWNLOADING = 3,
-  READY = 4,
-  LOGGED_OUT = 5,
+  DISCONNECTED,
+  CONNECTING,
+  LOGIN_SENT,
+  DOWNLOADING,
+  READY,
+  LOGGED_OUT,
   MIN = DISCONNECTED,
   MAX = LOGGED_OUT
 };
@@ -80,9 +80,9 @@ inline auto EnumNameGatewayStatus(GatewayStatus e) {
 }
 
 enum class TradingStatus : uint8_t {
-  UNDEFINED = 0,
-  CLOSED = 1,
-  OPEN = 2,
+  UNDEFINED,
+  CLOSED,
+  OPEN,
   MIN = UNDEFINED,
   MAX = OPEN
 };
@@ -102,9 +102,9 @@ inline auto EnumNameTradingStatus(TradingStatus e) {
 }
 
 enum class Side : uint8_t {
-  UNDEFINED = 0,
-  BUY = 1,
-  SELL = 2,
+  UNDEFINED,
+  BUY,
+  SELL,
   MIN = UNDEFINED,
   MAX = SELL
 };
@@ -124,9 +124,9 @@ inline auto EnumNameSide(Side e) {
 }
 
 enum class OrderType : uint8_t {
-  UNDEFINED = 0,
-  MARKET = 1,
-  LIMIT = 2,
+  UNDEFINED,
+  MARKET,
+  LIMIT,
   MIN = UNDEFINED,
   MAX = LIMIT
 };
@@ -146,11 +146,11 @@ inline auto EnumNameOrderType(OrderType e) {
 }
 
 enum class TimeInForce : uint8_t {
-  UNDEFINED = 0,
-  FOK = 1,
-  IOC = 2,
-  GFD = 3,
-  GTC = 4,
+  UNDEFINED,
+  FOK,
+  IOC,
+  GFD,
+  GTC,
   MIN = UNDEFINED,
   MAX = GTC
 };
@@ -172,9 +172,9 @@ inline auto EnumNameTimeInForce(TimeInForce e) {
 }
 
 enum class PositionEffect : uint8_t {
-  UNDEFINED = 0,
-  OPEN = 1,
-  CLOSE = 2,
+  UNDEFINED,
+  OPEN,
+  CLOSE,
   MIN = UNDEFINED,
   MAX = CLOSE
 };
@@ -194,14 +194,14 @@ inline auto EnumNamePositionEffect(PositionEffect e) {
 }
 
 enum class OrderStatus : uint8_t {
-  UNDEFINED = 0,
-  SENT = 1,
-  REJECTED = 2,
-  ACCEPTED = 3,
-  PENDING = 4,
-  WORKING = 5,
-  COMPLETED = 6,
-  CANCELED = 7,
+  UNDEFINED,
+  SENT,
+  REJECTED,
+  ACCEPTED,
+  PENDING,
+  WORKING,
+  COMPLETED,
+  CANCELED,
   MIN = UNDEFINED,
   MAX = CANCELED
 };
@@ -226,15 +226,17 @@ inline auto EnumNameOrderStatus(OrderStatus e) {
 }
 
 enum class RequestType : uint8_t {
-  CREATE_ORDER = 0,
-  MODIFY_ORDER = 1,
-  CANCEL_ORDER = 2,
+  UNDEFINED,
+  CREATE_ORDER,
+  MODIFY_ORDER,
+  CANCEL_ORDER,
   MIN = CREATE_ORDER,
   MAX = CANCEL_ORDER
 };
 
 inline auto EnumNamesRequestType() {
   static const std::string_view names[] = {
+    "UNDEFINED",
     "CREATE_ORDER",
     "MODIFY_ORDER",
     "CANCEL_ORDER",
@@ -248,16 +250,18 @@ inline auto EnumNameRequestType(RequestType e) {
 }
 
 enum class RequestStatus : uint8_t {
-  FORWARDED = 0,
-  ACCEPTED = 1,
-  REJECTED = 2,
-  TIMEOUT = 3,
+  UNDEFINED,
+  FORWARDED,
+  ACCEPTED,
+  REJECTED,
+  TIMEOUT,
   MIN = FORWARDED,
   MAX = TIMEOUT
 };
 
 inline auto EnumNamesRequestStatus() {
   static const std::string_view names[] = {
+    "UNDEFINED",
     "FORWARDED",
     "ACCEPTED",
     "REJECTED",
@@ -272,10 +276,10 @@ inline auto EnumNameRequestStatus(RequestStatus e) {
 }
 
 enum class Origin : uint8_t {
-  CLIENT = 0,
-  GATEWAY = 1,
-  BROKER = 2,
-  EXCHANGE = 3,
+  CLIENT,
+  GATEWAY,
+  BROKER,
+  EXCHANGE,
   MIN = CLIENT,
   MAX = EXCHANGE
 };
@@ -296,10 +300,10 @@ inline auto EnumNameOrigin(Origin e) {
 }
 
 enum class SecurityType : uint8_t {
-  UNDEFINED = 0,
-  FX_SPOT = 1,
-  FUTURES = 2,
-  OPTION = 3,
+  UNDEFINED,
+  FX_SPOT,
+  FUTURES,
+  OPTION,
   MIN = UNDEFINED,
   MAX = OPTION
 };
@@ -320,9 +324,9 @@ inline auto EnumNameSecurityType(SecurityType e) {
 }
 
 enum class OptionType : uint8_t {
-  UNDEFINED = 0,
-  CALL = 1,
-  PUT = 2,
+  UNDEFINED,
+  CALL,
+  PUT,
   MIN = UNDEFINED,
   MAX = PUT
 };
@@ -342,21 +346,21 @@ inline auto EnumNameOptionType(OptionType e) {
 }
 
 enum class Error : uint8_t {
-  NONE = 0,
-  UNKNOWN = 1,
-  GATEWAY_NOT_READY = 1,
-  INVALID_ACCOUNT = 2,
-  INVALID_EXCHANGE = 3,
-  INVALID_SYMBOL = 4,
-  INVALID_ORDER_TYPE = 5,
-  INVALID_TIME_IN_FORCE = 6,
-  INVALID_POSITION_EFFECT = 7,
-  INVALID_ORDER_TEMPLATE = 8,
-  NETWORK_ERROR = 9,
-  UNKNOWN_ORDER_ID = 10,
-  UNKNOWN_EXCHANGE_ORDER_ID = 11,
-  MODIFY_ORDER_NOT_SUPPORTED = 12,
-  INVALID_ORDER_ID = 13,
+  NONE,
+  UNKNOWN,
+  GATEWAY_NOT_READY,
+  INVALID_ACCOUNT,
+  INVALID_EXCHANGE,
+  INVALID_SYMBOL,
+  INVALID_ORDER_TYPE,
+  INVALID_TIME_IN_FORCE,
+  INVALID_POSITION_EFFECT,
+  INVALID_ORDER_TEMPLATE,
+  NETWORK_ERROR,
+  UNKNOWN_ORDER_ID,
+  UNKNOWN_EXCHANGE_ORDER_ID,
+  MODIFY_ORDER_NOT_SUPPORTED,
+  INVALID_ORDER_ID,
   MIN = NONE,
   MAX = INVALID_ORDER_ID
 };

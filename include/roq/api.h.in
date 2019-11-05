@@ -18,7 +18,11 @@
 #define ROQ_VERSION "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
 
 #if defined(__GNUC__) || defined(__clang__)
-#define ROQ_PUBLIC __attribute__ ((visibility("default")))
+#define ROQ_PUBLIC __attribute__((visibility("default")))
+#define ROQ_HOT __attribute__((hot))
+#else
+#define ROQ_PUBLIC
+#define ROQ_HOT
 #endif
 
 namespace roq {

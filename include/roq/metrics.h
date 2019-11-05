@@ -74,11 +74,11 @@ struct alignas(cache_line_size()) Histogram {
 
   Histogram(Histogram&&) = default;
 
-  inline void prefetch() {
+  inline void prefetch() noexcept {
     __builtin_prefetch(&_data, 1, 3);
   }
 
-  inline bool update(uint64_t value) {
+  inline bool update(uint64_t value) noexcept {
     bool result = false;
     if (value < N0) {
       _data.bucket_0 += 1;
@@ -169,7 +169,7 @@ class alignas(cache_line_size()) Counter {
     return *this;
   }
 
-  void update(uint64_t value) {
+  void update(uint64_t value) noexcept {
     atomic_release(_data.value, value);
   }
 

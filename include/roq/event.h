@@ -99,10 +99,10 @@ inline auto event_value(const CustomMessageEvent& event) {
 // create_event
 
 template <typename E>
-auto create_event(const MessageInfo&, const E&);
+E create_event(const MessageInfo&, const E&);
 
 template <>
-inline auto create_event(
+inline DownloadBeginEvent create_event(
     const MessageInfo& message_info,
     const DownloadBeginEvent& event) {
   return decltype(event) {
@@ -112,7 +112,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline DownloadEndEvent create_event(
     const MessageInfo& message_info,
     const DownloadEndEvent& event) {
   return decltype(event) {
@@ -122,7 +122,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline MarketDataStatusEvent create_event(
     const MessageInfo& message_info,
     const MarketDataStatusEvent& event) {
   return decltype(event) {
@@ -132,7 +132,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline OrderManagerStatusEvent create_event(
     const MessageInfo& message_info,
     const OrderManagerStatusEvent& event) {
   return decltype(event) {
@@ -142,7 +142,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline ReferenceDataEvent create_event(
     const MessageInfo& message_info,
     const ReferenceDataEvent& event) {
   return decltype(event) {
@@ -152,7 +152,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline MarketStatusEvent create_event(
     const MessageInfo& message_info,
     const MarketStatusEvent& event) {
   return decltype(event) {
@@ -162,7 +162,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline MarketByPriceEvent create_event(
     const MessageInfo& message_info,
     const MarketByPriceEvent& event) {
   return decltype(event) {
@@ -172,7 +172,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline TradeSummaryEvent create_event(
     const MessageInfo& message_info,
     const TradeSummaryEvent& event) {
   return decltype(event) {
@@ -182,7 +182,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline SessionStatisticsEvent create_event(
     const MessageInfo& message_info,
     const SessionStatisticsEvent& event) {
   return decltype(event) {
@@ -192,7 +192,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline DailyStatisticsEvent create_event(
     const MessageInfo& message_info,
     const DailyStatisticsEvent& event) {
   return decltype(event) {
@@ -202,7 +202,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline CreateOrderEvent create_event(
     const MessageInfo& message_info,
     const CreateOrderEvent& event) {
   return decltype(event) {
@@ -212,7 +212,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline ModifyOrderEvent create_event(
     const MessageInfo& message_info,
     const ModifyOrderEvent& event) {
   return decltype(event) {
@@ -222,7 +222,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline CancelOrderEvent create_event(
     const MessageInfo& message_info,
     const CancelOrderEvent& event) {
   return decltype(event) {
@@ -232,7 +232,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline OrderUpdateEvent create_event(
     const MessageInfo& message_info,
     const OrderUpdateEvent& event) {
   return decltype(event) {
@@ -242,7 +242,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline TradeUpdateEvent create_event(
     const MessageInfo& message_info,
     const TradeUpdateEvent& event) {
   return decltype(event) {
@@ -252,7 +252,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline PositionUpdateEvent create_event(
     const MessageInfo& message_info,
     const PositionUpdateEvent& event) {
   return decltype(event) {
@@ -262,7 +262,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline FundsUpdateEvent create_event(
     const MessageInfo& message_info,
     const FundsUpdateEvent& event) {
   return decltype(event) {
@@ -272,7 +272,7 @@ inline auto create_event(
 }
 
 template <>
-inline auto create_event(
+inline CustomMessageEvent create_event(
     const MessageInfo& message_info,
     const CustomMessageEvent& event) {
   return decltype(event) {

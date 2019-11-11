@@ -344,6 +344,7 @@ struct fmt::formatter<roq::MessageInfo> {
         "{{"
         "source={}, "
         "source_name=\"{}\", "
+        "source_session_id=\"{}\", "
         "source_seqno={}, "
         "receive_time_utc={}, "
         "receive_time={}, "
@@ -355,6 +356,7 @@ struct fmt::formatter<roq::MessageInfo> {
         "}}",
         value.source,
         value.source_name,
+        value.source_session_id,
         value.source_seqno,
         value.receive_time_utc,
         value.receive_time,

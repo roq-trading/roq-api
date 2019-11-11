@@ -400,6 +400,7 @@ inline auto EnumNameError(Error e) {
 struct ROQ_PUBLIC MessageInfo final {
   uint8_t source;
   std::string_view source_name;
+  std::string_view source_session_id;
   uint64_t source_seqno;
   std::chrono::nanoseconds receive_time_utc;     // realtime clock
   std::chrono::nanoseconds receive_time;         // system clock

@@ -768,7 +768,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         "order_id={}, "
         "exchange=\"{}\", "
         "symbol=\"{}\", "
-        "order_status={}, "
+        "status={}, "
         "side={}, "
         "price={}, "
         "remaining_quantity={}, "
@@ -785,7 +785,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.order_id,
         value.exchange,
         value.symbol,
-        value.order_status,
+        value.status,
         value.side,
         value.price,
         value.remaining_quantity,

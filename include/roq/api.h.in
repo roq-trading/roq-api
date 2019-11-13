@@ -556,7 +556,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   uint32_t order_id;
   std::string_view exchange;
   std::string_view symbol;
-  OrderStatus order_status;
+  OrderStatus status;
   Side side;
   double price;
   double remaining_quantity;
@@ -904,6 +904,23 @@ inline bool is_complete(const RequestStatus& status) {
     case RequestStatus::ACCEPTED:
     case RequestStatus::REJECTED:
     case RequestStatus::TIMEOUT:
+      return true;
+    default:
+      // TODO(thraneh): should throw
+      return true;
+  }
+}
+
+inline bool is_complete(const OrderStatus& status) {
+  switch (status) {
+    case OrderStatus::SENT:
+    case OrderStatus::ACCEPTED:
+    case OrderStatus::PENDING:
+    case OrderStatus::WORKING:
+      return false;
+    case OrderStatus::REJECTED:
+    case OrderStatus::COMPLETED:
+    case OrderStatus::CANCELED:
       return true;
     default:
       // TODO(thraneh): should throw

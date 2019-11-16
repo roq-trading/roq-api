@@ -33,9 +33,8 @@ roq-api.pc
 include/roq/api.h
 
 test/roq-api-test
-benchmark/roq-api-benchmark
 
-doc/Doxyfile
-doc/doxygen-build.stamp
-doc/html
-doc/xml
+doxygen/Doxyfile
+doxygen/doxygen-build.stamp
+doxygen/html
+doxygen/xml

@@ -1,7 +1,7 @@
 SUBDIRS = . include src test
 
-if ENABLE_DOC
-SUBDIRS += doc
+if ENABLE_DOXYGEN
+SUBDIRS += doxygen
 endif
 
 dist_doc_DATA = LICENSE README.md

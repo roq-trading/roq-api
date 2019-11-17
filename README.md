@@ -131,11 +131,15 @@ connected clients.
 When hovering, you'll be able to see the attributes
 of each measurement
 
+> We collect a histogram of the measurements.
+> This allows us to visualize e.g. "how many % of the events
+> exceed 5 microseconds" (the tail distribution).
+
 ![heartbeat-details](assets/heartbeat_details.png)
 
-> NUMA configuration affects latency.
+> NUMA configuration and thread affinity affects latency.
 > This example shows there are two distinct latencies
-> depending on the deployment configuration.
+> depending on the deployment.
 
 The gateways will automatically collect profiling
 information.

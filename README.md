@@ -64,11 +64,11 @@ and get started with compiling your own projects.
 * C++17
 * Linux (RHEL, CentOS, Debian, Ubuntu)
 * Same-host deployment
-* Communication using shared memory
+* Shared memory for communication
 * Micro-service design
-* 100% CPU usage due to busy polling
-* Disable hyperthreading, CPU isolation and thread affinity are
-  all strongly recommended
+* Busy polling causing 100% CPU usage
+* Use of CPU isolation and thread affinity, disable hyperthreading,
+  are all strongly recommended practices
 * Enough CPU cores to support your use-case
 
 

@@ -34,34 +34,41 @@ An open sourced API motivated by
 ## Build
 
 The API is not very useful by itself.
-You will need an implementation, such as the
-`roq-client` library.
+You will need an implementation of the interface,
+such as the `roq-client` library.
 
+> You will not achieve anything by compiling this project.
+
+Instead, head over to
 [Roq Samples](https://github.com/roq-trading/roq-api)
-will help you with installation and getting started.
+and follow the instrutions there to install `roq-client`
+and get started with compiling your own projects.
 
 
 ## Benefits
 
 * Ultra low latency (single digit microsecond response time)
 * Very high message throughput
-* Messages are being communicated to clients using a broadcast design
-* Automatic connection management
+* Messages communicated to clients using a broadcast (publish once) design
+* Automatic connection and download management
 * Message normalization
 * Market data (L1, L2, trade summary, session/daily statistics, etc).
 * Order management (create, modify, cancel, ack, update, trade)
 * Positions and funds (when available)
 * Automatically persist all messages to storage device (zero latency impact)
-* Integrate well with popular network kernel-bypass solutions
+* Integrate well with popular network kernel-bypass solutions (using epoll)
+* Suitable for fully autonomous algorithmic trading
 
 ## Constraints
 
 * C++17
 * Linux (RHEL, CentOS, Debian, Ubuntu)
 * Same-host deployment
-* Communication over shared memory
+* Communication using shared memory
 * Micro-service design
-* Requires CPU isolation and use of thread affinity
+* 100% CPU usage due to busy polling
+* Disable hyperthreading, CPU isolation and thread affinity are
+  all strongly recommended
 * Enough CPU cores to support your use-case
 
 
@@ -116,9 +123,6 @@ monitor the performance of the gateways.
 
 ![gateways](assets/gateways.png)
 
-> This example is running on a relatively low-powered
-> AMD EPYC 3251 SoC.
-
 This is the heartbeat latency between gateways and
 connected clients.
 
@@ -143,9 +147,8 @@ of each operation
 
 ![profile-details](assets/profile_details.png)
 
-> The cost of parsing JSON (e.g. Coinbase Pro's
-> `l2update`) is about 2x that of parsing FIX
-> (e.g. Deribit's `market_data_incremental_refresh`).
+> The cost of processing JSON updates (`ws_l2update`)
+> is about 2x that of processing FIX (`market_data_incremental_refresh`).
 
 
 ## Links

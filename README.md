@@ -1,6 +1,6 @@
 # Roq Trading Solutions
 
-*A C++ HFT Toolkit for Algo Traders*.
+*A C++ HFT Toolkit for Algo Traders*
 
 
 ## What is it?
@@ -89,7 +89,7 @@ These are some of our solutions
   * InfluxDB exporter
 * `roq-ansible`
   * Server provisioning using Ansible
-  * Configuration
+  * Gateway configuration
 * `roq-client-template`
   * Ansible Playbook (using `roq-ansible`)
 * `roq-vagrant`
@@ -106,7 +106,7 @@ These are some of our solutions
 
 This is not a comprehensive description of the design.
 For that we refer to the online documentation (see
-links below).
+link below).
 
 ![overview](assets/overview.png)
 

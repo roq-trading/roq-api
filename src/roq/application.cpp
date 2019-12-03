@@ -4,6 +4,8 @@
 
 #include <gflags/gflags.h>
 
+#include <cassert>
+
 #include "roq/logging.h"
 
 namespace roq {

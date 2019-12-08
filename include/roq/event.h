@@ -52,6 +52,11 @@ inline auto event_value(const MarketByPriceEvent& event) {
 }
 
 template <>
+inline auto event_value(const MarketByOrderEvent& event) {
+  return event.market_by_order;
+}
+
+template <>
 inline auto event_value(const TradeSummaryEvent& event) {
   return event.trade_summary;
 }
@@ -168,6 +173,16 @@ inline MarketByPriceEvent create_event(
   return decltype(event) {
     .message_info = message_info,
     .market_by_price = event.market_by_price,
+  };
+}
+
+template <>
+inline MarketByOrderEvent create_event(
+    const MessageInfo& message_info,
+    const MarketByOrderEvent& event) {
+  return decltype(event) {
+    .message_info = message_info,
+    .market_by_order = event.market_by_order,
   };
 }
 

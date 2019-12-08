@@ -309,6 +309,27 @@ struct fmt::formatter<roq::MBPUpdate> {
 };
 
 template <>
+struct fmt::formatter<roq::MBOUpdate> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::MBOUpdate& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "price={}, "
+        "quantity={},"
+        "order_id=\"{}\" "
+        "}}",
+        value.price,
+        value.quantity,
+        value.order_id);
+  }
+};
+
+template <>
 struct fmt::formatter<roq::Trade> {
   template <typename T>
   constexpr auto parse(T& ctx) {
@@ -547,6 +568,31 @@ struct fmt::formatter<roq::MarketByPrice> {
         value.symbol,
         fmt::join(value.bid, value.bid + value.bid_length, ", "),
         fmt::join(value.ask, value.ask + value.ask_length, ", "),
+        value.snapshot,
+        value.exchange_time_utc);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::MarketByOrder> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::MarketByOrder& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "exchange=\"{}\", "
+        "symbol=\"{}\", "
+        "orders=[{}], "
+        "snapshot={}, "
+        "exchange_time_utc={}"
+        "}}",
+        value.exchange,
+        value.symbol,
+        fmt::join(value.orders, value.orders + value.length, ", "),
         value.snapshot,
         value.exchange_time_utc);
   }
@@ -1171,6 +1217,25 @@ struct fmt::formatter<roq::MarketByPriceEvent> {
         "}}",
         value.message_info,
         value.market_by_price);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::MarketByOrderEvent> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::MarketByOrderEvent& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "message_info={}, "
+        "market_by_order={}"
+        "}}",
+        value.message_info,
+        value.market_by_order);
   }
 };
 

@@ -456,7 +456,7 @@ struct ROQ_PUBLIC MarketStatus final {
 
 struct ROQ_PUBLIC MBPUpdate final {
   double price;
-  double quantity;
+  double quantity;  // 0 => delete
 };
 
 static_assert(sizeof(MBPUpdate) == 16);
@@ -468,6 +468,23 @@ struct ROQ_PUBLIC MarketByPrice final {
   const MBPUpdate *bid;
   size_t ask_length;
   const MBPUpdate *ask;
+  bool snapshot;
+  std::chrono::nanoseconds exchange_time_utc;
+};
+
+struct ROQ_PUBLIC MBOUpdate final {
+  double price;
+  double quantity;  // 0 => delete, sign => side
+  uint64_t order_id;  // FIXME(thraneh): should be string
+};
+
+static_assert(sizeof(MBOUpdate) == 24);
+
+struct ROQ_PUBLIC MarketByOrder final {
+  std::string_view exchange;
+  std::string_view symbol;
+  size_t length;
+  const MBOUpdate *orders;
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };
@@ -680,6 +697,11 @@ struct ROQ_PUBLIC MarketByPriceEvent final {
   const MarketByPrice& market_by_price;
 };
 
+struct ROQ_PUBLIC MarketByOrderEvent final {
+  const MessageInfo& message_info;
+  const MarketByOrder& market_by_order;
+};
+
 struct ROQ_PUBLIC TradeSummaryEvent final {
   const MessageInfo& message_info;
   const TradeSummary& trade_summary;
@@ -811,6 +833,7 @@ class ROQ_PUBLIC Generator {
     virtual void operator()(const ReferenceDataEvent&) = 0;
     virtual void operator()(const MarketStatusEvent&) = 0;
     virtual void operator()(const MarketByPriceEvent&) = 0;
+    virtual void operator()(const MarketByOrderEvent&) = 0;
     virtual void operator()(const TradeSummaryEvent&) = 0;
     virtual void operator()(const SessionStatisticsEvent&) = 0;
     virtual void operator()(const DailyStatisticsEvent&) = 0;
@@ -836,6 +859,7 @@ class ROQ_PUBLIC Matcher {
     virtual void operator()(const ReferenceDataEvent&) = 0;
     virtual void operator()(const MarketStatusEvent&) = 0;
     virtual void operator()(const MarketByPriceEvent&) = 0;
+    virtual void operator()(const MarketByOrderEvent&) = 0;
     virtual void operator()(const TradeSummaryEvent&) = 0;
     virtual void operator()(const SessionStatisticsEvent&) = 0;
     virtual void operator()(const DailyStatisticsEvent&) = 0;
@@ -859,6 +883,7 @@ class ROQ_PUBLIC Matcher {
   virtual void operator()(const SessionStatisticsEvent&) = 0;
   virtual void operator()(const DailyStatisticsEvent&) = 0;
   virtual void operator()(const MarketByPriceEvent&) = 0;
+  virtual void operator()(const MarketByOrderEvent&) = 0;
   virtual void operator()(const TradeSummaryEvent&) = 0;
   virtual void operator()(const CreateOrderEvent&) = 0;
   virtual void operator()(const ModifyOrderEvent&) = 0;

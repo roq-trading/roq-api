@@ -36,7 +36,6 @@ namespace roq {
 constexpr auto MAX_ACCOUNT_NAME_LENGTH = size_t{31};
 constexpr auto MAX_USER_NAME_LENGTH = size_t{31};
 constexpr auto MAX_TRADE_ID_LENGTH = size_t{39};
-constexpr auto MAX_ORDER_ID_LENGTH = size_t{39};
 
 // enums
 
@@ -403,18 +402,16 @@ inline auto EnumNameError(Error e) {
 enum class OrderUpdateAction : uint8_t {
   NEW,
   MODIFY,
-  CANCEL,
-  FILL,
+  DELETE,
   MIN = NEW,
-  MAX = FILL,
+  MAX = DELETE,
 };
 
 inline auto EnumNamesOrderUpdateAction() {
   static const std::string_view names[] = {
     "NEW",
     "MODIFY",
-    "CANCEL",
-    "FILL",
+    "DELETE",
   };
   return names;
 }

@@ -424,6 +424,36 @@ inline auto EnumNameOrderUpdateAction(OrderUpdateAction e) {
     static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
+// helpers
+
+struct ROQ_PUBLIC MBPUpdate final {
+  double price;
+  double quantity;  // 0 => delete
+};
+
+static_assert(sizeof(MBPUpdate) == 16);
+
+struct ROQ_PUBLIC MBOUpdate final {
+  OrderUpdateAction action;
+  Side side;
+  double price;
+  double quantity;  // 0 => delete
+  uint64_t order_id;
+  uint64_t order_id_ext;  // optional
+  uint64_t priority;  // optional
+  uint8_t unused[12];
+};
+
+static_assert(sizeof(MBOUpdate) == 64);
+
+struct ROQ_PUBLIC Trade final {
+  Side side;
+  double price;
+  double quantity;
+  char trade_id[MAX_TRADE_ID_LENGTH + 1];
+};
+
+static_assert(sizeof(Trade) == 64);
 
 // transport
 
@@ -484,13 +514,6 @@ struct ROQ_PUBLIC MarketStatus final {
   TradingStatus trading_status;
 };
 
-struct ROQ_PUBLIC MBPUpdate final {
-  double price;
-  double quantity;  // 0 => delete
-};
-
-static_assert(sizeof(MBPUpdate) == 16);
-
 struct ROQ_PUBLIC MarketByPrice final {
   std::string_view exchange;
   std::string_view symbol;
@@ -500,19 +523,6 @@ struct ROQ_PUBLIC MarketByPrice final {
   std::chrono::nanoseconds exchange_time_utc;
 };
 
-struct ROQ_PUBLIC MBOUpdate final {
-  OrderUpdateAction action;
-  Side side;
-  double price;
-  double quantity;  // 0 => delete
-  uint64_t order_id;
-  uint64_t order_id_ext;  // optional
-  uint64_t priority;  // optional
-  uint8_t unused[12];
-};
-
-static_assert(sizeof(MBOUpdate) == 64);
-
 struct ROQ_PUBLIC MarketByOrder final {
   std::string_view exchange;
   std::string_view symbol;
@@ -520,15 +530,6 @@ struct ROQ_PUBLIC MarketByOrder final {
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };
-
-struct ROQ_PUBLIC Trade final {
-  Side side;
-  double price;
-  double quantity;
-  char trade_id[MAX_TRADE_ID_LENGTH + 1];
-};
-
-static_assert(sizeof(Trade) == 64);
 
 struct ROQ_PUBLIC TradeSummary final {
   std::string_view exchange;

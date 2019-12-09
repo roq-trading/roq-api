@@ -287,6 +287,21 @@ struct fmt::formatter<roq::Error> {
   }
 };
 
+template <>
+struct fmt::formatter<roq::OrderUpdateAction> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::OrderUpdateAction value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{}",
+        EnumNameOrderUpdateAction(value));
+  }
+};
+
 // helpers
 
 template <>
@@ -319,13 +334,21 @@ struct fmt::formatter<roq::MBOUpdate> {
     return format_to(
         ctx.out(),
         "{{"
+        "action={}, "
+        "side={}, "
         "price={}, "
         "quantity={},"
-        "order_id=\"{}\" "
+        "order_id={}, "
+        "order_id_ext={}, "
+        "priority={} "
         "}}",
+        value.action,
+        value.side,
         value.price,
         value.quantity,
-        value.order_id);
+        value.order_id,
+        value.order_id_ext,
+        value.priority);
   }
 };
 

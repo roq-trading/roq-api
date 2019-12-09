@@ -20,9 +20,11 @@
 #if defined(__GNUC__) || defined(__clang__)
 #define ROQ_PUBLIC __attribute__((visibility("default")))
 #define ROQ_HOT __attribute__((hot))
+#define ROQ_PACKED __attribute__((__packed__))
 #else
 #define ROQ_PUBLIC
 #define ROQ_HOT
+#define ROQ_PACKED
 #endif
 
 namespace roq {
@@ -32,6 +34,7 @@ namespace roq {
 constexpr auto MAX_ACCOUNT_NAME_LENGTH = size_t{31};
 constexpr auto MAX_USER_NAME_LENGTH = size_t{31};
 constexpr auto MAX_TRADE_ID_LENGTH = size_t{39};
+constexpr auto MAX_ORDER_ID_LENGTH = size_t{39};
 
 // enums
 
@@ -395,6 +398,31 @@ inline auto EnumNameError(Error e) {
     static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
+enum class OrderUpdateAction : uint8_t {
+  NEW,
+  MODIFY,
+  CANCEL,
+  FILL,
+  MIN = NEW,
+  MAX = FILL,
+};
+
+inline auto EnumNamesOrderUpdateAction() {
+  static const std::string_view names[] = {
+    "NEW",
+    "MODIFY",
+    "CANCEL",
+    "FILL",
+  };
+  return names;
+}
+
+inline auto EnumNameOrderUpdateAction(OrderUpdateAction e) {
+  return EnumNamesOrderUpdateAction()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+}
+
+
 // transport
 
 struct ROQ_PUBLIC MessageInfo final {
@@ -473,12 +501,17 @@ struct ROQ_PUBLIC MarketByPrice final {
 };
 
 struct ROQ_PUBLIC MBOUpdate final {
+  OrderUpdateAction action;
+  Side side;
   double price;
-  double quantity;  // 0 => delete, sign => side
-  uint64_t order_id;  // FIXME(thraneh): should be string
+  double quantity;  // 0 => delete
+  uint64_t order_id;
+  uint64_t order_id_ext;
+  uint64_t priority;  // optional
+  uint8_t unused[12];
 };
 
-static_assert(sizeof(MBOUpdate) == 24);
+static_assert(sizeof(MBOUpdate) == 64);
 
 struct ROQ_PUBLIC MarketByOrder final {
   std::string_view exchange;

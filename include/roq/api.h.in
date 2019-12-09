@@ -492,10 +492,14 @@ static_assert(sizeof(MBPUpdate) == 16);
 struct ROQ_PUBLIC MarketByPrice final {
   std::string_view exchange;
   std::string_view symbol;
-  size_t bid_length;
-  const MBPUpdate *bid;
-  size_t ask_length;
-  const MBPUpdate *ask;
+  struct {
+    const MBPUpdate *items;
+    size_t length;
+  } bids;
+  struct {
+    const MBPUpdate *items;
+    size_t length;
+  } asks;
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };
@@ -506,7 +510,7 @@ struct ROQ_PUBLIC MBOUpdate final {
   double price;
   double quantity;  // 0 => delete
   uint64_t order_id;
-  uint64_t order_id_ext;
+  uint64_t order_id_ext;  // optional
   uint64_t priority;  // optional
   uint8_t unused[12];
 };
@@ -516,8 +520,10 @@ static_assert(sizeof(MBOUpdate) == 64);
 struct ROQ_PUBLIC MarketByOrder final {
   std::string_view exchange;
   std::string_view symbol;
-  size_t length;
-  const MBOUpdate *orders;
+  struct {
+    const MBOUpdate *items;
+    size_t length;
+  } orders;
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };
@@ -534,8 +540,10 @@ static_assert(sizeof(Trade) == 64);
 struct ROQ_PUBLIC TradeSummary final {
   std::string_view exchange;
   std::string_view symbol;
-  size_t trade_length;
-  const Trade *trade;
+  struct {
+    const Trade *items;
+    size_t length;
+  } trades;
   std::chrono::nanoseconds exchange_time_utc;
 };
 

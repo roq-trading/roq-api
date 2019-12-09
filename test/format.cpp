@@ -36,14 +36,14 @@ TEST(format, subscribe) {
 }
 
 TEST(format, market_by_price) {
-  roq::MBPUpdate bid[] = {
+  roq::MBPUpdate bids[] = {
     { .price = 1.0, .quantity = 2.0 },
     { .price = 2.0, .quantity = 4.0 },
     { .price = 3.0, .quantity = 8.0 },
     { .price = 4.0, .quantity = 10.0 },
     { .price = 5.0, .quantity = 12.0 },
   };
-  roq::MBPUpdate ask[] = {
+  roq::MBPUpdate asks[] = {
     { .price = 1.0, .quantity = 2.0 },
     { .price = 2.0, .quantity = 4.0 },
     { .price = 3.0, .quantity = 8.0 },
@@ -53,10 +53,14 @@ TEST(format, market_by_price) {
   roq::MarketByPrice market_by_price {
     .exchange = "deribit",
     .symbol = "BTC-27DEC19",
-    .bid_length = std::size(bid),
-    .bid = bid,
-    .ask_length = std::size(ask),
-    .ask = ask,
+    .bids = {
+      .items = bids,
+      .length = std::size(bids),
+    },
+    .asks = {
+      .items = asks,
+      .length = std::size(asks),
+    },
     .snapshot = true,
     .exchange_time_utc = {}
   };

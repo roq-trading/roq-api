@@ -589,14 +589,8 @@ struct fmt::formatter<roq::MarketByPrice> {
         "}}",
         value.exchange,
         value.symbol,
-        fmt::join(
-          value.bids.items,
-          value.bids.items + value.bids.length,
-          ", "),
-        fmt::join(
-          value.asks.items,
-          value.asks.items + value.asks.length,
-          ", "),
+        fmt::join(value.bids, ", "),
+        fmt::join(value.asks, ", "),
         value.snapshot,
         value.exchange_time_utc);
   }
@@ -621,10 +615,7 @@ struct fmt::formatter<roq::MarketByOrder> {
         "}}",
         value.exchange,
         value.symbol,
-        fmt::join(
-          value.orders.items,
-          value.orders.items + value.orders.length,
-          ", "),
+        fmt::join(value.orders, ", "),
         value.snapshot,
         value.exchange_time_utc);
   }
@@ -648,10 +639,7 @@ struct fmt::formatter<roq::TradeSummary> {
         "}}",
         value.exchange,
         value.symbol,
-        fmt::join(
-          value.trades.items,
-          value.trades.items + value.trades.length,
-          ", "),
+        fmt::join(value.trades, ", "),
         value.exchange_time_utc);
   }
 };

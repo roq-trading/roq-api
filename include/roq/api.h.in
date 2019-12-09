@@ -15,6 +15,8 @@
 #include <unordered_set>
 #include <utility>
 
+#include "roq/compat.h"
+
 #define ROQ_VERSION "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
 
 #if defined(__GNUC__) || defined(__clang__)
@@ -492,14 +494,8 @@ static_assert(sizeof(MBPUpdate) == 16);
 struct ROQ_PUBLIC MarketByPrice final {
   std::string_view exchange;
   std::string_view symbol;
-  struct {
-    const MBPUpdate *items;
-    size_t length;
-  } bids;
-  struct {
-    const MBPUpdate *items;
-    size_t length;
-  } asks;
+  roq::span<MBPUpdate> bids;  // TODO(thraneh): use std::span
+  roq::span<MBPUpdate> asks;  // TODO(thraneh): use std::span
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };
@@ -520,10 +516,7 @@ static_assert(sizeof(MBOUpdate) == 64);
 struct ROQ_PUBLIC MarketByOrder final {
   std::string_view exchange;
   std::string_view symbol;
-  struct {
-    const MBOUpdate *items;
-    size_t length;
-  } orders;
+  roq::span<MBOUpdate> orders;  // TODO(thraneh): use std::span
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };
@@ -540,10 +533,7 @@ static_assert(sizeof(Trade) == 64);
 struct ROQ_PUBLIC TradeSummary final {
   std::string_view exchange;
   std::string_view symbol;
-  struct {
-    const Trade *items;
-    size_t length;
-  } trades;
+  roq::span<Trade> trades;  // TODO(thraneh): use std::span
   std::chrono::nanoseconds exchange_time_utc;
 };
 

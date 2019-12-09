@@ -3,6 +3,7 @@ pkginclude_HEADERS = \
 	api.h \
 	application.h \
 	builtins.h \
+	compat.h \
 	event.h \
 	format.h \
 	logging.h \

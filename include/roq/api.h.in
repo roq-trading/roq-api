@@ -428,7 +428,7 @@ inline auto EnumNameOrderUpdateAction(OrderUpdateAction e) {
 
 struct ROQ_PUBLIC MBPUpdate final {
   double price;
-  double quantity;  // 0 => delete
+  double quantity;
 };
 
 static_assert(sizeof(MBPUpdate) == 16);
@@ -437,7 +437,7 @@ struct ROQ_PUBLIC MBOUpdate final {
   OrderUpdateAction action;
   Side side;
   double price;
-  double quantity;  // 0 => delete
+  double remaining_quantity;
   uint64_t order_id;
   uint64_t order_id_ext;  // optional
   uint64_t priority;  // optional

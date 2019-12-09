@@ -337,7 +337,7 @@ struct fmt::formatter<roq::MBOUpdate> {
         "action={}, "
         "side={}, "
         "price={}, "
-        "quantity={},"
+        "remaining_quantity={},"
         "order_id={}, "
         "order_id_ext={}, "
         "priority={} "
@@ -345,7 +345,7 @@ struct fmt::formatter<roq::MBOUpdate> {
         value.action,
         value.side,
         value.price,
-        value.quantity,
+        value.remaining_quantity,
         value.order_id,
         value.order_id_ext,
         value.priority);

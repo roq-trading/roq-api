@@ -36,6 +36,7 @@ namespace roq {
 constexpr auto MAX_ACCOUNT_NAME_LENGTH = size_t{31};
 constexpr auto MAX_USER_NAME_LENGTH = size_t{31};
 constexpr auto MAX_TRADE_ID_LENGTH = size_t{39};
+constexpr auto MAX_ORDER_ID_LENGTH = size_t{39};
 
 // enums
 
@@ -435,13 +436,11 @@ struct ROQ_PUBLIC MBOUpdate final {
   Side side;
   double price;
   double remaining_quantity;
-  uint64_t order_id;
-  uint64_t order_id_ext;  // optional
   uint64_t priority;  // optional
-  uint8_t unused[12];
+  char order_id[MAX_ORDER_ID_LENGTH + 1];
 };
 
-static_assert(sizeof(MBOUpdate) == 64);
+static_assert(sizeof(MBOUpdate) == 72);
 
 struct ROQ_PUBLIC Trade final {
   Side side;

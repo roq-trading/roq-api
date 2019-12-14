@@ -35,8 +35,8 @@ namespace roq {
 
 constexpr auto MAX_ACCOUNT_NAME_LENGTH = size_t{31};
 constexpr auto MAX_USER_NAME_LENGTH = size_t{31};
-constexpr auto MAX_TRADE_ID_LENGTH = size_t{39};
-constexpr auto MAX_ORDER_ID_LENGTH = size_t{39};
+constexpr auto MAX_TRADE_ID_LENGTH = size_t{40};
+constexpr auto MAX_ORDER_ID_LENGTH = size_t{40};
 
 // enums
 
@@ -354,6 +354,28 @@ inline auto EnumNameOptionType(OptionType e) {
     static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
+enum class OrderUpdateAction : uint8_t {
+  NEW,
+  MODIFY,
+  REMOVE,
+  MIN = NEW,
+  MAX = REMOVE
+};
+
+inline auto EnumNamesOrderUpdateAction() {
+  static const std::string_view names[] = {
+    "NEW",
+    "MODIFY",
+    "REMOVE",
+  };
+  return names;
+}
+
+inline auto EnumNameOrderUpdateAction(OrderUpdateAction e) {
+  return EnumNamesOrderUpdateAction()[
+    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+}
+
 enum class Error : uint8_t {
   NONE,
   UNKNOWN,
@@ -400,28 +422,6 @@ inline auto EnumNameError(Error e) {
     static_cast<std::underlying_type<decltype(e)>::type>(e)];
 }
 
-enum class OrderUpdateAction : uint8_t {
-  NEW,
-  MODIFY,
-  DELETE,
-  MIN = NEW,
-  MAX = DELETE,
-};
-
-inline auto EnumNamesOrderUpdateAction() {
-  static const std::string_view names[] = {
-    "NEW",
-    "MODIFY",
-    "DELETE",
-  };
-  return names;
-}
-
-inline auto EnumNameOrderUpdateAction(OrderUpdateAction e) {
-  return EnumNamesOrderUpdateAction()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
-}
-
 // helpers
 
 struct ROQ_PUBLIC MBPUpdate final {
@@ -432,21 +432,20 @@ struct ROQ_PUBLIC MBPUpdate final {
 static_assert(sizeof(MBPUpdate) == 16);
 
 struct ROQ_PUBLIC MBOUpdate final {
-  OrderUpdateAction action;
-  Side side;
   double price;
   double remaining_quantity;
-  uint64_t priority;  // optional
-  char order_id[MAX_ORDER_ID_LENGTH + 1];
+  OrderUpdateAction action;
+  uint32_t priority;  // optional
+  char order_id[MAX_ORDER_ID_LENGTH];
 };
 
-static_assert(sizeof(MBOUpdate) == 72);
+static_assert(sizeof(MBOUpdate) == 64);
 
 struct ROQ_PUBLIC Trade final {
   Side side;
   double price;
   double quantity;
-  char trade_id[MAX_TRADE_ID_LENGTH + 1];
+  char trade_id[MAX_TRADE_ID_LENGTH];
 };
 
 static_assert(sizeof(Trade) == 64);
@@ -522,7 +521,8 @@ struct ROQ_PUBLIC MarketByPrice final {
 struct ROQ_PUBLIC MarketByOrder final {
   std::string_view exchange;
   std::string_view symbol;
-  roq::span<MBOUpdate> orders;  // TODO(thraneh): use std::span
+  roq::span<MBOUpdate> bids;  // TODO(thraneh): use std::span
+  roq::span<MBOUpdate> asks;  // TODO(thraneh): use std::span
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };

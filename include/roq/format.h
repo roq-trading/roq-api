@@ -273,21 +273,6 @@ struct fmt::formatter<roq::OptionType> {
 };
 
 template <>
-struct fmt::formatter<roq::Error> {
-  template <typename T>
-  constexpr auto parse(T& ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::Error value, T& ctx) {
-    return format_to(
-        ctx.out(),
-        "{}",
-        EnumNameError(value));
-  }
-};
-
-template <>
 struct fmt::formatter<roq::OrderUpdateAction> {
   template <typename T>
   constexpr auto parse(T& ctx) {
@@ -299,6 +284,21 @@ struct fmt::formatter<roq::OrderUpdateAction> {
         ctx.out(),
         "{}",
         EnumNameOrderUpdateAction(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Error> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::Error value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{}",
+        EnumNameError(value));
   }
 };
 
@@ -334,17 +334,15 @@ struct fmt::formatter<roq::MBOUpdate> {
     return format_to(
         ctx.out(),
         "{{"
-        "action={}, "
-        "side={}, "
         "price={}, "
         "remaining_quantity={},"
+        "action={}, "
         "priority={}, "
-        "order_id=\"{}\" "
+        "order_id=\"{}\""
         "}}",
-        value.action,
-        value.side,
         value.price,
         value.remaining_quantity,
+        value.action,
         value.priority,
         value.order_id);
   }
@@ -607,13 +605,15 @@ struct fmt::formatter<roq::MarketByOrder> {
         "{{"
         "exchange=\"{}\", "
         "symbol=\"{}\", "
-        "orders=[{}], "
+        "bids=[{}], "
+        "asks=[{}], "
         "snapshot={}, "
         "exchange_time_utc={}"
         "}}",
         value.exchange,
         value.symbol,
-        fmt::join(value.orders, ", "),
+        fmt::join(value.bids, ", "),
+        fmt::join(value.asks, ", "),
         value.snapshot,
         value.exchange_time_utc);
   }

@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2019, Hans Erik Thrane */
+/* Copyright (c) 2017-2020, Hans Erik Thrane */
 
 #include <gtest/gtest.h>
 

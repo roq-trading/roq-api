@@ -72,7 +72,11 @@ struct alignas(cache_line_size()) Histogram {
         _labels(labels) {
   }
 
+  Histogram(const Histogram&) = delete;
   Histogram(Histogram&&) = default;
+
+  void operator=(const Histogram&) = delete;
+  void operator=(Histogram&&) = delete;
 
   inline void prefetch() noexcept {
     __builtin_prefetch(&_data, 1, 3);
@@ -145,10 +149,6 @@ struct alignas(cache_line_size()) Histogram {
   static_assert(sizeof(Data) == cache_line_size());
   const std::string _name;
   const std::string _labels;
-
- private:
-  Histogram(const Histogram&) = delete;
-  void operator=(const Histogram&) = delete;
 };
 
 template <typename T>
@@ -162,7 +162,11 @@ class alignas(cache_line_size()) Counter {
         _labels(labels) {
   }
 
+  Counter(const Counter&) = delete;
   Counter(Counter&&) = default;
+
+  void operator=(const Counter&) = delete;
+  void operator=(Counter&&) = delete;
 
   Counter& operator++() {
     __atomic_fetch_add(&_data.value, 1, __ATOMIC_RELEASE);
@@ -188,10 +192,6 @@ class alignas(cache_line_size()) Counter {
   static_assert(sizeof(Data) == cache_line_size());
   const std::string _name;
   const std::string _labels;
-
- private:
-  Counter(const Counter&) = delete;
-  void operator=(const Counter&) = delete;
 };
 
 template <typename T>
@@ -205,7 +205,11 @@ class alignas(cache_line_size()) Gauge {
         _labels(labels) {
   }
 
+  Gauge(const Gauge&) = delete;
   Gauge(Gauge&&) = default;
+
+  void operator=(const Gauge&) = delete;
+  void operator=(Gauge&&) = delete;
 
   void set(T value) {
     atomic_release(_data.value, value);
@@ -226,10 +230,6 @@ class alignas(cache_line_size()) Gauge {
   static_assert(sizeof(Data) == cache_line_size());
   const std::string _name;
   const std::string _labels;
-
- private:
-  Gauge(const Gauge&) = delete;
-  void operator=(const Gauge&) = delete;
 };
 
 }  // namespace roq

@@ -66,6 +66,13 @@ class ROQ_PUBLIC LogMessage final {
         _memory_view(message_buffer.first, message_buffer.second) {
     _memory_view.append(prefix);
   }
+
+  LogMessage(const LogMessage&) = delete;
+  LogMessage(LogMessage&&) = delete;
+
+  void operator=(const LogMessage&) = delete;
+  void operator=(LogMessage&&) = delete;
+
   inline ~LogMessage() {
     try {
       _sink(_memory_view);
@@ -81,11 +88,6 @@ class ROQ_PUBLIC LogMessage final {
   }
 
  private:
-  LogMessage(LogMessage&&) = delete;
-  LogMessage(const LogMessage&) = delete;
-  void operator=(const LogMessage&) = delete;
-
- private:
   sink_t& _sink;
   memory_view_t _memory_view;
 };
@@ -98,6 +100,13 @@ class ROQ_PUBLIC ErrnoLogMessage final {
         _errnum(errno) {
     _memory_view.append(prefix);
   }
+
+  ErrnoLogMessage(const ErrnoLogMessage&) = delete;
+  ErrnoLogMessage(ErrnoLogMessage&&) = delete;
+
+  void operator=(const ErrnoLogMessage&) = delete;
+  void operator=(ErrnoLogMessage&&) = delete;
+
   inline ~ErrnoLogMessage() {
     try {
       fmt::format_to(
@@ -119,11 +128,6 @@ class ROQ_PUBLIC ErrnoLogMessage final {
   }
 
  private:
-  ErrnoLogMessage(ErrnoLogMessage&&) = delete;
-  ErrnoLogMessage(const ErrnoLogMessage&) = delete;
-  void operator=(const ErrnoLogMessage&) = delete;
-
- private:
   sink_t& _sink;
   memory_view_t _memory_view;
   int _errnum;
@@ -133,16 +137,18 @@ class ROQ_PUBLIC NullLogMessage final {
  public:
   inline NullLogMessage(sink_t&, const std::string_view&) {
   }
+
+  NullLogMessage(const NullLogMessage&) = delete;
+  NullLogMessage(NullLogMessage&&) = delete;
+
+  void operator=(const NullLogMessage&) = delete;
+  void operator=(NullLogMessage&&) = delete;
+
   inline void operator()(const std::string_view&) {
   }
   template <typename... Args>
   inline void operator()(const std::string_view&, Args&&...) {
   }
-
- private:
-  NullLogMessage(NullLogMessage&&) = delete;
-  NullLogMessage(const NullLogMessage&) = delete;
-  void operator=(const NullLogMessage&) = delete;
 };
 
 }  // namespace detail

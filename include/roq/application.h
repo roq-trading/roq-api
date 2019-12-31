@@ -14,7 +14,11 @@ class ROQ_PUBLIC Application {
       const std::string_view& description,
       const std::string_view& version = ROQ_VERSION);
 
+  Application(const Application&) = delete;
   Application(Application&&) = default;
+
+  void operator=(const Application&) = delete;
+  void operator=(Application&&) = delete;
 
   virtual ~Application();
 
@@ -22,10 +26,6 @@ class ROQ_PUBLIC Application {
 
  protected:
   virtual int main(int argc, char **argv) = 0;
-
- private:
-  Application(const Application&) = delete;
-  void operator=(const Application&) = delete;
 
  private:
   char **_argv;

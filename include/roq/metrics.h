@@ -49,13 +49,31 @@ class Metrics {
   }
 };
 
+struct MetricsBase {
+  static std::string create_labels(
+      const std::string_view& label_name_0,
+      const std::string_view& label_value_0);
+  static std::string create_labels(
+      const std::string_view& label_name_0,
+      const std::string_view& label_value_0,
+      const std::string_view& label_name_1,
+      const std::string_view& label_value_1);
+  static std::string create_labels(
+      const std::string_view& label_name_0,
+      const std::string_view& label_value_0,
+      const std::string_view& label_name_1,
+      const std::string_view& label_value_1,
+      const std::string_view& label_name_2,
+      const std::string_view& label_value_2);
+};
+
 template <uint64_t N0,
           uint64_t N1,
           uint64_t N2,
           uint64_t N3,
           uint64_t N4,
           uint64_t N5>
-struct alignas(cache_line_size()) Histogram {
+struct alignas(cache_line_size()) Histogram : public MetricsBase {
  public:
   constexpr uint64_t threshold() const {
     return N5;
@@ -70,6 +88,48 @@ struct alignas(cache_line_size()) Histogram {
       const std::string_view& labels)
       : _name(name),
         _labels(labels) {
+  }
+  Histogram(
+      const std::string_view& name,
+      const std::string_view& label_name_0,
+      const std::string_view& label_value_0)
+      : _name(name),
+        _labels(
+            create_labels(
+                label_name_0,
+                label_value_0)) {
+  }
+  Histogram(
+      const std::string_view& name,
+      const std::string_view& label_name_0,
+      const std::string_view& label_value_0,
+      const std::string_view& label_name_1,
+      const std::string_view& label_value_1)
+      : _name(name),
+        _labels(
+            create_labels(
+                label_name_0,
+                label_value_0,
+                label_name_1,
+                label_value_1)) {
+  }
+  Histogram(
+      const std::string_view& name,
+      const std::string_view& label_name_0,
+      const std::string_view& label_value_0,
+      const std::string_view& label_name_1,
+      const std::string_view& label_value_1,
+      const std::string_view& label_name_2,
+      const std::string_view& label_value_2)
+      : _name(name),
+        _labels(
+            create_labels(
+                label_name_0,
+                label_value_0,
+                label_name_1,
+                label_value_1,
+                label_name_2,
+                label_value_2)) {
   }
 
   Histogram(const Histogram&) = delete;
@@ -231,5 +291,13 @@ class alignas(cache_line_size()) Gauge {
   const std::string _name;
   const std::string _labels;
 };
+
+// convenience
+
+using InternalLatency = Histogram<
+    500, 1000, 2000, 5000, 10000, 20000>;
+
+using ExternalLatency = Histogram<
+    10000, 100000, 1000000, 10000000, 100000000, 1000000000>;
 
 }  // namespace roq

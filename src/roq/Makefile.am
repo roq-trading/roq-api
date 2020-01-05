@@ -18,4 +18,5 @@ libroq_api_la_SOURCES = \
 	application.cpp \
 	builtins.cpp \
 	logging.cpp \
+	metrics.cpp \
 	unwind.cpp

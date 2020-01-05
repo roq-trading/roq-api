@@ -15,7 +15,7 @@
 
 namespace roq {
 
-class Metrics {
+class ROQ_PUBLIC Metrics {
  public:
   virtual Metrics& write_type(
       const std::string_view& name,
@@ -49,7 +49,7 @@ class Metrics {
   }
 };
 
-struct MetricsBase {
+struct ROQ_PUBLIC MetricsBase {
   static std::string create_labels(
       const std::string_view& label_name_0,
       const std::string_view& label_value_0);

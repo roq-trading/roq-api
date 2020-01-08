@@ -983,17 +983,36 @@ inline bool is_complete(const OrderStatus& status) {
 
 inline Side invert(Side side) {
   switch (side) {
-    case Side::BUY: return Side::SELL;
-    case Side::SELL: return Side::BUY;
-    default: return side;
+    case Side::BUY:
+      return Side::SELL;
+    case Side::SELL:
+      return Side::BUY;
+    default:
+      return side;
   }
 }
 
 inline int sign(Side side) {
   switch (side) {
-    case Side::BUY: return 1;
-    case Side::SELL: return -1;
-    default: return 0;
+    case Side::BUY:
+      return 1;
+    case Side::SELL:
+      return -1;
+    default:
+      return 0;
+  }
+}
+
+inline double price_from_side(
+    const Layer& layer,
+    Side side) {
+  switch (side) {
+    case Side::BUY:
+      return layer.bid_price;
+    case Side::SELL:
+      return layer.ask_price;
+    default:
+      return std::numeric_limits<double>::quiet_NaN();
   }
 }
 

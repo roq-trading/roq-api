@@ -174,7 +174,7 @@ struct ROQ_PUBLIC Logger final {
 #define LOG_INFO(logger) RAW_LOG(logger, ::roq::detail::info)
 #define LOG_WARNING(logger) RAW_LOG(logger, ::roq::detail::warning)
 #define LOG_ERROR(logger) RAW_LOG(logger, ::roq::detail::error)
-// FIXME(thraneh): SO26888805 [[noreturn]]
+// XXX SO26888805 [[noreturn]]
 #define LOG_FATAL(logger) RAW_LOG(logger, ::roq::detail::critical)
 
 // The main logging interface (level in {INFO|WARNING|ERROR|FATAL})

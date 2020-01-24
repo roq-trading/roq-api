@@ -5,6 +5,7 @@
 #include <cstring>
 
 #include <chrono>
+#include <limits>
 #include <map>
 #include <set>
 #include <stdexcept>
@@ -56,8 +57,8 @@ inline auto EnumNamesConnectionStatus() {
 }
 
 inline auto EnumNameConnectionStatus(ConnectionStatus e) {
-  return EnumNamesConnectionStatus()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesConnectionStatus()[static_cast<value_type>(e)];
 }
 
 enum class GatewayStatus : uint8_t {
@@ -84,8 +85,8 @@ inline auto EnumNamesGatewayStatus() {
 }
 
 inline auto EnumNameGatewayStatus(GatewayStatus e) {
-  return EnumNamesGatewayStatus()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesGatewayStatus()[static_cast<value_type>(e)];
 }
 
 enum class TradingStatus : uint8_t {
@@ -106,8 +107,8 @@ inline auto EnumNamesTradingStatus() {
 }
 
 inline auto EnumNameTradingStatus(TradingStatus e) {
-  return EnumNamesTradingStatus()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesTradingStatus()[static_cast<value_type>(e)];
 }
 
 enum class Side : uint8_t {
@@ -128,8 +129,8 @@ inline auto EnumNamesSide() {
 }
 
 inline auto EnumNameSide(Side e) {
-  return EnumNamesSide()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesSide()[static_cast<value_type>(e)];
 }
 
 enum class OrderType : uint8_t {
@@ -150,8 +151,8 @@ inline auto EnumNamesOrderType() {
 }
 
 inline auto EnumNameOrderType(OrderType e) {
-  return EnumNamesOrderType()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesOrderType()[static_cast<value_type>(e)];
 }
 
 enum class TimeInForce : uint8_t {
@@ -176,8 +177,8 @@ inline auto EnumNamesTimeInForce() {
 }
 
 inline auto EnumNameTimeInForce(TimeInForce e) {
-  return EnumNamesTimeInForce()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesTimeInForce()[static_cast<value_type>(e)];
 }
 
 enum class PositionEffect : uint8_t {
@@ -198,8 +199,8 @@ inline auto EnumNamesPositionEffect() {
 }
 
 inline auto EnumNamePositionEffect(PositionEffect e) {
-  return EnumNamesPositionEffect()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesPositionEffect()[static_cast<value_type>(e)];
 }
 
 enum class OrderStatus : uint8_t {
@@ -230,8 +231,8 @@ inline auto EnumNamesOrderStatus() {
 }
 
 inline auto EnumNameOrderStatus(OrderStatus e) {
-  return EnumNamesOrderStatus()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesOrderStatus()[static_cast<value_type>(e)];
 }
 
 enum class RequestType : uint8_t {
@@ -254,8 +255,8 @@ inline auto EnumNamesRequestType() {
 }
 
 inline auto EnumNameRequestType(RequestType e) {
-  return EnumNamesRequestType()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesRequestType()[static_cast<value_type>(e)];
 }
 
 enum class RequestStatus : uint8_t {
@@ -280,8 +281,8 @@ inline auto EnumNamesRequestStatus() {
 }
 
 inline auto EnumNameRequestStatus(RequestStatus e) {
-  return EnumNamesRequestStatus()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesRequestStatus()[static_cast<value_type>(e)];
 }
 
 enum class Origin : uint8_t {
@@ -304,8 +305,8 @@ inline auto EnumNamesOrigin() {
 }
 
 inline auto EnumNameOrigin(Origin e) {
-  return EnumNamesOrigin()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesOrigin()[static_cast<value_type>(e)];
 }
 
 enum class SecurityType : uint8_t {
@@ -328,8 +329,8 @@ inline auto EnumNamesSecurityType() {
 }
 
 inline auto EnumNameSecurityType(SecurityType e) {
-  return EnumNamesSecurityType()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesSecurityType()[static_cast<value_type>(e)];
 }
 
 enum class OptionType : uint8_t {
@@ -350,8 +351,8 @@ inline auto EnumNamesOptionType() {
 }
 
 inline auto EnumNameOptionType(OptionType e) {
-  return EnumNamesOptionType()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesOptionType()[static_cast<value_type>(e)];
 }
 
 enum class OrderUpdateAction : uint8_t {
@@ -372,8 +373,8 @@ inline auto EnumNamesOrderUpdateAction() {
 }
 
 inline auto EnumNameOrderUpdateAction(OrderUpdateAction e) {
-  return EnumNamesOrderUpdateAction()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesOrderUpdateAction()[static_cast<value_type>(e)];
 }
 
 enum class Error : uint8_t {
@@ -418,8 +419,8 @@ inline auto EnumNamesError() {
 }
 
 inline auto EnumNameError(Error e) {
-  return EnumNamesError()[
-    static_cast<std::underlying_type<decltype(e)>::type>(e)];
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesError()[static_cast<value_type>(e)];
 }
 
 // helpers
@@ -446,6 +447,7 @@ struct ROQ_PUBLIC Trade final {
   double price;
   double quantity;
   char trade_id[MAX_TRADE_ID_LENGTH];
+  // XXX order_id?
 };
 
 static_assert(sizeof(Trade) == 64);
@@ -512,8 +514,8 @@ struct ROQ_PUBLIC MarketStatus final {
 struct ROQ_PUBLIC MarketByPrice final {
   std::string_view exchange;
   std::string_view symbol;
-  roq::span<MBPUpdate> bids;  // TODO(thraneh): use std::span
-  roq::span<MBPUpdate> asks;  // TODO(thraneh): use std::span
+  roq::span<MBPUpdate> bids;  // XXX std::span (c++20)
+  roq::span<MBPUpdate> asks;  // XXX std::span (c++20)
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };
@@ -521,8 +523,8 @@ struct ROQ_PUBLIC MarketByPrice final {
 struct ROQ_PUBLIC MarketByOrder final {
   std::string_view exchange;
   std::string_view symbol;
-  roq::span<MBOUpdate> bids;  // TODO(thraneh): use std::span
-  roq::span<MBOUpdate> asks;  // TODO(thraneh): use std::span
+  roq::span<MBOUpdate> bids;  // XXX std::span (c++20)
+  roq::span<MBOUpdate> asks;  // XXX std::span (c++20)
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };
@@ -530,7 +532,7 @@ struct ROQ_PUBLIC MarketByOrder final {
 struct ROQ_PUBLIC TradeSummary final {
   std::string_view exchange;
   std::string_view symbol;
-  roq::span<Trade> trades;  // TODO(thraneh): use std::span
+  roq::span<Trade> trades;  // XXX std::span (c++20)
   std::chrono::nanoseconds exchange_time_utc;
 };
 
@@ -959,7 +961,7 @@ inline bool is_complete(const RequestStatus& status) {
     case RequestStatus::TIMEOUT:
       return true;
     default:
-      // TODO(thraneh): should throw
+      // XXX throw?
       return true;
   }
 }
@@ -976,7 +978,7 @@ inline bool is_complete(const OrderStatus& status) {
     case OrderStatus::CANCELED:
       return true;
     default:
-      // TODO(thraneh): should throw
+      // XXX throw?
       return true;
   }
 }

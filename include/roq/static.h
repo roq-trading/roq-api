@@ -99,7 +99,7 @@ class static_string final {
   size_t _size;
 };
 
-// FIXME(thraneh): workaround to manage gcc build issues
+// XXX workaround to manage gcc build issues
 
 template <size_t N>
 class static_basename_string final {

@@ -20,7 +20,7 @@
 
 // helper
 
-// TODO(thraneh): make generic
+// XXX make generic
 template <>
 struct fmt::formatter<std::set<std::string> > {
   template <typename T>
@@ -38,7 +38,7 @@ struct fmt::formatter<std::set<std::string> > {
   }
 };
 
-// TODO(thraneh): make generic
+// XXX make generic
 template <>
 struct fmt::formatter<std::pair<const std::string, std::set<std::string> > > {
   template <typename T>
@@ -57,7 +57,7 @@ struct fmt::formatter<std::pair<const std::string, std::set<std::string> > > {
   }
 };
 
-// TODO(thraneh): make generic
+// XXX make generic
 template <>
 struct fmt::formatter<std::map<std::string, std::set<std::string> > > {
   template <typename T>

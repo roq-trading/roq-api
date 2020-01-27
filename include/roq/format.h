@@ -566,6 +566,31 @@ struct fmt::formatter<roq::MarketStatus> {
 };
 
 template <>
+struct fmt::formatter<roq::TopOfBook> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::TopOfBook& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "exchange=\"{}\", "
+        "symbol=\"{}\", "
+        "layer={}, "
+        "snapshot={}, "
+        "exchange_time_utc={}"
+        "}}",
+        value.exchange,
+        value.symbol,
+        value.layer,
+        value.snapshot,
+        value.exchange_time_utc);
+  }
+};
+
+template <>
 struct fmt::formatter<roq::MarketByPrice> {
   template <typename T>
   constexpr auto parse(T& ctx) {
@@ -1219,6 +1244,25 @@ struct fmt::formatter<roq::MarketStatusEvent> {
         "}}",
         value.message_info,
         value.market_status);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::TopOfBookEvent> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::TopOfBookEvent& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "message_info={}, "
+        "top_of_book={}"
+        "}}",
+        value.message_info,
+        value.top_of_book);
   }
 };
 

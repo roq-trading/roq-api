@@ -47,6 +47,11 @@ inline auto event_value(const MarketStatusEvent& event) {
 }
 
 template <>
+inline auto event_value(const TopOfBookEvent& event) {
+  return event.top_of_book;
+}
+
+template <>
 inline auto event_value(const MarketByPriceEvent& event) {
   return event.market_by_price;
 }
@@ -163,6 +168,16 @@ inline MarketStatusEvent create_event(
   return decltype(event) {
     .message_info = message_info,
     .market_status = event.market_status,
+  };
+}
+
+template <>
+inline TopOfBookEvent create_event(
+    const MessageInfo& message_info,
+    const TopOfBookEvent& event) {
+  return decltype(event) {
+    .message_info = message_info,
+    .top_of_book = event.top_of_book,
   };
 }
 

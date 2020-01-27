@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <cstring>
-
 #include <chrono>
 #include <limits>
 #include <map>
@@ -34,10 +32,10 @@ namespace roq {
 
 // limits
 
-constexpr auto MAX_ACCOUNT_NAME_LENGTH = size_t{31};
-constexpr auto MAX_USER_NAME_LENGTH = size_t{31};
-constexpr auto MAX_TRADE_ID_LENGTH = size_t{40};
-constexpr auto MAX_ORDER_ID_LENGTH = size_t{40};
+constexpr size_t MAX_ACCOUNT_NAME_LENGTH = 31;
+constexpr size_t MAX_USER_NAME_LENGTH = 31;
+constexpr size_t MAX_TRADE_ID_LENGTH = 40;
+constexpr size_t MAX_ORDER_ID_LENGTH = 40;
 
 // enums
 
@@ -425,6 +423,15 @@ inline auto EnumNameError(Error e) {
 
 // helpers
 
+struct ROQ_PUBLIC Layer final {
+  double bid_price;
+  double bid_quantity;
+  double ask_price;
+  double ask_quantity;
+};
+
+static_assert(sizeof(Layer) == 32);
+
 struct ROQ_PUBLIC MBPUpdate final {
   double price;
   double quantity;
@@ -509,6 +516,14 @@ struct ROQ_PUBLIC MarketStatus final {
   std::string_view exchange;
   std::string_view symbol;
   TradingStatus trading_status;
+};
+
+struct ROQ_PUBLIC TopOfBook final {
+  std::string_view exchange;
+  std::string_view symbol;
+  Layer layer;
+  bool snapshot;
+  std::chrono::nanoseconds exchange_time_utc;
 };
 
 struct ROQ_PUBLIC MarketByPrice final {
@@ -722,6 +737,11 @@ struct ROQ_PUBLIC MarketStatusEvent final {
   const MarketStatus& market_status;
 };
 
+struct ROQ_PUBLIC TopOfBookEvent final {
+  const MessageInfo& message_info;
+  const TopOfBook& top_of_book;
+};
+
 struct ROQ_PUBLIC MarketByPriceEvent final {
   const MessageInfo& message_info;
   const MarketByPrice& market_by_price;
@@ -843,15 +863,6 @@ class ROQ_PUBLIC OrderNotLive : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
-// utilities
-
-struct ROQ_PUBLIC Layer final {
-  double bid_price;
-  double bid_quantity;
-  double ask_price;
-  double ask_quantity;
-};
-
 /* Interface used to implement an event generator.
  */
 class ROQ_PUBLIC Generator {
@@ -862,6 +873,7 @@ class ROQ_PUBLIC Generator {
     virtual void operator()(const OrderManagerStatusEvent&) = 0;
     virtual void operator()(const ReferenceDataEvent&) = 0;
     virtual void operator()(const MarketStatusEvent&) = 0;
+    virtual void operator()(const TopOfBookEvent&) = 0;
     virtual void operator()(const MarketByPriceEvent&) = 0;
     virtual void operator()(const MarketByOrderEvent&) = 0;
     virtual void operator()(const TradeSummaryEvent&) = 0;
@@ -888,6 +900,7 @@ class ROQ_PUBLIC Matcher {
     virtual void operator()(const OrderManagerStatusEvent&) = 0;
     virtual void operator()(const ReferenceDataEvent&) = 0;
     virtual void operator()(const MarketStatusEvent&) = 0;
+    virtual void operator()(const TopOfBookEvent&) = 0;
     virtual void operator()(const MarketByPriceEvent&) = 0;
     virtual void operator()(const MarketByOrderEvent&) = 0;
     virtual void operator()(const TradeSummaryEvent&) = 0;
@@ -912,6 +925,7 @@ class ROQ_PUBLIC Matcher {
   virtual void operator()(const MarketStatusEvent&) = 0;
   virtual void operator()(const SessionStatisticsEvent&) = 0;
   virtual void operator()(const DailyStatisticsEvent&) = 0;
+  virtual void operator()(const TopOfBookEvent&) = 0;
   virtual void operator()(const MarketByPriceEvent&) = 0;
   virtual void operator()(const MarketByOrderEvent&) = 0;
   virtual void operator()(const TradeSummaryEvent&) = 0;
@@ -1020,15 +1034,13 @@ inline double price_from_side(
 
 inline std::string_view get_trade_id_as_string_view(
     const Trade& trade) {
-  auto null_ptr = std::memchr(
+  std::string_view result(
       trade.trade_id,
-      '\0',
       sizeof(trade.trade_id));
-  auto length = null_ptr
-    ? static_cast<size_t>(
-          reinterpret_cast<const char *>(null_ptr) - trade.trade_id)
-    : sizeof(trade.trade_id);
-  return std::string_view(trade.trade_id, length);
+  auto end = result.find('\0');
+  if (end != result.npos)
+    result.remove_suffix(result.size() - end);
+  return result;
 }
 
 }  // namespace roq

@@ -70,9 +70,6 @@ class ROQ_PUBLIC LogMessage final {
   LogMessage(const LogMessage&) = delete;
   LogMessage(LogMessage&&) = delete;
 
-  void operator=(const LogMessage&) = delete;
-  void operator=(LogMessage&&) = delete;
-
   inline ~LogMessage() {
     try {
       _sink(_memory_view);
@@ -103,9 +100,6 @@ class ROQ_PUBLIC ErrnoLogMessage final {
 
   ErrnoLogMessage(const ErrnoLogMessage&) = delete;
   ErrnoLogMessage(ErrnoLogMessage&&) = delete;
-
-  void operator=(const ErrnoLogMessage&) = delete;
-  void operator=(ErrnoLogMessage&&) = delete;
 
   inline ~ErrnoLogMessage() {
     try {
@@ -140,9 +134,6 @@ class ROQ_PUBLIC NullLogMessage final {
 
   NullLogMessage(const NullLogMessage&) = delete;
   NullLogMessage(NullLogMessage&&) = delete;
-
-  void operator=(const NullLogMessage&) = delete;
-  void operator=(NullLogMessage&&) = delete;
 
   inline void operator()(const std::string_view&) {
   }

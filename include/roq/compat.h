@@ -31,6 +31,12 @@ class span final {
         _length(length) {
   }
 
+  span(const span&) = default;
+  span(span&&) = default;
+
+  span& operator=(const span&) = default;
+  span& operator=(span&&) = default;
+
   pointer data() {
     return _array;
   }
@@ -84,7 +90,7 @@ class span final {
 
  private:
   pointer _array;
-  const size_t _length;
+  size_t _length;
 };
 
 }  // namespace roq

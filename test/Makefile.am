@@ -24,6 +24,7 @@ roq_api_test_CPPFLAGS = \
 	$(GTEST_CFLAGS)
 nodist_roq_api_test_SOURCES = \
 	alignment.cpp \
+	compat.cpp \
 	format.cpp \
 	logging.cpp \
 	metrics.cpp \

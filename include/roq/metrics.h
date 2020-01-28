@@ -135,9 +135,6 @@ struct alignas(cache_line_size()) Histogram : public MetricsBase {
   Histogram(const Histogram&) = delete;
   Histogram(Histogram&&) = default;
 
-  void operator=(const Histogram&) = delete;
-  void operator=(Histogram&&) = delete;
-
   inline void prefetch() noexcept {
     __builtin_prefetch(&_data, 1, 3);
   }
@@ -225,9 +222,6 @@ class alignas(cache_line_size()) Counter {
   Counter(const Counter&) = delete;
   Counter(Counter&&) = default;
 
-  void operator=(const Counter&) = delete;
-  void operator=(Counter&&) = delete;
-
   Counter& operator++() {
     __atomic_fetch_add(&_data.value, 1, __ATOMIC_RELEASE);
     return *this;
@@ -267,9 +261,6 @@ class alignas(cache_line_size()) Gauge {
 
   Gauge(const Gauge&) = delete;
   Gauge(Gauge&&) = default;
-
-  void operator=(const Gauge&) = delete;
-  void operator=(Gauge&&) = delete;
 
   void set(T value) {
     atomic_release(_data.value, value);

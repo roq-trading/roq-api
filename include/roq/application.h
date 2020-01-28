@@ -17,9 +17,6 @@ class ROQ_PUBLIC Application {
   Application(const Application&) = delete;
   Application(Application&&) = default;
 
-  void operator=(const Application&) = delete;
-  void operator=(Application&&) = delete;
-
   virtual ~Application();
 
   int run();

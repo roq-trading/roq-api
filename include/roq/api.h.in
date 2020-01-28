@@ -529,8 +529,8 @@ struct ROQ_PUBLIC TopOfBook final {
 struct ROQ_PUBLIC MarketByPrice final {
   std::string_view exchange;
   std::string_view symbol;
-  roq::span<MBPUpdate> bids;  // XXX std::span (c++20)
-  roq::span<MBPUpdate> asks;  // XXX std::span (c++20)
+  roq::span<MBPUpdate const> bids;  // XXX std::span (c++20)
+  roq::span<MBPUpdate const> asks;  // XXX std::span (c++20)
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };
@@ -538,8 +538,8 @@ struct ROQ_PUBLIC MarketByPrice final {
 struct ROQ_PUBLIC MarketByOrder final {
   std::string_view exchange;
   std::string_view symbol;
-  roq::span<MBOUpdate> bids;  // XXX std::span (c++20)
-  roq::span<MBOUpdate> asks;  // XXX std::span (c++20)
+  roq::span<MBOUpdate const> bids;  // XXX std::span (c++20)
+  roq::span<MBOUpdate const> asks;  // XXX std::span (c++20)
   bool snapshot;
   std::chrono::nanoseconds exchange_time_utc;
 };
@@ -547,7 +547,7 @@ struct ROQ_PUBLIC MarketByOrder final {
 struct ROQ_PUBLIC TradeSummary final {
   std::string_view exchange;
   std::string_view symbol;
-  roq::span<Trade> trades;  // XXX std::span (c++20)
+  roq::span<Trade const> trades;  // XXX std::span (c++20)
   std::chrono::nanoseconds exchange_time_utc;
 };
 

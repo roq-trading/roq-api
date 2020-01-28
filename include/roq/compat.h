@@ -6,24 +6,35 @@
 
 namespace roq {
 
-// transition to C++20
+// possibly preparing for a c++20 transition
 
 template <typename T>
 class span final {
  public:
-  using value_type = T;
+  using value_type = T;  // XXX c++20 using std::remove_cv_t<T>
+  using reference = value_type&;
+  using const_reference = const value_type&;
+  using pointer = value_type*;
+  using const_pointer = const value_type*;
+  using iterator = pointer;
+  using const_iterator = const_pointer;
 
   span() noexcept
       : _array(nullptr),
         _length(0) {
   }
 
-  span(const T *array, size_t length) noexcept
+  span(
+      pointer array,
+      size_t length) noexcept
       : _array(array),
         _length(length) {
   }
 
-  const T *data() const {
+  pointer data() {
+    return _array;
+  }
+  const_pointer data() const {
     return _array;
   }
 
@@ -39,26 +50,40 @@ class span final {
     return _length * sizeof(value_type);
   }
 
-  const T& operator[](size_t index) const {
+  reference operator[](size_t index) {
+    return _array[index];
+  }
+  const_reference operator[](size_t index) const {
     return _array[index];
   }
 
-  const T& at(size_t index) const {
+  reference at(size_t index) {
+    if (_length <= index)
+      throw std::out_of_range();
+    return _array[index];
+  }
+  const_reference at(size_t index) const {
     if (_length <= index)
       throw std::out_of_range();
     return _array[index];
   }
 
-  const T *begin() const {
+  iterator begin() const {
     return _array;
   }
+  iterator end() const {
+    return _array + _length;
+  }
 
-  const T *end() const {
+  const_iterator cbegin() const {
+    return _array;
+  }
+  const_iterator cend() const {
     return _array + _length;
   }
 
  private:
-  const T *_array;
+  pointer _array;
   const size_t _length;
 };
 

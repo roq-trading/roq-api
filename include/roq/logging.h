@@ -186,6 +186,8 @@ struct ROQ_PUBLIC Logger final {
 // Debug logging
 #if defined(NDEBUG)
 #define DLOG(level) LOG_ ## level(::roq::detail::NullLogMessage)
+#define DLOG_IF(level, condition) LOG_ ## level(::roq::detail::NullLogMessage)
 #else
 #define DLOG(level) LOG(level)
+#define DLOG_IF(level, condition) LOG_IF(level, condition)
 #endif

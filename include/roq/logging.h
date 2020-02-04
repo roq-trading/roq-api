@@ -79,10 +79,23 @@ class ROQ_PUBLIC LogMessage final {
   inline void operator()(const std::string_view& format) {
     _memory_view.append(format);
   }
-  template <typename... Args>
-  inline void operator()(const std::string_view& format, Args&&... args) {
-    fmt::format_to(std::back_inserter(_memory_view), format, args...);
+  template <typename F, typename... Args,
+    class = typename std::enable_if<fmt::is_compile_string<F>::value>::type>
+  inline void operator()(
+      const F& format,
+      Args&&... args) {
+    fmt::format_to(
+        std::back_inserter(_memory_view),
+        fmt::to_string_view(format),
+        std::forward<Args>(args)...);
   }
+  // XXX FMT_STRING is a macro and can't access "format"
+  // template <typename... Args>
+  // inline void operator()(
+  //     const std::string_view& format,
+  //     Args&&... args) {
+  //   (*this)(FMT_STRING(format), std::forward<Args>(args)...);
+  // }
 
  private:
   sink_t& _sink;
@@ -105,7 +118,7 @@ class ROQ_PUBLIC ErrnoLogMessage final {
     try {
       fmt::format_to(
           std::back_inserter(_memory_view),
-          ": {} [{}]",
+          FMT_STRING(": {} [{}]"),
           std::strerror(_errnum),
           _errnum);
       _memory_view.push_back('\0');
@@ -116,10 +129,23 @@ class ROQ_PUBLIC ErrnoLogMessage final {
   inline void operator()(const std::string_view& format) {
     _memory_view.append(format);
   }
-  template <typename... Args>
-  inline void operator()(const std::string_view& format, Args&&... args) {
-    fmt::format_to(std::back_inserter(_memory_view), format, args...);
+  template <typename F, typename... Args,
+    class = typename std::enable_if<fmt::is_compile_string<F>::value>::type>
+  inline void operator()(
+      const F& format,
+      Args&&... args) {
+    fmt::format_to(
+        std::back_inserter(_memory_view),
+        fmt::to_string_view(format),
+        std::forward<Args>(args)...);
   }
+  // XXX FMT_STRING is a macro and can't access "format"
+  // template <typename... Args>
+  // inline void operator()(
+  //     const std::string_view& format,
+  //     Args&&... args) {
+  //   (*this)(FMT_STRING(format), std::forward<Args>(args)...);
+  // }
 
  private:
   sink_t& _sink;

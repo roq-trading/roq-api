@@ -163,8 +163,11 @@ class ROQ_PUBLIC NullLogMessage final {
 
   inline void operator()(const std::string_view&) {
   }
-  template <typename... Args>
-  inline void operator()(const std::string_view&, Args&&...) {
+  template <typename F, typename... Args,
+    class = typename std::enable_if<fmt::is_compile_string<F>::value>::type>
+  inline void operator()(
+      const F& format,
+      Args&&... args) {
   }
 };
 

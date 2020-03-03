@@ -782,7 +782,7 @@ struct fmt::formatter<roq::ModifyOrder> {
         "account=\"{}\", "
         "order_id={}, "
         "quantity={}, "
-        "price={}, "
+        "price={}"
         "}}",
         value.account,
         value.order_id,
@@ -893,6 +893,31 @@ struct fmt::formatter<roq::OrderUpdate> {
 };
 
 template <>
+struct fmt::formatter<roq::Fill> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::Fill& value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{{"
+        "trade_id={}, "
+        "quantity={}, "
+        "price={}, "
+        "gateway_trade_id={}, "
+        "external_trade_id=\"{}\""
+        "}}",
+        value.trade_id,
+        value.quantity,
+        value.price,
+        value.gateway_trade_id,
+        value.external_trade_id);
+  }
+};
+
+template <>
 struct fmt::formatter<roq::TradeUpdate> {
   template <typename T>
   constexpr auto parse(T& ctx) {
@@ -904,38 +929,30 @@ struct fmt::formatter<roq::TradeUpdate> {
         ctx.out(),
         "{{"
         "account=\"{}\", "
-        "trade_id={}, "
         "order_id={}, "
         "exchange=\"{}\", "
         "symbol=\"{}\", "
         "side={}, "
-        "quantity={}, "
-        "price={}, "
         "position_effect={}, "
         "order_template=\"{}\", "
         "create_time_utc={}, "
         "update_time_utc={}, "
         "gateway_order_id={}, "
-        "gateway_trade_id={}, "
         "external_order_id=\"{}\", "
-        "external_trade_id=\"{}\""
+        "fills=[{}]"
         "}}",
         value.account,
-        value.trade_id,
         value.order_id,
         value.exchange,
         value.symbol,
         value.side,
-        value.quantity,
-        value.price,
         value.position_effect,
         value.order_template,
         value.create_time_utc,
         value.update_time_utc,
         value.gateway_order_id,
-        value.gateway_trade_id,
         value.external_order_id,
-        value.external_trade_id);
+        fmt::join(value.fills, ", "));
   }
 };
 

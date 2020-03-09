@@ -356,15 +356,17 @@ inline auto EnumNameOptionType(OptionType e) {
 }
 
 enum class OrderUpdateAction : uint8_t {
+  UNDEFINED,
   NEW,
   MODIFY,
   REMOVE,
-  MIN = NEW,
+  MIN = UNDEFINED,
   MAX = REMOVE
 };
 
 inline auto EnumNamesOrderUpdateAction() {
   static const std::string_view names[] = {
+    "UNDEFINED",
     "NEW",
     "MODIFY",
     "REMOVE",

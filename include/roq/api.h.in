@@ -40,14 +40,16 @@ constexpr size_t MAX_ORDER_ID_LENGTH = 40;
 // enums
 
 enum class ConnectionStatus : uint8_t {
+  UNDEFINED,
   DISCONNECTED,
   CONNECTED,
-  MIN = DISCONNECTED,
+  MIN = UNDEFINED,
   MAX = CONNECTED
 };
 
 inline auto EnumNamesConnectionStatus() {
   static const std::string_view names[] = {
+    "UNDEFINED",
     "DISCONNECTED",
     "CONNECTED",
   };
@@ -60,18 +62,20 @@ inline auto EnumNameConnectionStatus(ConnectionStatus e) {
 }
 
 enum class GatewayStatus : uint8_t {
+  UNDEFINED,
   DISCONNECTED,
   CONNECTING,
   LOGIN_SENT,
   DOWNLOADING,
   READY,
   LOGGED_OUT,
-  MIN = DISCONNECTED,
+  MIN = UNDEFINED,
   MAX = LOGGED_OUT
 };
 
 inline auto EnumNamesGatewayStatus() {
   static const std::string_view names[] = {
+    "UNDEFINED",
     "DISCONNECTED",
     "CONNECTING",
     "LOGIN_SENT",

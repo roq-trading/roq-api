@@ -953,6 +953,7 @@ class ROQ_PUBLIC Matcher {
 struct ROQ_PUBLIC Account {
   uint8_t id;
   std::string name;
+  std::string user;
   std::string login;
   std::string password;
   std::string secret;

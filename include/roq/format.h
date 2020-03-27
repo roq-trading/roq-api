@@ -1585,6 +1585,7 @@ struct fmt::formatter<roq::Account> {
         "{{"
         "id={}, "
         "name=\"{}\", "
+        "user=\"{}\", "
         "login=\"{}\", "
         "password=***, "
         "secret=***, "
@@ -1592,6 +1593,7 @@ struct fmt::formatter<roq::Account> {
         "}}",
         value.id,
         value.name,
+        value.user,
         value.login);
         // fmt::join(value.symbols, ", "));
   }

@@ -183,6 +183,32 @@ inline auto EnumNameTimeInForce(TimeInForce e) {
   return EnumNamesTimeInForce()[static_cast<value_type>(e)];
 }
 
+enum class ExecutionInstruction : uint8_t {
+  UNDEFINED,
+  PARTICIPATE_DO_NOT_INITIATE,
+  CANCEL_IF_NOT_BEST,
+  DO_NOT_INCREASE,
+  DO_NOT_REDUCE,
+  MIN = UNDEFINED,
+  MAX = DO_NOT_REDUCE
+};
+
+inline auto EnumNamesExecutionInstruction() {
+  static const std::string_view names[] = {
+    "UNDEFINED",
+    "PARTICIPATE_DO_NOT_INITIATE",
+    "CANCEL_IF_NOT_BEST",
+    "DO_NOT_INCREASE",
+    "DO_NOT_REDUCE",
+  };
+  return names;
+}
+
+inline auto EnumNameExecutionInstruction(ExecutionInstruction e) {
+  using value_type = std::underlying_type_t<decltype(e)>;
+  return EnumNamesExecutionInstruction()[static_cast<value_type>(e)];
+}
+
 enum class PositionEffect : uint8_t {
   UNDEFINED,
   OPEN,
@@ -593,6 +619,9 @@ struct ROQ_PUBLIC CreateOrder final {
   double price;
   TimeInForce time_in_force;
   PositionEffect position_effect;
+  ExecutionInstruction execution_instruction;
+  double stop_price;
+  double max_show_quantity;
   std::string_view order_template;
 };
 

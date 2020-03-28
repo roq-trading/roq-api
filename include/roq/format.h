@@ -153,6 +153,21 @@ struct fmt::formatter<roq::TimeInForce> {
 };
 
 template <>
+struct fmt::formatter<roq::ExecutionInstruction> {
+  template <typename T>
+  constexpr auto parse(T& ctx) {
+    return ctx.begin();
+  }
+  template <typename T>
+  auto format(const roq::ExecutionInstruction value, T& ctx) {
+    return format_to(
+        ctx.out(),
+        "{}",
+        EnumNameExecutionInstruction(value));
+  }
+};
+
+template <>
 struct fmt::formatter<roq::PositionEffect> {
   template <typename T>
   constexpr auto parse(T& ctx) {
@@ -752,6 +767,9 @@ struct fmt::formatter<roq::CreateOrder> {
         "price={}, "
         "time_in_force={}, "
         "position_effect={}, "
+        "execution_instruction={}, "
+        "stop_price={}, "
+        "max_show_quantity={}, "
         "order_template=\"{}\""
         "}}",
         value.account,
@@ -764,6 +782,9 @@ struct fmt::formatter<roq::CreateOrder> {
         value.price,
         value.time_in_force,
         value.position_effect,
+        value.execution_instruction,
+        value.stop_price,
+        value.max_show_quantity,
         value.order_template);
   }
 };

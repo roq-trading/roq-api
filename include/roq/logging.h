@@ -118,7 +118,7 @@ class ROQ_PUBLIC ErrnoLogMessage final {
     try {
       fmt::format_to(
           std::back_inserter(_memory_view),
-          FMT_STRING(": {} [{}]"),
+          FMT_STRING(R"(: {} [{}])"),
           std::strerror(_errnum),
           _errnum);
       _memory_view.push_back('\0');

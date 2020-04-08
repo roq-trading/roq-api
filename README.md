@@ -5,59 +5,60 @@
 
 ## What is it?
 
-The API used to communicate between clients (the
-implementation of your trading strategy) and other
-components developed by Roq, e.g. market gateways.
+This is the API used to communicate between your trading
+strategies and other components (market gateways)
+developed by Roq.
 
 
 ## Overview
 
-An open sourced API motivated by
+Primary motivation
 
-* No requirement to sign a NDA
-* Anyone should be able to implement solutions against the interface
+* Allows you to test without first having
+  to sign a NDA
+* An open sourced API giving anyone a free
+  option to implement alternative solutions
+* Easy access to closed source binaries as
+  either Conda packages or Docker images
 
-> Closed source solutions include
-> * `roq-coinbase-pro` market gateway
-> * `roq-deribit` market gateway
-> * `roq-client` library
->   * Low latency communication between trading strategy
->     and market gateways
->   * Simulation framework, including FIFO order matching
-> * `roq-influxdb` exporter
+> Some of the solutions are free to use,
+> e.g. `roq-client` and `roq-influxdb`.
 >
-> Some solutions are free to use, e.g. `roq-client` and `roq-influxdb`.
-> Other solutions will require you to enter a license agreement, e.g.
-> `roq-coinbase-pro` and `roq-deribit`.
+> Other solutions may require you to enter
+> a license agreement with Roq to enable more
+> advanced features, e.g. `roq-coinbase-pro`
+> and `roq-deribit`.
+>
+> All solutions are completely free to download.
 
 
 ## Build
 
 The API is not very useful by itself.
-You will need an implementation of the interface,
-such as the `roq-client` library.
+You will need an implementation of the interface
+such as the closed source `roq-client` library.
 
-> You will not achieve anything by compiling this project.
+> You will not achieve much by compiling this project.
 
-Instead, head over to
+Head over to
 [Roq Samples](https://github.com/roq-trading/roq-api)
-and follow the instrutions there to install `roq-client`
-and get started with compiling your own projects.
+and follow the instrutions there to install the
+`roq-client` library and compile some simple examples.
 
 
 ## Benefits
 
 * Ultra low latency (single digit microsecond response time)
-* Very high message throughput
-* Messages communicated to clients using a broadcast (publish once) design
-* Automatic connection and download management
-* Message normalization
+* Very high message throughput (only bound by single-message processing time)
+* Messages communicated to clients using a broadcast design (efficient publish-once implementation)
+* Automatic connection and download management (helps you manage state)
+* Message normalization (a single unified interface used to access all markets)
 * Market data (L1, L2, trade summary, session/daily statistics, etc).
 * Order management (create, modify, cancel, ack, update, trade)
 * Positions and funds (when available)
 * Automatically persist all messages to storage device (zero latency impact)
-* Integrate well with popular network kernel-bypass solutions (using epoll)
-* Suitable for fully autonomous algorithmic trading
+* Integrate well with popular network kernel-bypass solutions (having epoll support)
+* Suitable for fully autonomous algorithmic trading (e.g. bot trading)
 
 ## Constraints
 
@@ -66,25 +67,31 @@ and get started with compiling your own projects.
 * Same-host deployment
 * Shared memory for communication
 * Micro-service design
-* Busy polling causing 100% CPU usage
-* Use of CPU isolation and thread affinity, disable hyperthreading,
-  are all strongly recommended practices
+* Busy polling causing 100% CPU usage (to achieve ultra low latency)
+* CPU isolation, disable hyperthreading, use thread affinity, etc.
+  are strongly recommended practices (and therefore not suitable for VM deployment)
 * Enough CPU cores to support your use-case
 
 
 ## Solutions
 
-These are some of our solutions
+Gateways
+
+* [`roq-bitmex`](https://roq-trading.com/docs/gateways/bitmex/index.html)
+* [`roq-bitstamp`](https://roq-trading.com/docs/gateways/bitstamp/index.html)
+* [`roq-coinbase-pro`](https://roq-trading.com/docs/gateways/coinbase-pro/index.html)
+* [`roq-deribit`](https://roq-trading.com/docs/gateways/deribit/index.html)
+* [`roq-ftx`](https://roq-trading.com/docs/gateways/ftx/index.html)
+* [`roq-gemini`](https://roq-trading.com/docs/gateways/gemini/index.html)
+* [`roq-hitbtc`](https://roq-trading.com/docs/gateways/hitbtc/index.html)
+
+Support
 
 * `roq-client`
-  * Low latency client-server communication
-  * Simulation framework, including FIFO order matching
-* `roq-coinbase-pro`
-  * Market gateway
-  * FIX, WebSocket and REST
-* `roq-deribit`
-  * Market gateway
-  * FIX and WebSocket
+  * Ultra low latency client-server communication
+  * In-process simulation framework, including FIFO order matching
+* `roq-simulator`
+  * Gateway simulator
 * `roq-influxdb`
   * InfluxDB exporter
 * `roq-ansible`
@@ -96,17 +103,14 @@ These are some of our solutions
   * Deployment using Vagrant and VirtualBox
 * `roq-grafana`
   * Grafana dashboards
-* `roq-simulator`
-  * Market gateway simulator
-* `roq-benchmark`
-  * Performance testing
 
 
 ## Design
 
-This is not a comprehensive description of the design.
-For that we refer to the online documentation (see
-link below).
+We refer to the online [documentation](https://roq-trading.com/docs)
+for a more comprehensive desciption.
+
+This image provides an overview.
 
 ![overview](assets/overview.png)
 
@@ -117,6 +121,7 @@ link below).
 > hyperthreading disabled.
 > Linux is Ubuntu Server 18.04 LTS with the `isolcpus`
 > kernel parameter set.
+> Server is physically located is Switzerland.
 
 The Grafana example dashboard allows you to easily
 monitor the performance of the gateways.

@@ -890,7 +890,6 @@ struct fmt::formatter<roq::OrderUpdate> {
         "order_template=\"{}\", "
         "create_time_utc={}, "
         "update_time_utc={}, "
-        "commissions={}, "
         "gateway_order_id={}, "
         "external_order_id=\"{}\""
         "}}",
@@ -907,7 +906,6 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.order_template,
         value.create_time_utc,
         value.update_time_utc,
-        value.commissions,
         value.gateway_order_id,
         value.external_order_id);
   }

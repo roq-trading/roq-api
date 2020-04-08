@@ -666,7 +666,6 @@ struct ROQ_PUBLIC OrderUpdate final {
   std::string_view order_template;
   std::chrono::nanoseconds create_time_utc;
   std::chrono::nanoseconds update_time_utc;
-  double commissions;
   uint32_t gateway_order_id;
   std::string_view external_order_id;
 };

@@ -12,64 +12,83 @@ developed by Roq.
 
 ## Overview
 
-Primary motivation
+Primary motivations
 
-* Allows you to test without first having
-  to sign a NDA
-* An open sourced API giving anyone a free
-  option to implement alternative solutions
-* Easy access to closed source binaries as
-  either Conda packages or Docker images
+* You can test without first having to sign a NDA
+  * Remove barriers
+* We publish this open sourced API giving anyone
+  the free option to implement alternative solutions
+  * Avoid unnecessary lock-ins
+* Easy access to closed source binaries as either
+  [Conda packages](https://roq-trading.com/conda/stable/index.html) or
+  [Docker images](https://hub.docker.com/u/roqtrading)
+  * Lets you focus on your trading strategies
 
-> Some of the solutions are free to use,
+> Some of the solutions are **free to use**,
 > e.g. `roq-client` and `roq-influxdb`.
 >
 > Other solutions may require you to enter
-> a license agreement with Roq to enable more
+> a **license agreement** with Roq to enable more
 > advanced features, e.g. `roq-coinbase-pro`
 > and `roq-deribit`.
 >
 > All solutions are completely free to download.
 
+The gateways are very reasonably priced.
+Please [contact us](mailto:info@roq-trading.com) for
+further details.
 
 ## Build
 
-The API is not very useful by itself.
-You will need an implementation of the interface
-such as the closed source `roq-client` library.
-
 > You will not achieve much by compiling this project.
 
-Head over to
-[Roq Samples](https://github.com/roq-trading/roq-api)
-and follow the instrutions there to install the
-`roq-client` library and compile some simple examples.
+The API is not very useful by itself.
+You will need some implementation to make it useful.
+
+> Roq offers a 100% free implementation named `roq-client`.
+
+Head over to [Roq Samples](https://github.com/roq-trading/roq-api)
+and follow the instrutions there to install the `roq-client` library.
+You can then compile and test some simple examples.
 
 
 ## Benefits
 
-* Ultra low latency (single digit microsecond response time)
-* Very high message throughput (only bound by single-message processing time)
-* Messages communicated to clients using a broadcast design (efficient publish-once implementation)
-* Automatic connection and download management (helps you manage state)
-* Message normalization (a single unified interface used to access all markets)
-* Market data (L1, L2, trade summary, session/daily statistics, etc).
-* Order management (create, modify, cancel, ack, update, trade)
-* Positions and funds (when available)
-* Automatically persist all messages to storage device (zero latency impact)
-* Integrate well with popular network kernel-bypass solutions (having epoll support)
-* Suitable for fully autonomous algorithmic trading (e.g. bot trading)
+* Ultra low latency
+  * Single digit microsecond response time
+* Very high message throughput
+  * Only bound by single-message processing time
+* Messages communicated to clients using a broadcast design
+  * Efficient publish-once implementation
+* Automatic connection and download management
+  * Helps you more easily manage state
+* Message normalization
+  * A single unified interface used to access all markets
+* Reference data
+  * Multiplier, tick size, minimum quantity, etc.
+* Market data
+  * L1, L2, trade summary, session/daily statistics, etc.
+* Order management
+  * Create, modify, cancel, ack, update, trade (fill)
+* Positions and funds
+* Automatically persist all messages to storage device
+  * With zero impact on trading latency
+* Integrate well with popular network kernel-bypass solutions
+  * Requires epoll support
+* Suitable for fully autonomous algorithmic trading
 
 ## Constraints
 
 * C++17
-* Linux (RHEL, CentOS, Debian, Ubuntu)
-* Same-host deployment
-* Shared memory for communication
+* **Linux** (RHEL, CentOS, Debian, Ubuntu)
+* Deployment on **same host**
+  * Shared memory for all latency sensitive communication
 * Micro-service design
-* Busy polling causing 100% CPU usage (to achieve ultra low latency)
+* Busy polling causing **100% CPU usage**
+  * Required to achieve ultra low latency
 * CPU isolation, disable hyperthreading, use thread affinity, etc.
-  are strongly recommended practices (and therefore not suitable for VM deployment)
+  are strongly recommended practices
+  * Therefore **not suitable for VM deployment**
 * Enough CPU cores to support your use-case
 
 
@@ -89,30 +108,28 @@ Support
 
 * `roq-client`
   * Ultra low latency client-server communication
-  * In-process simulation framework, including FIFO order matching
+  * In-process simulation framework (including order matching with simulated priority)
 * `roq-simulator`
-  * Gateway simulator
+  * Simulation as a real-time service
 * `roq-influxdb`
-  * InfluxDB exporter
+  * Export captured events to the InfluxDB time-series database
 * `roq-ansible`
   * Server provisioning using Ansible
-  * Gateway configuration
-* `roq-client-template`
-  * Ansible Playbook (using `roq-ansible`)
+  * Manage your gateway configurations
 * `roq-vagrant`
-  * Deployment using Vagrant and VirtualBox
+  * Test your deployment using Vagrant and VirtualBox
 * `roq-grafana`
   * Grafana dashboards
 
 
 ## Design
 
-We refer to the online [documentation](https://roq-trading.com/docs)
-for a more comprehensive desciption.
-
-This image provides an overview.
+This image is only an overview
 
 ![overview](assets/overview.png)
+
+Please refer to the online [documentation](https://roq-trading.com/docs)
+for a more comprehensive desciption.
 
 ## Performance
 

@@ -4,27 +4,22 @@ All notable changes will be documented in this file.
 
 ## Head
 
-Unchanged
-
 ## 0.3.5 &ndash; 2020-04-22
-
-Unchanged
 
 ## 0.3.4 &ndash; 2020-04-08
 
 ### Added
-* `ExecutionInstruction` (enum)
-  * Similar to FIX `ExecInst`
-* `Error` (enum)
-  * `EXECUTION_INSTRUCTION_NOT_SUPPORTED`
-* `Account` (struct)
-  * `user`
-* Enums
-  * Ensure all have `UNDEFINED`
+
+* `ExecutionInstruction` (enum) similar to FIX `ExecInst`
+* `Error::EXECUTION_INSTRUCTION_NOT_SUPPORTED`
+* `Account::user`
+* `OrderUpdate::execution_instruction`, `OrderUpdate::stop_price` and
+  `OrderUpdate::max_show_quantity`
+* Ensure all enums have an `UNDEFINED`
 
 ### Removed
-* `OrderUpdate` (struct)
-  * `commissions`
+
+* `OrderUpdate::commissions`
 
 ### Changed
 
@@ -35,23 +30,20 @@ Unchanged
 
 ### Added
 
+* `Fill` (struct)
 * `TopOfBook` (struct)
 * `price_from_side` (function)
 * `span` (struct)
 
 ### Removed
-* `MBOUpdate` (struct)
-  * `side`
+
+* `MBOUpdate::side`
 
 ### Changed
 
-* `TradeUpdate` (struct)
-  * Now containing array of `Fill`'s (struct)
-* Logging
-  * Require `FMT_STRING` usage to catch more logging errors at compile time
-* `MarketByPrice` (struct)
-  * Separately maintain bids and asks
-* `MBOUpdate` (struct)
-  * `order_id` (string) replaces `order_id_ext` (integer)
-* Arrays
-  * Use `roq::span` everywhere
+* `TradeUpdate` (struct) now containing an array of `Fill`'s (struct)
+* Logging now requires `FMT_STRING` to better formatting errors at
+  compile time
+* `MarketByPrice` (struct) now maintaining `bids` and `asks` separately
+* `MBOUpdate::order_id` (string) replaces `order_id_ext` (integer)
+* Use `roq::span` everywhere

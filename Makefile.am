@@ -4,7 +4,10 @@ if ENABLE_DOXYGEN
 SUBDIRS += doxygen
 endif
 
-dist_doc_DATA = LICENSE README.md CHANGELOG.md
+dist_doc_DATA = \
+	CHANGELOG.md \
+	LICENSE \
+	README.md
 
 ACLOCAL_AMFLAGS = -I m4
 

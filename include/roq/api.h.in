@@ -903,6 +903,10 @@ class ROQ_PUBLIC NotConnected : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
+class ROQ_PUBLIC TimedOut : public RuntimeError {
+  using RuntimeError::RuntimeError;
+};
+
 class ROQ_PUBLIC OrderNotLive : public RuntimeError {
   using RuntimeError::RuntimeError;
 };

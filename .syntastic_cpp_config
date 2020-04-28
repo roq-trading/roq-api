@@ -1,0 +1,4 @@
+-Iinclude
+-Isrc
+-I../miniconda/include
+-std=c++17

@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.3.6 &ndash; 2020-05-02
+
 ### Added
 
 * `TimedOut` (exception)

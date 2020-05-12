@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Inherit all network-related exceptions from `NetworkError`
+
 ## 0.3.6 &ndash; 2020-05-02
 
 ### Added

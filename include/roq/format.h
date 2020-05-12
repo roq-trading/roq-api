@@ -30,11 +30,20 @@ struct fmt::formatter<std::set<std::string> > {
   template <typename T>
   auto format(const std::set<std::string>& value, T& ctx) {
     if (value.empty())
-      return format_to(ctx.out(), "{{}}");
+      return format_to(
+          ctx.out(),
+          FMT_STRING(
+              R"({{)"
+              R"(}})"));
     return format_to(
         ctx.out(),
-        "{{\"{}\"}}",
-        fmt::join(value, "\", \""));
+        FMT_STRING(
+            R"({{)"
+            R"("{}")"
+            R"(}})"),
+        fmt::join(
+            value,
+            R"(", ")"));
   }
 };
 
@@ -51,7 +60,7 @@ struct fmt::formatter<std::pair<const std::string, std::set<std::string> > > {
       T& ctx) {
     return format_to(
         ctx.out(),
-        "\"{}\"={}",
+        FMT_STRING(R"("{}"={})"),
         value.first,
         value.second);
   }
@@ -70,8 +79,14 @@ struct fmt::formatter<std::map<std::string, std::set<std::string> > > {
       T& ctx) {
     return format_to(
         ctx.out(),
-        "{{{}}}",
-        fmt::join(value.begin(), value.end(), ", "));
+        FMT_STRING(
+            R"({{)"
+            R"({})"
+            R"(}})"),
+        fmt::join(
+            value.begin(),
+            value.end(),
+            R"(, )"));
   }
 };
 
@@ -87,7 +102,7 @@ struct fmt::formatter<roq::ConnectionStatus> {
   auto format(const roq::ConnectionStatus value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameConnectionStatus(value));
   }
 };
@@ -102,7 +117,7 @@ struct fmt::formatter<roq::GatewayStatus> {
   auto format(const roq::GatewayStatus value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameGatewayStatus(value));
   }
 };
@@ -117,7 +132,7 @@ struct fmt::formatter<roq::Side> {
   auto format(const roq::Side value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameSide(value));
   }
 };
@@ -132,7 +147,7 @@ struct fmt::formatter<roq::OrderType> {
   auto format(const roq::OrderType value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameOrderType(value));
   }
 };
@@ -147,7 +162,7 @@ struct fmt::formatter<roq::TimeInForce> {
   auto format(const roq::TimeInForce value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameTimeInForce(value));
   }
 };
@@ -162,7 +177,7 @@ struct fmt::formatter<roq::ExecutionInstruction> {
   auto format(const roq::ExecutionInstruction value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameExecutionInstruction(value));
   }
 };
@@ -177,7 +192,7 @@ struct fmt::formatter<roq::PositionEffect> {
   auto format(const roq::PositionEffect value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNamePositionEffect(value));
   }
 };
@@ -192,7 +207,7 @@ struct fmt::formatter<roq::TradingStatus> {
   auto format(const roq::TradingStatus value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameTradingStatus(value));
   }
 };
@@ -207,7 +222,7 @@ struct fmt::formatter<roq::OrderStatus> {
   auto format(const roq::OrderStatus value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameOrderStatus(value));
   }
 };
@@ -222,7 +237,7 @@ struct fmt::formatter<roq::RequestType> {
   auto format(const roq::RequestType value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameRequestType(value));
   }
 };
@@ -237,7 +252,7 @@ struct fmt::formatter<roq::RequestStatus> {
   auto format(const roq::RequestStatus value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameRequestStatus(value));
   }
 };
@@ -252,7 +267,7 @@ struct fmt::formatter<roq::Origin> {
   auto format(const roq::Origin value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameOrigin(value));
   }
 };
@@ -267,7 +282,7 @@ struct fmt::formatter<roq::SecurityType> {
   auto format(const roq::SecurityType value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameSecurityType(value));
   }
 };
@@ -282,7 +297,7 @@ struct fmt::formatter<roq::OptionType> {
   auto format(const roq::OptionType value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameOptionType(value));
   }
 };
@@ -297,7 +312,7 @@ struct fmt::formatter<roq::OrderUpdateAction> {
   auto format(const roq::OrderUpdateAction value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameOrderUpdateAction(value));
   }
 };
@@ -312,7 +327,7 @@ struct fmt::formatter<roq::Error> {
   auto format(const roq::Error value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{}",
+        FMT_STRING(R"({})"),
         EnumNameError(value));
   }
 };
@@ -329,10 +344,11 @@ struct fmt::formatter<roq::MBPUpdate> {
   auto format(const roq::MBPUpdate& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "price={}, "
-        "quantity={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(price={}, )"
+            R"(quantity={})"
+            R"(}})"),
         value.price,
         value.quantity);
   }
@@ -348,13 +364,14 @@ struct fmt::formatter<roq::MBOUpdate> {
   auto format(const roq::MBOUpdate& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "price={}, "
-        "remaining_quantity={},"
-        "action={}, "
-        "priority={}, "
-        "order_id=\"{}\""
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(price={}, )"
+            R"(remaining_quantity={},)"
+            R"(action={}, )"
+            R"(priority={}, )"
+            R"(order_id="{}")"
+            R"(}})"),
         value.price,
         value.remaining_quantity,
         value.action,
@@ -373,12 +390,13 @@ struct fmt::formatter<roq::Trade> {
   auto format(const roq::Trade& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "price={}, "
-        "quantity={}, "
-        "side={}, "
-        "trade_id=\"{}\""
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(price={}, )"
+            R"(quantity={}, )"
+            R"(side={}, )"
+            R"(trade_id="{}")"
+            R"(}})"),
         value.price,
         value.quantity,
         value.side,
@@ -396,19 +414,20 @@ struct fmt::formatter<roq::MessageInfo> {
   auto format(const roq::MessageInfo& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "source={}, "
-        "source_name=\"{}\", "
-        "source_session_id=\"{}\", "
-        "source_seqno={}, "
-        "receive_time_utc={}, "
-        "receive_time={}, "
-        "source_send_time={}, "
-        "source_receive_time={}, "
-        "origin_create_time={}, "
-        "is_last={}, "
-        "opaque={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(source={}, )"
+            R"(source_name="{}", )"
+            R"(source_session_id="{}", )"
+            R"(source_seqno={}, )"
+            R"(receive_time_utc={}, )"
+            R"(receive_time={}, )"
+            R"(source_send_time={}, )"
+            R"(source_receive_time={}, )"
+            R"(origin_create_time={}, )"
+            R"(is_last={}, )"
+            R"(opaque={})"
+            R"(}})"),
         value.source,
         value.source_name,
         value.source_session_id,
@@ -435,10 +454,11 @@ struct fmt::formatter<roq::Subscribe> {
   auto format(const roq::Subscribe& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "accounts={}, "
-        "symbols_by_exchange={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(accounts={}, )"
+            R"(symbols_by_exchange={})"
+            R"(}})"),
         value.accounts,
         value.symbols_by_exchange);
   }
@@ -454,9 +474,10 @@ struct fmt::formatter<roq::DownloadBegin> {
   auto format(const roq::DownloadBegin& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\""
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}")"
+            R"(}})"),
         value.account);
   }
 };
@@ -471,10 +492,11 @@ struct fmt::formatter<roq::DownloadEnd> {
   auto format(const roq::DownloadEnd& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "max_order_id={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}", )"
+            R"(max_order_id={})"
+            R"(}})"),
         value.account,
         value.max_order_id);
   }
@@ -490,9 +512,10 @@ struct fmt::formatter<roq::MarketDataStatus> {
   auto format(const roq::MarketDataStatus& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "status={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(status={})"
+            R"(}})"),
         value.status);
   }
 };
@@ -507,10 +530,11 @@ struct fmt::formatter<roq::OrderManagerStatus> {
   auto format(const roq::OrderManagerStatus& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "status={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}", )"
+            R"(status={})"
+            R"(}})"),
         value.account,
         value.status);
   }
@@ -526,22 +550,23 @@ struct fmt::formatter<roq::ReferenceData> {
   auto format(const roq::ReferenceData& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "security_type={}, "
-        "currency=\"{}\", "
-        "settlement_currency=\"{}\", "
-        "commission_currency=\"{}\", "
-        "tick_size={}, "
-        "limit_up={}, "
-        "limit_down={}, "
-        "multiplier={}, "
-        "min_trade_vol={}, "
-        "option_type={}, "
-        "strike_currency=\"{}\", "
-        "strike_price={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(security_type={}, )"
+            R"(currency="{}", )"
+            R"(settlement_currency="{}", )"
+            R"(commission_currency="{}", )"
+            R"(tick_size={}, )"
+            R"(limit_up={}, )"
+            R"(limit_down={}, )"
+            R"(multiplier={}, )"
+            R"(min_trade_vol={}, )"
+            R"(option_type={}, )"
+            R"(strike_currency="{}", )"
+            R"(strike_price={})"
+            R"(}})"),
         value.exchange,
         value.symbol,
         value.security_type,
@@ -569,11 +594,12 @@ struct fmt::formatter<roq::MarketStatus> {
   auto format(const roq::MarketStatus& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "trading_status={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(trading_status={})"
+            R"(}})"),
         value.exchange,
         value.symbol,
         value.trading_status);
@@ -590,13 +616,14 @@ struct fmt::formatter<roq::TopOfBook> {
   auto format(const roq::TopOfBook& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "layer={}, "
-        "snapshot={}, "
-        "exchange_time_utc={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(layer={}, )"
+            R"(snapshot={}, )"
+            R"(exchange_time_utc={})"
+            R"(}})"),
         value.exchange,
         value.symbol,
         value.layer,
@@ -615,18 +642,23 @@ struct fmt::formatter<roq::MarketByPrice> {
   auto format(const roq::MarketByPrice& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "bids=[{}], "
-        "asks=[{}], "
-        "snapshot={}, "
-        "exchange_time_utc={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(bids=[{}], )"
+            R"(asks=[{}], )"
+            R"(snapshot={}, )"
+            R"(exchange_time_utc={})"
+            R"(}})"),
         value.exchange,
         value.symbol,
-        fmt::join(value.bids, ", "),
-        fmt::join(value.asks, ", "),
+        fmt::join(
+            value.bids,
+            R"(, )"),
+        fmt::join(
+            value.asks,
+            R"(, )"),
         value.snapshot,
         value.exchange_time_utc);
   }
@@ -642,18 +674,23 @@ struct fmt::formatter<roq::MarketByOrder> {
   auto format(const roq::MarketByOrder& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "bids=[{}], "
-        "asks=[{}], "
-        "snapshot={}, "
-        "exchange_time_utc={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(bids=[{}], )"
+            R"(asks=[{}], )"
+            R"(snapshot={}, )"
+            R"(exchange_time_utc={})"
+            R"(}})"),
         value.exchange,
         value.symbol,
-        fmt::join(value.bids, ", "),
-        fmt::join(value.asks, ", "),
+        fmt::join(
+            value.bids,
+            R"(, )"),
+        fmt::join(
+            value.asks,
+            R"(, )"),
         value.snapshot,
         value.exchange_time_utc);
   }
@@ -669,15 +706,18 @@ struct fmt::formatter<roq::TradeSummary> {
   auto format(const roq::TradeSummary& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "trades=[{}], "
-        "exchange_time_utc={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(trades=[{}], )"
+            R"(exchange_time_utc={})"
+            R"(}})"),
         value.exchange,
         value.symbol,
-        fmt::join(value.trades, ", "),
+        fmt::join(
+            value.trades,
+            R"(, )"),
         value.exchange_time_utc);
   }
 };
@@ -692,18 +732,19 @@ struct fmt::formatter<roq::SessionStatistics> {
   auto format(const roq::SessionStatistics& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "pre_open_interest={}, "
-        "pre_settlement_price={}, "
-        "pre_close_price={}, "
-        "highest_traded_price={}, "
-        "lowest_traded_price={}, "
-        "upper_limit_price={}, "
-        "lower_limit_price={}, "
-        "exchange_time_utc={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(pre_open_interest={}, )"
+            R"(pre_settlement_price={}, )"
+            R"(pre_close_price={}, )"
+            R"(highest_traded_price={}, )"
+            R"(lowest_traded_price={}, )"
+            R"(upper_limit_price={}, )"
+            R"(lower_limit_price={}, )"
+            R"(exchange_time_utc={})"
+            R"(}})"),
         value.exchange,
         value.symbol,
         value.pre_open_interest,
@@ -727,15 +768,16 @@ struct fmt::formatter<roq::DailyStatistics> {
   auto format(const roq::DailyStatistics& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "open_price={}, "
-        "settlement_price={}, "
-        "close_price={}, "
-        "open_interest={}, "
-        "exchange_time_utc={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(open_price={}, )"
+            R"(settlement_price={}, )"
+            R"(close_price={}, )"
+            R"(open_interest={}, )"
+            R"(exchange_time_utc={})"
+            R"(}})"),
         value.exchange,
         value.symbol,
         value.open_price,
@@ -756,22 +798,23 @@ struct fmt::formatter<roq::CreateOrder> {
   auto format(const roq::CreateOrder& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}, "
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "side={}, "
-        "quantity={}, "
-        "order_type={}, "
-        "price={}, "
-        "time_in_force={}, "
-        "position_effect={}, "
-        "execution_instruction={}, "
-        "stop_price={}, "
-        "max_show_quantity={}, "
-        "order_template=\"{}\""
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}", )"
+            R"(order_id={}, )"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(side={}, )"
+            R"(quantity={}, )"
+            R"(order_type={}, )"
+            R"(price={}, )"
+            R"(time_in_force={}, )"
+            R"(position_effect={}, )"
+            R"(execution_instruction={}, )"
+            R"(stop_price={}, )"
+            R"(max_show_quantity={}, )"
+            R"(order_template="{}")"
+            R"(}})"),
         value.account,
         value.order_id,
         value.exchange,
@@ -799,12 +842,13 @@ struct fmt::formatter<roq::ModifyOrder> {
   auto format(const roq::ModifyOrder& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}, "
-        "quantity={}, "
-        "price={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}", )"
+            R"(order_id={}, )"
+            R"(quantity={}, )"
+            R"(price={})"
+            R"(}})"),
         value.account,
         value.order_id,
         value.quantity,
@@ -822,10 +866,11 @@ struct fmt::formatter<roq::CancelOrder> {
   auto format(const roq::CancelOrder& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}", )"
+            R"(order_id={})"
+            R"(}})"),
         value.account,
         value.order_id);
   }
@@ -841,18 +886,19 @@ struct fmt::formatter<roq::OrderAck> {
   auto format(const roq::OrderAck& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}, "
-        "type={}, "
-        "origin={}, "
-        "status={}, "
-        "error={}, "
-        "text=\"{}\", "
-        "gateway_order_id={}, "
-        "external_order_id=\"{}\", "
-        "request_id=\"{}\""
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}", )"
+            R"(order_id={}, )"
+            R"(type={}, )"
+            R"(origin={}, )"
+            R"(status={}, )"
+            R"(error={}, )"
+            R"(text="{}", )"
+            R"(gateway_order_id={}, )"
+            R"(external_order_id="{}", )"
+            R"(request_id="{}")"
+            R"(}})"),
         value.account,
         value.order_id,
         value.type,
@@ -876,23 +922,24 @@ struct fmt::formatter<roq::OrderUpdate> {
   auto format(const roq::OrderUpdate& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}, "
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "status={}, "
-        "side={}, "
-        "price={}, "
-        "remaining_quantity={}, "
-        "traded_quantity={}, "
-        "position_effect={}, "
-        "order_template=\"{}\", "
-        "create_time_utc={}, "
-        "update_time_utc={}, "
-        "gateway_order_id={}, "
-        "external_order_id=\"{}\""
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}", )"
+            R"(order_id={}, )"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(status={}, )"
+            R"(side={}, )"
+            R"(price={}, )"
+            R"(remaining_quantity={}, )"
+            R"(traded_quantity={}, )"
+            R"(position_effect={}, )"
+            R"(order_template="{}", )"
+            R"(create_time_utc={}, )"
+            R"(update_time_utc={}, )"
+            R"(gateway_order_id={}, )"
+            R"(external_order_id="{}")"
+            R"(}})"),
         value.account,
         value.order_id,
         value.exchange,
@@ -921,13 +968,14 @@ struct fmt::formatter<roq::Fill> {
   auto format(const roq::Fill& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "trade_id={}, "
-        "quantity={}, "
-        "price={}, "
-        "gateway_trade_id={}, "
-        "external_trade_id=\"{}\""
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(trade_id={}, )"
+            R"(quantity={}, )"
+            R"(price={}, )"
+            R"(gateway_trade_id={}, )"
+            R"(external_trade_id="{}")"
+            R"(}})"),
         value.trade_id,
         value.quantity,
         value.price,
@@ -946,20 +994,21 @@ struct fmt::formatter<roq::TradeUpdate> {
   auto format(const roq::TradeUpdate& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "order_id={}, "
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "side={}, "
-        "position_effect={}, "
-        "order_template=\"{}\", "
-        "create_time_utc={}, "
-        "update_time_utc={}, "
-        "gateway_order_id={}, "
-        "external_order_id=\"{}\", "
-        "fills=[{}]"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}", )"
+            R"(order_id={}, )"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(side={}, )"
+            R"(position_effect={}, )"
+            R"(order_template="{}", )"
+            R"(create_time_utc={}, )"
+            R"(update_time_utc={}, )"
+            R"(gateway_order_id={}, )"
+            R"(external_order_id="{}", )"
+            R"(fills=[{}])"
+            R"(}})"),
         value.account,
         value.order_id,
         value.exchange,
@@ -971,7 +1020,9 @@ struct fmt::formatter<roq::TradeUpdate> {
         value.update_time_utc,
         value.gateway_order_id,
         value.external_order_id,
-        fmt::join(value.fills, ", "));
+        fmt::join(
+            value.fills,
+            R"(, )"));
   }
 };
 
@@ -985,17 +1036,18 @@ struct fmt::formatter<roq::PositionUpdate> {
   auto format(const roq::PositionUpdate& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "exchange=\"{}\", "
-        "symbol=\"{}\", "
-        "side={}, "
-        "position={}, "
-        "last_trade_id={}, "
-        "position_cost={}, "
-        "position_yesterday={}, "
-        "position_cost_yesterday={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}", )"
+            R"(exchange="{}", )"
+            R"(symbol="{}", )"
+            R"(side={}, )"
+            R"(position={}, )"
+            R"(last_trade_id={}, )"
+            R"(position_cost={}, )"
+            R"(position_yesterday={}, )"
+            R"(position_cost_yesterday={})"
+            R"(}})"),
         value.account,
         value.exchange,
         value.symbol,
@@ -1018,12 +1070,13 @@ struct fmt::formatter<roq::FundsUpdate> {
   auto format(const roq::FundsUpdate& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "account=\"{}\", "
-        "currency=\"{}\", "
-        "balance={}, "
-        "hold={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(account="{}", )"
+            R"(currency="{}", )"
+            R"(balance={}, )"
+            R"(hold={})"
+            R"(}})"),
         value.account,
         value.currency,
         value.balance,
@@ -1041,9 +1094,10 @@ struct fmt::formatter<roq::CustomMessage> {
   auto format(const roq::CustomMessage& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "length={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(length={})"
+            R"(}})"),
         value.length);
   }
 };
@@ -1060,8 +1114,9 @@ struct fmt::formatter<roq::StartEvent> {
   auto format(const roq::StartEvent&, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "}}");
+        FMT_STRING(
+            R"({{)"
+            R"(}})"));
   }
 };
 
@@ -1075,8 +1130,9 @@ struct fmt::formatter<roq::StopEvent> {
   auto format(const roq::StopEvent&, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "}}");
+        FMT_STRING(
+            R"({{)"
+            R"(}})"));
   }
 };
 
@@ -1090,9 +1146,10 @@ struct fmt::formatter<roq::TimerEvent> {
   auto format(const roq::TimerEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "now={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(now={})"
+            R"(}})"),
         value.now);
   }
 };
@@ -1107,10 +1164,11 @@ struct fmt::formatter<roq::ConnectionStatusEvent> {
   auto format(const roq::ConnectionStatusEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "connection_status={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(connection_status={})"
+            R"(}})"),
         value.message_info,
         value.connection_status);
   }
@@ -1126,9 +1184,10 @@ struct fmt::formatter<roq::BatchBeginEvent> {
   auto format(const roq::BatchBeginEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={})"
+            R"(}})"),
         value.message_info);
   }
 };
@@ -1143,9 +1202,10 @@ struct fmt::formatter<roq::BatchEndEvent> {
   auto format(const roq::BatchEndEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={})"
+            R"(}})"),
         value.message_info);
   }
 };
@@ -1160,10 +1220,11 @@ struct fmt::formatter<roq::SubscribeEvent> {
   auto format(const roq::SubscribeEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "subscribe={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(subscribe={})"
+            R"(}})"),
         value.message_info,
         value.subscribe);
   }
@@ -1179,10 +1240,11 @@ struct fmt::formatter<roq::DownloadBeginEvent> {
   auto format(const roq::DownloadBeginEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "download_begin={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(download_begin={})"
+            R"(}})"),
         value.message_info,
         value.download_begin);
   }
@@ -1198,10 +1260,11 @@ struct fmt::formatter<roq::DownloadEndEvent> {
   auto format(const roq::DownloadEndEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "download_end={}"
-        "}}",
+        FMT_STRING(
+          R"({{)"
+          R"(message_info={}, )"
+          R"(download_end={})"
+          R"(}})"),
         value.message_info,
         value.download_end);
   }
@@ -1217,10 +1280,11 @@ struct fmt::formatter<roq::MarketDataStatusEvent> {
   auto format(const roq::MarketDataStatusEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "market_data_status={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(market_data_status={})"
+            R"(}})"),
         value.message_info,
         value.market_data_status);
   }
@@ -1236,10 +1300,11 @@ struct fmt::formatter<roq::OrderManagerStatusEvent> {
   auto format(const roq::OrderManagerStatusEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "order_manager_status={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(order_manager_status={})"
+            R"(}})"),
         value.message_info,
         value.order_manager_status);
   }
@@ -1255,10 +1320,11 @@ struct fmt::formatter<roq::ReferenceDataEvent> {
   auto format(const roq::ReferenceDataEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "reference_data={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(reference_data={})"
+            R"(}})"),
         value.message_info,
         value.reference_data);
   }
@@ -1274,10 +1340,11 @@ struct fmt::formatter<roq::MarketStatusEvent> {
   auto format(const roq::MarketStatusEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "market_status={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(market_status={})"
+            R"(}})"),
         value.message_info,
         value.market_status);
   }
@@ -1293,10 +1360,11 @@ struct fmt::formatter<roq::TopOfBookEvent> {
   auto format(const roq::TopOfBookEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "top_of_book={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(top_of_book={})"
+            R"(}})"),
         value.message_info,
         value.top_of_book);
   }
@@ -1312,10 +1380,11 @@ struct fmt::formatter<roq::MarketByPriceEvent> {
   auto format(const roq::MarketByPriceEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "market_by_price={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(market_by_price={})"
+            R"(}})"),
         value.message_info,
         value.market_by_price);
   }
@@ -1331,10 +1400,11 @@ struct fmt::formatter<roq::MarketByOrderEvent> {
   auto format(const roq::MarketByOrderEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "market_by_order={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(market_by_order={})"
+            R"(}})"),
         value.message_info,
         value.market_by_order);
   }
@@ -1350,10 +1420,11 @@ struct fmt::formatter<roq::TradeSummaryEvent> {
   auto format(const roq::TradeSummaryEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "trade_summary={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(trade_summary={})"
+            R"(}})"),
         value.message_info,
         value.trade_summary);
   }
@@ -1369,10 +1440,11 @@ struct fmt::formatter<roq::SessionStatisticsEvent> {
   auto format(const roq::SessionStatisticsEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "session_statistics={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(session_statistics={})"
+            R"(}})"),
         value.message_info,
         value.session_statistics);
   }
@@ -1388,10 +1460,11 @@ struct fmt::formatter<roq::DailyStatisticsEvent> {
   auto format(const roq::DailyStatisticsEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "daily_statistics={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(daily_statistics={})"
+            R"(}})"),
         value.message_info,
         value.daily_statistics);
   }
@@ -1407,10 +1480,11 @@ struct fmt::formatter<roq::CreateOrderEvent> {
   auto format(const roq::CreateOrderEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "create_order={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(create_order={})"
+            R"(}})"),
         value.message_info,
         value.create_order);
   }
@@ -1426,10 +1500,11 @@ struct fmt::formatter<roq::ModifyOrderEvent> {
   auto format(const roq::ModifyOrderEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "modify_order={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(modify_order={})"
+            R"(}})"),
         value.message_info,
         value.modify_order);
   }
@@ -1445,10 +1520,11 @@ struct fmt::formatter<roq::CancelOrderEvent> {
   auto format(const roq::CancelOrderEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "cancel_order={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(cancel_order={})"
+            R"(}})"),
         value.message_info,
         value.cancel_order);
   }
@@ -1464,10 +1540,11 @@ struct fmt::formatter<roq::OrderAckEvent> {
   auto format(const roq::OrderAckEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "order_ack={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(order_ack={})"
+            R"(}})"),
         value.message_info,
         value.order_ack);
   }
@@ -1483,10 +1560,11 @@ struct fmt::formatter<roq::OrderUpdateEvent> {
   auto format(const roq::OrderUpdateEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "order_update={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(order_update={})"
+            R"(}})"),
         value.message_info,
         value.order_update);
   }
@@ -1502,10 +1580,11 @@ struct fmt::formatter<roq::TradeUpdateEvent> {
   auto format(const roq::TradeUpdateEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "trade_update={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(trade_update={})"
+            R"(}})"),
         value.message_info,
         value.trade_update);
   }
@@ -1521,10 +1600,11 @@ struct fmt::formatter<roq::PositionUpdateEvent> {
   auto format(const roq::PositionUpdateEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "position_update={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(position_update={})"
+            R"(}})"),
         value.message_info,
         value.position_update);
   }
@@ -1540,10 +1620,11 @@ struct fmt::formatter<roq::FundsUpdateEvent> {
   auto format(const roq::FundsUpdateEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "funds_update={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(funds_update={})"
+            R"(}})"),
         value.message_info,
         value.funds_update);
   }
@@ -1559,10 +1640,11 @@ struct fmt::formatter<roq::CustomMessageEvent> {
   auto format(const roq::CustomMessageEvent& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "message_info={}, "
-        "custom_message={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(message_info={}, )"
+            R"(custom_message={})"
+            R"(}})"),
         value.message_info,
         value.custom_message);
   }
@@ -1578,12 +1660,13 @@ struct fmt::formatter<roq::Layer> {
   auto format(const roq::Layer& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "bid_price={}, "
-        "bid_quantity={}, "
-        "ask_price={}, "
-        "ask_quantity={}"
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(bid_price={}, )"
+            R"(bid_quantity={}, )"
+            R"(ask_price={}, )"
+            R"(ask_quantity={})"
+            R"(}})"),
         value.bid_price,
         value.bid_quantity,
         value.ask_price,
@@ -1601,20 +1684,21 @@ struct fmt::formatter<roq::Account> {
   auto format(const roq::Account& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "id={}, "
-        "name=\"{}\", "
-        "user=\"{}\", "
-        "login=\"{}\", "
-        "password=***, "
-        "secret=***, "
-        "symbols=..."
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(id={}, )"
+            R"(name="{}", )"
+            R"(user="{}", )"
+            R"(login="{}", )"
+            R"(password=***, )"
+            R"(secret=***, )"
+            R"(symbols=...)"
+            R"(}})"),
         value.id,
         value.name,
         value.user,
         value.login);
-        // fmt::join(value.symbols, ", "));
+        // fmt::join(value.symbols, R"(, )"));
   }
 };
 
@@ -1628,17 +1712,20 @@ struct fmt::formatter<roq::User> {
   auto format(const roq::User& value, T& ctx) {
     return format_to(
         ctx.out(),
-        "{{"
-        "id={}, "
-        "name=\"{}\", "
-        "password=***, "
-        "accounts=[{}], "
-        "symbols=..., "
-        "limits=..."
-        "}}",
+        FMT_STRING(
+            R"({{)"
+            R"(id={}, )"
+            R"(name="{}", )"
+            R"(password=***, )"
+            R"(accounts=[{}], )"
+            R"(symbols=..., )"
+            R"(limits=...)"
+            R"(}})"),
         value.id,
         value.name,
-        fmt::join(value.accounts, ", "));
-        // fmt::join(value.symbols, ", "));
+        fmt::join(
+            value.accounts,
+            R"(, )"));
+        // fmt::join(value.symbols, R"(, )"));
   }
 };

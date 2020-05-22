@@ -743,6 +743,8 @@ struct fmt::formatter<roq::SessionStatistics> {
             R"(lowest_traded_price={}, )"
             R"(upper_limit_price={}, )"
             R"(lower_limit_price={}, )"
+            R"(index_value={}, )"
+            R"(margin_rate={}, )"
             R"(exchange_time_utc={})"
             R"(}})"),
         value.exchange,
@@ -754,6 +756,8 @@ struct fmt::formatter<roq::SessionStatistics> {
         value.lowest_traded_price,
         value.upper_limit_price,
         value.lower_limit_price,
+        value.index_value,
+        value.margin_rate,
         value.exchange_time_utc);
   }
 };

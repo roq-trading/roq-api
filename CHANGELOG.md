@@ -4,6 +4,11 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `SessionsStatistics::index_value` and
+  `SessionsStatistics::margin_rate`
+
 ### Changed
 
 * Inherit all network-related exceptions from `NetworkError`

@@ -597,6 +597,8 @@ struct ROQ_PUBLIC SessionStatistics final {
   double lowest_traded_price;
   double upper_limit_price;
   double lower_limit_price;
+  double index_value;
+  double margin_rate;
   std::chrono::nanoseconds exchange_time_utc;
 };
 

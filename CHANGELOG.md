@@ -4,8 +4,11 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.3.7 &ndash; 2020-05-27
+
 ### Added
 
+* Dependency on FlatBuffers
 * `SessionsStatistics::index_value` and
   `SessionsStatistics::margin_rate`
 

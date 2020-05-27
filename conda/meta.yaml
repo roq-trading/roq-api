@@ -29,6 +29,7 @@ requirements:
     - roq-oss-fmt
     - roq-oss-libunwind  # [linux]
     - roq-oss-spdlog
+    - roq-oss-flatbuffers
   run:
     - gflags >=2.2
 

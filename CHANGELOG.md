@@ -4,6 +4,11 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Now auto-generating enums, structs, classes, formatting, etc.
+* Major parts of the client API has now been moved here
+
 ## 0.3.7 &ndash; 2020-05-27
 
 ### Added

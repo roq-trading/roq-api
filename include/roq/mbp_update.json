@@ -1,0 +1,8 @@
+{
+"name": "MBPUpdate",
+"type": "struct",
+"values": [
+	{ "name": "price", "type": "double" },
+	{ "name": "quantity", "type": "double", "default": " = 0.0" }
+]
+}

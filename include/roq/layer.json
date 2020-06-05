@@ -1,0 +1,10 @@
+{
+"name": "Layer",
+"type": "struct",
+"values": [
+	{ "name": "bid_price", "type": "double" },
+	{ "name": "bid_quantity", "type": "double", "default": " = 0.0" },
+	{ "name": "ask_price", "type": "double" },
+	{ "name": "ask_quantity", "type": "double", "default": " = 0.0" }
+]
+}

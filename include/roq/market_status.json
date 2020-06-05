@@ -1,0 +1,9 @@
+{
+"name": "MarketStatus",
+"type": "message",
+"values": [
+	{ "name": "exchange", "type": "std::string_view" },
+	{ "name": "symbol", "type": "std::string_view" },
+	{ "name": "trading_status", "type": "TradingStatus" }
+]
+}

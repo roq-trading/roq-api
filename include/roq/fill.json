@@ -1,0 +1,11 @@
+{
+"name": "Fill",
+"type": "struct",
+"values": [
+	{ "name": "quantity", "type": "double" },
+	{ "name": "price", "type": "double" },
+	{ "name": "trade_id", "type": "uint32_t" },
+	{ "name": "gateway_trade_id", "type": "uint32_t" },
+	{ "name": "external_trade_id", "type": "roq::string<40>" }
+]
+}

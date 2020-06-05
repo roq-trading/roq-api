@@ -1,0 +1,7 @@
+{
+"name": "DownloadBegin",
+"type": "message",
+"values": [
+	{ "name": "account", "type": "std::string_view" }
+]
+}

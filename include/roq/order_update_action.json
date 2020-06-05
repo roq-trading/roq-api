@@ -1,0 +1,9 @@
+{
+"name": "OrderUpdateAction",
+"type": "enum",
+"values": [
+	{ "name": "New" },
+	{ "name": "Modify" },
+	{ "name": "Remove" }
+]
+}

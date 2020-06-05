@@ -1,0 +1,11 @@
+{
+"name": "MBOUpdate",
+"type": "struct",
+"values": [
+	{ "name": "price", "type": "double" },
+	{ "name": "remaining_quantity", "type": "double", "default": " = 0.0" },
+	{ "name": "action", "type": "OrderUpdateAction" },
+	{ "name": "priority", "type": "uint32_t" },
+	{ "name": "order_id", "type": "roq::string<40>"}
+]
+}

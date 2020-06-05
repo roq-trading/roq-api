@@ -1,0 +1,8 @@
+{
+"name": "TradingStatus",
+"type": "enum",
+"values": [
+	{ "name": "Closed" },
+	{ "name": "Open" }
+]
+}

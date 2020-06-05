@@ -1,0 +1,10 @@
+{
+"name": "TradeSummary",
+"type": "message",
+"values": [
+	{ "name": "exchange", "type": "std::string_view" },
+	{ "name": "symbol", "type": "std::string_view" },
+	{ "name": "trades", "type": "roq::span<Trade>" },
+	{ "name": "exchange_time_utc", "type": "std::chrono::nanoseconds" }
+]
+}

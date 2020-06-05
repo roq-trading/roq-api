@@ -1,0 +1,26 @@
+template <>
+struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
+  template <typename Context>
+  constexpr auto parse(Context& context) {
+    return context.begin();
+  }
+  template <typename Context>
+  auto format(
+      const {{ namespaces | join('::') }}::{{ name }}& value,
+      Context& context) {
+    return format_to(
+        context.out(),
+{%- raw %}
+        R"({{)"
+{% endraw %}
+{% for variable in variables %}
+        R"({{ variable.name }}={{ variable.format_string }}{{ ', ' if not loop.last }})"
+{% endfor %}
+{%- raw %}
+        R"(}})",
+{% endraw %}
+{% for variable in variables %}
+        {{ variable.format_value }}{{ ',' if not loop.last else ');' }}
+{% endfor %}
+  }
+};

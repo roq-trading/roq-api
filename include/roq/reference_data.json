@@ -1,0 +1,20 @@
+{
+"name": "ReferenceData",
+"type": "message",
+"values": [
+	{ "name": "exchange", "type": "std::string_view" },
+	{ "name": "symbol", "type": "std::string_view" },
+	{ "name": "security_type", "type": "SecurityType" },
+	{ "name": "currency", "type": "std::string_view" },
+	{ "name": "settlement_currency", "type": "std::string_view" },
+	{ "name": "commission_currency", "type": "std::string_view" },
+	{ "name": "tick_size", "type": "double" },
+	{ "name": "limit_up", "type": "double" },
+	{ "name": "limit_down", "type": "double" },
+	{ "name": "multiplier", "type": "double" },
+	{ "name": "min_trade_vol", "type": "double" },
+	{ "name": "option_type", "type": "OptionType" },
+	{ "name": "strike_currency", "type": "std::string_view" },
+	{ "name": "strike_price", "type": "double" }
+]
+}

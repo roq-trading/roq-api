@@ -1,0 +1,3 @@
+{% for filename in includes %}
+#include "{{ filename | join('/') }}.h"
+{% endfor %}

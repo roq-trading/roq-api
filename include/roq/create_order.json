@@ -1,0 +1,20 @@
+{
+"name": "CreateOrder",
+"type": "message",
+"values": [
+	{ "name": "account", "type": "std::string_view" },
+	{ "name": "order_id", "type": "uint32_t" },
+	{ "name": "exchange", "type": "std::string_view" },
+	{ "name": "symbol", "type": "std::string_view" },
+	{ "name": "side", "type": "Side" },
+	{ "name": "quantity", "type": "double" },
+	{ "name": "order_type", "type": "OrderType" },
+	{ "name": "price", "type": "double" },
+	{ "name": "time_in_force", "type": "TimeInForce" },
+	{ "name": "position_effect", "type": "PositionEffect" },
+	{ "name": "execution_instruction", "type": "ExecutionInstruction" },
+	{ "name": "stop_price", "type": "double" },
+	{ "name": "max_show_quantity", "type": "double" },
+	{ "name": "order_template", "type": "std::string_view" }
+]
+}

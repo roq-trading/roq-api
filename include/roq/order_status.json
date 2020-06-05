@@ -1,0 +1,13 @@
+{
+"name": "OrderStatus",
+"type": "enum",
+"values": [
+	{ "name": "Sent" },
+	{ "name": "Rejected" },
+	{ "name": "Accepted" },
+	{ "name": "Pending" },
+	{ "name": "Working" },
+	{ "name": "Completed" },
+	{ "name": "Canceled" }
+]
+}

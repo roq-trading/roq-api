@@ -1,0 +1,30 @@
+namespace roq;
+
+enum Side:uint8 {
+  Undefined,
+  Buy,
+  Sell
+}
+
+struct MBPUpdate {
+  price:double;
+  quantity:double;
+}
+
+table MarketByPrice {
+  exchange:string;
+  symbol:string;
+  bids:[MBPUpdate];
+  asks:[MBPUpdate];
+  snapshot:bool;
+  exchange_time_utc:uint64;
+}
+
+table CreateOrder {
+  account:string;
+  order_id:uint32;
+  exchange:string;
+  symbol:string;
+  side:Side;
+  quantity:double;
+}

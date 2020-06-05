@@ -1,0 +1,9 @@
+{
+"name": "SecurityType",
+"type": "enum",
+"values": [
+	{ "name": "Spot" },
+	{ "name": "Futures" },
+	{ "name": "Option" }
+]
+}

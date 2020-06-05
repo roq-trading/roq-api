@@ -1,0 +1,15 @@
+{
+"name": "PositionUpdate",
+"type": "message",
+"values": [
+	{ "name": "account", "type": "std::string_view" },
+	{ "name": "exchange", "type": "std::string_view" },
+	{ "name": "symbol", "type": "std::string_view" },
+	{ "name": "side", "type": "Side" },
+	{ "name": "position", "type": "double" },
+	{ "name": "last_trade_id", "type": "uint32_t" },
+	{ "name": "position_cost", "type": "double" },
+	{ "name": "position_yesterday", "type": "double" },
+	{ "name": "position_cost_yesterday", "type": "double" }
+]
+}

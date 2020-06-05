@@ -1,0 +1,8 @@
+{
+"name": "OrderType",
+"type": "enum",
+"values": [
+	{ "name": "Market" },
+	{ "name": "Limit" }
+]
+}

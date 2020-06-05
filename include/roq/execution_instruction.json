@@ -1,0 +1,10 @@
+{
+"name": "ExecutionInstruction",
+"type": "enum",
+"values": [
+	{ "name": "ParticipateDoNotInitiate" },
+	{ "name": "CancelIfNotBest" },
+	{ "name": "DoNotIncrease" },
+	{ "name": "DoNotReduce" }
+]
+}

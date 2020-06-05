@@ -1,0 +1,10 @@
+{
+"name": "TimeInForce",
+"type": "enum",
+"values": [
+	{ "name": "FOK" },
+	{ "name": "IOC" },
+	{ "name": "GFD" },
+	{ "name": "GTC" }
+]
+}

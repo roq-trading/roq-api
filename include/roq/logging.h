@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "roq/builtins.h"
-#include "roq/format.h"
+#include "roq/compat.h"
 #include "roq/static.h"
 
 namespace roq {

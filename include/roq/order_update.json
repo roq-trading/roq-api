@@ -1,0 +1,21 @@
+{
+"name": "OrderUpdate",
+"type": "message",
+"values": [
+	{ "name": "account", "type": "std::string_view" },
+	{ "name": "order_id", "type": "uint32_t" },
+	{ "name": "exchange", "type": "std::string_view" },
+	{ "name": "symbol", "type": "std::string_view" },
+	{ "name": "status", "type": "OrderStatus" },
+	{ "name": "side", "type": "Side" },
+	{ "name": "price", "type": "double" },
+	{ "name": "remaining_quantity", "type": "double" },
+	{ "name": "traded_quantity", "type": "double" },
+	{ "name": "position_effect", "type": "PositionEffect" },
+	{ "name": "order_template", "type": "std::string_view" },
+	{ "name": "create_time_utc", "type": "std::chrono::nanoseconds" },
+	{ "name": "update_time_utc", "type": "std::chrono::nanoseconds" },
+	{ "name": "gateway_order_id", "type": "uint32_t" },
+	{ "name": "external_order_id", "type": "std::string_view" }
+]
+}

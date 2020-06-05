@@ -1,0 +1,8 @@
+{
+"name": "OrderManagerStatus",
+"type": "message",
+"values": [
+	{ "name": "account", "type": "std::string_view" },
+	{ "name": "status", "type": "GatewayStatus" }
+]
+}

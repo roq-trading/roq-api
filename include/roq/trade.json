@@ -1,0 +1,10 @@
+{
+"name": "Trade",
+"type": "struct",
+"values": [
+	{ "name": "side", "type": "Side" },
+	{ "name": "price", "type": "double" },
+	{ "name": "quantity", "type": "double" },
+	{ "name": "trade_id", "type": "roq::string<40>"}
+]
+}

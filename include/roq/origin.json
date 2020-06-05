@@ -1,0 +1,10 @@
+{
+"name": "Origin",
+"type": "enum",
+"values": [
+	{ "name": "Client" },
+	{ "name": "Gateway" },
+	{ "name": "Broker" },
+	{ "name": "Exchange" }
+]
+}

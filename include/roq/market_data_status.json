@@ -1,0 +1,7 @@
+{
+"name": "MarketDataStatus",
+"type": "message",
+"values": [
+	{ "name": "status", "type": "GatewayStatus" }
+]
+}

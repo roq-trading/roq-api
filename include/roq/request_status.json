@@ -1,0 +1,10 @@
+{
+"name": "RequestStatus",
+"type": "enum",
+"values": [
+	{ "name": "Forwarded" },
+	{ "name": "Accepted" },
+	{ "name": "Rejected" },
+	{ "name": "Timeout" }
+]
+}

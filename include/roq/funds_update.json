@@ -1,0 +1,10 @@
+{
+"name": "FundsUpdate",
+"type": "message",
+"values": [
+	{ "name": "account", "type": "std::string_view" },
+	{ "name": "currency", "type": "std::string_view" },
+	{ "name": "balance", "type": "double" },
+	{ "name": "hold", "type": "double" }
+]
+}

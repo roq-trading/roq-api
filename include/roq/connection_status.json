@@ -1,0 +1,8 @@
+{
+"name": "ConnectionStatus",
+"type": "enum",
+"values": [
+	{ "name": "Disconnected" },
+	{ "name": "Connected" }
+]
+}

@@ -1,0 +1,11 @@
+{
+"name": "TopOfBook",
+"type": "message",
+"values": [
+	{ "name": "exchange", "type": "std::string_view" },
+	{ "name": "symbol", "type": "std::string_view" },
+	{ "name": "layer", "type": "Layer", "default": "" },
+	{ "name": "snapshot", "type": "bool" },
+	{ "name": "exchange_time_utc", "type": "std::chrono::nanoseconds" }
+]
+}

@@ -1,0 +1,8 @@
+{
+"name": "PositionEffect",
+"type": "enum",
+"values": [
+	{ "name": "Open" },
+	{ "name": "Close" }
+]
+}

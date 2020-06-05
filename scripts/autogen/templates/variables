@@ -1,0 +1,3 @@
+{% for variable in variables %}
+  {{ variable.type }} {{ variable.name }}{{ variable.default }};
+{% endfor %}

@@ -1,0 +1,10 @@
+{
+"name": "ModifyOrder",
+"type": "message",
+"values": [
+	{ "name": "account", "type": "std::string_view" },
+	{ "name": "order_id", "type": "uint32_t" },
+	{ "name": "quantity", "type": "double" },
+	{ "name": "price", "type": "double" }
+]
+}

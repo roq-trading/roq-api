@@ -1,0 +1,17 @@
+{
+"name": "MessageInfo",
+"type": "struct",
+"values": [
+	{ "name": "source", "type": "uint8_t" },
+	{ "name": "source_name", "type": "std::string_view" },
+	{ "name": "source_session_id", "type": "std::string_view" },
+	{ "name": "source_seqno", "type": "uint64_t" },
+	{ "name": "receive_time_utc", "type": "std::chrono::nanoseconds" },
+	{ "name": "receive_time", "type": "std::chrono::nanoseconds" },
+	{ "name": "source_send_time", "type": "std::chrono::nanoseconds" },
+	{ "name": "source_receive_time", "type": "std::chrono::nanoseconds" },
+	{ "name": "origin_create_time", "type": "std::chrono::nanoseconds" },
+	{ "name": "is_last", "type": "bool" },
+	{ "name": "opaque", "type": "uint64_t" }
+]
+}

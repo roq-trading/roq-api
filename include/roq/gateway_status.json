@@ -1,0 +1,12 @@
+{
+"name": "GatewayStatus",
+"type": "enum",
+"values": [
+	{ "name": "Disconnected" },
+	{ "name": "Connecting" },
+	{ "name": "LoginSent" },
+	{ "name": "Downloading" },
+	{ "name": "Ready" },
+	{ "name": "LoggedOut" }
+]
+}

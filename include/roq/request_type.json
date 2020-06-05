@@ -1,0 +1,9 @@
+{
+"name": "RequestType",
+"type": "enum",
+"values": [
+	{ "name": "CreateOrder" },
+	{ "name": "ModifyOrder" },
+	{ "name": "CancelOrder" }
+]
+}

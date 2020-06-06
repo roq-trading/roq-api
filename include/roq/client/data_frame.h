@@ -14,15 +14,6 @@ class DataFrame {
  public:
   class Handler {
    public:
-/*
-    // XXX use roq::span
-    virtual void add_series(
-        const char **values,
-        size_t length,
-        const std::string_view& name,
-        bool index,
-        bool category) = 0;
-*/
     virtual void add_series(
         const roq::span<std::string_view>& values,
         const std::string_view& name,

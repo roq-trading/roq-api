@@ -58,7 +58,7 @@ TEST(string, push_back) {
   EXPECT_THROW(s.push_back('4'), std::length_error);
   EXPECT_EQ(s.length(), std::size_t{3});
   s.clear();
-  EXPECT_EQ(s.length(), 0);
+  EXPECT_EQ(s.length(), std::size_t{});
   auto sv = static_cast<std::string_view>(s);
   EXPECT_TRUE(sv.empty());
 }

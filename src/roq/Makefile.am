@@ -17,6 +17,4 @@ libroq_api_la_SOURCES = \
 	affinity.cpp \
 	application.cpp \
 	builtins.cpp \
-	logging.cpp \
-	metrics.cpp \
-	unwind.cpp
+	metrics.cpp

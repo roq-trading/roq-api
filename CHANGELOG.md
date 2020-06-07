@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Removed
+
+* Logging has been moved into a separate library `roq-logging`
+
 ## 0.3.8 &ndash; 2020-06-06
 
 ### Changed

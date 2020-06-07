@@ -8,6 +8,8 @@
 
 #include "roq/logging.h"
 
+#include "roq/builtins.h"
+
 namespace roq {
 
 namespace {

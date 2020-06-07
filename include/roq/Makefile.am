@@ -58,7 +58,6 @@ pkginclude_HEADERS = \
 	event.h \
 	format.h \
 	generator.h \
-	logging.h \
 	matcher.h \
 	metrics.h \
 	patterns.h \

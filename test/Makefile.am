@@ -16,16 +16,17 @@ roq_api_test_LDADD = \
 	$(LIBUNWIND_LIBS) \
 	$(GFLAGS_LIBS) \
 	$(FMT_LIBS) \
+	$(ROQ_LOGGING_LIBS) \
 	libgtest.la
 roq_api_test_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/src \
 	$(PTHREAD_CFLAGS) \
+	$(ROQ_LOGGING_CFLAGS) \
 	$(GTEST_CFLAGS)
 nodist_roq_api_test_SOURCES = \
 	alignment.cpp \
 	format.cpp \
-	logging.cpp \
 	metrics.cpp \
 	span.cpp \
 	string.cpp \

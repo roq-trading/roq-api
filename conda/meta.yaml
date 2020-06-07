@@ -26,9 +26,8 @@ requirements:
     - make
   host:
     - gflags >=2.2
+    - roq-logging =={{ version }}
     - roq-oss-fmt
-    - roq-oss-libunwind  # [linux]
-    - roq-oss-spdlog
     - roq-oss-flatbuffers
   run:
     - gflags >=2.2

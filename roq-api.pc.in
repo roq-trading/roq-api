@@ -7,5 +7,4 @@ datadir=@datarootdir@
 Name: @PACKAGE@
 Description: Roq API
 Version: @VERSION@
-Libs: -L${libdir} -l@PACKAGE@ @LIBS@
 Cflags: @CPPFLAGS@ -I${includedir}

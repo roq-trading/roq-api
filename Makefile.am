@@ -1,4 +1,4 @@
-SUBDIRS = . include src test
+SUBDIRS = . include test
 
 if ENABLE_DOXYGEN
 SUBDIRS += doxygen

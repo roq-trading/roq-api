@@ -25,12 +25,8 @@ requirements:
     - pkg-config  # [unix]
     - make
   host:
-    - gflags >=2.2
-    - roq-logging =={{ version }}
     - roq-oss-fmt
     - roq-oss-flatbuffers
-  run:
-    - gflags >=2.2
 
 about:
   home: https://roq-trading.com

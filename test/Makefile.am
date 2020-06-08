@@ -11,7 +11,6 @@ TESTS = roq-api-test
 check_PROGRAMS = roq-api-test
 roq_api_test_LDADD = \
 	$(PTHREAD_CFLAGS) \
-	$(top_builddir)/src/roq/libroq-api.la \
 	$(ROQ_LOGGING_LIBS) \
 	$(FMT_LIBS) \
 	$(GFLAGS_LIBS) \

@@ -53,7 +53,6 @@ pkginclude_HEADERS = \
 	$(AUTOGEN_H) \
 	account.h \
 	api.h \
-	application.h \
 	atomic_ref.h \
 	compat.h \
 	exceptions.h \

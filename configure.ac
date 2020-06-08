@@ -16,8 +16,6 @@ AC_CONFIG_FILES([
  include/roq/Makefile
  include/roq/client/Makefile
  include/roq/metrics/Makefile
- src/Makefile
- src/roq/Makefile
  test/Makefile
 ])
 AC_CONFIG_FILES([include/roq/api.h])
@@ -26,7 +24,7 @@ AC_CONFIG_FILES([roq-api.pc])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 
 AM_PROG_AR
-LT_INIT([disable-static])
+LT_INIT([disable-dynamic])
 AC_PROG_CXX
 AC_LANG([C++])
 
@@ -35,10 +33,7 @@ AX_PTHREAD
 ROQ_CHECK_STDCXX
 
 ROQ_CHECK_FMT
-ROQ_CHECK_GFLAGS
 ROQ_CHECK_FLATBUFFERS
-
-PKG_CHECK_MODULES([ROQ_LOGGING], [roq-logging])
 
 ROQ_CHECK_GTEST([third_party/googletest])
 

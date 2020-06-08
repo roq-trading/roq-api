@@ -47,7 +47,7 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const FundsUpdateEvent&) {}
   virtual void operator()(const CustomMessageEvent&) {}
 
-  virtual void operator()(Metrics&) const {}
+  virtual void operator()(metrics::Writer&) const {}
 };
 
 }  // namespace client

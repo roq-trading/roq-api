@@ -1,4 +1,6 @@
-SUBDIRS = client
+SUBDIRS = \
+	metrics \
+	client
 AUTOGEN_H = \
         cancel_order.h \
         connection_status.h \
@@ -52,6 +54,7 @@ pkginclude_HEADERS = \
 	account.h \
 	api.h \
 	application.h \
+	atomic_ref.h \
 	builtins.h \
 	compat.h \
 	exceptions.h \

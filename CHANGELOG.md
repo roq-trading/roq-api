@@ -4,6 +4,12 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Metrics interfaces and utilities have been moved into the
+  `roq::metrics` namespace
+* Metric collectors now using std::atomic variables
+
 ### Removed
 
 * Logging has been moved into a separate library `roq-logging`
@@ -12,8 +18,8 @@ All notable changes will be documented in this file.
 
 ### Changed
 
-* Now auto-generating enums, structs, classes, formatting, etc.
-* Major parts of the client API has been moved here
+* Auto-generate enums, structs, classes, formatting, etc.
+* Major parts of the client API have been moved here
 
 ## 0.3.7 &ndash; 2020-05-27
 

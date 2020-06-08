@@ -12,5 +12,4 @@ libroq_api_la_CPPFLAGS = \
 libroq_api_la_SOURCES = \
 	affinity.cpp \
 	application.cpp \
-	builtins.cpp \
-	metrics.cpp
+	builtins.cpp

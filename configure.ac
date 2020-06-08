@@ -15,6 +15,7 @@ AC_CONFIG_FILES([
  include/Makefile
  include/roq/Makefile
  include/roq/client/Makefile
+ include/roq/metrics/Makefile
  src/Makefile
  src/roq/Makefile
  test/Makefile

@@ -4,6 +4,9 @@
 
 #include "roq/string.h"
 
+#include <atomic>
+#include <vector>
+
 using namespace roq;  // NOLINT
 
 TEST(string, empty) {

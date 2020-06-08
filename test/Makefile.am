@@ -29,6 +29,5 @@ nodist_roq_api_test_SOURCES = \
 	metrics.cpp \
 	span.cpp \
 	string.cpp \
-	traits.cpp \
 	utils.cpp \
 	main.cpp

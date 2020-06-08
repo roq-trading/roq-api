@@ -53,7 +53,6 @@ pkginclude_HEADERS = \
 	$(AUTOGEN_H) \
 	account.h \
 	api.h \
-	atomic_ref.h \
 	compat.h \
 	exceptions.h \
 	event.h \
@@ -61,11 +60,9 @@ pkginclude_HEADERS = \
 	generator.h \
 	matcher.h \
 	metrics.h \
-	patterns.h \
 	span.h \
 	string.h \
 	subscribe.h \
-	traits.h \
 	user.h \
 	utilities.h
 

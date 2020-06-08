@@ -9,7 +9,6 @@
 #include <string_view>
 
 #include "roq/compat.h"
-#include "roq/platform.h"
 
 #include "roq/metrics/writer.h"
 
@@ -17,7 +16,7 @@ namespace roq {
 namespace metrics {
 
 template <typename T>
-class alignas(cache_line_size()) Gauge {
+class alignas(ROQ_CACHELINE_SIZE) Gauge {
  public:
   Gauge() = default;
   explicit Gauge(const std::string_view& labels)
@@ -54,16 +53,14 @@ class alignas(cache_line_size()) Gauge {
   }
 
  private:
-  struct alignas(cache_line_size()) Data final {
+  struct alignas(ROQ_CACHELINE_SIZE) Data final {
     std::atomic<T> value = {0};
   } _data;
+  const std::string _labels;
   // assumptions
-  static_assert(sizeof(Data) == cache_line_size());
+  static_assert(sizeof(Data) == ROQ_CACHELINE_SIZE);
   static_assert(sizeof(std::atomic<T>) == sizeof(T));
   static_assert(std::alignment_of_v<std::atomic<T> > == std::alignment_of_v<T>);
-  // XXX remove
-  const std::string _name;
-  const std::string _labels;
 };
 
 }  // namespace metrics

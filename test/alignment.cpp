@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 
 #include "roq/api.h"
-#include "roq/platform.h"
 
 using namespace roq;  // NOLINT
 

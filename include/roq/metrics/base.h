@@ -5,6 +5,7 @@
 #include <fmt/format.h>
 
 #include <cstdint>
+#include <string>
 #include <string_view>
 
 #include "roq/compat.h"

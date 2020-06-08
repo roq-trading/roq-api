@@ -55,7 +55,6 @@ pkginclude_HEADERS = \
 	api.h \
 	application.h \
 	atomic_ref.h \
-	builtins.h \
 	compat.h \
 	exceptions.h \
 	event.h \
@@ -64,9 +63,7 @@ pkginclude_HEADERS = \
 	matcher.h \
 	metrics.h \
 	patterns.h \
-	platform.h \
 	span.h \
-	static.h \
 	string.h \
 	subscribe.h \
 	traits.h \

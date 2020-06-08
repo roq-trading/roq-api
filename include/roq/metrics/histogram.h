@@ -11,7 +11,6 @@
 #include <string_view>
 
 #include "roq/compat.h"
-#include "roq/platform.h"
 
 #include "roq/metrics/base.h"
 #include "roq/metrics/writer.h"
@@ -25,7 +24,7 @@ template <uint64_t N0,
           uint64_t N3,
           uint64_t N4,
           uint64_t N5>
-struct alignas(cache_line_size()) Histogram : public Base {
+struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
  public:
   constexpr uint64_t threshold() const {
     return N5;
@@ -142,7 +141,7 @@ struct alignas(cache_line_size()) Histogram : public Base {
   }
 
  private:
-  struct alignas(cache_line_size()) Data {
+  struct alignas(ROQ_CACHELINE_SIZE) Data {
     std::atomic<uint64_t> sum = {0};
     uint64_t bucket_0;
     uint64_t bucket_1;
@@ -154,7 +153,7 @@ struct alignas(cache_line_size()) Histogram : public Base {
   } _data = {};
   const std::string _labels;
   // assumptions
-  static_assert(sizeof(Data) == cache_line_size());
+  static_assert(sizeof(Data) == ROQ_CACHELINE_SIZE);
   static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t));
   static_assert(std::alignment_of_v<std::atomic<uint64_t> > == std::alignment_of_v<uint64_t>);
 };

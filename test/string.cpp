@@ -2,10 +2,10 @@
 
 #include <gtest/gtest.h>
 
-#include "roq/string.h"
-
 #include <atomic>
 #include <vector>
+
+#include "roq/string.h"
 
 using namespace roq;  // NOLINT
 

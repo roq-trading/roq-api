@@ -10,6 +10,4 @@ libroq_api_la_CPPFLAGS = \
 	$(GFLAGS_CFLAGS) \
 	$(FMT_CFLAGS)
 libroq_api_la_SOURCES = \
-	affinity.cpp \
-	application.cpp \
-	builtins.cpp
+	application.cpp

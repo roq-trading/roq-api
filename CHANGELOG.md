@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Fixed
+
+* `roq::event_value<ConnectionStatusEvent>` was broken in release 0.3.8
+
 ### Changed
 
 * Metrics interfaces and utilities have been moved into the

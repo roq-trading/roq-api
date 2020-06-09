@@ -30,7 +30,7 @@ struct event_value_helper<client::ConnectionStatusEvent> final {
   explicit event_value_helper(const client::ConnectionStatusEvent& event)
       : _event(event) {
   }
-  operator type() const {
+  operator const type&() const {
     return _event.connection_status;
   }
 

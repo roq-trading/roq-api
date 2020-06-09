@@ -10,7 +10,7 @@ struct event_value_helper;
 template <typename E>
 const typename event_value_helper<E>::type& event_value(const E& e) {
   using helper = event_value_helper<E>;
-  return static_cast<typename helper::type>(helper(e));
+  return static_cast<const typename helper::type&>(helper(e));
 }
 
 template <typename E, typename MessageInfo>

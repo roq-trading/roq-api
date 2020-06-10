@@ -1,0 +1,15 @@
+include "side.fbs";
+
+namespace roq;
+
+table PositionUpdate {
+  account:string;
+  exchange:string;
+  symbol:string;
+  side:Side;
+  position:double = nan;
+  last_trade_id:uint32;
+  position_cost:double = nan;
+  position_yesterday:double = nan;
+  position_cost_yesterday:double = nan;
+}

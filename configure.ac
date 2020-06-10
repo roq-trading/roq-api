@@ -12,6 +12,9 @@ AC_CONFIG_AUX_DIR([build-aux])
 
 AC_CONFIG_FILES([
  Makefile
+ schema/Makefile
+ schema/cpp/Makefile
+ schema/fbs/Makefile
  include/Makefile
  include/roq/Makefile
  include/roq/client/Makefile

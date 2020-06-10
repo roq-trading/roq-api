@@ -1,0 +1,11 @@
+include "layer.fbs";
+
+namespace roq;
+
+table TopOfBook {
+  exchange:string;
+  symbol:string;
+  layer:Layer;
+  snapshot:bool;
+  exchange_time_utc:int64;
+}

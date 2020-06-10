@@ -1,0 +1,5 @@
+namespace roq;
+
+table DownloadBegin {
+  account:string;
+}

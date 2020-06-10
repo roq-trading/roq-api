@@ -1,0 +1,6 @@
+namespace roq;
+
+table CancelOrder {
+  account:string;
+  order_id:uint32;
+}

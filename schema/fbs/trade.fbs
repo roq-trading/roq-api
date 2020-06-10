@@ -1,0 +1,10 @@
+include "side.fbs";
+
+namespace roq;
+
+table Trade {
+  side:Side;
+  price:double = nan;
+  quantity:double = 0.0;
+  trade_id:string;
+}

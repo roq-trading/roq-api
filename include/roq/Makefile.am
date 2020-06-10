@@ -69,7 +69,7 @@ pkginclude_HEADERS = \
 .gitignore: Makefile.am
 	echo $(AUTOGEN_H) | tr " " "\n" | sort > $@
 
-$(AUTOGEN_H): %.h: ../../schema/%.json
+$(AUTOGEN_H): %.h: ../../schema/cpp/%.json
 	@abs_top_builddir@/scripts/autogen/main.py \
 		--namespace roq \
                 --file-type h \

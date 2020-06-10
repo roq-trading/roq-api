@@ -1,0 +1,7 @@
+namespace roq;
+
+enum OrderType:uint8 {
+  Undefined,
+  Market,
+  Limit
+}

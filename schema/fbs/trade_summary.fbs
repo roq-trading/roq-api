@@ -1,0 +1,10 @@
+include "trade.fbs";
+
+namespace roq;
+
+table TradeSummary {
+  exchange:string;
+  symbol:string;
+  trades:[Trade];
+  exchange_time_utc:int64;
+}

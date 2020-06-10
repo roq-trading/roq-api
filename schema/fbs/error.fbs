@@ -1,0 +1,20 @@
+namespace roq;
+
+enum Error:uint8 {
+  Undefined,
+  Unknown,
+  GatewayNotReady,
+  InvalidAccount,
+  InvalidExchange,
+  InvalidSymbol,
+  InvalidOrderType,
+  InvalidTimeInForce,
+  InvalidPositionEffect,
+  InvalidOrderTemplate,
+  NetworkError,
+  UnknownErrorId,
+  UnknownExchangeOrderId,
+  ModifyOrderNotSupported,
+  InvalidOrderId,
+  ExecutionInstructionNotSupported
+}

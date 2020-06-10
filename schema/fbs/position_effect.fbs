@@ -1,0 +1,7 @@
+namespace roq;
+
+enum PositionEffect:uint8 {
+  Undefined,
+  Open,
+  Close
+}

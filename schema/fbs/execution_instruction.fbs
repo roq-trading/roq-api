@@ -1,0 +1,9 @@
+namespace roq;
+
+enum ExecutionInstruction:uint8 {
+  Undefined,
+  ParticipateDoNotInitiate,
+  CancelIfNotBest,
+  DoNotIncrease,
+  DoNotReduce
+}

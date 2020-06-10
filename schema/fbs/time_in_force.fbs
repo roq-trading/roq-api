@@ -1,0 +1,9 @@
+namespace roq;
+
+enum TimeInForce:uint8 {
+  Undefined,
+  FOK,
+  IOC,
+  GFD,
+  GTC
+}

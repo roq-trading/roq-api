@@ -1,0 +1,23 @@
+include "order_status.fbs";
+include "side.fbs";
+include "position_effect.fbs";
+
+namespace roq;
+
+table OrderUpdate {
+  account:string;
+  order_id:uint32;
+  exchange:string;
+  symbol:string;
+  status:OrderStatus;
+  side:Side;
+  price:double = nan;
+  remaining_quantity:double = nan;
+  traded_quantity:double = nan;
+  position_effect:PositionEffect;
+  order_template:string;
+  create_time_utc:int64;
+  update_time_utc:int64;
+  gateway_order_id:uint32;
+  external_order_id:string;
+}

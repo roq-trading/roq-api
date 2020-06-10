@@ -1,0 +1,11 @@
+namespace roq;
+
+enum GatewayStatus:uint8 {
+  Undefined,
+  Disconnected,
+  Connecting,
+  LoginSent,
+  Downloading,
+  Ready,
+  LoggedOut
+}

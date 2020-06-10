@@ -1,0 +1,7 @@
+namespace roq;
+
+enum TradingStatus:uint8 {
+  Undefined,
+  Closed,
+  Open
+}

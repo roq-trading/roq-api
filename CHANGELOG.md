@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* FlatBuffers schema (experimental!)
+
 ## 0.3.9 &ndash; 2020-06-09
 
 ### Fixed

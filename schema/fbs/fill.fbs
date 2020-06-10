@@ -1,0 +1,9 @@
+namespace roq;
+
+table Fill {
+  quantity:double;
+  price:double;
+  trade_id:uint32;
+  gateway_trade_id:uint32;
+  external_trade_id:string;
+}

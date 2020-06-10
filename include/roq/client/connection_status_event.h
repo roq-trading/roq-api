@@ -24,6 +24,7 @@ struct ROQ_PUBLIC ConnectionStatusEvent final {
 
 }  // namespace client
 
+namespace detail {
 template <>
 struct event_value_helper<client::ConnectionStatusEvent> final {
   using type = ConnectionStatus;
@@ -37,6 +38,8 @@ struct event_value_helper<client::ConnectionStatusEvent> final {
  private:
   const client::ConnectionStatusEvent& _event;
 };
+}  // namespace detail
+
 }  // namespace roq
 
 template <>

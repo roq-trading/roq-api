@@ -1,0 +1,19 @@
+include "request_type.fbs";
+include "origin.fbs";
+include "request_status.fbs";
+include "error.fbs";
+
+namespace roq;
+
+table OrderAck {
+  account:string;
+  order_id:uint32;
+  type:RequestType;
+  origin:Origin;
+  status:RequestStatus;
+  error:Error;
+  text:string;
+  gateway_order_id:uint32;
+  external_order_id:string;
+  request_id:string;
+}

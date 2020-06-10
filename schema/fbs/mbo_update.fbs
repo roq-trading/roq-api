@@ -1,0 +1,11 @@
+include "order_update_action.fbs";
+
+namespace roq;
+
+table MBOUpdate {
+  price:double = nan;
+  remaining_quantity:double = 0.0;
+  action:OrderUpdateAction;
+  priority:uint32 = 0;
+  order_id:string;
+}

@@ -1,0 +1,7 @@
+namespace roq;
+
+enum OptionType:uint8 {
+  Undefined,
+  Call,
+  Put
+}

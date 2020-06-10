@@ -39,6 +39,7 @@ inline {{ name }}Event create_event(
   };
 }
 
+namespace detail {
 template <>
 struct event_value_helper<{{ name }}Event> final {
   using type = {{ name }};
@@ -51,6 +52,7 @@ struct event_value_helper<{{ name }}Event> final {
  private:
   const {{ name }}Event& _event;
 };
+}  // namespace detail
 
 {% include 'namespace_end' %}
 

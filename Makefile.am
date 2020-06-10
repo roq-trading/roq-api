@@ -1,4 +1,4 @@
-SUBDIRS = . include test
+SUBDIRS = . schema include test
 
 if ENABLE_DOXYGEN
 SUBDIRS += doxygen

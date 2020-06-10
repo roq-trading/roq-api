@@ -1,0 +1,8 @@
+namespace roq;
+
+table Layer {
+  bid_price:double = nan;
+  bid_quantity:double = 0.0;
+  ask_price:double = nan;
+  ask_quantity:double = 0.0;
+}

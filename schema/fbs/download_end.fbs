@@ -1,0 +1,6 @@
+namespace roq;
+
+table DownloadEnd {
+  account:string;
+  max_order_id:uint32;
+}

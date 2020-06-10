@@ -1,0 +1,10 @@
+namespace roq;
+
+enum RequestStatus:uint8 {
+  Undefined,
+  Forwarded,
+  Accepted,
+  Rejected,
+  Timeout
+}
+

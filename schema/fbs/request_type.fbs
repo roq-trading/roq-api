@@ -1,0 +1,8 @@
+namespace roq;
+
+enum RequestType:uint8 {
+  Undefined,
+  CreateOrder,
+  ModifyOrder,
+  CancelOrder
+}

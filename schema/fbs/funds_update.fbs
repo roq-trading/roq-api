@@ -1,0 +1,8 @@
+namespace roq;
+
+table FundsUpdate {
+  account:string;
+  currency:string;
+  balance:double = nan;
+  hold:double = nan;
+}

@@ -1,0 +1,12 @@
+include "mbo_update.fbs";
+
+namespace roq;
+
+table MarketByOrder {
+  exchange:string;
+  symbol:string;
+  bids:[MBOUpdate];
+  asks:[MBOUpdate];
+  snapshot:bool;
+  exchange_time_utc:int64;
+}

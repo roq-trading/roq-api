@@ -1,0 +1,7 @@
+include "gateway_status.fbs";
+
+namespace roq;
+
+table MarketDataStatus {
+  status:GatewayStatus;
+}

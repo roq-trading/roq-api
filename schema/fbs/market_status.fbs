@@ -1,0 +1,9 @@
+include "trading_status.fbs";
+
+namespace roq;
+
+table MarketStatus {
+  exchange:string;
+  symbol:string;
+  trading_status:TradingStatus;
+}

@@ -67,22 +67,7 @@
 #include "roq/exceptions.h"
 #include "roq/utilities.h"
 
-/*
-// XXX client
-
-#include "roq/batch_begin_event.h"
-#include "roq/batch_end_event.h"
-#include "roq/custom_message.h"
-
-// XXX client + server
-
-#include "roq/connection_status_event.h"
-#include "roq/start_event.h"
-#include "roq/stop_event.h"
-#include "roq/timer_event.h"
-*/
-
-// XXX config
+// config
 
 #include "roq/account.h"
 #include "roq/user.h"
@@ -93,7 +78,7 @@
 
 namespace roq {
 
-// ensure multiples are cache aligned
+// check that multiples can be cache aligned
 
 static_assert(sizeof(Layer) == 32);
 static_assert(sizeof(MBPUpdate) == 16);

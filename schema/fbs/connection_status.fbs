@@ -1,0 +1,7 @@
+namespace roq;
+
+enum ConnectionStatus:uint8 {
+  Undefined,
+  Disconnected,
+  Connected
+}

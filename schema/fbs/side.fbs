@@ -1,0 +1,7 @@
+namespace roq;
+
+enum Side:uint8 {
+  Undefined,
+  Buy,
+  Sell
+}

@@ -46,6 +46,7 @@ inline client::CustomMessageEvent create_event(
   };
 }
 
+namespace detail {
 template <>
 struct event_value_helper<client::CustomMessageEvent> final {
   using type = client::CustomMessage;
@@ -58,6 +59,7 @@ struct event_value_helper<client::CustomMessageEvent> final {
  private:
   const client::CustomMessageEvent& _event;
 };
+}  // namespace detail
 
 }  // namespace roq
 

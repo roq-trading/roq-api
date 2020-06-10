@@ -1,0 +1,24 @@
+include "side.fbs";
+include "order_type.fbs";
+include "time_in_force.fbs";
+include "position_effect.fbs";
+include "execution_instruction.fbs";
+
+namespace roq;
+
+table CreateOrder {
+  account:string;
+  order_id:uint32;
+  exchange:string;
+  symbol:string;
+  side:Side;
+  quantity:double = nan;
+  order_type:OrderType;
+  price:double = nan;
+  time_in_force:TimeInForce;
+  position_effect:PositionEffect;
+  execution_instruction:ExecutionInstruction;
+  stop_price:double = nan;
+  max_show_quantity:double = nan;
+  order_template:string;
+}

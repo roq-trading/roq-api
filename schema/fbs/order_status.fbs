@@ -1,0 +1,12 @@
+namespace roq;
+
+enum OrderStatus:uint8 {
+  Undefined,
+  Sent,
+  Rejected,
+  Accepted,
+  Pending,
+  Working,
+  Completed,
+  Canceled
+}

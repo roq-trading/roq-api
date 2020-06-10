@@ -1,0 +1,120 @@
+// generated:
+
+// - enums
+
+include "connection_status.fbs";
+include "error.fbs";
+include "execution_instruction.fbs";
+include "gateway_status.fbs";
+include "option_type.fbs";
+include "order_status.fbs";
+include "order_type.fbs";
+include "order_update_action.fbs";
+include "origin.fbs";
+include "position_effect.fbs";
+include "request_status.fbs";
+include "request_type.fbs";
+include "security_type.fbs";
+include "side.fbs";
+include "time_in_force.fbs";
+include "trading_status.fbs";
+
+// - helpers
+
+include "fill.fbs";
+include "layer.fbs";
+include "mbo_update.fbs";
+include "mbp_update.fbs";
+include "trade.fbs";
+
+// - messages
+
+include "cancel_order.fbs";
+include "create_order.fbs";
+include "daily_statistics.fbs";
+include "download_begin.fbs";
+include "download_end.fbs";
+include "funds_update.fbs";
+include "market_by_order.fbs";
+include "market_by_price.fbs";
+include "market_data_status.fbs";
+include "market_status.fbs";
+include "modify_order.fbs";
+include "order_ack.fbs";
+include "order_manager_status.fbs";
+include "order_update.fbs";
+include "position_update.fbs";
+include "reference_data.fbs";
+include "session_statistics.fbs";
+include "top_of_book.fbs";
+include "trade_summary.fbs";
+include "trade_update.fbs";
+
+// ----------------------------------------------------------------------------
+
+namespace roq;
+
+table Handshake {
+  version:uint32;
+  application:string;
+  hostname:string;
+  pid:uint32;
+  uuid:string;
+  login:string;
+  password:string;
+}
+
+table HandshakeAck {
+  version:uint32;
+  application:string;
+  hostname:string;
+  pid:uint32;
+  failure:bool;
+  failure_reason:string;
+  uuid:string;
+  name:string;
+  user_id:uint8;
+}
+
+table Subscribe {
+  // XXX accounts
+  // XXX symbols_by_exchange
+}
+
+// note! only append to this list
+
+union Message {
+  Handshake,
+  HandshakeAck,
+  Subscribe,
+  // --- generated ---
+  CancelOrder,
+  CreateOrder,
+  DailyStatistics,
+  DownloadBegin,
+  DownloadEnd,
+  FundsUpdate,
+  MarketByOrder,
+  MarketByPrice,
+  MarketDataStatus,
+  MarketStatus,
+  ModifyOrder,
+  OrderAck,
+  OrderManagerStatus,
+  OrderUpdate,
+  PositionUpdate,
+  ReferenceData,
+  SessionStatistics,
+  TopOfBook,
+  TradeSummary,
+  TradeUpdate
+}
+
+table Update {
+  origin_create_time:int64;
+  source_receive_time:int64;
+  source_send_time:int64;
+  source_seqno:uint64;
+  message:Message;
+  is_last:bool;
+}

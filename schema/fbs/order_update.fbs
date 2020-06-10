@@ -2,7 +2,7 @@ include "order_status.fbs";
 include "side.fbs";
 include "position_effect.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table OrderUpdate {
   account:string;

@@ -1,6 +1,6 @@
 include "trade.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table TradeSummary {
   exchange:string;

@@ -1,4 +1,4 @@
-namespace roq;
+namespace roq.fbs;
 
 table Fill {
   quantity:double;

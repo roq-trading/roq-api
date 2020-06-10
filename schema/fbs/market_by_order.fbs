@@ -1,6 +1,6 @@
 include "mbo_update.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table MarketByOrder {
   exchange:string;

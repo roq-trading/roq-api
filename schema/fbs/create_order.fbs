@@ -4,7 +4,7 @@ include "time_in_force.fbs";
 include "position_effect.fbs";
 include "execution_instruction.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table CreateOrder {
   account:string;

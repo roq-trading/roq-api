@@ -1,6 +1,6 @@
 include "trading_status.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table MarketStatus {
   exchange:string;

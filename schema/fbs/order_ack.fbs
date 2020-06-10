@@ -3,7 +3,7 @@ include "origin.fbs";
 include "request_status.fbs";
 include "error.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table OrderAck {
   account:string;

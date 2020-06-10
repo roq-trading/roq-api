@@ -52,7 +52,7 @@ include "trade_update.fbs";
 
 // ----------------------------------------------------------------------------
 
-namespace roq;
+namespace roq.fbs;
 
 table Handshake {
   version:uint32;

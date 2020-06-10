@@ -2,7 +2,7 @@ include "side.fbs";
 include "position_effect.fbs";
 include "fill.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table TradeUpdate {
   account:string;

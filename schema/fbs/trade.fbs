@@ -1,6 +1,6 @@
 include "side.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table Trade {
   side:Side;

@@ -1,6 +1,6 @@
 include "gateway_status.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table OrderManagerStatus {
   account:string;

@@ -1,6 +1,6 @@
 include "order_update_action.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table MBOUpdate {
   price:double = nan;

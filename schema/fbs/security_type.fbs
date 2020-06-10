@@ -1,4 +1,4 @@
-namespace roq;
+namespace roq.fbs;
 
 enum SecurityType:uint8 {
   Undefined,

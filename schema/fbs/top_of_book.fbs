@@ -1,6 +1,6 @@
 include "layer.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table TopOfBook {
   exchange:string;

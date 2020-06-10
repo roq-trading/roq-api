@@ -1,6 +1,6 @@
 include "mbp_update.fbs";
 
-namespace roq;
+namespace roq.fbs;
 
 table MarketByPrice {
   exchange:string;

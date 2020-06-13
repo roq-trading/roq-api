@@ -86,28 +86,29 @@ table Subscribe {
 union Message {
   Handshake,
   HandshakeAck,
+  // ---
   Subscribe,
   // --- generated ---
-  CancelOrder,
-  CreateOrder,
-  DailyStatistics,
   DownloadBegin,
   DownloadEnd,
-  FundsUpdate,
-  MarketByOrder,
-  MarketByPrice,
   MarketDataStatus,
-  MarketStatus,
-  ModifyOrder,
-  OrderAck,
   OrderManagerStatus,
-  OrderUpdate,
-  PositionUpdate,
   ReferenceData,
-  SessionStatistics,
-  TopOfBook,
+  MarketStatus,
+  MarketByPrice,
+  MarketByOrder,
   TradeSummary,
+  SessionStatistics,
+  DailyStatistics,
+  CreateOrder,
+  ModifyOrder,
+  CancelOrder,
+  OrderAck,
+  OrderUpdate,
   TradeUpdate
+  PositionUpdate,
+  FundsUpdate,
+  TopOfBook,
 }
 
 table Update {
@@ -115,6 +116,12 @@ table Update {
   source_receive_time:int64;
   source_send_time:int64;
   source_seqno:uint64;
-  message:Message;
   is_last:bool;
 }
+
+table Event {
+  update:Update;
+  message:Message;
+}
+
+root_type Event;

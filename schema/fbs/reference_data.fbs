@@ -17,5 +17,5 @@ table ReferenceData {
   min_trade_vol:double = nan;
   option_type:OptionType;
   strike_currency:string;
-  strik_price:double = nan;
+  strike_price:double = nan;
 }

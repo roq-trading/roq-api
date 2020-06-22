@@ -40,7 +40,7 @@ AUTOGEN_FBS = \
         trade_summary.fbs \
         trade_update.fbs \
         trading_status.fbs
-schemadir=$(datadir)/roq/schema/fbs
+schemadir=$(datadir)/roq/schema/flatbuffers
 schema_DATA = \
   $(AUTOGEN_FBS) \
   api.fbs

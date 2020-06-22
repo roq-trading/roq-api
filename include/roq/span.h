@@ -3,6 +3,7 @@
 #pragma once
 
 #include <cstddef>
+#include <stdexcept>
 
 #include "roq/compat.h"
 
@@ -34,7 +35,7 @@ class span final {
   }
 
   template <typename C>
-  explicit span(C& container)
+  span(C& container)  // NOLINT
       : span(container.data(), container.size()) {
   }
 

@@ -14,7 +14,7 @@ AC_CONFIG_FILES([
  Makefile
  schema/Makefile
  schema/cpp/Makefile
- schema/fbs/Makefile
+ schema/flatbuffers/Makefile
  include/Makefile
  include/roq/Makefile
  include/roq/client/Makefile

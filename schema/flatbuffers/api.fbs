@@ -111,16 +111,22 @@ union Message {
   TopOfBook
 }
 
-table Update {
-  origin_create_time:int64;
-  source_receive_time:int64;
-  source_send_time:int64;
+table MessageInfo {
+  source:uint8;
   source_seqno:uint64;
+  source_send_time:uint64;        // system clock
+  source_receive_time:uint64;     // system clock
+  origin_create_time:uint64;      // system clock
+  origin_create_time_utc:uint64;  // realtime clock
   is_last:bool;
+  opaque:uint64;
 }
 
+// XXX receive_time:uint64;
+// XXX receive_time_utc:uint64;
+
 table Event {
-  update:Update;
+  message_info:MessageInfo;
   message:Message;
 }
 

@@ -11,6 +11,7 @@
 	{ "name": "source_send_time", "type": "std::chrono::nanoseconds" },
 	{ "name": "source_receive_time", "type": "std::chrono::nanoseconds" },
 	{ "name": "origin_create_time", "type": "std::chrono::nanoseconds" },
+	{ "name": "origin_create_time_utc", "type": "std::chrono::nanoseconds" },
 	{ "name": "is_last", "type": "bool" },
 	{ "name": "opaque", "type": "uint64_t" }
 ]

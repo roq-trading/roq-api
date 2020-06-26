@@ -81,13 +81,21 @@ table Subscribe {
   // XXX symbols_by_exchange
 }
 
-// note! only append to this list
+table BatchBegin {
+}
 
+table BatchEnd {
+}
+
+// important! only append to this list
 union Message {
+  // --- initial ---
   Handshake,
   HandshakeAck,
-  // ---
   Subscribe,
+  // --- control ---
+  BatchBegin,
+  BatchEnd,
   // --- generated ---
   DownloadBegin,
   DownloadEnd,
@@ -111,22 +119,16 @@ union Message {
   TopOfBook
 }
 
-table MessageInfo {
-  source:uint8;
-  source_seqno:uint64;
-  source_send_time:uint64;        // system clock
-  source_receive_time:uint64;     // system clock
-  origin_create_time:uint64;      // system clock
-  origin_create_time_utc:uint64;  // realtime clock
-  is_last:bool;
-  opaque:uint64;
+table SourceInfo {
+  seqno:uint64;
+  send_time_utc:uint64;    // realtime clock
+  create_time_utc:uint64;  // realtime clock
+  send_time:uint64;        // monotonic clock
+  create_time:uint64;      // monotonic clock
 }
 
-// XXX receive_time:uint64;
-// XXX receive_time_utc:uint64;
-
 table Event {
-  message_info:MessageInfo;
+  source_info:SourceInfo;
   message:Message;
 }
 

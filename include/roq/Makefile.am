@@ -14,8 +14,8 @@ AUTOGEN_H = \
         funds_update.h \
         gateway_status.h \
         layer.h \
-        market_by_order.h \
-        market_by_price.h \
+        market_by_order_update.h \
+        market_by_price_update.h \
         market_data_status.h \
         market_status.h \
         mbo_update.h \
@@ -38,6 +38,9 @@ AUTOGEN_H = \
         security_type.h \
         session_statistics.h \
         side.h \
+        statistics.h \
+        statistics_type.h \
+        statistics_update.h \
         time_in_force.h \
         top_of_book.h \
         trade.h \

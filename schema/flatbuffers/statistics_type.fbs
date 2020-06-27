@@ -1,0 +1,18 @@
+namespace roq.fbs;
+
+enum StatisticsType:uint8 {
+  Undefined,
+  OpenPrice,
+  SettlementPrice,
+  ClosePrice,
+  OpenInterest,
+  PreOpenInterest,
+  PreSettlementPrice,
+  PreClosePrice,
+  HighestTradedPrice,
+  LowestTradedPrice,
+  UpperLimitPrice,
+  LowerLimitPrice,
+  IndexValue,
+  MarginRate
+}

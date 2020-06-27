@@ -1,0 +1,8 @@
+{
+"name": "Statistics",
+"type": "struct",
+"values": [
+	{ "name": "type", "type": "StatisticsType" },
+	{ "name": "value", "type": "double"}
+]
+}

@@ -2,7 +2,7 @@ include "mbo_update.fbs";
 
 namespace roq.fbs;
 
-table MarketByOrder {
+table MarketByOrderUpdate {
   exchange:string;
   symbol:string;
   bids:[MBOUpdate];

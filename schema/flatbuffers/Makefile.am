@@ -11,8 +11,8 @@ AUTOGEN_FBS = \
         funds_update.fbs \
         gateway_status.fbs \
         layer.fbs \
-        market_by_order.fbs \
-        market_by_price.fbs \
+        market_by_order_update.fbs \
+        market_by_price_update.fbs \
         market_data_status.fbs \
         market_status.fbs \
         mbo_update.fbs \
@@ -34,6 +34,9 @@ AUTOGEN_FBS = \
         security_type.fbs \
         session_statistics.fbs \
         side.fbs \
+        statistics.fbs \
+        statistics_type.fbs \
+        statistics_update.fbs \
         time_in_force.fbs \
         top_of_book.fbs \
         trade.fbs \

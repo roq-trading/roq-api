@@ -1,0 +1,8 @@
+include "order_update_action.fbs";
+
+namespace roq.fbs;
+
+table Statistics {
+  type:StatisticsType;
+  value:double = nan;
+}

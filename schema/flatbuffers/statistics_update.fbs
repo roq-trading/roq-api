@@ -1,0 +1,11 @@
+include "mbp_update.fbs";
+
+namespace roq.fbs;
+
+table StatisticsUpdate {
+  exchange:string;
+  symbol:string;
+  statistics:[Statistics];
+  snapshot:bool;
+  exchange_time_utc:int64;
+}

@@ -7,6 +7,12 @@ All notable changes will be documented in this file.
 ### Added
 
 * FlatBuffers schema (experimental!)
+* `StatisticsUpdate` (to replace `DailyStatistics` and `SessionStatistics`)
+
+### Changed
+
+* Replaced `MarketByPrice` and `MarketByOrder` with `MarketByPriceUpdate` and
+  `MarketByOrderUpdate` to more clearly reflect changes being communicated
 
 ## 0.3.9 &ndash; 2020-06-09
 

@@ -16,6 +16,7 @@ include "request_status.fbs";
 include "request_type.fbs";
 include "security_type.fbs";
 include "side.fbs";
+include "statistics_type.fbs";
 include "time_in_force.fbs";
 include "trading_status.fbs";
 
@@ -25,6 +26,7 @@ include "fill.fbs";
 include "layer.fbs";
 include "mbo_update.fbs";
 include "mbp_update.fbs";
+include "statistics.fbs";
 include "trade.fbs";
 
 // - messages
@@ -35,8 +37,8 @@ include "daily_statistics.fbs";
 include "download_begin.fbs";
 include "download_end.fbs";
 include "funds_update.fbs";
-include "market_by_order.fbs";
-include "market_by_price.fbs";
+include "market_by_order_update.fbs";
+include "market_by_price_update.fbs";
 include "market_data_status.fbs";
 include "market_status.fbs";
 include "modify_order.fbs";
@@ -46,6 +48,7 @@ include "order_update.fbs";
 include "position_update.fbs";
 include "reference_data.fbs";
 include "session_statistics.fbs";
+include "statistics_update.fbs";
 include "top_of_book.fbs";
 include "trade_summary.fbs";
 include "trade_update.fbs";
@@ -103,8 +106,8 @@ union Message {
   OrderManagerStatus,
   ReferenceData,
   MarketStatus,
-  MarketByPrice,
-  MarketByOrder,
+  MarketByPriceUpdate,
+  MarketByOrderUpdate,
   TradeSummary,
   SessionStatistics,
   DailyStatistics,
@@ -116,7 +119,8 @@ union Message {
   TradeUpdate,
   PositionUpdate,
   FundsUpdate,
-  TopOfBook
+  TopOfBook,
+  StatisticsUpdate
 }
 
 table SourceInfo {

@@ -11,8 +11,8 @@ AUTOGEN_JSON = \
         funds_update.json \
         gateway_status.json \
         layer.json \
-        market_by_order.json \
-        market_by_price.json \
+        market_by_order_update.json \
+        market_by_price_update.json \
         market_data_status.json \
         market_status.json \
         mbo_update.json \
@@ -35,6 +35,9 @@ AUTOGEN_JSON = \
         security_type.json \
         session_statistics.json \
         side.json \
+        statistics.json \
+        statistics_type.json \
+        statistics_update.json \
         time_in_force.json \
         top_of_book.json \
         trade.json \

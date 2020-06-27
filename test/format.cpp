@@ -51,7 +51,7 @@ TEST(format, market_by_price) {
     { .price = 4.0, .quantity = 10.0 },
     { .price = 5.0, .quantity = 12.0 },
   };
-  roq::MarketByPrice market_by_price {
+  roq::MarketByPriceUpdate market_by_price {
     .exchange = "deribit",
     .symbol = "BTC-27DEC19",
     .bids = {

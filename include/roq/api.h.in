@@ -20,6 +20,7 @@
 #include "roq/request_type.h"
 #include "roq/security_type.h"
 #include "roq/side.h"
+#include "roq/statistics_type.h"
 #include "roq/time_in_force.h"
 #include "roq/trading_status.h"
 
@@ -29,6 +30,7 @@
 #include "roq/layer.h"
 #include "roq/mbo_update.h"
 #include "roq/mbp_update.h"
+#include "roq/statistics.h"
 #include "roq/trade.h"
 
 // transport
@@ -43,8 +45,8 @@
 #include "roq/download_begin.h"
 #include "roq/download_end.h"
 #include "roq/funds_update.h"
-#include "roq/market_by_order.h"
-#include "roq/market_by_price.h"
+#include "roq/market_by_order_update.h"
+#include "roq/market_by_price_update.h"
 #include "roq/market_data_status.h"
 #include "roq/market_status.h"
 #include "roq/modify_order.h"
@@ -54,6 +56,7 @@
 #include "roq/position_update.h"
 #include "roq/reference_data.h"
 #include "roq/session_statistics.h"
+#include "roq/statistics_update.h"
 #include "roq/top_of_book.h"
 #include "roq/trade_summary.h"
 #include "roq/trade_update.h"

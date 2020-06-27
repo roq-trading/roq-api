@@ -1,5 +1,5 @@
 {
-"name": "MarketByOrder",
+"name": "MarketByOrderUpdate",
 "type": "message",
 "values": [
 	{ "name": "exchange", "type": "std::string_view" },

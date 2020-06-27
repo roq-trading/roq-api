@@ -10,7 +10,6 @@
 #include <string_view>
 
 #include "roq/compat.h"
-#include "roq/event.h"
 #include "roq/span.h"
 #include "roq/string.h"
 

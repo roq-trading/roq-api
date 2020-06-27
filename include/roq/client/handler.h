@@ -25,9 +25,13 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const StartEvent&) {}
   virtual void operator()(const StopEvent&) {}
   virtual void operator()(const TimerEvent&) {}
+
+  // connection
   virtual void operator()(const Event<ConnectionStatus>&) {}
-  virtual void operator()(const BatchBeginEvent&) {}
-  virtual void operator()(const BatchEndEvent&) {}
+
+  // messages
+  virtual void operator()(const Event<BatchBegin>&) {}
+  virtual void operator()(const Event<BatchEnd>&) {}
   virtual void operator()(const Event<DownloadBegin>&) {}
   virtual void operator()(const Event<DownloadEnd>&) {}
   virtual void operator()(const Event<MarketDataStatus>&) {}
@@ -47,6 +51,7 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<FundsUpdate>&) {}
   virtual void operator()(const Event<CustomMessage>&) {}
 
+  // metrics
   virtual void operator()(metrics::Writer&) const {}
 };
 

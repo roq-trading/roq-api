@@ -17,26 +17,26 @@ class Collector {
  public:
   virtual ~Collector() {}
 
-  virtual void operator()(const DownloadBeginEvent&) = 0;
-  virtual void operator()(const DownloadEndEvent&) = 0;
-  virtual void operator()(const MarketDataStatusEvent&) = 0;
-  virtual void operator()(const OrderManagerStatusEvent&) = 0;
-  virtual void operator()(const ReferenceDataEvent&) = 0;
-  virtual void operator()(const MarketStatusEvent&) = 0;
-  virtual void operator()(const TopOfBookEvent&) = 0;
-  virtual void operator()(const MarketByPriceUpdateEvent&) = 0;
-  virtual void operator()(const MarketByOrderUpdateEvent&) = 0;
-  virtual void operator()(const TradeSummaryEvent&) = 0;
-  virtual void operator()(const SessionStatisticsEvent&) = 0;
-  virtual void operator()(const DailyStatisticsEvent&) = 0;
-  virtual void operator()(const CreateOrderEvent&) = 0;
-  virtual void operator()(const ModifyOrderEvent&) = 0;
-  virtual void operator()(const CancelOrderEvent&) = 0;
-  virtual void operator()(const OrderAckEvent&) = 0;
-  virtual void operator()(const OrderUpdateEvent&) = 0;
-  virtual void operator()(const TradeUpdateEvent&) = 0;
-  virtual void operator()(const PositionUpdateEvent&) = 0;
-  virtual void operator()(const FundsUpdateEvent&) = 0;
+  virtual void operator()(const Event<DownloadBegin>&) = 0;
+  virtual void operator()(const Event<DownloadEnd>&) = 0;
+  virtual void operator()(const Event<MarketDataStatus>&) = 0;
+  virtual void operator()(const Event<OrderManagerStatus>&) = 0;
+  virtual void operator()(const Event<ReferenceData>&) = 0;
+  virtual void operator()(const Event<MarketStatus>&) = 0;
+  virtual void operator()(const Event<TopOfBook>&) = 0;
+  virtual void operator()(const Event<MarketByPriceUpdate>&) = 0;
+  virtual void operator()(const Event<MarketByOrderUpdate>&) = 0;
+  virtual void operator()(const Event<TradeSummary>&) = 0;
+  virtual void operator()(const Event<SessionStatistics>&) = 0;
+  virtual void operator()(const Event<DailyStatistics>&) = 0;
+  virtual void operator()(const Event<CreateOrder>&) = 0;
+  virtual void operator()(const Event<ModifyOrder>&) = 0;
+  virtual void operator()(const Event<CancelOrder>&) = 0;
+  virtual void operator()(const Event<OrderAck>&) = 0;
+  virtual void operator()(const Event<OrderUpdate>&) = 0;
+  virtual void operator()(const Event<TradeUpdate>&) = 0;
+  virtual void operator()(const Event<PositionUpdate>&) = 0;
+  virtual void operator()(const Event<FundsUpdate>&) = 0;
 
   virtual void extract(
       const std::string_view& type,

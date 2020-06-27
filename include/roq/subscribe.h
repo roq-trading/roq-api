@@ -49,13 +49,13 @@ struct fmt::formatter<roq::Subscribe> {
 };
 
 template <>
-struct fmt::formatter<roq::SubscribeEvent> {
+struct fmt::formatter<roq::Event<roq::Subscribe> > {
   template <typename T>
   constexpr auto parse(T& ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::SubscribeEvent& value, T& ctx) {
+  auto format(const roq::Event<roq::Subscribe>& event, T& ctx) {
     return format_to(
         ctx.out(),
         FMT_STRING(
@@ -63,7 +63,7 @@ struct fmt::formatter<roq::SubscribeEvent> {
             R"(message_info={}, )"
             R"(subscribe={})"
             R"(}})"),
-        value.message_info,
-        value.subscribe);
+        event.message_info,
+        event.value);
   }
 };

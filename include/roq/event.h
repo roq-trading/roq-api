@@ -2,28 +2,46 @@
 
 #pragma once
 
+#include "roq/message_info.h"
+
 namespace roq {
 
-namespace detail {
-template <typename E>
-struct event_value_helper;
-}  // namespace detail
+template <typename T>
+struct Event final {
+  Event(
+      const MessageInfo& message_info,
+      const T& value)
+      : message_info(message_info),
+        value(value) {
+  }
 
-// utility function to get the value from an event without
-// having to specify the name of the member
-// useful for creating higher level templated utility functions
+  Event(const Event&) = delete;
 
-template <typename E>
-const typename detail::event_value_helper<E>::type& event_value(const E& e) {
-  using helper = detail::event_value_helper<E>;
-  return static_cast<const typename helper::type&>(helper(e));
+  template <typename H>
+  void dispatch(H&& handler) {
+    handler(*this);
+  }
+
+  operator const MessageInfo&() const {
+    return message_info;
+  }
+  operator const T&() const {
+    return value;
+  }
+
+  const MessageInfo& message_info;
+  const T& value;
+};
+
+template <typename H, typename T>
+inline void create_event_and_dispatch(
+    H&& handler,
+    const MessageInfo& message_info,
+    const T& value) {
+  Event event(
+      message_info,
+      value);
+  event.dispatch(handler);
 }
-
-// utility function to create an event from a message info
-// structure and an actual event
-// useful for creating higher level templated utility functions
-
-template <typename E, typename MessageInfo>
-E create_event(const MessageInfo&, const E&);
 
 }  // namespace roq

@@ -25,41 +25,15 @@ namespace roq {
 namespace client {
 
 struct ROQ_PUBLIC CustomMessage final {
+  CustomMessage() = default;
+  CustomMessage(CustomMessage&&) = default;
+  CustomMessage(const CustomMessage&) = delete;
+
   const void *message;
   size_t length;
 };
 
-struct ROQ_PUBLIC CustomMessageEvent final {
-  const MessageInfo& message_info;
-  const CustomMessage& custom_message;
-};
-
 }  // namespace client
-
-template <>
-inline client::CustomMessageEvent create_event(
-    const MessageInfo& message_info,
-    const client::CustomMessageEvent& event) {
-  return decltype(event) {
-    .message_info = message_info,
-    .custom_message = event.custom_message,
-  };
-}
-
-namespace detail {
-template <>
-struct event_value_helper<client::CustomMessageEvent> final {
-  using type = client::CustomMessage;
-  explicit event_value_helper(const client::CustomMessageEvent& event)
-      : _event(event) {
-  }
-  operator const type&() const {
-    return _event.custom_message;
-  }
- private:
-  const client::CustomMessageEvent& _event;
-};
-}  // namespace detail
 
 }  // namespace roq
 
@@ -83,14 +57,14 @@ struct fmt::formatter<roq::client::CustomMessage> {
 };
 
 template <>
-struct fmt::formatter<roq::client::CustomMessageEvent> {
+struct fmt::formatter<roq::Event<roq::client::CustomMessage> > {
   template <typename Context>
   constexpr auto parse(Context& context) {
     return context.begin();
   }
   template <typename Context>
   auto format(
-      const roq::client::CustomMessageEvent& value,
+      const roq::Event<roq::client::CustomMessage>& event,
       Context& context) {
     return format_to(
         context.out(),
@@ -98,7 +72,7 @@ struct fmt::formatter<roq::client::CustomMessageEvent> {
         R"(message_info={}, )"
         R"(custom_message={})"
         R"(}})",
-        value.message_info,
-        value.custom_message);
+        event.message_info,
+        event.value);
   }
 };

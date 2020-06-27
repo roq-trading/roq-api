@@ -11,6 +11,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Events are now wrapped with the `Event` template
 * Replaced `MarketByPrice` and `MarketByOrder` with `MarketByPriceUpdate` and
   `MarketByOrderUpdate` to more clearly reflect changes being communicated
 

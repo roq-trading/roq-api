@@ -2,55 +2,20 @@
 
 #pragma once
 
-#include <fmt/chrono.h>
 #include <fmt/format.h>
 
-#include <chrono>
-
-#include "roq/compat.h"
 #include "roq/event.h"
-
-#include "roq/message_info.h"
-
 #include "roq/connection_status.h"
 
-namespace roq {
-namespace client {
-
-struct ROQ_PUBLIC ConnectionStatusEvent final {
-  const MessageInfo& message_info;
-  ConnectionStatus connection_status;
-};
-
-}  // namespace client
-
-namespace detail {
 template <>
-struct event_value_helper<client::ConnectionStatusEvent> final {
-  using type = ConnectionStatus;
-  explicit event_value_helper(const client::ConnectionStatusEvent& event)
-      : _event(event) {
-  }
-  operator const type&() const {
-    return _event.connection_status;
-  }
-
- private:
-  const client::ConnectionStatusEvent& _event;
-};
-}  // namespace detail
-
-}  // namespace roq
-
-template <>
-struct fmt::formatter<roq::client::ConnectionStatusEvent> {
+struct fmt::formatter<roq::Event<roq::ConnectionStatus> > {
   template <typename Context>
   constexpr auto parse(Context& context) {
     return context.begin();
   }
   template <typename Context>
   auto format(
-      const roq::client::ConnectionStatusEvent& value,
+      const roq::Event<roq::ConnectionStatus>& event,
       Context& context) {
     return format_to(
         context.out(),
@@ -58,7 +23,7 @@ struct fmt::formatter<roq::client::ConnectionStatusEvent> {
         R"(message_info={}, )"
         R"(connection_status={})"
         R"(}})",
-        value.message_info,
-        value.connection_status);
+        event.message_info,
+        event.value);
   }
 };

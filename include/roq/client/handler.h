@@ -25,27 +25,27 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const StartEvent&) {}
   virtual void operator()(const StopEvent&) {}
   virtual void operator()(const TimerEvent&) {}
-  virtual void operator()(const ConnectionStatusEvent&) {}
+  virtual void operator()(const Event<ConnectionStatus>&) {}
   virtual void operator()(const BatchBeginEvent&) {}
   virtual void operator()(const BatchEndEvent&) {}
-  virtual void operator()(const DownloadBeginEvent&) {}
-  virtual void operator()(const DownloadEndEvent&) {}
-  virtual void operator()(const MarketDataStatusEvent&) {}
-  virtual void operator()(const OrderManagerStatusEvent&) {}
-  virtual void operator()(const ReferenceDataEvent&) {}
-  virtual void operator()(const MarketStatusEvent&) {}
-  virtual void operator()(const TopOfBookEvent&) {}
-  virtual void operator()(const MarketByPriceUpdateEvent&) {}
-  virtual void operator()(const MarketByOrderUpdateEvent&) {}
-  virtual void operator()(const TradeSummaryEvent&) {}
-  virtual void operator()(const SessionStatisticsEvent&) {}
-  virtual void operator()(const DailyStatisticsEvent&) {}
-  virtual void operator()(const OrderAckEvent&) {}
-  virtual void operator()(const OrderUpdateEvent&) {}
-  virtual void operator()(const TradeUpdateEvent&) {}
-  virtual void operator()(const PositionUpdateEvent&) {}
-  virtual void operator()(const FundsUpdateEvent&) {}
-  virtual void operator()(const CustomMessageEvent&) {}
+  virtual void operator()(const Event<DownloadBegin>&) {}
+  virtual void operator()(const Event<DownloadEnd>&) {}
+  virtual void operator()(const Event<MarketDataStatus>&) {}
+  virtual void operator()(const Event<OrderManagerStatus>&) {}
+  virtual void operator()(const Event<ReferenceData>&) {}
+  virtual void operator()(const Event<MarketStatus>&) {}
+  virtual void operator()(const Event<TopOfBook>&) {}
+  virtual void operator()(const Event<MarketByPriceUpdate>&) {}
+  virtual void operator()(const Event<MarketByOrderUpdate>&) {}
+  virtual void operator()(const Event<TradeSummary>&) {}
+  virtual void operator()(const Event<SessionStatistics>&) {}
+  virtual void operator()(const Event<DailyStatistics>&) {}
+  virtual void operator()(const Event<OrderAck>&) {}
+  virtual void operator()(const Event<OrderUpdate>&) {}
+  virtual void operator()(const Event<TradeUpdate>&) {}
+  virtual void operator()(const Event<PositionUpdate>&) {}
+  virtual void operator()(const Event<FundsUpdate>&) {}
+  virtual void operator()(const Event<CustomMessage>&) {}
 
   virtual void operator()(metrics::Writer&) const {}
 };

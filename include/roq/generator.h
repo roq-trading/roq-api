@@ -14,18 +14,18 @@ class ROQ_PUBLIC Generator {
  public:
   class ROQ_PUBLIC Dispatcher {
    public:
-    virtual void operator()(const MarketDataStatusEvent&) = 0;
-    virtual void operator()(const OrderManagerStatusEvent&) = 0;
-    virtual void operator()(const ReferenceDataEvent&) = 0;
-    virtual void operator()(const MarketStatusEvent&) = 0;
-    virtual void operator()(const TopOfBookEvent&) = 0;
-    virtual void operator()(const MarketByPriceUpdateEvent&) = 0;
-    virtual void operator()(const MarketByOrderUpdateEvent&) = 0;
-    virtual void operator()(const TradeSummaryEvent&) = 0;
-    virtual void operator()(const SessionStatisticsEvent&) = 0;
-    virtual void operator()(const DailyStatisticsEvent&) = 0;
-    virtual void operator()(const PositionUpdateEvent&) = 0;
-    virtual void operator()(const FundsUpdateEvent&) = 0;
+    virtual void operator()(const Event<MarketDataStatus>&) = 0;
+    virtual void operator()(const Event<OrderManagerStatus>&) = 0;
+    virtual void operator()(const Event<ReferenceData>&) = 0;
+    virtual void operator()(const Event<MarketStatus>&) = 0;
+    virtual void operator()(const Event<TopOfBook>&) = 0;
+    virtual void operator()(const Event<MarketByPriceUpdate>&) = 0;
+    virtual void operator()(const Event<MarketByOrderUpdate>&) = 0;
+    virtual void operator()(const Event<TradeSummary>&) = 0;
+    virtual void operator()(const Event<SessionStatistics>&) = 0;
+    virtual void operator()(const Event<DailyStatistics>&) = 0;
+    virtual void operator()(const Event<PositionUpdate>&) = 0;
+    virtual void operator()(const Event<FundsUpdate>&) = 0;
   };
 
   virtual ~Generator() {}

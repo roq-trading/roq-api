@@ -1,0 +1,7 @@
+{
+"name": "Connection",
+"type": "message",
+"values": [
+	{ "name": "status", "type": "ConnectionStatus" }
+]
+}

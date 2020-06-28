@@ -1,5 +1,8 @@
 AUTOGEN_JSON = \
+        batch_begin.json \
+        batch_end.json \
         cancel_order.json \
+        connection.json \
         connection_status.json \
         create_order.json \
         daily_statistics.json \
@@ -35,6 +38,7 @@ AUTOGEN_JSON = \
         security_type.json \
         session_statistics.json \
         side.json \
+        start.json \
         statistics.json \
         statistics_type.json \
         statistics_update.json \

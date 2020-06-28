@@ -22,14 +22,13 @@ namespace client {
  */
 class ROQ_PUBLIC Handler {
  public:
-  virtual void operator()(const StartEvent&) {}
-  virtual void operator()(const StopEvent&) {}
-  virtual void operator()(const TimerEvent&) {}
+   // host
+  virtual void operator()(const Event<Start>&) {}
+  virtual void operator()(const Event<Stop>&) {}
+  virtual void operator()(const Event<Timer>&) {}
+  virtual void operator()(const Event<Connection>&) {}
 
-  // connection
-  virtual void operator()(const Event<ConnectionStatus>&) {}
-
-  // messages
+  // network
   virtual void operator()(const Event<BatchBegin>&) {}
   virtual void operator()(const Event<BatchEnd>&) {}
   virtual void operator()(const Event<DownloadBegin>&) {}

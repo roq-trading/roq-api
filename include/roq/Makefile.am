@@ -2,7 +2,10 @@ SUBDIRS = \
 	metrics \
 	client
 AUTOGEN_H = \
+        batch_begin.h \
+        batch_end.h \
         cancel_order.h \
+        connection.h \
         connection_status.h \
         create_order.h \
         daily_statistics.h \
@@ -38,10 +41,13 @@ AUTOGEN_H = \
         security_type.h \
         session_statistics.h \
         side.h \
+        start.h \
         statistics.h \
         statistics_type.h \
         statistics_update.h \
+        stop.h \
         time_in_force.h \
+        timer.h \
         top_of_book.h \
         trade.h \
         trade_summary.h \

@@ -10,6 +10,11 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
       Context& context) {
     return format_to(
         context.out(),
+{% if variables | length == 0 %}
+{%- raw %}
+        R"({{}})");
+{% endraw %}
+{% else %}
 {%- raw %}
         R"({{)"
 {% endraw %}
@@ -22,5 +27,6 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
 {% for variable in variables %}
         {{ variable.format_value }}{{ ',' if not loop.last else ');' }}
 {% endfor %}
+{% endif %}
   }
 };

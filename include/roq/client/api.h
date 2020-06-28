@@ -6,13 +6,7 @@
 
 // events
 
-#include "roq/client/batch_begin_event.h"
-#include "roq/client/batch_end_event.h"
-#include "roq/client/connection_status_event.h"
 #include "roq/client/custom_message.h"
-#include "roq/client/start_event.h"
-#include "roq/client/stop_event.h"
-#include "roq/client/timer_event.h"
 
 // configuration
 

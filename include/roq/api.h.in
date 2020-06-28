@@ -37,8 +37,17 @@
 
 #include "roq/message_info.h"
 
+// control (autogen)
+
+#include "roq/connection.h"
+#include "roq/start.h"
+#include "roq/stop.h"
+#include "roq/timer.h"
+
 // messages (autogen)
 
+#include "roq/batch_begin.h"
+#include "roq/batch_end.h"
 #include "roq/cancel_order.h"
 #include "roq/create_order.h"
 #include "roq/daily_statistics.h"
@@ -80,6 +89,8 @@
 #define ROQ_VERSION "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
 
 namespace roq {
+
+constexpr uint8_t SOURCE_SELF = 255;
 
 // check that multiples can be cache aligned
 

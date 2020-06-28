@@ -106,11 +106,11 @@ union Message {
   OrderManagerStatus,
   ReferenceData,
   MarketStatus,
+  TopOfBook,
   MarketByPriceUpdate,
   MarketByOrderUpdate,
   TradeSummary,
-  SessionStatistics,
-  DailyStatistics,
+  StatisticsUpdate,
   CreateOrder,
   ModifyOrder,
   CancelOrder,
@@ -119,8 +119,9 @@ union Message {
   TradeUpdate,
   PositionUpdate,
   FundsUpdate,
-  TopOfBook,
-  StatisticsUpdate
+  // --- deprecated ---
+  SessionStatistics,
+  DailyStatistics
 }
 
 table SourceInfo {

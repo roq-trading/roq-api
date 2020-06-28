@@ -22,7 +22,7 @@ namespace client {
  */
 class ROQ_PUBLIC Handler {
  public:
-   // host
+  // host
   virtual void operator()(const Event<Start>&) {}
   virtual void operator()(const Event<Stop>&) {}
   virtual void operator()(const Event<Timer>&) {}
@@ -43,6 +43,7 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<TradeSummary>&) {}
   virtual void operator()(const Event<SessionStatistics>&) {}
   virtual void operator()(const Event<DailyStatistics>&) {}
+  virtual void operator()(const Event<StatisticsUpdate>&) {}
   virtual void operator()(const Event<OrderAck>&) {}
   virtual void operator()(const Event<OrderUpdate>&) {}
   virtual void operator()(const Event<TradeUpdate>&) {}

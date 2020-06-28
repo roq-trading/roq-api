@@ -25,6 +25,7 @@ class ROQ_PUBLIC Matcher {
     virtual void operator()(const Event<TradeSummary>&) = 0;
     virtual void operator()(const Event<SessionStatistics>&) = 0;
     virtual void operator()(const Event<DailyStatistics>&) = 0;
+    virtual void operator()(const Event<StatisticsUpdate>&) = 0;
     virtual void operator()(const Event<OrderAck>&) = 0;
     virtual void operator()(const Event<OrderUpdate>&) = 0;
     virtual void operator()(const Event<TradeUpdate>&) = 0;
@@ -44,6 +45,7 @@ class ROQ_PUBLIC Matcher {
   virtual void operator()(const Event<MarketStatus>&) = 0;
   virtual void operator()(const Event<SessionStatistics>&) = 0;
   virtual void operator()(const Event<DailyStatistics>&) = 0;
+  virtual void operator()(const Event<StatisticsUpdate>&) = 0;
   virtual void operator()(const Event<TopOfBook>&) = 0;
   virtual void operator()(const Event<MarketByPriceUpdate>&) = 0;
   virtual void operator()(const Event<MarketByOrderUpdate>&) = 0;

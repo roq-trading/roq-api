@@ -8,7 +8,6 @@ AUTOGEN_H = \
         connection.h \
         connection_status.h \
         create_order.h \
-        daily_statistics.h \
         download_begin.h \
         download_end.h \
         error.h \
@@ -39,7 +38,6 @@ AUTOGEN_H = \
         request_status.h \
         request_type.h \
         security_type.h \
-        session_statistics.h \
         side.h \
         start.h \
         statistics.h \

@@ -41,8 +41,6 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<MarketByPriceUpdate>&) {}
   virtual void operator()(const Event<MarketByOrderUpdate>&) {}
   virtual void operator()(const Event<TradeSummary>&) {}
-  virtual void operator()(const Event<SessionStatistics>&) {}
-  virtual void operator()(const Event<DailyStatistics>&) {}
   virtual void operator()(const Event<StatisticsUpdate>&) {}
   virtual void operator()(const Event<OrderAck>&) {}
   virtual void operator()(const Event<OrderUpdate>&) {}

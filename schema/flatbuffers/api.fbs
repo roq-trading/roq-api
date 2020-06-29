@@ -33,7 +33,6 @@ include "trade.fbs";
 
 include "cancel_order.fbs";
 include "create_order.fbs";
-include "daily_statistics.fbs";
 include "download_begin.fbs";
 include "download_end.fbs";
 include "funds_update.fbs";
@@ -47,7 +46,6 @@ include "order_manager_status.fbs";
 include "order_update.fbs";
 include "position_update.fbs";
 include "reference_data.fbs";
-include "session_statistics.fbs";
 include "statistics_update.fbs";
 include "top_of_book.fbs";
 include "trade_summary.fbs";
@@ -118,10 +116,7 @@ union Message {
   OrderUpdate,
   TradeUpdate,
   PositionUpdate,
-  FundsUpdate,
-  // --- deprecated ---
-  SessionStatistics,
-  DailyStatistics
+  FundsUpdate
 }
 
 table SourceInfo {

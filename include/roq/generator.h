@@ -22,8 +22,6 @@ class ROQ_PUBLIC Generator {
     virtual void operator()(const Event<MarketByPriceUpdate>&) = 0;
     virtual void operator()(const Event<MarketByOrderUpdate>&) = 0;
     virtual void operator()(const Event<TradeSummary>&) = 0;
-    virtual void operator()(const Event<SessionStatistics>&) = 0;
-    virtual void operator()(const Event<DailyStatistics>&) = 0;
     virtual void operator()(const Event<StatisticsUpdate>&) = 0;
     virtual void operator()(const Event<PositionUpdate>&) = 0;
     virtual void operator()(const Event<FundsUpdate>&) = 0;

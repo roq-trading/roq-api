@@ -2,7 +2,6 @@ AUTOGEN_FBS = \
         cancel_order.fbs \
         connection_status.fbs \
         create_order.fbs \
-        daily_statistics.fbs \
         download_begin.fbs \
         download_end.fbs \
         error.fbs \
@@ -32,7 +31,6 @@ AUTOGEN_FBS = \
         request_status.fbs \
         request_type.fbs \
         security_type.fbs \
-        session_statistics.fbs \
         side.fbs \
         statistics.fbs \
         statistics_type.fbs \

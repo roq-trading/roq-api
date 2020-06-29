@@ -5,7 +5,6 @@ AUTOGEN_JSON = \
         connection.json \
         connection_status.json \
         create_order.json \
-        daily_statistics.json \
         download_begin.json \
         download_end.json \
         error.json \
@@ -36,7 +35,6 @@ AUTOGEN_JSON = \
         request_status.json \
         request_type.json \
         security_type.json \
-        session_statistics.json \
         side.json \
         start.json \
         statistics.json \

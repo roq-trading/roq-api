@@ -4,6 +4,18 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.4.0 &ndash; 2020-06-30
+
+**Note!**
+*FlatBuffers has been introduced to compliment the C++ interface for
+non-latency sensitive use-cases.
+Event-logs are now using FlatBuffers for all encoding.
+This allows for backwards compatibility and thereby dropping the
+requirement for decoding to be binary compatible with encoding.
+An upcoming release will introduce a FlatBuffers interface into
+the gateways thereby allowing other languages than C++ languages
+to communicate with the gateway*.
+
 ### Added
 
 * FlatBuffers schema (experimental!)

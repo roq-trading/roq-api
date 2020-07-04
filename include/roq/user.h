@@ -42,15 +42,14 @@ struct fmt::formatter<roq::User> {
   auto format(const roq::User& value, T& ctx) {
     return format_to(
         ctx.out(),
-        FMT_STRING(
-            R"({{)"
-            R"(id={}, )"
-            R"(name="{}", )"
-            R"(password=***, )"
-            R"(accounts=[{}], )"
-            R"(symbols=..., )"
-            R"(limits=...)"
-            R"(}})"),
+        R"({{)"
+        R"(id={}, )"
+        R"(name="{}", )"
+        R"(password=***, )"
+        R"(accounts=[{}], )"
+        R"(symbols=..., )"
+        R"(limits=...)"
+        R"(}})",
         value.id,
         value.name,
         fmt::join(

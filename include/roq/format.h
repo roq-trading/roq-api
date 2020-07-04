@@ -32,15 +32,13 @@ struct fmt::formatter<std::set<std::string> > {
     if (value.empty())
       return format_to(
           ctx.out(),
-          FMT_STRING(
-              R"({{)"
-              R"(}})"));
+          R"({{)"
+          R"(}})");
     return format_to(
         ctx.out(),
-        FMT_STRING(
-            R"({{)"
-            R"("{}")"
-            R"(}})"),
+        R"({{)"
+        R"("{}")"
+        R"(}})",
         fmt::join(
             value,
             R"(", ")"));
@@ -60,7 +58,7 @@ struct fmt::formatter<std::pair<const std::string, std::set<std::string> > > {
       T& ctx) {
     return format_to(
         ctx.out(),
-        FMT_STRING(R"("{}"={})"),
+        R"("{}"={})",
         value.first,
         value.second);
   }
@@ -79,10 +77,9 @@ struct fmt::formatter<std::map<std::string, std::set<std::string> > > {
       T& ctx) {
     return format_to(
         ctx.out(),
-        FMT_STRING(
-            R"({{)"
-            R"({})"
-            R"(}})"),
+        R"({{)"
+        R"({})"
+        R"(}})",
         fmt::join(
             value.begin(),
             value.end(),

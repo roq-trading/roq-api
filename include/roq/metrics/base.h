@@ -18,7 +18,7 @@ struct ROQ_PUBLIC Base {
       const std::string_view& label_name_0,
       const std::string_view& label_value_0) {
     return fmt::format(
-      FMT_STRING(R"({}="{}")"),
+      R"({}="{}")",
       label_name_0,
       label_value_0);
   }
@@ -28,7 +28,7 @@ struct ROQ_PUBLIC Base {
       const std::string_view& label_name_1,
       const std::string_view& label_value_1) {
   return fmt::format(
-      FMT_STRING(R"({}="{}", {}="{}")"),
+      R"({}="{}", {}="{}")",
       label_name_0,
       label_value_0,
       label_name_1,
@@ -42,7 +42,7 @@ struct ROQ_PUBLIC Base {
       const std::string_view& label_name_2,
       const std::string_view& label_value_2) {
   return fmt::format(
-      FMT_STRING(R"({}="{}", {}="{}", {}="{}")"),
+      R"({}="{}", {}="{}", {}="{}")",
       label_name_0,
       label_value_0,
       label_name_1,

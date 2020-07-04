@@ -38,11 +38,10 @@ struct fmt::formatter<roq::Subscribe> {
   auto format(const roq::Subscribe& value, T& ctx) {
     return format_to(
         ctx.out(),
-        FMT_STRING(
-            R"({{)"
-            R"(accounts={}, )"
-            R"(symbols_by_exchange={})"
-            R"(}})"),
+        R"({{)"
+        R"(accounts={}, )"
+        R"(symbols_by_exchange={})"
+        R"(}})",
         value.accounts,
         value.symbols_by_exchange);
   }
@@ -58,11 +57,10 @@ struct fmt::formatter<roq::Event<roq::Subscribe> > {
   auto format(const roq::Event<roq::Subscribe>& event, T& ctx) {
     return format_to(
         ctx.out(),
-        FMT_STRING(
-            R"({{)"
-            R"(message_info={}, )"
-            R"(subscribe={})"
-            R"(}})"),
+        R"({{)"
+        R"(message_info={}, )"
+        R"(subscribe={})"
+        R"(}})",
         event.message_info,
         event.value);
   }

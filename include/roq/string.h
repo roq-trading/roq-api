@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <array>
+#include <string>
 #include <string_view>
 
 #include "roq/compat.h"
@@ -25,11 +26,20 @@ class ROQ_PACKED string final {
     copy(text);
   }
 
+  string(const std::string& text) {  // NOLINT (allow implicit)
+    copy(text);
+  }
+
   string(const value_type *text)  // NOLINT (allow implicit)
       : string(std::string_view(text)) {
   }
 
   string& operator=(const std::string_view& text) {
+    copy(text);
+    return *this;
+  }
+
+  string& operator=(const std::string& text) {
     copy(text);
     return *this;
   }

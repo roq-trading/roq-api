@@ -97,7 +97,7 @@ class ROQ_PACKED string final {
 
   void copy(const std::string_view& text) {
     auto length = text.length();
-    if (ROQ_PREDICT_TRUE(length <= size())) {
+    if (ROQ_LIKELY(length <= size())) {
       auto last = std::copy(
           text.begin(),
           text.end(),

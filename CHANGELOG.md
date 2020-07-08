@@ -6,6 +6,8 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Replace ROQ\_PREDICT\_{TRUE,FALSE} with ROQ\_LIKELY and
+  ROQ\_UNLIKLEY to better match c++20 naming
 * Removed (again) the use of FMT\_STRING since it will not be
   compatible with c++20
 

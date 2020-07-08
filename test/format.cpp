@@ -2,7 +2,9 @@
 
 #include <gtest/gtest.h>
 
-#include "roq/format.h"
+#include "roq/connection_status.h"
+#include "roq/market_by_price_update.h"
+#include "roq/subscribe.h"
 
 using namespace roq;  // NOLINT
 using namespace fmt;  // NOLINT
@@ -16,7 +18,6 @@ TEST(format, ConnectionStatus) {
   }
 }
 
-/*
 TEST(format, subscribe) {
   Subscribe subscribe {
     .accounts = {
@@ -27,14 +28,15 @@ TEST(format, subscribe) {
       {"abc", {"123", "234"}},
     }
   };
-  auto xxx = fmt::format("{}", subscribe);
-  EXPECT_GT(xxx.length(), size_t{0});
+  auto result = fmt::format("{}", subscribe);
+  EXPECT_GT(result.length(), size_t{0});
   EXPECT_EQ(
-      xxx,
-      "{accounts={\"abc\", \"test\"}, "
-      "symbols_by_exchange={\"abc\"={\"123\", \"234\"}}}");
+      result,
+      R"({)"
+      R"(accounts={"abc", "test"}, )"
+      R"(symbols_by_exchange={("abc", {"123", "234"})})"
+      R"(})");
 }
-*/
 
 TEST(format, market_by_price) {
   roq::MBPUpdate bids[] = {
@@ -65,6 +67,16 @@ TEST(format, market_by_price) {
     .snapshot = true,
     .exchange_time_utc = {}
   };
-  auto xxx = fmt::format("{}", market_by_price);
-  EXPECT_GT(xxx.length(), size_t{0});
+  auto result = fmt::format("{}", market_by_price);
+  EXPECT_GT(result.length(), size_t{0});
+  EXPECT_EQ(
+      result,
+      R"({)"
+      R"(exchange="deribit", )"
+      R"(symbol="BTC-27DEC19", )"
+      R"(bids=[{price=1.0, quantity=2.0}, {price=2.0, quantity=4.0}, {price=3.0, quantity=8.0}, {price=4.0, quantity=10.0}, {price=5.0, quantity=12.0}], )"
+      R"(asks=[{price=1.0, quantity=2.0}, {price=2.0, quantity=4.0}, {price=3.0, quantity=8.0}, {price=4.0, quantity=10.0}, {price=5.0, quantity=12.0}], )"
+      R"(snapshot=true, )"
+      R"(exchange_time_utc=0ns)"
+      R"(})");
 }

@@ -11,6 +11,10 @@ All notable changes will be documented in this file.
 * Removed (again) the use of FMT\_STRING since it will not be
   compatible with c++20
 
+### Removed
+
+* `roq/format.h`
+
 ## 0.4.0 &ndash; 2020-06-30
 
 **Note!**

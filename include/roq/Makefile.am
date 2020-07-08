@@ -63,7 +63,6 @@ pkginclude_HEADERS = \
 	compat.h \
 	exceptions.h \
 	event.h \
-	format.h \
 	generator.h \
 	matcher.h \
 	metrics.h \

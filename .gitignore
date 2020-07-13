@@ -1,17 +1,25 @@
+# vim
+
 *.swp
+*.swo
+
+
+# autotools
 
 Makefile
 Makefile.in
 aclocal.m4
 config.status
 configure
+config.log
 libtool
-autom4te.cache/
-m4/
-build-aux/
 
 .deps/
 .libs/
+
+autom4te.cache/
+m4/
+build-aux/
 
 *.Plo
 *.la
@@ -20,21 +28,32 @@ build-aux/
 
 *.tar.*
 
-*_generated.h
 
-*.capnp.h
-*.capnp.c++
+# cmake
+
+CMakeCache.txt
+
+build/
+
+
+# gtest
 
 *.log
 *.trs
 
-roq-api.pc
 
-include/roq/api.h
-
-test/roq-api-test
+# doxygen
 
 doxygen/Doxyfile
 doxygen/doxygen-build.stamp
 doxygen/html
 doxygen/xml
+
+
+# project specific
+
+roq-api.pc
+
+include/roq/api.h
+
+roq-api-test

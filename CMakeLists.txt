@@ -72,14 +72,15 @@ add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-autogen-headers)
 
 # test
 
-option(ROQ_API_TEST "Enable test" OFF)
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  include(CTest)
+endif()
 
-if(ROQ_API_TEST)
+if(BUILD_TESTING) 
   include(GoogleTest)
   add_subdirectory("${CMAKE_SOURCE_DIR}/third_party/googletest" EXCLUDE_FROM_ALL)
-  enable_testing()
   add_subdirectory("${CMAKE_SOURCE_DIR}/test")
-endif(ROQ_API_TEST)
+endif(BUILD_TESTING)
 
 # doxygen
 

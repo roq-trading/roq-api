@@ -2,7 +2,7 @@
 
 set -e
 
-ROQ_USE_CMAKE=1
+# ROQ_USE_CMAKE=1
 
 env
 

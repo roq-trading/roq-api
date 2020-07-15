@@ -84,14 +84,14 @@ endif(BUILD_TESTING)
 
 # doxygen
 
-option(ROQ_API_DOXYGEN "Enable doxygen" OFF)
+option(BUILD_DOCS "Enable doxygen" OFF)
 
-if(ROQ_API_DOXYGEN)
+if(BUILD_DOCS)
   find_package(Doxygen)
   add_subdirectory("${CMAKE_SOURCE_DIR}/doxygen")
   add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-doxygen)
   add_dependencies(${PROJECT_NAME}-doxygen ${PROJECT_NAME}-autogen-headers)
-endif(ROQ_API_DOXYGEN)
+endif(BUILD_DOCS)
 
 # install
 

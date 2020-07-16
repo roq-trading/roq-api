@@ -32,6 +32,17 @@ build-aux/
 # cmake
 
 CMakeCache.txt
+DartConfiguration.tcl
+
+CMakeFiles/
+Testing/
+lib/
+
+*.cmake
+
+*.a
+*.o
+*.so
 
 build/
 

@@ -1,0 +1,6 @@
+assets/* linguist-documentation
+cmake/* linguist-vendored
+include/* linguist-vendored=false
+m4/* linguist-vendored
+test/* linguist-vendored=false
+third_party/* linguist-vendored

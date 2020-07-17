@@ -4,8 +4,16 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.4.1 &ndash; 2020-07-17
+
+**Note!**
+*CMake is now the default build system for all Roq solutions.
+This makes it significantly easier to integrate with other CMake based
+solutions*.
+
 ### Changed
 
+* CMake is now the default build system for all Roq solutions
 * Replace ROQ\_PREDICT\_{TRUE,FALSE} with ROQ\_LIKELY and
   ROQ\_UNLIKLEY to better match c++20 naming
 * Removed (again) the use of FMT\_STRING since it will not be

@@ -19,10 +19,7 @@ build:
 requirements:
   build:
     - {{ compiler('cxx') }}
-    - autoconf    # [unix]
-    - automake    # [unix]
-    - libtool     # [unix]
-    - pkg-config  # [unix]
+    - cmake
     - make
   host:
     - roq-oss-fmt

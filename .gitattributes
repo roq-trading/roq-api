@@ -3,9 +3,9 @@ cmake/* linguist-vendored
 m4/* linguist-vendored
 third_party/* linguist-vendored
 
+doxygen/Doxyfile.cmake.in linguist-vendored
+
 include/* linguist-vendored=false
 test/* linguist-vendored=false
 
-*.in.h linguist-language=C++
-
-schema/cpp/*.json linguist-language=C++
+*.h.in linguist-language=C++

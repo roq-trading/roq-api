@@ -1,4 +1,4 @@
-set(TARGET_NAME "${PROJECT_NAME}-autogen-headers")
+set(TARGET_NAME "${PROJECT_NAME}-schema-cpp")
 
 set(SOURCES
   batch_begin.json
@@ -56,6 +56,7 @@ set(HEADER_DIR "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}/roq")
 
 set(AUTOGEN_PY "${CMAKE_SOURCE_DIR}/scripts/autogen/main.py")
 
+unset(AUTOGEN_HEADERS)
 foreach(source ${SOURCES})
   get_filename_component(name ${source} NAME_WE)
   set(target "${HEADER_DIR}/${name}.h")

@@ -1,3 +1,5 @@
+set(TARGET_NAME "${PROJECT_NAME}-schema-fbs")
+
 set(SOURCES
   api.fbs
   cancel_order.fbs
@@ -45,4 +47,36 @@ set(SOURCES
 )
 
 install(FILES ${SOURCES}
-  DESTINATION "${CMAKE_INSTALL_DATADIR}/roq/flatbuffers")
+  DESTINATION "${CMAKE_INSTALL_DATADIR}/roq/schema/fbs")
+
+# auto-generated c++ interface
+
+set(FBS_API_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/api.fbs")
+
+set(TARGET_DIR "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}/roq/fbs")
+
+file(MAKE_DIRECTORY "${TARGET_DIR}")
+
+set(CPP_API_TARGET "${TARGET_DIR}/api.h")
+
+add_custom_command(
+  OUTPUT "${CPP_API_TARGET}"
+  COMMAND "${FLATBUFFERS_COMPILER}"
+  ARGS --binary
+  ARGS --gen-all
+  ARGS --filename-suffix ""
+  ARGS --cpp --cpp-std c++17
+  ARGS "${FBS_API_SOURCE}"
+  WORKING_DIRECTORY "${TARGET_DIR}"
+  VERBATIM
+  DEPENDS "${FBS_API_SOURCE}")
+
+# dependency
+
+add_custom_target(${TARGET_NAME} ALL
+  DEPENDS "${CPP_API_TARGET}")
+
+# install
+
+install(FILES "${CPP_API_TARGET}"
+  DESTINATION "include/roq/fbs")

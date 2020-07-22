@@ -1,1 +1,1 @@
-SUBDIRS = cpp flatbuffers
+SUBDIRS = cpp fbs

@@ -1,6 +1,7 @@
 SUBDIRS = \
 	metrics \
-	client
+	client \
+	fbs
 AUTOGEN_H = \
         batch_begin.h \
         batch_end.h \

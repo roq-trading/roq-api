@@ -14,11 +14,12 @@ AC_CONFIG_FILES([
  Makefile
  schema/Makefile
  schema/cpp/Makefile
- schema/flatbuffers/Makefile
+ schema/fbs/Makefile
  include/Makefile
  include/roq/Makefile
  include/roq/client/Makefile
  include/roq/metrics/Makefile
+ include/roq/fbs/Makefile
  test/Makefile
 ])
 AC_CONFIG_FILES([include/roq/api.h])
@@ -27,7 +28,7 @@ AC_CONFIG_FILES([roq-api.pc])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 
 AM_PROG_AR
-LT_INIT([disable-dynamic])
+LT_INIT([disable-shared])
 AC_PROG_CXX
 AC_LANG([C++])
 

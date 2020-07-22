@@ -1,0 +1,8 @@
+build/
+dist/
+*.egg
+.eggs/
+*.egg-info/
+__pycache__
+
+src/roq/fbs

@@ -34,18 +34,18 @@ find_package(Flatbuffers REQUIRED)
 find_package(PythonInterp REQUIRED)
 find_package(fmt REQUIRED)
 
+find_program(FLATBUFFERS_COMPILER flatc REQUIRED)
+
 # include
 
 include_directories(
   "${CMAKE_SOURCE_DIR}/include"
-  "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}")  # autogen
-
-# ensure required output directories exist
-
-add_custom_target(ensure-include-directory-exists ALL
-  COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_INSTALL_INCLUDEDIR}/roq")
+  "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}")  # auto-generated
 
 # configure
+
+file(MAKE_DIRECTORY
+  "${CMAKE_INSTALL_INCLUDEDIR}/roq")
 
 set(ROQ_API_H "${CMAKE_INSTALL_INCLUDEDIR}/roq/api.h")
 
@@ -65,13 +65,23 @@ install(DIRECTORY "${CMAKE_SOURCE_DIR}/include/roq/"
 # sub-projects
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/schema/cpp")
-add_subdirectory("${CMAKE_SOURCE_DIR}/schema/flatbuffers")
+add_subdirectory("${CMAKE_SOURCE_DIR}/schema/fbs")
 
 # project
 
 add_library(${PROJECT_NAME} INTERFACE)
 
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-autogen-headers)
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-cpp)
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-fbs)
+
+# python
+
+option(BUILD_PYTHON "Enable python" OFF)
+
+if(BUILD_PYTHON)
+  add_subdirectory("${CMAKE_SOURCE_DIR}/python")
+  add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-python)
+endif(BUILD_PYTHON)
 
 # test
 
@@ -93,7 +103,7 @@ if(BUILD_DOCS)
   find_package(Doxygen)
   add_subdirectory("${CMAKE_SOURCE_DIR}/doxygen")
   add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-doxygen)
-  add_dependencies(${PROJECT_NAME}-doxygen ${PROJECT_NAME}-autogen-headers)
+  add_dependencies(${PROJECT_NAME}-doxygen ${PROJECT_NAME}-schema-cpp)
 endif(BUILD_DOCS)
 
 # install

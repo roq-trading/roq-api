@@ -6,6 +6,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 include(GetGitRepoVersion)
 
+# project
+
 project(roq-api VERSION ${GIT_REPO_VERSION})
 
 # conda
@@ -70,7 +72,8 @@ add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-fbs)
 
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/include/roq/"
   DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/roq"
-  FILES_MATCHING PATTERN "*.h")
+  FILES_MATCHING PATTERN "*.h"
+  PATTERN "CMakeFiles" EXCLUDE)
 
 # python
 

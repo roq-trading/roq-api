@@ -36,36 +36,25 @@ find_package(fmt REQUIRED)
 
 find_program(FLATBUFFERS_COMPILER flatc REQUIRED)
 
-# include
+# includes
 
 include_directories(
   "${CMAKE_SOURCE_DIR}/include"
   "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}")  # auto-generated
 
-# configure
+# common
 
-file(MAKE_DIRECTORY
-  "${CMAKE_INSTALL_INCLUDEDIR}/roq")
+set(SCHEMA_DIR "${CMAKE_SOURCE_DIR}/schema")
 
-set(ROQ_API_H "${CMAKE_INSTALL_INCLUDEDIR}/roq/api.h")
-
-configure_file("${CMAKE_SOURCE_DIR}/include/roq/api.h.in"
-  "${ROQ_API_H}"
-  @ONLY)
-
-install(FILES "${CMAKE_BINARY_DIR}/${ROQ_API_H}"
-  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/roq")
-
-# headers (public)
-
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/include/roq/"
-  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/roq"
-  FILES_MATCHING PATTERN "*.h")
+set(AUTOGEN_PY "${CMAKE_SOURCE_DIR}/scripts/autogen/main.py")
 
 # sub-projects
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/schema/cpp")
 add_subdirectory("${CMAKE_SOURCE_DIR}/schema/fbs")
+
+add_subdirectory("${CMAKE_SOURCE_DIR}/include/roq")
+add_subdirectory("${CMAKE_SOURCE_DIR}/include/roq/fbs")
 
 # project
 
@@ -73,6 +62,15 @@ add_library(${PROJECT_NAME} INTERFACE)
 
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-cpp)
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-fbs)
+
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-cpp)
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-fbs)
+
+# install (public headers)
+
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/include/roq/"
+  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/roq"
+  FILES_MATCHING PATTERN "*.h")
 
 # python
 
@@ -103,24 +101,24 @@ if(BUILD_DOCS)
   find_package(Doxygen)
   add_subdirectory("${CMAKE_SOURCE_DIR}/doxygen")
   add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-doxygen)
-  add_dependencies(${PROJECT_NAME}-doxygen ${PROJECT_NAME}-schema-cpp)
+  add_dependencies(${PROJECT_NAME}-doxygen ${PROJECT_NAME}-include-cpp)
 endif(BUILD_DOCS)
 
-# install
+# install (cmake)
 
 install(TARGETS ${PROJECT_NAME}
   EXPORT ${PROJECT_NAME}-config
 )
 
-set(ROQ_API_CMAKE_DIR
+set(CMAKE_LIB_DIR
   "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
 
 export(TARGETS ${PROJECT_NAME}
   NAMESPACE ${PROJECT_NAME}::
-  FILE "${ROQ_API_CMAKE_DIR}/${PROJECT_NAME}-config.cmake"
+  FILE "${CMAKE_LIB_DIR}/${PROJECT_NAME}-config.cmake"
 )
 
 install(EXPORT ${PROJECT_NAME}-config
   NAMESPACE ${PROJECT_NAME}::
-  DESTINATION "${ROQ_API_CMAKE_DIR}"
+  DESTINATION "${CMAKE_LIB_DIR}"
 )

@@ -1,10 +1,9 @@
 set(TARGET_NAME "${PROJECT_NAME}-python")
 
-# note! setup.py doesn't support out-of-tree
-
+# note! setup.py doesn't do out-of-tree ==> must use SOURCE_DIR
 set(MODULE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/roq")
 
-# auto-generated python interface
+# auto-generate
 
 file(MAKE_DIRECTORY "${MODULE_DIR}/fbs")
 

@@ -1,3 +1,4 @@
+api.h
 batch_begin.h
 batch_end.h
 cancel_order.h

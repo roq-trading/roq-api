@@ -1,11 +1,9 @@
 # Copyright (c) 2017-2020, Hans Erik Thrane
 
-""" test module """
+""" Test that import works """
 
-# import pytest
-
-def test_simple():
-    """ simple test """
+def test_import_simple():
+    """ Simplest test case """
     try:
         import roq
         print(dir(roq))
@@ -26,4 +24,8 @@ def test_simple():
         print(dir(roq.client.Trading))
     except ImportError:
         assert False
-    assert False
+    try:
+        import roq.client.Simulation
+        print(dir(roq.client.Trading))
+    except ImportError:
+        assert False

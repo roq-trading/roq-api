@@ -1,9 +1,8 @@
 assets/* linguist-documentation
 cmake/* linguist-vendored
-m4/* linguist-vendored
 third_party/* linguist-vendored
 
-doxygen/Doxyfile.cmake.in linguist-vendored
+doxygen/Doxyfile.in linguist-vendored
 
 include/* linguist-vendored=false
 test/* linguist-vendored=false

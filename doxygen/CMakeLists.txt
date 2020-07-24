@@ -7,7 +7,7 @@ set(TARGET_DIR "${CMAKE_INSTALL_DATADIR}/doc/${PROJECT_NAME}")
 set(DOXYFILE "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
 
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.cmake.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in"
   "${DOXYFILE}" @ONLY)
 
 # target

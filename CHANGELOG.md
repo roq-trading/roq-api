@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Removed
+
+* Automake support
+
 ## 0.4.1 &ndash; 2020-07-17
 
 **Note!**

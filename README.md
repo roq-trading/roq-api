@@ -70,7 +70,10 @@ make test
 ## Using
 
 > Please note that many of the interfaces are being auto-generated and
-> therefore only accessible once the project has been built or installed.
+> the source files are therefore only accessible once the project has
+> been built or installed.
+
+Documentation can be found [here](https://roq-trading.com/docs).
 
 ### c++
 

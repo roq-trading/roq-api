@@ -5,22 +5,21 @@ The client interface used to communicate with market gateways and simulators.
 
 Features
 
-* Open sourced interface (no need to sign an NDA).
+* Open source interface (no need to sign an NDA to access or use).
 * Permissive license (anyone is free to copy and use for whatever purpose).
 * Unified interface for all markets.
-* Design is strongly inspired by standards (e.g. FIX) and implementations used
-  by major exchanges (e.g. CME).
+* Design is strongly inspired by standards and specific implementations used
+  by major exchanges.
 * Allocation-free message decoding supported.
-* Auto-generated code.
-* Strongly typed events.
-* fmt support.
-* c++ interface for ultra low latency.
-* flatbuffers interface for non latency sensitive applications.
-* fmt support (c++).
+* Auto-generated code based on schemas.
+* Strongly typed messages (events).
+* Asynchronous interfaces and implementations.
+* c++ for ultra low latency.
+* flatbuffers when latency is not a concern.
 
-> Note! This project does **not** contain the c++ implementation of the
-> interfaces. The primary reason is that the implementation of the ultra low
-> latency communication protocol is closed source.
+> Note! This project does **not** contain the implementation of the c++
+> interfaces. This is due to the ultra low latency communication protocol
+> being closed source.
 
 Direct third-party dependencies
 
@@ -36,9 +35,6 @@ Direct third-party dependencies
 ## Prerequisites
 
 The project is designed to be compatible with the conda package manager.
-
-This is one way to create a conda environment and install the required
-packages
 
 ```bash
 wget -N https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -73,9 +69,13 @@ make test
 
 ## Using
 
+> Please note that many of the interfaces are being auto-generated and
+> therefore only accessible once the project has been built or installed.
+
 ### c++
 
-Using the c++ interface requires a closed source implementation
+The c++ interface is designed for ultra low latency and requires a closed
+source implementation
 
 ```bash
 conda install -y --channel https://roq-trading.com/conda/stable \
@@ -84,19 +84,25 @@ conda install -y --channel https://roq-trading.com/conda/stable \
 
 Samples can be found [here](https://github.com/roq-trading/roq-samples).
 
+![c++ design](https://roq-trading.com/assets/roq-api-cpp-design.png)
+
 ### flatbuffers
 
-Clients can use the flatbuffers interface when latency is not a concern.
-The flatbuffers project supports a variety of programming languages.
+The flatbuffers interface is useful when latency is not a concern or when
+other programming languages than c++ are required.
+Furthermore, the event log storage format uses flatbuffers and can be
+decoded from any language.
 
-Use cases
-
-* A non latency sensitive interface supported by all market gateways.
-* The storage format used when persisting an event log (tick data).
+![flatbuffers design](https://roq-trading.com/assets/roq-api-flatbuffers-design.png)
 
 #### [Python](./python)
 
 > WORK IN PROGRESS.
+
+
+## License
+
+The project is released under the terms of the MIT license.
 
 
 ## Links

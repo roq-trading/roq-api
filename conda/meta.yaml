@@ -29,7 +29,7 @@ about:
   home: https://roq-trading.com
   doc_url: https://roq-trading.com/docs
   dev_url: https://github.com/roq-trading
-  license: Commercial
-  license_family: PROPRIETARY
+  license: MIT
+  license_family: MIT
   license_file: LICENSE
   summary: Roq API Library

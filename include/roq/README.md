@@ -1,8 +1,7 @@
-If you're looking for "missing" headers:
+Please note that many headers are being auto-generated and only available after
+the project has been built.
 
-A schema is being used to auto-generate
-many interfaces, including parts of the C++
-API.
+Online reference documentation is available
+[here](https://roq-trading.com/docs/reference/cpp/roq-api/).
 
-You can find the `schema` directoy placed
-at the top level of this project.
+Schemas are available [here](../../schema/cpp/) and [here](../../schema/fbs/).

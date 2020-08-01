@@ -1,9 +1,14 @@
 # roq-api
 
+API for algorithmic and high-frequency trading (HFT).
 
-The client interface used to communicate with market gateways and simulators.
+> Note!
+> This project does **not** contain the implementation of the C++ interfaces.
+> This is due to the ultra low latency communication protocol being closed
+> source.
 
-Features
+
+## Features
 
 * Open source interface (no need to sign an NDA to access or use).
 * Permissive license (anyone is free to copy and use for whatever purpose).
@@ -14,22 +19,23 @@ Features
 * Auto-generated code based on schemas.
 * Strongly typed messages (events).
 * Asynchronous interfaces and implementations.
-* c++ for ultra low latency.
-* flatbuffers when latency is not a concern.
-
-> Note! This project does **not** contain the implementation of the c++
-> interfaces. This is due to the ultra low latency communication protocol
-> being closed source.
-
-Direct third-party dependencies
-
-* [flatbuffers](https://github.com/google/flatbuffers) (Apache 2.0 License)
-* [fmt](https://github.com/fmtlib/fmt) (MIT License)
+* C++ for ultra low latency.
+* FlatBuffers as an optional interface when latency is not a concern.
 
 
 ## Operating Systems
 
 * Linux
+
+
+## Library/Package Dependencies
+
+* [FlatBuffers](https://github.com/google/flatbuffers) (Apache 2.0 License)
+* [fmt](https://github.com/fmtlib/fmt) (MIT License)
+
+Optional
+
+* [Google Test](https://github.com/google/googletest) (BSD 3-Clause License)
 
 
 ## Prerequisites
@@ -75,9 +81,9 @@ make test
 
 Documentation can be found [here](https://roq-trading.com/docs).
 
-### c++
+### C++
 
-The c++ interface is designed for ultra low latency and requires a closed
+The C++ interface is designed for ultra low latency and requires a closed
 source implementation
 
 ```bash
@@ -87,16 +93,16 @@ conda install -y --channel https://roq-trading.com/conda/stable \
 
 Samples can be found [here](https://github.com/roq-trading/roq-samples).
 
-![c++ design](https://roq-trading.com/assets/roq-api-cpp-design.png)
+![C++ design](https://roq-trading.com/assets/roq-api-cpp-design.png)
 
-### flatbuffers
+### FlatBuffers
 
-The flatbuffers interface is useful when latency is not a concern or when
-other programming languages than c++ are required.
-Furthermore, the event log storage format uses flatbuffers and can be
+The FlatBuffers interface is useful when latency is not a concern or when
+other programming languages than C++ are required.
+Furthermore, the event log storage format uses FlatBuffers and can be
 decoded from any language.
 
-![flatbuffers design](https://roq-trading.com/assets/roq-api-flatbuffers-design.png)
+![FlatBuffers design](https://roq-trading.com/assets/roq-api-flatbuffers-design.png)
 
 #### [Python](./python)
 

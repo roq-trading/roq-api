@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `is_order_completed` and `is_request_completed` has replaced `is_completed`.
+
 ## 0.4.2 &ndash; 2020-07-27
 
 ### Removed

@@ -28,7 +28,7 @@ inline double price_from_side(
 
 // order status
 
-inline bool is_complete(const OrderStatus& status) {
+inline bool is_order_complete(const OrderStatus& status) {
   switch (status) {
     case OrderStatus::SENT:
     case OrderStatus::ACCEPTED:
@@ -47,7 +47,7 @@ inline bool is_complete(const OrderStatus& status) {
 
 // request status
 
-inline bool is_complete(const RequestStatus& status) {
+inline bool is_request_complete(const RequestStatus& status) {
   switch (status) {
     case RequestStatus::FORWARDED:
       return false;

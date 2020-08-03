@@ -96,6 +96,16 @@ class span final {
     return _array + _length;
   }
 
+  auto subspan(
+      size_t offset,
+      size_t count) const {
+    // according to standard: undefined behavior if offset/count is out of range
+    return span(_array + offset, count);
+  }
+  auto subspan(size_t offset) const {
+    return subspan(offset, _length - offset);
+  }
+
  private:
   pointer _array;
   size_t _length;

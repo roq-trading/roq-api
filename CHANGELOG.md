@@ -6,7 +6,13 @@ All notable changes will be documented in this file.
 
 ### Changed
 
-* `is_order_completed` and `is_request_completed` has replaced `is_completed`.
+* `client::Collector` interface now implements default handlers instead of
+   having pure virtual functions.
+* `is_{order|request}_completed` replacing `is_completed`.
+
+### Removed
+
+* `client::Collector::{extract|write}` were too specific.
 
 ## 0.4.2 &ndash; 2020-07-27
 

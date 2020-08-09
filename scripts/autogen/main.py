@@ -114,7 +114,7 @@ def _find_default_comment(name):
         commission_currency='Currency name',
         currency='Currency name',
         exchange='Exchange name',
-        exchange_timestamp_utc='Exchange timestamp (UTC)',
+        exchange_time_utc='Exchange timestamp (UTC)',
         external_order_id='External order identifier (as known to broker or exchange)',
         order_template='Order template (as known to the gateway)',
         request_id='Request identifier (as sent to broker or exchange)',

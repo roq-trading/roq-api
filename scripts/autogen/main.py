@@ -108,12 +108,27 @@ def _format_helper(char, string, array, safe_name, accessor):
         return ('[{}]', value)
     return ('{}', value)
 
+def _find_default_comment(name):
+    return dict(
+        account='Account name (as known to the gateway)',
+        commission_currency='Currency name',
+        currency='Currency name',
+        exchange='Exchange name',
+        exchange_timestamp_utc='Exchange timestamp (UTC)',
+        external_order_id='External order identifier (as known to broker or exchange)',
+        order_template='Order template (as known to the gateway)',
+        request_id='Request identifier (as sent to broker or exchange)',
+        settlement_currency='Currency name',
+        snapshot='Full update (possibly old) if true and otherwise an incremental update',
+        strike_currency='Currency name',
+        symbol='Symbol',
+    ).get(name, '')
 
 def _new_spec_helper(item):
     k = item['name']
     r = item.get('raw', k)
     t = item.get('type')
-    comment = item.get('comment', '')
+    comment = item.get('comment') or _find_default_comment(k)
     name = _safe_enum(snake_case(k))
     safe_name = _safe(name)
     char = t == 'char'

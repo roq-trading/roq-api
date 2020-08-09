@@ -20,7 +20,6 @@ class span final {
   using pointer = value_type*;
   using const_pointer = const value_type*;
   using iterator = pointer;
-  using const_iterator = const_pointer;
 
   span() noexcept
       : _array(nullptr),
@@ -82,23 +81,16 @@ class span final {
     return _array[index];
   }
 
-  iterator begin() {
+  iterator begin() const {
     return _array;
   }
-  iterator end() {
+  iterator end() const {
     return _array + _length;
   }
-
-  const_iterator begin() const {
+  iterator cbegin() const {
     return _array;
   }
-  const_iterator end() const {
-    return _array + _length;
-  }
-  const_iterator cbegin() const {
-    return _array;
-  }
-  const_iterator cend() const {
+  iterator cend() const {
     return _array + _length;
   }
 

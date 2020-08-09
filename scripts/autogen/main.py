@@ -113,6 +113,7 @@ def _new_spec_helper(item):
     k = item['name']
     r = item.get('raw', k)
     t = item.get('type')
+    comment = item.get('comment', '')
     name = _safe_enum(snake_case(k))
     safe_name = _safe(name)
     char = t == 'char'
@@ -129,6 +130,7 @@ def _new_spec_helper(item):
         raw_name=r,
         name=safe_name,
         enum_value=name.upper(),
+        comment=comment,
         is_variable=is_variable(t),
         tag=tag,
         custom=custom,

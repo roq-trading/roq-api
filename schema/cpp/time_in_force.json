@@ -3,9 +3,9 @@
 "type": "enum",
 "comment": "Enumeration of the time-in-force order attribute",
 "values": [
-	{ "name": "FOK" },
-	{ "name": "IOC" },
-	{ "name": "GFD" },
-	{ "name": "GTC" }
+	{ "name": "FOK", "comment": "Fill or Kill" },
+	{ "name": "IOC", "comment": "Immediate or Cancel" },
+	{ "name": "GFD", "comment": "Good for Day" },
+	{ "name": "GTC", "comment": "Good till Canceled" }
 ]
 }

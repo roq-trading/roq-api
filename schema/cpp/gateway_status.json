@@ -1,6 +1,7 @@
 {
 "name": "GatewayStatus",
 "type": "enum",
+"comment": "Enumeration of exchange connectivity status as seen from a gateway",
 "values": [
 	{ "name": "Disconnected" },
 	{ "name": "Connecting" },

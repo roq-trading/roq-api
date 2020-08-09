@@ -20,6 +20,7 @@
 
 {% include 'namespace_begin' %}
 
+//! {{ comment }}
 struct ROQ_PUBLIC {{ name }} final {
   {{ name }}() = default;
   {{ name }}({{name }}&&) = default;

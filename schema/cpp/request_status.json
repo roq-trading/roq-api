@@ -1,6 +1,7 @@
 {
 "name": "RequestStatus",
 "type": "enum",
+"comment": "Enumeration of request status types",
 "values": [
 	{ "name": "Forwarded" },
 	{ "name": "Accepted" },

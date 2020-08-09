@@ -1,6 +1,7 @@
 {
 "name": "ExecutionInstruction",
 "type": "enum",
+"comment": "Enumeration of execution types",
 "values": [
 	{ "name": "ParticipateDoNotInitiate" },
 	{ "name": "CancelIfNotBest" },

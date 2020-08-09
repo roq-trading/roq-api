@@ -1,6 +1,7 @@
 {
 "name": "CreateOrder",
 "type": "message",
+"comment": "Fields required to create an order",
 "values": [
 	{ "name": "account", "type": "std::string_view" },
 	{ "name": "order_id", "type": "uint32_t" },

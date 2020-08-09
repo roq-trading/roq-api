@@ -1,6 +1,7 @@
 {
 "name": "PositionUpdate",
 "type": "message",
+"comment": "Update relating to current position for a symbol/side/account",
 "values": [
 	{ "name": "account", "type": "std::string_view" },
 	{ "name": "exchange", "type": "std::string_view" },

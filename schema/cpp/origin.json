@@ -1,6 +1,7 @@
 {
 "name": "Origin",
 "type": "enum",
+"comment": "Enumeration of origin types",
 "values": [
 	{ "name": "Client" },
 	{ "name": "Gateway" },

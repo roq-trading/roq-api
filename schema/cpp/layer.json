@@ -1,6 +1,7 @@
 {
 "name": "Layer",
 "type": "struct",
+"comment": "Represents aggregate order book bid/ask information at a given depth",
 "values": [
 	{ "name": "bid_price", "type": "double" },
 	{ "name": "bid_quantity", "type": "double", "default": " = 0.0" },

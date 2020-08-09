@@ -153,19 +153,19 @@ def _include_helper(namespaces, variable):
     assert False
 
 
-def new_spec(path, namespaces, name, spec, type_):
+def new_spec(path, namespaces, name, comment, spec, type_):
     filename = os.path.splitext(os.path.basename(path))[0]
 
     values = [_new_spec_helper(item) for item in spec]
     variables = [value for value in values if value['is_variable']]
 
     includes = sorted({_include_helper(namespaces, variable) for variable in variables if (
-#        variable['is_array'] and not is_pod_or_std(sub_type(variable['type']))) or variable['is_enum']})
         variable['is_array'] and not is_string_like(sub_type(variable['type']))) or variable['is_enum']})
 
     return dict(
         namespaces=namespaces,
         name=name,
+        comment=comment,
         filename=filename,
         variables=variables,
         values=values,
@@ -177,6 +177,7 @@ def process(file_type, path, namespaces, templates):
         doc = json.load(fd)
         type_ = doc['type']
         name = doc['name']
+        comment = doc['comment']
         values = doc['values']
         from jinja2 import Environment, FileSystemLoader
         env = Environment(
@@ -184,7 +185,7 @@ def process(file_type, path, namespaces, templates):
                 trim_blocks=True,
                 lstrip_blocks=True)
         template = env.get_template('.'.join((type_, file_type)))
-        spec = new_spec(path, namespaces, name, values, type_)
+        spec = new_spec(path, namespaces, name, comment, values, type_)
         result = template.render(**spec)
         print(result)
 

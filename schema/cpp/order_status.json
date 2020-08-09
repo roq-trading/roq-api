@@ -1,6 +1,7 @@
 {
 "name": "OrderStatus",
 "type": "enum",
+"comment": "Enumeration of order status types",
 "values": [
 	{ "name": "Sent" },
 	{ "name": "Rejected" },

@@ -1,6 +1,7 @@
 {
 "name": "FundsUpdate",
 "type": "message",
+"comment": "Update relating to available funds",
 "values": [
 	{ "name": "account", "type": "std::string_view" },
 	{ "name": "currency", "type": "std::string_view" },

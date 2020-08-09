@@ -1,6 +1,7 @@
 {
 "name": "MarketByPriceUpdate",
 "type": "message",
+"comment": "Update relating to market by price",
 "values": [
 	{ "name": "exchange", "type": "std::string_view" },
 	{ "name": "symbol", "type": "std::string_view" },

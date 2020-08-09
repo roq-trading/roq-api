@@ -1,6 +1,7 @@
 {
 "name": "StatisticsType",
 "type": "enum",
+"comment": "Enumeration of a statistics type",
 "values": [
 	{ "name": "OpenPrice" },
 	{ "name": "SettlementPrice" },

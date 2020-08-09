@@ -1,6 +1,7 @@
 {
 "name": "MBPUpdate",
 "type": "struct",
+"comment": "Represents the update status of a single aggregate price level in the order book",
 "values": [
 	{ "name": "price", "type": "double" },
 	{ "name": "quantity", "type": "double", "default": " = 0.0" }

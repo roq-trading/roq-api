@@ -12,6 +12,7 @@
 
 {% include 'namespace_begin' %}
 
+//! {{ comment }}
 struct ROQ_PACKED {{ name }} final {
   enum type_t : uint8_t {
     UNDEFINED = 0,

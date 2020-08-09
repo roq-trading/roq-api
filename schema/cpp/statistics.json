@@ -1,6 +1,7 @@
 {
 "name": "Statistics",
 "type": "struct",
+"comment": "Represents a single statistic",
 "values": [
 	{ "name": "type", "type": "StatisticsType" },
 	{ "name": "value", "type": "double"}

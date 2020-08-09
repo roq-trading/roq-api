@@ -1,6 +1,7 @@
 {
 "name": "OrderUpdateAction",
 "type": "enum",
+"comment": "Enumeration of order update action types",
 "values": [
 	{ "name": "New" },
 	{ "name": "Modify" },

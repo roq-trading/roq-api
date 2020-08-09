@@ -1,6 +1,7 @@
 {
 "name": "StatisticsUpdate",
 "type": "message",
+"comment": "Update relating to statistics published by the exchange",
 "values": [
 	{ "name": "exchange", "type": "std::string_view" },
 	{ "name": "symbol", "type": "std::string_view" },

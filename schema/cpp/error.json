@@ -1,6 +1,7 @@
 {
 "name": "Error",
 "type": "enum",
+"comment": "Enumeration of error types",
 "values": [
 	{ "name": "Unknown" },
 	{ "name": "GatewayNotReady" },

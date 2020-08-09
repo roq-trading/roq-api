@@ -1,6 +1,7 @@
 {
 "name": "TradeSummary",
 "type": "message",
+"comment": "Update relating to trade reporting by the exchange",
 "values": [
 	{ "name": "exchange", "type": "std::string_view" },
 	{ "name": "symbol", "type": "std::string_view" },

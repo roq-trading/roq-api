@@ -16,6 +16,7 @@
 
 {% include 'namespace_begin' %}
 
+//! {{ comment }}
 struct ROQ_PUBLIC {{ name }} final {
 {% include 'variables' %}
 };

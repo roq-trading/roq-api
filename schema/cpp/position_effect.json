@@ -1,6 +1,7 @@
 {
 "name": "PositionEffect",
 "type": "enum",
+"comment": "Enumeration of position effect types",
 "values": [
 	{ "name": "Open" },
 	{ "name": "Close" }

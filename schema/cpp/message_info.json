@@ -1,6 +1,7 @@
 {
 "name": "MessageInfo",
 "type": "struct",
+"comment": "Trace information relating to the current message",
 "values": [
 	{ "name": "source", "type": "uint8_t" },
 	{ "name": "source_name", "type": "std::string_view" },

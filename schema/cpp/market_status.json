@@ -1,6 +1,7 @@
 {
 "name": "MarketStatus",
 "type": "message",
+"comment": "Update relating to current trading status of a symbol",
 "values": [
 	{ "name": "exchange", "type": "std::string_view" },
 	{ "name": "symbol", "type": "std::string_view" },

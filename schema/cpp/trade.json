@@ -1,6 +1,7 @@
 {
 "name": "Trade",
 "type": "struct",
+"comment": "Represents a single trade (match) as part of trade reporting by the exchange",
 "values": [
 	{ "name": "side", "type": "Side" },
 	{ "name": "price", "type": "double" },

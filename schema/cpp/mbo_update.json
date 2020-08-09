@@ -1,6 +1,7 @@
 {
 "name": "MBOUpdate",
 "type": "struct",
+"comment": "Represents the update status of a single order in the order book",
 "values": [
 	{ "name": "price", "type": "double" },
 	{ "name": "remaining_quantity", "type": "double", "default": " = 0.0" },

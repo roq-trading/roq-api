@@ -1,6 +1,7 @@
 {
 "name": "Timer",
 "type": "message",
+"comment": "Represents a timer update",
 "values": [
 	{ "name": "now", "type": "std::chrono::nanoseconds" }
 ]

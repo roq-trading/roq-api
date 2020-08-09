@@ -1,6 +1,7 @@
 {
 "name": "TimeInForce",
 "type": "enum",
+"comment": "Enumeration of the time-in-force order attribute",
 "values": [
 	{ "name": "FOK" },
 	{ "name": "IOC" },

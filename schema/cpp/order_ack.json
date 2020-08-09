@@ -1,6 +1,7 @@
 {
 "name": "OrderAck",
 "type": "message",
+"comment": "Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange",
 "values": [
 	{ "name": "account", "type": "std::string_view" },
 	{ "name": "order_id", "type": "uint32_t" },

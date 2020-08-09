@@ -1,6 +1,7 @@
 {
 "name": "MarketDataStatus",
 "type": "message",
+"comment": "Update relating to current status of market data connectivity",
 "values": [
 	{ "name": "status", "type": "GatewayStatus" }
 ]

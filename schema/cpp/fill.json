@@ -1,6 +1,7 @@
 {
 "name": "Fill",
 "type": "struct",
+"comment": "Represents a single fill (match) when an order is being partially or fully filled",
 "values": [
 	{ "name": "quantity", "type": "double" },
 	{ "name": "price", "type": "double" },

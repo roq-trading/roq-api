@@ -1,6 +1,7 @@
 {
 "name": "RequestType",
 "type": "enum",
+"comment": "Enumeration of request types",
 "values": [
 	{ "name": "CreateOrder" },
 	{ "name": "ModifyOrder" },

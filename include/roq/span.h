@@ -82,13 +82,19 @@ class span final {
     return _array[index];
   }
 
-  iterator begin() const {
+  iterator begin() {
     return _array;
   }
-  iterator end() const {
+  iterator end() {
     return _array + _length;
   }
 
+  const_iterator begin() const {
+    return _array;
+  }
+  const_iterator end() const {
+    return _array + _length;
+  }
   const_iterator cbegin() const {
     return _array;
   }

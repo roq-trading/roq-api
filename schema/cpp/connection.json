@@ -1,8 +1,12 @@
 {
-"name": "Connection",
-"type": "message",
-"comment": "Update relating to current status of gateway connectivity",
-"values": [
-	{ "name": "status", "type": "ConnectionStatus", "comment": "Connection status" }
-]
+    "name": "Connection",
+    "type": "message",
+    "comment": "Update relating to current status of gateway connectivity",
+    "values": [
+        {
+            "name": "status",
+            "type": "ConnectionStatus",
+            "comment": "Connection status"
+        }
+    ]
 }

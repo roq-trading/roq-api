@@ -1,22 +1,52 @@
 {
-"name": "Error",
-"type": "enum",
-"comment": "Enumeration of error types",
-"values": [
-	{ "name": "Unknown" },
-	{ "name": "GatewayNotReady" },
-	{ "name": "InvalidAccount" },
-	{ "name": "InvalidExchange" },
-	{ "name": "InvalidSymbol" },
-	{ "name": "InvalidOrderType" },
-	{ "name": "InvalidTimeInForce" },
-	{ "name": "InvalidPositionEffect" },
-	{ "name": "InvalidOrderTemplate" },
-	{ "name": "NetworkError" },
-	{ "name": "UnknownErrorId" },
-	{ "name": "UnknownExchangeOrderId" },
-	{ "name": "ModifyOrderNotSupported" },
-	{ "name": "InvalidOrderId" },
-	{ "name": "ExecutionInstructionNotSupported" }
-]
+    "name": "Error",
+    "type": "enum",
+    "comment": "Enumeration of error types",
+    "values": [
+        {
+            "name": "Unknown"
+        },
+        {
+            "name": "GatewayNotReady"
+        },
+        {
+            "name": "InvalidAccount"
+        },
+        {
+            "name": "InvalidExchange"
+        },
+        {
+            "name": "InvalidSymbol"
+        },
+        {
+            "name": "InvalidOrderType"
+        },
+        {
+            "name": "InvalidTimeInForce"
+        },
+        {
+            "name": "InvalidPositionEffect"
+        },
+        {
+            "name": "InvalidOrderTemplate"
+        },
+        {
+            "name": "NetworkError"
+        },
+        {
+            "name": "UnknownErrorId"
+        },
+        {
+            "name": "UnknownExchangeOrderId"
+        },
+        {
+            "name": "ModifyOrderNotSupported"
+        },
+        {
+            "name": "InvalidOrderId"
+        },
+        {
+            "name": "ExecutionInstructionNotSupported"
+        }
+    ]
 }

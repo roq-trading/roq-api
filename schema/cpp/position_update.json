@@ -1,16 +1,49 @@
 {
-"name": "PositionUpdate",
-"type": "message",
-"comment": "Update relating to current position for a symbol/side/account",
-"values": [
-	{ "name": "account", "type": "std::string_view" },
-	{ "name": "exchange", "type": "std::string_view" },
-	{ "name": "symbol", "type": "std::string_view" },
-	{ "name": "side", "type": "Side", "comment": "Side" },
-	{ "name": "position", "type": "double", "comment": "Current position" },
-	{ "name": "last_trade_id", "type": "uint32_t", "comment": "Last processed trade identifier" },
-	{ "name": "position_cost", "type": "double", "comment": "Position cost" },
-	{ "name": "position_yesterday", "type": "double", "comment": "Position as of yesterday" },
-	{ "name": "position_cost_yesterday", "type": "double", "comment": "Position cost as of yesterday" }
-]
+    "name": "PositionUpdate",
+    "type": "message",
+    "comment": "Update relating to current position for a symbol/side/account",
+    "values": [
+        {
+            "name": "account",
+            "type": "std::string_view"
+        },
+        {
+            "name": "exchange",
+            "type": "std::string_view"
+        },
+        {
+            "name": "symbol",
+            "type": "std::string_view"
+        },
+        {
+            "name": "side",
+            "type": "Side",
+            "comment": "Side"
+        },
+        {
+            "name": "position",
+            "type": "double",
+            "comment": "Current position"
+        },
+        {
+            "name": "last_trade_id",
+            "type": "uint32_t",
+            "comment": "Last processed trade identifier"
+        },
+        {
+            "name": "position_cost",
+            "type": "double",
+            "comment": "Position cost"
+        },
+        {
+            "name": "position_yesterday",
+            "type": "double",
+            "comment": "Position as of yesterday"
+        },
+        {
+            "name": "position_cost_yesterday",
+            "type": "double",
+            "comment": "Position cost as of yesterday"
+        }
+    ]
 }

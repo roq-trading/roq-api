@@ -1,10 +1,16 @@
 {
-"name": "SecurityType",
-"type": "enum",
-"comment": "Enumeration of security/instrument types",
-"values": [
-	{ "name": "Spot" },
-	{ "name": "Futures" },
-	{ "name": "Option" }
-]
+    "name": "SecurityType",
+    "type": "enum",
+    "comment": "Enumeration of security/instrument types",
+    "values": [
+        {
+            "name": "Spot"
+        },
+        {
+            "name": "Futures"
+        },
+        {
+            "name": "Option"
+        }
+    ]
 }

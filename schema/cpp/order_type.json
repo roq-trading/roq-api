@@ -1,9 +1,13 @@
 {
-"name": "OrderType",
-"type": "enum",
-"comment": "Enumeration of order types",
-"values": [
-	{ "name": "Market" },
-	{ "name": "Limit" }
-]
+    "name": "OrderType",
+    "type": "enum",
+    "comment": "Enumeration of order types",
+    "values": [
+        {
+            "name": "Market"
+        },
+        {
+            "name": "Limit"
+        }
+    ]
 }

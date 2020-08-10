@@ -1,8 +1,12 @@
 {
-"name": "Timer",
-"type": "message",
-"comment": "Represents a timer update",
-"values": [
-	{ "name": "now", "type": "std::chrono::nanoseconds", "comment": "Current time (monotonic clock)" }
-]
+    "name": "Timer",
+    "type": "message",
+    "comment": "Represents a timer update",
+    "values": [
+        {
+            "name": "now",
+            "type": "std::chrono::nanoseconds",
+            "comment": "Current time (monotonic clock)"
+        }
+    ]
 }

@@ -1,9 +1,18 @@
 {
-"name": "MBPUpdate",
-"type": "struct",
-"comment": "Represents the update status of a single aggregate price level in the order book",
-"values": [
-	{ "name": "price", "type": "double", "comment": "Price level" },
-	{ "name": "quantity", "type": "double", "default": " = 0.0", "comment": "Total quantity available at price" }
-]
+    "name": "MBPUpdate",
+    "type": "struct",
+    "comment": "Represents the update status of a single aggregate price level in the order book",
+    "values": [
+        {
+            "name": "price",
+            "type": "double",
+            "comment": "Price level"
+        },
+        {
+            "name": "quantity",
+            "type": "double",
+            "default": " = 0.0",
+            "comment": "Total quantity available at price"
+        }
+    ]
 }

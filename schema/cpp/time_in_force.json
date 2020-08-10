@@ -1,11 +1,23 @@
 {
-"name": "TimeInForce",
-"type": "enum",
-"comment": "Enumeration of the time-in-force order attribute",
-"values": [
-	{ "name": "FOK", "comment": "Fill or Kill" },
-	{ "name": "IOC", "comment": "Immediate or Cancel" },
-	{ "name": "GFD", "comment": "Good for Day" },
-	{ "name": "GTC", "comment": "Good till Canceled" }
-]
+    "name": "TimeInForce",
+    "type": "enum",
+    "comment": "Enumeration of the time-in-force order attribute",
+    "values": [
+        {
+            "name": "FOK",
+            "comment": "Fill or Kill"
+        },
+        {
+            "name": "IOC",
+            "comment": "Immediate or Cancel"
+        },
+        {
+            "name": "GFD",
+            "comment": "Good for Day"
+        },
+        {
+            "name": "GTC",
+            "comment": "Good till Canceled"
+        }
+    ]
 }

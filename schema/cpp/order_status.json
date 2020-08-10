@@ -1,14 +1,28 @@
 {
-"name": "OrderStatus",
-"type": "enum",
-"comment": "Enumeration of order status types",
-"values": [
-	{ "name": "Sent" },
-	{ "name": "Rejected" },
-	{ "name": "Accepted" },
-	{ "name": "Pending" },
-	{ "name": "Working" },
-	{ "name": "Completed" },
-	{ "name": "Canceled" }
-]
+    "name": "OrderStatus",
+    "type": "enum",
+    "comment": "Enumeration of order status types",
+    "values": [
+        {
+            "name": "Sent"
+        },
+        {
+            "name": "Rejected"
+        },
+        {
+            "name": "Accepted"
+        },
+        {
+            "name": "Pending"
+        },
+        {
+            "name": "Working"
+        },
+        {
+            "name": "Completed"
+        },
+        {
+            "name": "Canceled"
+        }
+    ]
 }

@@ -1,20 +1,46 @@
 {
-"name": "StatisticsType",
-"type": "enum",
-"comment": "Enumeration of a statistics type",
-"values": [
-	{ "name": "OpenPrice" },
-	{ "name": "SettlementPrice" },
-	{ "name": "ClosePrice" },
-	{ "name": "OpenInterest" },
-	{ "name": "PreOpenInterest" },
-	{ "name": "PreSettlementPrice" },
-	{ "name": "PreClosePrice" },
-	{ "name": "HighestTradedPrice" },
-	{ "name": "LowestTradedPrice" },
-	{ "name": "UpperLimitPrice" },
-	{ "name": "LowerLimitPrice" },
-	{ "name": "IndexValue" },
-	{ "name": "MarginRate" }
-]
+    "name": "StatisticsType",
+    "type": "enum",
+    "comment": "Enumeration of a statistics type",
+    "values": [
+        {
+            "name": "OpenPrice"
+        },
+        {
+            "name": "SettlementPrice"
+        },
+        {
+            "name": "ClosePrice"
+        },
+        {
+            "name": "OpenInterest"
+        },
+        {
+            "name": "PreOpenInterest"
+        },
+        {
+            "name": "PreSettlementPrice"
+        },
+        {
+            "name": "PreClosePrice"
+        },
+        {
+            "name": "HighestTradedPrice"
+        },
+        {
+            "name": "LowestTradedPrice"
+        },
+        {
+            "name": "UpperLimitPrice"
+        },
+        {
+            "name": "LowerLimitPrice"
+        },
+        {
+            "name": "IndexValue"
+        },
+        {
+            "name": "MarginRate"
+        }
+    ]
 }

@@ -1,7 +1,6 @@
 {
-"name": "BatchEnd",
-"type": "message",
-"comment": "Identifies the end of a sequence of related messages",
-"values": [
-]
+    "name": "BatchEnd",
+    "type": "message",
+    "comment": "Identifies the end of a sequence of related messages",
+    "values": []
 }

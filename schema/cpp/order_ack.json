@@ -1,17 +1,52 @@
 {
-"name": "OrderAck",
-"type": "message",
-"comment": "Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange",
-"values": [
-	{ "name": "account", "type": "std::string_view" },
-	{ "name": "order_id", "type": "uint32_t" },
-	{ "name": "type", "type": "RequestType", "comment": "Request type" },
-	{ "name": "origin", "type": "Origin", "comment": "Origin of ack" },
-	{ "name": "status", "type": "RequestStatus", "comment": "Request status" },
-	{ "name": "error", "type": "Error", "comment": "Error code" },
-	{ "name": "text", "type": "std::string_view", "comment": "Descriptive text" },
-	{ "name": "gateway_order_id", "type": "uint32_t" },
-	{ "name": "external_order_id", "type": "std::string_view" },
-	{ "name": "request_id", "type": "std::string_view" }
-]
+    "name": "OrderAck",
+    "type": "message",
+    "comment": "Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange",
+    "values": [
+        {
+            "name": "account",
+            "type": "std::string_view"
+        },
+        {
+            "name": "order_id",
+            "type": "uint32_t"
+        },
+        {
+            "name": "type",
+            "type": "RequestType",
+            "comment": "Request type"
+        },
+        {
+            "name": "origin",
+            "type": "Origin",
+            "comment": "Origin of ack"
+        },
+        {
+            "name": "status",
+            "type": "RequestStatus",
+            "comment": "Request status"
+        },
+        {
+            "name": "error",
+            "type": "Error",
+            "comment": "Error code"
+        },
+        {
+            "name": "text",
+            "type": "std::string_view",
+            "comment": "Descriptive text"
+        },
+        {
+            "name": "gateway_order_id",
+            "type": "uint32_t"
+        },
+        {
+            "name": "external_order_id",
+            "type": "std::string_view"
+        },
+        {
+            "name": "request_id",
+            "type": "std::string_view"
+        }
+    ]
 }

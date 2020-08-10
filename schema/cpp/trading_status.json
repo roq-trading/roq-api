@@ -1,9 +1,13 @@
 {
-"name": "TradingStatus",
-"type": "enum",
-"comment": "Enumeration of the tradig status of a symbol",
-"values": [
-	{ "name": "Closed" },
-	{ "name": "Open" }
-]
+    "name": "TradingStatus",
+    "type": "enum",
+    "comment": "Enumeration of the tradig status of a symbol",
+    "values": [
+        {
+            "name": "Closed"
+        },
+        {
+            "name": "Open"
+        }
+    ]
 }

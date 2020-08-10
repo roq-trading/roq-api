@@ -1,11 +1,29 @@
 {
-"name": "Layer",
-"type": "struct",
-"comment": "Represents aggregate order book bid/ask information at a given depth",
-"values": [
-	{ "name": "bid_price", "type": "double", "comment": "Bid price level" },
-	{ "name": "bid_quantity", "type": "double", "default": " = 0.0", "comment": "Total quantity available at bid" },
-	{ "name": "ask_price", "type": "double", "comment": "Ask price level" },
-	{ "name": "ask_quantity", "type": "double", "default": " = 0.0", "comment": "Total quantity available at ask" }
-]
+    "name": "Layer",
+    "type": "struct",
+    "comment": "Represents aggregate order book bid/ask information at a given depth",
+    "values": [
+        {
+            "name": "bid_price",
+            "type": "double",
+            "comment": "Bid price level"
+        },
+        {
+            "name": "bid_quantity",
+            "type": "double",
+            "default": " = 0.0",
+            "comment": "Total quantity available at bid"
+        },
+        {
+            "name": "ask_price",
+            "type": "double",
+            "comment": "Ask price level"
+        },
+        {
+            "name": "ask_quantity",
+            "type": "double",
+            "default": " = 0.0",
+            "comment": "Total quantity available at ask"
+        }
+    ]
 }

@@ -1,9 +1,17 @@
 {
-"name": "Statistics",
-"type": "struct",
-"comment": "Represents a single statistic",
-"values": [
-	{ "name": "type", "type": "StatisticsType", "comment": "Statistics type" },
-	{ "name": "value", "type": "double", "comment": "Value"}
-]
+    "name": "Statistics",
+    "type": "struct",
+    "comment": "Represents a single statistic",
+    "values": [
+        {
+            "name": "type",
+            "type": "StatisticsType",
+            "comment": "Statistics type"
+        },
+        {
+            "name": "value",
+            "type": "double",
+            "comment": "Value"
+        }
+    ]
 }

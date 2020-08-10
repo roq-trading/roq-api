@@ -1,11 +1,24 @@
 {
-"name": "TradeSummary",
-"type": "message",
-"comment": "Update relating to trade reporting by the exchange",
-"values": [
-	{ "name": "exchange", "type": "std::string_view" },
-	{ "name": "symbol", "type": "std::string_view" },
-	{ "name": "trades", "type": "roq::span<Trade>", "comment": "List of trades" },
-	{ "name": "exchange_time_utc", "type": "std::chrono::nanoseconds" }
-]
+    "name": "TradeSummary",
+    "type": "message",
+    "comment": "Update relating to trade reporting by the exchange",
+    "values": [
+        {
+            "name": "exchange",
+            "type": "std::string_view"
+        },
+        {
+            "name": "symbol",
+            "type": "std::string_view"
+        },
+        {
+            "name": "trades",
+            "type": "roq::span<Trade>",
+            "comment": "List of trades"
+        },
+        {
+            "name": "exchange_time_utc",
+            "type": "std::chrono::nanoseconds"
+        }
+    ]
 }

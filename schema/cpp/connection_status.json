@@ -1,9 +1,13 @@
 {
-"name": "ConnectionStatus",
-"type": "enum",
-"comment": "Enumeration of connection status types",
-"values": [
-	{ "name": "Disconnected" },
-	{ "name": "Connected" }
-]
+    "name": "ConnectionStatus",
+    "type": "enum",
+    "comment": "Enumeration of connection status types",
+    "values": [
+        {
+            "name": "Disconnected"
+        },
+        {
+            "name": "Connected"
+        }
+    ]
 }

@@ -14,7 +14,17 @@
 namespace roq {
 
 // fixed length string buffer
+//! A fixed-length string buffer with automatic conversion to/from
+//! \ref std::string_view.
+/*!
+ * This is useful for managing fixed length arrays as if they were string-like.
+ * Typically used to avoid heap allocations, e.g. stack allocated structs used
+ * for messaging.
 
+ * This is a higher level abstraction than \ref std::array to provide
+ * more * string-specific features.
+ * The interface is a subset of \ref std::string and \ref std::string_view.
+ */
 template <std::size_t N>
 class ROQ_PACKED string final {
  public:

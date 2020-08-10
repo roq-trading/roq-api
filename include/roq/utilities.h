@@ -11,8 +11,7 @@
 
 namespace roq {
 
-// layer
-
+//! Extract price for \ref roq::Layer given \ref roq::Side.
 inline double price_from_side(
     const Layer& layer,
     Side side) {
@@ -26,8 +25,7 @@ inline double price_from_side(
   }
 }
 
-// order status
-
+//! Check if order has reached a final (completed) status
 inline bool is_order_complete(const OrderStatus& status) {
   switch (status) {
     case OrderStatus::SENT:
@@ -45,8 +43,7 @@ inline bool is_order_complete(const OrderStatus& status) {
   }
 }
 
-// request status
-
+//! Check if request has reached a final (completed) status
 inline bool is_request_complete(const RequestStatus& status) {
   switch (status) {
     case RequestStatus::FORWARDED:
@@ -61,8 +58,7 @@ inline bool is_request_complete(const RequestStatus& status) {
   }
 }
 
-// side
-
+//! Get the opposite \ref Side.
 inline Side invert(Side side) {
   switch (side) {
     case Side::BUY:
@@ -74,6 +70,7 @@ inline Side invert(Side side) {
   }
 }
 
+//! Get notional sign given \ref roq::Side
 inline int sign(Side side) {
   switch (side) {
     case Side::BUY:

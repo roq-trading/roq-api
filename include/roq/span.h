@@ -9,8 +9,18 @@
 
 namespace roq {
 
-// similar to std::span (preparing for c++20)
-
+//! A non-owning contiguous array of objects.
+/*!
+ * This is useful for providing access to raw data without leaking how data is
+ * managed.
+ *
+ * The interface is a subset of \ref std::vector and
+ * \ref std::array.
+ *
+ * The implementation closely follows the design of
+ * `std::span <https://en.cppreference.com/w/cpp/container/span>`_ (since
+ * C++20).
+ */
 template <typename T>
 class span final {
  public:

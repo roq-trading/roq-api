@@ -7,6 +7,15 @@
 namespace roq {
 namespace client {
 
+//! An interface representing the operations needed to maintain a current view
+//! of depth based on incremental updates.
+/*!
+ * A choice must be made whether to update based on
+ * \ref roq::MarketByPriceUpdate or \ref roq::MarketByOrderUpdate.
+ * 
+ * The `reset` method must be called following a disconnect.
+ * (The next update is then expected to be a snapshot).
+ */
 class ROQ_PUBLIC DepthBuilder {
  public:
   virtual ~DepthBuilder() {

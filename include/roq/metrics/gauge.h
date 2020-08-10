@@ -15,6 +15,7 @@
 namespace roq {
 namespace metrics {
 
+//! Gauge
 template <typename T>
 class alignas(ROQ_CACHELINE_SIZE) Gauge {
  public:
@@ -26,12 +27,14 @@ class alignas(ROQ_CACHELINE_SIZE) Gauge {
   Gauge(const Gauge&) = delete;
   Gauge(Gauge&&) = delete;
 
+  //! Set gauge to specific value
   void set(T value) {
     _data.value.store(
         value,
         std::memory_order_release);
   }
 
+  //! Write formatted output
   void write(
       Writer& writer,
       const std::string_view& name) const {
@@ -41,6 +44,7 @@ class alignas(ROQ_CACHELINE_SIZE) Gauge {
         _labels);
   }
 
+  //! Write formatted output
   void write(
       Writer& writer,
       const std::string_view& name,

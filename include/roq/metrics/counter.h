@@ -15,6 +15,7 @@
 namespace roq {
 namespace metrics {
 
+//! Counter
 template <typename T>
 class alignas(ROQ_CACHELINE_SIZE) Counter {
  public:
@@ -26,6 +27,7 @@ class alignas(ROQ_CACHELINE_SIZE) Counter {
   Counter(const Counter&) = delete;
   Counter(Counter&&) = delete;
 
+  //! Increment counter
   Counter& operator++() {
     _data.value.fetch_add(
         1,
@@ -33,12 +35,14 @@ class alignas(ROQ_CACHELINE_SIZE) Counter {
     return *this;
   }
 
+  //! Update counter to specific value
   void update(uint64_t value) noexcept {
     _data.value.store(
         value,
         std::memory_order_release);
   }
 
+  //! Write formatted output
   void write(
       Writer& writer,
       const std::string_view& name) const {
@@ -48,6 +52,7 @@ class alignas(ROQ_CACHELINE_SIZE) Counter {
         _labels);
   }
 
+  //! Write formatted output
   void write(
       Writer& writer,
       const std::string_view& name,

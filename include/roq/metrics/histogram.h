@@ -18,6 +18,7 @@
 namespace roq {
 namespace metrics {
 
+//! Histogram
 template <uint64_t N0,
           uint64_t N1,
           uint64_t N2,
@@ -75,10 +76,12 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
   Histogram(const Histogram&) = delete;
   Histogram(Histogram&&) = delete;
 
+  //! Prefetch data into L1 cache
   inline void prefetch() noexcept {
     __builtin_prefetch(&_data, 1, 3);
   }
 
+  //! Update histogram with specific value
   inline bool update(uint64_t value) noexcept {
     bool result = false;
     if (value < N0) {
@@ -103,6 +106,7 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
     return result;
   }
 
+  //! Write formatted output
   Writer& write(
       Writer& writer,
       const std::string_view& name) const {
@@ -112,6 +116,7 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
         _labels);
   }
 
+  //! Write formatted output
   Writer& write(
       Writer& writer,
       const std::string_view& name,

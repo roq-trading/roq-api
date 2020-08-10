@@ -6,6 +6,7 @@
 
 namespace roq {
 
+//! Event
 template <typename T>
 struct Event final {
   Event(
@@ -17,22 +18,27 @@ struct Event final {
 
   Event(const Event&) = delete;
 
+  //! Dispatch to handler
   template <typename H>
   void dispatch(H&& handler) {
     handler(*this);
   }
 
+  //! Access MessageInfo
   operator const MessageInfo&() const {
     return message_info;
   }
+
+  //! Access Message
   operator const T&() const {
     return value;
   }
 
-  const MessageInfo& message_info;
-  const T& value;
+  const MessageInfo& message_info;  //!< MessageInfo
+  const T& value;  //!< Message
 };
 
+//! Create event and dispatch to handler
 template <typename H, typename T>
 inline void create_event_and_dispatch(
     H&& handler,

@@ -13,6 +13,7 @@
 namespace roq {
 namespace metrics {
 
+//! Helper for all metrics collectors
 struct ROQ_PUBLIC Base {
   inline std::string create_labels(
       const std::string_view& label_name_0,

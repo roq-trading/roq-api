@@ -8,10 +8,10 @@
 
 namespace roq {
 
-// Interface used to implement an event generator.
-
+//! Generator interface used to manage a sequence of messages
 class ROQ_PUBLIC Generator {
  public:
+  //! Dispatch interface used to handle update events
   class ROQ_PUBLIC Dispatcher {
    public:
     virtual void operator()(const Event<MarketDataStatus>&) = 0;
@@ -28,7 +28,11 @@ class ROQ_PUBLIC Generator {
   };
 
   virtual ~Generator() {}
+
+  //! Fetch information about the next message
   virtual std::pair<bool, std::chrono::nanoseconds> fetch() = 0;
+
+  //! Request the next message to be dispatched
   virtual void dispatch(Dispatcher& dispatcher) = 0;
 };
 

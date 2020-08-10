@@ -10,9 +10,8 @@
 namespace roq {
 namespace client {
 
-/* Interface used by a client implementation to handle
- * update events.
- *
+//! Client interface used to implement handlers for update events
+/*!
  * It is the responsibility of the client implementation
  * to manage state and state transitions.
  *

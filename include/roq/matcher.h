@@ -7,10 +7,10 @@
 namespace roq {
 
 
-// interface used to implement order matching
-
+//! Order matching interface used to manage a simulated order book
 class ROQ_PUBLIC Matcher {
  public:
+  //! Dispatch interface used to handle (possibly processed) events
   class ROQ_PUBLIC Dispatcher {
    public:
     virtual void operator()(const Event<DownloadBegin>&) = 0;
@@ -33,6 +33,7 @@ class ROQ_PUBLIC Matcher {
 
   virtual ~Matcher() {}
 
+  //! Dispatch all pending messages
   virtual void dispatch(
       Dispatcher& dispatcher,
       std::chrono::nanoseconds next) = 0;

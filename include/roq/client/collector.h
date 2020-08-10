@@ -7,6 +7,7 @@
 namespace roq {
 namespace client {
 
+//! Collector interface
 class Collector {
  public:
   virtual ~Collector() {}

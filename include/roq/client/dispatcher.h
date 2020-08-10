@@ -9,8 +9,8 @@
 namespace roq {
 namespace client {
 
-/* Interface used to dispatch client requests.
- *
+//! Dispatch interface used to manage client requests
+/*!
  * The implementation can throw if the request
  * is invalid or if the environment is known to
  * not be in a good state. For example, if a
@@ -25,12 +25,17 @@ class ROQ_PUBLIC Dispatcher {
 
   virtual void stop() = 0;
 
+  //! Send a request to create a new order
   virtual void send(
       const CreateOrder& create_order,
       uint8_t source) = 0;
+
+  //! Send a request to modify an existing order
   virtual void send(
       const ModifyOrder& modify_order,
       uint8_t source) = 0;
+
+  //! Send a request to cancel an existing order
   virtual void send(
       const CancelOrder& cancel_order,
       uint8_t source) = 0;

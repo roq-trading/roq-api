@@ -3,7 +3,7 @@
 "type": "struct",
 "comment": "Represents a single trade (match) as part of trade reporting by the exchange",
 "values": [
-	{ "name": "side", "type": "Side", "comment": "Side" },
+	{ "name": "side", "type": "Side", "comment": "Side (by convention: side of the taker)" },
 	{ "name": "price", "type": "double", "comment": "Price" },
 	{ "name": "quantity", "type": "double", "comment": "Quantity" },
 	{ "name": "trade_id", "type": "roq::string<40>"}

@@ -5,11 +5,11 @@
 "values": [
 	{ "name": "account", "type": "std::string_view" },
 	{ "name": "order_id", "type": "uint32_t" },
-	{ "name": "type", "type": "RequestType" },
-	{ "name": "origin", "type": "Origin" },
-	{ "name": "status", "type": "RequestStatus" },
-	{ "name": "error", "type": "Error" },
-	{ "name": "text", "type": "std::string_view" },
+	{ "name": "type", "type": "RequestType", "comment": "Request type" },
+	{ "name": "origin", "type": "Origin", "comment": "Origin of ack" },
+	{ "name": "status", "type": "RequestStatus", "comment": "Request status" },
+	{ "name": "error", "type": "Error", "comment": "Error code" },
+	{ "name": "text", "type": "std::string_view", "comment": "Descriptive text" },
 	{ "name": "gateway_order_id", "type": "uint32_t" },
 	{ "name": "external_order_id", "type": "std::string_view" },
 	{ "name": "request_id", "type": "std::string_view" }

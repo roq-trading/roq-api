@@ -5,8 +5,8 @@
 "values": [
 	{ "name": "exchange", "type": "std::string_view" },
 	{ "name": "symbol", "type": "std::string_view" },
-	{ "name": "bids", "type": "roq::span<MBPUpdate>" },
-	{ "name": "asks", "type": "roq::span<MBPUpdate>" },
+	{ "name": "bids", "type": "roq::span<MBPUpdate>", "comment": "List of bids" },
+	{ "name": "asks", "type": "roq::span<MBPUpdate>", "comment": "List of asks" },
 	{ "name": "snapshot", "type": "bool" },
 	{ "name": "exchange_time_utc", "type": "std::chrono::nanoseconds" }
 ]

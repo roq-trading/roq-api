@@ -3,10 +3,10 @@
 "type": "struct",
 "comment": "Represents the update status of a single order in the order book",
 "values": [
-	{ "name": "price", "type": "double" },
-	{ "name": "remaining_quantity", "type": "double", "default": " = 0.0" },
-	{ "name": "action", "type": "OrderUpdateAction" },
-	{ "name": "priority", "type": "uint32_t" },
+	{ "name": "price", "type": "double", "comment": "Order price" },
+	{ "name": "remaining_quantity", "type": "double", "default": " = 0.0", "comment": "Remaining order quantity" },
+	{ "name": "action", "type": "OrderUpdateAction", "comment": "Order update action" },
+	{ "name": "priority", "type": "uint32_t", "comment": "Queue priority" },
 	{ "name": "order_id", "type": "roq::string<40>"}
 ]
 }

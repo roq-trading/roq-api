@@ -3,8 +3,8 @@
 "type": "struct",
 "comment": "Represents a single fill (match) when an order is being partially or fully filled",
 "values": [
-	{ "name": "quantity", "type": "double" },
-	{ "name": "price", "type": "double" },
+	{ "name": "quantity", "type": "double", "comment": "Quantity" },
+	{ "name": "price", "type": "double", "comment": "Price" },
 	{ "name": "trade_id", "type": "uint32_t" },
 	{ "name": "gateway_trade_id", "type": "uint32_t" },
 	{ "name": "external_trade_id", "type": "roq::string<40>" }

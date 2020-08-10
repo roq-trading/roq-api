@@ -5,7 +5,7 @@
 "values": [
 	{ "name": "exchange", "type": "std::string_view" },
 	{ "name": "symbol", "type": "std::string_view" },
-	{ "name": "statistics", "type": "roq::span<Statistics>" },
+	{ "name": "statistics", "type": "roq::span<Statistics>", "comment": "List of statistics" },
 	{ "name": "snapshot", "type": "bool" },
 	{ "name": "exchange_time_utc", "type": "std::chrono::nanoseconds" }
 ]

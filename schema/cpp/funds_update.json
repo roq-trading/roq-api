@@ -5,7 +5,7 @@
 "values": [
 	{ "name": "account", "type": "std::string_view" },
 	{ "name": "currency", "type": "std::string_view" },
-	{ "name": "balance", "type": "double" },
-	{ "name": "hold", "type": "double" }
+	{ "name": "balance", "type": "double", "comment": "Current funds" },
+	{ "name": "hold", "type": "double", "comment": "Funds on hold" }
 ]
 }

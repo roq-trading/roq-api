@@ -5,17 +5,17 @@
 "values": [
 	{ "name": "exchange", "type": "std::string_view" },
 	{ "name": "symbol", "type": "std::string_view" },
-	{ "name": "security_type", "type": "SecurityType" },
+	{ "name": "security_type", "type": "SecurityType", "comment": "Security type" },
 	{ "name": "currency", "type": "std::string_view" },
 	{ "name": "settlement_currency", "type": "std::string_view" },
 	{ "name": "commission_currency", "type": "std::string_view" },
-	{ "name": "tick_size", "type": "double" },
-	{ "name": "limit_up", "type": "double" },
-	{ "name": "limit_down", "type": "double" },
-	{ "name": "multiplier", "type": "double" },
-	{ "name": "min_trade_vol", "type": "double" },
-	{ "name": "option_type", "type": "OptionType" },
+	{ "name": "tick_size", "type": "double", "comment": "Mminimum price increment" },
+	{ "name": "limit_up", "type": "double", "comment": "Limit up price" },
+	{ "name": "limit_down", "type": "double", "comment": "Limit down price" },
+	{ "name": "multiplier", "type": "double", "comment": "Multiplier (notional)" },
+	{ "name": "min_trade_vol", "type": "double", "comment": "Minimum trade volume" },
+	{ "name": "option_type", "type": "OptionType", "comment": "Option type" },
 	{ "name": "strike_currency", "type": "std::string_view" },
-	{ "name": "strike_price", "type": "double" }
+	{ "name": "strike_price", "type": "double", "comment": "Strike price" }
 ]
 }

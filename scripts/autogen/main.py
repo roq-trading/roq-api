@@ -112,16 +112,27 @@ def _find_default_comment(name):
     return dict(
         account='Account name (as known to the gateway)',
         commission_currency='Currency name',
+        create_time_utc='Created timestamp (UTC)',
         currency='Currency name',
         exchange='Exchange name',
         exchange_time_utc='Exchange timestamp (UTC)',
+        execution_instruction='Execution instruction',
         external_order_id='External order identifier (as known to broker or exchange)',
+        external_trade_id='External trade identifier (as known to broker or exchange)',
+        gateway_order_id='Order identifier (as known to gateway)',
+        gateway_trade_id='Trade identifier (as known to gateway)',
+        order_id='Order identifier (as known to client)',
         order_template='Order template (as known to the gateway)',
+        order_type='Order type',
+        position_effect='Position effect',
         request_id='Request identifier (as sent to broker or exchange)',
         settlement_currency='Currency name',
         snapshot='Full update (possibly old) if true and otherwise an incremental update',
         strike_currency='Currency name',
         symbol='Symbol',
+        time_in_force='Time in force',
+        trade_id='Trade identifier (as known to client)',
+        update_time_utc='Updated timestamp (UTC)',
     ).get(name, '')
 
 def _new_spec_helper(item):
@@ -175,6 +186,14 @@ def new_spec(path, namespaces, name, comment, spec, type_):
 
     values = [_new_spec_helper(item) for item in spec]
     variables = [value for value in values if value['is_variable']]
+
+    if type_ != 'enum':
+        if len(comment) == 0:
+            raise RuntimeError('{} has no commens'.format(name))
+        if any([len(value['comment']) == 0 for value in values]):
+            raise RuntimeError('{} requires comments for following fields {}'.format(
+                name,
+                [value['name'] for value in values if len(value['comment']) == 0]))
 
     includes = sorted({_include_helper(namespaces, variable) for variable in variables if (
         variable['is_array'] and not is_string_like(sub_type(variable['type']))) or variable['is_enum']})

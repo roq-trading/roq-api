@@ -4,6 +4,6 @@
 "comment": "Update relating to current status of order manager connectivity",
 "values": [
 	{ "name": "account", "type": "std::string_view" },
-	{ "name": "status", "type": "GatewayStatus" }
+	{ "name": "status", "type": "GatewayStatus", "comment": "Gateway status" }
 ]
 }

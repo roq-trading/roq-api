@@ -9,12 +9,8 @@ set(API_H "${CMAKE_BINARY_DIR}/${TARGET_DIR}/api.h")
 
 add_custom_command(
   OUTPUT "${API_H}"
-  COMMAND "${FLATBUFFERS_COMPILER}"
-  ARGS --binary
-  ARGS --gen-all
-  ARGS --filename-suffix ""
-  ARGS --cpp --cpp-std c++17
-  ARGS "${API_FBS}"
+  COMMAND "${FLATBUFFERS_COMPILER}" ARGS --binary ARGS --gen-all ARGS --filename-suffix "" ARGS
+          --cpp --cpp-std c++17 ARGS "${API_FBS}"
   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${TARGET_DIR}"
   VERBATIM
   DEPENDS "${FLATBUFFERS_COMPILER}" "${API_FBS}")
@@ -27,10 +23,8 @@ file(WRITE "${GITIGNORE}" "api.h\n")
 
 # target
 
-add_custom_target(${TARGET_NAME} ALL
-  DEPENDS "${API_H}" "${GITIGNORE}")
+add_custom_target(${TARGET_NAME} ALL DEPENDS "${API_H}" "${GITIGNORE}")
 
 # install
 
-install(FILES "${API_H}"
-  DESTINATION "${TARGET_DIR}")
+install(FILES "${API_H}" DESTINATION "${TARGET_DIR}")

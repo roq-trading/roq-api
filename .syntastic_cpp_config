@@ -1,4 +1,5 @@
 -std=c++17
 -I../miniconda/include
+-Ithird_party/googletest/googletest/include
 -Iinclude
 -Isrc

@@ -6,9 +6,7 @@ set(TARGET_DIR "${CMAKE_INSTALL_DATADIR}/doc/${PROJECT_NAME}")
 
 set(DOXYFILE "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
 
-configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in"
-  "${DOXYFILE}" @ONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in" "${DOXYFILE}" @ONLY)
 
 # target
 
@@ -21,15 +19,18 @@ add_custom_command(
   VERBATIM
   DEPENDS "${DOXYGEN_EXECUTABLE}" "${DOXYFILE}")
 
-add_custom_target(${TARGET_NAME} ALL
-  DEPENDS "${INDEX_HTML}")
+add_custom_target(${TARGET_NAME} ALL DEPENDS "${INDEX_HTML}")
 
 # install
 
-install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/xml/"
+install(
+  DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/xml/"
   DESTINATION "${TARGET_DIR}/xml"
-  FILES_MATCHING PATTERN "*.xml")
+  FILES_MATCHING
+  PATTERN "*.xml")
 
-install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/html/"
+install(
+  DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/html/"
   DESTINATION "${TARGET_DIR}/html"
-  FILES_MATCHING PATTERN "*.html")
+  FILES_MATCHING
+  PATTERN "*.html")

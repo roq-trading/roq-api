@@ -1,10 +1,16 @@
-assets/* linguist-documentation
 cmake/* linguist-vendored
 third_party/* linguist-vendored
 
+assets/* linguist-documentation
+
 doxygen/Doxyfile.in linguist-vendored
 
-include/* linguist-vendored=false
-test/* linguist-vendored=false
-
 *.h.in linguist-language=C++
+
+# EXPERIMENTAL
+python/* linguist-vendored
+
+
+
+# include/* linguist-vendored=false
+# test/* linguist-vendored=false

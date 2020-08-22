@@ -116,5 +116,6 @@ The project is released under the terms of the MIT license.
 
 ## Links
 
-* [Documentation](https://roq-trading.com/docs)
+* [Roq GmbH](https://roq-trading.com/)
+* [Documentation](https://roq-trading.com/docs/)
 * [Contact us](mailto:info@roq-trading.com)

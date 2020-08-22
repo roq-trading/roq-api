@@ -93,7 +93,7 @@ conda install -y --channel https://roq-trading.com/conda/stable \
 
 Samples can be found [here](https://github.com/roq-trading/roq-samples).
 
-![C++ design](https://roq-trading.com/assets/roq-api-cpp-design.png)
+![C++ design](/doc/images/roq-api-cpp-design.png)
 
 ### FlatBuffers
 
@@ -102,7 +102,7 @@ other programming languages than C++ are required.
 Furthermore, the event log storage format uses FlatBuffers and can be
 decoded from any language.
 
-![FlatBuffers design](https://roq-trading.com/assets/roq-api-flatbuffers-design.png)
+![FlatBuffers design](/doc/images/roq-api-flatbuffers-design.png)
 
 #### [Python](./python)
 

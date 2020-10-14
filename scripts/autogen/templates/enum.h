@@ -57,6 +57,10 @@ struct ROQ_PACKED {{ name }} final {
     return UNDEFINED;
   }
 
+  inline operator std::string_view() const {
+    return name();
+  }
+
  protected:
   inline type_t validate(uint8_t type) {
     auto result = static_cast<type_t>(type);

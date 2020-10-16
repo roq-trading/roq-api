@@ -1,1 +1,26 @@
 BasedOnStyle: Google
+
+AlignAfterOpenBracket: AlwaysBreak
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortFunctionsOnASingleLine: InlineOnly
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeBraces: Attach
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: BeforeColon
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+Cpp11BracedListStyle: false
+DerivePointerAlignment: false
+ExperimentalAutoDetectBinPacking: false
+IncludeBlocks: Preserve
+IndentCaseLabels: true
+PointerAlignment: Right
+
+# undecided ...
+
+SpaceBeforeCpp11BracedList: true
+
+# unavailable ...
+
+# https://reviews.llvm.org/D31635
+# ReferenceAlignment: Left

@@ -10,10 +10,10 @@ using namespace roq;  // NOLINT
 
 TEST(utils, trade_id) {
   Trade trade = {};
-  auto& trade_id = trade.trade_id;
+  auto &trade_id = trade.trade_id;
   std::string_view text_1;
   EXPECT_TRUE(trade_id.empty());
-  EXPECT_EQ(trade_id.length(), size_t{});
+  EXPECT_EQ(trade_id.length(), size_t {});
   EXPECT_EQ(static_cast<std::string_view>(trade_id), text_1);
   // small
   std::string_view text_2("123");

@@ -9,39 +9,30 @@ using namespace roq;  // NOLINT
 namespace {
 class Writer : public metrics::Writer {
  protected:
-  metrics::Writer& write_type(
-      const std::string_view&,
-      const std::string_view&) override {
+  metrics::Writer &write_type(
+      const std::string_view &, const std::string_view &) override {
     return *this;
   }
-  metrics::Writer& write_simple(
-       const std::string_view&,
-       const std::string_view&,
-       uint64_t) override {
+  metrics::Writer &write_simple(
+      const std::string_view &, const std::string_view &, uint64_t) override {
     return *this;
   }
-  metrics::Writer& write_bucket(
-        const std::string_view&,
-        const std::string_view&,
-        double,
-        uint64_t) override {
+  metrics::Writer &write_bucket(
+      const std::string_view &,
+      const std::string_view &,
+      double,
+      uint64_t) override {
     return *this;
   }
-  metrics::Writer& write_sum(
-        const std::string_view&,
-        const std::string_view&,
-        double) override {
+  metrics::Writer &write_sum(
+      const std::string_view &, const std::string_view &, double) override {
     return *this;
   }
-  metrics::Writer& write_count(
-        const std::string_view&,
-        const std::string_view&,
-        uint64_t) override {
+  metrics::Writer &write_count(
+      const std::string_view &, const std::string_view &, uint64_t) override {
     return *this;
   }
-  metrics::Writer& finish() override {
-    return *this;
-  }
+  metrics::Writer &finish() override { return *this; }
 };
 }  // namespace
 

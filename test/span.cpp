@@ -8,9 +8,7 @@ using namespace roq;  // NOLINT
 
 TEST(span, simple) {
   std::array<double, 3> raw { 0.0, 2.0, 3.0 };
-  roq::span span(
-      raw.data(),
-      raw.size());
+  roq::span span(raw.data(), raw.size());
   span[0] = 1.0;
   EXPECT_DOUBLE_EQ(span[0], 1.0);
   EXPECT_DOUBLE_EQ(span[1], 2.0);
@@ -27,9 +25,7 @@ TEST(span, string_view) {
     "abc",
     "def",
   };
-  roq::span span(
-      raw.data(),
-      raw.size());
+  roq::span span(raw.data(), raw.size());
   EXPECT_EQ(span[0], "abc");
   EXPECT_EQ(span[1], "def");
 }

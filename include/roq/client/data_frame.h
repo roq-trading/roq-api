@@ -15,23 +15,23 @@ class DataFrame {
   class Handler {
    public:
     virtual void add_series(
-        const roq::span<std::string_view>& values,
-        const std::string_view& name,
+        const roq::span<std::string_view> &values,
+        const std::string_view &name,
         bool index,
         bool category) = 0;
     virtual void add_series(
-        const roq::span<uint32_t>& values,
-        const std::string_view& name,
+        const roq::span<uint32_t> &values,
+        const std::string_view &name,
         bool index,
         bool category) = 0;
     virtual void add_series(
-        const roq::span<double>& values,
-        const std::string_view& name,
+        const roq::span<double> &values,
+        const std::string_view &name,
         bool index,
         bool category) = 0;
     virtual void add_series(
-        const roq::span<std::chrono::nanoseconds>& values,
-        const std::string_view& name,
+        const roq::span<std::chrono::nanoseconds> &values,
+        const std::string_view &name,
         bool index,
         bool category) = 0;
   };

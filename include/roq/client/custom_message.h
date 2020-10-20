@@ -26,8 +26,8 @@ namespace client {
 
 struct ROQ_PUBLIC CustomMessage final {
   CustomMessage() = default;
-  CustomMessage(CustomMessage&&) = default;
-  CustomMessage(const CustomMessage&) = delete;
+  CustomMessage(CustomMessage &&) = default;
+  CustomMessage(const CustomMessage &) = delete;
 
   const void *message;
   size_t length;
@@ -40,13 +40,11 @@ struct ROQ_PUBLIC CustomMessage final {
 template <>
 struct fmt::formatter<roq::client::CustomMessage> {
   template <typename Context>
-  constexpr auto parse(Context& context) {
+  constexpr auto parse(Context &context) {
     return context.begin();
   }
   template <typename Context>
-  auto format(
-      const roq::client::CustomMessage& value,
-      Context& context) {
+  auto format(const roq::client::CustomMessage &value, Context &context) {
     return format_to(
         context.out(),
         R"({{)"
@@ -59,13 +57,12 @@ struct fmt::formatter<roq::client::CustomMessage> {
 template <>
 struct fmt::formatter<roq::Event<roq::client::CustomMessage> > {
   template <typename Context>
-  constexpr auto parse(Context& context) {
+  constexpr auto parse(Context &context) {
     return context.begin();
   }
   template <typename Context>
   auto format(
-      const roq::Event<roq::client::CustomMessage>& event,
-      Context& context) {
+      const roq::Event<roq::client::CustomMessage> &event, Context &context) {
     return format_to(
         context.out(),
         R"({{)"

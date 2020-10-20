@@ -19,9 +19,7 @@ struct ROQ_PUBLIC Account {
   std::string login;
   std::string password;
   std::string secret;
-  std::unordered_map<
-    std::string,
-    std::unordered_set<std::string> > symbols;
+  std::unordered_map<std::string, std::unordered_set<std::string> > symbols;
 };
 
 }  // namespace roq
@@ -29,11 +27,11 @@ struct ROQ_PUBLIC Account {
 template <>
 struct fmt::formatter<roq::Account> {
   template <typename T>
-  constexpr auto parse(T& ctx) {
+  constexpr auto parse(T &ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::Account& value, T& ctx) {
+  auto format(const roq::Account &value, T &ctx) {
     return format_to(
         ctx.out(),
         R"({{)"
@@ -49,6 +47,6 @@ struct fmt::formatter<roq::Account> {
         value.name,
         value.user,
         value.login);
-        // fmt::join(value.symbols, R"(, )"));
+    // fmt::join(value.symbols, R"(, )"));
   }
 };

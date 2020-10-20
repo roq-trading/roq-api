@@ -11,18 +11,13 @@
 namespace roq {
 
 //! Base class for roq exceptions
-class ROQ_PUBLIC Exception : public std::exception {
-};
+class ROQ_PUBLIC Exception : public std::exception {};
 
 //! Runtime error
 class ROQ_PUBLIC RuntimeError : public Exception {
  public:
-  explicit RuntimeError(const std::string_view& what)
-      : _what(what) {
-  }
-  const char *what() const noexcept override {
-    return _what.c_str();
-  }
+  explicit RuntimeError(const std::string_view &what) : _what(what) {}
+  const char *what() const noexcept override { return _what.c_str(); }
 
  private:
   std::string _what;

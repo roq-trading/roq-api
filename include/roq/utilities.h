@@ -12,9 +12,7 @@
 namespace roq {
 
 //! Extract price for \ref roq::Layer given \ref roq::Side.
-inline double price_from_side(
-    const Layer& layer,
-    Side side) {
+inline double price_from_side(const Layer &layer, Side side) {
   switch (side) {
     case Side::BUY:
       return layer.bid_price;
@@ -26,7 +24,7 @@ inline double price_from_side(
 }
 
 //! Check if order has reached a final (completed) status
-inline bool is_order_complete(const OrderStatus& status) {
+inline bool is_order_complete(const OrderStatus &status) {
   switch (status) {
     case OrderStatus::SENT:
     case OrderStatus::ACCEPTED:
@@ -44,7 +42,7 @@ inline bool is_order_complete(const OrderStatus& status) {
 }
 
 //! Check if request has reached a final (completed) status
-inline bool is_request_complete(const RequestStatus& status) {
+inline bool is_request_complete(const RequestStatus &status) {
   switch (status) {
     case RequestStatus::FORWARDED:
       return false;

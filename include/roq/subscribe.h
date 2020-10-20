@@ -21,8 +21,8 @@ struct ROQ_PUBLIC Subscribe final {
 };
 
 struct ROQ_PUBLIC SubscribeEvent final {
-  const MessageInfo& message_info;
-  const Subscribe& subscribe;
+  const MessageInfo &message_info;
+  const Subscribe &subscribe;
 };
 
 }  // namespace roq
@@ -30,11 +30,11 @@ struct ROQ_PUBLIC SubscribeEvent final {
 template <>
 struct fmt::formatter<roq::Subscribe> {
   template <typename T>
-  constexpr auto parse(T& ctx) {
+  constexpr auto parse(T &ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::Subscribe& value, T& ctx) {
+  auto format(const roq::Subscribe &value, T &ctx) {
     return format_to(
         ctx.out(),
         R"({{)"
@@ -49,11 +49,11 @@ struct fmt::formatter<roq::Subscribe> {
 template <>
 struct fmt::formatter<roq::Event<roq::Subscribe> > {
   template <typename T>
-  constexpr auto parse(T& ctx) {
+  constexpr auto parse(T &ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::Event<roq::Subscribe>& event, T& ctx) {
+  auto format(const roq::Event<roq::Subscribe> &event, T &ctx) {
     return format_to(
         ctx.out(),
         R"({{)"

@@ -18,9 +18,7 @@ struct ROQ_PUBLIC User {
   std::string name;
   std::string password;
   std::unordered_set<std::string> accounts;
-  std::unordered_map<
-    std::string,
-    std::unordered_set<std::string> > symbols;
+  std::unordered_map<std::string, std::unordered_set<std::string> > symbols;
   struct Limits final {
     struct CreateOrder final {
       uint32_t max;
@@ -35,11 +33,11 @@ struct ROQ_PUBLIC User {
 template <>
 struct fmt::formatter<roq::User> {
   template <typename T>
-  constexpr auto parse(T& ctx) {
+  constexpr auto parse(T &ctx) {
     return ctx.begin();
   }
   template <typename T>
-  auto format(const roq::User& value, T& ctx) {
+  auto format(const roq::User &value, T &ctx) {
     return format_to(
         ctx.out(),
         R"({{)"
@@ -52,9 +50,7 @@ struct fmt::formatter<roq::User> {
         R"(}})",
         value.id,
         value.name,
-        fmt::join(
-            value.accounts,
-            R"(, )"));
-        // fmt::join(value.symbols, R"(, )"));
+        fmt::join(value.accounts, R"(, )"));
+    // fmt::join(value.symbols, R"(, )"));
   }
 };

@@ -16,7 +16,6 @@
 #define ROQ_UNLIKELY(x) (__builtin_expect(x, false))
 // c++20 uses the [[ likely ]] and [[ unlikely ]] attributes
 
-
 #define ROQ_CACHELINE_SIZE 64
 // constexpr std::hardware_{constructive,destructive}_interference_size
 // not supported by gcc:

@@ -63,6 +63,11 @@ doxygen/html
 doxygen/xml
 
 
+# cppcheck
+
+compile_commands.json
+
+
 # project specific
 
 roq-api.pc

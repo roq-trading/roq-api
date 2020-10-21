@@ -122,7 +122,7 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
 
  private:
   struct alignas(ROQ_CACHELINE_SIZE) Data {
-    std::atomic<uint64_t> sum = { 0 };
+    std::atomic<uint64_t> sum = {0};
     uint64_t bucket_0;
     uint64_t bucket_1;
     uint64_t bucket_2;

@@ -44,7 +44,7 @@ class alignas(ROQ_CACHELINE_SIZE) Gauge {
 
  private:
   struct alignas(ROQ_CACHELINE_SIZE) Data final {
-    std::atomic<T> value = { 0 };
+    std::atomic<T> value = {0};
   } _data;
   const std::string _labels;
   // assumptions

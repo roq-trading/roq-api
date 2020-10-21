@@ -9,7 +9,6 @@ BreakBeforeBraces: Attach
 BreakConstructorInitializers: BeforeColon
 BreakInheritanceList: BeforeColon
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
-Cpp11BracedListStyle: false
 DerivePointerAlignment: false
 ExperimentalAutoDetectBinPacking: false
 IncludeBlocks: Preserve
@@ -18,7 +17,8 @@ PointerAlignment: Right
 
 # undecided ...
 
-SpaceBeforeCpp11BracedList: true
+# Cpp11BracedListStyle: true
+# SpaceBeforeCpp11BracedList: false
 
 # unavailable ...
 

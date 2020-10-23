@@ -48,6 +48,8 @@ lib/
 
 build/
 
+compile_commands.json*
+
 
 # gtest
 
@@ -61,11 +63,6 @@ doxygen/Doxyfile
 doxygen/doxygen-build.stamp
 doxygen/html
 doxygen/xml
-
-
-# cppcheck
-
-compile_commands.json
 
 
 # project specific

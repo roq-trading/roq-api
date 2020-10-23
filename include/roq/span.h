@@ -37,6 +37,7 @@ class span final {
       : _array(array), _length(length) {}
 
   template <typename C>
+  // cppcheck-suppress noExplicitConstructor
   span(C &container)  // NOLINT
       : span(container.data(), container.size()) {}
 

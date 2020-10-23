@@ -32,14 +32,17 @@ class ROQ_PACKED string final {
 
   string() = default;
 
+  // cppcheck-suppress noExplicitConstructor
   string(const std::string_view &text) {  // NOLINT (allow implicit)
     copy(text);
   }
 
+  // cppcheck-suppress noExplicitConstructor
   string(const std::string &text) {  // NOLINT (allow implicit)
     copy(text);
   }
 
+  // cppcheck-suppress noExplicitConstructor
   string(const value_type *text)  // NOLINT (allow implicit)
       : string(std::string_view(text)) {}
 
@@ -88,15 +91,15 @@ class ROQ_PACKED string final {
   value_type *data() { return _buffer.data(); }
 
   void copy(const std::string_view &text) {
-    auto length = text.length();
-    if (ROQ_LIKELY(length <= size())) {
+    auto len = text.length();
+    if (ROQ_LIKELY(len <= size())) {
       auto last = std::copy(text.begin(), text.end(), _buffer.begin());
       std::fill(last, _buffer.end(), '\0');
     } else {
       throw std::length_error(fmt::format(
           R"(can't copy: len(text="{}")={} exceeds size={})",
           text,
-          length,
+          len,
           size()));
     }
   }

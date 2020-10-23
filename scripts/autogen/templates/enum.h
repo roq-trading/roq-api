@@ -27,6 +27,7 @@ struct ROQ_PACKED {{ name }} final {
 
   {{ name }}() = default;
 
+  // cppcheck-suppress noExplicitConstructor
   inline {{ name }}(type_t type)  // NOLINT
       : _type(type) {
   }

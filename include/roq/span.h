@@ -31,10 +31,10 @@ class span final {
   using const_pointer = const value_type *;
   using iterator = pointer;
 
-  span() noexcept : _array(nullptr), _length(0) {}
+  span() noexcept : array_(nullptr), length_(0) {}
 
   span(pointer array, size_t length) noexcept
-      : _array(array), _length(length) {}
+      : array_(array), length_(length) {}
 
   template <typename C>
   // cppcheck-suppress noExplicitConstructor
@@ -47,43 +47,43 @@ class span final {
   span &operator=(const span &) = default;
   span &operator=(span &&) = default;
 
-  pointer data() { return _array; }
-  const_pointer data() const { return _array; }
+  pointer data() { return array_; }
+  const_pointer data() const { return array_; }
 
-  bool empty() const { return _length == 0; }
+  bool empty() const { return length_ == 0; }
 
-  size_t size() const { return _length; }
+  size_t size() const { return length_; }
 
-  size_t size_bytes() const { return _length * sizeof(value_type); }
+  size_t size_bytes() const { return length_ * sizeof(value_type); }
 
-  reference operator[](size_t index) { return _array[index]; }
-  const_reference operator[](size_t index) const { return _array[index]; }
+  reference operator[](size_t index) { return array_[index]; }
+  const_reference operator[](size_t index) const { return array_[index]; }
 
   reference at(size_t index) {
-    if (_length <= index) throw std::out_of_range();
-    return _array[index];
+    if (length_ <= index) throw std::out_of_range();
+    return array_[index];
   }
   const_reference at(size_t index) const {
-    if (_length <= index) throw std::out_of_range();
-    return _array[index];
+    if (length_ <= index) throw std::out_of_range();
+    return array_[index];
   }
 
-  iterator begin() const { return _array; }
-  iterator end() const { return _array + _length; }
-  iterator cbegin() const { return _array; }
-  iterator cend() const { return _array + _length; }
+  iterator begin() const { return array_; }
+  iterator end() const { return array_ + length_; }
+  iterator cbegin() const { return array_; }
+  iterator cend() const { return array_ + length_; }
 
   auto subspan(size_t offset, size_t count) const {
     // according to standard: undefined behavior if offset/count is out of range
-    return span(_array + offset, count);
+    return span(array_ + offset, count);
   }
   auto subspan(size_t offset) const {
-    return subspan(offset, _length - offset);
+    return subspan(offset, length_ - offset);
   }
 
  private:
-  pointer _array;
-  size_t _length;
+  pointer array_;
+  size_t length_;
 };
 
 }  // namespace roq

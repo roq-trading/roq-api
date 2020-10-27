@@ -29,15 +29,15 @@ struct ROQ_PACKED {{ name }} final {
 
   // cppcheck-suppress noExplicitConstructor
   inline {{ name }}(type_t type)  // NOLINT
-      : _type(type) {
+      : type_(type) {
   }
 
   inline explicit {{ name }}(uint8_t type)
-      : _type(validate(type)) {
+      : type_(validate(type)) {
   }
 
   inline operator type_t() const {
-    return _type;
+    return type_;
   }
 
   inline std::string_view name() const {
@@ -45,7 +45,7 @@ struct ROQ_PACKED {{ name }} final {
   {% for value in values %}
     constexpr std::string_view {{ value.enum_value }}("{{ value.enum_value }}");
   {% endfor %}
-    switch (_type) {
+    switch (type_) {
       case type_t::UNDEFINED:
         break;
   {% for value in values %}
@@ -78,7 +78,7 @@ struct ROQ_PACKED {{ name }} final {
   }
 
  private:
-  type_t _type = type_t::UNDEFINED;
+  type_t type_ = type_t::UNDEFINED;
 };
 
 {% include 'namespace_end' %}

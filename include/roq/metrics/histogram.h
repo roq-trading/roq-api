@@ -31,17 +31,17 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
   constexpr uint64_t threshold() const { return N5; }
 
   Histogram() = default;
-  explicit Histogram(const std::string_view &labels) : _labels(labels) {}
+  explicit Histogram(const std::string_view &labels) : labels_(labels) {}
   Histogram(
       const std::string_view &label_name_0,
       const std::string_view &label_value_0)
-      : _labels(create_labels(label_name_0, label_value_0)) {}
+      : labels_(create_labels(label_name_0, label_value_0)) {}
   Histogram(
       const std::string_view &label_name_0,
       const std::string_view &label_value_0,
       const std::string_view &label_name_1,
       const std::string_view &label_value_1)
-      : _labels(create_labels(
+      : labels_(create_labels(
             label_name_0, label_value_0, label_name_1, label_value_1)) {}
   Histogram(
       const std::string_view &label_name_0,
@@ -50,7 +50,7 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
       const std::string_view &label_value_1,
       const std::string_view &label_name_2,
       const std::string_view &label_value_2)
-      : _labels(create_labels(
+      : labels_(create_labels(
             label_name_0,
             label_value_0,
             label_name_1,
@@ -62,34 +62,34 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
   Histogram(Histogram &&) = delete;
 
   //! Prefetch data into L1 cache
-  inline void prefetch() noexcept { __builtin_prefetch(&_data, 1, 3); }
+  inline void prefetch() noexcept { __builtin_prefetch(&data_, 1, 3); }
 
   //! Update histogram with specific value
   inline bool update(uint64_t value) noexcept {
     bool result = false;
     if (value < N0) {
-      _data.bucket_0 += 1;
+      data_.bucket_0 += 1;
     } else if (value < N1) {
-      _data.bucket_1 += 1;
+      data_.bucket_1 += 1;
     } else if (value < N2) {
-      _data.bucket_2 += 1;
+      data_.bucket_2 += 1;
     } else if (value < N3) {
-      _data.bucket_3 += 1;
+      data_.bucket_3 += 1;
     } else if (value < N4) {
-      _data.bucket_4 += 1;
+      data_.bucket_4 += 1;
     } else if (value < N5) {
-      _data.bucket_5 += 1;
+      data_.bucket_5 += 1;
     } else {
-      _data.bucket_6 += 1;
+      data_.bucket_6 += 1;
       result = true;
     }
-    _data.sum.fetch_add(value, std::memory_order_release);
+    data_.sum.fetch_add(value, std::memory_order_release);
     return result;
   }
 
   //! Write formatted output
   Writer &write(Writer &writer, const std::string_view &name) const {
-    return write(writer, name, _labels);
+    return write(writer, name, labels_);
   }
 
   //! Write formatted output
@@ -97,14 +97,14 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
       Writer &writer,
       const std::string_view &name,
       const std::string_view &labels) const {
-    auto sum = _data.sum.load(std::memory_order_acquire);
-    auto bucket_0 = _data.bucket_0;
-    auto bucket_1 = bucket_0 + _data.bucket_1;
-    auto bucket_2 = bucket_1 + _data.bucket_2;
-    auto bucket_3 = bucket_2 + _data.bucket_3;
-    auto bucket_4 = bucket_3 + _data.bucket_4;
-    auto bucket_5 = bucket_4 + _data.bucket_5;
-    auto bucket_6 = bucket_5 + _data.bucket_6;
+    auto sum = data_.sum.load(std::memory_order_acquire);
+    auto bucket_0 = data_.bucket_0;
+    auto bucket_1 = bucket_0 + data_.bucket_1;
+    auto bucket_2 = bucket_1 + data_.bucket_2;
+    auto bucket_3 = bucket_2 + data_.bucket_3;
+    auto bucket_4 = bucket_3 + data_.bucket_4;
+    auto bucket_5 = bucket_4 + data_.bucket_5;
+    auto bucket_6 = bucket_5 + data_.bucket_6;
     writer.write_type(name, "histogram")
         .write_bucket(name, labels, N0, bucket_0)
         .write_bucket(name, labels, N1, bucket_1)
@@ -130,8 +130,8 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
     uint64_t bucket_4;
     uint64_t bucket_5;
     uint64_t bucket_6;
-  } _data = {};
-  const std::string _labels;
+  } data_ = {};
+  const std::string labels_;
   // assumptions
   static_assert(sizeof(Data) == ROQ_CACHELINE_SIZE);
   static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t));

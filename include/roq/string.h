@@ -61,20 +61,20 @@ class ROQ_PACKED string final {
                static_cast<std::string_view>(rhs)) == 0;
   }
 
-  value_type &operator[](size_t index) { return _buffer[index]; }
+  value_type &operator[](size_t index) { return buffer_[index]; }
 
-  value_type operator[](size_t index) const { return _buffer[index]; }
+  value_type operator[](size_t index) const { return buffer_[index]; }
 
   constexpr std::size_t size() { return N; }
 
   inline std::size_t length() const {
-    auto iter = std::find(_buffer.begin(), _buffer.end(), '\0');
-    return iter - _buffer.begin();
+    auto iter = std::find(buffer_.begin(), buffer_.end(), '\0');
+    return iter - buffer_.begin();
   }
 
-  inline bool empty() const { return _buffer[0] == '\0'; }
+  inline bool empty() const { return buffer_[0] == '\0'; }
 
-  const value_type *data() const { return _buffer.data(); }
+  const value_type *data() const { return buffer_.data(); }
 
   operator std::string_view() const {
     return std::string_view(data(), length());
@@ -84,17 +84,17 @@ class ROQ_PACKED string final {
     // note!
     // we prefer to clear the entire buffer (for security reasons)
     // even though it would be enough to only set the first element
-    _buffer.fill('\0');
+    buffer_.fill('\0');
   }
 
  protected:
-  value_type *data() { return _buffer.data(); }
+  value_type *data() { return buffer_.data(); }
 
   void copy(const std::string_view &text) {
     auto len = text.length();
     if (ROQ_LIKELY(len <= size())) {
-      auto last = std::copy(text.begin(), text.end(), _buffer.begin());
-      std::fill(last, _buffer.end(), '\0');
+      auto last = std::copy(text.begin(), text.end(), buffer_.begin());
+      std::fill(last, buffer_.end(), '\0');
     } else {
       throw std::length_error(fmt::format(
           R"(can't copy: len(text="{}")={} exceeds size={})",
@@ -105,7 +105,7 @@ class ROQ_PACKED string final {
   }
 
  private:
-  std::array<value_type, N> _buffer = {};
+  std::array<value_type, N> buffer_ = {};
 };
 
 template <std::size_t N>

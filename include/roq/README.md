@@ -1,7 +1,10 @@
-Please note that many headers are being auto-generated and only available after
-the project has been built.
+# ARE YOU LOOKING FOR MISSING HEADER FILES ?
 
-Online reference documentation is available
+Many of the header files are auto-generated and only available **after** the
+project has been built.
+
+You can browse the auto-generation **schemas** for C++ [here](../../schema/cpp/)
+and FlatBuffers [here](../../schema/fbs/).
+
+You can browse the online **documentation**
 [here](https://roq-trading.com/docs/reference/cpp/roq-api/).
-
-Schemas are available [here](../../schema/cpp/) and [here](../../schema/fbs/).

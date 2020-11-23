@@ -25,3 +25,6 @@ AllowShortCaseLabelsOnASingleLine: true
 
 # https://reviews.llvm.org/D31635
 # ReferenceAlignment: Left
+
+# https://reviews.llvm.org/D69764
+# ConstPlacement: West

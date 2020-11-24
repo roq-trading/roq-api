@@ -11,8 +11,6 @@ table ReferenceData {
   settlement_currency:string;
   commission_currency:string;
   tick_size:double = nan;
-  limit_up:double = nan;
-  limit_down:double = nan;
   multiplier:double = nan;
   min_trade_vol:double = nan;
   option_type:OptionType;

@@ -34,16 +34,6 @@
             "comment": "Minimum price increment"
         },
         {
-            "name": "limit_up",
-            "type": "double",
-            "comment": "Limit up price"
-        },
-        {
-            "name": "limit_down",
-            "type": "double",
-            "comment": "Limit down price"
-        },
-        {
             "name": "multiplier",
             "type": "double",
             "comment": "Multiplier (notional)"

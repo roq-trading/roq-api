@@ -4,6 +4,14 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Removed
+
+* `ReferenceData::limit_{up|down}`
+
+   * Upper and lower trading limits belongs to daily session statistics,
+     not reference data.
+     These fields were anyway already managed by `StatisticsUpdate`.
+
 ## 0.4.5 &ndash; 2020-11-09
 
 ## 0.4.4 &ndash; 2020-09-20

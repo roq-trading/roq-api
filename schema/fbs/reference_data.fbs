@@ -16,4 +16,8 @@ table ReferenceData {
   option_type:OptionType;
   strike_currency:string;
   strike_price:double = nan;
+  underlying:string;
+  issue_date_utc:int64;
+  expiry_time_utc:int64;
+  settlement_date_utc:int64;
 }

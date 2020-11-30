@@ -4,6 +4,12 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `ReferenceData`
+
+   * `underlying`, `issue_date_utc`, `expiry_time_utc`, `settlement_date_utc`
+
 ### Removed
 
 * `ReferenceData::limit_{up|down}`

@@ -20,6 +20,8 @@ def camel_case(word):
 defaults = {
     'std::string_view': '',
     'std::chrono::nanoseconds': ' = {}',
+    'std::chrono::milliseconds': ' = {}',
+    'std::chrono::seconds': ' = {}',
     'bool': ' = false',
     'char': ' = \'\\0\'',
     'int8_t': ' = 0',

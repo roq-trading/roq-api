@@ -65,17 +65,17 @@
         },
         {
             "name": "issue_date_utc",
-            "type": "std::chrono::nanoseconds",
+            "type": "std::chrono::milliseconds",
             "comment": "Issue date"
         },
         {
             "name": "expiry_time_utc",
-            "type": "std::chrono::nanoseconds",
+            "type": "std::chrono::milliseconds",
             "comment": "Expiry time"
         },
         {
             "name": "settlement_date_utc",
-            "type": "std::chrono::nanoseconds",
+            "type": "std::chrono::milliseconds",
             "comment": "Settlement date"
         }
     ]

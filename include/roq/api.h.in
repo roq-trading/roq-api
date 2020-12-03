@@ -4,6 +4,11 @@
 
 #include "roq/compat.h"
 
+// preparing for C++20
+
+#include "roq/chrono.h"
+#include "roq/span.h"
+
 // enums
 
 #include "roq/connection_status.h"
@@ -84,7 +89,8 @@
 
 // version
 
-#define ROQ_VERSION "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
+#define ROQ_VERSION \
+  "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
 
 namespace roq {
 

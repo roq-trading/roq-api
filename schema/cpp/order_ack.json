@@ -41,6 +41,10 @@
             "type": "uint32_t"
         },
         {
+            "name": "external_account",
+            "type": "std::string_view"
+        },
+        {
             "name": "external_order_id",
             "type": "std::string_view"
         },

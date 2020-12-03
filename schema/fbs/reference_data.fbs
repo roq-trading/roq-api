@@ -6,6 +6,7 @@ namespace roq.fbs;
 table ReferenceData {
   exchange:string;
   symbol:string;
+  description:string;
   security_type:SecurityType;
   currency:string;
   settlement_currency:string;
@@ -17,7 +18,9 @@ table ReferenceData {
   strike_currency:string;
   strike_price:double = nan;
   underlying:string;
-  issue_date_utc:int64;
-  expiry_time_utc:int64;
-  settlement_date_utc:int64;
+  time_zone:string;
+  issue_date:int32;
+  settlement_date:int32;
+  expiry_datetime:int64;
+  expiry_datetime_utc:int64;
 }

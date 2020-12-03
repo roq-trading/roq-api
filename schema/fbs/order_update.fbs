@@ -19,5 +19,6 @@ table OrderUpdate {
   create_time_utc:int64;
   update_time_utc:int64;
   gateway_order_id:uint32;
+  external_account:string;
   external_order_id:string;
 }

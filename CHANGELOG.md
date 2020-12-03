@@ -8,7 +8,9 @@ All notable changes will be documented in this file.
 
 * `ReferenceData`
 
-   * `underlying`, `issue_date_utc`, `expiry_time_utc`, `settlement_date_utc`
+   * `description`, `underlying`,
+     `time_zone`, `issue_date`, `settlement_date`,
+     `expiry_datetime`, `expiry_datetime_utc
 
 ### Removed
 

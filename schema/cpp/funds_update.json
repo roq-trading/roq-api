@@ -20,6 +20,10 @@
             "name": "hold",
             "type": "double",
             "comment": "Funds on hold"
+        },
+        {
+            "name": "external_account",
+            "type": "std::string_view"
         }
     ]
 }

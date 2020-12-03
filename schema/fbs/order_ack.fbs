@@ -14,6 +14,7 @@ table OrderAck {
   error:Error;
   text:string;
   gateway_order_id:uint32;
+  external_account:string;
   external_order_id:string;
   request_id:string;
 }

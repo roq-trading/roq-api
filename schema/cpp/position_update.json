@@ -44,6 +44,10 @@
             "name": "position_cost_yesterday",
             "type": "double",
             "comment": "Position cost as of yesterday"
+        },
+        {
+            "name": "external_account",
+            "type": "std::string_view"
         }
     ]
 }

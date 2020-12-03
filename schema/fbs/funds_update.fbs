@@ -5,4 +5,5 @@ table FundsUpdate {
   currency:string;
   balance:double = nan;
   hold:double = nan;
+  external_account:string;
 }

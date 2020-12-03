@@ -12,4 +12,5 @@ table PositionUpdate {
   position_cost:double = nan;
   position_yesterday:double = nan;
   position_cost_yesterday:double = nan;
+  external_account:string;
 }

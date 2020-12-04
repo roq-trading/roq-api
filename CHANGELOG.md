@@ -4,6 +4,17 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.5.0 &ndash; 2020-12-04
+
+### Changed
+
+* Time management has been changed
+
+  * `std::chrono::nanoseconds` used for all precision timestamps
+  * `std::chrono::seconds` used for all date-times
+  * `std::chrono::days` (using `roq::chrono::days` until C++20 is supported)
+    used for all dates
+
 ### Added
 
 * `ReferenceData`

@@ -20,7 +20,7 @@
         },
         {
             "name": "trade_id",
-            "type": "roq::string<40>"
+            "type": "roq::fixed_string<40>"
         }
     ]
 }

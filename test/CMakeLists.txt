@@ -2,10 +2,10 @@ set(TARGET_NAME "${PROJECT_NAME}-test")
 
 set(SOURCES
     alignment.cpp
+    fixed_string.cpp
     format.cpp
     metrics.cpp
     span.cpp
-    string.cpp
     utils.cpp
     main.cpp)
 

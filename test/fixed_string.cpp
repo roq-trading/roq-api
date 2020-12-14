@@ -5,12 +5,12 @@
 #include <atomic>
 #include <vector>
 
-#include "roq/string.h"
+#include "roq/fixed_string.h"
 
 using namespace roq;  // NOLINT
 
-TEST(string, empty) {
-  roq::string<4> s;
+TEST(fixed_string, empty) {
+  roq::fixed_string<4> s;
   EXPECT_EQ(s.size(), std::size_t{4});
   EXPECT_EQ(s.length(), std::size_t{});
   auto sv = static_cast<std::string_view>(s);
@@ -18,9 +18,9 @@ TEST(string, empty) {
   EXPECT_EQ(sv.length(), std::size_t{});
 }
 
-TEST(string, partial) {
+TEST(fixed_string, partial) {
   constexpr auto text = "12";
-  roq::string<4> s = text;
+  roq::fixed_string<4> s = text;
   EXPECT_EQ(s.size(), std::size_t{4});
   EXPECT_EQ(s.length(), std::size_t{2});
   auto sv = static_cast<std::string_view>(s);
@@ -29,9 +29,9 @@ TEST(string, partial) {
   EXPECT_EQ(sv, text);
 }
 
-TEST(string, full) {
+TEST(fixed_string, full) {
   constexpr auto text = "123";
-  roq::string<4> s = text;
+  roq::fixed_string<4> s = text;
   EXPECT_EQ(s.size(), std::size_t{4});
   EXPECT_EQ(s.length(), std::size_t{3});
   auto sv = static_cast<std::string_view>(s);
@@ -40,11 +40,11 @@ TEST(string, full) {
   EXPECT_EQ(sv, text);
 }
 
-TEST(string, construct) {
-  roq::string<4>();
-  roq::string<4>("1");
-  roq::string<4>("12");
-  roq::string<4>("123");
-  roq::string<4>("1234");
-  EXPECT_THROW(roq::string<4>("12345"), std::length_error);
+TEST(fixed_string, construct) {
+  roq::fixed_string<4>();
+  roq::fixed_string<4>("1");
+  roq::fixed_string<4>("12");
+  roq::fixed_string<4>("123");
+  roq::fixed_string<4>("1234");
+  EXPECT_THROW(roq::fixed_string<4>("12345"), std::length_error);
 }

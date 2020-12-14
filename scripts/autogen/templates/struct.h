@@ -10,7 +10,7 @@
 #include <string_view>
 
 #include "roq/span.h"
-#include "roq/string.h"
+#include "roq/fixed_string.h"
 
 {% include 'includes' %}
 

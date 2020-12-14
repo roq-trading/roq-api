@@ -10,8 +10,8 @@
 
 #include "roq/compat.h"
 #include "roq/event.h"
+#include "roq/fixed_string.h"
 #include "roq/span.h"
-#include "roq/string.h"
 
 #include "roq/message_info.h"
 

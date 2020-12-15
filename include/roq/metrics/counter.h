@@ -31,6 +31,12 @@ class alignas(ROQ_CACHELINE_SIZE) Counter {
     return *this;
   }
 
+  //! Increment counter by value
+  Counter &operator+=(uint64_t value) {
+    data_.value.fetch_add(value, std::memory_order_release);
+    return *this;
+  }
+
   //! Update counter to specific value
   void update(uint64_t value) noexcept {
     data_.value.store(value, std::memory_order_release);

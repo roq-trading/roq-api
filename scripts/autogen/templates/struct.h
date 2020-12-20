@@ -11,6 +11,7 @@
 
 #include "roq/span.h"
 #include "roq/fixed_string.h"
+#include "roq/uuid.h"
 
 {% include 'includes' %}
 

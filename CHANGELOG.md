@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `MessageInfo.source_session_id` now using a more efficient UUID representation
+
 ## 0.5.0 &ndash; 2020-12-04
 
 ### Changed

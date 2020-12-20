@@ -15,7 +15,7 @@
         },
         {
             "name": "source_session_id",
-            "type": "std::string_view",
+            "type": "UUID",
             "comment": "Session identifier (UUID)"
         },
         {

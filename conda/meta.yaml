@@ -9,7 +9,7 @@ source:
   path: ..
 
 build:
-  skip: True  # [win and osx]
+  skip: true  # [win and osx]
   number: {{ number }}
   run_exports:
     strong:
@@ -22,9 +22,9 @@ requirements:
     - cmake
     - make
   host:
-    - roq-oss-doxygen
-    - roq-oss-fmt
-    - roq-oss-flatbuffers
+    - doxygen
+    - flatbuffers
+    - fmt
 
 about:
   home: https://roq-trading.com

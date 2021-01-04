@@ -20,9 +20,9 @@ requirements:
   build:
     - {{ compiler('cxx') }}
     - cmake
+    - doxygen
     - make
   host:
-    - doxygen
     - flatbuffers
     - fmt
 

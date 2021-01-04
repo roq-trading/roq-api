@@ -24,7 +24,6 @@ requirements:
     - flatbuffers
     - make
   host:
-    - flatbuffers
     - fmt
 
 about:

@@ -21,6 +21,7 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake
     - doxygen
+    - flatbuffers
     - make
   host:
     - flatbuffers

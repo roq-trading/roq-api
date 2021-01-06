@@ -19,12 +19,12 @@ build:
 requirements:
   build:
     - {{ compiler('cxx') }}
-    - cmake >=3.19
-    - doxygen >=1.8
-    - flatbuffers >=1.12
-    - make >=4.3
+    - cmake
+    - doxygen
+    - flatbuffers
+    - make
   host:
-    - fmt >=7.1
+    - fmt
 
 about:
   home: https://roq-trading.com

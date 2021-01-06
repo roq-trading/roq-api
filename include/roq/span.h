@@ -60,11 +60,13 @@ class span final {
   const_reference operator[](size_t index) const { return array_[index]; }
 
   reference at(size_t index) {
-    if (length_ <= index) throw std::out_of_range();
+    if (length_ <= index)
+      throw std::out_of_range();
     return array_[index];
   }
   const_reference at(size_t index) const {
-    if (length_ <= index) throw std::out_of_range();
+    if (length_ <= index)
+      throw std::out_of_range();
     return array_[index];
   }
 

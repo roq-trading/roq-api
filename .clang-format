@@ -15,6 +15,7 @@ IncludeBlocks: Preserve
 IndentCaseLabels: true
 PointerAlignment: Right
 AllowShortCaseLabelsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: Never
 
 # undecided ...
 

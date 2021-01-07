@@ -14,7 +14,7 @@ ExperimentalAutoDetectBinPacking: false
 IncludeBlocks: Preserve
 IndentCaseLabels: true
 PointerAlignment: Right
-AllowShortCaseLabelsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: false
 AllowShortIfStatementsOnASingleLine: Never
 
 # undecided ...

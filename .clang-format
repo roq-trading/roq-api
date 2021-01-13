@@ -2,7 +2,10 @@ BasedOnStyle: Google
 
 AlignAfterOpenBracket: AlwaysBreak
 AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
 BinPackArguments: false
 BinPackParameters: false
 BreakBeforeBraces: Attach
@@ -14,15 +17,13 @@ ExperimentalAutoDetectBinPacking: false
 IncludeBlocks: Preserve
 IndentCaseLabels: true
 PointerAlignment: Right
-AllowShortCaseLabelsOnASingleLine: false
-AllowShortIfStatementsOnASingleLine: Never
 
-# undecided ...
+# undecided:
 
 # Cpp11BracedListStyle: true
 # SpaceBeforeCpp11BracedList: false
 
-# unavailable ...
+# unavailable:
 
 # https://reviews.llvm.org/D31635
 # ReferenceAlignment: Left

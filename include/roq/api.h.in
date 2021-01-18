@@ -82,11 +82,6 @@
 #include "roq/exceptions.h"
 #include "roq/utilities.h"
 
-// config
-
-#include "roq/account.h"
-#include "roq/user.h"
-
 // version
 
 #define ROQ_VERSION \

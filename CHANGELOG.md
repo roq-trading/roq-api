@@ -10,6 +10,10 @@ All notable changes will be documented in this file.
 
 * `MessageInfo.source_session_id` now using a more efficient UUID representation
 
+### Removed
+
+* `User` and `Account` removed (not public interfaces)
+
 ## 0.5.0 &ndash; 2020-12-04
 
 ### Changed

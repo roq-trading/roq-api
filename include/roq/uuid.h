@@ -2,10 +2,11 @@
 
 #pragma once
 
+#include <fmt/format.h>
+
 #include <algorithm>
 #include <array>
-
-#include <fmt/format.h>
+#include <utility>
 
 namespace roq {
 

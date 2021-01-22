@@ -13,7 +13,6 @@ build:
   number: {{ number }}
   run_exports:
     strong:
-      - {{ pin_compatible('gflags', max_pin='x.x') }}
       - {{ pin_subpackage('roq-api', max_pin='x.x') }}
 
 requirements:

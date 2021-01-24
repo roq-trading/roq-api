@@ -33,8 +33,7 @@ class span final {
 
   span() noexcept : array_(nullptr), length_(0) {}
 
-  span(pointer array, size_t length) noexcept
-      : array_(array), length_(length) {}
+  span(pointer array, size_t length) noexcept : array_(array), length_(length) {}
 
   template <typename C>
   // cppcheck-suppress noExplicitConstructor
@@ -79,9 +78,7 @@ class span final {
     // according to standard: undefined behavior if offset/count is out of range
     return span(array_ + offset, count);
   }
-  auto subspan(size_t offset) const {
-    return subspan(offset, length_ - offset);
-  }
+  auto subspan(size_t offset) const { return subspan(offset, length_ - offset); }
 
  private:
   pointer array_;

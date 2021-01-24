@@ -38,9 +38,7 @@ class alignas(ROQ_CACHELINE_SIZE) Counter {
   }
 
   //! Update counter to specific value
-  void update(uint64_t value) noexcept {
-    data_.value.store(value, std::memory_order_release);
-  }
+  void update(uint64_t value) noexcept { data_.value.store(value, std::memory_order_release); }
 
   //! Write formatted output
   void write(Writer &writer, const std::string_view &name) const {
@@ -48,14 +46,9 @@ class alignas(ROQ_CACHELINE_SIZE) Counter {
   }
 
   //! Write formatted output
-  void write(
-      Writer &writer,
-      const std::string_view &name,
-      const std::string_view &labels) const {
+  void write(Writer &writer, const std::string_view &name, const std::string_view &labels) const {
     auto value = data_.value.load(std::memory_order_acquire);
-    writer.write_type(name, "counter")
-        .write_simple(name, labels, value)
-        .finish();
+    writer.write_type(name, "counter").write_simple(name, labels, value).finish();
   }
 
  private:

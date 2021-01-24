@@ -57,8 +57,7 @@ class ROQ_PACKED fixed_string final {
   }
 
   bool operator==(const fixed_string<N> &rhs) const {
-    return static_cast<std::string_view>(*this).compare(
-               static_cast<std::string_view>(rhs)) == 0;
+    return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) == 0;
   }
 
   value_type &operator[](size_t index) { return buffer_[index]; }
@@ -76,9 +75,7 @@ class ROQ_PACKED fixed_string final {
 
   const value_type *data() const { return buffer_.data(); }
 
-  operator std::string_view() const {
-    return std::string_view(data(), length());
-  }
+  operator std::string_view() const { return std::string_view(data(), length()); }
 
   void clear() {
     // note!
@@ -96,11 +93,8 @@ class ROQ_PACKED fixed_string final {
       auto last = std::copy(text.begin(), text.end(), buffer_.begin());
       std::fill(last, buffer_.end(), '\0');
     } else {
-      throw std::length_error(fmt::format(
-          R"(can't copy: len(text="{}")={} exceeds size={})",
-          text,
-          len,
-          size()));
+      throw std::length_error(
+          fmt::format(R"(can't copy: len(text="{}")={} exceeds size={})", text, len, size()));
     }
   }
 

@@ -19,30 +19,21 @@ namespace roq {
 namespace metrics {
 
 //! Histogram
-template <
-    uint64_t N0,
-    uint64_t N1,
-    uint64_t N2,
-    uint64_t N3,
-    uint64_t N4,
-    uint64_t N5>
+template <uint64_t N0, uint64_t N1, uint64_t N2, uint64_t N3, uint64_t N4, uint64_t N5>
 struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
  public:
   constexpr uint64_t threshold() const { return N5; }
 
   Histogram() = default;
   explicit Histogram(const std::string_view &labels) : labels_(labels) {}
-  Histogram(
-      const std::string_view &label_name_0,
-      const std::string_view &label_value_0)
+  Histogram(const std::string_view &label_name_0, const std::string_view &label_value_0)
       : labels_(create_labels(label_name_0, label_value_0)) {}
   Histogram(
       const std::string_view &label_name_0,
       const std::string_view &label_value_0,
       const std::string_view &label_name_1,
       const std::string_view &label_value_1)
-      : labels_(create_labels(
-            label_name_0, label_value_0, label_name_1, label_value_1)) {}
+      : labels_(create_labels(label_name_0, label_value_0, label_name_1, label_value_1)) {}
   Histogram(
       const std::string_view &label_name_0,
       const std::string_view &label_value_0,
@@ -94,9 +85,7 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
 
   //! Write formatted output
   Writer &write(
-      Writer &writer,
-      const std::string_view &name,
-      const std::string_view &labels) const {
+      Writer &writer, const std::string_view &name, const std::string_view &labels) const {
     auto sum = data_.sum.load(std::memory_order_acquire);
     auto bucket_0 = data_.bucket_0;
     auto bucket_1 = bucket_0 + data_.bucket_1;
@@ -112,8 +101,7 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
         .write_bucket(name, labels, N3, bucket_3)
         .write_bucket(name, labels, N4, bucket_4)
         .write_bucket(name, labels, N5, bucket_5)
-        .write_bucket(
-            name, labels, std::numeric_limits<double>::infinity(), bucket_6)
+        .write_bucket(name, labels, std::numeric_limits<double>::infinity(), bucket_6)
         .write_sum(name, labels, sum)
         .write_count(name, labels, bucket_6)
         .finish();
@@ -135,17 +123,14 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
   // assumptions
   static_assert(sizeof(Data) == ROQ_CACHELINE_SIZE);
   static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t));
-  static_assert(
-      std::alignment_of_v<std::atomic<uint64_t> > ==
-      std::alignment_of_v<uint64_t>);
+  static_assert(std::alignment_of_v<std::atomic<uint64_t> > == std::alignment_of_v<uint64_t>);
 };
 
 // convenience
 
 using InternalLatency = Histogram<500, 1000, 2000, 5000, 10000, 20000>;
 
-using ExternalLatency =
-    Histogram<10000, 100000, 1000000, 10000000, 100000000, 1000000000>;
+using ExternalLatency = Histogram<10000, 100000, 1000000, 10000000, 100000000, 1000000000>;
 
 }  // namespace metrics
 }  // namespace roq

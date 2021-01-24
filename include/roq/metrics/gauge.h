@@ -34,10 +34,7 @@ class alignas(ROQ_CACHELINE_SIZE) Gauge {
   }
 
   //! Write formatted output
-  void write(
-      Writer &writer,
-      const std::string_view &name,
-      const std::string_view &labels) const {
+  void write(Writer &writer, const std::string_view &name, const std::string_view &labels) const {
     auto value = data_.value.load(std::memory_order_acquire);
     writer.write_type(name, "gauge").write_simple(name, labels, value).finish();
   }

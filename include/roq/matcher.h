@@ -33,8 +33,7 @@ class ROQ_PUBLIC Matcher {
   virtual ~Matcher() {}
 
   //! Dispatch all pending messages
-  virtual void dispatch(
-      Dispatcher &dispatcher, std::chrono::nanoseconds next) = 0;
+  virtual void dispatch(Dispatcher &dispatcher, std::chrono::nanoseconds next) = 0;
 
   virtual void operator()(const Event<MarketDataStatus> &) = 0;
   virtual void operator()(const Event<OrderManagerStatus> &) = 0;

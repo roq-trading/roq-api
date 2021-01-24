@@ -57,6 +57,8 @@ conda install -y \
     fmt
 ```
 
+In addition, your system should provide `clang-format` (at least version 10).
+
 
 ## Building
 

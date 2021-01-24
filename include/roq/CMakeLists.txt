@@ -71,6 +71,7 @@ foreach(path ${SOURCES})
     OUTPUT "${target}"
     COMMAND ${PYTHON_EXECUTABLE} "${AUTOGEN_PY}" --namespace "roq" --file-type "h" "${source}" >
             "${target}"
+    COMMAND ${CLANG_FORMAT} -i "${target}"
     VERBATIM
     DEPENDS "${PYTHON_EXECUTABLE}" "${AUTOGEN_PY}" "${source}")
   list(APPEND AUTOGEN_HEADERS "${target}")

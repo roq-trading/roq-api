@@ -11,6 +11,7 @@ BinPackParameters: false
 BreakBeforeBraces: Attach
 BreakConstructorInitializers: BeforeColon
 BreakInheritanceList: BeforeColon
+ColumnLimit: 100
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 DerivePointerAlignment: false
 ExperimentalAutoDetectBinPacking: false

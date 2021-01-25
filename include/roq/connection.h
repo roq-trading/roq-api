@@ -43,10 +43,8 @@ struct fmt::formatter<roq::Connection> {
   auto format(const roq::Connection &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(status={})"
-
         R"(}})",
         value.status);
   }

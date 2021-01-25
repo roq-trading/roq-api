@@ -48,14 +48,12 @@ struct fmt::formatter<roq::StatisticsUpdate> {
   auto format(const roq::StatisticsUpdate &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(statistics=[{}], )"
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
-
         R"(}})",
         value.exchange,
         value.symbol,

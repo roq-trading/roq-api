@@ -39,13 +39,11 @@ struct fmt::formatter<roq::Trade> {
   auto format(const roq::Trade &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(side={}, )"
         R"(price={}, )"
         R"(quantity={}, )"
         R"(trade_id="{}")"
-
         R"(}})",
         value.side,
         value.price,

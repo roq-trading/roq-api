@@ -10,23 +10,23 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
       Context& context) {
     return format_to(
         context.out(),
-{% if variables | length == 0 %}
+{%- if variables | length == 0 %}
 {%- raw %}
         R"({{}})");
-{% endraw %}
-{% else %}
+{%- endraw %}
+{%- else %}
 {%- raw %}
         R"({{)"
-{% endraw %}
-{% for variable in variables %}
+{%- endraw %}
+{%- for variable in variables %}
         R"({{ variable.name }}={{ variable.format_string }}{{ ', ' if not loop.last }})"
-{% endfor %}
+{%- endfor %}
 {%- raw %}
         R"(}})",
-{% endraw %}
-{% for variable in variables %}
+{%- endraw %}
+{%- for variable in variables %}
         {{ variable.format_value }}{{ ',' if not loop.last else ');' }}
-{% endfor %}
-{% endif %}
+{%- endfor %}
+{%- endif %}
   }
 };

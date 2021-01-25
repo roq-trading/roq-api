@@ -57,7 +57,6 @@ struct fmt::formatter<roq::OrderAck> {
   auto format(const roq::OrderAck &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}", )"
         R"(order_id={}, )"
@@ -70,7 +69,6 @@ struct fmt::formatter<roq::OrderAck> {
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(request_id="{}")"
-
         R"(}})",
         value.account,
         value.order_id,

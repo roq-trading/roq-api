@@ -45,12 +45,10 @@ struct fmt::formatter<roq::MarketStatus> {
   auto format(const roq::MarketStatus &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(trading_status={})"
-
         R"(}})",
         value.exchange,
         value.symbol,

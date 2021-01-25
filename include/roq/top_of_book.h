@@ -48,14 +48,12 @@ struct fmt::formatter<roq::TopOfBook> {
   auto format(const roq::TopOfBook &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(layer={}, )"
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
-
         R"(}})",
         value.exchange,
         value.symbol,

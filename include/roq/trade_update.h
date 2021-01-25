@@ -58,7 +58,6 @@ struct fmt::formatter<roq::TradeUpdate> {
   auto format(const roq::TradeUpdate &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}", )"
         R"(order_id={}, )"
@@ -73,7 +72,6 @@ struct fmt::formatter<roq::TradeUpdate> {
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(fills=[{}])"
-
         R"(}})",
         value.account,
         value.order_id,

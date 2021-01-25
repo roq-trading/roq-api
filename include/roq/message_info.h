@@ -45,7 +45,6 @@ struct fmt::formatter<roq::MessageInfo> {
   auto format(const roq::MessageInfo &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(source={}, )"
         R"(source_name="{}", )"
@@ -59,7 +58,6 @@ struct fmt::formatter<roq::MessageInfo> {
         R"(origin_create_time_utc={}, )"
         R"(is_last={}, )"
         R"(opaque={})"
-
         R"(}})",
         value.source,
         value.source_name,

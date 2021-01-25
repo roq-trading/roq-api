@@ -64,7 +64,6 @@ struct fmt::formatter<roq::CreateOrder> {
   auto format(const roq::CreateOrder &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}", )"
         R"(order_id={}, )"
@@ -80,7 +79,6 @@ struct fmt::formatter<roq::CreateOrder> {
         R"(stop_price={}, )"
         R"(max_show_quantity={}, )"
         R"(order_template="{}")"
-
         R"(}})",
         value.account,
         value.order_id,

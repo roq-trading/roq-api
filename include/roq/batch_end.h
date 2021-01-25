@@ -37,10 +37,7 @@ struct fmt::formatter<roq::BatchEnd> {
   }
   template <typename Context>
   auto format(const roq::BatchEnd &value, Context &context) {
-    return format_to(
-        context.out(),
-
-        R"({{}})");
+    return format_to(context.out(), R"({{}})");
   }
 };
 template <>

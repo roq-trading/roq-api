@@ -35,11 +35,9 @@ struct fmt::formatter<roq::MBPUpdate> {
   auto format(const roq::MBPUpdate &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(price={}, )"
         R"(quantity={})"
-
         R"(}})",
         value.price,
         value.quantity);

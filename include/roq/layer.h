@@ -37,13 +37,11 @@ struct fmt::formatter<roq::Layer> {
   auto format(const roq::Layer &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(bid_price={}, )"
         R"(bid_quantity={}, )"
         R"(ask_price={}, )"
         R"(ask_quantity={})"
-
         R"(}})",
         value.bid_price,
         value.bid_quantity,

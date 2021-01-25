@@ -54,7 +54,6 @@ struct fmt::formatter<roq::PositionUpdate> {
   auto format(const roq::PositionUpdate &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}", )"
         R"(exchange="{}", )"
@@ -66,7 +65,6 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"(position_yesterday={}, )"
         R"(position_cost_yesterday={}, )"
         R"(external_account="{}")"
-
         R"(}})",
         value.account,
         value.exchange,

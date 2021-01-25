@@ -44,13 +44,11 @@ struct fmt::formatter<roq::ModifyOrder> {
   auto format(const roq::ModifyOrder &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}", )"
         R"(order_id={}, )"
         R"(quantity={}, )"
         R"(price={})"
-
         R"(}})",
         value.account,
         value.order_id,

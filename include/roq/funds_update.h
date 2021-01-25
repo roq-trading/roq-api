@@ -45,14 +45,12 @@ struct fmt::formatter<roq::FundsUpdate> {
   auto format(const roq::FundsUpdate &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}", )"
         R"(currency="{}", )"
         R"(balance={}, )"
         R"(hold={}, )"
         R"(external_account="{}")"
-
         R"(}})",
         value.account,
         value.currency,

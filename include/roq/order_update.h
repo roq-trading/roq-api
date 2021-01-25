@@ -61,7 +61,6 @@ struct fmt::formatter<roq::OrderUpdate> {
   auto format(const roq::OrderUpdate &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}", )"
         R"(order_id={}, )"
@@ -79,7 +78,6 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(gateway_order_id={}, )"
         R"(external_account="{}", )"
         R"(external_order_id="{}")"
-
         R"(}})",
         value.account,
         value.order_id,

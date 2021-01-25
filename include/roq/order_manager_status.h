@@ -44,11 +44,9 @@ struct fmt::formatter<roq::OrderManagerStatus> {
   auto format(const roq::OrderManagerStatus &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}", )"
         R"(status={})"
-
         R"(}})",
         value.account,
         value.status);

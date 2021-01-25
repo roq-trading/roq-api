@@ -42,11 +42,9 @@ struct fmt::formatter<roq::DownloadEnd> {
   auto format(const roq::DownloadEnd &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}", )"
         R"(max_order_id={})"
-
         R"(}})",
         value.account,
         value.max_order_id);

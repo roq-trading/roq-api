@@ -41,10 +41,8 @@ struct fmt::formatter<roq::Timer> {
   auto format(const roq::Timer &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(now={})"
-
         R"(}})",
         value.now);
   }

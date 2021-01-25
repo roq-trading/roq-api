@@ -43,10 +43,8 @@ struct fmt::formatter<roq::MarketDataStatus> {
   auto format(const roq::MarketDataStatus &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(status={})"
-
         R"(}})",
         value.status);
   }

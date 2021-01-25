@@ -41,10 +41,8 @@ struct fmt::formatter<roq::DownloadBegin> {
   auto format(const roq::DownloadBegin &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}")"
-
         R"(}})",
         value.account);
   }

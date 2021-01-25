@@ -40,14 +40,12 @@ struct fmt::formatter<roq::MBOUpdate> {
   auto format(const roq::MBOUpdate &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(price={}, )"
         R"(remaining_quantity={}, )"
         R"(action={}, )"
         R"(priority={}, )"
         R"(order_id="{}")"
-
         R"(}})",
         value.price,
         value.remaining_quantity,

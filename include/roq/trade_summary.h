@@ -46,13 +46,11 @@ struct fmt::formatter<roq::TradeSummary> {
   auto format(const roq::TradeSummary &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(trades=[{}], )"
         R"(exchange_time_utc={})"
-
         R"(}})",
         value.exchange,
         value.symbol,

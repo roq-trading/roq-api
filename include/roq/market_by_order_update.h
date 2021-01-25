@@ -49,7 +49,6 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
   auto format(const roq::MarketByOrderUpdate &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
@@ -57,7 +56,6 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         R"(asks=[{}], )"
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
-
         R"(}})",
         value.exchange,
         value.symbol,

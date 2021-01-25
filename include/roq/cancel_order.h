@@ -42,11 +42,9 @@ struct fmt::formatter<roq::CancelOrder> {
   auto format(const roq::CancelOrder &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(account="{}", )"
         R"(order_id={})"
-
         R"(}})",
         value.account,
         value.order_id);

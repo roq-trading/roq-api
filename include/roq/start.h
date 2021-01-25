@@ -37,10 +37,7 @@ struct fmt::formatter<roq::Start> {
   }
   template <typename Context>
   auto format(const roq::Start &value, Context &context) {
-    return format_to(
-        context.out(),
-
-        R"({{}})");
+    return format_to(context.out(), R"({{}})");
   }
 };
 template <>

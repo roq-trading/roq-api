@@ -37,11 +37,9 @@ struct fmt::formatter<roq::Statistics> {
   auto format(const roq::Statistics &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(type={}, )"
         R"(value={})"
-
         R"(}})",
         value.type,
         value.value);

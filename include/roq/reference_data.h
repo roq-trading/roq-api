@@ -62,7 +62,6 @@ struct fmt::formatter<roq::ReferenceData> {
   auto format(const roq::ReferenceData &value, Context &context) {
     return format_to(
         context.out(),
-
         R"({{)"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
@@ -83,7 +82,6 @@ struct fmt::formatter<roq::ReferenceData> {
         R"(settlement_date={}, )"
         R"(expiry_datetime={}, )"
         R"(expiry_datetime_utc={})"
-
         R"(}})",
         value.exchange,
         value.symbol,

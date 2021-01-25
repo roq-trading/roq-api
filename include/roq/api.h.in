@@ -57,6 +57,7 @@
 #include "roq/create_order.h"
 #include "roq/download_begin.h"
 #include "roq/download_end.h"
+#include "roq/external_latency.h"
 #include "roq/funds_update.h"
 #include "roq/market_by_order_update.h"
 #include "roq/market_by_price_update.h"
@@ -84,8 +85,7 @@
 
 // version
 
-#define ROQ_VERSION \
-  "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
+#define ROQ_VERSION "@ROQ_VERSION_MAJOR@.@ROQ_VERSION_MINOR@.@ROQ_VERSION_PATCH@"
 
 namespace roq {
 

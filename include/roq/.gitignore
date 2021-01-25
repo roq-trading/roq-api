@@ -9,6 +9,7 @@ download_begin.h
 download_end.h
 error.h
 execution_instruction.h
+external_latency.h
 fill.h
 funds_update.h
 gateway_status.h
@@ -26,8 +27,8 @@ order_ack.h
 order_manager_status.h
 order_status.h
 order_type.h
-order_update.h
 order_update_action.h
+order_update.h
 origin.h
 position_effect.h
 position_update.h

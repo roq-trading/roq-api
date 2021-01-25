@@ -6,11 +6,15 @@ All notable changes will be documented in this file.
 
 ### Changed
 
-* Now including all auto-generated header files (for better discoverability)
+* Repo now includes the auto-generated header files (for better discoverability)
 
 * Miniforge (instead of Miniconda)
 
 * `MessageInfo.source_session_id` now using a more efficient UUID representation
+
+### Added
+
+* `ExternalLatency`
 
 ### Removed
 

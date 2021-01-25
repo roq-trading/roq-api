@@ -1,0 +1,17 @@
+{
+    "name": "ExternalLatency",
+    "type": "message",
+    "comment": "Update relating to external latency",
+    "values": [
+        {
+            "name": "name",
+            "type": "std::string_view",
+            "comment": "connection name"
+        },
+        {
+            "name": "latency",
+            "type": "std::chrono::nanoseconds",
+            "comment": "two-way latency"
+        }
+    ]
+}

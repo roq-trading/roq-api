@@ -128,9 +128,9 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
 
 // convenience
 
-using InternalLatency = Histogram<500, 1000, 2000, 5000, 10000, 20000>;
+using internal_latency_t = Histogram<500, 1000, 2000, 5000, 10000, 20000>;
 
-using ExternalLatency = Histogram<10000, 100000, 1000000, 10000000, 100000000, 1000000000>;
+using external_latency_t = Histogram<10000, 100000, 1000000, 10000000, 100000000, 1000000000>;
 
 }  // namespace metrics
 }  // namespace roq

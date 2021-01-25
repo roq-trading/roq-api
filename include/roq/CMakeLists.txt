@@ -13,6 +13,7 @@ set(SOURCES
     download_end.json
     error.json
     execution_instruction.json
+    external_latency.json
     fill.json
     funds_update.json
     gateway_status.json
@@ -30,8 +31,8 @@ set(SOURCES
     order_manager_status.json
     order_status.json
     order_type.json
-    order_update.json
     order_update_action.json
+    order_update.json
     origin.json
     position_effect.json
     position_update.json

@@ -1,0 +1,8 @@
+include "gateway_status.fbs";
+
+namespace roq.fbs;
+
+table ExternalLatency {
+  name:string;
+  latency:int64;
+}

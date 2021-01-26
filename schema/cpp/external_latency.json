@@ -11,7 +11,7 @@
         {
             "name": "latency",
             "type": "std::chrono::nanoseconds",
-            "comment": "two-way latency"
+            "comment": "latency measurement (1-way)"
         }
     ]
 }

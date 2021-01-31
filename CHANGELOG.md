@@ -12,6 +12,8 @@ All notable changes will be documented in this file.
 
 * `MessageInfo.source_session_id` now using a more efficient UUID representation
 
+* Now using span-lite (instead of own implementation, C++20 preparation)
+
 ### Added
 
 * `ExternalLatency`

@@ -59,6 +59,7 @@
 #include "roq/download_end.h"
 #include "roq/external_latency.h"
 #include "roq/funds_update.h"
+#include "roq/gateway_settings.h"
 #include "roq/market_by_order_update.h"
 #include "roq/market_by_price_update.h"
 #include "roq/market_data_status.h"

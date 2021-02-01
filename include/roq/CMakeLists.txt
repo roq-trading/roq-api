@@ -16,6 +16,7 @@ set(SOURCES
     external_latency.json
     fill.json
     funds_update.json
+    gateway_settings.json
     gateway_status.json
     layer.json
     market_by_order_update.json
@@ -31,8 +32,8 @@ set(SOURCES
     order_manager_status.json
     order_status.json
     order_type.json
-    order_update_action.json
     order_update.json
+    order_update_action.json
     origin.json
     position_effect.json
     position_update.json
@@ -83,11 +84,6 @@ endforeach()
 set(GITIGNORE "${CMAKE_CURRENT_SOURCE_DIR}/.gitignore")
 
 file(WRITE "${GITIGNORE}" "api.h\n")
-
-foreach(path ${AUTOGEN_HEADERS})
-  get_filename_component(name ${path} NAME)
-  file(APPEND "${GITIGNORE}" "${name}\n")
-endforeach()
 
 # target
 

@@ -16,6 +16,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `Settings`
 * `ExternalLatency`
 
 ### Removed

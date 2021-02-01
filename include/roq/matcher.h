@@ -14,6 +14,7 @@ class ROQ_PUBLIC Matcher {
    public:
     virtual void operator()(const Event<DownloadBegin> &) = 0;
     virtual void operator()(const Event<DownloadEnd> &) = 0;
+    virtual void operator()(const Event<GatewaySettings> &) = 0;
     virtual void operator()(const Event<MarketDataStatus> &) = 0;
     virtual void operator()(const Event<OrderManagerStatus> &) = 0;
     virtual void operator()(const Event<ReferenceData> &) = 0;
@@ -35,6 +36,7 @@ class ROQ_PUBLIC Matcher {
   //! Dispatch all pending messages
   virtual void dispatch(Dispatcher &dispatcher, std::chrono::nanoseconds next) = 0;
 
+  virtual void operator()(const Event<GatewaySettings> &) = 0;
   virtual void operator()(const Event<MarketDataStatus> &) = 0;
   virtual void operator()(const Event<OrderManagerStatus> &) = 0;
   virtual void operator()(const Event<ReferenceData> &) = 0;

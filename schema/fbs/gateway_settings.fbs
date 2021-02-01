@@ -1,0 +1,6 @@
+namespace roq.fbs;
+
+table GatewaySettings {
+  mbp_max_depth:uint32;
+  mbp_allow_price_inversion:bool;
+}

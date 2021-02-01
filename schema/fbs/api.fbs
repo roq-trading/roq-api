@@ -37,6 +37,7 @@ include "download_begin.fbs";
 include "download_end.fbs";
 include "external_latency.fbs";
 include "funds_update.fbs";
+include "gateway_settings.fbs";
 include "market_by_order_update.fbs";
 include "market_by_price_update.fbs";
 include "market_data_status.fbs";
@@ -101,6 +102,7 @@ union Message {
   // --- generated ---
   DownloadBegin,
   DownloadEnd,
+  GatewaySettings,
   ExternalLatency,
   MarketDataStatus,
   OrderManagerStatus,

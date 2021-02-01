@@ -1,0 +1,17 @@
+{
+    "name": "GatewaySettings",
+    "type": "message",
+    "comment": "Gateway settings",
+    "values": [
+        {
+            "name": "mbp_max_depth",
+            "type": "uint32_t",
+            "comment": "MBP max depth"
+        },
+        {
+            "name": "mbp_allow_price_inversion",
+            "type": "bool",
+            "comment": "MBP allow price inversion?"
+        }
+    ]
+}

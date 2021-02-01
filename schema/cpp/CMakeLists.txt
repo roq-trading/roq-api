@@ -15,6 +15,7 @@ set(SOURCES
     execution_instruction.json
     fill.json
     funds_update.json
+    gateway_settings.json
     gateway_status.json
     layer.json
     market_by_order_update.json

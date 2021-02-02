@@ -1,0 +1,104 @@
+/* Copyright (c) 2017-2021, Hans Erik Thrane */
+
+#pragma once
+
+#include "roq/compat.h"
+
+// preparing for C++20
+
+#include "roq/chrono.h"
+#include "roq/span.h"
+
+// enums
+
+#include "roq/connection_status.h"
+#include "roq/error.h"
+#include "roq/execution_instruction.h"
+#include "roq/gateway_status.h"
+#include "roq/option_type.h"
+#include "roq/order_status.h"
+#include "roq/order_type.h"
+#include "roq/order_update_action.h"
+#include "roq/origin.h"
+#include "roq/position_effect.h"
+#include "roq/request_status.h"
+#include "roq/request_type.h"
+#include "roq/security_type.h"
+#include "roq/side.h"
+#include "roq/statistics_type.h"
+#include "roq/time_in_force.h"
+#include "roq/trading_status.h"
+
+// helpers
+
+#include "roq/fill.h"
+#include "roq/layer.h"
+#include "roq/mbo_update.h"
+#include "roq/mbp_update.h"
+#include "roq/statistics.h"
+#include "roq/trade.h"
+
+// transport
+
+#include "roq/message_info.h"
+
+// control (autogen)
+
+#include "roq/connection.h"
+#include "roq/start.h"
+#include "roq/stop.h"
+#include "roq/timer.h"
+
+// messages (autogen)
+
+#include "roq/batch_begin.h"
+#include "roq/batch_end.h"
+#include "roq/cancel_order.h"
+#include "roq/create_order.h"
+#include "roq/download_begin.h"
+#include "roq/download_end.h"
+#include "roq/external_latency.h"
+#include "roq/funds_update.h"
+#include "roq/gateway_settings.h"
+#include "roq/market_by_order_update.h"
+#include "roq/market_by_price_update.h"
+#include "roq/market_data_status.h"
+#include "roq/market_status.h"
+#include "roq/modify_order.h"
+#include "roq/order_ack.h"
+#include "roq/order_manager_status.h"
+#include "roq/order_update.h"
+#include "roq/position_update.h"
+#include "roq/reference_data.h"
+#include "roq/statistics_update.h"
+#include "roq/top_of_book.h"
+#include "roq/trade_summary.h"
+#include "roq/trade_update.h"
+
+// messages (manual)
+
+#include "roq/subscribe.h"
+
+// misc
+
+#include "roq/exceptions.h"
+#include "roq/utilities.h"
+
+// version
+
+#define ROQ_VERSION "0.6.0"
+
+namespace roq {
+
+constexpr uint8_t SOURCE_SELF = 255;
+
+// check that multiples can be cache aligned
+
+static_assert(sizeof(Layer) == 32);
+static_assert(sizeof(MBPUpdate) == 16);
+static_assert(sizeof(MBOUpdate) == 64);
+static_assert(sizeof(Trade) == 64);
+static_assert(sizeof(Fill) == 64);
+static_assert(sizeof(Statistics) == 16);
+
+}  // namespace roq

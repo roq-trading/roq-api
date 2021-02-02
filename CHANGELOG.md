@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.6.0 &ndash; 2021-02-02
+
 ### Changed
 
 * Repo now includes the auto-generated header files (for better discoverability)

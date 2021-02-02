@@ -11,15 +11,10 @@ add_custom_command(
   OUTPUT "${API_H}"
   COMMAND "${FLATBUFFERS_COMPILER}" ARGS --binary ARGS --gen-all ARGS --filename-suffix "" ARGS
           --cpp --cpp-std c++17 ARGS "${API_FBS}"
+  COMMAND ${CLANG_FORMAT} -i "${API_H}"
   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${TARGET_DIR}"
   VERBATIM
   DEPENDS "${FLATBUFFERS_COMPILER}" "${API_FBS}")
-
-# gitignore
-
-set(GITIGNORE "${CMAKE_CURRENT_SOURCE_DIR}/.gitignore")
-
-file(WRITE "${GITIGNORE}" "api.h\n")
 
 # target
 

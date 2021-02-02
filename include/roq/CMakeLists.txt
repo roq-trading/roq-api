@@ -79,12 +79,6 @@ foreach(path ${SOURCES})
   list(APPEND AUTOGEN_HEADERS "${target}")
 endforeach()
 
-# gitignore
-
-set(GITIGNORE "${CMAKE_CURRENT_SOURCE_DIR}/.gitignore")
-
-file(WRITE "${GITIGNORE}" "api.h\n")
-
 # target
 
 add_custom_target("${TARGET_NAME}" ALL DEPENDS ${AUTOGEN_HEADERS} "${GITIGNORE}")

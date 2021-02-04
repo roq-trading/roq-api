@@ -22,4 +22,4 @@ add_custom_target(${TARGET_NAME} ALL DEPENDS "${API_H}" "${GITIGNORE}")
 
 # install
 
-install(FILES "${API_H}" DESTINATION "${TARGET_DIR}")
+install(FILES "${API_H}" encode.h DESTINATION "${TARGET_DIR}")

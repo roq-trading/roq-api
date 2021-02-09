@@ -30,20 +30,18 @@ struct ROQ_PACKED OrderType final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view MARKET("MARKET");
-    constexpr std::string_view LIMIT("LIMIT");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::MARKET:
-        return MARKET;
+        return "MARKET"sv;
       case type_t::LIMIT:
-        return LIMIT;
+        return "LIMIT"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

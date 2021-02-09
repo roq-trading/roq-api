@@ -35,12 +35,13 @@ struct fmt::formatter<roq::Statistics> {
   }
   template <typename Context>
   auto format(const roq::Statistics &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(type={}, )"
         R"(value={})"
-        R"(}})",
+        R"(}})"sv,
         value.type,
         value.value);
   }

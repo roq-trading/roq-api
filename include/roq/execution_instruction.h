@@ -37,26 +37,22 @@ struct ROQ_PACKED ExecutionInstruction final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view PARTICIPATE_DO_NOT_INITIATE("PARTICIPATE_DO_NOT_INITIATE");
-    constexpr std::string_view CANCEL_IF_NOT_BEST("CANCEL_IF_NOT_BEST");
-    constexpr std::string_view DO_NOT_INCREASE("DO_NOT_INCREASE");
-    constexpr std::string_view DO_NOT_REDUCE("DO_NOT_REDUCE");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::PARTICIPATE_DO_NOT_INITIATE:
-        return PARTICIPATE_DO_NOT_INITIATE;
+        return "PARTICIPATE_DO_NOT_INITIATE"sv;
       case type_t::CANCEL_IF_NOT_BEST:
-        return CANCEL_IF_NOT_BEST;
+        return "CANCEL_IF_NOT_BEST"sv;
       case type_t::DO_NOT_INCREASE:
-        return DO_NOT_INCREASE;
+        return "DO_NOT_INCREASE"sv;
       case type_t::DO_NOT_REDUCE:
-        return DO_NOT_REDUCE;
+        return "DO_NOT_REDUCE"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

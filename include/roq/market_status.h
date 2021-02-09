@@ -43,13 +43,14 @@ struct fmt::formatter<roq::MarketStatus> {
   }
   template <typename Context>
   auto format(const roq::MarketStatus &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(trading_status={})"
-        R"(}})",
+        R"(}})"sv,
         value.exchange,
         value.symbol,
         value.trading_status);
@@ -63,12 +64,13 @@ struct fmt::formatter<roq::Event<roq::MarketStatus> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::MarketStatus> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(market_status={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

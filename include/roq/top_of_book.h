@@ -46,6 +46,7 @@ struct fmt::formatter<roq::TopOfBook> {
   }
   template <typename Context>
   auto format(const roq::TopOfBook &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -54,7 +55,7 @@ struct fmt::formatter<roq::TopOfBook> {
         R"(layer={}, )"
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
-        R"(}})",
+        R"(}})"sv,
         value.exchange,
         value.symbol,
         value.layer,
@@ -70,12 +71,13 @@ struct fmt::formatter<roq::Event<roq::TopOfBook> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::TopOfBook> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(top_of_book={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

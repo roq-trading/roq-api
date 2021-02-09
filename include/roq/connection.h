@@ -41,11 +41,12 @@ struct fmt::formatter<roq::Connection> {
   }
   template <typename Context>
   auto format(const roq::Connection &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(status={})"
-        R"(}})",
+        R"(}})"sv,
         value.status);
   }
 };
@@ -57,12 +58,13 @@ struct fmt::formatter<roq::Event<roq::Connection> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::Connection> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(connection={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

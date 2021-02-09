@@ -30,26 +30,22 @@ struct ROQ_PACKED RequestStatus final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view FORWARDED("FORWARDED");
-    constexpr std::string_view ACCEPTED("ACCEPTED");
-    constexpr std::string_view REJECTED("REJECTED");
-    constexpr std::string_view TIMEOUT("TIMEOUT");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::FORWARDED:
-        return FORWARDED;
+        return "FORWARDED"sv;
       case type_t::ACCEPTED:
-        return ACCEPTED;
+        return "ACCEPTED"sv;
       case type_t::REJECTED:
-        return REJECTED;
+        return "REJECTED"sv;
       case type_t::TIMEOUT:
-        return TIMEOUT;
+        return "TIMEOUT"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

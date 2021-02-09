@@ -47,6 +47,7 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
   }
   template <typename Context>
   auto format(const roq::MarketByPriceUpdate &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -56,7 +57,7 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
         R"(asks=[{}], )"
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
-        R"(}})",
+        R"(}})"sv,
         value.exchange,
         value.symbol,
         fmt::join(value.bids, ", "),
@@ -73,12 +74,13 @@ struct fmt::formatter<roq::Event<roq::MarketByPriceUpdate> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::MarketByPriceUpdate> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(market_by_price_update={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

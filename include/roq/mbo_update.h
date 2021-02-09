@@ -38,6 +38,7 @@ struct fmt::formatter<roq::MBOUpdate> {
   }
   template <typename Context>
   auto format(const roq::MBOUpdate &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -46,7 +47,7 @@ struct fmt::formatter<roq::MBOUpdate> {
         R"(action={}, )"
         R"(priority={}, )"
         R"(order_id="{}")"
-        R"(}})",
+        R"(}})"sv,
         value.price,
         value.remaining_quantity,
         value.action,

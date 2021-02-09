@@ -40,12 +40,13 @@ struct fmt::formatter<roq::CancelOrder> {
   }
   template <typename Context>
   auto format(const roq::CancelOrder &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(account="{}", )"
         R"(order_id={})"
-        R"(}})",
+        R"(}})"sv,
         value.account,
         value.order_id);
   }
@@ -58,12 +59,13 @@ struct fmt::formatter<roq::Event<roq::CancelOrder> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::CancelOrder> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(cancel_order={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

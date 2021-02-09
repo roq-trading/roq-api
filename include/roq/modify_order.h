@@ -42,6 +42,7 @@ struct fmt::formatter<roq::ModifyOrder> {
   }
   template <typename Context>
   auto format(const roq::ModifyOrder &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -49,7 +50,7 @@ struct fmt::formatter<roq::ModifyOrder> {
         R"(order_id={}, )"
         R"(quantity={}, )"
         R"(price={})"
-        R"(}})",
+        R"(}})"sv,
         value.account,
         value.order_id,
         value.quantity,
@@ -64,12 +65,13 @@ struct fmt::formatter<roq::Event<roq::ModifyOrder> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::ModifyOrder> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(modify_order={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

@@ -52,6 +52,7 @@ struct fmt::formatter<roq::PositionUpdate> {
   }
   template <typename Context>
   auto format(const roq::PositionUpdate &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -65,7 +66,7 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"(position_yesterday={}, )"
         R"(position_cost_yesterday={}, )"
         R"(external_account="{}")"
-        R"(}})",
+        R"(}})"sv,
         value.account,
         value.exchange,
         value.symbol,
@@ -86,12 +87,13 @@ struct fmt::formatter<roq::Event<roq::PositionUpdate> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::PositionUpdate> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(position_update={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

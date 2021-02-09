@@ -42,12 +42,13 @@ struct fmt::formatter<roq::OrderManagerStatus> {
   }
   template <typename Context>
   auto format(const roq::OrderManagerStatus &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(account="{}", )"
         R"(status={})"
-        R"(}})",
+        R"(}})"sv,
         value.account,
         value.status);
   }
@@ -60,12 +61,13 @@ struct fmt::formatter<roq::Event<roq::OrderManagerStatus> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::OrderManagerStatus> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(order_manager_status={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

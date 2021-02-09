@@ -55,6 +55,7 @@ struct fmt::formatter<roq::OrderAck> {
   }
   template <typename Context>
   auto format(const roq::OrderAck &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -69,7 +70,7 @@ struct fmt::formatter<roq::OrderAck> {
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(request_id="{}")"
-        R"(}})",
+        R"(}})"sv,
         value.account,
         value.order_id,
         value.type,
@@ -91,12 +92,13 @@ struct fmt::formatter<roq::Event<roq::OrderAck> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::OrderAck> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(order_ack={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

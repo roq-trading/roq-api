@@ -37,6 +37,7 @@ struct fmt::formatter<roq::Fill> {
   }
   template <typename Context>
   auto format(const roq::Fill &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -45,7 +46,7 @@ struct fmt::formatter<roq::Fill> {
         R"(trade_id={}, )"
         R"(gateway_trade_id={}, )"
         R"(external_trade_id="{}")"
-        R"(}})",
+        R"(}})"sv,
         value.quantity,
         value.price,
         value.trade_id,

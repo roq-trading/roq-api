@@ -40,12 +40,13 @@ struct fmt::formatter<roq::GatewaySettings> {
   }
   template <typename Context>
   auto format(const roq::GatewaySettings &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(mbp_max_depth={}, )"
         R"(mbp_allow_price_inversion={})"
-        R"(}})",
+        R"(}})"sv,
         value.mbp_max_depth,
         value.mbp_allow_price_inversion);
   }
@@ -58,12 +59,13 @@ struct fmt::formatter<roq::Event<roq::GatewaySettings> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::GatewaySettings> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(gateway_settings={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

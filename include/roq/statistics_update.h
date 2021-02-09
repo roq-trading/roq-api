@@ -46,6 +46,7 @@ struct fmt::formatter<roq::StatisticsUpdate> {
   }
   template <typename Context>
   auto format(const roq::StatisticsUpdate &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -54,7 +55,7 @@ struct fmt::formatter<roq::StatisticsUpdate> {
         R"(statistics=[{}], )"
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
-        R"(}})",
+        R"(}})"sv,
         value.exchange,
         value.symbol,
         fmt::join(value.statistics, ", "),
@@ -70,12 +71,13 @@ struct fmt::formatter<roq::Event<roq::StatisticsUpdate> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::StatisticsUpdate> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(statistics_update={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

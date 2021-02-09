@@ -48,60 +48,44 @@ struct ROQ_PACKED Error final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view UNKNOWN("UNKNOWN");
-    constexpr std::string_view GATEWAY_NOT_READY("GATEWAY_NOT_READY");
-    constexpr std::string_view INVALID_ACCOUNT("INVALID_ACCOUNT");
-    constexpr std::string_view INVALID_EXCHANGE("INVALID_EXCHANGE");
-    constexpr std::string_view INVALID_SYMBOL("INVALID_SYMBOL");
-    constexpr std::string_view INVALID_ORDER_TYPE("INVALID_ORDER_TYPE");
-    constexpr std::string_view INVALID_TIME_IN_FORCE("INVALID_TIME_IN_FORCE");
-    constexpr std::string_view INVALID_POSITION_EFFECT("INVALID_POSITION_EFFECT");
-    constexpr std::string_view INVALID_ORDER_TEMPLATE("INVALID_ORDER_TEMPLATE");
-    constexpr std::string_view NETWORK_ERROR("NETWORK_ERROR");
-    constexpr std::string_view UNKNOWN_ERROR_ID("UNKNOWN_ERROR_ID");
-    constexpr std::string_view UNKNOWN_EXCHANGE_ORDER_ID("UNKNOWN_EXCHANGE_ORDER_ID");
-    constexpr std::string_view MODIFY_ORDER_NOT_SUPPORTED("MODIFY_ORDER_NOT_SUPPORTED");
-    constexpr std::string_view INVALID_ORDER_ID("INVALID_ORDER_ID");
-    constexpr std::string_view EXECUTION_INSTRUCTION_NOT_SUPPORTED(
-        "EXECUTION_INSTRUCTION_NOT_SUPPORTED");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::UNKNOWN:
-        return UNKNOWN;
+        return "UNKNOWN"sv;
       case type_t::GATEWAY_NOT_READY:
-        return GATEWAY_NOT_READY;
+        return "GATEWAY_NOT_READY"sv;
       case type_t::INVALID_ACCOUNT:
-        return INVALID_ACCOUNT;
+        return "INVALID_ACCOUNT"sv;
       case type_t::INVALID_EXCHANGE:
-        return INVALID_EXCHANGE;
+        return "INVALID_EXCHANGE"sv;
       case type_t::INVALID_SYMBOL:
-        return INVALID_SYMBOL;
+        return "INVALID_SYMBOL"sv;
       case type_t::INVALID_ORDER_TYPE:
-        return INVALID_ORDER_TYPE;
+        return "INVALID_ORDER_TYPE"sv;
       case type_t::INVALID_TIME_IN_FORCE:
-        return INVALID_TIME_IN_FORCE;
+        return "INVALID_TIME_IN_FORCE"sv;
       case type_t::INVALID_POSITION_EFFECT:
-        return INVALID_POSITION_EFFECT;
+        return "INVALID_POSITION_EFFECT"sv;
       case type_t::INVALID_ORDER_TEMPLATE:
-        return INVALID_ORDER_TEMPLATE;
+        return "INVALID_ORDER_TEMPLATE"sv;
       case type_t::NETWORK_ERROR:
-        return NETWORK_ERROR;
+        return "NETWORK_ERROR"sv;
       case type_t::UNKNOWN_ERROR_ID:
-        return UNKNOWN_ERROR_ID;
+        return "UNKNOWN_ERROR_ID"sv;
       case type_t::UNKNOWN_EXCHANGE_ORDER_ID:
-        return UNKNOWN_EXCHANGE_ORDER_ID;
+        return "UNKNOWN_EXCHANGE_ORDER_ID"sv;
       case type_t::MODIFY_ORDER_NOT_SUPPORTED:
-        return MODIFY_ORDER_NOT_SUPPORTED;
+        return "MODIFY_ORDER_NOT_SUPPORTED"sv;
       case type_t::INVALID_ORDER_ID:
-        return INVALID_ORDER_ID;
+        return "INVALID_ORDER_ID"sv;
       case type_t::EXECUTION_INSTRUCTION_NOT_SUPPORTED:
-        return EXECUTION_INSTRUCTION_NOT_SUPPORTED;
+        return "EXECUTION_INSTRUCTION_NOT_SUPPORTED"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

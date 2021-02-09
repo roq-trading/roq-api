@@ -37,6 +37,7 @@ struct fmt::formatter<roq::BatchEnd> {
   }
   template <typename Context>
   auto format(const roq::BatchEnd &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(context.out(), R"({{}})");
   }
 };
@@ -48,12 +49,13 @@ struct fmt::formatter<roq::Event<roq::BatchEnd> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::BatchEnd> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(batch_end={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

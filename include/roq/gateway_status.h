@@ -39,32 +39,26 @@ struct ROQ_PACKED GatewayStatus final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view DISCONNECTED("DISCONNECTED");
-    constexpr std::string_view CONNECTING("CONNECTING");
-    constexpr std::string_view LOGIN_SENT("LOGIN_SENT");
-    constexpr std::string_view DOWNLOADING("DOWNLOADING");
-    constexpr std::string_view READY("READY");
-    constexpr std::string_view LOGGED_OUT("LOGGED_OUT");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::DISCONNECTED:
-        return DISCONNECTED;
+        return "DISCONNECTED"sv;
       case type_t::CONNECTING:
-        return CONNECTING;
+        return "CONNECTING"sv;
       case type_t::LOGIN_SENT:
-        return LOGIN_SENT;
+        return "LOGIN_SENT"sv;
       case type_t::DOWNLOADING:
-        return DOWNLOADING;
+        return "DOWNLOADING"sv;
       case type_t::READY:
-        return READY;
+        return "READY"sv;
       case type_t::LOGGED_OUT:
-        return LOGGED_OUT;
+        return "LOGGED_OUT"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

@@ -35,6 +35,7 @@ struct fmt::formatter<roq::Layer> {
   }
   template <typename Context>
   auto format(const roq::Layer &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -42,7 +43,7 @@ struct fmt::formatter<roq::Layer> {
         R"(bid_quantity={}, )"
         R"(ask_price={}, )"
         R"(ask_quantity={})"
-        R"(}})",
+        R"(}})"sv,
         value.bid_price,
         value.bid_quantity,
         value.ask_price,

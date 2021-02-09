@@ -39,11 +39,12 @@ struct fmt::formatter<roq::Timer> {
   }
   template <typename Context>
   auto format(const roq::Timer &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(now={})"
-        R"(}})",
+        R"(}})"sv,
         value.now);
   }
 };
@@ -55,12 +56,13 @@ struct fmt::formatter<roq::Event<roq::Timer> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::Timer> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(timer={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

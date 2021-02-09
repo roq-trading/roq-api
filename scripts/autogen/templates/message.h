@@ -43,6 +43,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
   auto format(
       const {{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}>& event,
       Context& context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
 {%- raw %}
@@ -51,7 +52,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
         R"(message_info={}, )"
         R"({{ filename }}={})"
 {%- raw %}
-        R"(}})",
+        R"(}})"sv,
 {%- endraw %}
         event.message_info,
         event.value);

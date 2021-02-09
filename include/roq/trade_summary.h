@@ -44,6 +44,7 @@ struct fmt::formatter<roq::TradeSummary> {
   }
   template <typename Context>
   auto format(const roq::TradeSummary &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -51,7 +52,7 @@ struct fmt::formatter<roq::TradeSummary> {
         R"(symbol="{}", )"
         R"(trades=[{}], )"
         R"(exchange_time_utc={})"
-        R"(}})",
+        R"(}})"sv,
         value.exchange,
         value.symbol,
         fmt::join(value.trades, ", "),
@@ -66,12 +67,13 @@ struct fmt::formatter<roq::Event<roq::TradeSummary> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::TradeSummary> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(trade_summary={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

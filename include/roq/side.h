@@ -30,20 +30,18 @@ struct ROQ_PACKED Side final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view BUY("BUY");
-    constexpr std::string_view SELL("SELL");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::BUY:
-        return BUY;
+        return "BUY"sv;
       case type_t::SELL:
-        return SELL;
+        return "SELL"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

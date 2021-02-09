@@ -41,21 +41,18 @@ struct ROQ_PACKED {{ name }} final {
   }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-  {% for value in values %}
-    constexpr std::string_view {{ value.enum_value }}("{{ value.enum_value }}");
-  {% endfor %}
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
   {% for value in values %}
       case type_t::{{ value.enum_value }}:
-        return {{ value.enum_value }};
+        return "{{ value.enum_value }}"sv;
   {% endfor %}
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const {

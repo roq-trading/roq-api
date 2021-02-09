@@ -36,23 +36,20 @@ struct ROQ_PACKED RequestType final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view CREATE_ORDER("CREATE_ORDER");
-    constexpr std::string_view MODIFY_ORDER("MODIFY_ORDER");
-    constexpr std::string_view CANCEL_ORDER("CANCEL_ORDER");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::CREATE_ORDER:
-        return CREATE_ORDER;
+        return "CREATE_ORDER"sv;
       case type_t::MODIFY_ORDER:
-        return MODIFY_ORDER;
+        return "MODIFY_ORDER"sv;
       case type_t::CANCEL_ORDER:
-        return CANCEL_ORDER;
+        return "CANCEL_ORDER"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

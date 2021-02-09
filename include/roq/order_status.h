@@ -40,35 +40,28 @@ struct ROQ_PACKED OrderStatus final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view SENT("SENT");
-    constexpr std::string_view REJECTED("REJECTED");
-    constexpr std::string_view ACCEPTED("ACCEPTED");
-    constexpr std::string_view PENDING("PENDING");
-    constexpr std::string_view WORKING("WORKING");
-    constexpr std::string_view COMPLETED("COMPLETED");
-    constexpr std::string_view CANCELED("CANCELED");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::SENT:
-        return SENT;
+        return "SENT"sv;
       case type_t::REJECTED:
-        return REJECTED;
+        return "REJECTED"sv;
       case type_t::ACCEPTED:
-        return ACCEPTED;
+        return "ACCEPTED"sv;
       case type_t::PENDING:
-        return PENDING;
+        return "PENDING"sv;
       case type_t::WORKING:
-        return WORKING;
+        return "WORKING"sv;
       case type_t::COMPLETED:
-        return COMPLETED;
+        return "COMPLETED"sv;
       case type_t::CANCELED:
-        return CANCELED;
+        return "CANCELED"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

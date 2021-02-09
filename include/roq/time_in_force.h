@@ -37,26 +37,22 @@ struct ROQ_PACKED TimeInForce final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view FOK("FOK");
-    constexpr std::string_view IOC("IOC");
-    constexpr std::string_view GFD("GFD");
-    constexpr std::string_view GTC("GTC");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::FOK:
-        return FOK;
+        return "FOK"sv;
       case type_t::IOC:
-        return IOC;
+        return "IOC"sv;
       case type_t::GFD:
-        return GFD;
+        return "GFD"sv;
       case type_t::GTC:
-        return GTC;
+        return "GTC"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

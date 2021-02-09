@@ -30,26 +30,22 @@ struct ROQ_PACKED Origin final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view CLIENT("CLIENT");
-    constexpr std::string_view GATEWAY("GATEWAY");
-    constexpr std::string_view BROKER("BROKER");
-    constexpr std::string_view EXCHANGE("EXCHANGE");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::CLIENT:
-        return CLIENT;
+        return "CLIENT"sv;
       case type_t::GATEWAY:
-        return GATEWAY;
+        return "GATEWAY"sv;
       case type_t::BROKER:
-        return BROKER;
+        return "BROKER"sv;
       case type_t::EXCHANGE:
-        return EXCHANGE;
+        return "EXCHANGE"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

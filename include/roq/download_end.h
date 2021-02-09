@@ -40,12 +40,13 @@ struct fmt::formatter<roq::DownloadEnd> {
   }
   template <typename Context>
   auto format(const roq::DownloadEnd &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(account="{}", )"
         R"(max_order_id={})"
-        R"(}})",
+        R"(}})"sv,
         value.account,
         value.max_order_id);
   }
@@ -58,12 +59,13 @@ struct fmt::formatter<roq::Event<roq::DownloadEnd> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::DownloadEnd> &event, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(download_end={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

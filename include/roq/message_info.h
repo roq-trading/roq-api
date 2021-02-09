@@ -43,6 +43,7 @@ struct fmt::formatter<roq::MessageInfo> {
   }
   template <typename Context>
   auto format(const roq::MessageInfo &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
@@ -58,7 +59,7 @@ struct fmt::formatter<roq::MessageInfo> {
         R"(origin_create_time_utc={}, )"
         R"(is_last={}, )"
         R"(opaque={})"
-        R"(}})",
+        R"(}})"sv,
         value.source,
         value.source_name,
         value.source_session_id,

@@ -8,6 +8,10 @@ All notable changes will be documented in this file.
 
 * Wrapper functions making it easier to encode Flatbuffers objects
 
+### Changed
+
+* Use the `sv` std literal (instead of declaring static const variables)
+
 ## 0.6.0 &ndash; 2021-02-02
 
 ### Changed

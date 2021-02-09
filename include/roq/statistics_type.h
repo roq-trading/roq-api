@@ -46,53 +46,40 @@ struct ROQ_PACKED StatisticsType final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    constexpr std::string_view UNDEFINED("UNDEFINED");
-    constexpr std::string_view OPEN_PRICE("OPEN_PRICE");
-    constexpr std::string_view SETTLEMENT_PRICE("SETTLEMENT_PRICE");
-    constexpr std::string_view CLOSE_PRICE("CLOSE_PRICE");
-    constexpr std::string_view OPEN_INTEREST("OPEN_INTEREST");
-    constexpr std::string_view PRE_OPEN_INTEREST("PRE_OPEN_INTEREST");
-    constexpr std::string_view PRE_SETTLEMENT_PRICE("PRE_SETTLEMENT_PRICE");
-    constexpr std::string_view PRE_CLOSE_PRICE("PRE_CLOSE_PRICE");
-    constexpr std::string_view HIGHEST_TRADED_PRICE("HIGHEST_TRADED_PRICE");
-    constexpr std::string_view LOWEST_TRADED_PRICE("LOWEST_TRADED_PRICE");
-    constexpr std::string_view UPPER_LIMIT_PRICE("UPPER_LIMIT_PRICE");
-    constexpr std::string_view LOWER_LIMIT_PRICE("LOWER_LIMIT_PRICE");
-    constexpr std::string_view INDEX_VALUE("INDEX_VALUE");
-    constexpr std::string_view MARGIN_RATE("MARGIN_RATE");
+    using namespace std::literals;  // NOLINT
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::OPEN_PRICE:
-        return OPEN_PRICE;
+        return "OPEN_PRICE"sv;
       case type_t::SETTLEMENT_PRICE:
-        return SETTLEMENT_PRICE;
+        return "SETTLEMENT_PRICE"sv;
       case type_t::CLOSE_PRICE:
-        return CLOSE_PRICE;
+        return "CLOSE_PRICE"sv;
       case type_t::OPEN_INTEREST:
-        return OPEN_INTEREST;
+        return "OPEN_INTEREST"sv;
       case type_t::PRE_OPEN_INTEREST:
-        return PRE_OPEN_INTEREST;
+        return "PRE_OPEN_INTEREST"sv;
       case type_t::PRE_SETTLEMENT_PRICE:
-        return PRE_SETTLEMENT_PRICE;
+        return "PRE_SETTLEMENT_PRICE"sv;
       case type_t::PRE_CLOSE_PRICE:
-        return PRE_CLOSE_PRICE;
+        return "PRE_CLOSE_PRICE"sv;
       case type_t::HIGHEST_TRADED_PRICE:
-        return HIGHEST_TRADED_PRICE;
+        return "HIGHEST_TRADED_PRICE"sv;
       case type_t::LOWEST_TRADED_PRICE:
-        return LOWEST_TRADED_PRICE;
+        return "LOWEST_TRADED_PRICE"sv;
       case type_t::UPPER_LIMIT_PRICE:
-        return UPPER_LIMIT_PRICE;
+        return "UPPER_LIMIT_PRICE"sv;
       case type_t::LOWER_LIMIT_PRICE:
-        return LOWER_LIMIT_PRICE;
+        return "LOWER_LIMIT_PRICE"sv;
       case type_t::INDEX_VALUE:
-        return INDEX_VALUE;
+        return "INDEX_VALUE"sv;
       case type_t::MARGIN_RATE:
-        return MARGIN_RATE;
+        return "MARGIN_RATE"sv;
       default:
         assert(false);
     }
-    return UNDEFINED;
+    return "UNDEFINED"sv;
   }
 
   inline operator std::string_view() const { return name(); }

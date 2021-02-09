@@ -33,12 +33,13 @@ struct fmt::formatter<roq::MBPUpdate> {
   }
   template <typename Context>
   auto format(const roq::MBPUpdate &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
         R"({{)"
         R"(price={}, )"
         R"(quantity={})"
-        R"(}})",
+        R"(}})"sv,
         value.price,
         value.quantity);
   }

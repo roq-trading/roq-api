@@ -11,6 +11,7 @@
 
 #include "roq/compat.h"
 
+#include "roq/event.h"
 #include "roq/message_info.h"
 
 namespace roq {
@@ -35,12 +36,13 @@ struct fmt::formatter<roq::Subscribe> {
   }
   template <typename T>
   auto format(const roq::Subscribe &value, T &ctx) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         ctx.out(),
         R"({{)"
         R"(accounts={}, )"
         R"(symbols_by_exchange={})"
-        R"(}})",
+        R"(}})"sv,
         value.accounts,
         value.symbols_by_exchange);
   }
@@ -54,12 +56,13 @@ struct fmt::formatter<roq::Event<roq::Subscribe> > {
   }
   template <typename T>
   auto format(const roq::Event<roq::Subscribe> &event, T &ctx) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         ctx.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(subscribe={})"
-        R"(}})",
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

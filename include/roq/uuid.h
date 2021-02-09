@@ -86,6 +86,7 @@ struct fmt::formatter<roq::UUID> {
   }
   template <typename Context>
   auto format(const roq::UUID &value, Context &context) {
+    using namespace std::literals;  // NOLINT
     auto data = value.data();
     return format_to(
         context.out(),
@@ -93,7 +94,7 @@ struct fmt::formatter<roq::UUID> {
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
-        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}",
+        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"sv,
         data[0],
         data[1],
         data[2],

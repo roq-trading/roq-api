@@ -88,13 +88,14 @@ class ROQ_PACKED fixed_string final {
   value_type *data() { return buffer_.data(); }
 
   void copy(const std::string_view &text) {
+    using namespace std::literals;  // NOLINT
     auto len = text.length();
     if (ROQ_LIKELY(len <= size())) {
       auto last = std::copy(text.begin(), text.end(), buffer_.begin());
       std::fill(last, buffer_.end(), '\0');
     } else {
       throw std::length_error(
-          fmt::format(R"(can't copy: len(text="{}")={} exceeds size={})", text, len, size()));
+          fmt::format(R"(can't copy: len(text="{}")={} exceeds size={})"sv, text, len, size()));
     }
   }
 

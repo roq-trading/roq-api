@@ -60,8 +60,8 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
         R"(}})"sv,
         value.exchange,
         value.symbol,
-        fmt::join(value.bids, ", "),
-        fmt::join(value.asks, ", "),
+        fmt::join(value.bids, ", "sv),
+        fmt::join(value.asks, ", "sv),
         value.snapshot,
         value.exchange_time_utc);
   }

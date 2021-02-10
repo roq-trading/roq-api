@@ -86,7 +86,7 @@ struct fmt::formatter<roq::TradeUpdate> {
         value.gateway_order_id,
         value.external_account,
         value.external_order_id,
-        fmt::join(value.fills, ", "));
+        fmt::join(value.fills, ", "sv));
   }
 };
 template <>

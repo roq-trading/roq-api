@@ -55,7 +55,7 @@ struct fmt::formatter<roq::TradeSummary> {
         R"(}})"sv,
         value.exchange,
         value.symbol,
-        fmt::join(value.trades, ", "),
+        fmt::join(value.trades, ", "sv),
         value.exchange_time_utc);
   }
 };

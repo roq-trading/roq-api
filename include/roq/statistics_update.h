@@ -58,7 +58,7 @@ struct fmt::formatter<roq::StatisticsUpdate> {
         R"(}})"sv,
         value.exchange,
         value.symbol,
-        fmt::join(value.statistics, ", "),
+        fmt::join(value.statistics, ", "sv),
         value.snapshot,
         value.exchange_time_utc);
   }

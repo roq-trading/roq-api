@@ -10,7 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
-* Use the `sv` std literal (instead of declaring static const variables)
+* Use std string literals
 
 ## 0.6.0 &ndash; 2021-02-02
 

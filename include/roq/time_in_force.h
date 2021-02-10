@@ -95,6 +95,7 @@ struct fmt::formatter<roq::TimeInForce> {
   }
   template <typename Context>
   auto format(const roq::TimeInForce &value, Context &context) {
-    return format_to(context.out(), "{}", value.name());
+    using namespace std::literals;  // NOLINT
+    return format_to(context.out(), "{}"sv, value.name());
   }
 };

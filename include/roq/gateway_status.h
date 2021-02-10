@@ -103,6 +103,7 @@ struct fmt::formatter<roq::GatewayStatus> {
   }
   template <typename Context>
   auto format(const roq::GatewayStatus &value, Context &context) {
-    return format_to(context.out(), "{}", value.name());
+    using namespace std::literals;  // NOLINT
+    return format_to(context.out(), "{}"sv, value.name());
   }
 };

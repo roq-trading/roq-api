@@ -98,9 +98,10 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
   auto format(
       const {{ namespaces | join('::') }}::{{ name }}& value,
       Context& context) {
+    using namespace std::literals;  // NOLINT
     return format_to(
         context.out(),
-        "{}",
+        "{}"sv,
         value.name());
   }
 };

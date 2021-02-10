@@ -82,6 +82,7 @@ struct fmt::formatter<roq::TradingStatus> {
   }
   template <typename Context>
   auto format(const roq::TradingStatus &value, Context &context) {
-    return format_to(context.out(), "{}", value.name());
+    using namespace std::literals;  // NOLINT
+    return format_to(context.out(), "{}"sv, value.name());
   }
 };

@@ -38,7 +38,7 @@ struct fmt::formatter<roq::BatchBegin> {
   template <typename Context>
   auto format(const roq::BatchBegin &value, Context &context) {
     using namespace std::literals;  // NOLINT
-    return format_to(context.out(), R"({{}})");
+    return format_to(context.out(), R"({{}})"sv);
   }
 };
 template <>

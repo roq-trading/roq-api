@@ -38,7 +38,7 @@ struct fmt::formatter<roq::Stop> {
   template <typename Context>
   auto format(const roq::Stop &value, Context &context) {
     using namespace std::literals;  // NOLINT
-    return format_to(context.out(), R"({{}})");
+    return format_to(context.out(), R"({{}})"sv);
   }
 };
 template <>

@@ -82,6 +82,7 @@ struct fmt::formatter<roq::Side> {
   }
   template <typename Context>
   auto format(const roq::Side &value, Context &context) {
-    return format_to(context.out(), "{}", value.name());
+    using namespace std::literals;  // NOLINT
+    return format_to(context.out(), "{}"sv, value.name());
   }
 };

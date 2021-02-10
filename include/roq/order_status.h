@@ -107,6 +107,7 @@ struct fmt::formatter<roq::OrderStatus> {
   }
   template <typename Context>
   auto format(const roq::OrderStatus &value, Context &context) {
-    return format_to(context.out(), "{}", value.name());
+    using namespace std::literals;  // NOLINT
+    return format_to(context.out(), "{}"sv, value.name());
   }
 };

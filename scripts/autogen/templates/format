@@ -13,7 +13,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
         context.out(),
 {%- if variables | length == 0 %}
 {%- raw %}
-        R"({{}})");
+        R"({{}})"sv);
 {%- endraw %}
 {%- else %}
 {%- raw %}

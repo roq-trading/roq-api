@@ -24,6 +24,7 @@ requirements:
     - make
   host:
     - fmt
+    - roq-oss-range-v3
     - roq-oss-span-lite
 
 about:

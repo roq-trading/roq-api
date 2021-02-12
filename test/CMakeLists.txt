@@ -5,6 +5,7 @@ set(SOURCES
     fixed_string.cpp
     format.cpp
     metrics.cpp
+    ranges.cpp
     span.cpp
     utils.cpp
     main.cpp)

@@ -11,6 +11,7 @@
 #include <limits>
 #include <string_view>
 
+#include "roq/chrono.h"
 #include "roq/fixed_string.h"
 #include "roq/span.h"
 #include "roq/uuid.h"

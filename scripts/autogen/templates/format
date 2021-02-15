@@ -1,19 +1,15 @@
 template <>
-struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
-  template <typename Context>
-  constexpr auto parse(Context& context) {
-    return context.begin();
-  }
+struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> : public roq::formatter {
   template <typename Context>
   auto format(
       const {{ namespaces | join('::') }}::{{ name }}& value,
       Context& context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
 {%- if variables | length == 0 %}
 {%- raw %}
-        R"({{}})"sv);
+        R"({{}})"_fmt);
 {%- endraw %}
 {%- else %}
 {%- raw %}
@@ -23,7 +19,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
         R"({{ variable.name }}={{ variable.format_string }}{{ ', ' if not loop.last }})"
 {%- endfor %}
 {%- raw %}
-        R"(}})"sv,
+        R"(}})"_fmt,
 {%- endraw %}
 {%- for variable in variables %}
         {{ variable.format_value }}{{ ',' if not loop.last else ');' }}

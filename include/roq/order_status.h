@@ -11,6 +11,8 @@
 #include <type_traits>
 
 #include "roq/compat.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 
 namespace roq {
 
@@ -32,7 +34,7 @@ struct ROQ_PACKED OrderStatus final {
   OrderStatus() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline OrderStatus(type_t type)  // NOLINT
+  inline OrderStatus(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
   inline explicit OrderStatus(uint8_t type) : type_(validate(type)) {}
@@ -40,28 +42,28 @@ struct ROQ_PACKED OrderStatus final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    using namespace std::literals;  // NOLINT
+    using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::SENT:
-        return "SENT"sv;
+        return "SENT"_sv;
       case type_t::REJECTED:
-        return "REJECTED"sv;
+        return "REJECTED"_sv;
       case type_t::ACCEPTED:
-        return "ACCEPTED"sv;
+        return "ACCEPTED"_sv;
       case type_t::PENDING:
-        return "PENDING"sv;
+        return "PENDING"_sv;
       case type_t::WORKING:
-        return "WORKING"sv;
+        return "WORKING"_sv;
       case type_t::COMPLETED:
-        return "COMPLETED"sv;
+        return "COMPLETED"_sv;
       case type_t::CANCELED:
-        return "CANCELED"sv;
+        return "CANCELED"_sv;
       default:
         assert(false);
     }
-    return "UNDEFINED"sv;
+    return "UNDEFINED"_sv;
   }
 
   inline operator std::string_view() const { return name(); }
@@ -100,14 +102,10 @@ struct std::underlying_type<roq::OrderStatus> {
 };
 
 template <>
-struct fmt::formatter<roq::OrderStatus> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::OrderStatus> : public roq::formatter {
   template <typename Context>
   auto format(const roq::OrderStatus &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(context.out(), "{}"sv, value.name());
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_fmt, value.name());
   }
 };

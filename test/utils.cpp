@@ -6,7 +6,8 @@
 
 #include "roq/api.h"
 
-using namespace roq;  // NOLINT
+using namespace roq;
+using namespace roq::literals;
 
 TEST(utils, trade_id) {
   Trade trade = {};
@@ -16,7 +17,7 @@ TEST(utils, trade_id) {
   EXPECT_EQ(trade_id.length(), size_t{});
   EXPECT_EQ(static_cast<std::string_view>(trade_id), text_1);
   // small
-  std::string_view text_2("123");
+  std::string_view text_2("123"_sv);
   trade_id = text_2;
   EXPECT_FALSE(trade_id.empty());
   EXPECT_EQ(trade_id.length(), text_2.length());
@@ -26,7 +27,7 @@ TEST(utils, trade_id) {
       "1234567890"
       "1234567890"
       "1234567890"
-      "123456789");
+      "123456789"_sv);
   trade_id = text_3;
   EXPECT_FALSE(trade_id.empty());
   EXPECT_EQ(trade_id.length(), text_3.length());

@@ -11,11 +11,12 @@
 
 #include "roq/chrono.h"
 #include "roq/compat.h"
-#include "roq/fixed_string.h"
-#include "roq/span.h"
-
 #include "roq/event.h"
+#include "roq/fixed_string.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/span.h"
 
 {% include 'includes' %}
 
@@ -35,17 +36,13 @@ struct ROQ_PUBLIC {{ name }} final {
 {% include 'format' %}
 
 template <>
-struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}> > {
-  template <typename Context>
-  constexpr auto parse(Context& context) {
-    return context.begin();
-  }
+struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}> > : public roq::formatter {
   template <typename Context>
   auto format(
       const {{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}>& event,
       Context& context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
 {%- raw %}
         R"({{)"
@@ -53,7 +50,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
         R"(message_info={}, )"
         R"({{ filename }}={})"
 {%- raw %}
-        R"(}})"sv,
+        R"(}})"_fmt,
 {%- endraw %}
         event.message_info,
         event.value);

@@ -104,7 +104,7 @@ def _safe_enum(name):
     return '_' + name if c.isdigit() else name
 
 def _format_helper(char, string, array, safe_name, accessor):
-    value=('fmt::join(value.{}{}, ", "sv)' if array else 'value.{}{}').format(safe_name, accessor)
+    value=('fmt::join(value.{}{}, ", "_sv)' if array else 'value.{}{}').format(safe_name, accessor)
     if char:
         return ('\'{}\'', value)
     if string:

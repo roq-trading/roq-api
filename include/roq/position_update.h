@@ -13,11 +13,12 @@
 
 #include "roq/chrono.h"
 #include "roq/compat.h"
-#include "roq/fixed_string.h"
-#include "roq/span.h"
-
 #include "roq/event.h"
+#include "roq/fixed_string.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/span.h"
 
 #include "roq/side.h"
 
@@ -46,15 +47,11 @@ struct ROQ_PUBLIC PositionUpdate final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::PositionUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::PositionUpdate> : public roq::formatter {
   template <typename Context>
   auto format(const roq::PositionUpdate &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(account="{}", )"
@@ -67,7 +64,7 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"(position_yesterday={}, )"
         R"(position_cost_yesterday={}, )"
         R"(external_account="{}")"
-        R"(}})"sv,
+        R"(}})"_fmt,
         value.account,
         value.exchange,
         value.symbol,
@@ -81,20 +78,16 @@ struct fmt::formatter<roq::PositionUpdate> {
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::PositionUpdate> > {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::Event<roq::PositionUpdate> > : public roq::formatter {
   template <typename Context>
   auto format(const roq::Event<roq::PositionUpdate> &event, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(position_update={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         event.message_info,
         event.value);
   }

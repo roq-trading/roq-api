@@ -7,7 +7,8 @@
 
 #include "roq/fixed_string.h"
 
-using namespace roq;  // NOLINT
+using namespace roq;
+using namespace roq::literals;
 
 TEST(fixed_string, empty) {
   roq::fixed_string<4> s;
@@ -19,7 +20,7 @@ TEST(fixed_string, empty) {
 }
 
 TEST(fixed_string, partial) {
-  constexpr auto text = "12";
+  constexpr auto text = "12"_sv;
   roq::fixed_string<4> s = text;
   EXPECT_EQ(s.size(), std::size_t{4});
   EXPECT_EQ(s.length(), std::size_t{2});
@@ -30,7 +31,7 @@ TEST(fixed_string, partial) {
 }
 
 TEST(fixed_string, full) {
-  constexpr auto text = "123";
+  constexpr auto text = "123"_sv;
   roq::fixed_string<4> s = text;
   EXPECT_EQ(s.size(), std::size_t{4});
   EXPECT_EQ(s.length(), std::size_t{3});
@@ -42,9 +43,9 @@ TEST(fixed_string, full) {
 
 TEST(fixed_string, construct) {
   roq::fixed_string<4>();
-  roq::fixed_string<4>("1");
-  roq::fixed_string<4>("12");
-  roq::fixed_string<4>("123");
-  roq::fixed_string<4>("1234");
-  EXPECT_THROW(roq::fixed_string<4>("12345"), std::length_error);
+  roq::fixed_string<4>("1"_sv);
+  roq::fixed_string<4>("12"_sv);
+  roq::fixed_string<4>("123"_sv);
+  roq::fixed_string<4>("1234"_sv);
+  EXPECT_THROW(roq::fixed_string<4>("12345"_sv), std::length_error);
 }

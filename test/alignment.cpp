@@ -4,7 +4,7 @@
 
 #include "roq/api.h"
 
-using namespace roq;  // NOLINT
+using namespace roq;
 
 TEST(alignment, layer) {
   std::array<Layer, 2> value;

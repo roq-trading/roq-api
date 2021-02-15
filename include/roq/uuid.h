@@ -8,6 +8,9 @@
 #include <array>
 #include <utility>
 
+#include "roq/format.h"
+#include "roq/literals.h"
+
 namespace roq {
 
 class UUID final {
@@ -79,22 +82,18 @@ static_assert(sizeof(UUID) == 16);
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::UUID> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::UUID> : public roq::formatter {
   template <typename Context>
   auto format(const roq::UUID &value, Context &context) {
-    using namespace std::literals;  // NOLINT
+    using namespace roq::literals;
     auto data = value.data();
-    return format_to(
+    return roq::format_to(
         context.out(),
         "{:02x}{:02x}{:02x}{:02x}-"
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
-        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"sv,
+        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"_fmt,
         data[0],
         data[1],
         data[2],

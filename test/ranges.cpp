@@ -4,7 +4,7 @@
 
 #include "roq/ranges.h"
 
-using namespace roq;  // NOLINT
+using namespace roq;
 
 TEST(ranges, iota_view) {
   size_t sum = 0;

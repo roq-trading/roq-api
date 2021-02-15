@@ -4,7 +4,8 @@
 
 #include "roq/metrics.h"
 
-using namespace roq;  // NOLINT
+using namespace roq;
+using namespace roq::literals;
 
 namespace {
 class Writer : public metrics::Writer {
@@ -35,5 +36,5 @@ TEST(histogram, simple) {
   metrics::Histogram<1, 2, 3, 4, 5, 6> histogram;
   histogram.update(3);
   Writer writer;
-  writer.write(histogram, "test");
+  writer.write(histogram, "test"_sv);
 }

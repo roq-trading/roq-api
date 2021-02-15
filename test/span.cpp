@@ -2,9 +2,11 @@
 
 #include <gtest/gtest.h>
 
+#include "roq/literals.h"
 #include "roq/span.h"
 
-using namespace roq;  // NOLINT
+using namespace roq;
+using namespace roq::literals;
 
 TEST(span, simple) {
   std::array<double, 3> raw{0.0, 2.0, 3.0};
@@ -22,10 +24,10 @@ TEST(span, simple) {
 
 TEST(span, string_view) {
   std::vector<std::string_view> raw{
-      "abc",
-      "def",
+      "abc"_sv,
+      "def"_sv,
   };
   roq::span span(raw.data(), raw.size());
-  EXPECT_EQ(span[0], "abc");
-  EXPECT_EQ(span[1], "def");
+  EXPECT_EQ(span[0], "abc"_sv);
+  EXPECT_EQ(span[1], "def"_sv);
 }

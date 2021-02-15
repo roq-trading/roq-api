@@ -13,6 +13,8 @@
 
 #include "roq/chrono.h"
 #include "roq/fixed_string.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 #include "roq/span.h"
 #include "roq/uuid.h"
 
@@ -37,15 +39,11 @@ struct ROQ_PUBLIC MessageInfo final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::MessageInfo> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::MessageInfo> : public roq::formatter {
   template <typename Context>
   auto format(const roq::MessageInfo &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(source={}, )"
@@ -60,7 +58,7 @@ struct fmt::formatter<roq::MessageInfo> {
         R"(origin_create_time_utc={}, )"
         R"(is_last={}, )"
         R"(opaque={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         value.source,
         value.source_name,
         value.source_session_id,

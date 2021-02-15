@@ -11,6 +11,8 @@
 #include <type_traits>
 
 #include "roq/compat.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 
 namespace roq {
 
@@ -38,7 +40,7 @@ struct ROQ_PACKED StatisticsType final {
   StatisticsType() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline StatisticsType(type_t type)  // NOLINT
+  inline StatisticsType(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
   inline explicit StatisticsType(uint8_t type) : type_(validate(type)) {}
@@ -46,40 +48,40 @@ struct ROQ_PACKED StatisticsType final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    using namespace std::literals;  // NOLINT
+    using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::OPEN_PRICE:
-        return "OPEN_PRICE"sv;
+        return "OPEN_PRICE"_sv;
       case type_t::SETTLEMENT_PRICE:
-        return "SETTLEMENT_PRICE"sv;
+        return "SETTLEMENT_PRICE"_sv;
       case type_t::CLOSE_PRICE:
-        return "CLOSE_PRICE"sv;
+        return "CLOSE_PRICE"_sv;
       case type_t::OPEN_INTEREST:
-        return "OPEN_INTEREST"sv;
+        return "OPEN_INTEREST"_sv;
       case type_t::PRE_OPEN_INTEREST:
-        return "PRE_OPEN_INTEREST"sv;
+        return "PRE_OPEN_INTEREST"_sv;
       case type_t::PRE_SETTLEMENT_PRICE:
-        return "PRE_SETTLEMENT_PRICE"sv;
+        return "PRE_SETTLEMENT_PRICE"_sv;
       case type_t::PRE_CLOSE_PRICE:
-        return "PRE_CLOSE_PRICE"sv;
+        return "PRE_CLOSE_PRICE"_sv;
       case type_t::HIGHEST_TRADED_PRICE:
-        return "HIGHEST_TRADED_PRICE"sv;
+        return "HIGHEST_TRADED_PRICE"_sv;
       case type_t::LOWEST_TRADED_PRICE:
-        return "LOWEST_TRADED_PRICE"sv;
+        return "LOWEST_TRADED_PRICE"_sv;
       case type_t::UPPER_LIMIT_PRICE:
-        return "UPPER_LIMIT_PRICE"sv;
+        return "UPPER_LIMIT_PRICE"_sv;
       case type_t::LOWER_LIMIT_PRICE:
-        return "LOWER_LIMIT_PRICE"sv;
+        return "LOWER_LIMIT_PRICE"_sv;
       case type_t::INDEX_VALUE:
-        return "INDEX_VALUE"sv;
+        return "INDEX_VALUE"_sv;
       case type_t::MARGIN_RATE:
-        return "MARGIN_RATE"sv;
+        return "MARGIN_RATE"_sv;
       default:
         assert(false);
     }
-    return "UNDEFINED"sv;
+    return "UNDEFINED"_sv;
   }
 
   inline operator std::string_view() const { return name(); }
@@ -124,14 +126,10 @@ struct std::underlying_type<roq::StatisticsType> {
 };
 
 template <>
-struct fmt::formatter<roq::StatisticsType> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::StatisticsType> : public roq::formatter {
   template <typename Context>
   auto format(const roq::StatisticsType &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(context.out(), "{}"sv, value.name());
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_fmt, value.name());
   }
 };

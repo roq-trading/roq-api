@@ -11,6 +11,8 @@
 #include <type_traits>
 
 #include "roq/compat.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 
 namespace roq {
 
@@ -22,7 +24,7 @@ struct ROQ_PACKED SecurityType final {
   SecurityType() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline SecurityType(type_t type)  // NOLINT
+  inline SecurityType(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
   inline explicit SecurityType(uint8_t type) : type_(validate(type)) {}
@@ -30,20 +32,20 @@ struct ROQ_PACKED SecurityType final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    using namespace std::literals;  // NOLINT
+    using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::SPOT:
-        return "SPOT"sv;
+        return "SPOT"_sv;
       case type_t::FUTURES:
-        return "FUTURES"sv;
+        return "FUTURES"_sv;
       case type_t::OPTION:
-        return "OPTION"sv;
+        return "OPTION"_sv;
       default:
         assert(false);
     }
-    return "UNDEFINED"sv;
+    return "UNDEFINED"_sv;
   }
 
   inline operator std::string_view() const { return name(); }
@@ -78,14 +80,10 @@ struct std::underlying_type<roq::SecurityType> {
 };
 
 template <>
-struct fmt::formatter<roq::SecurityType> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::SecurityType> : public roq::formatter {
   template <typename Context>
   auto format(const roq::SecurityType &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(context.out(), "{}"sv, value.name());
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_fmt, value.name());
   }
 };

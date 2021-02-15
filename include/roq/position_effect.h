@@ -11,6 +11,8 @@
 #include <type_traits>
 
 #include "roq/compat.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 
 namespace roq {
 
@@ -22,7 +24,7 @@ struct ROQ_PACKED PositionEffect final {
   PositionEffect() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline PositionEffect(type_t type)  // NOLINT
+  inline PositionEffect(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
   inline explicit PositionEffect(uint8_t type) : type_(validate(type)) {}
@@ -30,18 +32,18 @@ struct ROQ_PACKED PositionEffect final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    using namespace std::literals;  // NOLINT
+    using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::OPEN:
-        return "OPEN"sv;
+        return "OPEN"_sv;
       case type_t::CLOSE:
-        return "CLOSE"sv;
+        return "CLOSE"_sv;
       default:
         assert(false);
     }
-    return "UNDEFINED"sv;
+    return "UNDEFINED"_sv;
   }
 
   inline operator std::string_view() const { return name(); }
@@ -75,14 +77,10 @@ struct std::underlying_type<roq::PositionEffect> {
 };
 
 template <>
-struct fmt::formatter<roq::PositionEffect> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::PositionEffect> : public roq::formatter {
   template <typename Context>
   auto format(const roq::PositionEffect &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(context.out(), "{}"sv, value.name());
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_fmt, value.name());
   }
 };

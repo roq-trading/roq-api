@@ -13,11 +13,12 @@
 
 #include "roq/chrono.h"
 #include "roq/compat.h"
-#include "roq/fixed_string.h"
-#include "roq/span.h"
-
 #include "roq/event.h"
+#include "roq/fixed_string.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/span.h"
 
 #include "roq/fill.h"
 #include "roq/position_effect.h"
@@ -50,15 +51,11 @@ struct ROQ_PUBLIC TradeUpdate final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::TradeUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::TradeUpdate> : public roq::formatter {
   template <typename Context>
   auto format(const roq::TradeUpdate &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(account="{}", )"
@@ -74,7 +71,7 @@ struct fmt::formatter<roq::TradeUpdate> {
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(fills=[{}])"
-        R"(}})"sv,
+        R"(}})"_fmt,
         value.account,
         value.order_id,
         value.exchange,
@@ -87,24 +84,20 @@ struct fmt::formatter<roq::TradeUpdate> {
         value.gateway_order_id,
         value.external_account,
         value.external_order_id,
-        fmt::join(value.fills, ", "sv));
+        fmt::join(value.fills, ", "_sv));
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::TradeUpdate> > {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::Event<roq::TradeUpdate> > : public roq::formatter {
   template <typename Context>
   auto format(const roq::Event<roq::TradeUpdate> &event, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(trade_update={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         event.message_info,
         event.value);
   }

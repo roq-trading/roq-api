@@ -11,6 +11,7 @@
 #include <string_view>
 
 #include "roq/compat.h"
+#include "roq/literals.h"
 
 #include "roq/metrics/base.h"
 #include "roq/metrics/writer.h"
@@ -86,7 +87,7 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
   //! Write formatted output
   Writer &write(
       Writer &writer, const std::string_view &name, const std::string_view &labels) const {
-    using namespace std::literals;  // NOLINT
+    using namespace roq::literals;
     auto sum = data_.sum.load(std::memory_order_acquire);
     auto bucket_0 = data_.bucket_0;
     auto bucket_1 = bucket_0 + data_.bucket_1;
@@ -95,7 +96,8 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
     auto bucket_4 = bucket_3 + data_.bucket_4;
     auto bucket_5 = bucket_4 + data_.bucket_5;
     auto bucket_6 = bucket_5 + data_.bucket_6;
-    writer.write_type(name, "histogram"sv)
+    writer
+        .write_type(name, "histogram"_sv)  //
         .write_bucket(name, labels, N0, bucket_0)
         .write_bucket(name, labels, N1, bucket_1)
         .write_bucket(name, labels, N2, bucket_2)

@@ -13,11 +13,12 @@
 
 #include "roq/chrono.h"
 #include "roq/compat.h"
-#include "roq/fixed_string.h"
-#include "roq/span.h"
-
 #include "roq/event.h"
+#include "roq/fixed_string.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/span.h"
 
 namespace roq {
 
@@ -31,32 +32,24 @@ struct ROQ_PUBLIC BatchEnd final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::BatchEnd> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::BatchEnd> : public roq::formatter {
   template <typename Context>
   auto format(const roq::BatchEnd &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(context.out(), R"({{}})"sv);
+    using namespace roq::literals;
+    return roq::format_to(context.out(), R"({{}})"_fmt);
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::BatchEnd> > {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::Event<roq::BatchEnd> > : public roq::formatter {
   template <typename Context>
   auto format(const roq::Event<roq::BatchEnd> &event, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(batch_end={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         event.message_info,
         event.value);
   }

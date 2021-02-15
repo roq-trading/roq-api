@@ -11,6 +11,8 @@
 #include <type_traits>
 
 #include "roq/compat.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 
 namespace roq {
 
@@ -40,7 +42,7 @@ struct ROQ_PACKED Error final {
   Error() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline Error(type_t type)  // NOLINT
+  inline Error(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
   inline explicit Error(uint8_t type) : type_(validate(type)) {}
@@ -48,44 +50,44 @@ struct ROQ_PACKED Error final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    using namespace std::literals;  // NOLINT
+    using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::UNKNOWN:
-        return "UNKNOWN"sv;
+        return "UNKNOWN"_sv;
       case type_t::GATEWAY_NOT_READY:
-        return "GATEWAY_NOT_READY"sv;
+        return "GATEWAY_NOT_READY"_sv;
       case type_t::INVALID_ACCOUNT:
-        return "INVALID_ACCOUNT"sv;
+        return "INVALID_ACCOUNT"_sv;
       case type_t::INVALID_EXCHANGE:
-        return "INVALID_EXCHANGE"sv;
+        return "INVALID_EXCHANGE"_sv;
       case type_t::INVALID_SYMBOL:
-        return "INVALID_SYMBOL"sv;
+        return "INVALID_SYMBOL"_sv;
       case type_t::INVALID_ORDER_TYPE:
-        return "INVALID_ORDER_TYPE"sv;
+        return "INVALID_ORDER_TYPE"_sv;
       case type_t::INVALID_TIME_IN_FORCE:
-        return "INVALID_TIME_IN_FORCE"sv;
+        return "INVALID_TIME_IN_FORCE"_sv;
       case type_t::INVALID_POSITION_EFFECT:
-        return "INVALID_POSITION_EFFECT"sv;
+        return "INVALID_POSITION_EFFECT"_sv;
       case type_t::INVALID_ORDER_TEMPLATE:
-        return "INVALID_ORDER_TEMPLATE"sv;
+        return "INVALID_ORDER_TEMPLATE"_sv;
       case type_t::NETWORK_ERROR:
-        return "NETWORK_ERROR"sv;
+        return "NETWORK_ERROR"_sv;
       case type_t::UNKNOWN_ERROR_ID:
-        return "UNKNOWN_ERROR_ID"sv;
+        return "UNKNOWN_ERROR_ID"_sv;
       case type_t::UNKNOWN_EXCHANGE_ORDER_ID:
-        return "UNKNOWN_EXCHANGE_ORDER_ID"sv;
+        return "UNKNOWN_EXCHANGE_ORDER_ID"_sv;
       case type_t::MODIFY_ORDER_NOT_SUPPORTED:
-        return "MODIFY_ORDER_NOT_SUPPORTED"sv;
+        return "MODIFY_ORDER_NOT_SUPPORTED"_sv;
       case type_t::INVALID_ORDER_ID:
-        return "INVALID_ORDER_ID"sv;
+        return "INVALID_ORDER_ID"_sv;
       case type_t::EXECUTION_INSTRUCTION_NOT_SUPPORTED:
-        return "EXECUTION_INSTRUCTION_NOT_SUPPORTED"sv;
+        return "EXECUTION_INSTRUCTION_NOT_SUPPORTED"_sv;
       default:
         assert(false);
     }
-    return "UNDEFINED"sv;
+    return "UNDEFINED"_sv;
   }
 
   inline operator std::string_view() const { return name(); }
@@ -132,14 +134,10 @@ struct std::underlying_type<roq::Error> {
 };
 
 template <>
-struct fmt::formatter<roq::Error> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::Error> : public roq::formatter {
   template <typename Context>
   auto format(const roq::Error &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(context.out(), "{}"sv, value.name());
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_fmt, value.name());
   }
 };

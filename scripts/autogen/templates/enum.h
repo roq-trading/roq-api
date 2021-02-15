@@ -9,6 +9,8 @@
 #include <type_traits>
 
 #include "roq/compat.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 
 {% include 'namespace_begin' %}
 
@@ -28,7 +30,7 @@ struct ROQ_PACKED {{ name }} final {
   {{ name }}() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline {{ name }}(type_t type)  // NOLINT
+  inline {{ name }}(type_t type)  // NOLINT (allow implicit)
       : type_(type) {
   }
 
@@ -41,18 +43,18 @@ struct ROQ_PACKED {{ name }} final {
   }
 
   inline std::string_view name() const {
-    using namespace std::literals;  // NOLINT
+    using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
         break;
   {% for value in values %}
       case type_t::{{ value.enum_value }}:
-        return "{{ value.enum_value }}"sv;
+        return "{{ value.enum_value }}"_sv;
   {% endfor %}
       default:
         assert(false);
     }
-    return "UNDEFINED"sv;
+    return "UNDEFINED"_sv;
   }
 
   inline operator std::string_view() const {
@@ -89,19 +91,15 @@ struct std::underlying_type<{{ namespaces | join('::') }}::{{ name }}> {
 };
 
 template <>
-struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
-  template <typename Context>
-  constexpr auto parse(Context& context) {
-    return context.begin();
-  }
+struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> : public roq::formatter {
   template <typename Context>
   auto format(
       const {{ namespaces | join('::') }}::{{ name }}& value,
       Context& context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
-        "{}"sv,
+        "{}"_fmt,
         value.name());
   }
 };

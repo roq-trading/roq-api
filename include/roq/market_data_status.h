@@ -13,11 +13,12 @@
 
 #include "roq/chrono.h"
 #include "roq/compat.h"
-#include "roq/fixed_string.h"
-#include "roq/span.h"
-
 #include "roq/event.h"
+#include "roq/fixed_string.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/span.h"
 
 #include "roq/gateway_status.h"
 
@@ -35,37 +36,29 @@ struct ROQ_PUBLIC MarketDataStatus final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::MarketDataStatus> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::MarketDataStatus> : public roq::formatter {
   template <typename Context>
   auto format(const roq::MarketDataStatus &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(status={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         value.status);
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::MarketDataStatus> > {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::Event<roq::MarketDataStatus> > : public roq::formatter {
   template <typename Context>
   auto format(const roq::Event<roq::MarketDataStatus> &event, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(market_data_status={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         event.message_info,
         event.value);
   }

@@ -13,6 +13,8 @@
 
 #include "roq/chrono.h"
 #include "roq/fixed_string.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 #include "roq/span.h"
 #include "roq/uuid.h"
 
@@ -31,22 +33,18 @@ struct ROQ_PUBLIC Trade final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::Trade> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::Trade> : public roq::formatter {
   template <typename Context>
   auto format(const roq::Trade &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(side={}, )"
         R"(price={}, )"
         R"(quantity={}, )"
         R"(trade_id="{}")"
-        R"(}})"sv,
+        R"(}})"_fmt,
         value.side,
         value.price,
         value.quantity,

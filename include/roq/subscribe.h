@@ -10,6 +10,8 @@
 #include <string>
 
 #include "roq/compat.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 
 #include "roq/event.h"
 #include "roq/message_info.h"
@@ -29,40 +31,32 @@ struct ROQ_PUBLIC SubscribeEvent final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::Subscribe> {
-  template <typename T>
-  constexpr auto parse(T &ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::Subscribe &value, T &ctx) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
-        ctx.out(),
+struct fmt::formatter<roq::Subscribe> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::Subscribe &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(
+        context.out(),
         R"({{)"
         R"(accounts={}, )"
         R"(symbols_by_exchange={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         value.accounts,
         value.symbols_by_exchange);
   }
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::Subscribe> > {
-  template <typename T>
-  constexpr auto parse(T &ctx) {
-    return ctx.begin();
-  }
-  template <typename T>
-  auto format(const roq::Event<roq::Subscribe> &event, T &ctx) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
-        ctx.out(),
+struct fmt::formatter<roq::Event<roq::Subscribe> > : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::Event<roq::Subscribe> &event, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(
+        context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(subscribe={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         event.message_info,
         event.value);
   }

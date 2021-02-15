@@ -11,6 +11,8 @@
 #include <type_traits>
 
 #include "roq/compat.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 
 namespace roq {
 
@@ -29,7 +31,7 @@ struct ROQ_PACKED ExecutionInstruction final {
   ExecutionInstruction() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline ExecutionInstruction(type_t type)  // NOLINT
+  inline ExecutionInstruction(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
   inline explicit ExecutionInstruction(uint8_t type) : type_(validate(type)) {}
@@ -37,22 +39,22 @@ struct ROQ_PACKED ExecutionInstruction final {
   inline operator type_t() const { return type_; }
 
   inline std::string_view name() const {
-    using namespace std::literals;  // NOLINT
+    using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::PARTICIPATE_DO_NOT_INITIATE:
-        return "PARTICIPATE_DO_NOT_INITIATE"sv;
+        return "PARTICIPATE_DO_NOT_INITIATE"_sv;
       case type_t::CANCEL_IF_NOT_BEST:
-        return "CANCEL_IF_NOT_BEST"sv;
+        return "CANCEL_IF_NOT_BEST"_sv;
       case type_t::DO_NOT_INCREASE:
-        return "DO_NOT_INCREASE"sv;
+        return "DO_NOT_INCREASE"_sv;
       case type_t::DO_NOT_REDUCE:
-        return "DO_NOT_REDUCE"sv;
+        return "DO_NOT_REDUCE"_sv;
       default:
         assert(false);
     }
-    return "UNDEFINED"sv;
+    return "UNDEFINED"_sv;
   }
 
   inline operator std::string_view() const { return name(); }
@@ -88,14 +90,10 @@ struct std::underlying_type<roq::ExecutionInstruction> {
 };
 
 template <>
-struct fmt::formatter<roq::ExecutionInstruction> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::ExecutionInstruction> : public roq::formatter {
   template <typename Context>
   auto format(const roq::ExecutionInstruction &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(context.out(), "{}"sv, value.name());
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_fmt, value.name());
   }
 };

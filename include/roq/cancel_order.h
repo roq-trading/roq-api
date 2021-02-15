@@ -13,11 +13,12 @@
 
 #include "roq/chrono.h"
 #include "roq/compat.h"
-#include "roq/fixed_string.h"
-#include "roq/span.h"
-
 #include "roq/event.h"
+#include "roq/fixed_string.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/span.h"
 
 namespace roq {
 
@@ -34,39 +35,31 @@ struct ROQ_PUBLIC CancelOrder final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::CancelOrder> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::CancelOrder> : public roq::formatter {
   template <typename Context>
   auto format(const roq::CancelOrder &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(account="{}", )"
         R"(order_id={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         value.account,
         value.order_id);
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::CancelOrder> > {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::Event<roq::CancelOrder> > : public roq::formatter {
   template <typename Context>
   auto format(const roq::Event<roq::CancelOrder> &event, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(cancel_order={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         event.message_info,
         event.value);
   }

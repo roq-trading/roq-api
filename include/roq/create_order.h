@@ -13,11 +13,12 @@
 
 #include "roq/chrono.h"
 #include "roq/compat.h"
-#include "roq/fixed_string.h"
-#include "roq/span.h"
-
 #include "roq/event.h"
+#include "roq/fixed_string.h"
+#include "roq/format.h"
+#include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/span.h"
 
 #include "roq/execution_instruction.h"
 #include "roq/order_type.h"
@@ -56,15 +57,11 @@ struct ROQ_PUBLIC CreateOrder final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::CreateOrder> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::CreateOrder> : public roq::formatter {
   template <typename Context>
   auto format(const roq::CreateOrder &value, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(account="{}", )"
@@ -81,7 +78,7 @@ struct fmt::formatter<roq::CreateOrder> {
         R"(stop_price={}, )"
         R"(max_show_quantity={}, )"
         R"(order_template="{}")"
-        R"(}})"sv,
+        R"(}})"_fmt,
         value.account,
         value.order_id,
         value.exchange,
@@ -99,20 +96,16 @@ struct fmt::formatter<roq::CreateOrder> {
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::CreateOrder> > {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
-  }
+struct fmt::formatter<roq::Event<roq::CreateOrder> > : public roq::formatter {
   template <typename Context>
   auto format(const roq::Event<roq::CreateOrder> &event, Context &context) {
-    using namespace std::literals;  // NOLINT
-    return format_to(
+    using namespace roq::literals;
+    return roq::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(create_order={})"
-        R"(}})"sv,
+        R"(}})"_fmt,
         event.message_info,
         event.value);
   }

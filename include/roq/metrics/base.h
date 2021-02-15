@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <fmt/format.h>
-
 #include <cstdint>
 #include <string>
 #include <string_view>

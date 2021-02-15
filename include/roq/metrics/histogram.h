@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <fmt/format.h>
-
 #include <atomic>
 #include <cstdint>
 #include <limits>

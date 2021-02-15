@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <fmt/format.h>
-
 #include <algorithm>
 #include <array>
 #include <utility>

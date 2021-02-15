@@ -11,6 +11,7 @@ All notable changes will be documented in this file.
 ### Changed
 
 * Use std string literals
+* Enforce the use for `_fmt` literal when formatting
 
 ## 0.6.0 &ndash; 2021-02-02
 

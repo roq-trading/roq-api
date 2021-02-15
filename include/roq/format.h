@@ -3,8 +3,8 @@
 #pragma once
 
 // goals:
-// - only allow type-safe format strings
-// - perhaps allow for slightly easier transition to std::format
+// - require the use of format strings (reason: making compile checks possible)
+// - perhaps support both fmt::format and std::format
 
 #include <fmt/format.h>
 
@@ -22,13 +22,6 @@ namespace roq {
 template <typename... Args>
 inline std::string format(const format_str &fmt, Args &&... args) {
   return fmt::format(static_cast<std::string_view>(fmt), std::forward<Args>(args)...);
-}
-
-template <typename T>
-typename std::enable_if_t<!std::is_same_v<std::decay_t<T>, format_str>, std::string> inline format(
-    const T &value) {
-  using namespace literals;
-  return roq::format(format_str{"{}"_sv}, value);
 }
 
 // format_to

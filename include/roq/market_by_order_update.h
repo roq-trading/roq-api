@@ -5,7 +5,6 @@
 #pragma once
 
 #include <fmt/chrono.h>
-#include <fmt/format.h>
 
 #include <chrono>
 #include <limits>
@@ -58,8 +57,8 @@ struct fmt::formatter<roq::MarketByOrderUpdate> : public roq::formatter {
         R"(}})"_fmt,
         value.exchange,
         value.symbol,
-        fmt::join(value.bids, ", "_sv),
-        fmt::join(value.asks, ", "_sv),
+        roq::join(value.bids, ", "_sv),
+        roq::join(value.asks, ", "_sv),
         value.snapshot,
         value.exchange_time_utc);
   }

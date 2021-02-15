@@ -3,7 +3,6 @@
 #pragma once
 
 #include <fmt/chrono.h>
-#include <fmt/format.h>
 
 #include <chrono>
 #include <limits>

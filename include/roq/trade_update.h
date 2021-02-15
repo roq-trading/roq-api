@@ -5,7 +5,6 @@
 #pragma once
 
 #include <fmt/chrono.h>
-#include <fmt/format.h>
 
 #include <chrono>
 #include <limits>
@@ -84,7 +83,7 @@ struct fmt::formatter<roq::TradeUpdate> : public roq::formatter {
         value.gateway_order_id,
         value.external_account,
         value.external_order_id,
-        fmt::join(value.fills, ", "_sv));
+        roq::join(value.fills, ", "_sv));
   }
 };
 template <>

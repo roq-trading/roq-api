@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <fmt/format.h>
-
 #include <cassert>
 #include <string_view>
 #include <type_traits>

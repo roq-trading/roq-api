@@ -12,23 +12,54 @@
 #include <string_view>
 #include <utility>
 
+#include "roq/format_str.h"
+#include "roq/literals.h"
+
 namespace roq {
 
+// format
+
 template <typename... Args>
-inline std::string format(const std::string_view &format_str, Args &&... args) {
-  return fmt::format(format_str, std::forward<Args>(args)...);
+inline std::string format(const format_str &fmt, Args &&... args) {
+  return fmt::format(static_cast<std::string_view>(fmt), std::forward<Args>(args)...);
 }
+
+template <typename T>
+typename std::enable_if_t<!std::is_same_v<std::decay_t<T>, format_str>, std::string> inline format(
+    const T &value) {
+  using namespace literals;
+  return roq::format(format_str{"{}"_sv}, value);
+}
+
+// format_to
 
 template <typename OutputIt, typename... Args>
-inline constexpr OutputIt format_to(
-    OutputIt out, const std::string_view &format_str, Args &&... args) {
-  return fmt::format_to(out, format_str, std::forward<Args>(args)...);
+inline constexpr auto format_to(OutputIt out, const format_str &fmt, Args &&... args) {
+  return fmt::format_to(out, static_cast<std::string_view>(fmt), std::forward<Args>(args)...);
 }
 
-template <typename... Args>
-inline constexpr size_t formatted_size(const std::string_view &format_str, Args &&... args) {
-  return fmt::formatted_size(format_str, std::forward<Args>(args)...);
+// format_to_n
+
+template <typename OutputIt, typename... Args>
+inline constexpr auto format_to_n(OutputIt out, size_t n, const format_str &fmt, Args &&... args) {
+  return fmt::format_to_n(out, n, static_cast<std::string_view>(fmt), std::forward<Args>(args)...);
 }
+
+// formatted_size
+
+template <typename... Args>
+inline constexpr auto formatted_size(const format_str &fmt, Args &&... args) {
+  return fmt::formatted_size(static_cast<std::string_view>(fmt), std::forward<Args>(args)...);
+}
+
+// join
+
+template <typename Range>
+inline constexpr auto join(Range &&range, const std::string_view &sep) {
+  return fmt::join(range, sep);
+}
+
+// formatter
 
 struct formatter {
   template <typename Context>

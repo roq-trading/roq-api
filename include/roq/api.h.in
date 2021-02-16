@@ -11,6 +11,10 @@
 #include "roq/literals.h"
 #include "roq/span.h"
 
+// convenience
+
+#include "roq/numbers.h"
+
 // enums
 
 #include "roq/connection_status.h"

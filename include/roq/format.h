@@ -20,28 +20,28 @@ namespace roq {
 // format
 
 template <typename... Args>
-inline std::string format(const format_str &fmt, Args &&... args) {
+inline std::string format(const format_str &fmt, Args &&...args) {
   return fmt::format(static_cast<std::string_view>(fmt), std::forward<Args>(args)...);
 }
 
 // format_to
 
 template <typename OutputIt, typename... Args>
-inline constexpr auto format_to(OutputIt out, const format_str &fmt, Args &&... args) {
+inline constexpr auto format_to(OutputIt out, const format_str &fmt, Args &&...args) {
   return fmt::format_to(out, static_cast<std::string_view>(fmt), std::forward<Args>(args)...);
 }
 
 // format_to_n
 
 template <typename OutputIt, typename... Args>
-inline constexpr auto format_to_n(OutputIt out, size_t n, const format_str &fmt, Args &&... args) {
+inline constexpr auto format_to_n(OutputIt out, size_t n, const format_str &fmt, Args &&...args) {
   return fmt::format_to_n(out, n, static_cast<std::string_view>(fmt), std::forward<Args>(args)...);
 }
 
 // formatted_size
 
 template <typename... Args>
-inline constexpr auto formatted_size(const format_str &fmt, Args &&... args) {
+inline constexpr auto formatted_size(const format_str &fmt, Args &&...args) {
   return fmt::formatted_size(static_cast<std::string_view>(fmt), std::forward<Args>(args)...);
 }
 

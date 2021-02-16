@@ -7,7 +7,6 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
@@ -17,6 +16,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 
 #include "roq/side.h"
@@ -29,18 +29,16 @@ struct ROQ_PUBLIC PositionUpdate final {
   PositionUpdate(PositionUpdate &&) = default;
   PositionUpdate(const PositionUpdate &) = delete;
 
-  std::string_view account;     //!< Account name (as known to the gateway)
-  std::string_view exchange;    //!< Exchange name
-  std::string_view symbol;      //!< Symbol
-  Side side = Side::UNDEFINED;  //!< Side
-  double position = std::numeric_limits<double>::quiet_NaN();  //!< Current position
-  uint32_t last_trade_id = 0;                                  //!< Last processed trade identifier
-  double position_cost = std::numeric_limits<double>::quiet_NaN();  //!< Position cost
-  double position_yesterday =
-      std::numeric_limits<double>::quiet_NaN();  //!< Position as of yesterday
-  double position_cost_yesterday =
-      std::numeric_limits<double>::quiet_NaN();  //!< Position cost as of yesterday
-  std::string_view external_account;  //!< External account name (as known to broker or exchange)
+  std::string_view account;              //!< Account name (as known to the gateway)
+  std::string_view exchange;             //!< Exchange name
+  std::string_view symbol;               //!< Symbol
+  Side side = Side::UNDEFINED;           //!< Side
+  double position = NaN;                 //!< Current position
+  uint32_t last_trade_id = {};           //!< Last processed trade identifier
+  double position_cost = NaN;            //!< Position cost
+  double position_yesterday = NaN;       //!< Position as of yesterday
+  double position_cost_yesterday = NaN;  //!< Position cost as of yesterday
+  std::string_view external_account;     //!< External account name (as known to broker or exchange)
 };
 
 }  // namespace roq

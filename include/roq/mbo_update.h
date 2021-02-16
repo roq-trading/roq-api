@@ -7,13 +7,13 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
 #include "roq/fixed_string.h"
 #include "roq/format.h"
 #include "roq/literals.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 #include "roq/uuid.h"
 
@@ -23,10 +23,10 @@ namespace roq {
 
 //! Represents the update status of a single order in the order book
 struct ROQ_PUBLIC MBOUpdate final {
-  double price = std::numeric_limits<double>::quiet_NaN();  //!< Order price
-  double remaining_quantity = 0.0;                          //!< Remaining order quantity
+  double price = NaN;                                       //!< Order price
+  double remaining_quantity = {};                           //!< Remaining order quantity
   OrderUpdateAction action = OrderUpdateAction::UNDEFINED;  //!< Order update action
-  uint32_t priority = 0;                                    //!< Queue priority
+  uint32_t priority = {};                                   //!< Queue priority
   roq::fixed_string<40> order_id;  //!< Order identifier (as known to client)
 };
 

@@ -7,7 +7,6 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
@@ -17,6 +16,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 
 #include "roq/execution_instruction.h"
@@ -33,24 +33,22 @@ struct ROQ_PUBLIC CreateOrder final {
   CreateOrder(CreateOrder &&) = default;
   CreateOrder(const CreateOrder &) = delete;
 
-  std::string_view account;     //!< Account name (as known to the gateway)
-  uint32_t order_id = 0;        //!< Order identifier (as known to client)
-  std::string_view exchange;    //!< Exchange name
-  std::string_view symbol;      //!< Symbol
-  Side side = Side::UNDEFINED;  //!< Order side
-  double quantity = std::numeric_limits<double>::quiet_NaN();  //!< Order quantity
-  OrderType order_type = OrderType::UNDEFINED;                 //!< Order type
-  double price = std::numeric_limits<double>::quiet_NaN();  //!< Limit price (depends on order_type)
-  TimeInForce time_in_force = TimeInForce::UNDEFINED;       //!< Time in force
+  std::string_view account;                            //!< Account name (as known to the gateway)
+  uint32_t order_id = {};                              //!< Order identifier (as known to client)
+  std::string_view exchange;                           //!< Exchange name
+  std::string_view symbol;                             //!< Symbol
+  Side side = Side::UNDEFINED;                         //!< Order side
+  double quantity = NaN;                               //!< Order quantity
+  OrderType order_type = OrderType::UNDEFINED;         //!< Order type
+  double price = NaN;                                  //!< Limit price (depends on order_type)
+  TimeInForce time_in_force = TimeInForce::UNDEFINED;  //!< Time in force
   PositionEffect position_effect = PositionEffect::UNDEFINED;  //!< Position effect
   ExecutionInstruction execution_instruction =
-      ExecutionInstruction::UNDEFINED;                           //!< Execution instruction
-  double stop_price = std::numeric_limits<double>::quiet_NaN();  //!< Stop price (depends on
-                                                                 //!< order_type and time_in_force)
+      ExecutionInstruction::UNDEFINED;  //!< Execution instruction
+  double stop_price = NaN;              //!< Stop price (depends on order_type and time_in_force)
   double max_show_quantity =
-      std::numeric_limits<double>::quiet_NaN();  //!< Order quantity visible to market (depends on
-                                                 //!< exchange support)
-  std::string_view order_template;               //!< Order template (as known to the gateway)
+      NaN;  //!< Order quantity visible to market (depends on exchange support)
+  std::string_view order_template;  //!< Order template (as known to the gateway)
 };
 
 }  // namespace roq

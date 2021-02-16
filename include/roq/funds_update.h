@@ -7,7 +7,6 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
@@ -17,6 +16,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 
 namespace roq {
@@ -27,10 +27,10 @@ struct ROQ_PUBLIC FundsUpdate final {
   FundsUpdate(FundsUpdate &&) = default;
   FundsUpdate(const FundsUpdate &) = delete;
 
-  std::string_view account;   //!< Account name (as known to the gateway)
-  std::string_view currency;  //!< Currency name
-  double balance = std::numeric_limits<double>::quiet_NaN();  //!< Current funds
-  double hold = std::numeric_limits<double>::quiet_NaN();     //!< Funds on hold
+  std::string_view account;           //!< Account name (as known to the gateway)
+  std::string_view currency;          //!< Currency name
+  double balance = NaN;               //!< Current funds
+  double hold = NaN;                  //!< Funds on hold
   std::string_view external_account;  //!< External account name (as known to broker or exchange)
 };
 

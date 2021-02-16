@@ -7,7 +7,6 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
@@ -17,6 +16,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 
 #include "roq/option_type.h"
@@ -30,25 +30,25 @@ struct ROQ_PUBLIC ReferenceData final {
   ReferenceData(ReferenceData &&) = default;
   ReferenceData(const ReferenceData &) = delete;
 
-  std::string_view exchange;                                        //!< Exchange name
-  std::string_view symbol;                                          //!< Symbol
-  std::string_view description;                                     //!< Description
-  SecurityType security_type = SecurityType::UNDEFINED;             //!< Security type
-  std::string_view currency;                                        //!< Currency name
-  std::string_view settlement_currency;                             //!< Currency name
-  std::string_view commission_currency;                             //!< Currency name
-  double tick_size = std::numeric_limits<double>::quiet_NaN();      //!< Minimum price increment
-  double multiplier = std::numeric_limits<double>::quiet_NaN();     //!< Multiplier (notional)
-  double min_trade_vol = std::numeric_limits<double>::quiet_NaN();  //!< Minimum trade volume
-  OptionType option_type = OptionType::UNDEFINED;                   //!< Option type
-  std::string_view strike_currency;                                 //!< Strike currency
-  double strike_price = std::numeric_limits<double>::quiet_NaN();   //!< Strike price
-  std::string_view underlying;                                      //!< Underlying instrument
-  std::string_view time_zone;                                       //!< Time-zone
-  roq::chrono::days issue_date = {};                                //!< Issue date
-  roq::chrono::days settlement_date = {};                           //!< Settlement date
-  std::chrono::seconds expiry_datetime = {};                        //!< Expiry datetime
-  std::chrono::seconds expiry_datetime_utc = {};                    //!< Expiry datetime
+  std::string_view exchange;                             //!< Exchange name
+  std::string_view symbol;                               //!< Symbol
+  std::string_view description;                          //!< Description
+  SecurityType security_type = SecurityType::UNDEFINED;  //!< Security type
+  std::string_view currency;                             //!< Currency name
+  std::string_view settlement_currency;                  //!< Currency name
+  std::string_view commission_currency;                  //!< Currency name
+  double tick_size = NaN;                                //!< Minimum price increment
+  double multiplier = NaN;                               //!< Multiplier (notional)
+  double min_trade_vol = NaN;                            //!< Minimum trade volume
+  OptionType option_type = OptionType::UNDEFINED;        //!< Option type
+  std::string_view strike_currency;                      //!< Strike currency
+  double strike_price = NaN;                             //!< Strike price
+  std::string_view underlying;                           //!< Underlying instrument
+  std::string_view time_zone;                            //!< Time-zone
+  roq::chrono::days issue_date = {};                     //!< Issue date
+  roq::chrono::days settlement_date = {};                //!< Settlement date
+  std::chrono::seconds expiry_datetime = {};             //!< Expiry datetime
+  std::chrono::seconds expiry_datetime_utc = {};         //!< Expiry datetime
 };
 
 }  // namespace roq

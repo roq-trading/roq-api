@@ -26,19 +26,19 @@ defaults = {
     'roq::chrono::days': ' = {}',
     'bool': ' = false',
     'char': ' = \'\\0\'',
-    'int8_t': ' = 0',
-    'uint8_t': ' = 0',
-    'int16_t': ' = 0',
-    'uint16_t': ' = 0',
-    'int32_t': ' = 0',
-    'uint32_t': ' = 0',
-    'int64_t': ' = 0',
-    'uint64_t': ' = 0',
-    'std::int32_t': ' = 0',
-    'std::uint32_t': ' = 0',
-    'std::int64_t': ' = 0',
-    'std::uint64_t': ' = 0',
-    'double': ' = std::numeric_limits<double>::quiet_NaN()'}
+    'int8_t': ' = {}',
+    'uint8_t': ' = {}',
+    'int16_t': ' = {}',
+    'uint16_t': ' = {}',
+    'int32_t': ' = {}',
+    'uint32_t': ' = {}',
+    'int64_t': ' = {}',
+    'uint64_t': ' = {}',
+    'std::int32_t': ' = {}',
+    'std::uint32_t': ' = {}',
+    'std::int64_t': ' = {}',
+    'std::uint64_t': ' = {}',
+    'double': ' = NaN'}
 
 
 def is_variable(type_):

@@ -7,7 +7,6 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
@@ -17,6 +16,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 
 #include "roq/layer.h"

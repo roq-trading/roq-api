@@ -11,7 +11,7 @@
         {
             "name": "remaining_quantity",
             "type": "double",
-            "default": " = 0.0",
+            "default": " = {}",
             "comment": "Remaining order quantity"
         },
         {

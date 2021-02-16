@@ -7,7 +7,6 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
@@ -17,6 +16,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 
 #include "roq/order_status.h"
@@ -32,19 +32,19 @@ struct ROQ_PUBLIC OrderUpdate final {
   OrderUpdate(const OrderUpdate &) = delete;
 
   std::string_view account;                     //!< Account name (as known to the gateway)
-  uint32_t order_id = 0;                        //!< Order identifier (as known to client)
+  uint32_t order_id = {};                       //!< Order identifier (as known to client)
   std::string_view exchange;                    //!< Exchange name
   std::string_view symbol;                      //!< Symbol
   OrderStatus status = OrderStatus::UNDEFINED;  //!< Order status
   Side side = Side::UNDEFINED;                  //!< Side
-  double price = std::numeric_limits<double>::quiet_NaN();               //!< Price
-  double remaining_quantity = std::numeric_limits<double>::quiet_NaN();  //!< Remaining quantity
-  double traded_quantity = std::numeric_limits<double>::quiet_NaN();     //!< Traded quantity
-  PositionEffect position_effect = PositionEffect::UNDEFINED;            //!< Position effect
+  double price = NaN;                           //!< Price
+  double remaining_quantity = NaN;              //!< Remaining quantity
+  double traded_quantity = NaN;                 //!< Traded quantity
+  PositionEffect position_effect = PositionEffect::UNDEFINED;  //!< Position effect
   std::string_view order_template;                //!< Order template (as known to the gateway)
   std::chrono::nanoseconds create_time_utc = {};  //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};  //!< Updated timestamp (UTC)
-  uint32_t gateway_order_id = 0;                  //!< Order identifier (as known to gateway)
+  uint32_t gateway_order_id = {};                 //!< Order identifier (as known to gateway)
   std::string_view external_account;  //!< External account name (as known to broker or exchange)
   std::string_view
       external_order_id;  //!< External order identifier (as known to broker or exchange)

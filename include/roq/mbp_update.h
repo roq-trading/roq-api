@@ -7,13 +7,13 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
 #include "roq/fixed_string.h"
 #include "roq/format.h"
 #include "roq/literals.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 #include "roq/uuid.h"
 
@@ -21,8 +21,8 @@ namespace roq {
 
 //! Represents the update status of a single aggregate price level in the order book
 struct ROQ_PUBLIC MBPUpdate final {
-  double price = std::numeric_limits<double>::quiet_NaN();  //!< Price level
-  double quantity = 0.0;                                    //!< Total quantity available at price
+  double price = NaN;    //!< Price level
+  double quantity = {};  //!< Total quantity available at price
 };
 
 }  // namespace roq

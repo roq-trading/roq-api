@@ -11,7 +11,7 @@
         {
             "name": "quantity",
             "type": "double",
-            "default": " = 0.0",
+            "default": " = {}",
             "comment": "Total quantity available at price"
         }
     ]

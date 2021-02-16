@@ -7,7 +7,6 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
@@ -17,6 +16,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 
 namespace roq {
@@ -28,9 +28,9 @@ struct ROQ_PUBLIC ModifyOrder final {
   ModifyOrder(const ModifyOrder &) = delete;
 
   std::string_view account;  //!< Account name (as known to the gateway)
-  uint32_t order_id = 0;     //!< Order identifier (as known to client)
-  double quantity = std::numeric_limits<double>::quiet_NaN();  //!< New quantity
-  double price = std::numeric_limits<double>::quiet_NaN();     //!< New limit price
+  uint32_t order_id = {};    //!< Order identifier (as known to client)
+  double quantity = NaN;     //!< New quantity
+  double price = NaN;        //!< New limit price
 };
 
 }  // namespace roq

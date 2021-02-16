@@ -7,13 +7,13 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
 #include "roq/fixed_string.h"
 #include "roq/format.h"
 #include "roq/literals.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 #include "roq/uuid.h"
 
@@ -21,10 +21,10 @@ namespace roq {
 
 //! Represents a single fill (match) when an order is being partially or fully filled
 struct ROQ_PUBLIC Fill final {
-  double quantity = std::numeric_limits<double>::quiet_NaN();  //!< Quantity
-  double price = std::numeric_limits<double>::quiet_NaN();     //!< Price
-  uint32_t trade_id = 0;          //!< Trade identifier (as known to client)
-  uint32_t gateway_trade_id = 0;  //!< Trade identifier (as known to gateway)
+  double quantity = NaN;           //!< Quantity
+  double price = NaN;              //!< Price
+  uint32_t trade_id = {};          //!< Trade identifier (as known to client)
+  uint32_t gateway_trade_id = {};  //!< Trade identifier (as known to gateway)
   roq::fixed_string<40>
       external_trade_id;  //!< External trade identifier (as known to broker or exchange)
 };

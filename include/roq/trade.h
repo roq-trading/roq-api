@@ -7,13 +7,13 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
 #include "roq/fixed_string.h"
 #include "roq/format.h"
 #include "roq/literals.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 #include "roq/uuid.h"
 
@@ -23,9 +23,9 @@ namespace roq {
 
 //! Represents a single trade (match) as part of trade reporting by the exchange
 struct ROQ_PUBLIC Trade final {
-  Side side = Side::UNDEFINED;  //!< Side (by convention: side of the taker)
-  double price = std::numeric_limits<double>::quiet_NaN();     //!< Price
-  double quantity = std::numeric_limits<double>::quiet_NaN();  //!< Quantity
+  Side side = Side::UNDEFINED;     //!< Side (by convention: side of the taker)
+  double price = NaN;              //!< Price
+  double quantity = NaN;           //!< Quantity
   roq::fixed_string<40> trade_id;  //!< Trade identifier (as known to client)
 };
 

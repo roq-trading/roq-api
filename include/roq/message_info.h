@@ -7,13 +7,13 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
 #include "roq/fixed_string.h"
 #include "roq/format.h"
 #include "roq/literals.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 #include "roq/uuid.h"
 
@@ -21,10 +21,10 @@ namespace roq {
 
 //! Trace information relating to the current message
 struct ROQ_PUBLIC MessageInfo final {
-  uint8_t source = 0;            //!< Source identifier (index into the list of connections)
+  uint8_t source = {};           //!< Source identifier (index into the list of connections)
   std::string_view source_name;  //!< Source name
   UUID source_session_id;        //!< Session identifier (UUID)
-  uint64_t source_seqno = 0;     //!< Sequence number (strictly increasing)
+  uint64_t source_seqno = {};    //!< Sequence number (strictly increasing)
   std::chrono::nanoseconds receive_time_utc = {};        //!< Client receive time (realtime clock)
   std::chrono::nanoseconds receive_time = {};            //!< Client receive time (monotonic clock)
   std::chrono::nanoseconds source_send_time = {};        //!< Source send time (monotonic clock)
@@ -32,7 +32,7 @@ struct ROQ_PUBLIC MessageInfo final {
   std::chrono::nanoseconds origin_create_time = {};      //!< Origin create time (monotonic clock)
   std::chrono::nanoseconds origin_create_time_utc = {};  //!< Origin create time (realtime clock)
   bool is_last = false;                                  //!< Is last in batch?
-  uint64_t opaque = 0;                                   //!< Opaque value (internal)
+  uint64_t opaque = {};                                  //!< Opaque value (internal)
 };
 
 }  // namespace roq

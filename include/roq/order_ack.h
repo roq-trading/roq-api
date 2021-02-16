@@ -7,7 +7,6 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
@@ -17,6 +16,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 
 #include "roq/error.h"
@@ -33,13 +33,13 @@ struct ROQ_PUBLIC OrderAck final {
   OrderAck(const OrderAck &) = delete;
 
   std::string_view account;                         //!< Account name (as known to the gateway)
-  uint32_t order_id = 0;                            //!< Order identifier (as known to client)
+  uint32_t order_id = {};                           //!< Order identifier (as known to client)
   RequestType type = RequestType::UNDEFINED;        //!< Request type
   Origin origin = Origin::UNDEFINED;                //!< Origin of ack
   RequestStatus status = RequestStatus::UNDEFINED;  //!< Request status
   Error error = Error::UNDEFINED;                   //!< Error code
   std::string_view text;                            //!< Descriptive text
-  uint32_t gateway_order_id = 0;                    //!< Order identifier (as known to gateway)
+  uint32_t gateway_order_id = {};                   //!< Order identifier (as known to gateway)
   std::string_view external_account;  //!< External account name (as known to broker or exchange)
   std::string_view
       external_order_id;        //!< External order identifier (as known to broker or exchange)

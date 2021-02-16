@@ -7,7 +7,6 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
@@ -17,6 +16,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 
 namespace roq {
@@ -27,8 +27,8 @@ struct ROQ_PUBLIC DownloadEnd final {
   DownloadEnd(DownloadEnd &&) = default;
   DownloadEnd(const DownloadEnd &) = delete;
 
-  std::string_view account;   //!< Account name (as known to the gateway)
-  uint32_t max_order_id = 0;  //!< Highest previous order identifier (as seen by gateway)
+  std::string_view account;    //!< Account name (as known to the gateway)
+  uint32_t max_order_id = {};  //!< Highest previous order identifier (as seen by gateway)
 };
 
 }  // namespace roq

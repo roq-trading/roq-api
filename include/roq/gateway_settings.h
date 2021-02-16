@@ -7,7 +7,6 @@
 #include <fmt/chrono.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/chrono.h"
@@ -17,6 +16,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
+#include "roq/numbers.h"
 #include "roq/span.h"
 
 namespace roq {
@@ -27,7 +27,7 @@ struct ROQ_PUBLIC GatewaySettings final {
   GatewaySettings(GatewaySettings &&) = default;
   GatewaySettings(const GatewaySettings &) = delete;
 
-  uint32_t mbp_max_depth = 0;              //!< MBP max depth
+  uint32_t mbp_max_depth = {};             //!< MBP max depth
   bool mbp_allow_price_inversion = false;  //!< MBP allow price inversion?
 };
 

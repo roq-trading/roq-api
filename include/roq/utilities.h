@@ -5,6 +5,7 @@
 #include <limits>
 
 #include "roq/layer.h"
+#include "roq/numbers.h"
 #include "roq/order_status.h"
 #include "roq/request_status.h"
 #include "roq/side.h"
@@ -19,7 +20,7 @@ inline double price_from_side(const Layer &layer, Side side) {
     case Side::SELL:
       return layer.ask_price;
     default:
-      return std::numeric_limits<double>::quiet_NaN();
+      return NaN;
   }
 }
 

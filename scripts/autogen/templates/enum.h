@@ -19,28 +19,25 @@ struct ROQ_PACKED {{ name }} final {
     UNDEFINED = 0,
   {% for value in values %}
     {{ value.enum_value }},{{ '  //!< {}'.format(value.comment) if value.comment|length > 0 else '' }}
-    {% if loop.last %}
-    MAX = {{ value.enum_value }}
-    {% endif  %}
   {% endfor %}
   };
 
-  {{ name }}() = default;
+  constexpr {{ name }}() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline {{ name }}(type_t type)  // NOLINT (allow implicit)
+  constexpr {{ name }}(type_t type)  // NOLINT (allow implicit)
       : type_(type) {
   }
 
-  inline explicit {{ name }}(uint8_t type)
+  explicit constexpr {{ name }}(uint8_t type)
       : type_(validate(type)) {
   }
 
-  inline operator type_t() const {
+  constexpr operator type_t() const {
     return type_;
   }
 
-  inline std::string_view name() const {
+  constexpr std::string_view name() const {
     using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
@@ -55,12 +52,12 @@ struct ROQ_PACKED {{ name }} final {
     return "UNDEFINED"_sv;
   }
 
-  inline operator std::string_view() const {
+  constexpr operator std::string_view() const {
     return name();
   }
 
  protected:
-  inline type_t validate(uint8_t type) {
+  constexpr type_t validate(uint8_t type) {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:

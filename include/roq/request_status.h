@@ -17,19 +17,25 @@ namespace roq {
 //! Enumeration of request status types
 struct ROQ_PACKED RequestStatus final {
   //! helper
-  enum type_t : uint8_t { UNDEFINED = 0, FORWARDED, ACCEPTED, REJECTED, TIMEOUT, MAX = TIMEOUT };
+  enum type_t : uint8_t {
+    UNDEFINED = 0,
+    FORWARDED,
+    ACCEPTED,
+    REJECTED,
+    TIMEOUT,
+  };
 
-  RequestStatus() = default;
+  constexpr RequestStatus() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline RequestStatus(type_t type)  // NOLINT (allow implicit)
+  constexpr RequestStatus(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  inline explicit RequestStatus(uint8_t type) : type_(validate(type)) {}
+  explicit constexpr RequestStatus(uint8_t type) : type_(validate(type)) {}
 
-  inline operator type_t() const { return type_; }
+  constexpr operator type_t() const { return type_; }
 
-  inline std::string_view name() const {
+  constexpr std::string_view name() const {
     using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
@@ -48,10 +54,10 @@ struct ROQ_PACKED RequestStatus final {
     return "UNDEFINED"_sv;
   }
 
-  inline operator std::string_view() const { return name(); }
+  constexpr operator std::string_view() const { return name(); }
 
  protected:
-  inline type_t validate(uint8_t type) {
+  constexpr type_t validate(uint8_t type) {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:

@@ -17,19 +17,24 @@ namespace roq {
 //! Enumeration of order update action types
 struct ROQ_PACKED OrderUpdateAction final {
   //! helper
-  enum type_t : uint8_t { UNDEFINED = 0, NEW, MODIFY, REMOVE, MAX = REMOVE };
+  enum type_t : uint8_t {
+    UNDEFINED = 0,
+    NEW,
+    MODIFY,
+    REMOVE,
+  };
 
-  OrderUpdateAction() = default;
+  constexpr OrderUpdateAction() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline OrderUpdateAction(type_t type)  // NOLINT (allow implicit)
+  constexpr OrderUpdateAction(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  inline explicit OrderUpdateAction(uint8_t type) : type_(validate(type)) {}
+  explicit constexpr OrderUpdateAction(uint8_t type) : type_(validate(type)) {}
 
-  inline operator type_t() const { return type_; }
+  constexpr operator type_t() const { return type_; }
 
-  inline std::string_view name() const {
+  constexpr std::string_view name() const {
     using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
@@ -46,10 +51,10 @@ struct ROQ_PACKED OrderUpdateAction final {
     return "UNDEFINED"_sv;
   }
 
-  inline operator std::string_view() const { return name(); }
+  constexpr operator std::string_view() const { return name(); }
 
  protected:
-  inline type_t validate(uint8_t type) {
+  constexpr type_t validate(uint8_t type) {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:

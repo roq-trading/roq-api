@@ -23,20 +23,19 @@ struct ROQ_PACKED ExecutionInstruction final {
     CANCEL_IF_NOT_BEST,
     DO_NOT_INCREASE,
     DO_NOT_REDUCE,
-    MAX = DO_NOT_REDUCE
   };
 
-  ExecutionInstruction() = default;
+  constexpr ExecutionInstruction() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline ExecutionInstruction(type_t type)  // NOLINT (allow implicit)
+  constexpr ExecutionInstruction(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  inline explicit ExecutionInstruction(uint8_t type) : type_(validate(type)) {}
+  explicit constexpr ExecutionInstruction(uint8_t type) : type_(validate(type)) {}
 
-  inline operator type_t() const { return type_; }
+  constexpr operator type_t() const { return type_; }
 
-  inline std::string_view name() const {
+  constexpr std::string_view name() const {
     using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
@@ -55,10 +54,10 @@ struct ROQ_PACKED ExecutionInstruction final {
     return "UNDEFINED"_sv;
   }
 
-  inline operator std::string_view() const { return name(); }
+  constexpr operator std::string_view() const { return name(); }
 
  protected:
-  inline type_t validate(uint8_t type) {
+  constexpr type_t validate(uint8_t type) {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:

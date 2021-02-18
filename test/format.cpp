@@ -10,10 +10,9 @@ using namespace roq;
 using namespace roq::literals;
 
 TEST(format, ConnectionStatus) {
-  for (uint8_t i = 0; i <= ConnectionStatus::MAX; ++i) {
-    ConnectionStatus value(i);
-    EXPECT_EQ(format("{}"_fmt, value), value.name());
-  }
+  EXPECT_EQ(format("{}"_fmt, ConnectionStatus{ConnectionStatus::UNDEFINED}), "UNDEFINED"_sv);
+  EXPECT_EQ(format("{}"_fmt, ConnectionStatus{ConnectionStatus::DISCONNECTED}), "DISCONNECTED"_sv);
+  EXPECT_EQ(format("{}"_fmt, ConnectionStatus{ConnectionStatus::CONNECTED}), "CONNECTED"_sv);
 }
 
 TEST(format, subscribe) {

@@ -34,20 +34,19 @@ struct ROQ_PACKED Error final {
     MODIFY_ORDER_NOT_SUPPORTED,
     INVALID_ORDER_ID,
     EXECUTION_INSTRUCTION_NOT_SUPPORTED,
-    MAX = EXECUTION_INSTRUCTION_NOT_SUPPORTED
   };
 
-  Error() = default;
+  constexpr Error() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  inline Error(type_t type)  // NOLINT (allow implicit)
+  constexpr Error(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  inline explicit Error(uint8_t type) : type_(validate(type)) {}
+  explicit constexpr Error(uint8_t type) : type_(validate(type)) {}
 
-  inline operator type_t() const { return type_; }
+  constexpr operator type_t() const { return type_; }
 
-  inline std::string_view name() const {
+  constexpr std::string_view name() const {
     using namespace roq::literals;
     switch (type_) {
       case type_t::UNDEFINED:
@@ -88,10 +87,10 @@ struct ROQ_PACKED Error final {
     return "UNDEFINED"_sv;
   }
 
-  inline operator std::string_view() const { return name(); }
+  constexpr operator std::string_view() const { return name(); }
 
  protected:
-  inline type_t validate(uint8_t type) {
+  constexpr type_t validate(uint8_t type) {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:

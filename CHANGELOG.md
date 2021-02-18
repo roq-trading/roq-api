@@ -13,6 +13,11 @@ All notable changes will be documented in this file.
 * Use std string literals
 * Enforce the use for `_fmt` literal when formatting
 
+### Removed
+
+* Enumerations no longer include `MAX`
+
+
 ## 0.6.0 &ndash; 2021-02-02
 
 ### Changed

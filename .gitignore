@@ -1,72 +1,23 @@
 # vim
-
-*.swp
-*.swo
-
-
-# autotools
-
-Makefile
-Makefile.in
-aclocal.m4
-config.status
-configure
-config.log
-libtool
-
-.deps/
-.libs/
-
-autom4te.cache/
-m4/
-build-aux/
-
-*.Plo
-*.la
-*.lo
-*.o
-
-*.tar.*
-
+*.sw[po]
 
 # cmake
-
-CMakeCache.txt
-DartConfiguration.tcl
-install_manifest.txt
+*.[ao]
+*.cmake
+*.so
 CMake*.in
-
+CMakeCache.txt
 CMakeFiles/
+DartConfiguration.tcl
+Makefile
 Testing/
+build/
+compile_commands.json*
+install_manifest.txt
 lib/
 
-*.cmake
+# cpack
+_CPack_Packages/
 
-*.a
-*.o
-*.so
-
-build/
-
-compile_commands.json*
-
-
-# gtest
-
-*.log
-*.trs
-
-
-# doxygen
-
-doxygen/Doxyfile
-doxygen/doxygen-build.stamp
-doxygen/html
-doxygen/xml
-
-
-# project specific
-
-roq-api.pc
-
-roq-api-test
+# debian
+*.deb

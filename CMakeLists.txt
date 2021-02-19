@@ -132,3 +132,9 @@ install(
   EXPORT ${PROJECT_NAME}-config
   NAMESPACE ${PROJECT_NAME}::
   DESTINATION "${CMAKE_LIB_DIR}")
+
+# debian
+
+set(CPACK_GENERATOR "DEB")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "thraneh@gmail.com")
+include(CPack)

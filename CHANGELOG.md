@@ -4,14 +4,16 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.6.1 &ndash; 2021-02-19
+
 ### Added
 
-* Wrapper functions making it easier to encode Flatbuffers objects
+* Convenience functions making it easy to encode Flatbuffers objects
 
 ### Changed
 
-* Use std string literals
-* Enforce the use for `_fmt` literal when formatting
+* Consistent use string literals
+* Enforce usage of the `_fmt` literal when formatting
 
 ### Removed
 

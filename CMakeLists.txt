@@ -137,4 +137,5 @@ install(
 
 set(CPACK_GENERATOR "DEB")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "thraneh@gmail.com")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libfmt-dev, librange-v3-dev")  # XXX span-lite?
 include(CPack)

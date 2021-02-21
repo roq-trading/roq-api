@@ -79,10 +79,6 @@ install(
   PATTERN "*.h"
   PATTERN "CMakeFiles" EXCLUDE)
 
-# use span-lite?
-
-option(USE_SPAN_LITE "Use span-lite?" OFF)
-
 # python
 
 option(BUILD_PYTHON "Enable python" OFF)

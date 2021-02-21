@@ -14,6 +14,7 @@ Testing/
 build/
 compile_commands.json*
 install_manifest.txt
+lib-prefix/
 lib/
 
 # cpack

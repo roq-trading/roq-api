@@ -51,7 +51,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::Error &value) {
   using result_type = Error;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -59,7 +60,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::ExecutionInstruction &value) {
   using result_type = ExecutionInstruction;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -67,7 +69,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::GatewayStatus &value) {
   using result_type = GatewayStatus;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -75,7 +78,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::OptionType &value) {
   using result_type = OptionType;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -83,7 +87,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::OrderStatus &value) {
   using result_type = OrderStatus;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -91,7 +96,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::OrderType &value) {
   using result_type = OrderType;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -99,7 +105,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::OrderUpdateAction &value) {
   using result_type = OrderUpdateAction;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -107,7 +114,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::Origin &value) {
   using result_type = Origin;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -115,7 +123,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::PositionEffect &value) {
   using result_type = PositionEffect;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -123,7 +132,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::RequestStatus &value) {
   using result_type = RequestStatus;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -131,14 +141,16 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::RequestType &value) {
   using result_type = RequestType;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::SecurityType &value) {
   using result_type = SecurityType;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -146,7 +158,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::Side &value) {
   using result_type = Side;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -154,7 +167,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::TimeInForce &value) {
   using result_type = TimeInForce;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -162,7 +176,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::TradingStatus &value) {
   using result_type = TradingStatus;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -170,7 +185,8 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::StatisticsType &value) {
   using result_type = StatisticsType;
   using value_type = std::underlying_type_t<result_type>;
-  static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>, value_type>);
+  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
+  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -549,7 +565,7 @@ flatbuffers::Offset<Event> encode(B &builder, const roq::Event<roq::DownloadBegi
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::DownloadBegin,
+      Message_DownloadBegin,
       encode(builder, event.value).Union());
 }
 
@@ -558,7 +574,7 @@ auto encode(B &builder, const roq::Event<roq::DownloadEnd> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::DownloadEnd,
+      Message_DownloadEnd,
       encode(builder, event.value).Union());
 }
 
@@ -567,7 +583,7 @@ auto encode(B &builder, const roq::Event<roq::GatewaySettings> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::GatewaySettings,
+      Message_GatewaySettings,
       encode(builder, event.value).Union());
 }
 
@@ -576,7 +592,7 @@ auto encode(B &builder, const roq::Event<roq::ExternalLatency> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::ExternalLatency,
+      Message_ExternalLatency,
       encode(builder, event.value).Union());
 }
 
@@ -585,7 +601,7 @@ auto encode(B &builder, const roq::Event<roq::MarketDataStatus> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::MarketDataStatus,
+      Message_MarketDataStatus,
       encode(builder, event.value).Union());
 }
 
@@ -594,7 +610,7 @@ auto encode(B &builder, const roq::Event<roq::OrderManagerStatus> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::OrderManagerStatus,
+      Message_OrderManagerStatus,
       encode(builder, event.value).Union());
 }
 
@@ -603,7 +619,7 @@ auto encode(B &builder, const roq::Event<roq::ReferenceData> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::ReferenceData,
+      Message_ReferenceData,
       encode(builder, event.value).Union());
 }
 
@@ -612,7 +628,7 @@ auto encode(B &builder, const roq::Event<roq::MarketStatus> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::MarketStatus,
+      Message_MarketStatus,
       encode(builder, event.value).Union());
 }
 
@@ -621,7 +637,7 @@ auto encode(B &builder, const roq::Event<roq::TopOfBook> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::TopOfBook,
+      Message_TopOfBook,
       encode(builder, event.value).Union());
 }
 
@@ -630,7 +646,7 @@ auto encode(B &builder, const roq::Event<roq::MarketByPriceUpdate> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::MarketByPriceUpdate,
+      Message_MarketByPriceUpdate,
       encode(builder, event.value).Union());
 }
 
@@ -639,7 +655,7 @@ auto encode(B &builder, const roq::Event<roq::MarketByOrderUpdate> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::MarketByOrderUpdate,
+      Message_MarketByOrderUpdate,
       encode(builder, event.value).Union());
 }
 
@@ -648,7 +664,7 @@ auto encode(B &builder, const roq::Event<roq::TradeSummary> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::TradeSummary,
+      Message_TradeSummary,
       encode(builder, event.value).Union());
 }
 
@@ -657,7 +673,7 @@ auto encode(B &builder, const roq::Event<roq::StatisticsUpdate> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::StatisticsUpdate,
+      Message_StatisticsUpdate,
       encode(builder, event.value).Union());
 }
 
@@ -666,7 +682,7 @@ auto encode(B &builder, const roq::Event<roq::CreateOrder> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::CreateOrder,
+      Message_CreateOrder,
       encode(builder, event.value).Union());
 }
 
@@ -675,7 +691,7 @@ auto encode(B &builder, const roq::Event<roq::ModifyOrder> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::ModifyOrder,
+      Message_ModifyOrder,
       encode(builder, event.value).Union());
 }
 
@@ -684,7 +700,7 @@ auto encode(B &builder, const roq::Event<roq::CancelOrder> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::CancelOrder,
+      Message_CancelOrder,
       encode(builder, event.value).Union());
 }
 
@@ -693,7 +709,7 @@ auto encode(B &builder, const roq::Event<roq::OrderAck> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::OrderAck,
+      Message_OrderAck,
       encode(builder, event.value).Union());
 }
 
@@ -702,7 +718,7 @@ auto encode(B &builder, const roq::Event<roq::OrderUpdate> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::OrderUpdate,
+      Message_OrderUpdate,
       encode(builder, event.value).Union());
 }
 
@@ -711,7 +727,7 @@ auto encode(B &builder, const roq::Event<roq::TradeUpdate> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::TradeUpdate,
+      Message_TradeUpdate,
       encode(builder, event.value).Union());
 }
 
@@ -720,7 +736,7 @@ auto encode(B &builder, const roq::Event<roq::PositionUpdate> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::PositionUpdate,
+      Message_PositionUpdate,
       encode(builder, event.value).Union());
 }
 
@@ -729,7 +745,7 @@ auto encode(B &builder, const roq::Event<roq::FundsUpdate> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message::FundsUpdate,
+      Message_FundsUpdate,
       encode(builder, event.value).Union());
 }
 

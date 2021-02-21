@@ -58,8 +58,18 @@ TEST(format, market_by_price) {
   };
   auto result = format("{}"_fmt, market_by_price);
   EXPECT_GT(result.length(), size_t{0});
-  EXPECT_EQ(
-      result,
+#if FMT_VERSION < 70000
+  auto expected =
+      R"({)"
+      R"(exchange="deribit", )"
+      R"(symbol="BTC-27DEC19", )"
+      R"(bids=[{price=1.0, quantity=2.0}, {price=2.0, quantity=4.0}, {price=3.0, quantity=8.0}, {price=4.0, quantity=10.0}, {price=5.0, quantity=12.0}], )"
+      R"(asks=[{price=1.0, quantity=2.0}, {price=2.0, quantity=4.0}, {price=3.0, quantity=8.0}, {price=4.0, quantity=10.0}, {price=5.0, quantity=12.0}], )"
+      R"(snapshot=true, )"
+      R"(exchange_time_utc=0ns)"
+      R"(})"_sv;
+#else
+  auto expected =
       R"({)"
       R"(exchange="deribit", )"
       R"(symbol="BTC-27DEC19", )"
@@ -67,5 +77,7 @@ TEST(format, market_by_price) {
       R"(asks=[{price=1, quantity=2}, {price=2, quantity=4}, {price=3, quantity=8}, {price=4, quantity=10}, {price=5, quantity=12}], )"
       R"(snapshot=true, )"
       R"(exchange_time_utc=0ns)"
-      R"(})"_sv);
+      R"(})"_sv;
+#endif
+  EXPECT_EQ(result, expected);
 }

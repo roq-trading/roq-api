@@ -79,6 +79,10 @@ install(
   PATTERN "*.h"
   PATTERN "CMakeFiles" EXCLUDE)
 
+# use span-lite?
+
+option(USE_SPAN_LITE "Use span-lite?" OFF)
+
 # python
 
 option(BUILD_PYTHON "Enable python" OFF)
@@ -137,5 +141,5 @@ install(
 
 set(CPACK_GENERATOR "DEB")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "thraneh@gmail.com")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libfmt-dev, librange-v3-dev")  # XXX span-lite?
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libfmt-dev, librange-v3-dev")
 include(CPack)

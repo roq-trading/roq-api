@@ -37,6 +37,8 @@ include(GNUInstallDirs)
 find_package(Flatbuffers REQUIRED)
 find_package(PythonInterp REQUIRED)
 find_package(fmt REQUIRED)
+find_package(range-v3 REQUIRED)
+find_package(span-lite REQUIRED)
 
 find_program(FLATBUFFERS_COMPILER flatc REQUIRED)
 find_program(CLANG_FORMAT clang-format REQUIRED)
@@ -137,5 +139,5 @@ install(
 
 set(CPACK_GENERATOR "DEB")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "thraneh@gmail.com")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libfmt-dev, librange-v3-dev")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libfmt-dev, librange-v3-dev, roq-oss-span-lite")
 include(CPack)

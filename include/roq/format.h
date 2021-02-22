@@ -43,28 +43,28 @@ inline constexpr auto compile(const format_str &fmt) {
 // format
 
 template <typename... Args>
-inline std::string format(const format_str &fmt, Args &&...args) {
+inline std::string format(const format_str &fmt, Args &&... args) {
   return fmt::format(detail::compile(fmt), std::forward<Args>(args)...);
 }
 
 // format_to
 
 template <typename OutputIt, typename... Args>
-inline constexpr auto format_to(OutputIt out, const format_str &fmt, Args &&...args) {
+inline constexpr auto format_to(OutputIt out, const format_str &fmt, Args &&... args) {
   return fmt::format_to(out, detail::compile(fmt), std::forward<Args>(args)...);
 }
 
 // format_to_n
 
 template <typename OutputIt, typename... Args>
-inline constexpr auto format_to_n(OutputIt out, size_t n, const format_str &fmt, Args &&...args) {
+inline constexpr auto format_to_n(OutputIt out, size_t n, const format_str &fmt, Args &&... args) {
   return fmt::format_to_n(out, n, detail::compile(fmt), std::forward<Args>(args)...);
 }
 
 // formatted_size
 
 template <typename... Args>
-inline constexpr auto formatted_size(const format_str &fmt, Args &&...args) {
+inline constexpr auto formatted_size(const format_str &fmt, Args &&... args) {
   return fmt::formatted_size(detail::compile(fmt), std::forward<Args>(args)...);
 }
 
@@ -72,7 +72,11 @@ inline constexpr auto formatted_size(const format_str &fmt, Args &&...args) {
 
 template <typename Range>
 inline constexpr auto join(Range &&range, const std::string_view &sep) {
+#if (FMT_VERSION < 70000)
+  return fmt::join(range.begin(), range.end(), sep);
+#else
   return fmt::join(range, sep);
+#endif
 }
 
 // formatter

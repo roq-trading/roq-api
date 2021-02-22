@@ -15,6 +15,8 @@ build/
 compile_commands.json*
 install_manifest.txt
 lib/
+external/
+external-prefix/
 
 # cpack
 _CPack_Packages/

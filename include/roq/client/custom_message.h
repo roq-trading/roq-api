@@ -26,11 +26,7 @@ namespace roq {
 namespace client {
 
 struct ROQ_PUBLIC CustomMessage final {
-  CustomMessage() = default;
-  CustomMessage(CustomMessage &&) = default;
-  CustomMessage(const CustomMessage &) = delete;
-
-  const void *message;
+  void const *message;
   size_t length;
 };
 

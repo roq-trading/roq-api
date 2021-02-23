@@ -23,10 +23,6 @@ namespace roq {
 
 //! Fields required to modify an existing order
 struct ROQ_PUBLIC ModifyOrder final {
-  ModifyOrder() = default;
-  ModifyOrder(ModifyOrder &&) = default;
-  ModifyOrder(const ModifyOrder &) = delete;
-
   std::string_view account;  //!< Account name (as known to the gateway)
   uint32_t order_id = {};    //!< Order identifier (as known to client)
   double quantity = NaN;     //!< New quantity

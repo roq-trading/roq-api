@@ -22,11 +22,7 @@
 namespace roq {
 
 //! Signals a start event
-struct ROQ_PUBLIC Start final {
-  Start() = default;
-  Start(Start &&) = default;
-  Start(const Start &) = delete;
-};
+struct ROQ_PUBLIC Start final {};
 
 }  // namespace roq
 

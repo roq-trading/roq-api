@@ -25,10 +25,6 @@ namespace roq {
 
 //! Update relating to current status of gateway connectivity
 struct ROQ_PUBLIC Connection final {
-  Connection() = default;
-  Connection(Connection &&) = default;
-  Connection(const Connection &) = delete;
-
   ConnectionStatus status = ConnectionStatus::UNDEFINED;  //!< Connection status
 };
 

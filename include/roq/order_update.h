@@ -27,10 +27,6 @@ namespace roq {
 
 //! Update relating to current status of an order
 struct ROQ_PUBLIC OrderUpdate final {
-  OrderUpdate() = default;
-  OrderUpdate(OrderUpdate &&) = default;
-  OrderUpdate(const OrderUpdate &) = delete;
-
   std::string_view account;                     //!< Account name (as known to the gateway)
   uint32_t order_id = {};                       //!< Order identifier (as known to client)
   std::string_view exchange;                    //!< Exchange name

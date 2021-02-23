@@ -27,10 +27,6 @@ namespace roq {
 
 //! Update relating to order being partially or fully filled
 struct ROQ_PUBLIC TradeUpdate final {
-  TradeUpdate() = default;
-  TradeUpdate(TradeUpdate &&) = default;
-  TradeUpdate(const TradeUpdate &) = delete;
-
   std::string_view account;     //!< Account name (as known to the gateway)
   uint32_t order_id = {};       //!< Order identifier (as known to client)
   std::string_view exchange;    //!< Exchange name

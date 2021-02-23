@@ -23,10 +23,6 @@ namespace roq {
 
 //! Fields required to cancel an existing order
 struct ROQ_PUBLIC CancelOrder final {
-  CancelOrder() = default;
-  CancelOrder(CancelOrder &&) = default;
-  CancelOrder(const CancelOrder &) = delete;
-
   std::string_view account;  //!< Account name (as known to the gateway)
   uint32_t order_id = {};    //!< Order identifier (as known to client)
 };

@@ -22,11 +22,7 @@
 namespace roq {
 
 //! Identifies the end of a sequence of related messages
-struct ROQ_PUBLIC BatchEnd final {
-  BatchEnd() = default;
-  BatchEnd(BatchEnd &&) = default;
-  BatchEnd(const BatchEnd &) = delete;
-};
+struct ROQ_PUBLIC BatchEnd final {};
 
 }  // namespace roq
 

@@ -26,10 +26,6 @@ namespace roq {
 
 //! Update relating to the reference data for a symbol
 struct ROQ_PUBLIC ReferenceData final {
-  ReferenceData() = default;
-  ReferenceData(ReferenceData &&) = default;
-  ReferenceData(const ReferenceData &) = delete;
-
   std::string_view exchange;                             //!< Exchange name
   std::string_view symbol;                               //!< Symbol
   std::string_view description;                          //!< Description

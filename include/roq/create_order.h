@@ -29,10 +29,6 @@ namespace roq {
 
 //! Fields required to create an order
 struct ROQ_PUBLIC CreateOrder final {
-  CreateOrder() = default;
-  CreateOrder(CreateOrder &&) = default;
-  CreateOrder(const CreateOrder &) = delete;
-
   std::string_view account;                            //!< Account name (as known to the gateway)
   uint32_t order_id = {};                              //!< Order identifier (as known to client)
   std::string_view exchange;                           //!< Exchange name

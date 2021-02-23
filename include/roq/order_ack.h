@@ -28,10 +28,6 @@ namespace roq {
 
 //! Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange
 struct ROQ_PUBLIC OrderAck final {
-  OrderAck() = default;
-  OrderAck(OrderAck &&) = default;
-  OrderAck(const OrderAck &) = delete;
-
   std::string_view account;                         //!< Account name (as known to the gateway)
   uint32_t order_id = {};                           //!< Order identifier (as known to client)
   RequestType type = RequestType::UNDEFINED;        //!< Request type

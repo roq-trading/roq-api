@@ -25,10 +25,6 @@ namespace roq {
 
 //! Update relating to current status of order manager connectivity
 struct ROQ_PUBLIC OrderManagerStatus final {
-  OrderManagerStatus() = default;
-  OrderManagerStatus(OrderManagerStatus &&) = default;
-  OrderManagerStatus(const OrderManagerStatus &) = delete;
-
   std::string_view account;                         //!< Account name (as known to the gateway)
   GatewayStatus status = GatewayStatus::UNDEFINED;  //!< Gateway status
 };

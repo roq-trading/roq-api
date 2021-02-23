@@ -25,10 +25,6 @@ namespace roq {
 
 //! Update relating to current trading status of a symbol
 struct ROQ_PUBLIC MarketStatus final {
-  MarketStatus() = default;
-  MarketStatus(MarketStatus &&) = default;
-  MarketStatus(const MarketStatus &) = delete;
-
   std::string_view exchange;                                //!< Exchange name
   std::string_view symbol;                                  //!< Symbol
   TradingStatus trading_status = TradingStatus::UNDEFINED;  //!< Trading status

@@ -22,11 +22,7 @@
 namespace roq {
 
 //! Identifies the beginning of a sequence of related messages
-struct ROQ_PUBLIC BatchBegin final {
-  BatchBegin() = default;
-  BatchBegin(BatchBegin &&) = default;
-  BatchBegin(const BatchBegin &) = delete;
-};
+struct ROQ_PUBLIC BatchBegin final {};
 
 }  // namespace roq
 

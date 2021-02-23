@@ -25,10 +25,6 @@ namespace roq {
 
 //! Update relating to current position for a symbol/side/account
 struct ROQ_PUBLIC PositionUpdate final {
-  PositionUpdate() = default;
-  PositionUpdate(PositionUpdate &&) = default;
-  PositionUpdate(const PositionUpdate &) = delete;
-
   std::string_view account;              //!< Account name (as known to the gateway)
   std::string_view exchange;             //!< Exchange name
   std::string_view symbol;               //!< Symbol

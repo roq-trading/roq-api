@@ -22,11 +22,7 @@
 namespace roq {
 
 //! Signals a stop event
-struct ROQ_PUBLIC Stop final {
-  Stop() = default;
-  Stop(Stop &&) = default;
-  Stop(const Stop &) = delete;
-};
+struct ROQ_PUBLIC Stop final {};
 
 }  // namespace roq
 

@@ -25,10 +25,6 @@ namespace roq {
 
 //! Update relating to trade reporting by the exchange
 struct ROQ_PUBLIC TradeSummary final {
-  TradeSummary() = default;
-  TradeSummary(TradeSummary &&) = default;
-  TradeSummary(const TradeSummary &) = delete;
-
   std::string_view exchange;                        //!< Exchange name
   std::string_view symbol;                          //!< Symbol
   roq::span<Trade> trades;                          //!< List of trades

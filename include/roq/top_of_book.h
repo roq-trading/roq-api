@@ -25,10 +25,6 @@ namespace roq {
 
 //! Update relating to top of book (aggregate price)
 struct ROQ_PUBLIC TopOfBook final {
-  TopOfBook() = default;
-  TopOfBook(TopOfBook &&) = default;
-  TopOfBook(const TopOfBook &) = delete;
-
   std::string_view exchange;  //!< Exchange name
   std::string_view symbol;    //!< Symbol
   Layer layer;                //!< Top of book

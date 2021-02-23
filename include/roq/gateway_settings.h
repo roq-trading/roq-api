@@ -23,10 +23,6 @@ namespace roq {
 
 //! Gateway settings
 struct ROQ_PUBLIC GatewaySettings final {
-  GatewaySettings() = default;
-  GatewaySettings(GatewaySettings &&) = default;
-  GatewaySettings(const GatewaySettings &) = delete;
-
   uint32_t mbp_max_depth = {};             //!< MBP max depth
   bool mbp_allow_price_inversion = false;  //!< MBP allow price inversion?
 };

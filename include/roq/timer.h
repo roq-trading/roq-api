@@ -23,10 +23,6 @@ namespace roq {
 
 //! Represents a timer update
 struct ROQ_PUBLIC Timer final {
-  Timer() = default;
-  Timer(Timer &&) = default;
-  Timer(const Timer &) = delete;
-
   std::chrono::nanoseconds now = {};  //!< Current time (monotonic clock)
 };
 

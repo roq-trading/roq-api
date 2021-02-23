@@ -23,10 +23,6 @@ namespace roq {
 
 //! Update relating to external latency
 struct ROQ_PUBLIC ExternalLatency final {
-  ExternalLatency() = default;
-  ExternalLatency(ExternalLatency &&) = default;
-  ExternalLatency(const ExternalLatency &) = delete;
-
   std::string_view name;                  //!< connection name
   std::chrono::nanoseconds latency = {};  //!< latency measurement (1-way)
 };

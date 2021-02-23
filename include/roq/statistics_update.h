@@ -25,10 +25,6 @@ namespace roq {
 
 //! Update relating to statistics published by the exchange
 struct ROQ_PUBLIC StatisticsUpdate final {
-  StatisticsUpdate() = default;
-  StatisticsUpdate(StatisticsUpdate &&) = default;
-  StatisticsUpdate(const StatisticsUpdate &) = delete;
-
   std::string_view exchange;         //!< Exchange name
   std::string_view symbol;           //!< Symbol
   roq::span<Statistics> statistics;  //!< List of statistics

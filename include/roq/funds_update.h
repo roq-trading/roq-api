@@ -23,10 +23,6 @@ namespace roq {
 
 //! Update relating to available funds
 struct ROQ_PUBLIC FundsUpdate final {
-  FundsUpdate() = default;
-  FundsUpdate(FundsUpdate &&) = default;
-  FundsUpdate(const FundsUpdate &) = delete;
-
   std::string_view account;           //!< Account name (as known to the gateway)
   std::string_view currency;          //!< Currency name
   double balance = NaN;               //!< Current funds

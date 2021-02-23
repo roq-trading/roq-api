@@ -25,10 +25,6 @@ namespace roq {
 
 //! Update relating to current status of market data connectivity
 struct ROQ_PUBLIC MarketDataStatus final {
-  MarketDataStatus() = default;
-  MarketDataStatus(MarketDataStatus &&) = default;
-  MarketDataStatus(const MarketDataStatus &) = delete;
-
   GatewayStatus status = GatewayStatus::UNDEFINED;  //!< Gateway status
 };
 

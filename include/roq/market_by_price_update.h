@@ -25,10 +25,6 @@ namespace roq {
 
 //! Update relating to market by price
 struct ROQ_PUBLIC MarketByPriceUpdate final {
-  MarketByPriceUpdate() = default;
-  MarketByPriceUpdate(MarketByPriceUpdate &&) = default;
-  MarketByPriceUpdate(const MarketByPriceUpdate &) = delete;
-
   std::string_view exchange;  //!< Exchange name
   std::string_view symbol;    //!< Symbol
   roq::span<MBPUpdate> bids;  //!< List of bids

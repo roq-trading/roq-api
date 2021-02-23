@@ -23,10 +23,6 @@
 
 //! {{ comment }}
 struct ROQ_PUBLIC {{ name }} final {
-  {{ name }}() = default;
-  {{ name }}({{name }}&&) = default;
-  {{ name }}(const {{name }}&) = delete;
-
 {% include 'variables' %}
 };
 

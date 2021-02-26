@@ -9,7 +9,7 @@
 namespace roq {
 namespace chrono {
 
-// https://stackoverflow.com/questions/42114518/stdchrono-add-days-to-current-date
+// https://stackoverflow.com/a/42116047
 using days =
     std::chrono::duration<int, std::ratio_multiply<std::ratio<24>, std::chrono::hours::period>>;
 

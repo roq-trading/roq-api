@@ -88,15 +88,6 @@ install(
   PATTERN "*.h"
   PATTERN "CMakeFiles" EXCLUDE)
 
-# python
-
-option(BUILD_PYTHON "Enable python" OFF)
-
-if(BUILD_PYTHON)
-  add_subdirectory("${CMAKE_SOURCE_DIR}/python")
-  add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-python)
-endif(BUILD_PYTHON)
-
 # test
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)

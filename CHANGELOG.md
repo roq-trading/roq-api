@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Removed
+
+* Python API (this is not the right place)
+
 ## 0.6.1 &ndash; 2021-02-19
 
 ### Added

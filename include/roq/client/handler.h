@@ -27,15 +27,18 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<Timer> &) {}
   virtual void operator()(const Event<Connection> &) {}
 
-  // network
+  // control
   virtual void operator()(const Event<BatchBegin> &) {}
   virtual void operator()(const Event<BatchEnd> &) {}
   virtual void operator()(const Event<DownloadBegin> &) {}
   virtual void operator()(const Event<DownloadEnd> &) {}
+
+  // server
   virtual void operator()(const Event<GatewaySettings> &) {}
   virtual void operator()(const Event<ExternalLatency> &) {}
+
+  // market data
   virtual void operator()(const Event<MarketDataStatus> &) {}
-  virtual void operator()(const Event<OrderManagerStatus> &) {}
   virtual void operator()(const Event<ReferenceData> &) {}
   virtual void operator()(const Event<MarketStatus> &) {}
   virtual void operator()(const Event<TopOfBook> &) {}
@@ -43,11 +46,18 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<MarketByOrderUpdate> &) {}
   virtual void operator()(const Event<TradeSummary> &) {}
   virtual void operator()(const Event<StatisticsUpdate> &) {}
+
+  // order management
+  virtual void operator()(const Event<OrderManagerStatus> &) {}
   virtual void operator()(const Event<OrderAck> &) {}
   virtual void operator()(const Event<OrderUpdate> &) {}
   virtual void operator()(const Event<TradeUpdate> &) {}
+
+  // account management
   virtual void operator()(const Event<PositionUpdate> &) {}
   virtual void operator()(const Event<FundsUpdate> &) {}
+
+  // ancillary
   virtual void operator()(const Event<CustomMessage> &) {}
 
   // metrics

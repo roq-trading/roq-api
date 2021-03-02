@@ -23,6 +23,7 @@ namespace roq {
 
 //! Update relating to available funds
 struct ROQ_PUBLIC FundsUpdate final {
+  uint16_t stream_id = {};            //!< Stream identifier
   std::string_view account;           //!< Account name (as known to the gateway)
   std::string_view currency;          //!< Currency name
   double balance = NaN;               //!< Current funds
@@ -40,12 +41,14 @@ struct fmt::formatter<roq::FundsUpdate> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(stream_id={}, )"
         R"(account="{}", )"
         R"(currency="{}", )"
         R"(balance={}, )"
         R"(hold={}, )"
         R"(external_account="{}")"
         R"(}})"_fmt,
+        value.stream_id,
         value.account,
         value.currency,
         value.balance,

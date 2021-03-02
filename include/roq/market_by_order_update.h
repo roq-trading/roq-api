@@ -25,6 +25,7 @@ namespace roq {
 
 //! Update relating to market by order
 struct ROQ_PUBLIC MarketByOrderUpdate final {
+  uint16_t stream_id = {};    //!< Stream identifier
   std::string_view exchange;  //!< Exchange name
   std::string_view symbol;    //!< Symbol
   roq::span<MBOUpdate> bids;  //!< List of bids
@@ -44,6 +45,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(stream_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(bids=[{}], )"
@@ -51,6 +53,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> : public roq::formatter {
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
         R"(}})"_fmt,
+        value.stream_id,
         value.exchange,
         value.symbol,
         roq::join(value.bids, ", "_sv),

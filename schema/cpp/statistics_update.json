@@ -4,6 +4,10 @@
     "comment": "Update relating to statistics published by the exchange",
     "values": [
         {
+            "name": "stream_id",
+            "type": "uint16_t"
+        },
+        {
             "name": "exchange",
             "type": "std::string_view"
         },

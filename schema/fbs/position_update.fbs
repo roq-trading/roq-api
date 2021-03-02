@@ -3,6 +3,7 @@ include "side.fbs";
 namespace roq.fbs;
 
 table PositionUpdate {
+  stream_id:uint16;
   account:string;
   exchange:string;
   symbol:string;

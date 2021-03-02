@@ -5,6 +5,7 @@ include "fill.fbs";
 namespace roq.fbs;
 
 table TradeUpdate {
+  stream_id:uint16;
   account:string;
   order_id:uint32;
   exchange:string;

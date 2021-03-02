@@ -25,6 +25,7 @@ namespace roq {
 
 //! Update relating to current status of market data connectivity
 struct ROQ_PUBLIC MarketDataStatus final {
+  uint16_t stream_id = {};                          //!< Stream identifier
   GatewayStatus status = GatewayStatus::UNDEFINED;  //!< Gateway status
 };
 
@@ -38,8 +39,10 @@ struct fmt::formatter<roq::MarketDataStatus> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(stream_id={}, )"
         R"(status={})"
         R"(}})"_fmt,
+        value.stream_id,
         value.status);
   }
 };

@@ -25,6 +25,7 @@ namespace roq {
 
 //! Update relating to top of book (aggregate price)
 struct ROQ_PUBLIC TopOfBook final {
+  uint16_t stream_id = {};    //!< Stream identifier
   std::string_view exchange;  //!< Exchange name
   std::string_view symbol;    //!< Symbol
   Layer layer;                //!< Top of book
@@ -43,12 +44,14 @@ struct fmt::formatter<roq::TopOfBook> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(stream_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(layer={}, )"
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
         R"(}})"_fmt,
+        value.stream_id,
         value.exchange,
         value.symbol,
         value.layer,

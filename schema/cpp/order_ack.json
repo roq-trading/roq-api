@@ -4,6 +4,10 @@
     "comment": "Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange",
     "values": [
         {
+            "name": "stream_id",
+            "type": "uint16_t"
+        },
+        {
             "name": "account",
             "type": "std::string_view"
         },

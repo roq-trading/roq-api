@@ -3,6 +3,7 @@ include "trading_status.fbs";
 namespace roq.fbs;
 
 table MarketStatus {
+  stream_id:uint16;
   exchange:string;
   symbol:string;
   trading_status:TradingStatus;

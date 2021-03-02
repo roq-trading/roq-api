@@ -25,6 +25,7 @@ namespace roq {
 
 //! Update relating to current status of order manager connectivity
 struct ROQ_PUBLIC OrderManagerStatus final {
+  uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view account;                         //!< Account name (as known to the gateway)
   GatewayStatus status = GatewayStatus::UNDEFINED;  //!< Gateway status
 };
@@ -39,9 +40,11 @@ struct fmt::formatter<roq::OrderManagerStatus> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(stream_id={}, )"
         R"(account="{}", )"
         R"(status={})"
         R"(}})"_fmt,
+        value.stream_id,
         value.account,
         value.status);
   }

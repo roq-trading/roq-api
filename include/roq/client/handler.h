@@ -33,8 +33,10 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<DownloadBegin> &) {}
   virtual void operator()(const Event<DownloadEnd> &) {}
 
-  // server
+  // server config
   virtual void operator()(const Event<GatewaySettings> &) {}
+
+  // network
   virtual void operator()(const Event<ExternalLatency> &) {}
 
   // market data

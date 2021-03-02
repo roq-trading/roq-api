@@ -141,6 +141,7 @@ def _find_default_comment(name):
         time_in_force="Time in force",
         trade_id="Trade identifier (as known to client)",
         update_time_utc="Updated timestamp (UTC)",
+        stream_id="Stream identifier",
     ).get(name, "")
 
 

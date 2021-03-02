@@ -25,6 +25,7 @@ namespace roq {
 
 //! Update relating to current trading status of a symbol
 struct ROQ_PUBLIC MarketStatus final {
+  uint16_t stream_id = {};                                  //!< Stream identifier
   std::string_view exchange;                                //!< Exchange name
   std::string_view symbol;                                  //!< Symbol
   TradingStatus trading_status = TradingStatus::UNDEFINED;  //!< Trading status
@@ -40,10 +41,12 @@ struct fmt::formatter<roq::MarketStatus> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(stream_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(trading_status={})"
         R"(}})"_fmt,
+        value.stream_id,
         value.exchange,
         value.symbol,
         value.trading_status);

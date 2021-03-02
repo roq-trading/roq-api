@@ -3,6 +3,7 @@ include "mbp_update.fbs";
 namespace roq.fbs;
 
 table StatisticsUpdate {
+  stream_id:uint16;
   exchange:string;
   symbol:string;
   statistics:[Statistics];

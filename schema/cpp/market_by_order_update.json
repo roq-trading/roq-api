@@ -4,6 +4,10 @@
     "comment": "Update relating to market by order",
     "values": [
         {
+            "name": "stream_id",
+            "type": "uint16_t"
+        },
+        {
             "name": "exchange",
             "type": "std::string_view"
         },

@@ -1,6 +1,7 @@
 namespace roq.fbs;
 
 table FundsUpdate {
+  stream_id:uint16;
   account:string;
   currency:string;
   balance:double = nan;

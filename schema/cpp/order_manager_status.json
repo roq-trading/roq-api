@@ -4,6 +4,10 @@
     "comment": "Update relating to current status of order manager connectivity",
     "values": [
         {
+            "name": "stream_id",
+            "type": "uint16_t"
+        },
+        {
             "name": "account",
             "type": "std::string_view"
         },

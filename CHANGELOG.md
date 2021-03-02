@@ -4,6 +4,15 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* All server (gateway) originated structs now include `stream_id` to indicate
+  the origin of a message.
+  `MarketDataStatus` and `OrderManagerStatus` are now published per
+  `stream_id` and should be used to selectively invalidate cached state.
+  This change is done to allow gateways to manage load balance e.g. by using
+  multiple connections.
+
 ### Removed
 
 * Python API (this is not the right place)

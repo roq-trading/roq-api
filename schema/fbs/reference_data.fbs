@@ -4,6 +4,7 @@ include "option_type.fbs";
 namespace roq.fbs;
 
 table ReferenceData {
+  stream_id:uint16;
   exchange:string;
   symbol:string;
   description:string;

@@ -25,6 +25,7 @@ namespace roq {
 
 //! Update relating to current position for a symbol/side/account
 struct ROQ_PUBLIC PositionUpdate final {
+  uint16_t stream_id = {};               //!< Stream identifier
   std::string_view account;              //!< Account name (as known to the gateway)
   std::string_view exchange;             //!< Exchange name
   std::string_view symbol;               //!< Symbol
@@ -47,6 +48,7 @@ struct fmt::formatter<roq::PositionUpdate> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(stream_id={}, )"
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
@@ -58,6 +60,7 @@ struct fmt::formatter<roq::PositionUpdate> : public roq::formatter {
         R"(position_cost_yesterday={}, )"
         R"(external_account="{}")"
         R"(}})"_fmt,
+        value.stream_id,
         value.account,
         value.exchange,
         value.symbol,

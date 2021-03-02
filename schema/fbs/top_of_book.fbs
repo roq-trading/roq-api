@@ -3,6 +3,7 @@ include "layer.fbs";
 namespace roq.fbs;
 
 table TopOfBook {
+  stream_id:uint16;
   exchange:string;
   symbol:string;
   layer:Layer;

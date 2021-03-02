@@ -51,8 +51,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::Error &value) {
   using result_type = Error;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -60,8 +58,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::ExecutionInstruction &value) {
   using result_type = ExecutionInstruction;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -69,8 +65,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::GatewayStatus &value) {
   using result_type = GatewayStatus;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -78,8 +72,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::OptionType &value) {
   using result_type = OptionType;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -87,8 +79,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::OrderStatus &value) {
   using result_type = OrderStatus;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -96,8 +86,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::OrderType &value) {
   using result_type = OrderType;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -105,8 +93,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::OrderUpdateAction &value) {
   using result_type = OrderUpdateAction;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -114,8 +100,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::Origin &value) {
   using result_type = Origin;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -123,8 +107,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::PositionEffect &value) {
   using result_type = PositionEffect;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -132,8 +114,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::RequestStatus &value) {
   using result_type = RequestStatus;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -141,16 +121,12 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::RequestType &value) {
   using result_type = RequestType;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::SecurityType &value) {
   using result_type = SecurityType;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -158,8 +134,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::Side &value) {
   using result_type = Side;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -167,8 +141,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::TimeInForce &value) {
   using result_type = TimeInForce;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -176,8 +148,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::TradingStatus &value) {
   using result_type = TradingStatus;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -185,8 +155,6 @@ template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::StatisticsType &value) {
   using result_type = StatisticsType;
   using value_type = std::underlying_type_t<result_type>;
-  // static_assert(std::is_same_v<std::underlying_type_t<std::decay_t<decltype(value)>>,
-  // value_type>);
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -338,24 +306,19 @@ auto encode(B &builder, const roq::GatewaySettings &value) {
 template <typename B>
 auto encode(B &builder, const roq::ExternalLatency &value) {
   return CreateExternalLatency(
-      builder, encode(builder, value.name), encode(builder, value.latency));
+      builder, value.stream_id, encode(builder, value.name), encode(builder, value.latency));
 }
 
 template <typename B>
 auto encode(B &builder, const roq::MarketDataStatus &value) {
-  return CreateMarketDataStatus(builder, encode(builder, value.status));
-}
-
-template <typename B>
-auto encode(B &builder, const roq::OrderManagerStatus &value) {
-  return CreateOrderManagerStatus(
-      builder, encode(builder, value.account), encode(builder, value.status));
+  return CreateMarketDataStatus(builder, value.stream_id, encode(builder, value.status));
 }
 
 template <typename B>
 auto encode(B &builder, const roq::ReferenceData &value) {
   return CreateReferenceData(
       builder,
+      value.stream_id,
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.description),
@@ -381,6 +344,7 @@ template <typename B>
 auto encode(B &builder, const roq::MarketStatus &value) {
   return CreateMarketStatus(
       builder,
+      value.stream_id,
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.trading_status));
@@ -390,6 +354,7 @@ template <typename B>
 auto encode(B &builder, const roq::TopOfBook &value) {
   return CreateTopOfBook(
       builder,
+      value.stream_id,
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.layer),
@@ -401,6 +366,7 @@ template <typename B>
 auto encode(B &builder, const roq::MarketByPriceUpdate &value) {
   return CreateMarketByPriceUpdate(
       builder,
+      value.stream_id,
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.bids),
@@ -413,6 +379,7 @@ template <typename B>
 auto encode(B &builder, const roq::MarketByOrderUpdate &value) {
   return CreateMarketByOrderUpdate(
       builder,
+      value.stream_id,
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.bids),
@@ -425,6 +392,7 @@ template <typename B>
 auto encode(B &builder, const roq::TradeSummary &value) {
   return CreateTradeSummary(
       builder,
+      value.stream_id,
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.trades),
@@ -435,11 +403,18 @@ template <typename B>
 auto encode(B &builder, const roq::StatisticsUpdate &value) {
   return CreateStatisticsUpdate(
       builder,
+      value.stream_id,
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.statistics),
       value.snapshot,
       encode(builder, value.exchange_time_utc));
+}
+
+template <typename B>
+auto encode(B &builder, const roq::OrderManagerStatus &value) {
+  return CreateOrderManagerStatus(
+      builder, value.stream_id, encode(builder, value.account), encode(builder, value.status));
 }
 
 template <typename B>
@@ -477,6 +452,7 @@ template <typename B>
 auto encode(B &builder, const roq::OrderAck &value) {
   return CreateOrderAck(
       builder,
+      value.stream_id,
       encode(builder, value.account),
       value.order_id,
       encode(builder, value.type),
@@ -494,6 +470,7 @@ template <typename B>
 auto encode(B &builder, const roq::OrderUpdate &value) {
   return CreateOrderUpdate(
       builder,
+      value.stream_id,
       encode(builder, value.account),
       value.order_id,
       encode(builder, value.exchange),
@@ -516,6 +493,7 @@ template <typename B>
 auto encode(B &builder, const roq::TradeUpdate &value) {
   return CreateTradeUpdate(
       builder,
+      value.stream_id,
       encode(builder, value.account),
       value.order_id,
       encode(builder, value.exchange),
@@ -535,6 +513,7 @@ template <typename B>
 auto encode(B &builder, const roq::PositionUpdate &value) {
   return CreatePositionUpdate(
       builder,
+      value.stream_id,
       encode(builder, value.account),
       encode(builder, value.exchange),
       encode(builder, value.symbol),
@@ -551,6 +530,7 @@ template <typename B>
 auto encode(B &builder, const roq::FundsUpdate &value) {
   return CreateFundsUpdate(
       builder,
+      value.stream_id,
       encode(builder, value.account),
       encode(builder, value.currency),
       value.balance,
@@ -602,15 +582,6 @@ auto encode(B &builder, const roq::Event<roq::MarketDataStatus> &event) {
       builder,
       encode(builder, event.message_info),
       Message_MarketDataStatus,
-      encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, const roq::Event<roq::OrderManagerStatus> &event) {
-  return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_OrderManagerStatus,
       encode(builder, event.value).Union());
 }
 
@@ -674,6 +645,15 @@ auto encode(B &builder, const roq::Event<roq::StatisticsUpdate> &event) {
       builder,
       encode(builder, event.message_info),
       Message_StatisticsUpdate,
+      encode(builder, event.value).Union());
+}
+
+template <typename B>
+auto encode(B &builder, const roq::Event<roq::OrderManagerStatus> &event) {
+  return CreateEvent(
+      builder,
+      encode(builder, event.message_info),
+      Message_OrderManagerStatus,
       encode(builder, event.value).Union());
 }
 

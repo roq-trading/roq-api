@@ -3,6 +3,7 @@ include "mbo_update.fbs";
 namespace roq.fbs;
 
 table MarketByOrderUpdate {
+  stream_id:uint16;
   exchange:string;
   symbol:string;
   bids:[MBOUpdate];

@@ -3,6 +3,7 @@ include "gateway_status.fbs";
 namespace roq.fbs;
 
 table ExternalLatency {
+  stream_id:uint16;
   name:string;
   latency:int64;
 }

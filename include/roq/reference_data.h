@@ -26,6 +26,7 @@ namespace roq {
 
 //! Update relating to the reference data for a symbol
 struct ROQ_PUBLIC ReferenceData final {
+  uint16_t stream_id = {};                               //!< Stream identifier
   std::string_view exchange;                             //!< Exchange name
   std::string_view symbol;                               //!< Symbol
   std::string_view description;                          //!< Description
@@ -57,6 +58,7 @@ struct fmt::formatter<roq::ReferenceData> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(stream_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(description="{}", )"
@@ -77,6 +79,7 @@ struct fmt::formatter<roq::ReferenceData> : public roq::formatter {
         R"(expiry_datetime={}, )"
         R"(expiry_datetime_utc={})"
         R"(}})"_fmt,
+        value.stream_id,
         value.exchange,
         value.symbol,
         value.description,

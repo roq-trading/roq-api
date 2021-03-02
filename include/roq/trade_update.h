@@ -27,6 +27,7 @@ namespace roq {
 
 //! Update relating to order being partially or fully filled
 struct ROQ_PUBLIC TradeUpdate final {
+  uint16_t stream_id = {};      //!< Stream identifier
   std::string_view account;     //!< Account name (as known to the gateway)
   uint32_t order_id = {};       //!< Order identifier (as known to client)
   std::string_view exchange;    //!< Exchange name
@@ -53,6 +54,7 @@ struct fmt::formatter<roq::TradeUpdate> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(stream_id={}, )"
         R"(account="{}", )"
         R"(order_id={}, )"
         R"(exchange="{}", )"
@@ -67,6 +69,7 @@ struct fmt::formatter<roq::TradeUpdate> : public roq::formatter {
         R"(external_order_id="{}", )"
         R"(fills=[{}])"
         R"(}})"_fmt,
+        value.stream_id,
         value.account,
         value.order_id,
         value.exchange,

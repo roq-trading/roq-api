@@ -49,6 +49,7 @@ TEST(format, market_by_price) {
       {.price = 5.0, .quantity = 12.0},
   };
   roq::MarketByPriceUpdate market_by_price{
+      .stream_id = {},
       .exchange = "deribit"_sv,
       .symbol = "BTC-27DEC19"_sv,
       .bids = {.items = bids, .length = std::size(bids)},
@@ -61,6 +62,7 @@ TEST(format, market_by_price) {
 #if FMT_VERSION < 70000
   auto expected =
       R"({)"
+      R"(stream_id=0, )"
       R"(exchange="deribit", )"
       R"(symbol="BTC-27DEC19", )"
       R"(bids=[{price=1.0, quantity=2.0}, {price=2.0, quantity=4.0}, {price=3.0, quantity=8.0}, {price=4.0, quantity=10.0}, {price=5.0, quantity=12.0}], )"
@@ -71,6 +73,7 @@ TEST(format, market_by_price) {
 #else
   auto expected =
       R"({)"
+      R"(stream_id=0, )"
       R"(exchange="deribit", )"
       R"(symbol="BTC-27DEC19", )"
       R"(bids=[{price=1, quantity=2}, {price=2, quantity=4}, {price=3, quantity=8}, {price=4, quantity=10}, {price=5, quantity=12}], )"

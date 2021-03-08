@@ -22,17 +22,6 @@ endif()
 
 # c++
 
-option(TEST_CPP20 "Enable c++20" OFF)
-
-if(TEST_CPP20)
-  set(CMAKE_CXX_STANDARD 20)
-else(TEST_CPP20)
-  set(CMAKE_CXX_STANDARD 17)
-endif(TEST_CPP20)
-
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
 # filesystem

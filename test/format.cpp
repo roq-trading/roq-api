@@ -52,8 +52,8 @@ TEST(format, market_by_price) {
       .stream_id = {},
       .exchange = "deribit"_sv,
       .symbol = "BTC-27DEC19"_sv,
-      .bids = {.items = bids, .length = std::size(bids)},
-      .asks = {.items = asks, .length = std::size(asks)},
+      .bids = {bids, std::size(bids)},
+      .asks = {asks, std::size(asks)},
       .snapshot = true,
       .exchange_time_utc = {},
   };

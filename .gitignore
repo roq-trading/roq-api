@@ -5,6 +5,7 @@
 *.[ao]
 *.cmake
 *.so
+*.dylib
 CMake*.in
 CMakeCache.txt
 CMakeFiles/

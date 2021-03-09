@@ -7,7 +7,7 @@
 // using namespace envelope so we can more easily manage and replace
 // dependencies when making the transition to C++20
 
-#if __has_include(<span>)
+#if __cplusplus >= 202002L
 #include <span>
 namespace roq {
 using std::span;

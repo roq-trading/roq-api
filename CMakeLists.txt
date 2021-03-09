@@ -126,7 +126,7 @@ install(
 
 option(BUILD_DEB "Enable debian packaging?" OFF)
 
-if (BUILD_DEB)
+if(BUILD_DEB)
   set(CPACK_GENERATOR "DEB")
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "thraneh@gmail.com")
   set(CPACK_DEBIAN_PACKAGE_DEPENDS "libfmt-dev, librange-v3-dev, roq-oss-span-lite")

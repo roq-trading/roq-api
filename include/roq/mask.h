@@ -4,6 +4,7 @@
 
 #include <initializer_list>
 #include <type_traits>
+#include <utility>
 
 namespace roq {
 
@@ -28,6 +29,10 @@ class Mask final {
       value_ |= static_cast<value_type>(flag);
   }
 
+  template <typename... Args>
+  constexpr Mask(const Mask &other, Args &&...args)
+      : value_(other.value_ | Mask{std::forward<Args>(args)...}.get()) {}
+
   constexpr bool operator==(const Mask &rhs) const { return value_ == rhs.value_; }
 
   constexpr bool operator!=(const Mask &rhs) const { return value_ != rhs.value_; }
@@ -36,11 +41,21 @@ class Mask final {
 
   constexpr bool has(T flag) const { return value_ & static_cast<value_type>(flag); }
 
+  constexpr bool has_any(T flag) const {
+    return (value_ & static_cast<value_type>(flag)) != value_type{};
+  }
+
   constexpr bool has_any(std::initializer_list<T> flags) const {
     value_type value = {};
     for (auto &flag : flags)
       value |= static_cast<value_type>(flag);
     return value_ & value;
+  }
+
+  constexpr bool has_any(Mask &rhs) const { return (value_ & rhs.value_) != value_type{}; }
+
+  constexpr bool has_all(T flag) const {
+    return (value_ & static_cast<value_type>(flag)) == static_cast<value_type>(flag);
   }
 
   constexpr bool has_all(std::initializer_list<T> flags) const {
@@ -50,6 +65,8 @@ class Mask final {
     return (value_ & value) == value;
   }
 
+  constexpr bool has_all(Mask &rhs) const { return (value_ & rhs.value_) == rhs.value_; }
+
   constexpr Mask &set(T flag) {
     value_ |= static_cast<value_type>(flag);
     return *this;
@@ -57,6 +74,11 @@ class Mask final {
   constexpr Mask &remove(T flag) {
     value_ &= ~static_cast<value_type>(flag);
     return *this;
+  }
+
+  constexpr Mask &set(std::initializer_list<T> flags) {
+    for (auto &flag : flags)
+      value_ |= static_cast<value_type>(flag);
   }
 
  private:

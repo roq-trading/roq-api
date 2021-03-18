@@ -27,13 +27,13 @@ namespace roq {
 
 //! Update relating to order being partially or fully filled
 struct ROQ_PUBLIC TradeUpdate final {
-  uint16_t stream_id = {};      //!< Stream identifier
-  std::string_view account;     //!< Account name (as known to the gateway)
-  uint32_t order_id = {};       //!< Order identifier (as known to client)
-  std::string_view exchange;    //!< Exchange name
-  std::string_view symbol;      //!< Symbol
-  Side side = Side::UNDEFINED;  //!< Side
-  PositionEffect position_effect = PositionEffect::UNDEFINED;  //!< Position effect
+  uint16_t stream_id = {};                        //!< Stream identifier
+  std::string_view account;                       //!< Account name (as known to the gateway)
+  uint32_t order_id = {};                         //!< Order identifier (as known to client)
+  std::string_view exchange;                      //!< Exchange name
+  std::string_view symbol;                        //!< Symbol
+  Side side = {};                                 //!< Side
+  PositionEffect position_effect = {};            //!< Position effect
   std::string_view order_template;                //!< Order template (as known to the gateway)
   std::chrono::nanoseconds create_time_utc = {};  //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};  //!< Updated timestamp (UTC)

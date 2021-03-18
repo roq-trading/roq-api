@@ -111,6 +111,13 @@ auto encode([[maybe_unused]] B &builder, const roq::PositionEffect &value) {
 }
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::Priority &value) {
+  using result_type = Priority;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::RequestStatus &value) {
   using result_type = RequestStatus;
   using value_type = std::underlying_type_t<result_type>;
@@ -133,6 +140,21 @@ auto encode([[maybe_unused]] B &builder, const roq::SecurityType &value) {
 template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::Side &value) {
   using result_type = Side;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::StreamType &value) {
+  using result_type = StreamType;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+// note! not used directly... redundant, really
+template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::SupportType &value) {
+  using result_type = SupportType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
@@ -304,14 +326,21 @@ auto encode(B &builder, const roq::GatewaySettings &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::ExternalLatency &value) {
-  return CreateExternalLatency(
-      builder, value.stream_id, encode(builder, value.name), encode(builder, value.latency));
+auto encode(B &builder, const roq::StreamUpdate &value) {
+  return CreateStreamUpdate(
+      builder,
+      value.stream_id,
+      encode(builder, value.type),
+      value.supports,  // note! using Mask<SupportType>
+      encode(builder, value.account),
+      encode(builder, value.priority),
+      encode(builder, value.status));
 }
 
 template <typename B>
-auto encode(B &builder, const roq::MarketDataStatus &value) {
-  return CreateMarketDataStatus(builder, value.stream_id, encode(builder, value.status));
+auto encode(B &builder, const roq::ExternalLatency &value) {
+  return CreateExternalLatency(
+      builder, value.stream_id, encode(builder, value.name), encode(builder, value.latency));
 }
 
 template <typename B>
@@ -409,12 +438,6 @@ auto encode(B &builder, const roq::StatisticsUpdate &value) {
       encode(builder, value.statistics),
       value.snapshot,
       encode(builder, value.exchange_time_utc));
-}
-
-template <typename B>
-auto encode(B &builder, const roq::OrderManagerStatus &value) {
-  return CreateOrderManagerStatus(
-      builder, value.stream_id, encode(builder, value.account), encode(builder, value.status));
 }
 
 template <typename B>
@@ -568,20 +591,20 @@ auto encode(B &builder, const roq::Event<roq::GatewaySettings> &event) {
 }
 
 template <typename B>
+auto encode(B &builder, const roq::Event<roq::StreamUpdate> &event) {
+  return CreateEvent(
+      builder,
+      encode(builder, event.message_info),
+      Message_StreamUpdate,
+      encode(builder, event.value).Union());
+}
+
+template <typename B>
 auto encode(B &builder, const roq::Event<roq::ExternalLatency> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
       Message_ExternalLatency,
-      encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, const roq::Event<roq::MarketDataStatus> &event) {
-  return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_MarketDataStatus,
       encode(builder, event.value).Union());
 }
 
@@ -645,15 +668,6 @@ auto encode(B &builder, const roq::Event<roq::StatisticsUpdate> &event) {
       builder,
       encode(builder, event.message_info),
       Message_StatisticsUpdate,
-      encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, const roq::Event<roq::OrderManagerStatus> &event) {
-  return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_OrderManagerStatus,
       encode(builder, event.value).Union());
 }
 

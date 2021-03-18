@@ -81,7 +81,7 @@ def get_default_from_type(type_):
     if is_array(type_) or is_string_like(type_):
         return ""
     ret = defaults.get(type_)
-    return ret if isinstance(ret, str) else " = {}::UNDEFINED".format(type_)
+    return ret if isinstance(ret, str) else " = {}"
 
 
 def get_variable_name(name):
@@ -162,6 +162,7 @@ def _new_spec_helper(item):
     default = item.get("default", get_default_from_type(t))
     accessor = item.get("accessor", "")
     format_string, format_value = _format_helper(char, string, array, safe_name, accessor)
+    bit = item.get("bit", 0)
     return dict(
         raw_name=r,
         name=safe_name,
@@ -181,6 +182,7 @@ def _new_spec_helper(item):
         is_float=is_float,
         format_string=format_string,
         format_value=format_value,
+        bit=bit,
     )
 
 

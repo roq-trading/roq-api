@@ -18,7 +18,7 @@ namespace roq {
 struct ROQ_PACKED TimeInForce final {
   //! helper
   enum type_t : uint8_t {
-    UNDEFINED = 0,
+    UNDEFINED = 0u,
     FOK,  //!< Fill or Kill
     IOC,  //!< Immediate or Cancel
     GFD,  //!< Good for Day

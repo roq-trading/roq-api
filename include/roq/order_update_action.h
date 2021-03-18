@@ -18,7 +18,7 @@ namespace roq {
 struct ROQ_PACKED OrderUpdateAction final {
   //! helper
   enum type_t : uint8_t {
-    UNDEFINED = 0,
+    UNDEFINED = 0u,
     NEW,
     MODIFY,
     REMOVE,

@@ -25,7 +25,7 @@ namespace roq {
 
 //! Update relating to current status of gateway connectivity
 struct ROQ_PUBLIC Connection final {
-  ConnectionStatus status = ConnectionStatus::UNDEFINED;  //!< Connection status
+  ConnectionStatus status = {};  //!< Connection status
 };
 
 }  // namespace roq

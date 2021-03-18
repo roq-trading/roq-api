@@ -29,7 +29,7 @@ struct ROQ_PUBLIC PositionUpdate final {
   std::string_view account;              //!< Account name (as known to the gateway)
   std::string_view exchange;             //!< Exchange name
   std::string_view symbol;               //!< Symbol
-  Side side = Side::UNDEFINED;           //!< Side
+  Side side = {};                        //!< Side
   double position = NaN;                 //!< Current position
   uint32_t last_trade_id = {};           //!< Last processed trade identifier
   double position_cost = NaN;            //!< Position cost

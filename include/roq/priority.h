@@ -14,24 +14,21 @@
 
 namespace roq {
 
-//! Enumeration of execution types
-struct ROQ_PACKED ExecutionInstruction final {
+//! Enumeration of priority
+struct ROQ_PACKED Priority final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0u,
-    PARTICIPATE_DO_NOT_INITIATE,
-    CANCEL_IF_NOT_BEST,
-    DO_NOT_INCREASE,
-    DO_NOT_REDUCE,
+    PRIMARY,  //!< Primary
   };
 
-  constexpr ExecutionInstruction() = default;
+  constexpr Priority() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr ExecutionInstruction(type_t type)  // NOLINT (allow implicit)
+  constexpr Priority(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr ExecutionInstruction(uint8_t type) : type_(validate(type)) {}
+  explicit constexpr Priority(uint8_t type) : type_(validate(type)) {}
 
   constexpr operator type_t() const { return type_; }
 
@@ -40,14 +37,8 @@ struct ROQ_PACKED ExecutionInstruction final {
     switch (type_) {
       case type_t::UNDEFINED:
         break;
-      case type_t::PARTICIPATE_DO_NOT_INITIATE:
-        return "PARTICIPATE_DO_NOT_INITIATE"_sv;
-      case type_t::CANCEL_IF_NOT_BEST:
-        return "CANCEL_IF_NOT_BEST"_sv;
-      case type_t::DO_NOT_INCREASE:
-        return "DO_NOT_INCREASE"_sv;
-      case type_t::DO_NOT_REDUCE:
-        return "DO_NOT_REDUCE"_sv;
+      case type_t::PRIMARY:
+        return "PRIMARY"_sv;
       default:
         assert(false);
     }
@@ -61,10 +52,7 @@ struct ROQ_PACKED ExecutionInstruction final {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:
-      case type_t::PARTICIPATE_DO_NOT_INITIATE:
-      case type_t::CANCEL_IF_NOT_BEST:
-      case type_t::DO_NOT_INCREASE:
-      case type_t::DO_NOT_REDUCE:
+      case type_t::PRIMARY:
         return result;
       default:
         assert(false);
@@ -79,17 +67,17 @@ struct ROQ_PACKED ExecutionInstruction final {
 }  // namespace roq
 
 template <>
-struct std::is_enum<roq::ExecutionInstruction> : std::true_type {};
+struct std::is_enum<roq::Priority> : std::true_type {};
 
 template <>
-struct std::underlying_type<roq::ExecutionInstruction> {
+struct std::underlying_type<roq::Priority> {
   using type = uint8_t;
 };
 
 template <>
-struct fmt::formatter<roq::ExecutionInstruction> : public roq::formatter {
+struct fmt::formatter<roq::Priority> : public roq::formatter {
   template <typename Context>
-  auto format(const roq::ExecutionInstruction &value, Context &context) {
+  auto format(const roq::Priority &value, Context &context) {
     using namespace roq::literals;
     return roq::format_to(context.out(), "{}"_fmt, value.name());
   }

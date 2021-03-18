@@ -23,7 +23,7 @@ namespace roq {
 
 //! Represents a single trade (match) as part of trade reporting by the exchange
 struct ROQ_PUBLIC Trade final {
-  Side side = Side::UNDEFINED;     //!< Side (by convention: side of the taker)
+  Side side = {};                  //!< Side (by convention: side of the taker)
   double price = NaN;              //!< Price
   double quantity = NaN;           //!< Quantity
   roq::fixed_string<40> trade_id;  //!< Trade identifier (as known to client)

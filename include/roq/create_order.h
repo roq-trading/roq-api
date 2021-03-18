@@ -29,21 +29,19 @@ namespace roq {
 
 //! Fields required to create an order
 struct ROQ_PUBLIC CreateOrder final {
-  std::string_view account;                            //!< Account name (as known to the gateway)
-  uint32_t order_id = {};                              //!< Order identifier (as known to client)
-  std::string_view exchange;                           //!< Exchange name
-  std::string_view symbol;                             //!< Symbol
-  Side side = Side::UNDEFINED;                         //!< Order side
-  double quantity = NaN;                               //!< Order quantity
-  OrderType order_type = OrderType::UNDEFINED;         //!< Order type
-  double price = NaN;                                  //!< Limit price (depends on order_type)
-  TimeInForce time_in_force = TimeInForce::UNDEFINED;  //!< Time in force
-  PositionEffect position_effect = PositionEffect::UNDEFINED;  //!< Position effect
-  ExecutionInstruction execution_instruction =
-      ExecutionInstruction::UNDEFINED;  //!< Execution instruction
-  double stop_price = NaN;              //!< Stop price (depends on order_type and time_in_force)
-  double max_show_quantity =
-      NaN;  //!< Order quantity visible to market (depends on exchange support)
+  std::string_view account;                         //!< Account name (as known to the gateway)
+  uint32_t order_id = {};                           //!< Order identifier (as known to client)
+  std::string_view exchange;                        //!< Exchange name
+  std::string_view symbol;                          //!< Symbol
+  Side side = {};                                   //!< Order side
+  double quantity = NaN;                            //!< Order quantity
+  OrderType order_type = {};                        //!< Order type
+  double price = NaN;                               //!< Limit price (depends on order_type)
+  TimeInForce time_in_force = {};                   //!< Time in force
+  PositionEffect position_effect = {};              //!< Position effect
+  ExecutionInstruction execution_instruction = {};  //!< Execution instruction
+  double stop_price = NaN;          //!< Stop price (depends on order_type and time_in_force)
+  double max_show_quantity = NaN;   //!< Quantity visible to market (requires exchange support)
   std::string_view order_template;  //!< Order template (as known to the gateway)
 };
 

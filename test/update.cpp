@@ -13,6 +13,7 @@ TEST(update, floating_point) {
   EXPECT_DOUBLE_EQ(value, 1.0);
   EXPECT_TRUE(update(value, 2.0));
   EXPECT_DOUBLE_EQ(value, 2.0);
+  // shouldn't change
   EXPECT_FALSE(update(value, NaN));
   EXPECT_DOUBLE_EQ(value, 2.0);
 }

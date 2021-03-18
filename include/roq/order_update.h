@@ -27,17 +27,17 @@ namespace roq {
 
 //! Update relating to current status of an order
 struct ROQ_PUBLIC OrderUpdate final {
-  uint16_t stream_id = {};                      //!< Stream identifier
-  std::string_view account;                     //!< Account name (as known to the gateway)
-  uint32_t order_id = {};                       //!< Order identifier (as known to client)
-  std::string_view exchange;                    //!< Exchange name
-  std::string_view symbol;                      //!< Symbol
-  OrderStatus status = OrderStatus::UNDEFINED;  //!< Order status
-  Side side = Side::UNDEFINED;                  //!< Side
-  double price = NaN;                           //!< Price
-  double remaining_quantity = NaN;              //!< Remaining quantity
-  double traded_quantity = NaN;                 //!< Traded quantity
-  PositionEffect position_effect = PositionEffect::UNDEFINED;  //!< Position effect
+  uint16_t stream_id = {};                        //!< Stream identifier
+  std::string_view account;                       //!< Account name (as known to the gateway)
+  uint32_t order_id = {};                         //!< Order identifier (as known to client)
+  std::string_view exchange;                      //!< Exchange name
+  std::string_view symbol;                        //!< Symbol
+  OrderStatus status = {};                        //!< Order status
+  Side side = {};                                 //!< Side
+  double price = NaN;                             //!< Price
+  double remaining_quantity = NaN;                //!< Remaining quantity
+  double traded_quantity = NaN;                   //!< Traded quantity
+  PositionEffect position_effect = {};            //!< Position effect
   std::string_view order_template;                //!< Order template (as known to the gateway)
   std::chrono::nanoseconds create_time_utc = {};  //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};  //!< Updated timestamp (UTC)

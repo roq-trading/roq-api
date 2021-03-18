@@ -23,10 +23,10 @@ namespace roq {
 
 //! Represents the update status of a single order in the order book
 struct ROQ_PUBLIC MBOUpdate final {
-  double price = NaN;                                       //!< Order price
-  double remaining_quantity = {};                           //!< Remaining order quantity
-  OrderUpdateAction action = OrderUpdateAction::UNDEFINED;  //!< Order update action
-  uint32_t priority = {};                                   //!< Queue priority
+  double price = NaN;              //!< Order price
+  double remaining_quantity = {};  //!< Remaining order quantity
+  OrderUpdateAction action = {};   //!< Order update action
+  uint32_t priority = {};          //!< Queue priority
   roq::fixed_string<40> order_id;  //!< Order identifier (as known to client)
 };
 

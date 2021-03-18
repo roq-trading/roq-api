@@ -53,9 +53,6 @@ struct MarketByOrderUpdateBuilder;
 struct MarketByPriceUpdate;
 struct MarketByPriceUpdateBuilder;
 
-struct MarketDataStatus;
-struct MarketDataStatusBuilder;
-
 struct MarketStatus;
 struct MarketStatusBuilder;
 
@@ -64,9 +61,6 @@ struct ModifyOrderBuilder;
 
 struct OrderAck;
 struct OrderAckBuilder;
-
-struct OrderManagerStatus;
-struct OrderManagerStatusBuilder;
 
 struct OrderUpdate;
 struct OrderUpdateBuilder;
@@ -79,6 +73,9 @@ struct ReferenceDataBuilder;
 
 struct StatisticsUpdate;
 struct StatisticsUpdateBuilder;
+
+struct StreamUpdate;
+struct StreamUpdateBuilder;
 
 struct TopOfBook;
 struct TopOfBookBuilder;
@@ -652,6 +649,114 @@ inline const char *EnumNameStatisticsType(StatisticsType e) {
   return EnumNamesStatisticsType()[index];
 }
 
+enum StreamType {
+  StreamType_Undefined = 0,
+  StreamType_FIX = 1,
+  StreamType_WebSocket = 2,
+  StreamType_REST = 3,
+  StreamType_MIN = StreamType_Undefined,
+  StreamType_MAX = StreamType_REST
+};
+
+inline const StreamType (&EnumValuesStreamType())[4] {
+  static const StreamType values[] = {
+      StreamType_Undefined, StreamType_FIX, StreamType_WebSocket, StreamType_REST};
+  return values;
+}
+
+inline const char *const *EnumNamesStreamType() {
+  static const char *const names[5] = {"Undefined", "FIX", "WebSocket", "REST", nullptr};
+  return names;
+}
+
+inline const char *EnumNameStreamType(StreamType e) {
+  if (flatbuffers::IsOutRange(e, StreamType_Undefined, StreamType_REST))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesStreamType()[index];
+}
+
+enum SupportType {
+  SupportType_Undefined = 0,
+  SupportType_ReferenceData = 1,
+  SupportType_MarketStatus = 2,
+  SupportType_TopOfBook = 4,
+  SupportType_MarketByPrice = 8,
+  SupportType_MarketByOrder = 16,
+  SupportType_TradeSummary = 32,
+  SupportType_Statistics = 64,
+  SupportType_CreateOrder = 65536,
+  SupportType_ModifyOrder = 131072,
+  SupportType_CancelOrder = 262144,
+  SupportType_OrderAck = 524288,
+  SupportType_Order = 1048576,
+  SupportType_Trade = 2097152,
+  SupportType_Position = 4194304,
+  SupportType_Funds = 268435456,
+  SupportType_MIN = SupportType_Undefined,
+  SupportType_MAX = SupportType_Funds
+};
+
+inline const SupportType (&EnumValuesSupportType())[16] {
+  static const SupportType values[] = {
+      SupportType_Undefined,
+      SupportType_ReferenceData,
+      SupportType_MarketStatus,
+      SupportType_TopOfBook,
+      SupportType_MarketByPrice,
+      SupportType_MarketByOrder,
+      SupportType_TradeSummary,
+      SupportType_Statistics,
+      SupportType_CreateOrder,
+      SupportType_ModifyOrder,
+      SupportType_CancelOrder,
+      SupportType_OrderAck,
+      SupportType_Order,
+      SupportType_Trade,
+      SupportType_Position,
+      SupportType_Funds};
+  return values;
+}
+
+inline const char *EnumNameSupportType(SupportType e) {
+  switch (e) {
+    case SupportType_Undefined:
+      return "Undefined";
+    case SupportType_ReferenceData:
+      return "ReferenceData";
+    case SupportType_MarketStatus:
+      return "MarketStatus";
+    case SupportType_TopOfBook:
+      return "TopOfBook";
+    case SupportType_MarketByPrice:
+      return "MarketByPrice";
+    case SupportType_MarketByOrder:
+      return "MarketByOrder";
+    case SupportType_TradeSummary:
+      return "TradeSummary";
+    case SupportType_Statistics:
+      return "Statistics";
+    case SupportType_CreateOrder:
+      return "CreateOrder";
+    case SupportType_ModifyOrder:
+      return "ModifyOrder";
+    case SupportType_CancelOrder:
+      return "CancelOrder";
+    case SupportType_OrderAck:
+      return "OrderAck";
+    case SupportType_Order:
+      return "Order";
+    case SupportType_Trade:
+      return "Trade";
+    case SupportType_Position:
+      return "Position";
+    case SupportType_Funds:
+      return "Funds";
+    default:
+      return "";
+  }
+}
+
 enum TimeInForce {
   TimeInForce_Undefined = 0,
   TimeInForce_FOK = 1,
@@ -706,6 +811,30 @@ inline const char *EnumNameTradingStatus(TradingStatus e) {
   return EnumNamesTradingStatus()[index];
 }
 
+enum Priority {
+  Priority_Undefined = 0,
+  Priority_Primary = 1,
+  Priority_MIN = Priority_Undefined,
+  Priority_MAX = Priority_Primary
+};
+
+inline const Priority (&EnumValuesPriority())[2] {
+  static const Priority values[] = {Priority_Undefined, Priority_Primary};
+  return values;
+}
+
+inline const char *const *EnumNamesPriority() {
+  static const char *const names[3] = {"Undefined", "Primary", nullptr};
+  return names;
+}
+
+inline const char *EnumNamePriority(Priority e) {
+  if (flatbuffers::IsOutRange(e, Priority_Undefined, Priority_Primary))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesPriority()[index];
+}
+
 enum Message {
   Message_NONE = 0,
   Message_Handshake = 1,
@@ -716,29 +845,28 @@ enum Message {
   Message_DownloadBegin = 6,
   Message_DownloadEnd = 7,
   Message_GatewaySettings = 8,
-  Message_ExternalLatency = 9,
-  Message_MarketDataStatus = 10,
-  Message_OrderManagerStatus = 11,
-  Message_ReferenceData = 12,
-  Message_MarketStatus = 13,
-  Message_TopOfBook = 14,
-  Message_MarketByPriceUpdate = 15,
-  Message_MarketByOrderUpdate = 16,
-  Message_TradeSummary = 17,
-  Message_StatisticsUpdate = 18,
-  Message_CreateOrder = 19,
-  Message_ModifyOrder = 20,
-  Message_CancelOrder = 21,
-  Message_OrderAck = 22,
-  Message_OrderUpdate = 23,
-  Message_TradeUpdate = 24,
-  Message_PositionUpdate = 25,
-  Message_FundsUpdate = 26,
+  Message_StreamUpdate = 9,
+  Message_ExternalLatency = 10,
+  Message_ReferenceData = 11,
+  Message_MarketStatus = 12,
+  Message_TopOfBook = 13,
+  Message_MarketByPriceUpdate = 14,
+  Message_MarketByOrderUpdate = 15,
+  Message_TradeSummary = 16,
+  Message_StatisticsUpdate = 17,
+  Message_CreateOrder = 18,
+  Message_ModifyOrder = 19,
+  Message_CancelOrder = 20,
+  Message_OrderAck = 21,
+  Message_OrderUpdate = 22,
+  Message_TradeUpdate = 23,
+  Message_PositionUpdate = 24,
+  Message_FundsUpdate = 25,
   Message_MIN = Message_NONE,
   Message_MAX = Message_FundsUpdate
 };
 
-inline const Message (&EnumValuesMessage())[27] {
+inline const Message (&EnumValuesMessage())[26] {
   static const Message values[] = {
       Message_NONE,
       Message_Handshake,
@@ -749,9 +877,8 @@ inline const Message (&EnumValuesMessage())[27] {
       Message_DownloadBegin,
       Message_DownloadEnd,
       Message_GatewaySettings,
+      Message_StreamUpdate,
       Message_ExternalLatency,
-      Message_MarketDataStatus,
-      Message_OrderManagerStatus,
       Message_ReferenceData,
       Message_MarketStatus,
       Message_TopOfBook,
@@ -771,7 +898,7 @@ inline const Message (&EnumValuesMessage())[27] {
 }
 
 inline const char *const *EnumNamesMessage() {
-  static const char *const names[28] = {
+  static const char *const names[27] = {
       "NONE",
       "Handshake",
       "HandshakeAck",
@@ -781,9 +908,8 @@ inline const char *const *EnumNamesMessage() {
       "DownloadBegin",
       "DownloadEnd",
       "GatewaySettings",
+      "StreamUpdate",
       "ExternalLatency",
-      "MarketDataStatus",
-      "OrderManagerStatus",
       "ReferenceData",
       "MarketStatus",
       "TopOfBook",
@@ -856,18 +982,13 @@ struct MessageTraits<roq::fbs::GatewaySettings> {
 };
 
 template <>
+struct MessageTraits<roq::fbs::StreamUpdate> {
+  static const Message enum_value = Message_StreamUpdate;
+};
+
+template <>
 struct MessageTraits<roq::fbs::ExternalLatency> {
   static const Message enum_value = Message_ExternalLatency;
-};
-
-template <>
-struct MessageTraits<roq::fbs::MarketDataStatus> {
-  static const Message enum_value = Message_MarketDataStatus;
-};
-
-template <>
-struct MessageTraits<roq::fbs::OrderManagerStatus> {
-  static const Message enum_value = Message_OrderManagerStatus;
 };
 
 template <>
@@ -2158,53 +2279,6 @@ inline flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdateDirect(
       _fbb, stream_id, exchange__, symbol__, bids__, asks__, snapshot, exchange_time_utc);
 }
 
-struct MarketDataStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef MarketDataStatusBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_STREAM_ID = 4,
-    VT_STATUS = 6
-  };
-  uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  roq::fbs::GatewayStatus status() const {
-    return static_cast<roq::fbs::GatewayStatus>(GetField<uint8_t>(VT_STATUS, 0));
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
-           VerifyField<uint8_t>(verifier, VT_STATUS) && verifier.EndTable();
-  }
-};
-
-struct MarketDataStatusBuilder {
-  typedef MarketDataStatus Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(MarketDataStatus::VT_STREAM_ID, stream_id, 0);
-  }
-  void add_status(roq::fbs::GatewayStatus status) {
-    fbb_.AddElement<uint8_t>(MarketDataStatus::VT_STATUS, static_cast<uint8_t>(status), 0);
-  }
-  explicit MarketDataStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  MarketDataStatusBuilder &operator=(const MarketDataStatusBuilder &);
-  flatbuffers::Offset<MarketDataStatus> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<MarketDataStatus>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<MarketDataStatus> CreateMarketDataStatus(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t stream_id = 0,
-    roq::fbs::GatewayStatus status = roq::fbs::GatewayStatus_Undefined) {
-  MarketDataStatusBuilder builder_(_fbb);
-  builder_.add_stream_id(stream_id);
-  builder_.add_status(status);
-  return builder_.Finish();
-}
-
 struct MarketStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef MarketStatusBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -2538,72 +2612,6 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
       external_account__,
       external_order_id__,
       request_id__);
-}
-
-struct OrderManagerStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef OrderManagerStatusBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_STREAM_ID = 4,
-    VT_ACCOUNT = 6,
-    VT_STATUS = 8
-  };
-  uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
-  roq::fbs::GatewayStatus status() const {
-    return static_cast<roq::fbs::GatewayStatus>(GetField<uint8_t>(VT_STATUS, 0));
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
-           VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint8_t>(verifier, VT_STATUS) && verifier.EndTable();
-  }
-};
-
-struct OrderManagerStatusBuilder {
-  typedef OrderManagerStatus Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(OrderManagerStatus::VT_STREAM_ID, stream_id, 0);
-  }
-  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
-    fbb_.AddOffset(OrderManagerStatus::VT_ACCOUNT, account);
-  }
-  void add_status(roq::fbs::GatewayStatus status) {
-    fbb_.AddElement<uint8_t>(OrderManagerStatus::VT_STATUS, static_cast<uint8_t>(status), 0);
-  }
-  explicit OrderManagerStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  OrderManagerStatusBuilder &operator=(const OrderManagerStatusBuilder &);
-  flatbuffers::Offset<OrderManagerStatus> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<OrderManagerStatus>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<OrderManagerStatus> CreateOrderManagerStatus(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t stream_id = 0,
-    flatbuffers::Offset<flatbuffers::String> account = 0,
-    roq::fbs::GatewayStatus status = roq::fbs::GatewayStatus_Undefined) {
-  OrderManagerStatusBuilder builder_(_fbb);
-  builder_.add_account(account);
-  builder_.add_stream_id(stream_id);
-  builder_.add_status(status);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<OrderManagerStatus> CreateOrderManagerStatusDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t stream_id = 0,
-    const char *account = nullptr,
-    roq::fbs::GatewayStatus status = roq::fbs::GatewayStatus_Undefined) {
-  auto account__ = account ? _fbb.CreateString(account) : 0;
-  return roq::fbs::CreateOrderManagerStatus(_fbb, stream_id, account__, status);
 }
 
 struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -3400,6 +3408,102 @@ inline flatbuffers::Offset<StatisticsUpdate> CreateStatisticsUpdateDirect(
       statistics ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Statistics>>(*statistics) : 0;
   return roq::fbs::CreateStatisticsUpdate(
       _fbb, stream_id, exchange__, symbol__, statistics__, snapshot, exchange_time_utc);
+}
+
+struct StreamUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StreamUpdateBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_STREAM_ID = 4,
+    VT_TYPE = 6,
+    VT_SUPPORTS = 8,
+    VT_ACCOUNT = 10,
+    VT_PRIORITY = 12,
+    VT_STATUS = 14
+  };
+  uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
+  roq::fbs::StreamType type() const {
+    return static_cast<roq::fbs::StreamType>(GetField<uint8_t>(VT_TYPE, 0));
+  }
+  uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
+  const flatbuffers::String *account() const {
+    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
+  }
+  roq::fbs::Priority priority() const {
+    return static_cast<roq::fbs::Priority>(GetField<uint32_t>(VT_PRIORITY, 0));
+  }
+  roq::fbs::GatewayStatus status() const {
+    return static_cast<roq::fbs::GatewayStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+           VerifyField<uint8_t>(verifier, VT_TYPE) &&
+           VerifyField<uint64_t>(verifier, VT_SUPPORTS) && VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) && VerifyField<uint32_t>(verifier, VT_PRIORITY) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS) && verifier.EndTable();
+  }
+};
+
+struct StreamUpdateBuilder {
+  typedef StreamUpdate Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_stream_id(uint16_t stream_id) {
+    fbb_.AddElement<uint16_t>(StreamUpdate::VT_STREAM_ID, stream_id, 0);
+  }
+  void add_type(roq::fbs::StreamType type) {
+    fbb_.AddElement<uint8_t>(StreamUpdate::VT_TYPE, static_cast<uint8_t>(type), 0);
+  }
+  void add_supports(uint64_t supports) {
+    fbb_.AddElement<uint64_t>(StreamUpdate::VT_SUPPORTS, supports, 0);
+  }
+  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
+    fbb_.AddOffset(StreamUpdate::VT_ACCOUNT, account);
+  }
+  void add_priority(roq::fbs::Priority priority) {
+    fbb_.AddElement<uint32_t>(StreamUpdate::VT_PRIORITY, static_cast<uint32_t>(priority), 0);
+  }
+  void add_status(roq::fbs::GatewayStatus status) {
+    fbb_.AddElement<uint8_t>(StreamUpdate::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  explicit StreamUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  StreamUpdateBuilder &operator=(const StreamUpdateBuilder &);
+  flatbuffers::Offset<StreamUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<StreamUpdate>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<StreamUpdate> CreateStreamUpdate(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t stream_id = 0,
+    roq::fbs::StreamType type = roq::fbs::StreamType_Undefined,
+    uint64_t supports = 0,
+    flatbuffers::Offset<flatbuffers::String> account = 0,
+    roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
+    roq::fbs::GatewayStatus status = roq::fbs::GatewayStatus_Undefined) {
+  StreamUpdateBuilder builder_(_fbb);
+  builder_.add_supports(supports);
+  builder_.add_priority(priority);
+  builder_.add_account(account);
+  builder_.add_stream_id(stream_id);
+  builder_.add_status(status);
+  builder_.add_type(type);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<StreamUpdate> CreateStreamUpdateDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t stream_id = 0,
+    roq::fbs::StreamType type = roq::fbs::StreamType_Undefined,
+    uint64_t supports = 0,
+    const char *account = nullptr,
+    roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
+    roq::fbs::GatewayStatus status = roq::fbs::GatewayStatus_Undefined) {
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  return roq::fbs::CreateStreamUpdate(_fbb, stream_id, type, supports, account__, priority, status);
 }
 
 struct TopOfBook FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4242,19 +4346,14 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
                ? static_cast<const roq::fbs::GatewaySettings *>(message())
                : nullptr;
   }
+  const roq::fbs::StreamUpdate *message_as_StreamUpdate() const {
+    return message_type() == roq::fbs::Message_StreamUpdate
+               ? static_cast<const roq::fbs::StreamUpdate *>(message())
+               : nullptr;
+  }
   const roq::fbs::ExternalLatency *message_as_ExternalLatency() const {
     return message_type() == roq::fbs::Message_ExternalLatency
                ? static_cast<const roq::fbs::ExternalLatency *>(message())
-               : nullptr;
-  }
-  const roq::fbs::MarketDataStatus *message_as_MarketDataStatus() const {
-    return message_type() == roq::fbs::Message_MarketDataStatus
-               ? static_cast<const roq::fbs::MarketDataStatus *>(message())
-               : nullptr;
-  }
-  const roq::fbs::OrderManagerStatus *message_as_OrderManagerStatus() const {
-    return message_type() == roq::fbs::Message_OrderManagerStatus
-               ? static_cast<const roq::fbs::OrderManagerStatus *>(message())
                : nullptr;
   }
   const roq::fbs::ReferenceData *message_as_ReferenceData() const {
@@ -4381,18 +4480,13 @@ inline const roq::fbs::GatewaySettings *Event::message_as<roq::fbs::GatewaySetti
 }
 
 template <>
+inline const roq::fbs::StreamUpdate *Event::message_as<roq::fbs::StreamUpdate>() const {
+  return message_as_StreamUpdate();
+}
+
+template <>
 inline const roq::fbs::ExternalLatency *Event::message_as<roq::fbs::ExternalLatency>() const {
   return message_as_ExternalLatency();
-}
-
-template <>
-inline const roq::fbs::MarketDataStatus *Event::message_as<roq::fbs::MarketDataStatus>() const {
-  return message_as_MarketDataStatus();
-}
-
-template <>
-inline const roq::fbs::OrderManagerStatus *Event::message_as<roq::fbs::OrderManagerStatus>() const {
-  return message_as_OrderManagerStatus();
 }
 
 template <>
@@ -4545,16 +4639,12 @@ inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Mess
       auto ptr = reinterpret_cast<const roq::fbs::GatewaySettings *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case Message_StreamUpdate: {
+      auto ptr = reinterpret_cast<const roq::fbs::StreamUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     case Message_ExternalLatency: {
       auto ptr = reinterpret_cast<const roq::fbs::ExternalLatency *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case Message_MarketDataStatus: {
-      auto ptr = reinterpret_cast<const roq::fbs::MarketDataStatus *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case Message_OrderManagerStatus: {
-      auto ptr = reinterpret_cast<const roq::fbs::OrderManagerStatus *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_ReferenceData: {

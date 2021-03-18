@@ -14,24 +14,23 @@
 
 namespace roq {
 
-//! Enumeration of execution types
-struct ROQ_PACKED ExecutionInstruction final {
+//! Enumeration of stream types
+struct ROQ_PACKED StreamType final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0u,
-    PARTICIPATE_DO_NOT_INITIATE,
-    CANCEL_IF_NOT_BEST,
-    DO_NOT_INCREASE,
-    DO_NOT_REDUCE,
+    FIX,         //!< FIX
+    WEB_SOCKET,  //!< Web-Socket
+    REST,        //!< REST
   };
 
-  constexpr ExecutionInstruction() = default;
+  constexpr StreamType() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr ExecutionInstruction(type_t type)  // NOLINT (allow implicit)
+  constexpr StreamType(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr ExecutionInstruction(uint8_t type) : type_(validate(type)) {}
+  explicit constexpr StreamType(uint8_t type) : type_(validate(type)) {}
 
   constexpr operator type_t() const { return type_; }
 
@@ -40,14 +39,12 @@ struct ROQ_PACKED ExecutionInstruction final {
     switch (type_) {
       case type_t::UNDEFINED:
         break;
-      case type_t::PARTICIPATE_DO_NOT_INITIATE:
-        return "PARTICIPATE_DO_NOT_INITIATE"_sv;
-      case type_t::CANCEL_IF_NOT_BEST:
-        return "CANCEL_IF_NOT_BEST"_sv;
-      case type_t::DO_NOT_INCREASE:
-        return "DO_NOT_INCREASE"_sv;
-      case type_t::DO_NOT_REDUCE:
-        return "DO_NOT_REDUCE"_sv;
+      case type_t::FIX:
+        return "FIX"_sv;
+      case type_t::WEB_SOCKET:
+        return "WEB_SOCKET"_sv;
+      case type_t::REST:
+        return "REST"_sv;
       default:
         assert(false);
     }
@@ -61,10 +58,9 @@ struct ROQ_PACKED ExecutionInstruction final {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:
-      case type_t::PARTICIPATE_DO_NOT_INITIATE:
-      case type_t::CANCEL_IF_NOT_BEST:
-      case type_t::DO_NOT_INCREASE:
-      case type_t::DO_NOT_REDUCE:
+      case type_t::FIX:
+      case type_t::WEB_SOCKET:
+      case type_t::REST:
         return result;
       default:
         assert(false);
@@ -79,17 +75,17 @@ struct ROQ_PACKED ExecutionInstruction final {
 }  // namespace roq
 
 template <>
-struct std::is_enum<roq::ExecutionInstruction> : std::true_type {};
+struct std::is_enum<roq::StreamType> : std::true_type {};
 
 template <>
-struct std::underlying_type<roq::ExecutionInstruction> {
+struct std::underlying_type<roq::StreamType> {
   using type = uint8_t;
 };
 
 template <>
-struct fmt::formatter<roq::ExecutionInstruction> : public roq::formatter {
+struct fmt::formatter<roq::StreamType> : public roq::formatter {
   template <typename Context>
-  auto format(const roq::ExecutionInstruction &value, Context &context) {
+  auto format(const roq::StreamType &value, Context &context) {
     using namespace roq::literals;
     return roq::format_to(context.out(), "{}"_fmt, value.name());
   }

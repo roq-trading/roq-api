@@ -26,26 +26,26 @@ namespace roq {
 
 //! Update relating to the reference data for a symbol
 struct ROQ_PUBLIC ReferenceData final {
-  uint16_t stream_id = {};                               //!< Stream identifier
-  std::string_view exchange;                             //!< Exchange name
-  std::string_view symbol;                               //!< Symbol
-  std::string_view description;                          //!< Description
-  SecurityType security_type = SecurityType::UNDEFINED;  //!< Security type
-  std::string_view currency;                             //!< Currency name
-  std::string_view settlement_currency;                  //!< Currency name
-  std::string_view commission_currency;                  //!< Currency name
-  double tick_size = NaN;                                //!< Minimum price increment
-  double multiplier = NaN;                               //!< Multiplier (notional)
-  double min_trade_vol = NaN;                            //!< Minimum trade volume
-  OptionType option_type = OptionType::UNDEFINED;        //!< Option type
-  std::string_view strike_currency;                      //!< Strike currency
-  double strike_price = NaN;                             //!< Strike price
-  std::string_view underlying;                           //!< Underlying instrument
-  std::string_view time_zone;                            //!< Time-zone
-  roq::chrono::days issue_date = {};                     //!< Issue date
-  roq::chrono::days settlement_date = {};                //!< Settlement date
-  std::chrono::seconds expiry_datetime = {};             //!< Expiry datetime
-  std::chrono::seconds expiry_datetime_utc = {};         //!< Expiry datetime
+  uint16_t stream_id = {};                        //!< Stream identifier
+  std::string_view exchange;                      //!< Exchange name
+  std::string_view symbol;                        //!< Symbol
+  std::string_view description;                   //!< Description
+  SecurityType security_type = {};                //!< Security type
+  std::string_view currency;                      //!< Currency name
+  std::string_view settlement_currency;           //!< Currency name
+  std::string_view commission_currency;           //!< Currency name
+  double tick_size = NaN;                         //!< Minimum price increment
+  double multiplier = NaN;                        //!< Multiplier (notional)
+  double min_trade_vol = NaN;                     //!< Minimum trade volume
+  OptionType option_type = {};                    //!< Option type
+  std::string_view strike_currency;               //!< Strike currency
+  double strike_price = NaN;                      //!< Strike price
+  std::string_view underlying;                    //!< Underlying instrument
+  std::string_view time_zone;                     //!< Time-zone
+  roq::chrono::days issue_date = {};              //!< Issue date
+  roq::chrono::days settlement_date = {};         //!< Settlement date
+  std::chrono::seconds expiry_datetime = {};      //!< Expiry datetime
+  std::chrono::seconds expiry_datetime_utc = {};  //!< Expiry datetime
 };
 
 }  // namespace roq

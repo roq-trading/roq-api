@@ -1,0 +1,20 @@
+namespace roq.fbs;
+
+enum SupportType:uint32 {
+  Undefined = 0,
+  ReferenceData = 1,
+  MarketStatus = 2,
+  TopOfBook = 4,
+  MarketByPrice = 8,
+  MarketByOrder = 16,
+  TradeSummary = 32,
+  Statistics = 64,
+  CreateOrder = 65536,
+  ModifyOrder = 131072,
+  CancelOrder = 262144,
+  OrderAck = 524288,
+  Order = 1048576,
+  Trade = 2097152,
+  Position = 4194304,
+  Funds = 268435456,
+}

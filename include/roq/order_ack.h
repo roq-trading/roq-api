@@ -28,15 +28,15 @@ namespace roq {
 
 //! Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange
 struct ROQ_PUBLIC OrderAck final {
-  uint16_t stream_id = {};                          //!< Stream identifier
-  std::string_view account;                         //!< Account name (as known to the gateway)
-  uint32_t order_id = {};                           //!< Order identifier (as known to client)
-  RequestType type = RequestType::UNDEFINED;        //!< Request type
-  Origin origin = Origin::UNDEFINED;                //!< Origin of ack
-  RequestStatus status = RequestStatus::UNDEFINED;  //!< Request status
-  Error error = Error::UNDEFINED;                   //!< Error code
-  std::string_view text;                            //!< Descriptive text
-  uint32_t gateway_order_id = {};                   //!< Order identifier (as known to gateway)
+  uint16_t stream_id = {};            //!< Stream identifier
+  std::string_view account;           //!< Account name (as known to the gateway)
+  uint32_t order_id = {};             //!< Order identifier (as known to client)
+  RequestType type = {};              //!< Request type
+  Origin origin = {};                 //!< Origin of ack
+  RequestStatus status = {};          //!< Request status
+  Error error = {};                   //!< Error code
+  std::string_view text;              //!< Descriptive text
+  uint32_t gateway_order_id = {};     //!< Order identifier (as known to gateway)
   std::string_view external_account;  //!< External account name (as known to broker or exchange)
   std::string_view
       external_order_id;        //!< External order identifier (as known to broker or exchange)

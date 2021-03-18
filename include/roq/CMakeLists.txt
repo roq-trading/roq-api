@@ -21,7 +21,6 @@ set(SOURCES
     layer.json
     market_by_order_update.json
     market_by_price_update.json
-    market_data_status.json
     market_status.json
     mbo_update.json
     mbp_update.json
@@ -29,7 +28,6 @@ set(SOURCES
     modify_order.json
     option_type.json
     order_ack.json
-    order_manager_status.json
     order_status.json
     order_type.json
     order_update.json
@@ -37,6 +35,7 @@ set(SOURCES
     origin.json
     position_effect.json
     position_update.json
+    priority.json
     reference_data.json
     request_status.json
     request_type.json
@@ -47,6 +46,9 @@ set(SOURCES
     statistics_type.json
     statistics_update.json
     stop.json
+    stream_type.json
+    stream_update.json
+    support_type.json
     time_in_force.json
     timer.json
     top_of_book.json

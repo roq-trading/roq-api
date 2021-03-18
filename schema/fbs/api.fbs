@@ -17,6 +17,8 @@ include "request_type.fbs";
 include "security_type.fbs";
 include "side.fbs";
 include "statistics_type.fbs";
+include "stream_type.fbs";
+include "support_type.fbs";
 include "time_in_force.fbs";
 include "trading_status.fbs";
 
@@ -40,15 +42,14 @@ include "funds_update.fbs";
 include "gateway_settings.fbs";
 include "market_by_order_update.fbs";
 include "market_by_price_update.fbs";
-include "market_data_status.fbs";
 include "market_status.fbs";
 include "modify_order.fbs";
 include "order_ack.fbs";
-include "order_manager_status.fbs";
 include "order_update.fbs";
 include "position_update.fbs";
 include "reference_data.fbs";
 include "statistics_update.fbs";
+include "stream_update.fbs";
 include "top_of_book.fbs";
 include "trade_summary.fbs";
 include "trade_update.fbs";
@@ -103,9 +104,8 @@ union Message {
   DownloadBegin,
   DownloadEnd,
   GatewaySettings,
+  StreamUpdate,
   ExternalLatency,
-  MarketDataStatus,
-  OrderManagerStatus,
   ReferenceData,
   MarketStatus,
   TopOfBook,

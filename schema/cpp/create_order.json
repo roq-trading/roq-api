@@ -58,7 +58,7 @@
         {
             "name": "max_show_quantity",
             "type": "double",
-            "comment": "Order quantity visible to market (depends on exchange support)"
+            "comment": "Quantity visible to market (requires exchange support)"
         },
         {
             "name": "order_template",

@@ -33,14 +33,14 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<DownloadBegin> &) {}
   virtual void operator()(const Event<DownloadEnd> &) {}
 
-  // server config
+  // config
   virtual void operator()(const Event<GatewaySettings> &) {}
 
-  // network
+  // stream
+  virtual void operator()(const Event<StreamUpdate> &) {}
   virtual void operator()(const Event<ExternalLatency> &) {}
 
   // market data
-  virtual void operator()(const Event<MarketDataStatus> &) {}
   virtual void operator()(const Event<ReferenceData> &) {}
   virtual void operator()(const Event<MarketStatus> &) {}
   virtual void operator()(const Event<TopOfBook> &) {}
@@ -50,7 +50,6 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<StatisticsUpdate> &) {}
 
   // order management
-  virtual void operator()(const Event<OrderManagerStatus> &) {}
   virtual void operator()(const Event<OrderAck> &) {}
   virtual void operator()(const Event<OrderUpdate> &) {}
   virtual void operator()(const Event<TradeUpdate> &) {}

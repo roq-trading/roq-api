@@ -1,0 +1,14 @@
+include "gateway_status.fbs";
+include "priority.fbs";
+include "stream_type.fbs";
+
+namespace roq.fbs;
+
+table StreamUpdate {
+  stream_id:uint16;
+  type:StreamType;
+  supports:uint64;
+  account:string;
+  priority:Priority;
+  status:GatewayStatus;
+}

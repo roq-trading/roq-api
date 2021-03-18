@@ -1,0 +1,35 @@
+{
+    "name": "StreamUpdate",
+    "type": "message",
+    "comment": "Update relating to current stream status",
+    "values": [
+        {
+            "name": "stream_id",
+            "type": "uint16_t"
+        },
+        {
+            "name": "type",
+            "type": "StreamType",
+            "comment": "Stream type"
+        },
+        {
+            "name": "supports",
+            "type": "uint64_t",
+            "comment": "Update types (bit mask)"
+        },
+        {
+            "name": "account",
+            "type": "std::string_view"
+        },
+        {
+            "name": "priority",
+            "type": "Priority",
+            "comment": "Priority"
+        },
+        {
+            "name": "status",
+            "type": "GatewayStatus",
+            "comment": "Gateway status"
+        }
+    ]
+}

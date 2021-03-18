@@ -15,10 +15,10 @@
 //! {{ comment }}
 struct ROQ_PACKED {{ name }} final {
   //! helper
-  enum type_t : uint8_t {
+  enum type_t : uint64_t {
     UNDEFINED = 0u,
   {% for value in values %}
-    {{ value.enum_value }},{{ '  //!< {}'.format(value.comment) if value.comment|length > 0 else '' }}
+    {{ value.enum_value }} = 1u << {{ value.bit }},{{ '  //!< {}'.format(value.comment) if value.comment|length > 0 else '' }}
   {% endfor %}
   };
 
@@ -29,7 +29,7 @@ struct ROQ_PACKED {{ name }} final {
       : type_(type) {
   }
 
-  explicit constexpr {{ name }}(uint8_t type)
+  explicit constexpr {{ name }}(uint64_t type)
       : type_(validate(type)) {
   }
 
@@ -57,7 +57,7 @@ struct ROQ_PACKED {{ name }} final {
   }
 
  protected:
-  constexpr type_t validate(uint8_t type) {
+  constexpr type_t validate(uint64_t type) {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:
@@ -82,7 +82,7 @@ struct std::is_enum<{{ namespaces | join('::') }}::{{ name }}> : std::true_type 
 
 template <>
 struct std::underlying_type<{{ namespaces | join('::') }}::{{ name }}> {
-  using type = uint8_t;
+  using type = uint64_t;
 };
 
 template <>

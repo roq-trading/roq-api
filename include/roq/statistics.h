@@ -23,8 +23,8 @@ namespace roq {
 
 //! Represents a single statistic
 struct ROQ_PUBLIC Statistics final {
-  StatisticsType type = StatisticsType::UNDEFINED;  //!< Statistics type
-  double value = NaN;                               //!< Value
+  StatisticsType type = {};  //!< Statistics type
+  double value = NaN;        //!< Value
 };
 
 }  // namespace roq

@@ -25,10 +25,10 @@ namespace roq {
 
 //! Update relating to current trading status of a symbol
 struct ROQ_PUBLIC MarketStatus final {
-  uint16_t stream_id = {};                                  //!< Stream identifier
-  std::string_view exchange;                                //!< Exchange name
-  std::string_view symbol;                                  //!< Symbol
-  TradingStatus trading_status = TradingStatus::UNDEFINED;  //!< Trading status
+  uint16_t stream_id = {};            //!< Stream identifier
+  std::string_view exchange;          //!< Exchange name
+  std::string_view symbol;            //!< Symbol
+  TradingStatus trading_status = {};  //!< Trading status
 };
 
 }  // namespace roq

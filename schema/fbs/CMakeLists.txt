@@ -18,14 +18,12 @@ set(SOURCES
     layer.fbs
     market_by_order_update.fbs
     market_by_price_update.fbs
-    market_data_status.fbs
     market_status.fbs
     mbo_update.fbs
     mbp_update.fbs
     modify_order.fbs
     option_type.fbs
     order_ack.fbs
-    order_manager_status.fbs
     order_status.fbs
     order_type.fbs
     order_update.fbs
@@ -33,6 +31,7 @@ set(SOURCES
     origin.fbs
     position_effect.fbs
     position_update.fbs
+    priority.fbs
     reference_data.fbs
     request_status.fbs
     request_type.fbs
@@ -41,6 +40,9 @@ set(SOURCES
     statistics.fbs
     statistics_type.fbs
     statistics_update.fbs
+    stream_type.fbs
+    stream_update.fbs
+    support_type.fbs
     time_in_force.fbs
     top_of_book.fbs
     trade.fbs

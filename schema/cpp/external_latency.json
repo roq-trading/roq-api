@@ -8,11 +8,6 @@
             "type": "uint16_t"
         },
         {
-            "name": "name",
-            "type": "std::string_view",
-            "comment": "connection name"
-        },
-        {
             "name": "latency",
             "type": "std::chrono::nanoseconds",
             "comment": "latency measurement (1-way)"

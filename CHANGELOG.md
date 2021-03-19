@@ -8,14 +8,18 @@ All notable changes will be documented in this file.
 
 * All server (gateway) originated structs now include `stream_id` to indicate
   the origin of a message.
-  `MarketDataStatus` and `OrderManagerStatus` are now published per
-  `stream_id` and should be used to selectively invalidate cached state.
-  This change is done to allow gateways to manage load balance e.g. by using
-  multiple connections.
+  `MarketDataStatus` and `OrderManagerStatus` have been replaced with
+  `StreamUpdate`.
+  Clients must use the `supports` bit-mask from `StreamUpdate` to maintain
+  availability of cached objects.
+  This change was done to allow gateways to manage load balance e.g. by
+  maintaining multiple connections.
 
 ### Removed
 
 * Python API (this is not the right place)
+* Removed `name` from `ExternalLatency`
+* Removed `MarketDataStatus` and `OrderManagerStatus`
 
 ## 0.6.1 &ndash; 2021-02-19
 

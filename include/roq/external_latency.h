@@ -24,7 +24,6 @@ namespace roq {
 //! Update relating to external latency
 struct ROQ_PUBLIC ExternalLatency final {
   uint16_t stream_id = {};                //!< Stream identifier
-  std::string_view name;                  //!< connection name
   std::chrono::nanoseconds latency = {};  //!< latency measurement (1-way)
 };
 
@@ -39,11 +38,9 @@ struct fmt::formatter<roq::ExternalLatency> : public roq::formatter {
         context.out(),
         R"({{)"
         R"(stream_id={}, )"
-        R"(name="{}", )"
         R"(latency={})"
         R"(}})"_fmt,
         value.stream_id,
-        value.name,
         value.latency);
   }
 };

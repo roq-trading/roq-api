@@ -339,8 +339,7 @@ auto encode(B &builder, const roq::StreamUpdate &value) {
 
 template <typename B>
 auto encode(B &builder, const roq::ExternalLatency &value) {
-  return CreateExternalLatency(
-      builder, value.stream_id, encode(builder, value.name), encode(builder, value.latency));
+  return CreateExternalLatency(builder, value.stream_id, encode(builder, value.latency));
 }
 
 template <typename B>

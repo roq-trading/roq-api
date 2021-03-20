@@ -31,7 +31,7 @@ struct fmt::formatter<roq::BatchEnd> : public roq::formatter {
   template <typename Context>
   auto format(const roq::BatchEnd &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(context.out(), R"({{}})"_fmt);
+    return roq::format_to(context.out(), R"({{}})"_sv);
   }
 };
 template <>

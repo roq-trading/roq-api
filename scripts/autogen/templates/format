@@ -9,7 +9,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> : public roq::f
         context.out(),
 {%- if variables | length == 0 %}
 {%- raw %}
-        R"({{}})"_fmt);
+        R"({{}})"_sv);
 {%- endraw %}
 {%- else %}
 {%- raw %}

@@ -36,10 +36,10 @@ struct fmt::formatter<roq::Subscribe> : public roq::formatter {
     using namespace roq::literals;
     return roq::format_to(
         context.out(),
-        R"({{)"
-        R"(accounts={}, )"
-        R"(symbols_by_exchange={})"
-        R"(}})"_fmt,
+        "{{"
+        "accounts={}, "
+        "symbols_by_exchange={}"
+        "}}"_fmt,
         value.accounts,
         value.symbols_by_exchange);
   }
@@ -52,10 +52,10 @@ struct fmt::formatter<roq::Event<roq::Subscribe> > : public roq::formatter {
     using namespace roq::literals;
     return roq::format_to(
         context.out(),
-        R"({{)"
-        R"(message_info={}, )"
-        R"(subscribe={})"
-        R"(}})"_fmt,
+        "{{"
+        "message_info={}, "
+        "subscribe={}"
+        "}}"_fmt,
         event.message_info,
         event.value);
   }

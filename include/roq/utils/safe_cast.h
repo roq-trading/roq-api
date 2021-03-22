@@ -29,7 +29,11 @@ struct safe_cast final {
 
   template <typename R>
   operator R() const {
-    if constexpr (std::is_floating_point<T>::value) {
+    if constexpr (is_integer<T>::value) {
+      if (!(value_ >= std::numeric_limits<R>::min() && value_ <= std::numeric_limits<R>::max()))
+        throw std::overflow_error("overflow"_s);
+      return static_cast<R>(value_);
+    } else if constexpr (std::is_floating_point<T>::value) {
       if constexpr (is_integer<R>::value && std::is_signed<R>::value) {
         // references:
         //   https://stackoverflow.com/a/30424410

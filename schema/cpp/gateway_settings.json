@@ -12,6 +12,11 @@
             "name": "mbp_allow_price_inversion",
             "type": "bool",
             "comment": "MBP allow price inversion?"
+        },
+        {
+            "name": "mbp_allow_fractional_tick_size",
+            "type": "bool",
+            "comment": "MBP allow fractional tick-size?"
         }
     ]
 }

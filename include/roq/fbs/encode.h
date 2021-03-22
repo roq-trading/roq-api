@@ -322,7 +322,11 @@ auto encode(B &builder, const roq::DownloadEnd &value) {
 
 template <typename B>
 auto encode(B &builder, const roq::GatewaySettings &value) {
-  return CreateGatewaySettings(builder, value.mbp_max_depth, value.mbp_allow_price_inversion);
+  return CreateGatewaySettings(
+      builder,
+      value.mbp_max_depth,
+      value.mbp_allow_price_inversion,
+      value.mbp_allow_fractional_tick_size);
 }
 
 template <typename B>

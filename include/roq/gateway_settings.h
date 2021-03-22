@@ -23,8 +23,9 @@ namespace roq {
 
 //! Gateway settings
 struct ROQ_PUBLIC GatewaySettings final {
-  uint32_t mbp_max_depth = {};             //!< MBP max depth
-  bool mbp_allow_price_inversion = false;  //!< MBP allow price inversion?
+  uint32_t mbp_max_depth = {};                  //!< MBP max depth
+  bool mbp_allow_price_inversion = false;       //!< MBP allow price inversion?
+  bool mbp_allow_fractional_tick_size = false;  //!< MBP allow fractional tick-size?
 };
 
 }  // namespace roq
@@ -38,10 +39,12 @@ struct fmt::formatter<roq::GatewaySettings> : public roq::formatter {
         context.out(),
         R"({{)"
         R"(mbp_max_depth={}, )"
-        R"(mbp_allow_price_inversion={})"
+        R"(mbp_allow_price_inversion={}, )"
+        R"(mbp_allow_fractional_tick_size={})"
         R"(}})"_fmt,
         value.mbp_max_depth,
-        value.mbp_allow_price_inversion);
+        value.mbp_allow_price_inversion,
+        value.mbp_allow_fractional_tick_size);
   }
 };
 template <>

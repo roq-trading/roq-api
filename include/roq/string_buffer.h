@@ -43,7 +43,7 @@ class ROQ_PACKED string_buffer final {
   }
 
   // cppcheck-suppress noExplicitConstructor
-  string_buffer(const value_type *text)  // NOLINT (allow implicit)
+  string_buffer(value_type const *text)  // NOLINT (allow implicit)
       : string_buffer(std::string_view(text)) {}
 
   string_buffer &operator=(const std::string_view &text) {
@@ -73,7 +73,7 @@ class ROQ_PACKED string_buffer final {
 
   inline bool empty() const { return buffer_[0] == '\0'; }
 
-  const value_type *data() const { return buffer_.data(); }
+  value_type const *data() const { return buffer_.data(); }
 
   operator std::string_view() const { return std::string_view(data(), length()); }
 

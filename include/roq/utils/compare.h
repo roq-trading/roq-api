@@ -7,11 +7,12 @@
 
 #include "roq/layer.h"
 
-// "spaceship" comparison
+// c++20 "spaceship"-like comparison
 // - rules to deal with NaN (floating point)
 // - compile-time evaluation
 
 namespace roq {
+namespace utils {
 
 namespace detail {
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
@@ -34,7 +35,7 @@ constexpr bool fabs(T x) {
 }
 
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
-constexpr int spaceship(T lhs, T rhs) {
+constexpr int compare(T lhs, T rhs) {
   auto lhs_nan = isnan<T>(lhs);
   auto rhs_nan = isnan<T>(rhs);
   if (!lhs_nan) {
@@ -68,7 +69,7 @@ constexpr int compare(const T &lhs, const U &rhs) {
   using rhs_type = typename std::decay<U>::type;
   if constexpr (
       std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
-    return detail::spaceship(lhs, rhs);
+    return detail::compare(lhs, rhs);
   } else if constexpr (
       std::is_same<lhs_type, Layer>::value && std::is_same<lhs_type, rhs_type>::value) {
     if (auto result = compare(lhs.bid_price, rhs.bid_price) != 0)
@@ -95,4 +96,5 @@ constexpr int compare(const T &lhs, const U &rhs) {
   }
 }
 
+}  // namespace utils
 }  // namespace roq

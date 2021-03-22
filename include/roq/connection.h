@@ -12,12 +12,12 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/fixed_string.h"
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
+#include "roq/string_buffer.h"
 
 #include "roq/connection_status.h"
 

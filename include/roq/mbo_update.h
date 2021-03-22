@@ -10,11 +10,11 @@
 #include <string_view>
 
 #include "roq/chrono.h"
-#include "roq/fixed_string.h"
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
+#include "roq/string_buffer.h"
 #include "roq/uuid.h"
 
 #include "roq/order_update_action.h"
@@ -23,11 +23,11 @@ namespace roq {
 
 //! Represents the update status of a single order in the order book
 struct ROQ_PUBLIC MBOUpdate final {
-  double price = NaN;              //!< Order price
-  double remaining_quantity = {};  //!< Remaining order quantity
-  OrderUpdateAction action = {};   //!< Order update action
-  uint32_t priority = {};          //!< Queue priority
-  roq::fixed_string<40> order_id;  //!< Order identifier (as known to client)
+  double price = NaN;               //!< Order price
+  double remaining_quantity = {};   //!< Remaining order quantity
+  OrderUpdateAction action = {};    //!< Order update action
+  uint32_t priority = {};           //!< Queue priority
+  roq::string_buffer<40> order_id;  //!< Order identifier (as known to client)
 };
 
 }  // namespace roq

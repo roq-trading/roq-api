@@ -2,9 +2,10 @@
 
 #include <gtest/gtest.h>
 
-#include "roq/update.h"
+#include "roq/utils/update.h"
 
 using namespace roq;
+using namespace roq::utils;
 using namespace roq::literals;
 
 TEST(update, floating_point) {

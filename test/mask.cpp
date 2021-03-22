@@ -2,9 +2,10 @@
 
 #include <gtest/gtest.h>
 
-#include "roq/mask.h"
+#include "roq/utils/mask.h"
 
 using namespace roq;
+using namespace roq::utils;
 
 namespace {
 enum class E : int {

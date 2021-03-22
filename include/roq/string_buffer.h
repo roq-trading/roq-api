@@ -26,37 +26,37 @@ namespace roq {
  * The interface is a subset of \ref std::string and \ref std::string_view.
  */
 template <std::size_t N>
-class ROQ_PACKED fixed_string final {
+class ROQ_PACKED string_buffer final {
  public:
   using value_type = char;
 
-  fixed_string() = default;
+  string_buffer() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  fixed_string(const std::string_view &text) {  // NOLINT (allow implicit)
+  string_buffer(const std::string_view &text) {  // NOLINT (allow implicit)
     copy(text);
   }
 
   // cppcheck-suppress noExplicitConstructor
-  fixed_string(const std::string &text) {  // NOLINT (allow implicit)
+  string_buffer(const std::string &text) {  // NOLINT (allow implicit)
     copy(text);
   }
 
   // cppcheck-suppress noExplicitConstructor
-  fixed_string(const value_type *text)  // NOLINT (allow implicit)
-      : fixed_string(std::string_view(text)) {}
+  string_buffer(const value_type *text)  // NOLINT (allow implicit)
+      : string_buffer(std::string_view(text)) {}
 
-  fixed_string &operator=(const std::string_view &text) {
+  string_buffer &operator=(const std::string_view &text) {
     copy(text);
     return *this;
   }
 
-  fixed_string &operator=(const std::string &text) {
+  string_buffer &operator=(const std::string &text) {
     copy(text);
     return *this;
   }
 
-  bool operator==(const fixed_string<N> &rhs) const {
+  bool operator==(const string_buffer<N> &rhs) const {
     return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) == 0;
   }
 
@@ -104,7 +104,7 @@ class ROQ_PACKED fixed_string final {
 };
 
 template <std::size_t N>
-inline bool operator==(const fixed_string<N> &lhs, const fixed_string<N> &rhs) {
+inline bool operator==(const string_buffer<N> &lhs, const string_buffer<N> &rhs) {
   return lhs.operator==()(rhs);
 }
 

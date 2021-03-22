@@ -10,11 +10,11 @@
 #include <string_view>
 
 #include "roq/chrono.h"
-#include "roq/fixed_string.h"
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
+#include "roq/string_buffer.h"
 #include "roq/uuid.h"
 
 #include "roq/statistics_type.h"

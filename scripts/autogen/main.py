@@ -63,7 +63,7 @@ def is_pod_or_std(type_):
     return type_ is None or type_ in defaults or "std::" in type_
 
 
-_string_like_types = {"std::string_view", "roq::fixed_string", "UUID"}
+_string_like_types = {"std::string_view", "roq::string_buffer", "UUID"}
 
 
 def is_string_like(type_):

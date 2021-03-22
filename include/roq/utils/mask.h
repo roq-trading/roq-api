@@ -7,6 +7,7 @@
 #include <utility>
 
 namespace roq {
+namespace utils {
 
 // implements a bitmap mask using an underlying enumeration
 // some limitations:
@@ -85,4 +86,5 @@ class Mask final {
   value_type value_ = {};
 };
 
+}  // namespace utils
 }  // namespace roq

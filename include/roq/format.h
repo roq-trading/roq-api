@@ -2,9 +2,9 @@
 
 #pragma once
 
-// goals:
+// objectives:
 // - require the use of format strings (reason: making compile checks possible)
-// - perhaps support both fmt::format and std::format
+// - possibly support both fmt::format and std::format
 
 #include <fmt/format.h>
 

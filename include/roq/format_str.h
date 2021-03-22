@@ -2,8 +2,9 @@
 
 #pragma once
 
-// goals:
-// - compile-time validate format strings
+// objectives:
+// - require explicit identification of format strings
+// - (eventually) make compile-time validation of format strings possible
 
 #include <string_view>
 

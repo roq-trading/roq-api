@@ -11,6 +11,7 @@
 #include "roq/side.h"
 
 namespace roq {
+namespace utils {
 
 //! Extract price for \ref roq::Layer given \ref roq::Side.
 inline double price_from_side(const Layer &layer, Side side) {
@@ -81,4 +82,5 @@ inline int sign(Side side) {
   }
 }
 
+}  // namespace utils
 }  // namespace roq

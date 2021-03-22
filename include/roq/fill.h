@@ -10,11 +10,11 @@
 #include <string_view>
 
 #include "roq/chrono.h"
-#include "roq/fixed_string.h"
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
+#include "roq/string_buffer.h"
 #include "roq/uuid.h"
 
 namespace roq {
@@ -25,7 +25,7 @@ struct ROQ_PUBLIC Fill final {
   double price = NaN;              //!< Price
   uint32_t trade_id = {};          //!< Trade identifier (as known to client)
   uint32_t gateway_trade_id = {};  //!< Trade identifier (as known to gateway)
-  roq::fixed_string<40>
+  roq::string_buffer<40>
       external_trade_id;  //!< External trade identifier (as known to broker or exchange)
 };
 

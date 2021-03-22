@@ -10,11 +10,11 @@
 #include <string_view>
 
 #include "roq/chrono.h"
-#include "roq/fixed_string.h"
 #include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
+#include "roq/string_buffer.h"
 #include "roq/uuid.h"
 
 #include "roq/side.h"
@@ -23,10 +23,10 @@ namespace roq {
 
 //! Represents a single trade (match) as part of trade reporting by the exchange
 struct ROQ_PUBLIC Trade final {
-  Side side = {};                  //!< Side (by convention: side of the taker)
-  double price = NaN;              //!< Price
-  double quantity = NaN;           //!< Quantity
-  roq::fixed_string<40> trade_id;  //!< Trade identifier (as known to client)
+  Side side = {};                   //!< Side (by convention: side of the taker)
+  double price = NaN;               //!< Price
+  double quantity = NaN;            //!< Quantity
+  roq::string_buffer<40> trade_id;  //!< Trade identifier (as known to client)
 };
 
 }  // namespace roq

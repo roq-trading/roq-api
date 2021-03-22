@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "roq/compare.h"
+#include "roq/utils/compare.h"
 
 // update result
 // - allows the user to detect changes
@@ -10,6 +10,7 @@
 // - convenience extensions to capture max-of or first-of
 
 namespace roq {
+namespace utils {
 
 template <typename T, typename U>
 constexpr bool update(T &result, const U &value) {
@@ -45,4 +46,5 @@ constexpr bool update_first(T &result, const U &value) {
   return false;
 }
 
+}  // namespace utils
 }  // namespace roq

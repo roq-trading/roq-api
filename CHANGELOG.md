@@ -4,6 +4,11 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* Promoted a number of generic utilities to the `roq::utils` namespace.
+  Although these are useful, they should not be considered "API".
+
 ### Changed
 
 * All server (gateway) originated structs now include `stream_id` to indicate

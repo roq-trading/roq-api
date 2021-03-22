@@ -3,12 +3,13 @@ set(TARGET_NAME "${PROJECT_NAME}-test")
 set(SOURCES
     alignment.cpp
     compare.cpp
-    fixed_string.cpp
     format.cpp
     mask.cpp
     metrics.cpp
     ranges.cpp
     span.cpp
+    string_buffer.cpp
+    traits.cpp
     update.cpp
     utils.cpp
     main.cpp)

@@ -2,8 +2,9 @@
 
 #pragma once
 
-// goals:
+// objectives:
 // - type-safe format strings
+// - avoid 'char const *' use cases implying the run-time use of strlen
 
 #include <string>
 #include <string_view>

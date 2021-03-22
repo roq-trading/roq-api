@@ -90,7 +90,6 @@
 // misc
 
 #include "roq/exceptions.h"
-#include "roq/utilities.h"
 
 // version
 

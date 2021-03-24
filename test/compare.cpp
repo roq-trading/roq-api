@@ -1,5 +1,7 @@
 /* Copyright (c) 2017-2021, Hans Erik Thrane */
 
+#include <gtest/gtest.h>
+
 #include "roq/utils/compare.h"
 
 namespace roq {
@@ -23,3 +25,19 @@ static_assert(compare(NaN, 0.0) == -1);
 
 }  // namespace utils
 }  // namespace roq
+
+using namespace roq;
+using namespace roq::utils;
+
+TEST(compare, case_insensitive) {
+  // same length
+  EXPECT_EQ(case_insensitive_compare(""_sv, ""_sv), 0);
+  EXPECT_EQ(case_insensitive_compare("abc123"_sv, "ABC123"_sv), 0);
+  EXPECT_EQ(case_insensitive_compare("abc123"_sv, "DEF456"_sv), -1);
+  EXPECT_EQ(case_insensitive_compare("def456"_sv, "ABC123"_sv), 1);
+  // different length
+  EXPECT_EQ(case_insensitive_compare(""_sv, "ABC123"_sv), -1);
+  EXPECT_EQ(case_insensitive_compare("abc123"_sv, ""_sv), 1);
+  EXPECT_EQ(case_insensitive_compare("abc"_sv, "ABC123"_sv), -1);
+  EXPECT_EQ(case_insensitive_compare("abc123"_sv, "ABC"_sv), 1);
+}

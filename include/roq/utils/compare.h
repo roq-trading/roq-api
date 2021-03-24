@@ -7,6 +7,8 @@
 
 #include "roq/layer.h"
 
+#include "roq/utils/traits.h"
+
 // c++20 "spaceship"-like comparison
 // - rules to deal with NaN (floating point)
 // - compile-time evaluation
@@ -81,12 +83,9 @@ constexpr int compare(const T &lhs, const U &rhs) {
     if (auto result = compare(lhs.ask_quantity, rhs.ask_quantity) != 0)
       return result;
     return 0;
-  } else if constexpr (
-      (std::is_same<lhs_type, std::string>::value ||
-       std::is_same<lhs_type, std::string_view>::value) &&
-      (std::is_same<rhs_type, std::string>::value ||
-       std::is_same<rhs_type, std::string_view>::value)) {
-    return lhs.compare(rhs);
+  } else if constexpr (is_string<lhs_type>::value && is_string<rhs_type>::value) {
+    // cast both to std::string_view to avoid accidential allocation of std::string
+    return std::string_view(lhs).compare(std::string_view(rhs));
   } else {
     if (lhs < rhs)
       return -1;
@@ -94,6 +93,29 @@ constexpr int compare(const T &lhs, const U &rhs) {
       return 1;
     return 0;
   }
+}
+
+// special functions
+
+template <typename T, typename U>
+typename std::enable_if<is_string<T>::value && is_string<U>::value, int>::type
+case_insensitive_compare(const T &lhs, const U &rhs) {
+  // cast both to std::string_view to avoid accidential allocation of std::string
+  std::string_view lhs_tmp(lhs), rhs_tmp(rhs);
+  // comparing using std::toupper
+  // otherwise following conventions from std::string/std::string_view
+  // references:
+  //   https://en.cppreference.com/w/cpp/string/basic_string/compare
+  auto size1 = std::size(lhs_tmp), size2 = std::size(rhs_tmp);
+  auto rlen = std::min(size1, size2);
+  for (size_t i = 0u; i < rlen; ++i) {
+    auto l = std::toupper(lhs_tmp[i]), r = std::toupper(rhs_tmp[i]);
+    if (l != r)
+      return (l < r) ? -1 : 1;
+  }
+  if (size1 != size2)
+    return size1 < size2 ? -1 : 1;
+  return 0;
 }
 
 }  // namespace utils

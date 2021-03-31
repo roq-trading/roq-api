@@ -7,6 +7,7 @@
 #include <string_view>
 
 #include "roq/compat.h"
+#include "roq/format.h"
 
 namespace roq {
 
@@ -16,7 +17,10 @@ class ROQ_PUBLIC Exception : public std::exception {};
 //! Runtime error
 class ROQ_PUBLIC RuntimeError : public Exception {
  public:
-  explicit RuntimeError(const std::string_view &what) : what_(what) {}
+  template <typename T, typename... Args>
+  RuntimeError(const T &fmt, Args &&...args)
+      : what_(roq::format(fmt, std::forward<Args>(args)...)) {}
+
   const char *what() const noexcept override { return what_.c_str(); }
 
  private:

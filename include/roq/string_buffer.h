@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "roq/compat.h"
+#include "roq/exceptions.h"
 #include "roq/format.h"
 #include "roq/literals.h"
 
@@ -94,8 +95,8 @@ class ROQ_PACKED string_buffer final {
       auto last = std::copy(text.begin(), text.end(), buffer_.begin());
       std::fill(last, buffer_.end(), '\0');
     } else {
-      throw std::length_error(
-          roq::format(R"(can't copy: len(text="{}")={} exceeds size={})"_fmt, text, len, size()));
+      throw LengthErrorException(
+          R"(can't copy: len(text="{}")={} exceeds size={})"_fmt, text, len, size());
     }
   }
 

@@ -6,6 +6,7 @@
 #include <limits>
 #include <stdexcept>
 
+#include "roq/exceptions.h"
 #include "roq/literals.h"
 
 #include "roq/utils/traits.h"
@@ -39,7 +40,7 @@ struct safe_cast final {
       // integer to ...
       if (!(value_ >= std::numeric_limits<result_type>::min() &&
             value_ <= std::numeric_limits<result_type>::max()))
-        throw std::overflow_error("overflow"_s);
+        throw OverflowErrorException("overflow"_sv);
       return static_cast<result_type>(value_);
     } else if constexpr (std::is_floating_point<value_type>::value) {
       // floating point to ...
@@ -49,7 +50,7 @@ struct safe_cast final {
         //   https://stackoverflow.com/a/30424410
         if (!(value_ > static_cast<double>(std::numeric_limits<result_type>::min()) &&
               value_ < static_cast<double>(std::numeric_limits<result_type>::max())))
-          throw std::overflow_error("overflow"_s);
+          throw OverflowErrorException("overflow"_sv);
         return static_cast<result_type>(value_);
       } else {
         static_assert(detail::always_false<result_type>, "not implemented for unsigned");

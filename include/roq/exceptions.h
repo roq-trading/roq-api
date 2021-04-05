@@ -29,8 +29,8 @@ class ROQ_PUBLIC RuntimeError : public Exception, public std::runtime_error {
 
  protected:
   template <typename... Args>
-  RuntimeError(const source_location &loc, std::string &&what)
-      : std::runtime_error(std::move(what)), file_(basename(loc.file_name())), line_(loc.line()) {}
+  RuntimeError(const source_location &loc, const std::string &what)
+      : std::runtime_error(what), file_(basename(loc.file_name())), line_(loc.line()) {}
 
   static /*consteval*/ constexpr std::string_view basename(const std::string_view &path) noexcept {
     auto pos = path.find_last_of('/');
@@ -54,8 +54,8 @@ RuntimeErrorException(Args &&...) -> RuntimeErrorException<Args...>;
 //! SystemError
 class ROQ_PUBLIC SystemError : public RuntimeError, public std::system_error {
  protected:
-  SystemError(const source_location &loc, std::error_code ec, std::string &&what)
-      : RuntimeError(loc, std::move(what)), std::system_error(ec) {}
+  SystemError(const source_location &loc, std::error_code ec, const std::string &what)
+      : RuntimeError(loc, what), std::system_error(ec, what) {}
 };
 
 template <typename ErrorCode, typename... Args>
@@ -71,8 +71,8 @@ SystemErrorException(ErrorCode, Args &&...) -> SystemErrorException<ErrorCode, A
 //! RangeError
 class ROQ_PUBLIC RangeError : public RuntimeError, public std::range_error {
  protected:
-  RangeError(const source_location &loc, std::string &&what)
-      : RuntimeError(loc, std::move(what)), std::range_error(std::move(what)) {}
+  RangeError(const source_location &loc, const std::string &what)
+      : RuntimeError(loc, what), std::range_error(what) {}
 };
 
 template <typename... Args>
@@ -87,8 +87,8 @@ RangeErrorException(Args &&...) -> RangeErrorException<Args...>;
 //! OverflowError
 class ROQ_PUBLIC OverflowError : public RuntimeError, public std::overflow_error {
  protected:
-  OverflowError(const source_location &loc, std::string &&what)
-      : RuntimeError(loc, std::move(what)), std::overflow_error(std::move(what)) {}
+  OverflowError(const source_location &loc, const std::string &what)
+      : RuntimeError(loc, what), std::overflow_error(what) {}
 };
 
 template <typename... Args>
@@ -109,8 +109,8 @@ class ROQ_PUBLIC LogicError : public Exception, public std::logic_error {
 
  protected:
   template <typename... Args>
-  LogicError(const source_location &loc, std::string &&what)
-      : std::logic_error(std::move(what)), file_(basename(loc.file_name())), line_(loc.line()) {}
+  LogicError(const source_location &loc, const std::string &what)
+      : std::logic_error(what), file_(basename(loc.file_name())), line_(loc.line()) {}
 
   static /*consteval*/ constexpr std::string_view basename(const std::string_view &path) noexcept {
     auto pos = path.find_last_of('/');
@@ -134,8 +134,8 @@ LogicErrorException(Args &&...) -> LogicErrorException<Args...>;
 //! InvalidArgument
 class ROQ_PUBLIC InvalidArgument : public LogicError, public std::invalid_argument {
  protected:
-  InvalidArgument(const source_location &loc, std::string &&what)
-      : LogicError(loc, std::move(what)), std::invalid_argument(std::move(what)) {}
+  InvalidArgument(const source_location &loc, const std::string &what)
+      : LogicError(loc, what), std::invalid_argument(what) {}
 };
 
 template <typename... Args>
@@ -150,8 +150,8 @@ InvalidArgumentException(Args &&...) -> InvalidArgumentException<Args...>;
 //! OutOfRange
 class ROQ_PUBLIC OutOfRange : public LogicError, public std::out_of_range {
  protected:
-  OutOfRange(const source_location &loc, std::string &&what)
-      : LogicError(loc, std::move(what)), std::out_of_range(std::move(what)) {}
+  OutOfRange(const source_location &loc, const std::string &what)
+      : LogicError(loc, what), std::out_of_range(what) {}
 };
 
 template <typename... Args>
@@ -166,8 +166,8 @@ OutOfRangeException(Args &&...) -> OutOfRangeException<Args...>;
 //! LengthError
 class ROQ_PUBLIC LengthError : public LogicError, public std::length_error {
  protected:
-  LengthError(const source_location &loc, std::string &&what)
-      : LogicError(loc, std::move(what)), std::length_error(std::move(what)) {}
+  LengthError(const source_location &loc, const std::string &what)
+      : LogicError(loc, what), std::length_error(what) {}
 };
 
 template <typename... Args>

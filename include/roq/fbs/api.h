@@ -110,24 +110,42 @@ struct EventBuilder;
 enum ConnectionStatus {
   ConnectionStatus_Undefined = 0,
   ConnectionStatus_Disconnected = 1,
-  ConnectionStatus_Connected = 2,
+  ConnectionStatus_Connecting = 2,
+  ConnectionStatus_LoginSent = 3,
+  ConnectionStatus_Downloading = 4,
+  ConnectionStatus_Ready = 5,
+  ConnectionStatus_LoggedOut = 6,
   ConnectionStatus_MIN = ConnectionStatus_Undefined,
-  ConnectionStatus_MAX = ConnectionStatus_Connected
+  ConnectionStatus_MAX = ConnectionStatus_LoggedOut
 };
 
-inline const ConnectionStatus (&EnumValuesConnectionStatus())[3] {
+inline const ConnectionStatus (&EnumValuesConnectionStatus())[7] {
   static const ConnectionStatus values[] = {
-      ConnectionStatus_Undefined, ConnectionStatus_Disconnected, ConnectionStatus_Connected};
+      ConnectionStatus_Undefined,
+      ConnectionStatus_Disconnected,
+      ConnectionStatus_Connecting,
+      ConnectionStatus_LoginSent,
+      ConnectionStatus_Downloading,
+      ConnectionStatus_Ready,
+      ConnectionStatus_LoggedOut};
   return values;
 }
 
 inline const char *const *EnumNamesConnectionStatus() {
-  static const char *const names[4] = {"Undefined", "Disconnected", "Connected", nullptr};
+  static const char *const names[8] = {
+      "Undefined",
+      "Disconnected",
+      "Connecting",
+      "LoginSent",
+      "Downloading",
+      "Ready",
+      "LoggedOut",
+      nullptr};
   return names;
 }
 
 inline const char *EnumNameConnectionStatus(ConnectionStatus e) {
-  if (flatbuffers::IsOutRange(e, ConnectionStatus_Undefined, ConnectionStatus_Connected))
+  if (flatbuffers::IsOutRange(e, ConnectionStatus_Undefined, ConnectionStatus_LoggedOut))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesConnectionStatus()[index];
@@ -240,50 +258,6 @@ inline const char *EnumNameExecutionInstruction(ExecutionInstruction e) {
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesExecutionInstruction()[index];
-}
-
-enum GatewayStatus {
-  GatewayStatus_Undefined = 0,
-  GatewayStatus_Disconnected = 1,
-  GatewayStatus_Connecting = 2,
-  GatewayStatus_LoginSent = 3,
-  GatewayStatus_Downloading = 4,
-  GatewayStatus_Ready = 5,
-  GatewayStatus_LoggedOut = 6,
-  GatewayStatus_MIN = GatewayStatus_Undefined,
-  GatewayStatus_MAX = GatewayStatus_LoggedOut
-};
-
-inline const GatewayStatus (&EnumValuesGatewayStatus())[7] {
-  static const GatewayStatus values[] = {
-      GatewayStatus_Undefined,
-      GatewayStatus_Disconnected,
-      GatewayStatus_Connecting,
-      GatewayStatus_LoginSent,
-      GatewayStatus_Downloading,
-      GatewayStatus_Ready,
-      GatewayStatus_LoggedOut};
-  return values;
-}
-
-inline const char *const *EnumNamesGatewayStatus() {
-  static const char *const names[8] = {
-      "Undefined",
-      "Disconnected",
-      "Connecting",
-      "LoginSent",
-      "Downloading",
-      "Ready",
-      "LoggedOut",
-      nullptr};
-  return names;
-}
-
-inline const char *EnumNameGatewayStatus(GatewayStatus e) {
-  if (flatbuffers::IsOutRange(e, GatewayStatus_Undefined, GatewayStatus_LoggedOut))
-    return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesGatewayStatus()[index];
 }
 
 enum OptionType {
@@ -3423,8 +3397,8 @@ struct StreamUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::Priority priority() const {
     return static_cast<roq::fbs::Priority>(GetField<uint32_t>(VT_PRIORITY, 0));
   }
-  roq::fbs::GatewayStatus status() const {
-    return static_cast<roq::fbs::GatewayStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  roq::fbs::ConnectionStatus status() const {
+    return static_cast<roq::fbs::ConnectionStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
@@ -3454,7 +3428,7 @@ struct StreamUpdateBuilder {
   void add_priority(roq::fbs::Priority priority) {
     fbb_.AddElement<uint32_t>(StreamUpdate::VT_PRIORITY, static_cast<uint32_t>(priority), 0);
   }
-  void add_status(roq::fbs::GatewayStatus status) {
+  void add_status(roq::fbs::ConnectionStatus status) {
     fbb_.AddElement<uint8_t>(StreamUpdate::VT_STATUS, static_cast<uint8_t>(status), 0);
   }
   explicit StreamUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
@@ -3475,7 +3449,7 @@ inline flatbuffers::Offset<StreamUpdate> CreateStreamUpdate(
     uint64_t supports = 0,
     flatbuffers::Offset<flatbuffers::String> account = 0,
     roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
-    roq::fbs::GatewayStatus status = roq::fbs::GatewayStatus_Undefined) {
+    roq::fbs::ConnectionStatus status = roq::fbs::ConnectionStatus_Undefined) {
   StreamUpdateBuilder builder_(_fbb);
   builder_.add_supports(supports);
   builder_.add_priority(priority);
@@ -3493,7 +3467,7 @@ inline flatbuffers::Offset<StreamUpdate> CreateStreamUpdateDirect(
     uint64_t supports = 0,
     const char *account = nullptr,
     roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
-    roq::fbs::GatewayStatus status = roq::fbs::GatewayStatus_Undefined) {
+    roq::fbs::ConnectionStatus status = roq::fbs::ConnectionStatus_Undefined) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   return roq::fbs::CreateStreamUpdate(_fbb, stream_id, type, supports, account__, priority, status);
 }

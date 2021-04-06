@@ -2,17 +2,17 @@
 
 #include <gtest/gtest.h>
 
-#include "roq/connection_status.h"
 #include "roq/market_by_price_update.h"
+#include "roq/side.h"
 #include "roq/subscribe.h"
 
 using namespace roq;
 using namespace roq::literals;
 
-TEST(format, ConnectionStatus) {
-  EXPECT_EQ(format("{}"_fmt, ConnectionStatus{ConnectionStatus::UNDEFINED}), "UNDEFINED"_sv);
-  EXPECT_EQ(format("{}"_fmt, ConnectionStatus{ConnectionStatus::DISCONNECTED}), "DISCONNECTED"_sv);
-  EXPECT_EQ(format("{}"_fmt, ConnectionStatus{ConnectionStatus::CONNECTED}), "CONNECTED"_sv);
+TEST(format, Side) {
+  EXPECT_EQ(format("{}"_fmt, Side{Side::UNDEFINED}), "UNDEFINED"_sv);
+  EXPECT_EQ(format("{}"_fmt, Side{Side::BUY}), "BUY"_sv);
+  EXPECT_EQ(format("{}"_fmt, Side{Side::SELL}), "SELL"_sv);
 }
 
 TEST(format, subscribe) {

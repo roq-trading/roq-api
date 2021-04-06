@@ -6,9 +6,10 @@ set(SOURCES
     batch_begin.json
     batch_end.json
     cancel_order.json
-    connection.json
+    connected.json
     connection_status.json
     create_order.json
+    disconnected.json
     download_begin.json
     download_end.json
     error.json
@@ -16,7 +17,6 @@ set(SOURCES
     fill.json
     funds_update.json
     gateway_settings.json
-    gateway_status.json
     layer.json
     market_by_order_update.json
     market_by_price_update.json

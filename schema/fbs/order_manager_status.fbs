@@ -1,9 +1,0 @@
-include "gateway_status.fbs";
-
-namespace roq.fbs;
-
-table OrderManagerStatus {
-  stream_id:uint16;
-  account:string;
-  status:GatewayStatus;
-}

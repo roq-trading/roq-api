@@ -1,8 +1,0 @@
-include "gateway_status.fbs";
-
-namespace roq.fbs;
-
-table MarketDataStatus {
-  stream_id:uint16;
-  status:GatewayStatus;
-}

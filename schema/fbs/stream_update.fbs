@@ -1,4 +1,4 @@
-include "gateway_status.fbs";
+include "connection_status.fbs";
 include "priority.fbs";
 include "stream_type.fbs";
 
@@ -10,5 +10,5 @@ table StreamUpdate {
   supports:uint64;
   account:string;
   priority:Priority;
-  status:GatewayStatus;
+  status:ConnectionStatus;
 }

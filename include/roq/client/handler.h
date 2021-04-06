@@ -25,7 +25,8 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<Start> &) {}
   virtual void operator()(const Event<Stop> &) {}
   virtual void operator()(const Event<Timer> &) {}
-  virtual void operator()(const Event<Connection> &) {}
+  virtual void operator()(const Event<Connected> &) {}
+  virtual void operator()(const Event<Disconnected> &) {}
 
   // control
   virtual void operator()(const Event<BatchBegin> &) {}

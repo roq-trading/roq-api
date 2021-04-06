@@ -14,13 +14,17 @@
 
 namespace roq {
 
-//! Enumeration of connection status types
+//! Enumeration of exchange connectivity status as seen from a gateway
 struct ROQ_PACKED ConnectionStatus final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0u,
     DISCONNECTED,
-    CONNECTED,
+    CONNECTING,
+    LOGIN_SENT,
+    DOWNLOADING,
+    READY,
+    LOGGED_OUT,
   };
 
   constexpr ConnectionStatus() = default;
@@ -40,8 +44,16 @@ struct ROQ_PACKED ConnectionStatus final {
         break;
       case type_t::DISCONNECTED:
         return "DISCONNECTED"_sv;
-      case type_t::CONNECTED:
-        return "CONNECTED"_sv;
+      case type_t::CONNECTING:
+        return "CONNECTING"_sv;
+      case type_t::LOGIN_SENT:
+        return "LOGIN_SENT"_sv;
+      case type_t::DOWNLOADING:
+        return "DOWNLOADING"_sv;
+      case type_t::READY:
+        return "READY"_sv;
+      case type_t::LOGGED_OUT:
+        return "LOGGED_OUT"_sv;
       default:
         assert(false);
     }
@@ -56,7 +68,11 @@ struct ROQ_PACKED ConnectionStatus final {
     switch (result) {
       case type_t::UNDEFINED:
       case type_t::DISCONNECTED:
-      case type_t::CONNECTED:
+      case type_t::CONNECTING:
+      case type_t::LOGIN_SENT:
+      case type_t::DOWNLOADING:
+      case type_t::READY:
+      case type_t::LOGGED_OUT:
         return result;
       default:
         assert(false);

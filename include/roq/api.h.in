@@ -20,7 +20,6 @@
 #include "roq/connection_status.h"
 #include "roq/error.h"
 #include "roq/execution_instruction.h"
-#include "roq/gateway_status.h"
 #include "roq/option_type.h"
 #include "roq/order_status.h"
 #include "roq/order_type.h"
@@ -53,7 +52,8 @@
 
 // control (autogen)
 
-#include "roq/connection.h"
+#include "roq/connected.h"
+#include "roq/disconnected.h"
 #include "roq/start.h"
 #include "roq/stop.h"
 #include "roq/timer.h"

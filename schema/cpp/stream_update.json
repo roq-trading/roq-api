@@ -28,8 +28,8 @@
         },
         {
             "name": "status",
-            "type": "GatewayStatus",
-            "comment": "Gateway status"
+            "type": "ConnectionStatus",
+            "comment": "Connection status"
         }
     ]
 }

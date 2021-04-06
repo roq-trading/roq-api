@@ -1,0 +1,6 @@
+{
+    "name": "Disconnected",
+    "type": "message",
+    "comment": "Disconnected from gateway",
+    "values": []
+}

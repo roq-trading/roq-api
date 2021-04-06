@@ -48,6 +48,13 @@ auto encode(B &, const roq::chrono::days &value) {
 // enums
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::ConnectionStatus &value) {
+  using result_type = ConnectionStatus;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::Error &value) {
   using result_type = Error;
   using value_type = std::underlying_type_t<result_type>;
@@ -57,13 +64,6 @@ auto encode([[maybe_unused]] B &builder, const roq::Error &value) {
 template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::ExecutionInstruction &value) {
   using result_type = ExecutionInstruction;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::GatewayStatus &value) {
-  using result_type = GatewayStatus;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }

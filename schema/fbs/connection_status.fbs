@@ -3,5 +3,9 @@ namespace roq.fbs;
 enum ConnectionStatus:uint8 {
   Undefined,
   Disconnected,
-  Connected
+  Connecting,
+  LoginSent,
+  Downloading,
+  Ready,
+  LoggedOut
 }

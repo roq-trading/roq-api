@@ -19,40 +19,31 @@
 #include "roq/span.h"
 #include "roq/string_buffer.h"
 
-#include "roq/connection_status.h"
-
 namespace roq {
 
-//! Update relating to current status of gateway connectivity
-struct ROQ_PUBLIC Connection final {
-  ConnectionStatus status = {};  //!< Connection status
-};
+//! Disconnected from gateway
+struct ROQ_PUBLIC Disconnected final {};
 
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::Connection> : public roq::formatter {
+struct fmt::formatter<roq::Disconnected> : public roq::formatter {
   template <typename Context>
-  auto format(const roq::Connection &value, Context &context) {
+  auto format(const roq::Disconnected &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
-        context.out(),
-        R"({{)"
-        R"(status={})"
-        R"(}})"_fmt,
-        value.status);
+    return roq::format_to(context.out(), R"({{}})"_sv);
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::Connection> > : public roq::formatter {
+struct fmt::formatter<roq::Event<roq::Disconnected> > : public roq::formatter {
   template <typename Context>
-  auto format(const roq::Event<roq::Connection> &event, Context &context) {
+  auto format(const roq::Event<roq::Disconnected> &event, Context &context) {
     using namespace roq::literals;
     return roq::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
-        R"(connection={})"
+        R"(disconnected={})"
         R"(}})"_fmt,
         event.message_info,
         event.value);

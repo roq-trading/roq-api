@@ -19,6 +19,8 @@ All notable changes will be documented in this file.
   availability of cached objects.
   This change was done to allow gateways to manage load balance e.g. by
   maintaining multiple connections.
+* Replaced `Connection` with `Connected` and `Disconnected`
+* Renamed `GatewayStatus` to `ConnectionStatus`
 
 ### Removed
 

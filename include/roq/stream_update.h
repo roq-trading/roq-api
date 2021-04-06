@@ -19,7 +19,7 @@
 #include "roq/span.h"
 #include "roq/string_buffer.h"
 
-#include "roq/gateway_status.h"
+#include "roq/connection_status.h"
 #include "roq/priority.h"
 #include "roq/stream_type.h"
 
@@ -27,12 +27,12 @@ namespace roq {
 
 //! Update relating to current stream status
 struct ROQ_PUBLIC StreamUpdate final {
-  uint16_t stream_id = {};    //!< Stream identifier
-  StreamType type = {};       //!< Stream type
-  uint64_t supports = {};     //!< Update types (bit mask)
-  std::string_view account;   //!< Account name (as known to the gateway)
-  Priority priority = {};     //!< Priority
-  GatewayStatus status = {};  //!< Gateway status
+  uint16_t stream_id = {};       //!< Stream identifier
+  StreamType type = {};          //!< Stream type
+  uint64_t supports = {};        //!< Update types (bit mask)
+  std::string_view account;      //!< Account name (as known to the gateway)
+  Priority priority = {};        //!< Priority
+  ConnectionStatus status = {};  //!< Connection status
 };
 
 }  // namespace roq

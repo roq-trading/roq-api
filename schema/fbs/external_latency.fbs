@@ -1,5 +1,3 @@
-include "gateway_status.fbs";
-
 namespace roq.fbs;
 
 table ExternalLatency {

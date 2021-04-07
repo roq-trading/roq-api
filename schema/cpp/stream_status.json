@@ -8,9 +8,8 @@
             "type": "uint16_t"
         },
         {
-            "name": "type",
-            "type": "StreamType",
-            "comment": "Stream type"
+            "name": "account",
+            "type": "std::string_view"
         },
         {
             "name": "supports",
@@ -18,18 +17,19 @@
             "comment": "Update types (bit mask)"
         },
         {
-            "name": "account",
-            "type": "std::string_view"
+            "name": "status",
+            "type": "ConnectionStatus",
+            "comment": "Connection status"
+        },
+        {
+            "name": "type",
+            "type": "StreamType",
+            "comment": "Stream type"
         },
         {
             "name": "priority",
             "type": "Priority",
             "comment": "Priority"
-        },
-        {
-            "name": "status",
-            "type": "ConnectionStatus",
-            "comment": "Connection status"
         }
     ]
 }

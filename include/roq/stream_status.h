@@ -28,11 +28,11 @@ namespace roq {
 //! Update relating to current stream status
 struct ROQ_PUBLIC StreamStatus final {
   uint16_t stream_id = {};       //!< Stream identifier
-  StreamType type = {};          //!< Stream type
-  uint64_t supports = {};        //!< Update types (bit mask)
   std::string_view account;      //!< Account name (as known to the gateway)
-  Priority priority = {};        //!< Priority
+  uint64_t supports = {};        //!< Update types (bit mask)
   ConnectionStatus status = {};  //!< Connection status
+  StreamType type = {};          //!< Stream type
+  Priority priority = {};        //!< Priority
 };
 
 }  // namespace roq
@@ -46,18 +46,18 @@ struct fmt::formatter<roq::StreamStatus> : public roq::formatter {
         context.out(),
         R"({{)"
         R"(stream_id={}, )"
-        R"(type={}, )"
-        R"(supports={}, )"
         R"(account="{}", )"
-        R"(priority={}, )"
-        R"(status={})"
+        R"(supports={}, )"
+        R"(status={}, )"
+        R"(type={}, )"
+        R"(priority={})"
         R"(}})"_fmt,
         value.stream_id,
-        value.type,
-        value.supports,
         value.account,
-        value.priority,
-        value.status);
+        value.supports,
+        value.status,
+        value.type,
+        value.priority);
   }
 };
 template <>

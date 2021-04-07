@@ -2030,19 +2030,19 @@ struct GatewayStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef GatewayStatusBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ACCOUNT = 4,
-    VT_SUPPORTS = 6,
+    VT_SUPPORTED = 6,
     VT_AVAILABLE = 8,
     VT_UNAVAILABLE = 10
   };
   const flatbuffers::String *account() const {
     return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
   }
-  uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
+  uint64_t supported() const { return GetField<uint64_t>(VT_SUPPORTED, 0); }
   uint64_t available() const { return GetField<uint64_t>(VT_AVAILABLE, 0); }
   uint64_t unavailable() const { return GetField<uint64_t>(VT_UNAVAILABLE, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) && VerifyField<uint64_t>(verifier, VT_SUPPORTS) &&
+           verifier.VerifyString(account()) && VerifyField<uint64_t>(verifier, VT_SUPPORTED) &&
            VerifyField<uint64_t>(verifier, VT_AVAILABLE) &&
            VerifyField<uint64_t>(verifier, VT_UNAVAILABLE) && verifier.EndTable();
   }
@@ -2055,8 +2055,8 @@ struct GatewayStatusBuilder {
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(GatewayStatus::VT_ACCOUNT, account);
   }
-  void add_supports(uint64_t supports) {
-    fbb_.AddElement<uint64_t>(GatewayStatus::VT_SUPPORTS, supports, 0);
+  void add_supported(uint64_t supported) {
+    fbb_.AddElement<uint64_t>(GatewayStatus::VT_SUPPORTED, supported, 0);
   }
   void add_available(uint64_t available) {
     fbb_.AddElement<uint64_t>(GatewayStatus::VT_AVAILABLE, available, 0);
@@ -2078,13 +2078,13 @@ struct GatewayStatusBuilder {
 inline flatbuffers::Offset<GatewayStatus> CreateGatewayStatus(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> account = 0,
-    uint64_t supports = 0,
+    uint64_t supported = 0,
     uint64_t available = 0,
     uint64_t unavailable = 0) {
   GatewayStatusBuilder builder_(_fbb);
   builder_.add_unavailable(unavailable);
   builder_.add_available(available);
-  builder_.add_supports(supports);
+  builder_.add_supported(supported);
   builder_.add_account(account);
   return builder_.Finish();
 }
@@ -2092,11 +2092,11 @@ inline flatbuffers::Offset<GatewayStatus> CreateGatewayStatus(
 inline flatbuffers::Offset<GatewayStatus> CreateGatewayStatusDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *account = nullptr,
-    uint64_t supports = 0,
+    uint64_t supported = 0,
     uint64_t available = 0,
     uint64_t unavailable = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
-  return roq::fbs::CreateGatewayStatus(_fbb, account__, supports, available, unavailable);
+  return roq::fbs::CreateGatewayStatus(_fbb, account__, supported, available, unavailable);
 }
 
 struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -3464,32 +3464,32 @@ struct StreamStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StreamStatusBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STREAM_ID = 4,
-    VT_TYPE = 6,
+    VT_ACCOUNT = 6,
     VT_SUPPORTS = 8,
-    VT_ACCOUNT = 10,
-    VT_PRIORITY = 12,
-    VT_STATUS = 14
+    VT_STATUS = 10,
+    VT_TYPE = 12,
+    VT_PRIORITY = 14
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  roq::fbs::StreamType type() const {
-    return static_cast<roq::fbs::StreamType>(GetField<uint8_t>(VT_TYPE, 0));
-  }
-  uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
   const flatbuffers::String *account() const {
     return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
+  }
+  uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
+  roq::fbs::ConnectionStatus status() const {
+    return static_cast<roq::fbs::ConnectionStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  roq::fbs::StreamType type() const {
+    return static_cast<roq::fbs::StreamType>(GetField<uint8_t>(VT_TYPE, 0));
   }
   roq::fbs::Priority priority() const {
     return static_cast<roq::fbs::Priority>(GetField<uint32_t>(VT_PRIORITY, 0));
   }
-  roq::fbs::ConnectionStatus status() const {
-    return static_cast<roq::fbs::ConnectionStatus>(GetField<uint8_t>(VT_STATUS, 0));
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
-           VerifyField<uint8_t>(verifier, VT_TYPE) &&
-           VerifyField<uint64_t>(verifier, VT_SUPPORTS) && VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) && VerifyField<uint32_t>(verifier, VT_PRIORITY) &&
-           VerifyField<uint8_t>(verifier, VT_STATUS) && verifier.EndTable();
+           VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
+           VerifyField<uint64_t>(verifier, VT_SUPPORTS) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS) && VerifyField<uint8_t>(verifier, VT_TYPE) &&
+           VerifyField<uint32_t>(verifier, VT_PRIORITY) && verifier.EndTable();
   }
 };
 
@@ -3500,20 +3500,20 @@ struct StreamStatusBuilder {
   void add_stream_id(uint16_t stream_id) {
     fbb_.AddElement<uint16_t>(StreamStatus::VT_STREAM_ID, stream_id, 0);
   }
-  void add_type(roq::fbs::StreamType type) {
-    fbb_.AddElement<uint8_t>(StreamStatus::VT_TYPE, static_cast<uint8_t>(type), 0);
+  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
+    fbb_.AddOffset(StreamStatus::VT_ACCOUNT, account);
   }
   void add_supports(uint64_t supports) {
     fbb_.AddElement<uint64_t>(StreamStatus::VT_SUPPORTS, supports, 0);
   }
-  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
-    fbb_.AddOffset(StreamStatus::VT_ACCOUNT, account);
+  void add_status(roq::fbs::ConnectionStatus status) {
+    fbb_.AddElement<uint8_t>(StreamStatus::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_type(roq::fbs::StreamType type) {
+    fbb_.AddElement<uint8_t>(StreamStatus::VT_TYPE, static_cast<uint8_t>(type), 0);
   }
   void add_priority(roq::fbs::Priority priority) {
     fbb_.AddElement<uint32_t>(StreamStatus::VT_PRIORITY, static_cast<uint32_t>(priority), 0);
-  }
-  void add_status(roq::fbs::ConnectionStatus status) {
-    fbb_.AddElement<uint8_t>(StreamStatus::VT_STATUS, static_cast<uint8_t>(status), 0);
   }
   explicit StreamStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3529,31 +3529,31 @@ struct StreamStatusBuilder {
 inline flatbuffers::Offset<StreamStatus> CreateStreamStatus(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    roq::fbs::StreamType type = roq::fbs::StreamType_Undefined,
-    uint64_t supports = 0,
     flatbuffers::Offset<flatbuffers::String> account = 0,
-    roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
-    roq::fbs::ConnectionStatus status = roq::fbs::ConnectionStatus_Undefined) {
+    uint64_t supports = 0,
+    roq::fbs::ConnectionStatus status = roq::fbs::ConnectionStatus_Undefined,
+    roq::fbs::StreamType type = roq::fbs::StreamType_Undefined,
+    roq::fbs::Priority priority = roq::fbs::Priority_Undefined) {
   StreamStatusBuilder builder_(_fbb);
   builder_.add_supports(supports);
   builder_.add_priority(priority);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
-  builder_.add_status(status);
   builder_.add_type(type);
+  builder_.add_status(status);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<StreamStatus> CreateStreamStatusDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    roq::fbs::StreamType type = roq::fbs::StreamType_Undefined,
-    uint64_t supports = 0,
     const char *account = nullptr,
-    roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
-    roq::fbs::ConnectionStatus status = roq::fbs::ConnectionStatus_Undefined) {
+    uint64_t supports = 0,
+    roq::fbs::ConnectionStatus status = roq::fbs::ConnectionStatus_Undefined,
+    roq::fbs::StreamType type = roq::fbs::StreamType_Undefined,
+    roq::fbs::Priority priority = roq::fbs::Priority_Undefined) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
-  return roq::fbs::CreateStreamStatus(_fbb, stream_id, type, supports, account__, priority, status);
+  return roq::fbs::CreateStreamStatus(_fbb, stream_id, account__, supports, status, type, priority);
 }
 
 struct TopOfBook FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

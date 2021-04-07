@@ -8,19 +8,19 @@
             "type": "std::string_view"
         },
         {
-            "name": "supports",
+            "name": "supported",
             "type": "uint64_t",
-            "comment": "Update types (bit mask) supported by all streams"
+            "comment": "Supported update types (bit mask)"
         },
         {
             "name": "available",
             "type": "uint64_t",
-            "comment": "Update types (bit mask) available from all supporting streams"
+            "comment": "Update types (bit mask) available from all streams"
         },
         {
             "name": "unavailable",
             "type": "uint64_t",
-            "comment": "Update types (bit mask) unavailable from one or more supporting streams"
+            "comment": "Update types (bit mask) unavailable from one or more streams"
         }
     ]
 }

@@ -2,7 +2,7 @@ namespace roq.fbs;
 
 table GatewayStatus {
   account:string;
-  supports:uint64;
+  supported:uint64;
   available:uint64;
   unavailable:uint64;
 }

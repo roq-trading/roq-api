@@ -335,11 +335,11 @@ auto encode(B &builder, const roq::StreamStatus &value) {
   return CreateStreamStatus(
       builder,
       value.stream_id,
-      encode(builder, value.type),
-      value.supports,  // note! using Mask<SupportType>
       encode(builder, value.account),
-      encode(builder, value.priority),
-      encode(builder, value.status));
+      value.supports,  // note! using Mask<SupportType>
+      encode(builder, value.status),
+      encode(builder, value.type),
+      encode(builder, value.priority));
 }
 
 template <typename B>
@@ -352,7 +352,7 @@ auto encode(B &builder, const roq::GatewayStatus &value) {
   return CreateGatewayStatus(
       builder,
       encode(builder, value.account),
-      value.supports,      // note! using Mask<SupportType>
+      value.supported,     // note! using Mask<SupportType>
       value.available,     // note! using Mask<SupportType>
       value.unavailable);  // note! using Mask<SupportType>
 }

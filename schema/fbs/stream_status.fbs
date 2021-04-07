@@ -6,9 +6,9 @@ namespace roq.fbs;
 
 table StreamStatus {
   stream_id:uint16;
-  type:StreamType;
-  supports:uint64;
   account:string;
-  priority:Priority;
+  supports:uint64;
   status:ConnectionStatus;
+  type:StreamType;
+  priority:Priority;
 }

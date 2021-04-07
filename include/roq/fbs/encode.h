@@ -130,6 +130,7 @@ auto encode([[maybe_unused]] B &builder, const roq::RequestType &value) {
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
+
 template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::SecurityType &value) {
   using result_type = SecurityType;
@@ -330,8 +331,8 @@ auto encode(B &builder, const roq::GatewaySettings &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::StreamUpdate &value) {
-  return CreateStreamUpdate(
+auto encode(B &builder, const roq::StreamStatus &value) {
+  return CreateStreamStatus(
       builder,
       value.stream_id,
       encode(builder, value.type),
@@ -344,6 +345,16 @@ auto encode(B &builder, const roq::StreamUpdate &value) {
 template <typename B>
 auto encode(B &builder, const roq::ExternalLatency &value) {
   return CreateExternalLatency(builder, value.stream_id, encode(builder, value.latency));
+}
+
+template <typename B>
+auto encode(B &builder, const roq::GatewayStatus &value) {
+  return CreateGatewayStatus(
+      builder,
+      encode(builder, value.account),
+      value.supports,      // note! using Mask<SupportType>
+      value.available,     // note! using Mask<SupportType>
+      value.unavailable);  // note! using Mask<SupportType>
 }
 
 template <typename B>
@@ -594,11 +605,11 @@ auto encode(B &builder, const roq::Event<roq::GatewaySettings> &event) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::StreamUpdate> &event) {
+auto encode(B &builder, const roq::Event<roq::StreamStatus> &event) {
   return CreateEvent(
       builder,
       encode(builder, event.message_info),
-      Message_StreamUpdate,
+      Message_StreamStatus,
       encode(builder, event.value).Union());
 }
 
@@ -608,6 +619,15 @@ auto encode(B &builder, const roq::Event<roq::ExternalLatency> &event) {
       builder,
       encode(builder, event.message_info),
       Message_ExternalLatency,
+      encode(builder, event.value).Union());
+}
+
+template <typename B>
+auto encode(B &builder, const roq::Event<roq::GatewayStatus> &event) {
+  return CreateEvent(
+      builder,
+      encode(builder, event.message_info),
+      Message_GatewayStatus,
       encode(builder, event.value).Union());
 }
 

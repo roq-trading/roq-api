@@ -14,7 +14,7 @@ class ROQ_PUBLIC Generator {
   //! Dispatch interface used to handle update events
   class ROQ_PUBLIC Dispatcher {
    public:
-    virtual void operator()(const Event<StreamUpdate> &) = 0;
+    virtual void operator()(const Event<GatewayStatus> &) = 0;
     virtual void operator()(const Event<ReferenceData> &) = 0;
     virtual void operator()(const Event<MarketStatus> &) = 0;
     virtual void operator()(const Event<TopOfBook> &) = 0;

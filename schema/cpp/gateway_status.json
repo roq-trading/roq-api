@@ -1,0 +1,26 @@
+{
+    "name": "GatewayStatus",
+    "type": "message",
+    "comment": "Update relating to current gateway service status",
+    "values": [
+        {
+            "name": "account",
+            "type": "std::string_view"
+        },
+        {
+            "name": "supports",
+            "type": "uint64_t",
+            "comment": "Update types (bit mask) supported by all streams"
+        },
+        {
+            "name": "available",
+            "type": "uint64_t",
+            "comment": "Update types (bit mask) available from all supporting streams"
+        },
+        {
+            "name": "unavailable",
+            "type": "uint64_t",
+            "comment": "Update types (bit mask) unavailable from one or more supporting streams"
+        }
+    ]
+}

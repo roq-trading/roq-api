@@ -14,6 +14,7 @@ set(SOURCES
     fill.fbs
     funds_update.fbs
     gateway_settings.fbs
+    gateway_status.fbs
     layer.fbs
     market_by_order_update.fbs
     market_by_price_update.fbs
@@ -39,8 +40,8 @@ set(SOURCES
     statistics.fbs
     statistics_type.fbs
     statistics_update.fbs
+    stream_status.fbs
     stream_type.fbs
-    stream_update.fbs
     support_type.fbs
     time_in_force.fbs
     top_of_book.fbs

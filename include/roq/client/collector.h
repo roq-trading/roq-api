@@ -15,7 +15,7 @@ class Collector {
   virtual void operator()(const Event<DownloadBegin> &) {}
   virtual void operator()(const Event<DownloadEnd> &) {}
   virtual void operator()(const Event<GatewaySettings> &) {}
-  virtual void operator()(const Event<StreamUpdate> &) {}
+  virtual void operator()(const Event<GatewayStatus> &) {}
   virtual void operator()(const Event<ExternalLatency> &) {}
   virtual void operator()(const Event<ReferenceData> &) {}
   virtual void operator()(const Event<MarketStatus> &) {}

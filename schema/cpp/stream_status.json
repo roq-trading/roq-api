@@ -1,5 +1,5 @@
 {
-    "name": "StreamUpdate",
+    "name": "StreamStatus",
     "type": "message",
     "comment": "Update relating to current stream status",
     "values": [

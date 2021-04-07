@@ -39,6 +39,7 @@ include "download_end.fbs";
 include "external_latency.fbs";
 include "funds_update.fbs";
 include "gateway_settings.fbs";
+include "gateway_status.fbs";
 include "market_by_order_update.fbs";
 include "market_by_price_update.fbs";
 include "market_status.fbs";
@@ -48,7 +49,7 @@ include "order_update.fbs";
 include "position_update.fbs";
 include "reference_data.fbs";
 include "statistics_update.fbs";
-include "stream_update.fbs";
+include "stream_status.fbs";
 include "top_of_book.fbs";
 include "trade_summary.fbs";
 include "trade_update.fbs";
@@ -103,8 +104,9 @@ union Message {
   DownloadBegin,
   DownloadEnd,
   GatewaySettings,
-  StreamUpdate,
+  StreamStatus,
   ExternalLatency,
+  GatewayStatus,
   ReferenceData,
   MarketStatus,
   TopOfBook,

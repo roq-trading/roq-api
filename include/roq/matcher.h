@@ -15,7 +15,7 @@ class ROQ_PUBLIC Matcher {
     virtual void operator()(const Event<DownloadBegin> &) = 0;
     virtual void operator()(const Event<DownloadEnd> &) = 0;
     virtual void operator()(const Event<GatewaySettings> &) = 0;
-    virtual void operator()(const Event<StreamUpdate> &) = 0;
+    virtual void operator()(const Event<GatewayStatus> &) = 0;
     virtual void operator()(const Event<ReferenceData> &) = 0;
     virtual void operator()(const Event<MarketStatus> &) = 0;
     virtual void operator()(const Event<TopOfBook> &) = 0;
@@ -36,7 +36,7 @@ class ROQ_PUBLIC Matcher {
   virtual void dispatch(Dispatcher &, std::chrono::nanoseconds next) = 0;
 
   virtual void operator()(const Event<GatewaySettings> &) = 0;
-  virtual void operator()(const Event<StreamUpdate> &) = 0;
+  virtual void operator()(const Event<GatewayStatus> &) = 0;
   virtual void operator()(const Event<ReferenceData> &) = 0;
   virtual void operator()(const Event<MarketStatus> &) = 0;
   virtual void operator()(const Event<StatisticsUpdate> &) = 0;

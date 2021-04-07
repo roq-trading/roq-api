@@ -26,7 +26,7 @@
 namespace roq {
 
 //! Update relating to current stream status
-struct ROQ_PUBLIC StreamUpdate final {
+struct ROQ_PUBLIC StreamStatus final {
   uint16_t stream_id = {};       //!< Stream identifier
   StreamType type = {};          //!< Stream type
   uint64_t supports = {};        //!< Update types (bit mask)
@@ -38,9 +38,9 @@ struct ROQ_PUBLIC StreamUpdate final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::StreamUpdate> : public roq::formatter {
+struct fmt::formatter<roq::StreamStatus> : public roq::formatter {
   template <typename Context>
-  auto format(const roq::StreamUpdate &value, Context &context) {
+  auto format(const roq::StreamStatus &value, Context &context) {
     using namespace roq::literals;
     return roq::format_to(
         context.out(),
@@ -61,15 +61,15 @@ struct fmt::formatter<roq::StreamUpdate> : public roq::formatter {
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::StreamUpdate> > : public roq::formatter {
+struct fmt::formatter<roq::Event<roq::StreamStatus> > : public roq::formatter {
   template <typename Context>
-  auto format(const roq::Event<roq::StreamUpdate> &event, Context &context) {
+  auto format(const roq::Event<roq::StreamStatus> &event, Context &context) {
     using namespace roq::literals;
     return roq::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
-        R"(stream_update={})"
+        R"(stream_status={})"
         R"(}})"_fmt,
         event.message_info,
         event.value);

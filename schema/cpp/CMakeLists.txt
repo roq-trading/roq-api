@@ -17,6 +17,7 @@ set(SOURCES
     fill.json
     funds_update.json
     gateway_settings.json
+    gateway_status.json
     layer.json
     market_by_order_update.json
     market_by_price_update.json
@@ -45,8 +46,8 @@ set(SOURCES
     statistics_type.json
     statistics_update.json
     stop.json
+    stream_status.json
     stream_type.json
-    stream_update.json
     support_type.json
     time_in_force.json
     timer.json

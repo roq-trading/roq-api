@@ -38,8 +38,11 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<GatewaySettings> &) {}
 
   // stream
-  virtual void operator()(const Event<StreamUpdate> &) {}
+  virtual void operator()(const Event<StreamStatus> &) {}
   virtual void operator()(const Event<ExternalLatency> &) {}
+
+  // service
+  virtual void operator()(const Event<GatewayStatus> &) {}
 
   // market data
   virtual void operator()(const Event<ReferenceData> &) {}

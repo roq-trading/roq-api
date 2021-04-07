@@ -47,6 +47,9 @@ struct FundsUpdateBuilder;
 struct GatewaySettings;
 struct GatewaySettingsBuilder;
 
+struct GatewayStatus;
+struct GatewayStatusBuilder;
+
 struct MarketByOrderUpdate;
 struct MarketByOrderUpdateBuilder;
 
@@ -74,8 +77,8 @@ struct ReferenceDataBuilder;
 struct StatisticsUpdate;
 struct StatisticsUpdateBuilder;
 
-struct StreamUpdate;
-struct StreamUpdateBuilder;
+struct StreamStatus;
+struct StreamStatusBuilder;
 
 struct TopOfBook;
 struct TopOfBookBuilder;
@@ -819,28 +822,29 @@ enum Message {
   Message_DownloadBegin = 6,
   Message_DownloadEnd = 7,
   Message_GatewaySettings = 8,
-  Message_StreamUpdate = 9,
+  Message_StreamStatus = 9,
   Message_ExternalLatency = 10,
-  Message_ReferenceData = 11,
-  Message_MarketStatus = 12,
-  Message_TopOfBook = 13,
-  Message_MarketByPriceUpdate = 14,
-  Message_MarketByOrderUpdate = 15,
-  Message_TradeSummary = 16,
-  Message_StatisticsUpdate = 17,
-  Message_CreateOrder = 18,
-  Message_ModifyOrder = 19,
-  Message_CancelOrder = 20,
-  Message_OrderAck = 21,
-  Message_OrderUpdate = 22,
-  Message_TradeUpdate = 23,
-  Message_PositionUpdate = 24,
-  Message_FundsUpdate = 25,
+  Message_GatewayStatus = 11,
+  Message_ReferenceData = 12,
+  Message_MarketStatus = 13,
+  Message_TopOfBook = 14,
+  Message_MarketByPriceUpdate = 15,
+  Message_MarketByOrderUpdate = 16,
+  Message_TradeSummary = 17,
+  Message_StatisticsUpdate = 18,
+  Message_CreateOrder = 19,
+  Message_ModifyOrder = 20,
+  Message_CancelOrder = 21,
+  Message_OrderAck = 22,
+  Message_OrderUpdate = 23,
+  Message_TradeUpdate = 24,
+  Message_PositionUpdate = 25,
+  Message_FundsUpdate = 26,
   Message_MIN = Message_NONE,
   Message_MAX = Message_FundsUpdate
 };
 
-inline const Message (&EnumValuesMessage())[26] {
+inline const Message (&EnumValuesMessage())[27] {
   static const Message values[] = {
       Message_NONE,
       Message_Handshake,
@@ -851,8 +855,9 @@ inline const Message (&EnumValuesMessage())[26] {
       Message_DownloadBegin,
       Message_DownloadEnd,
       Message_GatewaySettings,
-      Message_StreamUpdate,
+      Message_StreamStatus,
       Message_ExternalLatency,
+      Message_GatewayStatus,
       Message_ReferenceData,
       Message_MarketStatus,
       Message_TopOfBook,
@@ -872,7 +877,7 @@ inline const Message (&EnumValuesMessage())[26] {
 }
 
 inline const char *const *EnumNamesMessage() {
-  static const char *const names[27] = {
+  static const char *const names[28] = {
       "NONE",
       "Handshake",
       "HandshakeAck",
@@ -882,8 +887,9 @@ inline const char *const *EnumNamesMessage() {
       "DownloadBegin",
       "DownloadEnd",
       "GatewaySettings",
-      "StreamUpdate",
+      "StreamStatus",
       "ExternalLatency",
+      "GatewayStatus",
       "ReferenceData",
       "MarketStatus",
       "TopOfBook",
@@ -956,13 +962,18 @@ struct MessageTraits<roq::fbs::GatewaySettings> {
 };
 
 template <>
-struct MessageTraits<roq::fbs::StreamUpdate> {
-  static const Message enum_value = Message_StreamUpdate;
+struct MessageTraits<roq::fbs::StreamStatus> {
+  static const Message enum_value = Message_StreamStatus;
 };
 
 template <>
 struct MessageTraits<roq::fbs::ExternalLatency> {
   static const Message enum_value = Message_ExternalLatency;
+};
+
+template <>
+struct MessageTraits<roq::fbs::GatewayStatus> {
+  static const Message enum_value = Message_GatewayStatus;
 };
 
 template <>
@@ -2013,6 +2024,79 @@ inline flatbuffers::Offset<GatewaySettings> CreateGatewaySettings(
   builder_.add_mbp_allow_fractional_tick_size(mbp_allow_fractional_tick_size);
   builder_.add_mbp_allow_price_inversion(mbp_allow_price_inversion);
   return builder_.Finish();
+}
+
+struct GatewayStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef GatewayStatusBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ACCOUNT = 4,
+    VT_SUPPORTS = 6,
+    VT_AVAILABLE = 8,
+    VT_UNAVAILABLE = 10
+  };
+  const flatbuffers::String *account() const {
+    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
+  }
+  uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
+  uint64_t available() const { return GetField<uint64_t>(VT_AVAILABLE, 0); }
+  uint64_t unavailable() const { return GetField<uint64_t>(VT_UNAVAILABLE, 0); }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) && VerifyField<uint64_t>(verifier, VT_SUPPORTS) &&
+           VerifyField<uint64_t>(verifier, VT_AVAILABLE) &&
+           VerifyField<uint64_t>(verifier, VT_UNAVAILABLE) && verifier.EndTable();
+  }
+};
+
+struct GatewayStatusBuilder {
+  typedef GatewayStatus Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
+    fbb_.AddOffset(GatewayStatus::VT_ACCOUNT, account);
+  }
+  void add_supports(uint64_t supports) {
+    fbb_.AddElement<uint64_t>(GatewayStatus::VT_SUPPORTS, supports, 0);
+  }
+  void add_available(uint64_t available) {
+    fbb_.AddElement<uint64_t>(GatewayStatus::VT_AVAILABLE, available, 0);
+  }
+  void add_unavailable(uint64_t unavailable) {
+    fbb_.AddElement<uint64_t>(GatewayStatus::VT_UNAVAILABLE, unavailable, 0);
+  }
+  explicit GatewayStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  GatewayStatusBuilder &operator=(const GatewayStatusBuilder &);
+  flatbuffers::Offset<GatewayStatus> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<GatewayStatus>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<GatewayStatus> CreateGatewayStatus(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> account = 0,
+    uint64_t supports = 0,
+    uint64_t available = 0,
+    uint64_t unavailable = 0) {
+  GatewayStatusBuilder builder_(_fbb);
+  builder_.add_unavailable(unavailable);
+  builder_.add_available(available);
+  builder_.add_supports(supports);
+  builder_.add_account(account);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<GatewayStatus> CreateGatewayStatusDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *account = nullptr,
+    uint64_t supports = 0,
+    uint64_t available = 0,
+    uint64_t unavailable = 0) {
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  return roq::fbs::CreateGatewayStatus(_fbb, account__, supports, available, unavailable);
 }
 
 struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -3376,8 +3460,8 @@ inline flatbuffers::Offset<StatisticsUpdate> CreateStatisticsUpdateDirect(
       _fbb, stream_id, exchange__, symbol__, statistics__, snapshot, exchange_time_utc);
 }
 
-struct StreamUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef StreamUpdateBuilder Builder;
+struct StreamStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef StreamStatusBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_STREAM_ID = 4,
     VT_TYPE = 6,
@@ -3409,40 +3493,40 @@ struct StreamUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct StreamUpdateBuilder {
-  typedef StreamUpdate Table;
+struct StreamStatusBuilder {
+  typedef StreamStatus Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(StreamUpdate::VT_STREAM_ID, stream_id, 0);
+    fbb_.AddElement<uint16_t>(StreamStatus::VT_STREAM_ID, stream_id, 0);
   }
   void add_type(roq::fbs::StreamType type) {
-    fbb_.AddElement<uint8_t>(StreamUpdate::VT_TYPE, static_cast<uint8_t>(type), 0);
+    fbb_.AddElement<uint8_t>(StreamStatus::VT_TYPE, static_cast<uint8_t>(type), 0);
   }
   void add_supports(uint64_t supports) {
-    fbb_.AddElement<uint64_t>(StreamUpdate::VT_SUPPORTS, supports, 0);
+    fbb_.AddElement<uint64_t>(StreamStatus::VT_SUPPORTS, supports, 0);
   }
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
-    fbb_.AddOffset(StreamUpdate::VT_ACCOUNT, account);
+    fbb_.AddOffset(StreamStatus::VT_ACCOUNT, account);
   }
   void add_priority(roq::fbs::Priority priority) {
-    fbb_.AddElement<uint32_t>(StreamUpdate::VT_PRIORITY, static_cast<uint32_t>(priority), 0);
+    fbb_.AddElement<uint32_t>(StreamStatus::VT_PRIORITY, static_cast<uint32_t>(priority), 0);
   }
   void add_status(roq::fbs::ConnectionStatus status) {
-    fbb_.AddElement<uint8_t>(StreamUpdate::VT_STATUS, static_cast<uint8_t>(status), 0);
+    fbb_.AddElement<uint8_t>(StreamStatus::VT_STATUS, static_cast<uint8_t>(status), 0);
   }
-  explicit StreamUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
+  explicit StreamStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  StreamUpdateBuilder &operator=(const StreamUpdateBuilder &);
-  flatbuffers::Offset<StreamUpdate> Finish() {
+  StreamStatusBuilder &operator=(const StreamStatusBuilder &);
+  flatbuffers::Offset<StreamStatus> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<StreamUpdate>(end);
+    auto o = flatbuffers::Offset<StreamStatus>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<StreamUpdate> CreateStreamUpdate(
+inline flatbuffers::Offset<StreamStatus> CreateStreamStatus(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
     roq::fbs::StreamType type = roq::fbs::StreamType_Undefined,
@@ -3450,7 +3534,7 @@ inline flatbuffers::Offset<StreamUpdate> CreateStreamUpdate(
     flatbuffers::Offset<flatbuffers::String> account = 0,
     roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
     roq::fbs::ConnectionStatus status = roq::fbs::ConnectionStatus_Undefined) {
-  StreamUpdateBuilder builder_(_fbb);
+  StreamStatusBuilder builder_(_fbb);
   builder_.add_supports(supports);
   builder_.add_priority(priority);
   builder_.add_account(account);
@@ -3460,7 +3544,7 @@ inline flatbuffers::Offset<StreamUpdate> CreateStreamUpdate(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<StreamUpdate> CreateStreamUpdateDirect(
+inline flatbuffers::Offset<StreamStatus> CreateStreamStatusDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
     roq::fbs::StreamType type = roq::fbs::StreamType_Undefined,
@@ -3469,7 +3553,7 @@ inline flatbuffers::Offset<StreamUpdate> CreateStreamUpdateDirect(
     roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
     roq::fbs::ConnectionStatus status = roq::fbs::ConnectionStatus_Undefined) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
-  return roq::fbs::CreateStreamUpdate(_fbb, stream_id, type, supports, account__, priority, status);
+  return roq::fbs::CreateStreamStatus(_fbb, stream_id, type, supports, account__, priority, status);
 }
 
 struct TopOfBook FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4312,14 +4396,19 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
                ? static_cast<const roq::fbs::GatewaySettings *>(message())
                : nullptr;
   }
-  const roq::fbs::StreamUpdate *message_as_StreamUpdate() const {
-    return message_type() == roq::fbs::Message_StreamUpdate
-               ? static_cast<const roq::fbs::StreamUpdate *>(message())
+  const roq::fbs::StreamStatus *message_as_StreamStatus() const {
+    return message_type() == roq::fbs::Message_StreamStatus
+               ? static_cast<const roq::fbs::StreamStatus *>(message())
                : nullptr;
   }
   const roq::fbs::ExternalLatency *message_as_ExternalLatency() const {
     return message_type() == roq::fbs::Message_ExternalLatency
                ? static_cast<const roq::fbs::ExternalLatency *>(message())
+               : nullptr;
+  }
+  const roq::fbs::GatewayStatus *message_as_GatewayStatus() const {
+    return message_type() == roq::fbs::Message_GatewayStatus
+               ? static_cast<const roq::fbs::GatewayStatus *>(message())
                : nullptr;
   }
   const roq::fbs::ReferenceData *message_as_ReferenceData() const {
@@ -4446,13 +4535,18 @@ inline const roq::fbs::GatewaySettings *Event::message_as<roq::fbs::GatewaySetti
 }
 
 template <>
-inline const roq::fbs::StreamUpdate *Event::message_as<roq::fbs::StreamUpdate>() const {
-  return message_as_StreamUpdate();
+inline const roq::fbs::StreamStatus *Event::message_as<roq::fbs::StreamStatus>() const {
+  return message_as_StreamStatus();
 }
 
 template <>
 inline const roq::fbs::ExternalLatency *Event::message_as<roq::fbs::ExternalLatency>() const {
   return message_as_ExternalLatency();
+}
+
+template <>
+inline const roq::fbs::GatewayStatus *Event::message_as<roq::fbs::GatewayStatus>() const {
+  return message_as_GatewayStatus();
 }
 
 template <>
@@ -4605,12 +4699,16 @@ inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Mess
       auto ptr = reinterpret_cast<const roq::fbs::GatewaySettings *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Message_StreamUpdate: {
-      auto ptr = reinterpret_cast<const roq::fbs::StreamUpdate *>(obj);
+    case Message_StreamStatus: {
+      auto ptr = reinterpret_cast<const roq::fbs::StreamStatus *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_ExternalLatency: {
       auto ptr = reinterpret_cast<const roq::fbs::ExternalLatency *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message_GatewayStatus: {
+      auto ptr = reinterpret_cast<const roq::fbs::GatewayStatus *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_ReferenceData: {

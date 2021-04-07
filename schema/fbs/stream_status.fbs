@@ -4,7 +4,7 @@ include "stream_type.fbs";
 
 namespace roq.fbs;
 
-table StreamUpdate {
+table StreamStatus {
   stream_id:uint16;
   type:StreamType;
   supports:uint64;

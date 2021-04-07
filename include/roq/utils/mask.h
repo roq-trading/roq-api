@@ -53,7 +53,7 @@ class Mask final {
     return value_ & value;
   }
 
-  constexpr bool has_any(Mask &rhs) const { return (value_ & rhs.value_) != value_type{}; }
+  constexpr bool has_any(Mask rhs) const { return (value_ & rhs.value_) != value_type{}; }
 
   constexpr bool has_all(T flag) const {
     return (value_ & static_cast<value_type>(flag)) == static_cast<value_type>(flag);
@@ -66,16 +66,23 @@ class Mask final {
     return (value_ & value) == value;
   }
 
-  constexpr bool has_all(Mask &rhs) const { return (value_ & rhs.value_) == rhs.value_; }
+  constexpr bool has_all(Mask rhs) const { return (value_ & rhs.value_) == rhs.value_; }
 
   constexpr Mask &set(T flag) {
     value_ |= static_cast<value_type>(flag);
     return *this;
   }
+
   constexpr Mask &remove(T flag) {
     value_ &= ~static_cast<value_type>(flag);
     return *this;
   }
+
+  constexpr bool has_none(T flag) const { return !has_any(flag); }
+
+  constexpr bool has_none(std::initializer_list<T> flags) const { return !has_any(flags); }
+
+  constexpr bool has_none(Mask rhs) const { return !has_any(rhs); }
 
   constexpr Mask &set(std::initializer_list<T> flags) {
     for (auto &flag : flags)

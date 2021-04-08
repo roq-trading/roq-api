@@ -106,6 +106,9 @@ def _format_helper(char, string, array, safe_name, accessor):
     value = ('roq::join(value.{}{}, ", "_sv)' if array else "value.{}{}").format(
         safe_name, accessor
     )
+    # required until Mask has been implemented
+    if safe_name in ('supports', 'supported', 'available', 'unavailable'):
+        return ("'{:#x}'", value)
     if char:
         return ("'{}'", value)
     if string:
@@ -162,7 +165,7 @@ def _new_spec_helper(item):
     default = item.get("default", get_default_from_type(t))
     accessor = item.get("accessor", "")
     format_string, format_value = _format_helper(char, string, array, safe_name, accessor)
-    bit = item.get("bit", 0)
+    position = item.get("position", 0)
     return dict(
         raw_name=r,
         name=safe_name,
@@ -182,7 +185,7 @@ def _new_spec_helper(item):
         is_float=is_float,
         format_string=format_string,
         format_value=format_value,
-        bit=bit,
+        position=position,
     )
 
 

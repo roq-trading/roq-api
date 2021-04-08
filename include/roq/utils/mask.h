@@ -87,10 +87,18 @@ class Mask final {
 
   constexpr bool has_none(Mask rhs) const { return !has_any(rhs); }
 
+  constexpr Mask negate() const { return Mask(~value_); }
+
+  constexpr Mask logical_and(Mask rhs) const { return Mask(value_ & rhs.value_); }
+
   constexpr Mask &set(std::initializer_list<T> flags) {
     for (auto &flag : flags)
       value_ |= static_cast<value_type>(flag);
   }
+
+  constexpr Mask operator~() const { return negate(); }
+
+  constexpr Mask operator&(Mask rhs) const { return logical_and(rhs); }
 
  private:
   value_type value_ = {};

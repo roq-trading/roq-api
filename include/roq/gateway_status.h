@@ -40,9 +40,9 @@ struct fmt::formatter<roq::GatewayStatus> : public roq::formatter {
         context.out(),
         R"({{)"
         R"(account="{}", )"
-        R"(supported={}, )"
-        R"(available={}, )"
-        R"(unavailable={})"
+        R"(supported='{:#x}', )"
+        R"(available='{:#x}', )"
+        R"(unavailable='{:#x}')"
         R"(}})"_fmt,
         value.account,
         value.supported,

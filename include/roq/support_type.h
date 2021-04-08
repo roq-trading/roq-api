@@ -18,22 +18,22 @@ namespace roq {
 struct ROQ_PACKED SupportType final {
   //! helper
   enum type_t : uint64_t {
-    UNDEFINED = 0u,
-    REFERENCE_DATA = 1u << 0,   //!< Reference data
-    MARKET_STATUS = 1u << 1,    //!< Market status
-    TOP_OF_BOOK = 1u << 2,      //!< Top of book
-    MARKET_BY_PRICE = 1u << 3,  //!< Market by price
-    MARKET_BY_ORDER = 1u << 4,  //!< Market by order
-    TRADE_SUMMARY = 1u << 5,    //!< Trade summary
-    STATISTICS = 1u << 6,       //!< Statistics
-    CREATE_ORDER = 1u << 16,    //!< Create order
-    MODIFY_ORDER = 1u << 17,    //!< Modify order
-    CANCEL_ORDER = 1u << 18,    //!< Cancel order
-    ORDER_ACK = 1u << 19,       //!< Order ack
-    ORDER = 1u << 20,           //!< Order
-    TRADE = 1u << 21,           //!< Trade
-    POSITION = 1u << 22,        //!< Position
-    FUNDS = 1u << 28,           //!< Funds
+    UNDEFINED = 0x0,
+    REFERENCE_DATA = 0x1,    //!< Reference data
+    MARKET_STATUS = 0x2,     //!< Market status
+    TOP_OF_BOOK = 0x4,       //!< Top of book
+    MARKET_BY_PRICE = 0x8,   //!< Market by price
+    MARKET_BY_ORDER = 0x10,  //!< Market by order
+    TRADE_SUMMARY = 0x20,    //!< Trade summary
+    STATISTICS = 0x40,       //!< Statistics
+    CREATE_ORDER = 0x10000,  //!< Create order
+    MODIFY_ORDER = 0x20000,  //!< Modify order
+    CANCEL_ORDER = 0x40000,  //!< Cancel order
+    ORDER_ACK = 0x80000,     //!< Order ack
+    ORDER = 0x100000,        //!< Order
+    TRADE = 0x200000,        //!< Trade
+    POSITION = 0x400000,     //!< Position
+    FUNDS = 0x10000000,      //!< Funds
   };
 
   constexpr SupportType() = default;

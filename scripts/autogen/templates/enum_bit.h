@@ -16,9 +16,9 @@
 struct ROQ_PACKED {{ name }} final {
   //! helper
   enum type_t : uint64_t {
-    UNDEFINED = 0u,
+    UNDEFINED = 0x0,
   {% for value in values %}
-    {{ value.enum_value }} = 1u << {{ value.bit }},{{ '  //!< {}'.format(value.comment) if value.comment|length > 0 else '' }}
+    {{ value.enum_value }} = {{ "{:#x}".format((1).__lshift__(value.position)) }},{{ '  //!< {}'.format(value.comment) if value.comment|length > 0 else '' }}
   {% endfor %}
   };
 

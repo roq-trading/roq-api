@@ -5,77 +5,77 @@
     "values": [
         {
             "name": "ReferenceData",
-	    "bit": 0,
+	    "position": 0,
 	    "comment": "Reference data"
         },
         {
             "name": "MarketStatus",
-	    "bit": 1,
+	    "position": 1,
 	    "comment": "Market status"
         },
         {
             "name": "TopOfBook",
-	    "bit": 2,
+	    "position": 2,
 	    "comment": "Top of book"
         },
         {
             "name": "MarketByPrice",
-	    "bit": 3,
+	    "position": 3,
 	    "comment": "Market by price"
         },
         {
             "name": "MarketByOrder",
-	    "bit": 4,
+	    "position": 4,
 	    "comment": "Market by order"
         },
         {
             "name": "TradeSummary",
-	    "bit": 5,
+	    "position": 5,
 	    "comment": "Trade summary"
         },
         {
             "name": "Statistics",
-	    "bit": 6,
+	    "position": 6,
 	    "comment": "Statistics"
         },
         {
             "name": "CreateOrder",
-	    "bit": 16,
+	    "position": 16,
 	    "comment": "Create order"
         },
         {
             "name": "ModifyOrder",
-	    "bit": 17,
+	    "position": 17,
 	    "comment": "Modify order"
         },
         {
             "name": "CancelOrder",
-	    "bit": 18,
+	    "position": 18,
 	    "comment": "Cancel order"
         },
         {
             "name": "OrderAck",
-	    "bit": 19,
+	    "position": 19,
 	    "comment": "Order ack"
         },
         {
             "name": "Order",
-	    "bit": 20,
+	    "position": 20,
 	    "comment": "Order"
         },
         {
             "name": "Trade",
-	    "bit": 21,
+	    "position": 21,
 	    "comment": "Trade"
         },
         {
             "name": "Position",
-	    "bit": 22,
+	    "position": 22,
 	    "comment": "Position"
         },
         {
             "name": "Funds",
-	    "bit": 28,
+	    "position": 28,
 	    "comment": "Funds"
         }
     ]

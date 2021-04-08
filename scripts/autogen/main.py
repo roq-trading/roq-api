@@ -108,7 +108,7 @@ def _format_helper(char, string, array, safe_name, accessor):
     )
     # required until Mask has been implemented
     if safe_name in ('supports', 'supported', 'available', 'unavailable'):
-        return ("'{:#x}'", value)
+        return ("{:#x}", value)
     if char:
         return ("'{}'", value)
     if string:

@@ -54,6 +54,9 @@ RuntimeErrorException(Args &&...) -> RuntimeErrorException<Args...>;
 
 //! SystemError
 class ROQ_PUBLIC SystemError : public RuntimeError, public std::system_error {
+ public:
+  char const *what() const noexcept override { return std::system_error::what(); }
+
  protected:
   SystemError(const source_location &loc, std::error_code ec, const std::string &what)
       : RuntimeError(loc, what), std::system_error(ec, what) {}
@@ -71,6 +74,9 @@ SystemErrorException(ErrorCode, Args &&...) -> SystemErrorException<ErrorCode, A
 
 //! RangeError
 class ROQ_PUBLIC RangeError : public RuntimeError, public std::range_error {
+ public:
+  char const *what() const noexcept override { return std::range_error::what(); }
+
  protected:
   RangeError(const source_location &loc, const std::string &what)
       : RuntimeError(loc, what), std::range_error(what) {}
@@ -87,6 +93,9 @@ RangeErrorException(Args &&...) -> RangeErrorException<Args...>;
 
 //! OverflowError
 class ROQ_PUBLIC OverflowError : public RuntimeError, public std::overflow_error {
+ public:
+  char const *what() const noexcept override { return std::overflow_error::what(); }
+
  protected:
   OverflowError(const source_location &loc, const std::string &what)
       : RuntimeError(loc, what), std::overflow_error(what) {}
@@ -134,6 +143,9 @@ LogicErrorException(Args &&...) -> LogicErrorException<Args...>;
 
 //! InvalidArgument
 class ROQ_PUBLIC InvalidArgument : public LogicError, public std::invalid_argument {
+ public:
+  char const *what() const noexcept override { return std::invalid_argument::what(); }
+
  protected:
   InvalidArgument(const source_location &loc, const std::string &what)
       : LogicError(loc, what), std::invalid_argument(what) {}
@@ -150,6 +162,9 @@ InvalidArgumentException(Args &&...) -> InvalidArgumentException<Args...>;
 
 //! OutOfRange
 class ROQ_PUBLIC OutOfRange : public LogicError, public std::out_of_range {
+ public:
+  char const *what() const noexcept override { return std::out_of_range::what(); }
+
  protected:
   OutOfRange(const source_location &loc, const std::string &what)
       : LogicError(loc, what), std::out_of_range(what) {}
@@ -166,6 +181,9 @@ OutOfRangeException(Args &&...) -> OutOfRangeException<Args...>;
 
 //! LengthError
 class ROQ_PUBLIC LengthError : public LogicError, public std::length_error {
+ public:
+  char const *what() const noexcept override { return std::length_error::what(); }
+
  protected:
   LengthError(const source_location &loc, const std::string &what)
       : LogicError(loc, what), std::length_error(what) {}

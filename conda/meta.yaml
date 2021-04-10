@@ -6,10 +6,10 @@ package:
   version: {{ version }}
 
 source:
-  path: ..
+  git_url: ..
 
 build:
-  skip: true  # [win and osx]
+  skip: true  # [win]
   number: {{ number }}
   run_exports:
     strong:

@@ -45,20 +45,37 @@ Optional
 
 The project is primarily designed to be compatible with the conda package manager.
 
-### Download and Install Miniforge (Linux)
+### Download and Install Miniforge (Linux / X86\_64)
 
 ```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname -s)-$(uname -m).sh
+wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
 
-bash Miniforge3-$(uname -s)-$(uname -m).sh -b -u -p ~/conda
+bash Miniforge3-Linux-x86_64.sh -b -u -p ~/conda
+
+~/conda/bin/conda install -y \
+    gxx_linux-64
 ```
 
-### Download and Install Miniforge (macOS)
+### Download and Install Miniforge (Linux / Aarch64)
 
 ```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-$(uname -m).sh
+wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
 
-bash Miniforge3-MacOSX-$(uname -m).sh -b -u -p ~/conda
+bash Miniforge3-Linux-aarch64.sh -b -u -p ~/conda
+
+~/conda/bin/conda install -y \
+    gxx_linux-aarch64
+```
+
+### Download and Install Miniforge (macOS / X86\_64)
+
+```bash
+wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
+
+bash Miniforge3-MacOSX-x86_64.sh -b -u -p ~/conda
+
+~/conda/bin/conda install -y \
+   clang_osx-64
 ```
 
 ### Install Dependencies
@@ -69,7 +86,6 @@ source ~/conda/bin/activate
 conda install -y \
     git \
     cmake \
-    gxx_linux-64 \
     flatbuffers \
     fmt
 

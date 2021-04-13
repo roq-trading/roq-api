@@ -45,7 +45,7 @@ Optional
 
 The project is primarily designed to be compatible with the conda package manager.
 
-### Linux
+### Download and Install Miniforge (Linux)
 
 ```bash
 wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname -s)-$(uname -m).sh
@@ -53,15 +53,15 @@ wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Minifo
 bash Miniforge3-$(uname -s)-$(uname -m).sh -b -u -p ~/conda
 ```
 
-### macOS
+### Download and Install Miniforge (macOS)
 
 ```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname -s)-$(uname -m).sh
+wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-$(uname -m).sh
 
-bash Miniforge3-$(uname -s)-$(uname -m).sh -b -u -p ~/conda
+bash Miniforge3-MacOSX-$(uname -m).sh -b -u -p ~/conda
 ```
 
-### All
+### Install Dependencies
 
 ```bash
 source ~/conda/bin/activate

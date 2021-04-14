@@ -43,6 +43,7 @@ struct ROQ_PUBLIC CreateOrder final {
   double stop_price = NaN;          //!< Stop price (depends on order_type and time_in_force)
   double max_show_quantity = NaN;   //!< Quantity visible to market (requires exchange support)
   std::string_view order_template;  //!< Order template (as known to the gateway)
+  std::string_view routing_id;      //!< Routing identifier
 };
 
 }  // namespace roq
@@ -68,7 +69,8 @@ struct fmt::formatter<roq::CreateOrder> : public roq::formatter {
         R"(execution_instruction={}, )"
         R"(stop_price={}, )"
         R"(max_show_quantity={}, )"
-        R"(order_template="{}")"
+        R"(order_template="{}", )"
+        R"(routing_id="{}")"
         R"(}})"_fmt,
         value.account,
         value.order_id,
@@ -83,7 +85,8 @@ struct fmt::formatter<roq::CreateOrder> : public roq::formatter {
         value.execution_instruction,
         value.stop_price,
         value.max_show_quantity,
-        value.order_template);
+        value.order_template,
+        value.routing_id);
   }
 };
 template <>

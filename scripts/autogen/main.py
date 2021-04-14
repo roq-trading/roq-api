@@ -145,6 +145,7 @@ def _find_default_comment(name):
         trade_id="Trade identifier (as known to client)",
         update_time_utc="Updated timestamp (UTC)",
         stream_id="Stream identifier",
+        routing_id="Routing identifier",
     ).get(name, "")
 
 

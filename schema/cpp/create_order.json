@@ -63,6 +63,10 @@
         {
             "name": "order_template",
             "type": "std::string_view"
+        },
+        {
+            "name": "routing_id",
+            "type": "std::string_view"
         }
     ]
 }

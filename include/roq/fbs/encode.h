@@ -471,7 +471,8 @@ auto encode(B &builder, const roq::CreateOrder &value) {
       encode(builder, value.execution_instruction),
       value.stop_price,
       value.max_show_quantity,
-      encode(builder, value.order_template));
+      encode(builder, value.order_template),
+      encode(builder, value.routing_id));
 }
 
 template <typename B>
@@ -500,6 +501,7 @@ auto encode(B &builder, const roq::OrderAck &value) {
       value.gateway_order_id,
       encode(builder, value.external_account),
       encode(builder, value.external_order_id),
+      encode(builder, value.routing_id),
       encode(builder, value.request_id));
 }
 
@@ -523,7 +525,8 @@ auto encode(B &builder, const roq::OrderUpdate &value) {
       encode(builder, value.update_time_utc),
       value.gateway_order_id,
       encode(builder, value.external_account),
-      encode(builder, value.external_order_id));
+      encode(builder, value.external_order_id),
+      encode(builder, value.routing_id));
 }
 
 template <typename B>
@@ -543,6 +546,7 @@ auto encode(B &builder, const roq::TradeUpdate &value) {
       value.gateway_order_id,
       encode(builder, value.external_account),
       encode(builder, value.external_order_id),
+      encode(builder, value.routing_id),
       encode(builder, value.fills));
 }
 

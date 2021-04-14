@@ -53,6 +53,10 @@
             "type": "std::string_view"
         },
         {
+            "name": "routing_id",
+            "type": "std::string_view"
+        },
+        {
             "name": "request_id",
             "type": "std::string_view"
         }

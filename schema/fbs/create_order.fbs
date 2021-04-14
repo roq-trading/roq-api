@@ -21,4 +21,5 @@ table CreateOrder {
   stop_price:double = nan;
   max_show_quantity:double = nan;
   order_template:string;
+  routing_id:string;
 }

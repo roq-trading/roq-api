@@ -22,4 +22,5 @@ table OrderUpdate {
   gateway_order_id:uint32;
   external_account:string;
   external_order_id:string;
+  routing_id:string;
 }

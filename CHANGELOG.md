@@ -8,6 +8,9 @@ All notable changes will be documented in this file.
 
 * Promoted a number of generic utilities to the `roq::utils` namespace.
   Although these are useful, they should not be considered "API".
+* The `routing_id` field has been added to the relevant order management
+  structures.
+
 
 ### Changed
 

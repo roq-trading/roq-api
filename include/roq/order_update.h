@@ -44,7 +44,8 @@ struct ROQ_PUBLIC OrderUpdate final {
   uint32_t gateway_order_id = {};                 //!< Order identifier (as known to gateway)
   std::string_view external_account;  //!< External account name (as known to broker or exchange)
   std::string_view
-      external_order_id;  //!< External order identifier (as known to broker or exchange)
+      external_order_id;        //!< External order identifier (as known to broker or exchange)
+  std::string_view routing_id;  //!< Routing identifier
 };
 
 }  // namespace roq
@@ -73,7 +74,8 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         R"(update_time_utc={}, )"
         R"(gateway_order_id={}, )"
         R"(external_account="{}", )"
-        R"(external_order_id="{}")"
+        R"(external_order_id="{}", )"
+        R"(routing_id="{}")"
         R"(}})"_fmt,
         value.stream_id,
         value.account,
@@ -91,7 +93,8 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         value.update_time_utc,
         value.gateway_order_id,
         value.external_account,
-        value.external_order_id);
+        value.external_order_id,
+        value.routing_id);
   }
 };
 template <>

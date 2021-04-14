@@ -40,8 +40,9 @@ struct ROQ_PUBLIC TradeUpdate final {
   uint32_t gateway_order_id = {};                 //!< Order identifier (as known to gateway)
   std::string_view external_account;  //!< External account name (as known to broker or exchange)
   std::string_view
-      external_order_id;  //!< External order identifier (as known to broker or exchange)
-  roq::span<Fill> fills;  //!< List of fills
+      external_order_id;        //!< External order identifier (as known to broker or exchange)
+  std::string_view routing_id;  //!< Routing identifier
+  roq::span<Fill> fills;        //!< List of fills
 };
 
 }  // namespace roq
@@ -67,6 +68,7 @@ struct fmt::formatter<roq::TradeUpdate> : public roq::formatter {
         R"(gateway_order_id={}, )"
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
+        R"(routing_id="{}", )"
         R"(fills=[{}])"
         R"(}})"_fmt,
         value.stream_id,
@@ -82,6 +84,7 @@ struct fmt::formatter<roq::TradeUpdate> : public roq::formatter {
         value.gateway_order_id,
         value.external_account,
         value.external_order_id,
+        value.routing_id,
         roq::join(value.fills, ", "_sv));
   }
 };

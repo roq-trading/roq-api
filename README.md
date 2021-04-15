@@ -47,7 +47,7 @@ The project is primarily designed to be compatible with the conda package manage
 
 ### Download and Install Miniforge
 
-#### Linux / X86\_64
+#### Linux / x86\_64
 
 ```bash
 wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
@@ -58,7 +58,7 @@ bash Miniforge3-Linux-x86_64.sh -b -u -p ~/conda
     gxx_linux-64
 ```
 
-#### Linux / Aarch64
+#### Linux / aarch64
 
 ```bash
 wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
@@ -69,7 +69,7 @@ bash Miniforge3-Linux-aarch64.sh -b -u -p ~/conda
     gxx_linux-aarch64
 ```
 
-#### macOS / X86\_64
+#### macOS / x86\_64
 
 ```bash
 wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh

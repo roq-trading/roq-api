@@ -4,6 +4,7 @@ set(TARGET_DIR "${CMAKE_INSTALL_DATADIR}/roq/schema/fbs")
 
 set(SOURCES
     api.fbs
+    cancel_all_orders.fbs
     cancel_order.fbs
     connection_status.fbs
     create_order.fbs
@@ -32,6 +33,7 @@ set(SOURCES
     position_effect.fbs
     position_update.fbs
     priority.fbs
+    rate_limit_usage.fbs
     reference_data.fbs
     request_status.fbs
     request_type.fbs

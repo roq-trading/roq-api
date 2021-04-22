@@ -47,6 +47,7 @@ class ROQ_PUBLIC Matcher {
   virtual void operator()(const Event<CreateOrder> &) = 0;
   virtual void operator()(const Event<ModifyOrder> &) = 0;
   virtual void operator()(const Event<CancelOrder> &) = 0;
+  virtual void operator()(const Event<CancelAllOrders> &) = 0;
   virtual void operator()(const Event<PositionUpdate> &) = 0;
   virtual void operator()(const Event<FundsUpdate> &) = 0;
 };

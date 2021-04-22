@@ -26,6 +26,9 @@ struct StatisticsBuilder;
 struct Trade;
 struct TradeBuilder;
 
+struct CancelAllOrders;
+struct CancelAllOrdersBuilder;
+
 struct CancelOrder;
 struct CancelOrderBuilder;
 
@@ -70,6 +73,9 @@ struct OrderUpdateBuilder;
 
 struct PositionUpdate;
 struct PositionUpdateBuilder;
+
+struct RateLimitUsage;
+struct RateLimitUsageBuilder;
 
 struct ReferenceData;
 struct ReferenceDataBuilder;
@@ -824,88 +830,55 @@ enum Message {
   Message_GatewaySettings = 8,
   Message_StreamStatus = 9,
   Message_ExternalLatency = 10,
-  Message_GatewayStatus = 11,
-  Message_ReferenceData = 12,
-  Message_MarketStatus = 13,
-  Message_TopOfBook = 14,
-  Message_MarketByPriceUpdate = 15,
-  Message_MarketByOrderUpdate = 16,
-  Message_TradeSummary = 17,
-  Message_StatisticsUpdate = 18,
-  Message_CreateOrder = 19,
-  Message_ModifyOrder = 20,
-  Message_CancelOrder = 21,
-  Message_OrderAck = 22,
-  Message_OrderUpdate = 23,
-  Message_TradeUpdate = 24,
-  Message_PositionUpdate = 25,
-  Message_FundsUpdate = 26,
+  Message_RateLimitUsage = 11,
+  Message_GatewayStatus = 12,
+  Message_ReferenceData = 13,
+  Message_MarketStatus = 14,
+  Message_TopOfBook = 15,
+  Message_MarketByPriceUpdate = 16,
+  Message_MarketByOrderUpdate = 17,
+  Message_TradeSummary = 18,
+  Message_StatisticsUpdate = 19,
+  Message_CreateOrder = 20,
+  Message_ModifyOrder = 21,
+  Message_CancelOrder = 22,
+  Message_CancelAllOrders = 23,
+  Message_OrderAck = 24,
+  Message_OrderUpdate = 25,
+  Message_TradeUpdate = 26,
+  Message_PositionUpdate = 27,
+  Message_FundsUpdate = 28,
   Message_MIN = Message_NONE,
   Message_MAX = Message_FundsUpdate
 };
 
-inline const Message (&EnumValuesMessage())[27] {
+inline const Message (&EnumValuesMessage())[29] {
   static const Message values[] = {
-      Message_NONE,
-      Message_Handshake,
-      Message_HandshakeAck,
-      Message_Subscribe,
-      Message_BatchBegin,
-      Message_BatchEnd,
-      Message_DownloadBegin,
-      Message_DownloadEnd,
-      Message_GatewaySettings,
-      Message_StreamStatus,
-      Message_ExternalLatency,
-      Message_GatewayStatus,
-      Message_ReferenceData,
-      Message_MarketStatus,
-      Message_TopOfBook,
-      Message_MarketByPriceUpdate,
-      Message_MarketByOrderUpdate,
-      Message_TradeSummary,
-      Message_StatisticsUpdate,
-      Message_CreateOrder,
-      Message_ModifyOrder,
-      Message_CancelOrder,
-      Message_OrderAck,
-      Message_OrderUpdate,
-      Message_TradeUpdate,
-      Message_PositionUpdate,
-      Message_FundsUpdate};
+      Message_NONE,           Message_Handshake,           Message_HandshakeAck,
+      Message_Subscribe,      Message_BatchBegin,          Message_BatchEnd,
+      Message_DownloadBegin,  Message_DownloadEnd,         Message_GatewaySettings,
+      Message_StreamStatus,   Message_ExternalLatency,     Message_RateLimitUsage,
+      Message_GatewayStatus,  Message_ReferenceData,       Message_MarketStatus,
+      Message_TopOfBook,      Message_MarketByPriceUpdate, Message_MarketByOrderUpdate,
+      Message_TradeSummary,   Message_StatisticsUpdate,    Message_CreateOrder,
+      Message_ModifyOrder,    Message_CancelOrder,         Message_CancelAllOrders,
+      Message_OrderAck,       Message_OrderUpdate,         Message_TradeUpdate,
+      Message_PositionUpdate, Message_FundsUpdate};
   return values;
 }
 
 inline const char *const *EnumNamesMessage() {
-  static const char *const names[28] = {
-      "NONE",
-      "Handshake",
-      "HandshakeAck",
-      "Subscribe",
-      "BatchBegin",
-      "BatchEnd",
-      "DownloadBegin",
-      "DownloadEnd",
-      "GatewaySettings",
-      "StreamStatus",
-      "ExternalLatency",
-      "GatewayStatus",
-      "ReferenceData",
-      "MarketStatus",
-      "TopOfBook",
-      "MarketByPriceUpdate",
-      "MarketByOrderUpdate",
-      "TradeSummary",
-      "StatisticsUpdate",
-      "CreateOrder",
-      "ModifyOrder",
-      "CancelOrder",
-      "OrderAck",
-      "OrderUpdate",
-      "TradeUpdate",
-      "PositionUpdate",
-      "FundsUpdate",
-      nullptr};
+  static const char *const names[30] = {
+      "NONE",           "Handshake",           "HandshakeAck",
+      "Subscribe",      "BatchBegin",          "BatchEnd",
+      "DownloadBegin",  "DownloadEnd",         "GatewaySettings",
+      "StreamStatus",   "ExternalLatency",     "RateLimitUsage",
+      "GatewayStatus",  "ReferenceData",       "MarketStatus",
+      "TopOfBook",      "MarketByPriceUpdate", "MarketByOrderUpdate",
+      "TradeSummary",   "StatisticsUpdate",    "CreateOrder",
+      "ModifyOrder",    "CancelOrder",         "CancelAllOrders",
+      "OrderAck",       "OrderUpdate",         "TradeUpdate",
+      "PositionUpdate", "FundsUpdate",         nullptr};
   return names;
 }
 
@@ -972,6 +945,11 @@ struct MessageTraits<roq::fbs::ExternalLatency> {
 };
 
 template <>
+struct MessageTraits<roq::fbs::RateLimitUsage> {
+  static const Message enum_value = Message_RateLimitUsage;
+};
+
+template <>
 struct MessageTraits<roq::fbs::GatewayStatus> {
   static const Message enum_value = Message_GatewayStatus;
 };
@@ -1024,6 +1002,11 @@ struct MessageTraits<roq::fbs::ModifyOrder> {
 template <>
 struct MessageTraits<roq::fbs::CancelOrder> {
   static const Message enum_value = Message_CancelOrder;
+};
+
+template <>
+struct MessageTraits<roq::fbs::CancelAllOrders> {
+  static const Message enum_value = Message_CancelAllOrders;
 };
 
 template <>
@@ -1451,6 +1434,49 @@ inline flatbuffers::Offset<Trade> CreateTradeDirect(
     const char *trade_id = nullptr) {
   auto trade_id__ = trade_id ? _fbb.CreateString(trade_id) : 0;
   return roq::fbs::CreateTrade(_fbb, side, price, quantity, trade_id__);
+}
+
+struct CancelAllOrders FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CancelAllOrdersBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_ACCOUNT = 4 };
+  const flatbuffers::String *account() const {
+    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) && verifier.EndTable();
+  }
+};
+
+struct CancelAllOrdersBuilder {
+  typedef CancelAllOrders Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
+    fbb_.AddOffset(CancelAllOrders::VT_ACCOUNT, account);
+  }
+  explicit CancelAllOrdersBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  CancelAllOrdersBuilder &operator=(const CancelAllOrdersBuilder &);
+  flatbuffers::Offset<CancelAllOrders> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CancelAllOrders>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrders(
+    flatbuffers::FlatBufferBuilder &_fbb, flatbuffers::Offset<flatbuffers::String> account = 0) {
+  CancelAllOrdersBuilder builder_(_fbb);
+  builder_.add_account(account);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrdersDirect(
+    flatbuffers::FlatBufferBuilder &_fbb, const char *account = nullptr) {
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  return roq::fbs::CreateCancelAllOrders(_fbb, account__);
 }
 
 struct CancelOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -3114,6 +3140,52 @@ inline flatbuffers::Offset<PositionUpdate> CreatePositionUpdateDirect(
       external_account__);
 }
 
+struct RateLimitUsage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef RateLimitUsageBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_STREAM_ID = 4,
+    VT_ABOVE_HIGH_WATER_MARK = 6
+  };
+  uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
+  bool above_high_water_mark() const { return GetField<uint8_t>(VT_ABOVE_HIGH_WATER_MARK, 0) != 0; }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+           VerifyField<uint8_t>(verifier, VT_ABOVE_HIGH_WATER_MARK) && verifier.EndTable();
+  }
+};
+
+struct RateLimitUsageBuilder {
+  typedef RateLimitUsage Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_stream_id(uint16_t stream_id) {
+    fbb_.AddElement<uint16_t>(RateLimitUsage::VT_STREAM_ID, stream_id, 0);
+  }
+  void add_above_high_water_mark(bool above_high_water_mark) {
+    fbb_.AddElement<uint8_t>(
+        RateLimitUsage::VT_ABOVE_HIGH_WATER_MARK, static_cast<uint8_t>(above_high_water_mark), 0);
+  }
+  explicit RateLimitUsageBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  RateLimitUsageBuilder &operator=(const RateLimitUsageBuilder &);
+  flatbuffers::Offset<RateLimitUsage> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<RateLimitUsage>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<RateLimitUsage> CreateRateLimitUsage(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t stream_id = 0,
+    bool above_high_water_mark = false) {
+  RateLimitUsageBuilder builder_(_fbb);
+  builder_.add_stream_id(stream_id);
+  builder_.add_above_high_water_mark(above_high_water_mark);
+  return builder_.Finish();
+}
+
 struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ReferenceDataBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -4458,6 +4530,11 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
                ? static_cast<const roq::fbs::ExternalLatency *>(message())
                : nullptr;
   }
+  const roq::fbs::RateLimitUsage *message_as_RateLimitUsage() const {
+    return message_type() == roq::fbs::Message_RateLimitUsage
+               ? static_cast<const roq::fbs::RateLimitUsage *>(message())
+               : nullptr;
+  }
   const roq::fbs::GatewayStatus *message_as_GatewayStatus() const {
     return message_type() == roq::fbs::Message_GatewayStatus
                ? static_cast<const roq::fbs::GatewayStatus *>(message())
@@ -4511,6 +4588,11 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const roq::fbs::CancelOrder *message_as_CancelOrder() const {
     return message_type() == roq::fbs::Message_CancelOrder
                ? static_cast<const roq::fbs::CancelOrder *>(message())
+               : nullptr;
+  }
+  const roq::fbs::CancelAllOrders *message_as_CancelAllOrders() const {
+    return message_type() == roq::fbs::Message_CancelAllOrders
+               ? static_cast<const roq::fbs::CancelAllOrders *>(message())
                : nullptr;
   }
   const roq::fbs::OrderAck *message_as_OrderAck() const {
@@ -4597,6 +4679,11 @@ inline const roq::fbs::ExternalLatency *Event::message_as<roq::fbs::ExternalLate
 }
 
 template <>
+inline const roq::fbs::RateLimitUsage *Event::message_as<roq::fbs::RateLimitUsage>() const {
+  return message_as_RateLimitUsage();
+}
+
+template <>
 inline const roq::fbs::GatewayStatus *Event::message_as<roq::fbs::GatewayStatus>() const {
   return message_as_GatewayStatus();
 }
@@ -4651,6 +4738,11 @@ inline const roq::fbs::ModifyOrder *Event::message_as<roq::fbs::ModifyOrder>() c
 template <>
 inline const roq::fbs::CancelOrder *Event::message_as<roq::fbs::CancelOrder>() const {
   return message_as_CancelOrder();
+}
+
+template <>
+inline const roq::fbs::CancelAllOrders *Event::message_as<roq::fbs::CancelAllOrders>() const {
+  return message_as_CancelAllOrders();
 }
 
 template <>
@@ -4759,6 +4851,10 @@ inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Mess
       auto ptr = reinterpret_cast<const roq::fbs::ExternalLatency *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case Message_RateLimitUsage: {
+      auto ptr = reinterpret_cast<const roq::fbs::RateLimitUsage *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     case Message_GatewayStatus: {
       auto ptr = reinterpret_cast<const roq::fbs::GatewayStatus *>(obj);
       return verifier.VerifyTable(ptr);
@@ -4801,6 +4897,10 @@ inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Mess
     }
     case Message_CancelOrder: {
       auto ptr = reinterpret_cast<const roq::fbs::CancelOrder *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message_CancelAllOrders: {
+      auto ptr = reinterpret_cast<const roq::fbs::CancelAllOrders *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_OrderAck: {

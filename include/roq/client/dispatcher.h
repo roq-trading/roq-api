@@ -26,15 +26,18 @@ class ROQ_PUBLIC Dispatcher {
   virtual void stop() = 0;
 
   //! Send a request to create a new order
-  virtual void send(const CreateOrder &create_order, uint8_t source) = 0;
+  virtual void send(const CreateOrder &, uint8_t source) = 0;
 
   //! Send a request to modify an existing order
-  virtual void send(const ModifyOrder &modify_order, uint8_t source) = 0;
+  virtual void send(const ModifyOrder &, uint8_t source) = 0;
 
   //! Send a request to cancel an existing order
-  virtual void send(const CancelOrder &cancel_order, uint8_t source) = 0;
+  virtual void send(const CancelOrder &, uint8_t source) = 0;
 
-  virtual void enqueue(const CustomMessage &message) = 0;
+  //! Send a request to cancel all orders
+  virtual void send(const CancelAllOrders &, uint8_t source) = 0;
+
+  virtual void enqueue(const CustomMessage &) = 0;
 };
 
 }  // namespace client

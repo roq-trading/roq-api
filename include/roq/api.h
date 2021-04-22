@@ -62,6 +62,7 @@
 
 #include "roq/batch_begin.h"
 #include "roq/batch_end.h"
+#include "roq/cancel_all_orders.h"
 #include "roq/cancel_order.h"
 #include "roq/create_order.h"
 #include "roq/download_begin.h"
@@ -77,6 +78,7 @@
 #include "roq/order_ack.h"
 #include "roq/order_update.h"
 #include "roq/position_update.h"
+#include "roq/rate_limit_usage.h"
 #include "roq/reference_data.h"
 #include "roq/statistics_update.h"
 #include "roq/stream_status.h"

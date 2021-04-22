@@ -32,6 +32,7 @@ include "trade.fbs";
 
 // - messages
 
+include "cancel_all_orders.fbs";
 include "cancel_order.fbs";
 include "create_order.fbs";
 include "download_begin.fbs";
@@ -47,6 +48,7 @@ include "modify_order.fbs";
 include "order_ack.fbs";
 include "order_update.fbs";
 include "position_update.fbs";
+include "rate_limit_usage.fbs";
 include "reference_data.fbs";
 include "statistics_update.fbs";
 include "stream_status.fbs";
@@ -106,6 +108,7 @@ union Message {
   GatewaySettings,
   StreamStatus,
   ExternalLatency,
+  RateLimitUsage,
   GatewayStatus,
   ReferenceData,
   MarketStatus,
@@ -117,6 +120,7 @@ union Message {
   CreateOrder,
   ModifyOrder,
   CancelOrder,
+  CancelAllOrders,
   OrderAck,
   OrderUpdate,
   TradeUpdate,

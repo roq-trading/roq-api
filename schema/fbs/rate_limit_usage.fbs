@@ -1,0 +1,6 @@
+namespace roq.fbs;
+
+table RateLimitUsage {
+  stream_id:uint16;
+  above_high_water_mark:bool;
+}

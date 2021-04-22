@@ -1,0 +1,5 @@
+namespace roq.fbs;
+
+table CancelAllOrders {
+  account:string;
+}

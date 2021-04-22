@@ -5,6 +5,7 @@ set(TARGET_DIR "${CMAKE_INSTALL_INCLUDEDIR}/roq")
 set(SOURCES
     batch_begin.json
     batch_end.json
+    cancel_all_orders.json
     cancel_order.json
     connected.json
     connection_status.json
@@ -37,6 +38,7 @@ set(SOURCES
     position_effect.json
     position_update.json
     priority.json
+    rate_limit_usage.json
     reference_data.json
     request_status.json
     request_type.json

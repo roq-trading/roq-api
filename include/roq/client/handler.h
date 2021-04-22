@@ -40,6 +40,7 @@ class ROQ_PUBLIC Handler {
   // stream
   virtual void operator()(const Event<StreamStatus> &) {}
   virtual void operator()(const Event<ExternalLatency> &) {}
+  virtual void operator()(const Event<RateLimitUsage> &) {}
 
   // service
   virtual void operator()(const Event<GatewayStatus> &) {}

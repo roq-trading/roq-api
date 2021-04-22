@@ -1,0 +1,16 @@
+{
+    "name": "RateLimitUsage",
+    "type": "message",
+    "comment": "Rate-limit usage vs high-water mark",
+    "values": [
+        {
+            "name": "stream_id",
+            "type": "uint16_t"
+        },
+        {
+            "name": "above_high_water_mark",
+            "type": "bool",
+	    "comment": "true when there is an increased probability that the next request could fail"
+        }
+    ]
+}

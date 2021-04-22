@@ -348,6 +348,11 @@ auto encode(B &builder, const roq::ExternalLatency &value) {
 }
 
 template <typename B>
+auto encode(B &builder, const roq::RateLimitUsage &value) {
+  return CreateRateLimitUsage(builder, value.stream_id, value.above_high_water_mark);
+}
+
+template <typename B>
 auto encode(B &builder, const roq::GatewayStatus &value) {
   return CreateGatewayStatus(
       builder,
@@ -484,6 +489,11 @@ auto encode(B &builder, const roq::ModifyOrder &value) {
 template <typename B>
 auto encode(B &builder, const roq::CancelOrder &value) {
   return CreateCancelOrder(builder, encode(builder, value.account), value.order_id);
+}
+
+template <typename B>
+auto encode(B &builder, const roq::CancelAllOrders &value) {
+  return CreateCancelAllOrders(builder, encode(builder, value.account));
 }
 
 template <typename B>
@@ -627,6 +637,15 @@ auto encode(B &builder, const roq::Event<roq::ExternalLatency> &event) {
 }
 
 template <typename B>
+auto encode(B &builder, const roq::Event<roq::RateLimitUsage> &event) {
+  return CreateEvent(
+      builder,
+      encode(builder, event.message_info),
+      Message_RateLimitUsage,
+      encode(builder, event.value).Union());
+}
+
+template <typename B>
 auto encode(B &builder, const roq::Event<roq::GatewayStatus> &event) {
   return CreateEvent(
       builder,
@@ -722,6 +741,15 @@ auto encode(B &builder, const roq::Event<roq::CancelOrder> &event) {
       builder,
       encode(builder, event.message_info),
       Message_CancelOrder,
+      encode(builder, event.value).Union());
+}
+
+template <typename B>
+auto encode(B &builder, const roq::Event<roq::CancelAllOrders> &event) {
+  return CreateEvent(
+      builder,
+      encode(builder, event.message_info),
+      Message_CancelAllOrders,
       encode(builder, event.value).Union());
 }
 

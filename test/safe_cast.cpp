@@ -18,8 +18,8 @@ TEST(safe_cast, int_to_int) {
   EXPECT_EQ(static_cast<int16_t>(safe_cast<int32_t>(1)), 1);
   EXPECT_EQ(static_cast<int16_t>(safe_cast<int32_t>(32767)), 32767);
   // ... overflow
-  EXPECT_THROW(static_cast<int16_t>(safe_cast<int32_t>(-32769)), std::overflow_error);
-  EXPECT_THROW(static_cast<int16_t>(safe_cast<int32_t>(32768)), std::overflow_error);
+  EXPECT_THROW((void)static_cast<int16_t>(safe_cast<int32_t>(-32769)), std::overflow_error);
+  EXPECT_THROW((void)static_cast<int16_t>(safe_cast<int32_t>(32768)), std::overflow_error);
   // int16_t --> int32_t
   EXPECT_EQ(static_cast<int32_t>(safe_cast<int16_t>(-32768)), -32768);
   EXPECT_EQ(static_cast<int32_t>(safe_cast<int16_t>(-1)), -1);
@@ -42,8 +42,9 @@ TEST(safe_cast, float_to_int) {
   // 9223372036854775807);
   // ... overflow
   EXPECT_THROW(
-      static_cast<int64_t>(safe_cast<double>(-9223372036854775808.0)), std::overflow_error);
-  EXPECT_THROW(static_cast<int64_t>(safe_cast<double>(9223372036854775808.0)), std::overflow_error);
+      (void)static_cast<int64_t>(safe_cast<double>(-9223372036854775808.0)), std::overflow_error);
+  EXPECT_THROW(
+      (void)static_cast<int64_t>(safe_cast<double>(9223372036854775808.0)), std::overflow_error);
   // have seen this
   auto tick_size = 1.0e-10;
   auto price = 100000000.0;

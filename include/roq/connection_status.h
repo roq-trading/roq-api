@@ -18,7 +18,7 @@ namespace roq {
 struct ROQ_PACKED ConnectionStatus final {
   //! helper
   enum type_t : uint8_t {
-    UNDEFINED = 0u,
+    UNDEFINED = 0,
     DISCONNECTED,
     CONNECTING,
     LOGIN_SENT,

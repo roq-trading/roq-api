@@ -7,8 +7,8 @@
 using namespace roq;
 
 TEST(ranges, iota_view) {
-  size_t sum = 0u;
-  for (auto i : roq::ranges::iota_view(5u, 10u))
+  size_t sum = 0;
+  for (auto i : roq::ranges::iota_view(5, 10))
     sum += i;
-  EXPECT_EQ(sum, 35u);
+  EXPECT_EQ(sum, 35);
 }

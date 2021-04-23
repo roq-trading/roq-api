@@ -100,15 +100,15 @@
 
 namespace roq {
 
-static const constexpr uint8_t SOURCE_SELF = 255u;
+static const constexpr uint8_t SOURCE_SELF = 255;
 
 // check that multiples can be cache aligned
 
-static_assert(sizeof(Layer) == 32u);
-static_assert(sizeof(MBPUpdate) == 16u);
-static_assert(sizeof(MBOUpdate) == 64u);
-static_assert(sizeof(Trade) == 64u);
-static_assert(sizeof(Fill) == 64u);
-static_assert(sizeof(Statistics) == 16u);
+static_assert(sizeof(Layer) == 32);
+static_assert(sizeof(MBPUpdate) == 16);
+static_assert(sizeof(MBOUpdate) == 64);
+static_assert(sizeof(Trade) == 64);
+static_assert(sizeof(Fill) == 64);
+static_assert(sizeof(Statistics) == 16);
 
 }  // namespace roq

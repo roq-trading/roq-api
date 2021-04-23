@@ -16,7 +16,7 @@
 struct ROQ_PACKED {{ name }} final {
   //! helper
   enum type_t : uint8_t {
-    UNDEFINED = 0u,
+    UNDEFINED = 0,
   {% for value in values %}
     {{ value.enum_value }},{{ '  //!< {}'.format(value.comment) if value.comment|length > 0 else '' }}
   {% endfor %}

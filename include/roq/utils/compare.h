@@ -109,7 +109,7 @@ case_insensitive_compare(const T &lhs, const U &rhs) {
   //   https://en.cppreference.com/w/cpp/string/basic_string/compare
   auto size1 = std::size(lhs_tmp), size2 = std::size(rhs_tmp);
   auto rlen = std::min(size1, size2);
-  for (size_t i = 0u; i < rlen; ++i) {
+  for (size_t i = 0; i < rlen; ++i) {
     auto l = std::toupper(lhs_tmp[i]), r = std::toupper(rhs_tmp[i]);
     if (l != r)
       return (l < r) ? -1 : 1;

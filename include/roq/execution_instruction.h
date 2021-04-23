@@ -18,7 +18,7 @@ namespace roq {
 struct ROQ_PACKED ExecutionInstruction final {
   //! helper
   enum type_t : uint8_t {
-    UNDEFINED = 0u,
+    UNDEFINED = 0,
     PARTICIPATE_DO_NOT_INITIATE,
     CANCEL_IF_NOT_BEST,
     DO_NOT_INCREASE,

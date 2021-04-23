@@ -18,7 +18,7 @@ namespace roq {
 struct ROQ_PACKED SecurityType final {
   //! helper
   enum type_t : uint8_t {
-    UNDEFINED = 0u,
+    UNDEFINED = 0,
     SPOT,
     FUTURES,
     OPTION,

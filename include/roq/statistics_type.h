@@ -18,7 +18,7 @@ namespace roq {
 struct ROQ_PACKED StatisticsType final {
   //! helper
   enum type_t : uint8_t {
-    UNDEFINED = 0u,
+    UNDEFINED = 0,
     OPEN_PRICE,
     SETTLEMENT_PRICE,
     CLOSE_PRICE,

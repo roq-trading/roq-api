@@ -9,32 +9,32 @@ using namespace roq::literals;
 
 TEST(string_buffer, empty) {
   roq::string_buffer<4> s;
-  EXPECT_EQ(s.size(), 4u);
-  EXPECT_EQ(s.length(), 0u);
+  EXPECT_EQ(s.size(), 4);
+  EXPECT_EQ(s.length(), 0);
   auto sv = static_cast<std::string_view>(s);
   EXPECT_TRUE(sv.empty());
-  EXPECT_EQ(sv.length(), 0u);
+  EXPECT_EQ(sv.length(), 0);
 }
 
 TEST(string_buffer, partial) {
   constexpr auto text = "12"_sv;
   roq::string_buffer<4> s = text;
-  EXPECT_EQ(s.size(), 4u);
-  EXPECT_EQ(s.length(), 2u);
+  EXPECT_EQ(s.size(), 4);
+  EXPECT_EQ(s.length(), 2);
   auto sv = static_cast<std::string_view>(s);
   EXPECT_FALSE(sv.empty());
-  EXPECT_EQ(sv.length(), 2u);
+  EXPECT_EQ(sv.length(), 2);
   EXPECT_EQ(sv, text);
 }
 
 TEST(string_buffer, full) {
   constexpr auto text = "123"_sv;
   roq::string_buffer<4> s = text;
-  EXPECT_EQ(s.size(), 4u);
-  EXPECT_EQ(s.length(), 3u);
+  EXPECT_EQ(s.size(), 4);
+  EXPECT_EQ(s.length(), 3);
   auto sv = static_cast<std::string_view>(s);
   EXPECT_FALSE(sv.empty());
-  EXPECT_EQ(sv.length(), 3u);
+  EXPECT_EQ(sv.length(), 3);
   EXPECT_EQ(sv, text);
 }
 

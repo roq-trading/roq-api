@@ -2007,7 +2007,8 @@ struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MBP_MAX_DEPTH = 4,
     VT_MBP_ALLOW_PRICE_INVERSION = 6,
-    VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE = 8
+    VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE = 8,
+    VT_MBP_ALLOW_REMOVE_NON_EXISTING = 10
   };
   uint32_t mbp_max_depth() const { return GetField<uint32_t>(VT_MBP_MAX_DEPTH, 0); }
   bool mbp_allow_price_inversion() const {
@@ -2016,10 +2017,14 @@ struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool mbp_allow_fractional_tick_size() const {
     return GetField<uint8_t>(VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE, 0) != 0;
   }
+  bool mbp_allow_remove_non_existing() const {
+    return GetField<uint8_t>(VT_MBP_ALLOW_REMOVE_NON_EXISTING, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_MBP_MAX_DEPTH) &&
            VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_PRICE_INVERSION) &&
-           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE) &&
+           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_REMOVE_NON_EXISTING) && verifier.EndTable();
   }
 };
 
@@ -2042,6 +2047,12 @@ struct GatewaySettingsBuilder {
         static_cast<uint8_t>(mbp_allow_fractional_tick_size),
         0);
   }
+  void add_mbp_allow_remove_non_existing(bool mbp_allow_remove_non_existing) {
+    fbb_.AddElement<uint8_t>(
+        GatewaySettings::VT_MBP_ALLOW_REMOVE_NON_EXISTING,
+        static_cast<uint8_t>(mbp_allow_remove_non_existing),
+        0);
+  }
   explicit GatewaySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
@@ -2057,9 +2068,11 @@ inline flatbuffers::Offset<GatewaySettings> CreateGatewaySettings(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint32_t mbp_max_depth = 0,
     bool mbp_allow_price_inversion = false,
-    bool mbp_allow_fractional_tick_size = false) {
+    bool mbp_allow_fractional_tick_size = false,
+    bool mbp_allow_remove_non_existing = false) {
   GatewaySettingsBuilder builder_(_fbb);
   builder_.add_mbp_max_depth(mbp_max_depth);
+  builder_.add_mbp_allow_remove_non_existing(mbp_allow_remove_non_existing);
   builder_.add_mbp_allow_fractional_tick_size(mbp_allow_fractional_tick_size);
   builder_.add_mbp_allow_price_inversion(mbp_allow_price_inversion);
   return builder_.Finish();

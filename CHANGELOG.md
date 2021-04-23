@@ -9,6 +9,8 @@ All notable changes will be documented in this file.
 * `RateLimitUsage` to allow strategy to back off when it high-water mark on
    rate-limiting has been detected
 * `CancelAllOrders` when all orders must be cancelled immediately
+* `GatewaySettings.mbp_allow_remove_non_existing` to indicate if an exchange
+   could possibly send updates to unknown price levels
 
 ## 0.7.0 &ndash; 2021-04-15
 

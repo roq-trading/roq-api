@@ -327,7 +327,8 @@ auto encode(B &builder, const roq::GatewaySettings &value) {
       builder,
       value.mbp_max_depth,
       value.mbp_allow_price_inversion,
-      value.mbp_allow_fractional_tick_size);
+      value.mbp_allow_fractional_tick_size,
+      value.mbp_allow_remove_non_existing);
 }
 
 template <typename B>

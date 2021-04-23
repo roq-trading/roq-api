@@ -4,4 +4,5 @@ table GatewaySettings {
   mbp_max_depth:uint32;
   mbp_allow_price_inversion:bool;
   mbp_allow_fractional_tick_size:bool;
+  mbp_allow_remove_non_existing:bool;
 }

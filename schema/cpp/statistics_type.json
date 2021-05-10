@@ -41,6 +41,12 @@
         },
         {
             "name": "MarginRate"
+        },
+        {
+            "name": "FundingRate"
+        },
+        {
+            "name": "DailyFundingRate"
         }
     ]
 }

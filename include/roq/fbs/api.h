@@ -582,11 +582,13 @@ enum StatisticsType {
   StatisticsType_LowerLimitPrice = 11,
   StatisticsType_IndexValue = 12,
   StatisticsType_MarginRate = 13,
+  StatisticsType_FundingRate = 14,
+  StatisticsType_DailyFundingRate = 15,
   StatisticsType_MIN = StatisticsType_Undefined,
-  StatisticsType_MAX = StatisticsType_MarginRate
+  StatisticsType_MAX = StatisticsType_DailyFundingRate
 };
 
-inline const StatisticsType (&EnumValuesStatisticsType())[14] {
+inline const StatisticsType (&EnumValuesStatisticsType())[16] {
   static const StatisticsType values[] = {
       StatisticsType_Undefined,
       StatisticsType_OpenPrice,
@@ -601,12 +603,14 @@ inline const StatisticsType (&EnumValuesStatisticsType())[14] {
       StatisticsType_UpperLimitPrice,
       StatisticsType_LowerLimitPrice,
       StatisticsType_IndexValue,
-      StatisticsType_MarginRate};
+      StatisticsType_MarginRate,
+      StatisticsType_FundingRate,
+      StatisticsType_DailyFundingRate};
   return values;
 }
 
 inline const char *const *EnumNamesStatisticsType() {
-  static const char *const names[15] = {
+  static const char *const names[17] = {
       "Undefined",
       "OpenPrice",
       "SettlementPrice",
@@ -621,12 +625,14 @@ inline const char *const *EnumNamesStatisticsType() {
       "LowerLimitPrice",
       "IndexValue",
       "MarginRate",
+      "FundingRate",
+      "DailyFundingRate",
       nullptr};
   return names;
 }
 
 inline const char *EnumNameStatisticsType(StatisticsType e) {
-  if (flatbuffers::IsOutRange(e, StatisticsType_Undefined, StatisticsType_MarginRate))
+  if (flatbuffers::IsOutRange(e, StatisticsType_Undefined, StatisticsType_DailyFundingRate))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStatisticsType()[index];
@@ -1319,16 +1325,25 @@ inline flatbuffers::Offset<MBPUpdate> CreateMBPUpdate(
 
 struct Statistics FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef StatisticsBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_TYPE = 4, VT_VALUE = 6 };
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TYPE = 4,
+    VT_VALUE = 6,
+    VT_BEGIN_TIME_UTC = 8,
+    VT_END_TIME_UTC = 10
+  };
   roq::fbs::StatisticsType type() const {
     return static_cast<roq::fbs::StatisticsType>(GetField<uint8_t>(VT_TYPE, 0));
   }
   double value() const {
     return GetField<double>(VT_VALUE, std::numeric_limits<double>::quiet_NaN());
   }
+  int64_t begin_time_utc() const { return GetField<int64_t>(VT_BEGIN_TIME_UTC, 0); }
+  int64_t end_time_utc() const { return GetField<int64_t>(VT_END_TIME_UTC, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint8_t>(verifier, VT_TYPE) &&
-           VerifyField<double>(verifier, VT_VALUE) && verifier.EndTable();
+           VerifyField<double>(verifier, VT_VALUE) &&
+           VerifyField<int64_t>(verifier, VT_BEGIN_TIME_UTC) &&
+           VerifyField<int64_t>(verifier, VT_END_TIME_UTC) && verifier.EndTable();
   }
 };
 
@@ -1341,6 +1356,12 @@ struct StatisticsBuilder {
   }
   void add_value(double value) {
     fbb_.AddElement<double>(Statistics::VT_VALUE, value, std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_begin_time_utc(int64_t begin_time_utc) {
+    fbb_.AddElement<int64_t>(Statistics::VT_BEGIN_TIME_UTC, begin_time_utc, 0);
+  }
+  void add_end_time_utc(int64_t end_time_utc) {
+    fbb_.AddElement<int64_t>(Statistics::VT_END_TIME_UTC, end_time_utc, 0);
   }
   explicit StatisticsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -1356,8 +1377,12 @@ struct StatisticsBuilder {
 inline flatbuffers::Offset<Statistics> CreateStatistics(
     flatbuffers::FlatBufferBuilder &_fbb,
     roq::fbs::StatisticsType type = roq::fbs::StatisticsType_Undefined,
-    double value = std::numeric_limits<double>::quiet_NaN()) {
+    double value = std::numeric_limits<double>::quiet_NaN(),
+    int64_t begin_time_utc = 0,
+    int64_t end_time_utc = 0) {
   StatisticsBuilder builder_(_fbb);
+  builder_.add_end_time_utc(end_time_utc);
+  builder_.add_begin_time_utc(begin_time_utc);
   builder_.add_value(value);
   builder_.add_type(type);
   return builder_.Finish();

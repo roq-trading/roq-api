@@ -23,8 +23,10 @@ namespace roq {
 
 //! Represents a single statistic
 struct ROQ_PUBLIC Statistics final {
-  StatisticsType type = {};  //!< Statistics type
-  double value = NaN;        //!< Value
+  StatisticsType type = {};                  //!< Statistics type
+  double value = NaN;                        //!< Value
+  std::chrono::seconds begin_time_utc = {};  //!< Sample period begin time
+  std::chrono::seconds end_time_utc = {};    //!< Sample period end time
 };
 
 }  // namespace roq
@@ -38,9 +40,13 @@ struct fmt::formatter<roq::Statistics> : public roq::formatter {
         context.out(),
         R"({{)"
         R"(type={}, )"
-        R"(value={})"
+        R"(value={}, )"
+        R"(begin_time_utc={}, )"
+        R"(end_time_utc={})"
         R"(}})"_fmt,
         value.type,
-        value.value);
+        value.value,
+        value.begin_time_utc,
+        value.end_time_utc);
   }
 };

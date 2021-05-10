@@ -109,6 +109,6 @@ static_assert(sizeof(MBPUpdate) == 16);
 static_assert(sizeof(MBOUpdate) == 64);
 static_assert(sizeof(Trade) == 64);
 static_assert(sizeof(Fill) == 64);
-static_assert(sizeof(Statistics) == 16);
+static_assert(sizeof(Statistics) == 32);
 
 }  // namespace roq

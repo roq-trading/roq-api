@@ -12,6 +12,16 @@
             "name": "value",
             "type": "double",
             "comment": "Value"
+        },
+        {
+            "name": "begin_time_utc",
+            "type": "std::chrono::seconds",
+            "comment": "Sample period begin time"
+        },
+        {
+            "name": "end_time_utc",
+            "type": "std::chrono::seconds",
+            "comment": "Sample period end time"
         }
     ]
 }

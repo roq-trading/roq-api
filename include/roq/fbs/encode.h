@@ -228,7 +228,12 @@ auto encode(B &builder, const roq::Fill &value) {
 
 template <typename B>
 auto encode(B &builder, const roq::Statistics &value) {
-  return CreateStatistics(builder, encode(builder, value.type), value.value);
+  return CreateStatistics(
+      builder,
+      encode(builder, value.type),
+      value.value,
+      encode(builder, value.begin_time_utc),
+      encode(builder, value.end_time_utc));
 }
 
 // roq::span

@@ -116,7 +116,7 @@ struct SourceInfoBuilder;
 struct Event;
 struct EventBuilder;
 
-enum ConnectionStatus {
+enum ConnectionStatus : uint8_t {
   ConnectionStatus_Undefined = 0,
   ConnectionStatus_Disconnected = 1,
   ConnectionStatus_Connecting = 2,
@@ -160,7 +160,7 @@ inline const char *EnumNameConnectionStatus(ConnectionStatus e) {
   return EnumNamesConnectionStatus()[index];
 }
 
-enum Error {
+enum Error : uint8_t {
   Error_Undefined = 0,
   Error_Unknown = 1,
   Error_GatewayNotReady = 2,
@@ -231,7 +231,7 @@ inline const char *EnumNameError(Error e) {
   return EnumNamesError()[index];
 }
 
-enum ExecutionInstruction {
+enum ExecutionInstruction : uint8_t {
   ExecutionInstruction_Undefined = 0,
   ExecutionInstruction_ParticipateDoNotInitiate = 1,
   ExecutionInstruction_CancelIfNotBest = 2,
@@ -269,7 +269,7 @@ inline const char *EnumNameExecutionInstruction(ExecutionInstruction e) {
   return EnumNamesExecutionInstruction()[index];
 }
 
-enum OptionType {
+enum OptionType : uint8_t {
   OptionType_Undefined = 0,
   OptionType_Call = 1,
   OptionType_Put = 2,
@@ -294,7 +294,7 @@ inline const char *EnumNameOptionType(OptionType e) {
   return EnumNamesOptionType()[index];
 }
 
-enum OrderStatus {
+enum OrderStatus : uint8_t {
   OrderStatus_Undefined = 0,
   OrderStatus_Sent = 1,
   OrderStatus_Rejected = 2,
@@ -341,7 +341,7 @@ inline const char *EnumNameOrderStatus(OrderStatus e) {
   return EnumNamesOrderStatus()[index];
 }
 
-enum OrderType {
+enum OrderType : uint8_t {
   OrderType_Undefined = 0,
   OrderType_Market = 1,
   OrderType_Limit = 2,
@@ -366,7 +366,7 @@ inline const char *EnumNameOrderType(OrderType e) {
   return EnumNamesOrderType()[index];
 }
 
-enum OrderUpdateAction {
+enum OrderUpdateAction : uint8_t {
   OrderUpdateAction_Undefined = 0,
   OrderUpdateAction_New = 1,
   OrderUpdateAction_Modify = 2,
@@ -396,7 +396,7 @@ inline const char *EnumNameOrderUpdateAction(OrderUpdateAction e) {
   return EnumNamesOrderUpdateAction()[index];
 }
 
-enum Origin {
+enum Origin : uint8_t {
   Origin_Undefined = 0,
   Origin_Client = 1,
   Origin_Gateway = 2,
@@ -425,7 +425,7 @@ inline const char *EnumNameOrigin(Origin e) {
   return EnumNamesOrigin()[index];
 }
 
-enum PositionEffect {
+enum PositionEffect : uint8_t {
   PositionEffect_Undefined = 0,
   PositionEffect_Open = 1,
   PositionEffect_Close = 2,
@@ -451,7 +451,7 @@ inline const char *EnumNamePositionEffect(PositionEffect e) {
   return EnumNamesPositionEffect()[index];
 }
 
-enum RequestStatus {
+enum RequestStatus : uint8_t {
   RequestStatus_Undefined = 0,
   RequestStatus_Forwarded = 1,
   RequestStatus_Accepted = 2,
@@ -484,7 +484,7 @@ inline const char *EnumNameRequestStatus(RequestStatus e) {
   return EnumNamesRequestStatus()[index];
 }
 
-enum RequestType {
+enum RequestType : uint8_t {
   RequestType_Undefined = 0,
   RequestType_CreateOrder = 1,
   RequestType_ModifyOrder = 2,
@@ -515,7 +515,7 @@ inline const char *EnumNameRequestType(RequestType e) {
   return EnumNamesRequestType()[index];
 }
 
-enum SecurityType {
+enum SecurityType : uint8_t {
   SecurityType_Undefined = 0,
   SecurityType_Spot = 1,
   SecurityType_Futures = 2,
@@ -542,7 +542,7 @@ inline const char *EnumNameSecurityType(SecurityType e) {
   return EnumNamesSecurityType()[index];
 }
 
-enum Side {
+enum Side : uint8_t {
   Side_Undefined = 0,
   Side_Buy = 1,
   Side_Sell = 2,
@@ -567,7 +567,7 @@ inline const char *EnumNameSide(Side e) {
   return EnumNamesSide()[index];
 }
 
-enum StatisticsType {
+enum StatisticsType : uint8_t {
   StatisticsType_Undefined = 0,
   StatisticsType_OpenPrice = 1,
   StatisticsType_SettlementPrice = 2,
@@ -638,7 +638,7 @@ inline const char *EnumNameStatisticsType(StatisticsType e) {
   return EnumNamesStatisticsType()[index];
 }
 
-enum StreamType {
+enum StreamType : uint8_t {
   StreamType_Undefined = 0,
   StreamType_FIX = 1,
   StreamType_WebSocket = 2,
@@ -665,7 +665,7 @@ inline const char *EnumNameStreamType(StreamType e) {
   return EnumNamesStreamType()[index];
 }
 
-enum SupportType {
+enum SupportType : uint32_t {
   SupportType_Undefined = 0,
   SupportType_ReferenceData = 1,
   SupportType_MarketStatus = 2,
@@ -746,7 +746,7 @@ inline const char *EnumNameSupportType(SupportType e) {
   }
 }
 
-enum TimeInForce {
+enum TimeInForce : uint8_t {
   TimeInForce_Undefined = 0,
   TimeInForce_FOK = 1,
   TimeInForce_IOC = 2,
@@ -774,7 +774,7 @@ inline const char *EnumNameTimeInForce(TimeInForce e) {
   return EnumNamesTimeInForce()[index];
 }
 
-enum TradingStatus {
+enum TradingStatus : uint8_t {
   TradingStatus_Undefined = 0,
   TradingStatus_Closed = 1,
   TradingStatus_Open = 2,
@@ -800,7 +800,7 @@ inline const char *EnumNameTradingStatus(TradingStatus e) {
   return EnumNamesTradingStatus()[index];
 }
 
-enum Priority {
+enum Priority : uint32_t {
   Priority_Undefined = 0,
   Priority_Primary = 1,
   Priority_MIN = Priority_Undefined,
@@ -824,7 +824,7 @@ inline const char *EnumNamePriority(Priority e) {
   return EnumNamesPriority()[index];
 }
 
-enum Message {
+enum Message : uint8_t {
   Message_NONE = 0,
   Message_Handshake = 1,
   Message_HandshakeAck = 2,
@@ -1090,7 +1090,6 @@ struct FillBuilder {
   explicit FillBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  FillBuilder &operator=(const FillBuilder &);
   flatbuffers::Offset<Fill> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Fill>(end);
@@ -1171,7 +1170,6 @@ struct LayerBuilder {
   explicit LayerBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  LayerBuilder &operator=(const LayerBuilder &);
   flatbuffers::Offset<Layer> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Layer>(end);
@@ -1244,7 +1242,6 @@ struct MBOUpdateBuilder {
   explicit MBOUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  MBOUpdateBuilder &operator=(const MBOUpdateBuilder &);
   flatbuffers::Offset<MBOUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MBOUpdate>(end);
@@ -1305,7 +1302,6 @@ struct MBPUpdateBuilder {
   explicit MBPUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  MBPUpdateBuilder &operator=(const MBPUpdateBuilder &);
   flatbuffers::Offset<MBPUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MBPUpdate>(end);
@@ -1366,7 +1362,6 @@ struct StatisticsBuilder {
   explicit StatisticsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  StatisticsBuilder &operator=(const StatisticsBuilder &);
   flatbuffers::Offset<Statistics> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Statistics>(end);
@@ -1429,7 +1424,6 @@ struct TradeBuilder {
   explicit TradeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TradeBuilder &operator=(const TradeBuilder &);
   flatbuffers::Offset<Trade> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Trade>(end);
@@ -1483,7 +1477,6 @@ struct CancelAllOrdersBuilder {
   explicit CancelAllOrdersBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  CancelAllOrdersBuilder &operator=(const CancelAllOrdersBuilder &);
   flatbuffers::Offset<CancelAllOrders> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CancelAllOrders>(end);
@@ -1534,7 +1527,6 @@ struct CancelOrderBuilder {
   explicit CancelOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  CancelOrderBuilder &operator=(const CancelOrderBuilder &);
   flatbuffers::Offset<CancelOrder> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CancelOrder>(end);
@@ -1697,7 +1689,6 @@ struct CreateOrderBuilder {
   explicit CreateOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  CreateOrderBuilder &operator=(const CreateOrderBuilder &);
   flatbuffers::Offset<CreateOrder> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CreateOrder>(end);
@@ -1804,7 +1795,6 @@ struct DownloadBeginBuilder {
   explicit DownloadBeginBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  DownloadBeginBuilder &operator=(const DownloadBeginBuilder &);
   flatbuffers::Offset<DownloadBegin> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<DownloadBegin>(end);
@@ -1855,7 +1845,6 @@ struct DownloadEndBuilder {
   explicit DownloadEndBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  DownloadEndBuilder &operator=(const DownloadEndBuilder &);
   flatbuffers::Offset<DownloadEnd> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<DownloadEnd>(end);
@@ -1908,7 +1897,6 @@ struct ExternalLatencyBuilder {
   explicit ExternalLatencyBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ExternalLatencyBuilder &operator=(const ExternalLatencyBuilder &);
   flatbuffers::Offset<ExternalLatency> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ExternalLatency>(end);
@@ -1986,7 +1974,6 @@ struct FundsUpdateBuilder {
   explicit FundsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  FundsUpdateBuilder &operator=(const FundsUpdateBuilder &);
   flatbuffers::Offset<FundsUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<FundsUpdate>(end);
@@ -2081,7 +2068,6 @@ struct GatewaySettingsBuilder {
   explicit GatewaySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  GatewaySettingsBuilder &operator=(const GatewaySettingsBuilder &);
   flatbuffers::Offset<GatewaySettings> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<GatewaySettings>(end);
@@ -2144,7 +2130,6 @@ struct GatewayStatusBuilder {
   explicit GatewayStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  GatewayStatusBuilder &operator=(const GatewayStatusBuilder &);
   flatbuffers::Offset<GatewayStatus> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<GatewayStatus>(end);
@@ -2246,7 +2231,6 @@ struct MarketByOrderUpdateBuilder {
   explicit MarketByOrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  MarketByOrderUpdateBuilder &operator=(const MarketByOrderUpdateBuilder &);
   flatbuffers::Offset<MarketByOrderUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MarketByOrderUpdate>(end);
@@ -2361,7 +2345,6 @@ struct MarketByPriceUpdateBuilder {
   explicit MarketByPriceUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  MarketByPriceUpdateBuilder &operator=(const MarketByPriceUpdateBuilder &);
   flatbuffers::Offset<MarketByPriceUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MarketByPriceUpdate>(end);
@@ -2452,7 +2435,6 @@ struct MarketStatusBuilder {
   explicit MarketStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  MarketStatusBuilder &operator=(const MarketStatusBuilder &);
   flatbuffers::Offset<MarketStatus> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MarketStatus>(end);
@@ -2531,7 +2513,6 @@ struct ModifyOrderBuilder {
   explicit ModifyOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ModifyOrderBuilder &operator=(const ModifyOrderBuilder &);
   flatbuffers::Offset<ModifyOrder> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ModifyOrder>(end);
@@ -2676,7 +2657,6 @@ struct OrderAckBuilder {
   explicit OrderAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  OrderAckBuilder &operator=(const OrderAckBuilder &);
   flatbuffers::Offset<OrderAck> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<OrderAck>(end);
@@ -2906,7 +2886,6 @@ struct OrderUpdateBuilder {
   explicit OrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  OrderUpdateBuilder &operator=(const OrderUpdateBuilder &);
   flatbuffers::Offset<OrderUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<OrderUpdate>(end);
@@ -3110,7 +3089,6 @@ struct PositionUpdateBuilder {
   explicit PositionUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  PositionUpdateBuilder &operator=(const PositionUpdateBuilder &);
   flatbuffers::Offset<PositionUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<PositionUpdate>(end);
@@ -3206,7 +3184,6 @@ struct RateLimitUsageBuilder {
   explicit RateLimitUsageBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  RateLimitUsageBuilder &operator=(const RateLimitUsageBuilder &);
   flatbuffers::Offset<RateLimitUsage> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<RateLimitUsage>(end);
@@ -3396,7 +3373,6 @@ struct ReferenceDataBuilder {
   explicit ReferenceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ReferenceDataBuilder &operator=(const ReferenceDataBuilder &);
   flatbuffers::Offset<ReferenceData> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ReferenceData>(end);
@@ -3566,7 +3542,6 @@ struct StatisticsUpdateBuilder {
   explicit StatisticsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  StatisticsUpdateBuilder &operator=(const StatisticsUpdateBuilder &);
   flatbuffers::Offset<StatisticsUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<StatisticsUpdate>(end);
@@ -3667,7 +3642,6 @@ struct StreamStatusBuilder {
   explicit StreamStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  StreamStatusBuilder &operator=(const StreamStatusBuilder &);
   flatbuffers::Offset<StreamStatus> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<StreamStatus>(end);
@@ -3760,7 +3734,6 @@ struct TopOfBookBuilder {
   explicit TopOfBookBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TopOfBookBuilder &operator=(const TopOfBookBuilder &);
   flatbuffers::Offset<TopOfBook> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TopOfBook>(end);
@@ -3853,7 +3826,6 @@ struct TradeSummaryBuilder {
   explicit TradeSummaryBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TradeSummaryBuilder &operator=(const TradeSummaryBuilder &);
   flatbuffers::Offset<TradeSummary> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TradeSummary>(end);
@@ -4018,7 +3990,6 @@ struct TradeUpdateBuilder {
   explicit TradeUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TradeUpdateBuilder &operator=(const TradeUpdateBuilder &);
   flatbuffers::Offset<TradeUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TradeUpdate>(end);
@@ -4171,7 +4142,6 @@ struct HandshakeBuilder {
   explicit HandshakeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  HandshakeBuilder &operator=(const HandshakeBuilder &);
   flatbuffers::Offset<Handshake> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Handshake>(end);
@@ -4293,7 +4263,6 @@ struct HandshakeAckBuilder {
   explicit HandshakeAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  HandshakeAckBuilder &operator=(const HandshakeAckBuilder &);
   flatbuffers::Offset<HandshakeAck> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<HandshakeAck>(end);
@@ -4368,7 +4337,6 @@ struct SubscribeBuilder {
   explicit SubscribeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  SubscribeBuilder &operator=(const SubscribeBuilder &);
   flatbuffers::Offset<Subscribe> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Subscribe>(end);
@@ -4395,7 +4363,6 @@ struct BatchBeginBuilder {
   explicit BatchBeginBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  BatchBeginBuilder &operator=(const BatchBeginBuilder &);
   flatbuffers::Offset<BatchBegin> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<BatchBegin>(end);
@@ -4422,7 +4389,6 @@ struct BatchEndBuilder {
   explicit BatchEndBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  BatchEndBuilder &operator=(const BatchEndBuilder &);
   flatbuffers::Offset<BatchEnd> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<BatchEnd>(end);
@@ -4478,7 +4444,6 @@ struct SourceInfoBuilder {
   explicit SourceInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  SourceInfoBuilder &operator=(const SourceInfoBuilder &);
   flatbuffers::Offset<SourceInfo> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<SourceInfo>(end);
@@ -4824,7 +4789,6 @@ struct EventBuilder {
   explicit EventBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  EventBuilder &operator=(const EventBuilder &);
   flatbuffers::Offset<Event> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Event>(end);

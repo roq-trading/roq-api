@@ -41,6 +41,8 @@ class Mask final {
   constexpr bool operator>(const Mask &rhs) const { return value_ > rhs.value_; }
   constexpr bool operator>=(const Mask &rhs) const { return value_ >= rhs.value_; }
 
+  constexpr bool empty() const { return value_ == value_type{}; }
+
   constexpr value_type get() const { return value_; }
 
   constexpr bool has(T flag) const { return value_ & static_cast<value_type>(flag); }
@@ -76,8 +78,18 @@ class Mask final {
     return *this;
   }
 
+  constexpr Mask &set(Mask rhs) {
+    value_ |= rhs.value_;
+    return *this;
+  }
+
   constexpr Mask &remove(T flag) {
     value_ &= ~static_cast<value_type>(flag);
+    return *this;
+  }
+
+  constexpr Mask &remove(Mask rhs) {
+    value_ &= ~rhs.value_;
     return *this;
   }
 
@@ -99,6 +111,16 @@ class Mask final {
   constexpr Mask operator~() const { return negate(); }
 
   constexpr Mask operator&(Mask rhs) const { return logical_and(rhs); }
+
+  constexpr Mask &operator|=(T flag) {
+    set(flag);
+    return *this;
+  }
+
+  constexpr Mask &operator|=(Mask rhs) {
+    set(rhs);
+    return *this;
+  }
 
  private:
   value_type value_ = {};

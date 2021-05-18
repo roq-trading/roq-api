@@ -5,6 +5,7 @@
 #include <chrono>
 #include <limits>
 #include <stdexcept>
+#include <string>
 
 #include "roq/exceptions.h"
 #include "roq/literals.h"
@@ -57,6 +58,9 @@ struct safe_cast final {
       }
     } else if constexpr (is_duration<value_type>::value) {
       return std::chrono::duration_cast<result_type>(value_);
+    } else if constexpr (std::is_same<result_type, std::string>::value) {
+      // ... to string
+      return std::string{value_};
     } else {
       static_assert(detail::always_false<result_type>, "not implemented for this type");
     }

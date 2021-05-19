@@ -5,4 +5,5 @@ table ModifyOrder {
   order_id:uint32;
   quantity:double = nan;
   price:double = nan;
+  routing_id:string;
 }

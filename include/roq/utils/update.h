@@ -46,5 +46,16 @@ constexpr bool update_first(T &result, const U &value) {
   return false;
 }
 
+template <typename T, typename U>
+constexpr bool update_if_not_empty(T &result, const U &value) {
+  using lhs_type = typename std::decay<T>::type;
+  using rhs_type = typename std::decay<U>::type;
+  if constexpr (is_string<lhs_type>::value && is_string<rhs_type>::value) {
+    if (value.empty())
+      return false;
+  }
+  return update(result, value);
+}
+
 }  // namespace utils
 }  // namespace roq

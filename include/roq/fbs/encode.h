@@ -489,12 +489,18 @@ auto encode(B &builder, const roq::CreateOrder &value) {
 template <typename B>
 auto encode(B &builder, const roq::ModifyOrder &value) {
   return CreateModifyOrder(
-      builder, encode(builder, value.account), value.order_id, value.quantity, value.price);
+      builder,
+      encode(builder, value.account),
+      value.order_id,
+      value.quantity,
+      value.price,
+      encode(builder, value.routing_id));
 }
 
 template <typename B>
 auto encode(B &builder, const roq::CancelOrder &value) {
-  return CreateCancelOrder(builder, encode(builder, value.account), value.order_id);
+  return CreateCancelOrder(
+      builder, encode(builder, value.account), value.order_id, encode(builder, value.routing_id));
 }
 
 template <typename B>

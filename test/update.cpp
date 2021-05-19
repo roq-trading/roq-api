@@ -28,3 +28,23 @@ TEST(update, string) {
   EXPECT_FALSE(update(value, "bar"_sv));
   EXPECT_EQ(value, "bar"_sv);
 }
+
+TEST(utils, update_if_not_empty_string) {
+  std::string result;
+  utils::update_if_not_empty(result, "some_test"_sv);
+  EXPECT_EQ(result, "some_test"_sv);
+  utils::update_if_not_empty(result, ""_sv);
+  EXPECT_EQ(result, "some_test"_sv);
+  utils::update_if_not_empty(result, "foobar"_sv);
+  EXPECT_EQ(result, "foobar"_sv);
+}
+
+TEST(utils, update_if_not_empty_double) {
+  double result = NaN;
+  utils::update_if_not_empty(result, 1.0);
+  EXPECT_DOUBLE_EQ(result, 1.0);
+  utils::update_if_not_empty(result, NaN);
+  EXPECT_DOUBLE_EQ(result, 1.0);
+  utils::update_if_not_empty(result, 2.0);
+  EXPECT_DOUBLE_EQ(result, 2.0);
+}

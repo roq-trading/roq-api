@@ -15,9 +15,9 @@ struct Event final {
   Event(const Event &) = delete;
 
   //! Dispatch to handler
-  template <typename H>
-  void dispatch(H &&handler) {
-    handler(*this);
+  template <typename R, typename H, typename... Args>
+  R dispatch(H &&handler, Args &&...args) {
+    return handler(*this, std::forward<Args>(args)...);
   }
 
   //! Access MessageInfo
@@ -31,11 +31,11 @@ struct Event final {
 };
 
 //! Create event and dispatch to handler
-template <typename H, typename T>
+template <typename H, typename T, typename... Args>
 inline void create_event_and_dispatch(
-    H &&handler, const MessageInfo &message_info, const T &value) {
+    H &&handler, const MessageInfo &message_info, const T &value, Args &&...args) {
   Event event(message_info, value);
-  event.dispatch(handler);
+  return event.template dispatch<void>(handler, std::forward<Args>(args)...);
 }
 
 }  // namespace roq

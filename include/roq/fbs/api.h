@@ -1501,15 +1501,20 @@ struct CancelOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef CancelOrderBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ACCOUNT = 4,
-    VT_ORDER_ID = 6
+    VT_ORDER_ID = 6,
+    VT_ROUTING_ID = 8
   };
   const flatbuffers::String *account() const {
     return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
   }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
+  const flatbuffers::String *routing_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
            verifier.VerifyString(account()) && VerifyField<uint32_t>(verifier, VT_ORDER_ID) &&
+           VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
            verifier.EndTable();
   }
 };
@@ -1524,6 +1529,9 @@ struct CancelOrderBuilder {
   void add_order_id(uint32_t order_id) {
     fbb_.AddElement<uint32_t>(CancelOrder::VT_ORDER_ID, order_id, 0);
   }
+  void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
+    fbb_.AddOffset(CancelOrder::VT_ROUTING_ID, routing_id);
+  }
   explicit CancelOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
@@ -1537,17 +1545,23 @@ struct CancelOrderBuilder {
 inline flatbuffers::Offset<CancelOrder> CreateCancelOrder(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> account = 0,
-    uint32_t order_id = 0) {
+    uint32_t order_id = 0,
+    flatbuffers::Offset<flatbuffers::String> routing_id = 0) {
   CancelOrderBuilder builder_(_fbb);
+  builder_.add_routing_id(routing_id);
   builder_.add_order_id(order_id);
   builder_.add_account(account);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<CancelOrder> CreateCancelOrderDirect(
-    flatbuffers::FlatBufferBuilder &_fbb, const char *account = nullptr, uint32_t order_id = 0) {
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *account = nullptr,
+    uint32_t order_id = 0,
+    const char *routing_id = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
-  return roq::fbs::CreateCancelOrder(_fbb, account__, order_id);
+  auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
+  return roq::fbs::CreateCancelOrder(_fbb, account__, order_id, routing_id__);
 }
 
 struct CreateOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -2473,7 +2487,8 @@ struct ModifyOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ACCOUNT = 4,
     VT_ORDER_ID = 6,
     VT_QUANTITY = 8,
-    VT_PRICE = 10
+    VT_PRICE = 10,
+    VT_ROUTING_ID = 12
   };
   const flatbuffers::String *account() const {
     return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
@@ -2485,10 +2500,14 @@ struct ModifyOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double price() const {
     return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
   }
+  const flatbuffers::String *routing_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
            verifier.VerifyString(account()) && VerifyField<uint32_t>(verifier, VT_ORDER_ID) &&
            VerifyField<double>(verifier, VT_QUANTITY) && VerifyField<double>(verifier, VT_PRICE) &&
+           VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
            verifier.EndTable();
   }
 };
@@ -2510,6 +2529,9 @@ struct ModifyOrderBuilder {
   void add_price(double price) {
     fbb_.AddElement<double>(ModifyOrder::VT_PRICE, price, std::numeric_limits<double>::quiet_NaN());
   }
+  void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
+    fbb_.AddOffset(ModifyOrder::VT_ROUTING_ID, routing_id);
+  }
   explicit ModifyOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
@@ -2525,10 +2547,12 @@ inline flatbuffers::Offset<ModifyOrder> CreateModifyOrder(
     flatbuffers::Offset<flatbuffers::String> account = 0,
     uint32_t order_id = 0,
     double quantity = std::numeric_limits<double>::quiet_NaN(),
-    double price = std::numeric_limits<double>::quiet_NaN()) {
+    double price = std::numeric_limits<double>::quiet_NaN(),
+    flatbuffers::Offset<flatbuffers::String> routing_id = 0) {
   ModifyOrderBuilder builder_(_fbb);
   builder_.add_price(price);
   builder_.add_quantity(quantity);
+  builder_.add_routing_id(routing_id);
   builder_.add_order_id(order_id);
   builder_.add_account(account);
   return builder_.Finish();
@@ -2539,9 +2563,11 @@ inline flatbuffers::Offset<ModifyOrder> CreateModifyOrderDirect(
     const char *account = nullptr,
     uint32_t order_id = 0,
     double quantity = std::numeric_limits<double>::quiet_NaN(),
-    double price = std::numeric_limits<double>::quiet_NaN()) {
+    double price = std::numeric_limits<double>::quiet_NaN(),
+    const char *routing_id = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
-  return roq::fbs::CreateModifyOrder(_fbb, account__, order_id, quantity, price);
+  auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
+  return roq::fbs::CreateModifyOrder(_fbb, account__, order_id, quantity, price, routing_id__);
 }
 
 struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

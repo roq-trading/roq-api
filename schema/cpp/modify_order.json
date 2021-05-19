@@ -20,6 +20,10 @@
             "name": "price",
             "type": "double",
             "comment": "New limit price"
+        },
+        {
+            "name": "routing_id",
+            "type": "std::string_view"
         }
     ]
 }

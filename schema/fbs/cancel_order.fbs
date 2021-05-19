@@ -3,4 +3,5 @@ namespace roq.fbs;
 table CancelOrder {
   account:string;
   order_id:uint32;
+  routing_id:string;
 }

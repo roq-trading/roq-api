@@ -29,6 +29,8 @@ table OrderUpdate {
   execution_instruction:ExecutionInstruction;
   stop_price:double = nan;
   max_show_quantity:double = nan;
-  average_price:double = nan;
-  liquidity:Liquidity;
+  average_traded_price:double = nan;
+  last_traded_price:double = nan;
+  last_traded_quantity:double = nan;
+  last_liquidity:Liquidity;
 }

@@ -562,8 +562,10 @@ auto encode(B &builder, const roq::OrderUpdate &value) {
       encode(builder, value.execution_instruction),
       value.stop_price,
       value.max_show_quantity,
-      value.average_price,
-      encode(builder, value.liquidity));
+      value.average_traded_price,
+      value.last_traded_price,
+      value.last_traded_quantity,
+      encode(builder, value.last_liquidity));
 }
 
 template <typename B>

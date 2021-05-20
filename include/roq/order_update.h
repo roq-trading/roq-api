@@ -53,10 +53,12 @@ struct ROQ_PUBLIC OrderUpdate final {
   OrderType order_type = {};       //!< Order type
   TimeInForce time_in_force = {};  //!< Time in force
   ExecutionInstruction execution_instruction = {};  //!< Execution instruction
-  double stop_price = NaN;         //!< Stop price (depends on order_type and time_in_force)
-  double max_show_quantity = NaN;  //!< Quantity visible to market (requires exchange support)
-  double average_price = NaN;      //!< Average price (for traded quantity)
-  Liquidity liquidity = {};        //!< Liquidity (maker or taker)
+  double stop_price = NaN;            //!< Stop price (depends on order_type and time_in_force)
+  double max_show_quantity = NaN;     //!< Quantity visible to market (requires exchange support)
+  double average_traded_price = NaN;  //!< Average price (for traded quantity)
+  double last_traded_price = NaN;     //!< Last traded price (for last quantity)
+  double last_traded_quantity = NaN;  //!< Last traded quantity
+  Liquidity last_liquidity = {};      //!< Liquidity indicator (for last trade)
 };
 
 }  // namespace roq
@@ -92,8 +94,10 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         R"(execution_instruction={}, )"
         R"(stop_price={}, )"
         R"(max_show_quantity={}, )"
-        R"(average_price={}, )"
-        R"(liquidity={})"
+        R"(average_traded_price={}, )"
+        R"(last_traded_price={}, )"
+        R"(last_traded_quantity={}, )"
+        R"(last_liquidity={})"
         R"(}})"_fmt,
         value.stream_id,
         value.account,
@@ -118,8 +122,10 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         value.execution_instruction,
         value.stop_price,
         value.max_show_quantity,
-        value.average_price,
-        value.liquidity);
+        value.average_traded_price,
+        value.last_traded_price,
+        value.last_traded_quantity,
+        value.last_liquidity);
   }
 };
 template <>

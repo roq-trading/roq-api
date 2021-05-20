@@ -271,24 +271,24 @@ inline const char *EnumNameExecutionInstruction(ExecutionInstruction e) {
 
 enum Liquidity : uint8_t {
   Liquidity_Undefined = 0,
-  Liquidity_Maker = 1,
-  Liquidity_Taker = 2,
+  Liquidity_Added = 1,
+  Liquidity_Removed = 2,
   Liquidity_MIN = Liquidity_Undefined,
-  Liquidity_MAX = Liquidity_Taker
+  Liquidity_MAX = Liquidity_Removed
 };
 
 inline const Liquidity (&EnumValuesLiquidity())[3] {
-  static const Liquidity values[] = {Liquidity_Undefined, Liquidity_Maker, Liquidity_Taker};
+  static const Liquidity values[] = {Liquidity_Undefined, Liquidity_Added, Liquidity_Removed};
   return values;
 }
 
 inline const char *const *EnumNamesLiquidity() {
-  static const char *const names[4] = {"Undefined", "Maker", "Taker", nullptr};
+  static const char *const names[4] = {"Undefined", "Added", "Removed", nullptr};
   return names;
 }
 
 inline const char *EnumNameLiquidity(Liquidity e) {
-  if (flatbuffers::IsOutRange(e, Liquidity_Undefined, Liquidity_Taker))
+  if (flatbuffers::IsOutRange(e, Liquidity_Undefined, Liquidity_Removed))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesLiquidity()[index];
@@ -2823,8 +2823,10 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXECUTION_INSTRUCTION = 44,
     VT_STOP_PRICE = 46,
     VT_MAX_SHOW_QUANTITY = 48,
-    VT_AVERAGE_PRICE = 50,
-    VT_LIQUIDITY = 52
+    VT_AVERAGE_TRADED_PRICE = 50,
+    VT_LAST_TRADED_PRICE = 52,
+    VT_LAST_TRADED_QUANTITY = 54,
+    VT_LAST_LIQUIDITY = 56
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *account() const {
@@ -2884,11 +2886,17 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double max_show_quantity() const {
     return GetField<double>(VT_MAX_SHOW_QUANTITY, std::numeric_limits<double>::quiet_NaN());
   }
-  double average_price() const {
-    return GetField<double>(VT_AVERAGE_PRICE, std::numeric_limits<double>::quiet_NaN());
+  double average_traded_price() const {
+    return GetField<double>(VT_AVERAGE_TRADED_PRICE, std::numeric_limits<double>::quiet_NaN());
   }
-  roq::fbs::Liquidity liquidity() const {
-    return static_cast<roq::fbs::Liquidity>(GetField<uint8_t>(VT_LIQUIDITY, 0));
+  double last_traded_price() const {
+    return GetField<double>(VT_LAST_TRADED_PRICE, std::numeric_limits<double>::quiet_NaN());
+  }
+  double last_traded_quantity() const {
+    return GetField<double>(VT_LAST_TRADED_QUANTITY, std::numeric_limits<double>::quiet_NaN());
+  }
+  roq::fbs::Liquidity last_liquidity() const {
+    return static_cast<roq::fbs::Liquidity>(GetField<uint8_t>(VT_LAST_LIQUIDITY, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
@@ -2913,8 +2921,10 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION) &&
            VerifyField<double>(verifier, VT_STOP_PRICE) &&
            VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) &&
-           VerifyField<double>(verifier, VT_AVERAGE_PRICE) &&
-           VerifyField<uint8_t>(verifier, VT_LIQUIDITY) && verifier.EndTable();
+           VerifyField<double>(verifier, VT_AVERAGE_TRADED_PRICE) &&
+           VerifyField<double>(verifier, VT_LAST_TRADED_PRICE) &&
+           VerifyField<double>(verifier, VT_LAST_TRADED_QUANTITY) &&
+           VerifyField<uint8_t>(verifier, VT_LAST_LIQUIDITY) && verifier.EndTable();
   }
 };
 
@@ -3001,12 +3011,27 @@ struct OrderUpdateBuilder {
         max_show_quantity,
         std::numeric_limits<double>::quiet_NaN());
   }
-  void add_average_price(double average_price) {
+  void add_average_traded_price(double average_traded_price) {
     fbb_.AddElement<double>(
-        OrderUpdate::VT_AVERAGE_PRICE, average_price, std::numeric_limits<double>::quiet_NaN());
+        OrderUpdate::VT_AVERAGE_TRADED_PRICE,
+        average_traded_price,
+        std::numeric_limits<double>::quiet_NaN());
   }
-  void add_liquidity(roq::fbs::Liquidity liquidity) {
-    fbb_.AddElement<uint8_t>(OrderUpdate::VT_LIQUIDITY, static_cast<uint8_t>(liquidity), 0);
+  void add_last_traded_price(double last_traded_price) {
+    fbb_.AddElement<double>(
+        OrderUpdate::VT_LAST_TRADED_PRICE,
+        last_traded_price,
+        std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_last_traded_quantity(double last_traded_quantity) {
+    fbb_.AddElement<double>(
+        OrderUpdate::VT_LAST_TRADED_QUANTITY,
+        last_traded_quantity,
+        std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_last_liquidity(roq::fbs::Liquidity last_liquidity) {
+    fbb_.AddElement<uint8_t>(
+        OrderUpdate::VT_LAST_LIQUIDITY, static_cast<uint8_t>(last_liquidity), 0);
   }
   explicit OrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3043,10 +3068,14 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     roq::fbs::ExecutionInstruction execution_instruction = roq::fbs::ExecutionInstruction_Undefined,
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
     double max_show_quantity = std::numeric_limits<double>::quiet_NaN(),
-    double average_price = std::numeric_limits<double>::quiet_NaN(),
-    roq::fbs::Liquidity liquidity = roq::fbs::Liquidity_Undefined) {
+    double average_traded_price = std::numeric_limits<double>::quiet_NaN(),
+    double last_traded_price = std::numeric_limits<double>::quiet_NaN(),
+    double last_traded_quantity = std::numeric_limits<double>::quiet_NaN(),
+    roq::fbs::Liquidity last_liquidity = roq::fbs::Liquidity_Undefined) {
   OrderUpdateBuilder builder_(_fbb);
-  builder_.add_average_price(average_price);
+  builder_.add_last_traded_quantity(last_traded_quantity);
+  builder_.add_last_traded_price(last_traded_price);
+  builder_.add_average_traded_price(average_traded_price);
   builder_.add_max_show_quantity(max_show_quantity);
   builder_.add_stop_price(stop_price);
   builder_.add_update_time_utc(update_time_utc);
@@ -3064,7 +3093,7 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
   builder_.add_order_id(order_id);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
-  builder_.add_liquidity(liquidity);
+  builder_.add_last_liquidity(last_liquidity);
   builder_.add_execution_instruction(execution_instruction);
   builder_.add_time_in_force(time_in_force);
   builder_.add_order_type(order_type);
@@ -3099,8 +3128,10 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     roq::fbs::ExecutionInstruction execution_instruction = roq::fbs::ExecutionInstruction_Undefined,
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
     double max_show_quantity = std::numeric_limits<double>::quiet_NaN(),
-    double average_price = std::numeric_limits<double>::quiet_NaN(),
-    roq::fbs::Liquidity liquidity = roq::fbs::Liquidity_Undefined) {
+    double average_traded_price = std::numeric_limits<double>::quiet_NaN(),
+    double last_traded_price = std::numeric_limits<double>::quiet_NaN(),
+    double last_traded_quantity = std::numeric_limits<double>::quiet_NaN(),
+    roq::fbs::Liquidity last_liquidity = roq::fbs::Liquidity_Undefined) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -3133,8 +3164,10 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       execution_instruction,
       stop_price,
       max_show_quantity,
-      average_price,
-      liquidity);
+      average_traded_price,
+      last_traded_price,
+      last_traded_quantity,
+      last_liquidity);
 }
 
 struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

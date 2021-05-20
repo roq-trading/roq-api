@@ -103,13 +103,24 @@
             "comment": "Quantity visible to market (requires exchange support)"
         },
         {
-            "name": "average_price",
+            "name": "average_traded_price",
             "type": "double",
             "comment": "Average price (for traded quantity)"
         },
         {
-            "name": "liquidity",
-            "type": "Liquidity"
+            "name": "last_traded_price",
+            "type": "double",
+            "comment": "Last traded price (for last quantity)"
+        },
+        {
+            "name": "last_traded_quantity",
+            "type": "double",
+            "comment": "Last traded quantity"
+        },
+        {
+            "name": "last_liquidity",
+            "type": "Liquidity",
+            "comment": "Liquidity indicator (for last trade)"
         }
     ]
 }

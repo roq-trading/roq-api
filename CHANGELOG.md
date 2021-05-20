@@ -17,7 +17,7 @@ All notable changes will be documented in this file.
    order state management (through ClOrdId/OrigClOrdId transitions)
 * `GatewaySettings.supports` to allow users to detect what is supported
 * Added `Liquidity` to indicate if last fill was as maker or taker
-* Extend `OrderUpdate` with more fields (used when downloading)
+* Extend `OrderUpdate` with more fields (required for FIX bridge and download)
 
 
 ## 0.7.0 &ndash; 2021-04-15

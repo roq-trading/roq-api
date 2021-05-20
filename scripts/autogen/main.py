@@ -132,7 +132,6 @@ def _find_default_comment(name):
         external_trade_id="External trade identifier (as known to broker or exchange)",
         gateway_order_id="Order identifier (as known to gateway)",
         gateway_trade_id="Trade identifier (as known to gateway)",
-        liquidity="Liquidity (maker or taker)",
         order_id="Order identifier (as known to client)",
         order_template="Order template (as known to the gateway)",
         order_type="Order type",

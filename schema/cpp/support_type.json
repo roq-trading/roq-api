@@ -64,6 +64,11 @@
 	    "comment": "Order"
         },
         {
+            "name": "OrderState",
+	    "position": 23,
+	    "comment": "Order"
+        },
+        {
             "name": "Trade",
 	    "position": 21,
 	    "comment": "Trade"

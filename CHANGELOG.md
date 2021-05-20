@@ -13,6 +13,9 @@ All notable changes will be documented in this file.
    could possibly send updates to unknown price levels
 * `StatisticsType::FUNDING_RATE` and `StatisticsType::DAILY_FUNDING_RATE`
 * `routing_id` to `ModifyOrder` and `CancelOrder`
+* `SupportType.ORDER_STATE` to indicate if gateway supports FIX 4.4 style
+   order state management (through ClOrdId/OrigClOrdId transitions)
+* `GatewaySettings.supports` to allow users to detect what is supported
 
 ## 0.7.0 &ndash; 2021-04-15
 

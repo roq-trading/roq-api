@@ -14,7 +14,7 @@
         {
             "name": "supports",
             "type": "uint64_t",
-            "comment": "Update types (bit mask)"
+            "comment": "Support types (bit mask)"
         },
         {
             "name": "status",

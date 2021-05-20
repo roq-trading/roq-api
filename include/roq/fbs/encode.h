@@ -333,7 +333,8 @@ auto encode(B &builder, const roq::GatewaySettings &value) {
       value.mbp_max_depth,
       value.mbp_allow_price_inversion,
       value.mbp_allow_fractional_tick_size,
-      value.mbp_allow_remove_non_existing);
+      value.mbp_allow_remove_non_existing,
+      value.supports);  // note! using Mask<SupportType>
 }
 
 template <typename B>

@@ -31,6 +31,7 @@ struct ROQ_PACKED SupportType final {
     CANCEL_ORDER = 0x40000,  //!< Cancel order
     ORDER_ACK = 0x80000,     //!< Order ack
     ORDER = 0x100000,        //!< Order
+    ORDER_STATE = 0x800000,  //!< Order
     TRADE = 0x200000,        //!< Trade
     POSITION = 0x400000,     //!< Position
     FUNDS = 0x10000000,      //!< Funds
@@ -75,6 +76,8 @@ struct ROQ_PACKED SupportType final {
         return "ORDER_ACK"_sv;
       case type_t::ORDER:
         return "ORDER"_sv;
+      case type_t::ORDER_STATE:
+        return "ORDER_STATE"_sv;
       case type_t::TRADE:
         return "TRADE"_sv;
       case type_t::POSITION:
@@ -106,6 +109,7 @@ struct ROQ_PACKED SupportType final {
       case type_t::CANCEL_ORDER:
       case type_t::ORDER_ACK:
       case type_t::ORDER:
+      case type_t::ORDER_STATE:
       case type_t::TRADE:
       case type_t::POSITION:
       case type_t::FUNDS:

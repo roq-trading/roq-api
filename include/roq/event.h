@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <utility>
+
 #include "roq/message_info.h"
 
 namespace roq {

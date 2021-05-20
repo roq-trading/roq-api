@@ -681,12 +681,13 @@ enum SupportType : uint32_t {
   SupportType_Order = 1048576,
   SupportType_Trade = 2097152,
   SupportType_Position = 4194304,
+  SupportType_OrderState = 8388608,
   SupportType_Funds = 268435456,
   SupportType_MIN = SupportType_Undefined,
   SupportType_MAX = SupportType_Funds
 };
 
-inline const SupportType (&EnumValuesSupportType())[16] {
+inline const SupportType (&EnumValuesSupportType())[17] {
   static const SupportType values[] = {
       SupportType_Undefined,
       SupportType_ReferenceData,
@@ -703,6 +704,7 @@ inline const SupportType (&EnumValuesSupportType())[16] {
       SupportType_Order,
       SupportType_Trade,
       SupportType_Position,
+      SupportType_OrderState,
       SupportType_Funds};
   return values;
 }
@@ -739,6 +741,8 @@ inline const char *EnumNameSupportType(SupportType e) {
       return "Trade";
     case SupportType_Position:
       return "Position";
+    case SupportType_OrderState:
+      return "OrderState";
     case SupportType_Funds:
       return "Funds";
     default:
@@ -2034,7 +2038,8 @@ struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MBP_MAX_DEPTH = 4,
     VT_MBP_ALLOW_PRICE_INVERSION = 6,
     VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE = 8,
-    VT_MBP_ALLOW_REMOVE_NON_EXISTING = 10
+    VT_MBP_ALLOW_REMOVE_NON_EXISTING = 10,
+    VT_SUPPORTS = 12
   };
   uint32_t mbp_max_depth() const { return GetField<uint32_t>(VT_MBP_MAX_DEPTH, 0); }
   bool mbp_allow_price_inversion() const {
@@ -2046,11 +2051,13 @@ struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool mbp_allow_remove_non_existing() const {
     return GetField<uint8_t>(VT_MBP_ALLOW_REMOVE_NON_EXISTING, 0) != 0;
   }
+  uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_MBP_MAX_DEPTH) &&
            VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_PRICE_INVERSION) &&
            VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE) &&
-           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_REMOVE_NON_EXISTING) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_REMOVE_NON_EXISTING) &&
+           VerifyField<uint64_t>(verifier, VT_SUPPORTS) && verifier.EndTable();
   }
 };
 
@@ -2079,6 +2086,9 @@ struct GatewaySettingsBuilder {
         static_cast<uint8_t>(mbp_allow_remove_non_existing),
         0);
   }
+  void add_supports(uint64_t supports) {
+    fbb_.AddElement<uint64_t>(GatewaySettings::VT_SUPPORTS, supports, 0);
+  }
   explicit GatewaySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
@@ -2094,8 +2104,10 @@ inline flatbuffers::Offset<GatewaySettings> CreateGatewaySettings(
     uint32_t mbp_max_depth = 0,
     bool mbp_allow_price_inversion = false,
     bool mbp_allow_fractional_tick_size = false,
-    bool mbp_allow_remove_non_existing = false) {
+    bool mbp_allow_remove_non_existing = false,
+    uint64_t supports = 0) {
   GatewaySettingsBuilder builder_(_fbb);
+  builder_.add_supports(supports);
   builder_.add_mbp_max_depth(mbp_max_depth);
   builder_.add_mbp_allow_remove_non_existing(mbp_allow_remove_non_existing);
   builder_.add_mbp_allow_fractional_tick_size(mbp_allow_fractional_tick_size);

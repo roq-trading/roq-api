@@ -29,7 +29,7 @@ namespace roq {
 struct ROQ_PUBLIC StreamStatus final {
   uint16_t stream_id = {};       //!< Stream identifier
   std::string_view account;      //!< Account name (as known to the gateway)
-  uint64_t supports = {};        //!< Update types (bit mask)
+  uint64_t supports = {};        //!< Support types (bit mask)
   ConnectionStatus status = {};  //!< Connection status
   StreamType type = {};          //!< Stream type
   Priority priority = {};        //!< Priority

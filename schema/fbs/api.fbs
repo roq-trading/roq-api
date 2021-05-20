@@ -5,6 +5,7 @@
 include "connection_status.fbs";
 include "error.fbs";
 include "execution_instruction.fbs";
+include "liquidity.fbs";
 include "option_type.fbs";
 include "order_status.fbs";
 include "order_type.fbs";

@@ -20,6 +20,7 @@ set(SOURCES
     gateway_settings.json
     gateway_status.json
     layer.json
+    liquidity.json
     market_by_order_update.json
     market_by_price_update.json
     market_status.json

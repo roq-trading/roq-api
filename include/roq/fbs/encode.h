@@ -62,6 +62,13 @@ auto encode([[maybe_unused]] B &builder, const roq::Error &value) {
 }
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::Liquidity &value) {
+  using result_type = Liquidity;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::ExecutionInstruction &value) {
   using result_type = ExecutionInstruction;
   using value_type = std::underlying_type_t<result_type>;
@@ -549,7 +556,14 @@ auto encode(B &builder, const roq::OrderUpdate &value) {
       value.gateway_order_id,
       encode(builder, value.external_account),
       encode(builder, value.external_order_id),
-      encode(builder, value.routing_id));
+      encode(builder, value.routing_id),
+      encode(builder, value.order_type),
+      encode(builder, value.time_in_force),
+      encode(builder, value.execution_instruction),
+      value.stop_price,
+      value.max_show_quantity,
+      value.average_price,
+      encode(builder, value.liquidity));
 }
 
 template <typename B>

@@ -20,6 +20,7 @@
 #include "roq/connection_status.h"
 #include "roq/error.h"
 #include "roq/execution_instruction.h"
+#include "roq/liquidity.h"
 #include "roq/option_type.h"
 #include "roq/order_status.h"
 #include "roq/order_type.h"

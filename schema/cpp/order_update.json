@@ -79,6 +79,37 @@
         {
             "name": "routing_id",
             "type": "std::string_view"
+        },
+        {
+            "name": "order_type",
+            "type": "OrderType"
+        },
+        {
+            "name": "time_in_force",
+            "type": "TimeInForce"
+        },
+        {
+            "name": "execution_instruction",
+            "type": "ExecutionInstruction"
+        },
+        {
+            "name": "stop_price",
+            "type": "double",
+            "comment": "Stop price (depends on order_type and time_in_force)"
+        },
+        {
+            "name": "max_show_quantity",
+            "type": "double",
+            "comment": "Quantity visible to market (requires exchange support)"
+        },
+        {
+            "name": "average_price",
+            "type": "double",
+            "comment": "Average price (for traded quantity)"
+        },
+        {
+            "name": "liquidity",
+            "type": "Liquidity"
         }
     ]
 }

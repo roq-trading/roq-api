@@ -269,6 +269,31 @@ inline const char *EnumNameExecutionInstruction(ExecutionInstruction e) {
   return EnumNamesExecutionInstruction()[index];
 }
 
+enum Liquidity : uint8_t {
+  Liquidity_Undefined = 0,
+  Liquidity_Maker = 1,
+  Liquidity_Taker = 2,
+  Liquidity_MIN = Liquidity_Undefined,
+  Liquidity_MAX = Liquidity_Taker
+};
+
+inline const Liquidity (&EnumValuesLiquidity())[3] {
+  static const Liquidity values[] = {Liquidity_Undefined, Liquidity_Maker, Liquidity_Taker};
+  return values;
+}
+
+inline const char *const *EnumNamesLiquidity() {
+  static const char *const names[4] = {"Undefined", "Maker", "Taker", nullptr};
+  return names;
+}
+
+inline const char *EnumNameLiquidity(Liquidity e) {
+  if (flatbuffers::IsOutRange(e, Liquidity_Undefined, Liquidity_Taker))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesLiquidity()[index];
+}
+
 enum OptionType : uint8_t {
   OptionType_Undefined = 0,
   OptionType_Call = 1,
@@ -2792,7 +2817,14 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_GATEWAY_ORDER_ID = 32,
     VT_EXTERNAL_ACCOUNT = 34,
     VT_EXTERNAL_ORDER_ID = 36,
-    VT_ROUTING_ID = 38
+    VT_ROUTING_ID = 38,
+    VT_ORDER_TYPE = 40,
+    VT_TIME_IN_FORCE = 42,
+    VT_EXECUTION_INSTRUCTION = 44,
+    VT_STOP_PRICE = 46,
+    VT_MAX_SHOW_QUANTITY = 48,
+    VT_AVERAGE_PRICE = 50,
+    VT_LIQUIDITY = 52
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *account() const {
@@ -2836,6 +2868,28 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *routing_id() const {
     return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID);
   }
+  roq::fbs::OrderType order_type() const {
+    return static_cast<roq::fbs::OrderType>(GetField<uint8_t>(VT_ORDER_TYPE, 0));
+  }
+  roq::fbs::TimeInForce time_in_force() const {
+    return static_cast<roq::fbs::TimeInForce>(GetField<uint8_t>(VT_TIME_IN_FORCE, 0));
+  }
+  roq::fbs::ExecutionInstruction execution_instruction() const {
+    return static_cast<roq::fbs::ExecutionInstruction>(
+        GetField<uint8_t>(VT_EXECUTION_INSTRUCTION, 0));
+  }
+  double stop_price() const {
+    return GetField<double>(VT_STOP_PRICE, std::numeric_limits<double>::quiet_NaN());
+  }
+  double max_show_quantity() const {
+    return GetField<double>(VT_MAX_SHOW_QUANTITY, std::numeric_limits<double>::quiet_NaN());
+  }
+  double average_price() const {
+    return GetField<double>(VT_AVERAGE_PRICE, std::numeric_limits<double>::quiet_NaN());
+  }
+  roq::fbs::Liquidity liquidity() const {
+    return static_cast<roq::fbs::Liquidity>(GetField<uint8_t>(VT_LIQUIDITY, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
@@ -2854,7 +2908,13 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(external_account()) &&
            VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
            verifier.VerifyString(external_order_id()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && verifier.EndTable();
+           verifier.VerifyString(routing_id()) && VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) &&
+           VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
+           VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION) &&
+           VerifyField<double>(verifier, VT_STOP_PRICE) &&
+           VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) &&
+           VerifyField<double>(verifier, VT_AVERAGE_PRICE) &&
+           VerifyField<uint8_t>(verifier, VT_LIQUIDITY) && verifier.EndTable();
   }
 };
 
@@ -2921,6 +2981,33 @@ struct OrderUpdateBuilder {
   void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
     fbb_.AddOffset(OrderUpdate::VT_ROUTING_ID, routing_id);
   }
+  void add_order_type(roq::fbs::OrderType order_type) {
+    fbb_.AddElement<uint8_t>(OrderUpdate::VT_ORDER_TYPE, static_cast<uint8_t>(order_type), 0);
+  }
+  void add_time_in_force(roq::fbs::TimeInForce time_in_force) {
+    fbb_.AddElement<uint8_t>(OrderUpdate::VT_TIME_IN_FORCE, static_cast<uint8_t>(time_in_force), 0);
+  }
+  void add_execution_instruction(roq::fbs::ExecutionInstruction execution_instruction) {
+    fbb_.AddElement<uint8_t>(
+        OrderUpdate::VT_EXECUTION_INSTRUCTION, static_cast<uint8_t>(execution_instruction), 0);
+  }
+  void add_stop_price(double stop_price) {
+    fbb_.AddElement<double>(
+        OrderUpdate::VT_STOP_PRICE, stop_price, std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_max_show_quantity(double max_show_quantity) {
+    fbb_.AddElement<double>(
+        OrderUpdate::VT_MAX_SHOW_QUANTITY,
+        max_show_quantity,
+        std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_average_price(double average_price) {
+    fbb_.AddElement<double>(
+        OrderUpdate::VT_AVERAGE_PRICE, average_price, std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_liquidity(roq::fbs::Liquidity liquidity) {
+    fbb_.AddElement<uint8_t>(OrderUpdate::VT_LIQUIDITY, static_cast<uint8_t>(liquidity), 0);
+  }
   explicit OrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
@@ -2950,8 +3037,18 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     uint32_t gateway_order_id = 0,
     flatbuffers::Offset<flatbuffers::String> external_account = 0,
     flatbuffers::Offset<flatbuffers::String> external_order_id = 0,
-    flatbuffers::Offset<flatbuffers::String> routing_id = 0) {
+    flatbuffers::Offset<flatbuffers::String> routing_id = 0,
+    roq::fbs::OrderType order_type = roq::fbs::OrderType_Undefined,
+    roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce_Undefined,
+    roq::fbs::ExecutionInstruction execution_instruction = roq::fbs::ExecutionInstruction_Undefined,
+    double stop_price = std::numeric_limits<double>::quiet_NaN(),
+    double max_show_quantity = std::numeric_limits<double>::quiet_NaN(),
+    double average_price = std::numeric_limits<double>::quiet_NaN(),
+    roq::fbs::Liquidity liquidity = roq::fbs::Liquidity_Undefined) {
   OrderUpdateBuilder builder_(_fbb);
+  builder_.add_average_price(average_price);
+  builder_.add_max_show_quantity(max_show_quantity);
+  builder_.add_stop_price(stop_price);
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
   builder_.add_traded_quantity(traded_quantity);
@@ -2967,6 +3064,10 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
   builder_.add_order_id(order_id);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
+  builder_.add_liquidity(liquidity);
+  builder_.add_execution_instruction(execution_instruction);
+  builder_.add_time_in_force(time_in_force);
+  builder_.add_order_type(order_type);
   builder_.add_position_effect(position_effect);
   builder_.add_side(side);
   builder_.add_status(status);
@@ -2992,7 +3093,14 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     uint32_t gateway_order_id = 0,
     const char *external_account = nullptr,
     const char *external_order_id = nullptr,
-    const char *routing_id = nullptr) {
+    const char *routing_id = nullptr,
+    roq::fbs::OrderType order_type = roq::fbs::OrderType_Undefined,
+    roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce_Undefined,
+    roq::fbs::ExecutionInstruction execution_instruction = roq::fbs::ExecutionInstruction_Undefined,
+    double stop_price = std::numeric_limits<double>::quiet_NaN(),
+    double max_show_quantity = std::numeric_limits<double>::quiet_NaN(),
+    double average_price = std::numeric_limits<double>::quiet_NaN(),
+    roq::fbs::Liquidity liquidity = roq::fbs::Liquidity_Undefined) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -3019,7 +3127,14 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       gateway_order_id,
       external_account__,
       external_order_id__,
-      routing_id__);
+      routing_id__,
+      order_type,
+      time_in_force,
+      execution_instruction,
+      stop_price,
+      max_show_quantity,
+      average_price,
+      liquidity);
 }
 
 struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

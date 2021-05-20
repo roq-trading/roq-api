@@ -1,6 +1,7 @@
+include "liquidity.fbs";
 include "order_status.fbs";
-include "side.fbs";
 include "position_effect.fbs";
+include "side.fbs";
 
 namespace roq.fbs;
 
@@ -23,4 +24,11 @@ table OrderUpdate {
   external_account:string;
   external_order_id:string;
   routing_id:string;
+  order_type:OrderType;
+  time_in_force:TimeInForce;
+  execution_instruction:ExecutionInstruction;
+  stop_price:double = nan;
+  max_show_quantity:double = nan;
+  average_price:double = nan;
+  liquidity:Liquidity;
 }

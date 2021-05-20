@@ -19,9 +19,13 @@
 #include "roq/span.h"
 #include "roq/string_buffer.h"
 
+#include "roq/execution_instruction.h"
+#include "roq/liquidity.h"
 #include "roq/order_status.h"
+#include "roq/order_type.h"
 #include "roq/position_effect.h"
 #include "roq/side.h"
+#include "roq/time_in_force.h"
 
 namespace roq {
 
@@ -44,8 +48,15 @@ struct ROQ_PUBLIC OrderUpdate final {
   uint32_t gateway_order_id = {};                 //!< Order identifier (as known to gateway)
   std::string_view external_account;  //!< External account name (as known to broker or exchange)
   std::string_view
-      external_order_id;        //!< External order identifier (as known to broker or exchange)
-  std::string_view routing_id;  //!< Routing identifier
+      external_order_id;           //!< External order identifier (as known to broker or exchange)
+  std::string_view routing_id;     //!< Routing identifier
+  OrderType order_type = {};       //!< Order type
+  TimeInForce time_in_force = {};  //!< Time in force
+  ExecutionInstruction execution_instruction = {};  //!< Execution instruction
+  double stop_price = NaN;         //!< Stop price (depends on order_type and time_in_force)
+  double max_show_quantity = NaN;  //!< Quantity visible to market (requires exchange support)
+  double average_price = NaN;      //!< Average price (for traded quantity)
+  Liquidity liquidity = {};        //!< Liquidity (maker or taker)
 };
 
 }  // namespace roq
@@ -75,7 +86,14 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         R"(gateway_order_id={}, )"
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
-        R"(routing_id="{}")"
+        R"(routing_id="{}", )"
+        R"(order_type={}, )"
+        R"(time_in_force={}, )"
+        R"(execution_instruction={}, )"
+        R"(stop_price={}, )"
+        R"(max_show_quantity={}, )"
+        R"(average_price={}, )"
+        R"(liquidity={})"
         R"(}})"_fmt,
         value.stream_id,
         value.account,
@@ -94,7 +112,14 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         value.gateway_order_id,
         value.external_account,
         value.external_order_id,
-        value.routing_id);
+        value.routing_id,
+        value.order_type,
+        value.time_in_force,
+        value.execution_instruction,
+        value.stop_price,
+        value.max_show_quantity,
+        value.average_price,
+        value.liquidity);
   }
 };
 template <>

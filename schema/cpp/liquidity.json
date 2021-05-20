@@ -1,0 +1,13 @@
+{
+    "name": "Liquidity",
+    "type": "enum",
+    "comment": "Enumeration of liquidity type",
+    "values": [
+        {
+            "name": "Maker"
+        },
+        {
+            "name": "Taker"
+        }
+    ]
+}

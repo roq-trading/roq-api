@@ -16,6 +16,9 @@ All notable changes will be documented in this file.
 * `SupportType.ORDER_STATE` to indicate if gateway supports FIX 4.4 style
    order state management (through ClOrdId/OrigClOrdId transitions)
 * `GatewaySettings.supports` to allow users to detect what is supported
+* Added `Liquidity` to indicate if last fill was as maker or taker
+* Extend `OrderUpdate` with more fields (used when downloading)
+
 
 ## 0.7.0 &ndash; 2021-04-15
 

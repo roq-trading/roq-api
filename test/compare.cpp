@@ -29,7 +29,24 @@ static_assert(compare(NaN, 0.0) == -1);
 using namespace roq;
 using namespace roq::utils;
 
-TEST(compare, case_insensitive) {
+TEST(compare, int) {
+  EXPECT_EQ(compare(0, 0), 0);
+  EXPECT_EQ(compare(0, 1), -1);
+  EXPECT_EQ(compare(0, -1), 1);
+}
+
+TEST(compare, double) {
+  EXPECT_EQ(compare(0.0, 0.0), 0);
+  EXPECT_EQ(compare(0.0, -0.0), 0);
+  EXPECT_EQ(compare(-0.0, 0.0), 0);
+  EXPECT_EQ(compare(0.0, 1.0), -1);
+  EXPECT_EQ(compare(0.0, -1.0), 1);
+  EXPECT_EQ(compare(NaN, NaN), 0);
+  EXPECT_EQ(compare(0.0, NaN), 1);
+  EXPECT_EQ(compare(NaN, 0.0), -1);
+}
+
+TEST(compare, string_case_insensitive) {
   // same length
   EXPECT_EQ(case_insensitive_compare(""_sv, ""_sv), 0);
   EXPECT_EQ(case_insensitive_compare("abc123"_sv, "ABC123"_sv), 0);

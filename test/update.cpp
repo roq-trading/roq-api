@@ -2,13 +2,17 @@
 
 #include <gtest/gtest.h>
 
+#include <chrono>
+
 #include "roq/utils/update.h"
 
 using namespace roq;
 using namespace roq::utils;
 using namespace roq::literals;
 
-TEST(update, floating_point) {
+// update()
+
+TEST(update, double) {
   double value = NaN;
   EXPECT_TRUE(update(value, 1.0));
   EXPECT_DOUBLE_EQ(value, 1.0);
@@ -29,7 +33,66 @@ TEST(update, string) {
   EXPECT_EQ(value, "bar"_sv);
 }
 
-TEST(utils, update_if_not_empty_string) {
+// update_first()
+
+TEST(update, int_first) {
+  int value = 0;
+  EXPECT_EQ(value, 0);
+  EXPECT_TRUE(update_first(value, 1));
+  EXPECT_EQ(value, 1);
+  EXPECT_FALSE(update_first(value, 2));
+  EXPECT_EQ(value, 1);
+}
+
+TEST(update, enum_first) {
+  enum class MyEnum { A, B, C } value = MyEnum::A;
+  EXPECT_EQ(value, MyEnum::A);
+  EXPECT_TRUE(update_first(value, MyEnum::B));
+  EXPECT_EQ(value, MyEnum::B);
+  EXPECT_FALSE(update_first(value, MyEnum::C));
+  EXPECT_EQ(value, MyEnum::B);
+}
+
+TEST(update, chrono_first) {
+  std::chrono::seconds value{};
+  EXPECT_EQ(value, std::chrono::seconds{});
+  EXPECT_TRUE(update_first(value, std::chrono::seconds{1}));
+  EXPECT_EQ(value, std::chrono::seconds{1});
+  EXPECT_FALSE(update_first(value, std::chrono::seconds{2}));
+  EXPECT_EQ(value, std::chrono::seconds{1});
+}
+
+// update_max()
+
+TEST(update, int_max) {
+  int value = 0;
+  EXPECT_EQ(value, 0);
+  EXPECT_TRUE(update_max(value, 1));
+  EXPECT_EQ(value, 1);
+  EXPECT_FALSE(update_max(value, 1));
+  EXPECT_EQ(value, 1);
+  EXPECT_FALSE(update_max(value, 0));
+  EXPECT_EQ(value, 1);
+  EXPECT_TRUE(update_max(value, 2));
+  EXPECT_EQ(value, 2);
+}
+
+TEST(update, enum_max) {
+  enum class MyEnum { A, B, C } value = MyEnum ::A;
+  EXPECT_EQ(value, MyEnum::A);
+  EXPECT_TRUE(update_max(value, MyEnum::B));
+  EXPECT_EQ(value, MyEnum::B);
+  EXPECT_FALSE(update_max(value, MyEnum::B));
+  EXPECT_EQ(value, MyEnum::B);
+  EXPECT_FALSE(update_max(value, MyEnum::A));
+  EXPECT_EQ(value, MyEnum::B);
+  EXPECT_TRUE(update_max(value, MyEnum::C));
+  EXPECT_EQ(value, MyEnum::C);
+}
+
+// update_if_not_empty()
+
+TEST(update, string_if_not_empty) {
   std::string result;
   utils::update_if_not_empty(result, "some_test"_sv);
   EXPECT_EQ(result, "some_test"_sv);
@@ -39,7 +102,7 @@ TEST(utils, update_if_not_empty_string) {
   EXPECT_EQ(result, "foobar"_sv);
 }
 
-TEST(utils, update_if_not_empty_double) {
+TEST(update, double_if_not_empty) {
   double result = NaN;
   utils::update_if_not_empty(result, 1.0);
   EXPECT_DOUBLE_EQ(result, 1.0);

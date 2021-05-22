@@ -271,24 +271,24 @@ inline const char *EnumNameExecutionInstruction(ExecutionInstruction e) {
 
 enum Liquidity : uint8_t {
   Liquidity_Undefined = 0,
-  Liquidity_Added = 1,
-  Liquidity_Removed = 2,
+  Liquidity_Maker = 1,
+  Liquidity_Taker = 2,
   Liquidity_MIN = Liquidity_Undefined,
-  Liquidity_MAX = Liquidity_Removed
+  Liquidity_MAX = Liquidity_Taker
 };
 
 inline const Liquidity (&EnumValuesLiquidity())[3] {
-  static const Liquidity values[] = {Liquidity_Undefined, Liquidity_Added, Liquidity_Removed};
+  static const Liquidity values[] = {Liquidity_Undefined, Liquidity_Maker, Liquidity_Taker};
   return values;
 }
 
 inline const char *const *EnumNamesLiquidity() {
-  static const char *const names[4] = {"Undefined", "Added", "Removed", nullptr};
+  static const char *const names[4] = {"Undefined", "Maker", "Taker", nullptr};
   return names;
 }
 
 inline const char *EnumNameLiquidity(Liquidity e) {
-  if (flatbuffers::IsOutRange(e, Liquidity_Undefined, Liquidity_Removed))
+  if (flatbuffers::IsOutRange(e, Liquidity_Undefined, Liquidity_Taker))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesLiquidity()[index];

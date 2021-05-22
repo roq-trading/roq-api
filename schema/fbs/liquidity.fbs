@@ -2,6 +2,6 @@ namespace roq.fbs;
 
 enum Liquidity:uint8 {
   Undefined,
-  Added,
-  Removed
+  Maker,
+  Taker
 }

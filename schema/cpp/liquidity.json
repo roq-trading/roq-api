@@ -4,10 +4,10 @@
     "comment": "Enumeration of liquidity type",
     "values": [
         {
-            "name": "Added"
+            "name": "Maker"
         },
         {
-            "name": "Removed"
+            "name": "Taker"
         }
     ]
 }

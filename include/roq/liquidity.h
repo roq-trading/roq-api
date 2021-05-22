@@ -19,8 +19,8 @@ struct ROQ_PACKED Liquidity final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0,
-    ADDED,
-    REMOVED,
+    MAKER,
+    TAKER,
   };
 
   constexpr Liquidity() = default;
@@ -38,10 +38,10 @@ struct ROQ_PACKED Liquidity final {
     switch (type_) {
       case type_t::UNDEFINED:
         break;
-      case type_t::ADDED:
-        return "ADDED"_sv;
-      case type_t::REMOVED:
-        return "REMOVED"_sv;
+      case type_t::MAKER:
+        return "MAKER"_sv;
+      case type_t::TAKER:
+        return "TAKER"_sv;
       default:
         assert(false);
     }
@@ -55,8 +55,8 @@ struct ROQ_PACKED Liquidity final {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:
-      case type_t::ADDED:
-      case type_t::REMOVED:
+      case type_t::MAKER:
+      case type_t::TAKER:
         return result;
       default:
         assert(false);

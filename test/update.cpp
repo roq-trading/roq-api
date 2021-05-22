@@ -78,7 +78,7 @@ TEST(update, int_max) {
 }
 
 TEST(update, enum_max) {
-  enum class MyEnum { A, B, C } value = MyEnum ::A;
+  enum class MyEnum { A, B, C } value = MyEnum::A;
   EXPECT_EQ(value, MyEnum::A);
   EXPECT_TRUE(update_max(value, MyEnum::B));
   EXPECT_EQ(value, MyEnum::B);
@@ -110,4 +110,15 @@ TEST(update, double_if_not_empty) {
   EXPECT_DOUBLE_EQ(result, 1.0);
   utils::update_if_not_empty(result, 2.0);
   EXPECT_DOUBLE_EQ(result, 2.0);
+}
+
+TEST(update, enum_if_not_empty) {
+  enum class MyEnum { A, B, C } value = MyEnum::A;  // A = 0 = "empty"
+  EXPECT_EQ(value, MyEnum::A);
+  EXPECT_TRUE(update_if_not_empty(value, MyEnum::B));
+  EXPECT_EQ(value, MyEnum::B);
+  EXPECT_FALSE(update_if_not_empty(value, MyEnum::A));
+  EXPECT_EQ(value, MyEnum::B);
+  EXPECT_TRUE(update_if_not_empty(value, MyEnum::C));
+  EXPECT_EQ(value, MyEnum::C);
 }

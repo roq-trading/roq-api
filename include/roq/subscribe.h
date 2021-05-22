@@ -20,6 +20,7 @@ namespace roq {
 struct ROQ_PUBLIC Subscribe final {
   std::set<std::string> accounts;
   std::map<std::string, std::set<std::string> > symbols_by_exchange;
+  bool cancel_on_disconnect = false;
 };
 
 struct ROQ_PUBLIC SubscribeEvent final {
@@ -38,10 +39,12 @@ struct fmt::formatter<roq::Subscribe> : public roq::formatter {
         context.out(),
         "{{"
         "accounts={}, "
-        "symbols_by_exchange={}"
+        "symbols_by_exchange={}, "
+        "cancel_on_disconnect={}"
         "}}"_fmt,
         value.accounts,
-        value.symbols_by_exchange);
+        value.symbols_by_exchange,
+        value.cancel_on_disconnect);
   }
 };
 

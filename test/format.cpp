@@ -22,6 +22,7 @@ TEST(format, subscribe) {
           {
               {"abc"_s, {"123"_s, "234"_s}},
           },
+      .cancel_on_disconnect = true,
   };
   auto result = format("{}"_fmt, subscribe);
   EXPECT_GT(result.length(), size_t{0});
@@ -29,7 +30,8 @@ TEST(format, subscribe) {
       result,
       R"({)"
       R"(accounts={"abc", "test"}, )"
-      R"(symbols_by_exchange={("abc", {"123", "234"})})"
+      R"(symbols_by_exchange={("abc", {"123", "234"})}, )"
+      R"(cancel_on_disconnect=true)"
       R"(})"_sv);
 }
 

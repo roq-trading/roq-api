@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <tuple>
 #include <utility>
 
 #include "roq/message_info.h"
@@ -27,6 +28,9 @@ struct Event final {
 
   //! Access Message
   operator const T &() const { return value; }
+
+  //! Structured binding
+  operator std::tuple<const MessageInfo &, const T &>() const { return {message_info, value}; }
 
   const MessageInfo &message_info;  //!< MessageInfo
   const T &value;                   //!< Message

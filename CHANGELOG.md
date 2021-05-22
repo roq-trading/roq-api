@@ -19,6 +19,14 @@ All notable changes will be documented in this file.
 * Added `Liquidity` to indicate if last fill was as maker or taker
 * Extend `OrderUpdate` with more fields (required for FIX bridge and download)
 
+### Changed
+
+* `client::Config::Handler` now includes a method to configur
+e `client::Settings`. This makes it possible to override the default (new)
+  `cancel_on_disconnect` parameter.
+* `Disconnected` now adds a flag useful to detect if disconnect will trigger a
+   best effort order cancellation request
+
 
 ## 0.7.0 &ndash; 2021-04-15
 

@@ -21,8 +21,10 @@
 
 namespace roq {
 
-//! Disconnected from gateway
-struct ROQ_PUBLIC Disconnected final {};
+//! Disconnected
+struct ROQ_PUBLIC Disconnected final {
+  bool cancel_on_disconnect = false;  //!< Cancel orders on disconnect?
+};
 
 }  // namespace roq
 
@@ -31,7 +33,12 @@ struct fmt::formatter<roq::Disconnected> : public roq::formatter {
   template <typename Context>
   auto format(const roq::Disconnected &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(context.out(), R"({{}})"_sv);
+    return roq::format_to(
+        context.out(),
+        R"({{)"
+        R"(cancel_on_disconnect={})"
+        R"(}})"_fmt,
+        value.cancel_on_disconnect);
   }
 };
 template <>

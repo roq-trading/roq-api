@@ -1,6 +1,12 @@
 {
     "name": "Disconnected",
     "type": "message",
-    "comment": "Disconnected from gateway",
-    "values": []
+    "comment": "Disconnected",
+    "values": [
+        {
+            "name": "cancel_on_disconnect",
+            "type": "bool",
+            "comment": "Cancel orders on disconnect?"
+        }
+    ]
 }

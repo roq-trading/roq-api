@@ -9,6 +9,11 @@
 namespace roq {
 namespace client {
 
+//! Settings
+struct ROQ_PUBLIC Settings {
+  bool cancel_on_disconnect = true;  //!< Cancel orders on disconnect?
+};
+
 //! Account regex
 struct ROQ_PUBLIC Account {
   std::string_view regex;  //!< Regular expression
@@ -16,8 +21,8 @@ struct ROQ_PUBLIC Account {
 
 //! Symbol regex
 struct ROQ_PUBLIC Symbol {
-  std::string_view regex;                          //!< Regular expression
-  std::string_view exchange = std::string_view();  //!< Exchange name (optional)
+  std::string_view regex;          //!< Regular expression
+  std::string_view exchange = {};  //!< Exchange name (optional)
 };
 
 //! Dispatch interface used to manage subscriptions.
@@ -25,14 +30,15 @@ class ROQ_PUBLIC Config {
  public:
   class ROQ_PUBLIC Handler {
    public:
-    virtual void operator()(const Account &account) = 0;
-    virtual void operator()(const Symbol &symbol) = 0;
+    virtual void operator()(const Settings &) {}
+    virtual void operator()(const Account &) = 0;
+    virtual void operator()(const Symbol &) = 0;
   };
 
   virtual ~Config() {}
 
   //! Framework will request subscriptions by calling this method
-  virtual void dispatch(Handler &handler) const = 0;
+  virtual void dispatch(Handler &) const = 0;
 };
 
 }  // namespace client

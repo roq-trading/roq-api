@@ -17,6 +17,7 @@
 
 // enums
 
+#include "roq/cancel_policy.h"
 #include "roq/connection_status.h"
 #include "roq/error.h"
 #include "roq/execution_instruction.h"

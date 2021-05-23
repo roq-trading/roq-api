@@ -12,6 +12,7 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 
+#include "roq/cancel_policy.h"
 #include "roq/event.h"
 #include "roq/message_info.h"
 
@@ -20,7 +21,7 @@ namespace roq {
 struct ROQ_PUBLIC Subscribe final {
   std::set<std::string> accounts;
   std::map<std::string, std::set<std::string> > symbols_by_exchange;
-  bool cancel_on_disconnect = false;
+  CancelPolicy cancel_policy = {};
 };
 
 struct ROQ_PUBLIC SubscribeEvent final {
@@ -40,11 +41,11 @@ struct fmt::formatter<roq::Subscribe> : public roq::formatter {
         "{{"
         "accounts={}, "
         "symbols_by_exchange={}, "
-        "cancel_on_disconnect={}"
+        "cancel_policy={}"
         "}}"_fmt,
         value.accounts,
         value.symbols_by_exchange,
-        value.cancel_on_disconnect);
+        value.cancel_policy);
   }
 };
 

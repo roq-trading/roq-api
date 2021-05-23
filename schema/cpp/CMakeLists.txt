@@ -7,6 +7,7 @@ set(SOURCES
     batch_end.json
     cancel_all_orders.json
     cancel_order.json
+    cancel_policy.json
     connected.json
     connection_status.json
     create_order.json

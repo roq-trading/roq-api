@@ -22,10 +22,10 @@ All notable changes will be documented in this file.
 ### Changed
 
 * `client::Config::Handler` now includes a method to configur
-e `client::Settings`. This makes it possible to override the default (new)
-  `cancel_on_disconnect` parameter.
-* `Disconnected` now adds a flag useful to detect if disconnect will trigger a
-   best effort order cancellation request
+e `client::Settings`. This makes it possible to override `cancel_policy` (on
+   disconnect)
+* `Disconnected` now adds a flag useful to detect if disconnect could trigger an
+   order cancellation request
 
 
 ## 0.7.0 &ndash; 2021-04-15

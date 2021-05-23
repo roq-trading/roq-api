@@ -4,6 +4,7 @@
 
 #include <string_view>
 
+#include "roq/cancel_policy.h"
 #include "roq/compat.h"
 
 namespace roq {
@@ -11,7 +12,7 @@ namespace client {
 
 //! Settings
 struct ROQ_PUBLIC Settings {
-  bool cancel_on_disconnect = true;  //!< Cancel orders on disconnect?
+  CancelPolicy cancel_policy = {};  //!< Cancel orders on disconnect?
 };
 
 //! Account regex

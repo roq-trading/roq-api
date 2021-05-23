@@ -4,8 +4,8 @@
     "comment": "Disconnected",
     "values": [
         {
-            "name": "cancel_on_disconnect",
-            "type": "bool",
+            "name": "cancel_policy",
+            "type": "CancelPolicy",
             "comment": "Cancel orders on disconnect?"
         }
     ]

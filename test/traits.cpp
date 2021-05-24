@@ -72,5 +72,4 @@ void test_has_no_random_access_iterator(const T &) {
 TEST(traits, has_random_access_iterator) {
   test_has_random_access_iterator(std::vector{"abc", "def"});
   test_has_no_random_access_iterator(std::unordered_set<int>{1, 2});
-  // test_has_no_random_access_iterator(absl::flat_hash_set<int>{1, 2});
 }

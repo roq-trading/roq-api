@@ -61,6 +61,11 @@ class ROQ_PACKED string_buffer final {
     return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) == 0;
   }
 
+  template <typename... Args>
+  int compare(Args &&...args) const {
+    return static_cast<std::string_view>(*this).compare(std::forward<Args>(args)...);
+  }
+
   value_type &operator[](size_t index) { return buffer_[index]; }
 
   value_type operator[](size_t index) const { return buffer_[index]; }
@@ -110,3 +115,12 @@ inline bool operator==(const string_buffer<N> &lhs, const string_buffer<N> &rhs)
 }
 
 }  // namespace roq
+
+template <size_t N>
+struct fmt::formatter<roq::string_buffer<N> > : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::string_buffer<N> &value, Context &ctx) {
+    using namespace roq::literals;
+    return roq::format_to(ctx.out(), "{}"_fmt, static_cast<std::string_view>(value));
+  }
+};

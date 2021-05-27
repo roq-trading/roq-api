@@ -112,6 +112,8 @@ static const constexpr size_t MAX_LENGTH_EXTERNAL_ACCOUNT = 64;
 static const constexpr size_t MAX_LENGTH_EXTERNAL_ORDER_ID = 64;
 static const constexpr size_t MAX_LENGTH_EXTERNAL_TRADE_ID = 40;
 static const constexpr size_t MAX_LENGTH_ROUTING_ID = 32;
+static const constexpr size_t MAX_LENGTH_CL_ORD_ID = 36;
+static const constexpr size_t MAX_LENGTH_REQUEST_ID = 36;
 
 // check that multiples can be cache aligned
 

@@ -3,10 +3,12 @@ namespace roq.fbs;
 enum OrderStatus:uint8 {
   Undefined,
   Sent,
-  Rejected,
   Accepted,
-  Pending,
+  Suspended,
   Working,
+  Stopped,
   Completed,
-  Canceled
+  Expired,
+  Canceled,
+  Rejected
 }

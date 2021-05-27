@@ -14,15 +14,24 @@
 
 namespace roq {
 
-//! Enumeration of the time-in-force order attribute
+//! Order life-time, aka time in force
 struct ROQ_PACKED TimeInForce final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0,
-    FOK,  //!< Fill or Kill
-    IOC,  //!< Immediate or Cancel
-    GFD,  //!< Good for Day
-    GTC,  //!< Good till Canceled
+    GFD,                    //!< Good for day, aka DAY
+    GTC,                    //!< Good till canceled
+    OPG,                    //!< At the open
+    IOC,                    //!< Immediate or cancel
+    FOK,                    //!< Fill or kill
+    GTX,                    //!< Good till crossing
+    GTD,                    //!< Good till date
+    AT_THE_CLOSE,           //!< At the close
+    GOOD_THROUGH_CROSSING,  //!< Good through crossing
+    AT_CROSSING,            //!< At crossing
+    GOOD_FOR_TIME,          //!< Good for time
+    GFA,                    //!< Good for auction
+    GFM,                    //!< Good for this month
   };
 
   constexpr TimeInForce() = default;
@@ -40,14 +49,32 @@ struct ROQ_PACKED TimeInForce final {
     switch (type_) {
       case type_t::UNDEFINED:
         break;
-      case type_t::FOK:
-        return "FOK"_sv;
-      case type_t::IOC:
-        return "IOC"_sv;
       case type_t::GFD:
         return "GFD"_sv;
       case type_t::GTC:
         return "GTC"_sv;
+      case type_t::OPG:
+        return "OPG"_sv;
+      case type_t::IOC:
+        return "IOC"_sv;
+      case type_t::FOK:
+        return "FOK"_sv;
+      case type_t::GTX:
+        return "GTX"_sv;
+      case type_t::GTD:
+        return "GTD"_sv;
+      case type_t::AT_THE_CLOSE:
+        return "AT_THE_CLOSE"_sv;
+      case type_t::GOOD_THROUGH_CROSSING:
+        return "GOOD_THROUGH_CROSSING"_sv;
+      case type_t::AT_CROSSING:
+        return "AT_CROSSING"_sv;
+      case type_t::GOOD_FOR_TIME:
+        return "GOOD_FOR_TIME"_sv;
+      case type_t::GFA:
+        return "GFA"_sv;
+      case type_t::GFM:
+        return "GFM"_sv;
       default:
         assert(false);
     }
@@ -61,10 +88,19 @@ struct ROQ_PACKED TimeInForce final {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:
-      case type_t::FOK:
-      case type_t::IOC:
       case type_t::GFD:
       case type_t::GTC:
+      case type_t::OPG:
+      case type_t::IOC:
+      case type_t::FOK:
+      case type_t::GTX:
+      case type_t::GTD:
+      case type_t::AT_THE_CLOSE:
+      case type_t::GOOD_THROUGH_CROSSING:
+      case type_t::AT_CROSSING:
+      case type_t::GOOD_FOR_TIME:
+      case type_t::GFA:
+      case type_t::GFM:
         return result;
       default:
         assert(false);

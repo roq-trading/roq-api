@@ -22,10 +22,12 @@ All notable changes will be documented in this file.
 ### Changed
 
 * `client::Config::Handler` now includes a method to configur
-e `client::Settings`. This makes it possible to override `cancel_policy` (on
+* `client::Settings`. This makes it possible to override `cancel_policy` (on
    disconnect)
 * `Disconnected` now adds a flag useful to detect if disconnect could trigger an
    order cancellation request
+* `OrderStatus` better aligned with FIX enum, but excluding state transitions
+* `TimeInForce` better aligned with FIX enum
 
 
 ## 0.7.0 &ndash; 2021-04-15

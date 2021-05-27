@@ -2,8 +2,17 @@ namespace roq.fbs;
 
 enum TimeInForce:uint8 {
   Undefined,
-  FOK,
-  IOC,
   GFD,
-  GTC
+  GTC,
+  OPG,
+  IOC,
+  FOK,
+  GTX,
+  GTD,
+  AT_THE_CLOSE,
+  GOOD_THROUGH_CROSSING,
+  AT_CROSSING,
+  GOOD_FOR_TIME,
+  GFA,
+  GFM
 }

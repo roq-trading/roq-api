@@ -322,45 +322,51 @@ inline const char *EnumNameOptionType(OptionType e) {
 enum OrderStatus : uint8_t {
   OrderStatus_Undefined = 0,
   OrderStatus_Sent = 1,
-  OrderStatus_Rejected = 2,
-  OrderStatus_Accepted = 3,
-  OrderStatus_Pending = 4,
-  OrderStatus_Working = 5,
+  OrderStatus_Accepted = 2,
+  OrderStatus_Suspended = 3,
+  OrderStatus_Working = 4,
+  OrderStatus_Stopped = 5,
   OrderStatus_Completed = 6,
-  OrderStatus_Canceled = 7,
+  OrderStatus_Expired = 7,
+  OrderStatus_Canceled = 8,
+  OrderStatus_Rejected = 9,
   OrderStatus_MIN = OrderStatus_Undefined,
-  OrderStatus_MAX = OrderStatus_Canceled
+  OrderStatus_MAX = OrderStatus_Rejected
 };
 
-inline const OrderStatus (&EnumValuesOrderStatus())[8] {
+inline const OrderStatus (&EnumValuesOrderStatus())[10] {
   static const OrderStatus values[] = {
       OrderStatus_Undefined,
       OrderStatus_Sent,
-      OrderStatus_Rejected,
       OrderStatus_Accepted,
-      OrderStatus_Pending,
+      OrderStatus_Suspended,
       OrderStatus_Working,
+      OrderStatus_Stopped,
       OrderStatus_Completed,
-      OrderStatus_Canceled};
+      OrderStatus_Expired,
+      OrderStatus_Canceled,
+      OrderStatus_Rejected};
   return values;
 }
 
 inline const char *const *EnumNamesOrderStatus() {
-  static const char *const names[9] = {
+  static const char *const names[11] = {
       "Undefined",
       "Sent",
-      "Rejected",
       "Accepted",
-      "Pending",
+      "Suspended",
       "Working",
+      "Stopped",
       "Completed",
+      "Expired",
       "Canceled",
+      "Rejected",
       nullptr};
   return names;
 }
 
 inline const char *EnumNameOrderStatus(OrderStatus e) {
-  if (flatbuffers::IsOutRange(e, OrderStatus_Undefined, OrderStatus_Canceled))
+  if (flatbuffers::IsOutRange(e, OrderStatus_Undefined, OrderStatus_Rejected))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOrderStatus()[index];
@@ -777,27 +783,64 @@ inline const char *EnumNameSupportType(SupportType e) {
 
 enum TimeInForce : uint8_t {
   TimeInForce_Undefined = 0,
-  TimeInForce_FOK = 1,
-  TimeInForce_IOC = 2,
-  TimeInForce_GFD = 3,
-  TimeInForce_GTC = 4,
+  TimeInForce_GFD = 1,
+  TimeInForce_GTC = 2,
+  TimeInForce_OPG = 3,
+  TimeInForce_IOC = 4,
+  TimeInForce_FOK = 5,
+  TimeInForce_GTX = 6,
+  TimeInForce_GTD = 7,
+  TimeInForce_AT_THE_CLOSE = 8,
+  TimeInForce_GOOD_THROUGH_CROSSING = 9,
+  TimeInForce_AT_CROSSING = 10,
+  TimeInForce_GOOD_FOR_TIME = 11,
+  TimeInForce_GFA = 12,
+  TimeInForce_GFM = 13,
   TimeInForce_MIN = TimeInForce_Undefined,
-  TimeInForce_MAX = TimeInForce_GTC
+  TimeInForce_MAX = TimeInForce_GFM
 };
 
-inline const TimeInForce (&EnumValuesTimeInForce())[5] {
+inline const TimeInForce (&EnumValuesTimeInForce())[14] {
   static const TimeInForce values[] = {
-      TimeInForce_Undefined, TimeInForce_FOK, TimeInForce_IOC, TimeInForce_GFD, TimeInForce_GTC};
+      TimeInForce_Undefined,
+      TimeInForce_GFD,
+      TimeInForce_GTC,
+      TimeInForce_OPG,
+      TimeInForce_IOC,
+      TimeInForce_FOK,
+      TimeInForce_GTX,
+      TimeInForce_GTD,
+      TimeInForce_AT_THE_CLOSE,
+      TimeInForce_GOOD_THROUGH_CROSSING,
+      TimeInForce_AT_CROSSING,
+      TimeInForce_GOOD_FOR_TIME,
+      TimeInForce_GFA,
+      TimeInForce_GFM};
   return values;
 }
 
 inline const char *const *EnumNamesTimeInForce() {
-  static const char *const names[6] = {"Undefined", "FOK", "IOC", "GFD", "GTC", nullptr};
+  static const char *const names[15] = {
+      "Undefined",
+      "GFD",
+      "GTC",
+      "OPG",
+      "IOC",
+      "FOK",
+      "GTX",
+      "GTD",
+      "AT_THE_CLOSE",
+      "GOOD_THROUGH_CROSSING",
+      "AT_CROSSING",
+      "GOOD_FOR_TIME",
+      "GFA",
+      "GFM",
+      nullptr};
   return names;
 }
 
 inline const char *EnumNameTimeInForce(TimeInForce e) {
-  if (flatbuffers::IsOutRange(e, TimeInForce_Undefined, TimeInForce_GTC))
+  if (flatbuffers::IsOutRange(e, TimeInForce_Undefined, TimeInForce_GFM))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTimeInForce()[index];

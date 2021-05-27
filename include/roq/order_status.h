@@ -14,18 +14,20 @@
 
 namespace roq {
 
-//! Enumeration of order status types
+//! Last known order status received from exchange
 struct ROQ_PACKED OrderStatus final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0,
-    SENT,
-    REJECTED,
-    ACCEPTED,
-    PENDING,
-    WORKING,
-    COMPLETED,
-    CANCELED,
+    SENT,       //!< Order has been sent to exchange (no response has been received yet)
+    ACCEPTED,   //!< Order has been accepted by exchange and is not yet been activated
+    SUSPENDED,  //!< Order has been suspended and requires external action to re-activate
+    WORKING,    //!< Order is working and has not yet been completely filled
+    STOPPED,    //!< Order has guaranteed fill at as of yet unknown price
+    COMPLETED,  //!< Order has been completely filled
+    EXPIRED,    //!< Order has expired
+    CANCELED,   //!< Order has been canceled
+    REJECTED,   //!< Order has been rejected
   };
 
   constexpr OrderStatus() = default;
@@ -45,18 +47,22 @@ struct ROQ_PACKED OrderStatus final {
         break;
       case type_t::SENT:
         return "SENT"_sv;
-      case type_t::REJECTED:
-        return "REJECTED"_sv;
       case type_t::ACCEPTED:
         return "ACCEPTED"_sv;
-      case type_t::PENDING:
-        return "PENDING"_sv;
+      case type_t::SUSPENDED:
+        return "SUSPENDED"_sv;
       case type_t::WORKING:
         return "WORKING"_sv;
+      case type_t::STOPPED:
+        return "STOPPED"_sv;
       case type_t::COMPLETED:
         return "COMPLETED"_sv;
+      case type_t::EXPIRED:
+        return "EXPIRED"_sv;
       case type_t::CANCELED:
         return "CANCELED"_sv;
+      case type_t::REJECTED:
+        return "REJECTED"_sv;
       default:
         assert(false);
     }
@@ -71,12 +77,14 @@ struct ROQ_PACKED OrderStatus final {
     switch (result) {
       case type_t::UNDEFINED:
       case type_t::SENT:
-      case type_t::REJECTED:
       case type_t::ACCEPTED:
-      case type_t::PENDING:
+      case type_t::SUSPENDED:
       case type_t::WORKING:
+      case type_t::STOPPED:
       case type_t::COMPLETED:
+      case type_t::EXPIRED:
       case type_t::CANCELED:
+      case type_t::REJECTED:
         return result;
       default:
         assert(false);

@@ -30,12 +30,13 @@ inline bool is_order_complete(const OrderStatus &status) {
   switch (status) {
     case OrderStatus::SENT:
     case OrderStatus::ACCEPTED:
-    case OrderStatus::PENDING:
+    case OrderStatus::SUSPENDED:
     case OrderStatus::WORKING:
       return false;
-    case OrderStatus::REJECTED:
     case OrderStatus::COMPLETED:
+    case OrderStatus::EXPIRED:
     case OrderStatus::CANCELED:
+    case OrderStatus::REJECTED:
       return true;
     default:
       // XXX throw?

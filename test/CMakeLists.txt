@@ -2,6 +2,7 @@ set(TARGET_NAME "${PROJECT_NAME}-test")
 
 set(SOURCES
     alignment.cpp
+    chrono.cpp
     compare.cpp
     format.cpp
     mask.cpp

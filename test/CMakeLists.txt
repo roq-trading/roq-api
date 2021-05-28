@@ -6,7 +6,6 @@ set(SOURCES
     format.cpp
     mask.cpp
     metrics.cpp
-    ranges.cpp
     safe_cast.cpp
     span.cpp
     string_buffer.cpp

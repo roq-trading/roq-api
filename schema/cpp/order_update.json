@@ -24,61 +24,23 @@
             "type": "std::string_view"
         },
         {
-            "name": "status",
-            "type": "OrderStatus",
-            "comment": "Order status"
-        },
-        {
             "name": "side",
             "type": "Side",
             "comment": "Side"
-        },
-        {
-            "name": "price",
-            "type": "double",
-            "comment": "Price"
-        },
-        {
-            "name": "remaining_quantity",
-            "type": "double",
-            "comment": "Remaining quantity"
-        },
-        {
-            "name": "traded_quantity",
-            "type": "double",
-            "comment": "Traded quantity"
         },
         {
             "name": "position_effect",
             "type": "PositionEffect"
         },
         {
-            "name": "order_template",
-            "type": "std::string_view"
+            "name": "quantity",
+            "type": "double",
+            "comment": "Original quantity"
         },
         {
-            "name": "create_time_utc",
-            "type": "std::chrono::nanoseconds"
-        },
-        {
-            "name": "update_time_utc",
-            "type": "std::chrono::nanoseconds"
-        },
-        {
-            "name": "gateway_order_id",
-            "type": "uint32_t"
-        },
-        {
-            "name": "external_account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "external_order_id",
-            "type": "std::string_view"
-        },
-        {
-            "name": "routing_id",
-            "type": "std::string_view"
+            "name": "max_show_quantity",
+            "type": "double",
+            "comment": "Quantity visible to market (requires exchange support)"
         },
         {
             "name": "order_type",
@@ -93,14 +55,53 @@
             "type": "ExecutionInstruction"
         },
         {
+            "name": "order_template",
+            "type": "std::string_view"
+        },
+        {
+            "name": "create_time_utc",
+            "type": "std::chrono::nanoseconds"
+        },
+        {
+            "name": "update_time_utc",
+            "type": "std::chrono::nanoseconds"
+        },
+        {
+            "name": "external_account",
+            "type": "std::string_view"
+        },
+        {
+            "name": "external_order_id",
+            "type": "std::string_view"
+        },
+        {
+            "name": "routing_id",
+            "type": "std::string_view"
+        },
+        {
+            "name": "status",
+            "type": "OrderStatus",
+            "comment": "Order status"
+        },
+        {
+            "name": "price",
+            "type": "double",
+            "comment": "Price"
+        },
+        {
             "name": "stop_price",
             "type": "double",
             "comment": "Stop price (depends on order_type and time_in_force)"
         },
         {
-            "name": "max_show_quantity",
+            "name": "remaining_quantity",
             "type": "double",
-            "comment": "Quantity visible to market (requires exchange support)"
+            "comment": "Remaining quantity"
+        },
+        {
+            "name": "traded_quantity",
+            "type": "double",
+            "comment": "Traded quantity"
         },
         {
             "name": "average_traded_price",

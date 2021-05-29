@@ -25,35 +25,13 @@
             "comment": "Order side"
         },
         {
-            "name": "quantity",
-            "type": "double",
-            "comment": "Order quantity"
-        },
-        {
-            "name": "order_type",
-            "type": "OrderType"
-        },
-        {
-            "name": "price",
-            "type": "double",
-            "comment": "Limit price (depends on order_type)"
-        },
-        {
-            "name": "time_in_force",
-            "type": "TimeInForce"
-        },
-        {
             "name": "position_effect",
             "type": "PositionEffect"
         },
         {
-            "name": "execution_instruction",
-            "type": "ExecutionInstruction"
-        },
-        {
-            "name": "stop_price",
+            "name": "quantity",
             "type": "double",
-            "comment": "Stop price (depends on order_type and time_in_force)"
+            "comment": "Order quantity"
         },
         {
             "name": "max_show_quantity",
@@ -61,8 +39,30 @@
             "comment": "Quantity visible to market (requires exchange support)"
         },
         {
+            "name": "order_type",
+            "type": "OrderType"
+        },
+        {
+            "name": "time_in_force",
+            "type": "TimeInForce"
+        },
+        {
+            "name": "execution_instruction",
+            "type": "ExecutionInstruction"
+        },
+        {
             "name": "order_template",
             "type": "std::string_view"
+        },
+        {
+            "name": "price",
+            "type": "double",
+            "comment": "Limit price (depends on order_type)"
+        },
+        {
+            "name": "stop_price",
+            "type": "double",
+            "comment": "Stop price (depends on order_type and time_in_force)"
         },
         {
             "name": "routing_id",

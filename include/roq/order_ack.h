@@ -36,7 +36,6 @@ struct ROQ_PUBLIC OrderAck final {
   RequestStatus status = {};          //!< Request status
   Error error = {};                   //!< Error code
   std::string_view text;              //!< Descriptive text
-  uint32_t gateway_order_id = {};     //!< Order identifier (as known to gateway)
   std::string_view external_account;  //!< External account name (as known to broker or exchange)
   std::string_view
       external_order_id;        //!< External order identifier (as known to broker or exchange)
@@ -62,7 +61,6 @@ struct fmt::formatter<roq::OrderAck> : public roq::formatter {
         R"(status={}, )"
         R"(error={}, )"
         R"(text="{}", )"
-        R"(gateway_order_id={}, )"
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(routing_id="{}", )"
@@ -76,7 +74,6 @@ struct fmt::formatter<roq::OrderAck> : public roq::formatter {
         value.status,
         value.error,
         value.text,
-        value.gateway_order_id,
         value.external_account,
         value.external_order_id,
         value.routing_id,

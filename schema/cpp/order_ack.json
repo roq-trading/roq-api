@@ -41,10 +41,6 @@
             "comment": "Descriptive text"
         },
         {
-            "name": "gateway_order_id",
-            "type": "uint32_t"
-        },
-        {
             "name": "external_account",
             "type": "std::string_view"
         },

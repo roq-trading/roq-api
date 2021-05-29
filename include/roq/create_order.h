@@ -29,21 +29,21 @@ namespace roq {
 
 //! Fields required to create an order
 struct ROQ_PUBLIC CreateOrder final {
-  std::string_view account;                         //!< Account name (as known to the gateway)
-  uint32_t order_id = {};                           //!< Order identifier (as known to client)
-  std::string_view exchange;                        //!< Exchange name
-  std::string_view symbol;                          //!< Symbol
-  Side side = {};                                   //!< Order side
-  double quantity = NaN;                            //!< Order quantity
-  OrderType order_type = {};                        //!< Order type
-  double price = NaN;                               //!< Limit price (depends on order_type)
-  TimeInForce time_in_force = {};                   //!< Time in force
-  PositionEffect position_effect = {};              //!< Position effect
+  std::string_view account;             //!< Account name (as known to the gateway)
+  uint32_t order_id = {};               //!< Order identifier (as known to client)
+  std::string_view exchange;            //!< Exchange name
+  std::string_view symbol;              //!< Symbol
+  Side side = {};                       //!< Order side
+  PositionEffect position_effect = {};  //!< Position effect
+  double quantity = NaN;                //!< Order quantity
+  double max_show_quantity = NaN;       //!< Quantity visible to market (requires exchange support)
+  OrderType order_type = {};            //!< Order type
+  TimeInForce time_in_force = {};       //!< Time in force
   ExecutionInstruction execution_instruction = {};  //!< Execution instruction
-  double stop_price = NaN;          //!< Stop price (depends on order_type and time_in_force)
-  double max_show_quantity = NaN;   //!< Quantity visible to market (requires exchange support)
-  std::string_view order_template;  //!< Order template (as known to the gateway)
-  std::string_view routing_id;      //!< Routing identifier
+  std::string_view order_template;                  //!< Order template (as known to the gateway)
+  double price = NaN;                               //!< Limit price (depends on order_type)
+  double stop_price = NaN;      //!< Stop price (depends on order_type and time_in_force)
+  std::string_view routing_id;  //!< Routing identifier
 };
 
 }  // namespace roq
@@ -61,15 +61,15 @@ struct fmt::formatter<roq::CreateOrder> : public roq::formatter {
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(side={}, )"
-        R"(quantity={}, )"
-        R"(order_type={}, )"
-        R"(price={}, )"
-        R"(time_in_force={}, )"
         R"(position_effect={}, )"
-        R"(execution_instruction={}, )"
-        R"(stop_price={}, )"
+        R"(quantity={}, )"
         R"(max_show_quantity={}, )"
+        R"(order_type={}, )"
+        R"(time_in_force={}, )"
+        R"(execution_instruction={}, )"
         R"(order_template="{}", )"
+        R"(price={}, )"
+        R"(stop_price={}, )"
         R"(routing_id="{}")"
         R"(}})"_fmt,
         value.account,
@@ -77,15 +77,15 @@ struct fmt::formatter<roq::CreateOrder> : public roq::formatter {
         value.exchange,
         value.symbol,
         value.side,
-        value.quantity,
-        value.order_type,
-        value.price,
-        value.time_in_force,
         value.position_effect,
-        value.execution_instruction,
-        value.stop_price,
+        value.quantity,
         value.max_show_quantity,
+        value.order_type,
+        value.time_in_force,
+        value.execution_instruction,
         value.order_template,
+        value.price,
+        value.stop_price,
         value.routing_id);
   }
 };

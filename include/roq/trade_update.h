@@ -34,10 +34,8 @@ struct ROQ_PUBLIC TradeUpdate final {
   std::string_view symbol;                        //!< Symbol
   Side side = {};                                 //!< Side
   PositionEffect position_effect = {};            //!< Position effect
-  std::string_view order_template;                //!< Order template (as known to the gateway)
   std::chrono::nanoseconds create_time_utc = {};  //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};  //!< Updated timestamp (UTC)
-  uint32_t gateway_order_id = {};                 //!< Order identifier (as known to gateway)
   std::string_view external_account;  //!< External account name (as known to broker or exchange)
   std::string_view
       external_order_id;        //!< External order identifier (as known to broker or exchange)
@@ -62,10 +60,8 @@ struct fmt::formatter<roq::TradeUpdate> : public roq::formatter {
         R"(symbol="{}", )"
         R"(side={}, )"
         R"(position_effect={}, )"
-        R"(order_template="{}", )"
         R"(create_time_utc={}, )"
         R"(update_time_utc={}, )"
-        R"(gateway_order_id={}, )"
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(routing_id="{}", )"
@@ -78,10 +74,8 @@ struct fmt::formatter<roq::TradeUpdate> : public roq::formatter {
         value.symbol,
         value.side,
         value.position_effect,
-        value.order_template,
         value.create_time_utc,
         value.update_time_utc,
-        value.gateway_order_id,
         value.external_account,
         value.external_order_id,
         value.routing_id,

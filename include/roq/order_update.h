@@ -31,30 +31,30 @@ namespace roq {
 
 //! Update relating to current status of an order
 struct ROQ_PUBLIC OrderUpdate final {
-  uint16_t stream_id = {};                        //!< Stream identifier
-  std::string_view account;                       //!< Account name (as known to the gateway)
-  uint32_t order_id = {};                         //!< Order identifier (as known to client)
-  std::string_view exchange;                      //!< Exchange name
-  std::string_view symbol;                        //!< Symbol
-  OrderStatus status = {};                        //!< Order status
-  Side side = {};                                 //!< Side
-  double price = NaN;                             //!< Price
-  double remaining_quantity = NaN;                //!< Remaining quantity
-  double traded_quantity = NaN;                   //!< Traded quantity
-  PositionEffect position_effect = {};            //!< Position effect
-  std::string_view order_template;                //!< Order template (as known to the gateway)
-  std::chrono::nanoseconds create_time_utc = {};  //!< Created timestamp (UTC)
-  std::chrono::nanoseconds update_time_utc = {};  //!< Updated timestamp (UTC)
-  uint32_t gateway_order_id = {};                 //!< Order identifier (as known to gateway)
+  uint16_t stream_id = {};              //!< Stream identifier
+  std::string_view account;             //!< Account name (as known to the gateway)
+  uint32_t order_id = {};               //!< Order identifier (as known to client)
+  std::string_view exchange;            //!< Exchange name
+  std::string_view symbol;              //!< Symbol
+  Side side = {};                       //!< Side
+  PositionEffect position_effect = {};  //!< Position effect
+  double quantity = NaN;                //!< Original quantity
+  double max_show_quantity = NaN;       //!< Quantity visible to market (requires exchange support)
+  OrderType order_type = {};            //!< Order type
+  TimeInForce time_in_force = {};       //!< Time in force
+  ExecutionInstruction execution_instruction = {};  //!< Execution instruction
+  std::string_view order_template;                  //!< Order template (as known to the gateway)
+  std::chrono::nanoseconds create_time_utc = {};    //!< Created timestamp (UTC)
+  std::chrono::nanoseconds update_time_utc = {};    //!< Updated timestamp (UTC)
   std::string_view external_account;  //!< External account name (as known to broker or exchange)
   std::string_view
-      external_order_id;           //!< External order identifier (as known to broker or exchange)
-  std::string_view routing_id;     //!< Routing identifier
-  OrderType order_type = {};       //!< Order type
-  TimeInForce time_in_force = {};  //!< Time in force
-  ExecutionInstruction execution_instruction = {};  //!< Execution instruction
-  double stop_price = NaN;            //!< Stop price (depends on order_type and time_in_force)
-  double max_show_quantity = NaN;     //!< Quantity visible to market (requires exchange support)
+      external_order_id;            //!< External order identifier (as known to broker or exchange)
+  std::string_view routing_id;      //!< Routing identifier
+  OrderStatus status = {};          //!< Order status
+  double price = NaN;               //!< Price
+  double stop_price = NaN;          //!< Stop price (depends on order_type and time_in_force)
+  double remaining_quantity = NaN;  //!< Remaining quantity
+  double traded_quantity = NaN;     //!< Traded quantity
   double average_traded_price = NaN;  //!< Average price (for traded quantity)
   double last_traded_price = NaN;     //!< Last traded price (for last quantity)
   double last_traded_quantity = NaN;  //!< Last traded quantity
@@ -76,24 +76,24 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         R"(order_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(status={}, )"
         R"(side={}, )"
-        R"(price={}, )"
-        R"(remaining_quantity={}, )"
-        R"(traded_quantity={}, )"
         R"(position_effect={}, )"
-        R"(order_template="{}", )"
-        R"(create_time_utc={}, )"
-        R"(update_time_utc={}, )"
-        R"(gateway_order_id={}, )"
-        R"(external_account="{}", )"
-        R"(external_order_id="{}", )"
-        R"(routing_id="{}", )"
+        R"(quantity={}, )"
+        R"(max_show_quantity={}, )"
         R"(order_type={}, )"
         R"(time_in_force={}, )"
         R"(execution_instruction={}, )"
+        R"(order_template="{}", )"
+        R"(create_time_utc={}, )"
+        R"(update_time_utc={}, )"
+        R"(external_account="{}", )"
+        R"(external_order_id="{}", )"
+        R"(routing_id="{}", )"
+        R"(status={}, )"
+        R"(price={}, )"
         R"(stop_price={}, )"
-        R"(max_show_quantity={}, )"
+        R"(remaining_quantity={}, )"
+        R"(traded_quantity={}, )"
         R"(average_traded_price={}, )"
         R"(last_traded_price={}, )"
         R"(last_traded_quantity={}, )"
@@ -104,24 +104,24 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         value.order_id,
         value.exchange,
         value.symbol,
-        value.status,
         value.side,
-        value.price,
-        value.remaining_quantity,
-        value.traded_quantity,
         value.position_effect,
-        value.order_template,
-        value.create_time_utc,
-        value.update_time_utc,
-        value.gateway_order_id,
-        value.external_account,
-        value.external_order_id,
-        value.routing_id,
+        value.quantity,
+        value.max_show_quantity,
         value.order_type,
         value.time_in_force,
         value.execution_instruction,
+        value.order_template,
+        value.create_time_utc,
+        value.update_time_utc,
+        value.external_account,
+        value.external_order_id,
+        value.routing_id,
+        value.status,
+        value.price,
         value.stop_price,
-        value.max_show_quantity,
+        value.remaining_quantity,
+        value.traded_quantity,
         value.average_traded_price,
         value.last_traded_price,
         value.last_traded_quantity,

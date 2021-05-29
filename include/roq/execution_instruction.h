@@ -17,7 +17,7 @@ namespace roq {
 //! Enumeration of execution types
 struct ROQ_PACKED ExecutionInstruction final {
   //! helper
-  enum type_t : uint64_t {
+  enum type_t : uint8_t {
     UNDEFINED = 0x0,
     PARTICIPATE_DO_NOT_INITIATE =
         0x1,  //!< Cancel if order would have executed on placement (i.e. not as maker)
@@ -33,7 +33,7 @@ struct ROQ_PACKED ExecutionInstruction final {
   constexpr ExecutionInstruction(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr ExecutionInstruction(uint64_t type) : type_(validate(type)) {}
+  explicit constexpr ExecutionInstruction(uint8_t type) : type_(validate(type)) {}
 
   constexpr operator type_t() const { return type_; }
 
@@ -59,7 +59,7 @@ struct ROQ_PACKED ExecutionInstruction final {
   constexpr operator std::string_view() const { return name(); }
 
  protected:
-  constexpr type_t validate(uint64_t type) {
+  constexpr type_t validate(uint8_t type) {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:
@@ -85,7 +85,7 @@ struct std::is_enum<roq::ExecutionInstruction> : std::true_type {};
 
 template <>
 struct std::underlying_type<roq::ExecutionInstruction> {
-  using type = uint64_t;
+  using type = uint8_t;
 };
 
 template <>

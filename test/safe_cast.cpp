@@ -41,10 +41,8 @@ TEST(safe_cast, float_to_int) {
   // EXPECT_THROW(static_cast<int64_t>(safe_cast<double>(9223372036854775807.0)),
   // 9223372036854775807);
   // ... overflow
-  EXPECT_THROW(
-      (void)static_cast<int64_t>(safe_cast<double>(-9223372036854775808.0)), std::overflow_error);
-  EXPECT_THROW(
-      (void)static_cast<int64_t>(safe_cast<double>(9223372036854775808.0)), std::overflow_error);
+  EXPECT_THROW((void)static_cast<int64_t>(safe_cast<double>(-9223372036854775808.0)), std::overflow_error);
+  EXPECT_THROW((void)static_cast<int64_t>(safe_cast<double>(9223372036854775808.0)), std::overflow_error);
   // have seen this
   auto tick_size = 1.0e-10;
   auto price = 100000000.0;

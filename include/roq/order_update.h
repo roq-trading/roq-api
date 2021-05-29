@@ -31,34 +31,33 @@ namespace roq {
 
 //! Update relating to current status of an order
 struct ROQ_PUBLIC OrderUpdate final {
-  uint16_t stream_id = {};              //!< Stream identifier
-  std::string_view account;             //!< Account name (as known to the gateway)
-  uint32_t order_id = {};               //!< Order identifier (as known to client)
-  std::string_view exchange;            //!< Exchange name
-  std::string_view symbol;              //!< Symbol
-  Side side = {};                       //!< Side
-  PositionEffect position_effect = {};  //!< Position effect
-  double quantity = NaN;                //!< Original quantity
-  double max_show_quantity = NaN;       //!< Quantity visible to market (requires exchange support)
-  OrderType order_type = {};            //!< Order type
-  TimeInForce time_in_force = {};       //!< Time in force
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view account;                         //!< Account name (as known to the gateway)
+  uint32_t order_id = {};                           //!< Order identifier (as known to client)
+  std::string_view exchange;                        //!< Exchange name
+  std::string_view symbol;                          //!< Symbol
+  Side side = {};                                   //!< Side
+  PositionEffect position_effect = {};              //!< Position effect
+  double quantity = NaN;                            //!< Original quantity
+  double max_show_quantity = NaN;                   //!< Quantity visible to market (requires exchange support)
+  OrderType order_type = {};                        //!< Order type
+  TimeInForce time_in_force = {};                   //!< Time in force
   ExecutionInstruction execution_instruction = {};  //!< Execution instruction
   std::string_view order_template;                  //!< Order template (as known to the gateway)
   std::chrono::nanoseconds create_time_utc = {};    //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};    //!< Updated timestamp (UTC)
-  std::string_view external_account;  //!< External account name (as known to broker or exchange)
-  std::string_view
-      external_order_id;            //!< External order identifier (as known to broker or exchange)
-  std::string_view routing_id;      //!< Routing identifier
-  OrderStatus status = {};          //!< Order status
-  double price = NaN;               //!< Price
-  double stop_price = NaN;          //!< Stop price (depends on order_type and time_in_force)
-  double remaining_quantity = NaN;  //!< Remaining quantity
-  double traded_quantity = NaN;     //!< Traded quantity
-  double average_traded_price = NaN;  //!< Average price (for traded quantity)
-  double last_traded_price = NaN;     //!< Last traded price (for last quantity)
-  double last_traded_quantity = NaN;  //!< Last traded quantity
-  Liquidity last_liquidity = {};      //!< Liquidity indicator (for last trade)
+  std::string_view external_account;                //!< External account name (as known to broker or exchange)
+  std::string_view external_order_id;               //!< External order identifier (as known to broker or exchange)
+  std::string_view routing_id;                      //!< Routing identifier
+  OrderStatus status = {};                          //!< Order status
+  double price = NaN;                               //!< Price
+  double stop_price = NaN;                          //!< Stop price (depends on order_type and time_in_force)
+  double remaining_quantity = NaN;                  //!< Remaining quantity
+  double traded_quantity = NaN;                     //!< Traded quantity
+  double average_traded_price = NaN;                //!< Average price (for traded quantity)
+  double last_traded_price = NaN;                   //!< Last traded price (for last quantity)
+  double last_traded_quantity = NaN;                //!< Last traded quantity
+  Liquidity last_liquidity = {};                    //!< Liquidity indicator (for last trade)
 };
 
 }  // namespace roq

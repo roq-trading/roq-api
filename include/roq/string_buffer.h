@@ -101,8 +101,7 @@ class ROQ_PACKED string_buffer final {
       auto last = std::copy(text.begin(), text.end(), buffer_.begin());
       std::fill(last, buffer_.end(), '\0');
     } else {
-      throw LengthErrorException(
-          R"(can't copy: len(text="{}")={} exceeds size={})"_fmt, text, len, size());
+      throw LengthErrorException(R"(can't copy: len(text="{}")={} exceeds size={})"_fmt, text, len, size());
     }
   }
 

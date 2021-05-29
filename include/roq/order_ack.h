@@ -28,19 +28,18 @@ namespace roq {
 
 //! Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange
 struct ROQ_PUBLIC OrderAck final {
-  uint16_t stream_id = {};            //!< Stream identifier
-  std::string_view account;           //!< Account name (as known to the gateway)
-  uint32_t order_id = {};             //!< Order identifier (as known to client)
-  RequestType type = {};              //!< Request type
-  Origin origin = {};                 //!< Origin of ack
-  RequestStatus status = {};          //!< Request status
-  Error error = {};                   //!< Error code
-  std::string_view text;              //!< Descriptive text
-  std::string_view external_account;  //!< External account name (as known to broker or exchange)
-  std::string_view
-      external_order_id;        //!< External order identifier (as known to broker or exchange)
-  std::string_view routing_id;  //!< Routing identifier
-  std::string_view request_id;  //!< Request identifier (as sent to broker or exchange)
+  uint16_t stream_id = {};             //!< Stream identifier
+  std::string_view account;            //!< Account name (as known to the gateway)
+  uint32_t order_id = {};              //!< Order identifier (as known to client)
+  RequestType type = {};               //!< Request type
+  Origin origin = {};                  //!< Origin of ack
+  RequestStatus status = {};           //!< Request status
+  Error error = {};                    //!< Error code
+  std::string_view text;               //!< Descriptive text
+  std::string_view external_account;   //!< External account name (as known to broker or exchange)
+  std::string_view external_order_id;  //!< External order identifier (as known to broker or exchange)
+  std::string_view routing_id;         //!< Routing identifier
+  std::string_view request_id;         //!< Request identifier (as sent to broker or exchange)
 };
 
 }  // namespace roq

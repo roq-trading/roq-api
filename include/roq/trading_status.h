@@ -19,21 +19,21 @@ struct ROQ_PACKED TradingStatus final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0,
-    START_OF_DAY,        //!< No matching, no order actions
-    PRE_OPEN,            //!< No matching, all order actions
-    PRE_OPEN_NO_CANCEL,  //!< No matching, only new orders
-    PRE_OPEN_FREEZE,     //!< Matching, no order actions
-    OPEN,                //!< Matching, all order actions
-    FAST_MARKET,  //!< Same as Open, exchange may elect to adopt more relaxed settings (matching,
-                  //!< quoting, etc.)
-    HALT,         //!< No matching, only order cancellation
+    START_OF_DAY,         //!< No matching, no order actions
+    PRE_OPEN,             //!< No matching, all order actions
+    PRE_OPEN_NO_CANCEL,   //!< No matching, only new orders
+    PRE_OPEN_FREEZE,      //!< Matching, no order actions
+    OPEN,                 //!< Matching, all order actions
+    FAST_MARKET,          //!< Same as Open, exchange may elect to adopt more relaxed settings (matching,
+                          //!< quoting, etc.)
+    HALT,                 //!< No matching, only order cancellation
     CLOSE_NOT_FINAL,      //!< Same as Close, state required to support mid-session PreOpen
     PRE_CLOSE,            //!< No matching, all order actions
     PRE_CLOSE_NO_CANCEL,  //!< No matching, only new orders
     PRE_CLOSE_FREEZE,     //!< Matching, no order actions
-    CLOSE,       //!< No matching, no order actions, good-for-day orders automatically canceled
-    POST_CLOSE,  //!< No matching, all order actions (only with next-trading-day validity)
-    END_OF_DAY,  //!< No matching, no order actions
+    CLOSE,                //!< No matching, no order actions, good-for-day orders automatically canceled
+    POST_CLOSE,           //!< No matching, all order actions (only with next-trading-day validity)
+    END_OF_DAY,           //!< No matching, no order actions
   };
 
   constexpr TradingStatus() = default;

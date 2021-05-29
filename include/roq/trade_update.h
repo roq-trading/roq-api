@@ -36,11 +36,10 @@ struct ROQ_PUBLIC TradeUpdate final {
   PositionEffect position_effect = {};            //!< Position effect
   std::chrono::nanoseconds create_time_utc = {};  //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};  //!< Updated timestamp (UTC)
-  std::string_view external_account;  //!< External account name (as known to broker or exchange)
-  std::string_view
-      external_order_id;        //!< External order identifier (as known to broker or exchange)
-  std::string_view routing_id;  //!< Routing identifier
-  roq::span<Fill> fills;        //!< List of fills
+  std::string_view external_account;              //!< External account name (as known to broker or exchange)
+  std::string_view external_order_id;             //!< External order identifier (as known to broker or exchange)
+  std::string_view routing_id;                    //!< Routing identifier
+  roq::span<Fill> fills;                          //!< List of fills
 };
 
 }  // namespace roq

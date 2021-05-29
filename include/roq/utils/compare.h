@@ -70,11 +70,9 @@ template <typename T, typename U>
 constexpr int compare(const T &lhs, const U &rhs) {
   using lhs_type = typename std::decay<T>::type;
   using rhs_type = typename std::decay<U>::type;
-  if constexpr (
-      std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
+  if constexpr (std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
     return detail::compare(lhs, rhs);
-  } else if constexpr (
-      std::is_same<lhs_type, Layer>::value && std::is_same<lhs_type, rhs_type>::value) {
+  } else if constexpr (std::is_same<lhs_type, Layer>::value && std::is_same<lhs_type, rhs_type>::value) {
     if (auto result = compare(lhs.bid_price, rhs.bid_price) != 0)
       return result;
     if (auto result = compare(lhs.bid_quantity, rhs.bid_quantity) != 0)
@@ -99,8 +97,8 @@ constexpr int compare(const T &lhs, const U &rhs) {
 // special functions
 
 template <typename T, typename U>
-typename std::enable_if<is_string<T>::value && is_string<U>::value, int>::type
-case_insensitive_compare(const T &lhs, const U &rhs) {
+typename std::enable_if<is_string<T>::value && is_string<U>::value, int>::type case_insensitive_compare(
+    const T &lhs, const U &rhs) {
   // cast both to std::string_view to avoid accidential allocation of std::string
   std::string_view lhs_tmp(lhs), rhs_tmp(rhs);
   // comparing using std::toupper

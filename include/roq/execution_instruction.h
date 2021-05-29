@@ -19,12 +19,11 @@ struct ROQ_PACKED ExecutionInstruction final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0x0,
-    PARTICIPATE_DO_NOT_INITIATE =
-        0x1,  //!< Cancel if order would have executed on placement (i.e. not as maker)
-    CANCEL_IF_NOT_BEST = 0x2,  //!< Cancel if order can not be placed at best price
-    DO_NOT_INCREASE = 0x4,     //!< Order may only reduce net position, order quantity can
-                               //!< automatically be reduced by exchange
-    DO_NOT_REDUCE = 0x8,       //!< Order can not be partially filled, aka. all-or-none (AON) orders
+    PARTICIPATE_DO_NOT_INITIATE = 0x1,  //!< Cancel if order would have executed on placement (i.e. not as maker)
+    CANCEL_IF_NOT_BEST = 0x2,           //!< Cancel if order can not be placed at best price
+    DO_NOT_INCREASE = 0x4,              //!< Order may only reduce net position, order quantity can
+                                        //!< automatically be reduced by exchange
+    DO_NOT_REDUCE = 0x8,                //!< Order can not be partially filled, aka. all-or-none (AON) orders
   };
 
   constexpr ExecutionInstruction() = default;

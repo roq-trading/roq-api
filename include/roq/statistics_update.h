@@ -29,8 +29,7 @@ struct ROQ_PUBLIC StatisticsUpdate final {
   std::string_view exchange;         //!< Exchange name
   std::string_view symbol;           //!< Symbol
   roq::span<Statistics> statistics;  //!< List of statistics
-  bool snapshot =
-      false;  //!< Full update (possibly old) if true and otherwise an incremental update
+  bool snapshot = false;             //!< Full update (possibly old) if true and otherwise an incremental update
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
 };
 

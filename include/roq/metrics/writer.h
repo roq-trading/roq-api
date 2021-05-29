@@ -17,23 +17,17 @@ class ROQ_PUBLIC Writer {
   virtual Writer &write_type(const std::string_view &name, const std::string_view &type) = 0;
 
   //! Write simple metrics (counter and gauge)
-  virtual Writer &write_simple(
-      const std::string_view &name, const std::string_view &labels, uint64_t value) = 0;
+  virtual Writer &write_simple(const std::string_view &name, const std::string_view &labels, uint64_t value) = 0;
 
   //! Write histogram buckets
   virtual Writer &write_bucket(
-      const std::string_view &name,
-      const std::string_view &labels,
-      double quantile,
-      uint64_t value) = 0;
+      const std::string_view &name, const std::string_view &labels, double quantile, uint64_t value) = 0;
 
   //! Write histogram sum
-  virtual Writer &write_sum(
-      const std::string_view &name, const std::string_view &labels, double value) = 0;
+  virtual Writer &write_sum(const std::string_view &name, const std::string_view &labels, double value) = 0;
 
   //! Write histogram count
-  virtual Writer &write_count(
-      const std::string_view &name, const std::string_view &labels, uint64_t count) = 0;
+  virtual Writer &write_count(const std::string_view &name, const std::string_view &labels, uint64_t count) = 0;
 
   //! Finish this metric
   virtual Writer &finish() = 0;

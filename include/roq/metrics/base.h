@@ -15,8 +15,7 @@ namespace metrics {
 
 //! Helper for all metrics collectors
 struct ROQ_PUBLIC Base {
-  inline std::string create_labels(
-      const std::string_view &label_name_0, const std::string_view &label_value_0) {
+  inline std::string create_labels(const std::string_view &label_name_0, const std::string_view &label_value_0) {
     using namespace roq::literals;
     return roq::format(R"({}="{}")"_fmt, label_name_0, label_value_0);
   }
@@ -26,8 +25,7 @@ struct ROQ_PUBLIC Base {
       const std::string_view &label_name_1,
       const std::string_view &label_value_1) {
     using namespace roq::literals;
-    return roq::format(
-        R"({}="{}", {}="{}")"_fmt, label_name_0, label_value_0, label_name_1, label_value_1);
+    return roq::format(R"({}="{}", {}="{}")"_fmt, label_name_0, label_value_0, label_name_1, label_value_1);
   }
   inline std::string create_labels(
       const std::string_view &label_name_0,

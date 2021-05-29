@@ -16,8 +16,7 @@ template <typename T, typename U>
 constexpr bool update(T &result, const U &value) {
   using lhs_type = typename std::decay<T>::type;
   using rhs_type = typename std::decay<U>::type;
-  if constexpr (
-      std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
+  if constexpr (std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
     // special case for floating point: also drop NaN
     if (compare(result, value) == 0 || compare(value, NaN) == 0)
       return false;
@@ -53,8 +52,7 @@ constexpr bool update_if_not_empty(T &result, const U &value) {
   if constexpr (is_string<rhs_type>::value) {
     if (value.empty())
       return false;
-  } else if constexpr (
-      std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
+  } else if constexpr (std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
     // update() will do the right thing
   } else {
     if (compare(value, U{}) == 0)

@@ -21,10 +21,10 @@ namespace roq {
 
 //! Trace information relating to the current message
 struct ROQ_PUBLIC MessageInfo final {
-  uint8_t source = {};           //!< Source identifier (index into the list of connections)
-  std::string_view source_name;  //!< Source name
-  UUID source_session_id;        //!< Session identifier (UUID)
-  uint64_t source_seqno = {};    //!< Sequence number (strictly increasing)
+  uint8_t source = {};                                   //!< Source identifier (index into the list of connections)
+  std::string_view source_name;                          //!< Source name
+  UUID source_session_id;                                //!< Session identifier (UUID)
+  uint64_t source_seqno = {};                            //!< Sequence number (strictly increasing)
   std::chrono::nanoseconds receive_time_utc = {};        //!< Client receive time (realtime clock)
   std::chrono::nanoseconds receive_time = {};            //!< Client receive time (monotonic clock)
   std::chrono::nanoseconds source_send_time = {};        //!< Source send time (monotonic clock)

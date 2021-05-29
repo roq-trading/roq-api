@@ -21,12 +21,11 @@ namespace roq {
 
 //! Represents a single fill (match) when an order is being partially or fully filled
 struct ROQ_PUBLIC Fill final {
-  double quantity = NaN;           //!< Quantity
-  double price = NaN;              //!< Price
-  uint32_t trade_id = {};          //!< Trade identifier (as known to client)
-  uint32_t gateway_trade_id = {};  //!< Trade identifier (as known to gateway)
-  roq::string_buffer<40>
-      external_trade_id;  //!< External trade identifier (as known to broker or exchange)
+  double quantity = NaN;                     //!< Quantity
+  double price = NaN;                        //!< Price
+  uint32_t trade_id = {};                    //!< Trade identifier (as known to client)
+  uint32_t gateway_trade_id = {};            //!< Trade identifier (as known to gateway)
+  roq::string_buffer<40> external_trade_id;  //!< External trade identifier (as known to broker or exchange)
 };
 
 }  // namespace roq

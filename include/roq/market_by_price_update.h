@@ -30,8 +30,7 @@ struct ROQ_PUBLIC MarketByPriceUpdate final {
   std::string_view symbol;    //!< Symbol
   roq::span<MBPUpdate> bids;  //!< List of bids
   roq::span<MBPUpdate> asks;  //!< List of asks
-  bool snapshot =
-      false;  //!< Full update (possibly old) if true and otherwise an incremental update
+  bool snapshot = false;      //!< Full update (possibly old) if true and otherwise an incremental update
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
 };
 

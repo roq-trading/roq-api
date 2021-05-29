@@ -26,9 +26,8 @@ struct ROQ_PUBLIC GatewaySettings final {
   uint32_t mbp_max_depth = {};                  //!< MBP max depth
   bool mbp_allow_price_inversion = false;       //!< MBP allow price inversion?
   bool mbp_allow_fractional_tick_size = false;  //!< MBP allow fractional tick-size?
-  bool mbp_allow_remove_non_existing =
-      false;               //!< MBP allow remove operation on non-existing level?
-  uint64_t supports = {};  //!< Support types (bit mask)
+  bool mbp_allow_remove_non_existing = false;   //!< MBP allow remove operation on non-existing level?
+  uint64_t supports = {};                       //!< Support types (bit mask)
 };
 
 }  // namespace roq

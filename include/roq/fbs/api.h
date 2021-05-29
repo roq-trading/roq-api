@@ -142,14 +142,7 @@ inline const ConnectionStatus (&EnumValuesConnectionStatus())[7] {
 
 inline const char *const *EnumNamesConnectionStatus() {
   static const char *const names[8] = {
-      "Undefined",
-      "Disconnected",
-      "Connecting",
-      "LoginSent",
-      "Downloading",
-      "Ready",
-      "LoggedOut",
-      nullptr};
+      "Undefined", "Disconnected", "Connecting", "LoginSent", "Downloading", "Ready", "LoggedOut", nullptr};
   return names;
 }
 
@@ -412,10 +405,7 @@ enum OrderUpdateAction : uint8_t {
 
 inline const OrderUpdateAction (&EnumValuesOrderUpdateAction())[4] {
   static const OrderUpdateAction values[] = {
-      OrderUpdateAction_Undefined,
-      OrderUpdateAction_New,
-      OrderUpdateAction_Modify,
-      OrderUpdateAction_Remove};
+      OrderUpdateAction_Undefined, OrderUpdateAction_New, OrderUpdateAction_Modify, OrderUpdateAction_Remove};
   return values;
 }
 
@@ -442,14 +432,12 @@ enum Origin : uint8_t {
 };
 
 inline const Origin (&EnumValuesOrigin())[5] {
-  static const Origin values[] = {
-      Origin_Undefined, Origin_Client, Origin_Gateway, Origin_Broker, Origin_Exchange};
+  static const Origin values[] = {Origin_Undefined, Origin_Client, Origin_Gateway, Origin_Broker, Origin_Exchange};
   return values;
 }
 
 inline const char *const *EnumNamesOrigin() {
-  static const char *const names[6] = {
-      "Undefined", "Client", "Gateway", "Broker", "Exchange", nullptr};
+  static const char *const names[6] = {"Undefined", "Client", "Gateway", "Broker", "Exchange", nullptr};
   return names;
 }
 
@@ -469,8 +457,7 @@ enum PositionEffect : uint8_t {
 };
 
 inline const PositionEffect (&EnumValuesPositionEffect())[3] {
-  static const PositionEffect values[] = {
-      PositionEffect_Undefined, PositionEffect_Open, PositionEffect_Close};
+  static const PositionEffect values[] = {PositionEffect_Undefined, PositionEffect_Open, PositionEffect_Close};
   return values;
 }
 
@@ -507,8 +494,7 @@ inline const RequestStatus (&EnumValuesRequestStatus())[5] {
 }
 
 inline const char *const *EnumNamesRequestStatus() {
-  static const char *const names[6] = {
-      "Undefined", "Forwarded", "Accepted", "Rejected", "Timeout", nullptr};
+  static const char *const names[6] = {"Undefined", "Forwarded", "Accepted", "Rejected", "Timeout", nullptr};
   return names;
 }
 
@@ -530,16 +516,12 @@ enum RequestType : uint8_t {
 
 inline const RequestType (&EnumValuesRequestType())[4] {
   static const RequestType values[] = {
-      RequestType_Undefined,
-      RequestType_CreateOrder,
-      RequestType_ModifyOrder,
-      RequestType_CancelOrder};
+      RequestType_Undefined, RequestType_CreateOrder, RequestType_ModifyOrder, RequestType_CancelOrder};
   return values;
 }
 
 inline const char *const *EnumNamesRequestType() {
-  static const char *const names[5] = {
-      "Undefined", "CreateOrder", "ModifyOrder", "CancelOrder", nullptr};
+  static const char *const names[5] = {"Undefined", "CreateOrder", "ModifyOrder", "CancelOrder", nullptr};
   return names;
 }
 
@@ -683,8 +665,7 @@ enum StreamType : uint8_t {
 };
 
 inline const StreamType (&EnumValuesStreamType())[4] {
-  static const StreamType values[] = {
-      StreamType_Undefined, StreamType_FIX, StreamType_WebSocket, StreamType_REST};
+  static const StreamType values[] = {StreamType_Undefined, StreamType_FIX, StreamType_WebSocket, StreamType_REST};
   return values;
 }
 
@@ -977,32 +958,30 @@ enum Message : uint8_t {
 };
 
 inline const Message (&EnumValuesMessage())[29] {
-  static const Message values[] = {
-      Message_NONE,           Message_Handshake,           Message_HandshakeAck,
-      Message_Subscribe,      Message_BatchBegin,          Message_BatchEnd,
-      Message_DownloadBegin,  Message_DownloadEnd,         Message_GatewaySettings,
-      Message_StreamStatus,   Message_ExternalLatency,     Message_RateLimitUsage,
-      Message_GatewayStatus,  Message_ReferenceData,       Message_MarketStatus,
-      Message_TopOfBook,      Message_MarketByPriceUpdate, Message_MarketByOrderUpdate,
-      Message_TradeSummary,   Message_StatisticsUpdate,    Message_CreateOrder,
-      Message_ModifyOrder,    Message_CancelOrder,         Message_CancelAllOrders,
-      Message_OrderAck,       Message_OrderUpdate,         Message_TradeUpdate,
-      Message_PositionUpdate, Message_FundsUpdate};
+  static const Message values[] = {Message_NONE,           Message_Handshake,           Message_HandshakeAck,
+                                   Message_Subscribe,      Message_BatchBegin,          Message_BatchEnd,
+                                   Message_DownloadBegin,  Message_DownloadEnd,         Message_GatewaySettings,
+                                   Message_StreamStatus,   Message_ExternalLatency,     Message_RateLimitUsage,
+                                   Message_GatewayStatus,  Message_ReferenceData,       Message_MarketStatus,
+                                   Message_TopOfBook,      Message_MarketByPriceUpdate, Message_MarketByOrderUpdate,
+                                   Message_TradeSummary,   Message_StatisticsUpdate,    Message_CreateOrder,
+                                   Message_ModifyOrder,    Message_CancelOrder,         Message_CancelAllOrders,
+                                   Message_OrderAck,       Message_OrderUpdate,         Message_TradeUpdate,
+                                   Message_PositionUpdate, Message_FundsUpdate};
   return values;
 }
 
 inline const char *const *EnumNamesMessage() {
-  static const char *const names[30] = {
-      "NONE",           "Handshake",           "HandshakeAck",
-      "Subscribe",      "BatchBegin",          "BatchEnd",
-      "DownloadBegin",  "DownloadEnd",         "GatewaySettings",
-      "StreamStatus",   "ExternalLatency",     "RateLimitUsage",
-      "GatewayStatus",  "ReferenceData",       "MarketStatus",
-      "TopOfBook",      "MarketByPriceUpdate", "MarketByOrderUpdate",
-      "TradeSummary",   "StatisticsUpdate",    "CreateOrder",
-      "ModifyOrder",    "CancelOrder",         "CancelAllOrders",
-      "OrderAck",       "OrderUpdate",         "TradeUpdate",
-      "PositionUpdate", "FundsUpdate",         nullptr};
+  static const char *const names[30] = {"NONE",           "Handshake",           "HandshakeAck",
+                                        "Subscribe",      "BatchBegin",          "BatchEnd",
+                                        "DownloadBegin",  "DownloadEnd",         "GatewaySettings",
+                                        "StreamStatus",   "ExternalLatency",     "RateLimitUsage",
+                                        "GatewayStatus",  "ReferenceData",       "MarketStatus",
+                                        "TopOfBook",      "MarketByPriceUpdate", "MarketByOrderUpdate",
+                                        "TradeSummary",   "StatisticsUpdate",    "CreateOrder",
+                                        "ModifyOrder",    "CancelOrder",         "CancelAllOrders",
+                                        "OrderAck",       "OrderUpdate",         "TradeUpdate",
+                                        "PositionUpdate", "FundsUpdate",         nullptr};
   return names;
 }
 
@@ -1182,10 +1161,8 @@ struct Fill FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_QUANTITY) &&
-           VerifyField<double>(verifier, VT_PRICE) &&
-           VerifyField<uint32_t>(verifier, VT_TRADE_ID) &&
-           VerifyField<uint32_t>(verifier, VT_GATEWAY_TRADE_ID) &&
-           VerifyOffset(verifier, VT_EXTERNAL_TRADE_ID) &&
+           VerifyField<double>(verifier, VT_PRICE) && VerifyField<uint32_t>(verifier, VT_TRADE_ID) &&
+           VerifyField<uint32_t>(verifier, VT_GATEWAY_TRADE_ID) && VerifyOffset(verifier, VT_EXTERNAL_TRADE_ID) &&
            verifier.VerifyString(external_trade_id()) && verifier.EndTable();
   }
 };
@@ -1196,18 +1173,14 @@ struct FillBuilder {
   flatbuffers::uoffset_t start_;
   void add_quantity(double quantity) { fbb_.AddElement<double>(Fill::VT_QUANTITY, quantity, 0.0); }
   void add_price(double price) { fbb_.AddElement<double>(Fill::VT_PRICE, price, 0.0); }
-  void add_trade_id(uint32_t trade_id) {
-    fbb_.AddElement<uint32_t>(Fill::VT_TRADE_ID, trade_id, 0);
-  }
+  void add_trade_id(uint32_t trade_id) { fbb_.AddElement<uint32_t>(Fill::VT_TRADE_ID, trade_id, 0); }
   void add_gateway_trade_id(uint32_t gateway_trade_id) {
     fbb_.AddElement<uint32_t>(Fill::VT_GATEWAY_TRADE_ID, gateway_trade_id, 0);
   }
   void add_external_trade_id(flatbuffers::Offset<flatbuffers::String> external_trade_id) {
     fbb_.AddOffset(Fill::VT_EXTERNAL_TRADE_ID, external_trade_id);
   }
-  explicit FillBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit FillBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Fill> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Fill>(end);
@@ -1239,8 +1212,7 @@ inline flatbuffers::Offset<Fill> CreateFillDirect(
     uint32_t gateway_trade_id = 0,
     const char *external_trade_id = nullptr) {
   auto external_trade_id__ = external_trade_id ? _fbb.CreateString(external_trade_id) : 0;
-  return roq::fbs::CreateFill(
-      _fbb, quantity, price, trade_id, gateway_trade_id, external_trade_id__);
+  return roq::fbs::CreateFill(_fbb, quantity, price, trade_id, gateway_trade_id, external_trade_id__);
 }
 
 struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -1251,18 +1223,13 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ASK_PRICE = 8,
     VT_ASK_QUANTITY = 10
   };
-  double bid_price() const {
-    return GetField<double>(VT_BID_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
+  double bid_price() const { return GetField<double>(VT_BID_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double bid_quantity() const { return GetField<double>(VT_BID_QUANTITY, 0.0); }
-  double ask_price() const {
-    return GetField<double>(VT_ASK_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
+  double ask_price() const { return GetField<double>(VT_ASK_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double ask_quantity() const { return GetField<double>(VT_ASK_QUANTITY, 0.0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_BID_PRICE) &&
-           VerifyField<double>(verifier, VT_BID_QUANTITY) &&
-           VerifyField<double>(verifier, VT_ASK_PRICE) &&
+           VerifyField<double>(verifier, VT_BID_QUANTITY) && VerifyField<double>(verifier, VT_ASK_PRICE) &&
            VerifyField<double>(verifier, VT_ASK_QUANTITY) && verifier.EndTable();
   }
 };
@@ -1272,22 +1239,14 @@ struct LayerBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_bid_price(double bid_price) {
-    fbb_.AddElement<double>(
-        Layer::VT_BID_PRICE, bid_price, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(Layer::VT_BID_PRICE, bid_price, std::numeric_limits<double>::quiet_NaN());
   }
-  void add_bid_quantity(double bid_quantity) {
-    fbb_.AddElement<double>(Layer::VT_BID_QUANTITY, bid_quantity, 0.0);
-  }
+  void add_bid_quantity(double bid_quantity) { fbb_.AddElement<double>(Layer::VT_BID_QUANTITY, bid_quantity, 0.0); }
   void add_ask_price(double ask_price) {
-    fbb_.AddElement<double>(
-        Layer::VT_ASK_PRICE, ask_price, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(Layer::VT_ASK_PRICE, ask_price, std::numeric_limits<double>::quiet_NaN());
   }
-  void add_ask_quantity(double ask_quantity) {
-    fbb_.AddElement<double>(Layer::VT_ASK_QUANTITY, ask_quantity, 0.0);
-  }
-  explicit LayerBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  void add_ask_quantity(double ask_quantity) { fbb_.AddElement<double>(Layer::VT_ASK_QUANTITY, ask_quantity, 0.0); }
+  explicit LayerBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Layer> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Layer>(end);
@@ -1318,21 +1277,16 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_PRIORITY = 10,
     VT_ORDER_ID = 12
   };
-  double price() const {
-    return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
+  double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double remaining_quantity() const { return GetField<double>(VT_REMAINING_QUANTITY, 0.0); }
   roq::fbs::OrderUpdateAction action() const {
     return static_cast<roq::fbs::OrderUpdateAction>(GetField<uint8_t>(VT_ACTION, 0));
   }
   uint32_t priority() const { return GetField<uint32_t>(VT_PRIORITY, 0); }
-  const flatbuffers::String *order_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_ORDER_ID);
-  }
+  const flatbuffers::String *order_id() const { return GetPointer<const flatbuffers::String *>(VT_ORDER_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_PRICE) &&
-           VerifyField<double>(verifier, VT_REMAINING_QUANTITY) &&
-           VerifyField<uint8_t>(verifier, VT_ACTION) &&
+           VerifyField<double>(verifier, VT_REMAINING_QUANTITY) && VerifyField<uint8_t>(verifier, VT_ACTION) &&
            VerifyField<uint32_t>(verifier, VT_PRIORITY) && VerifyOffset(verifier, VT_ORDER_ID) &&
            verifier.VerifyString(order_id()) && verifier.EndTable();
   }
@@ -1351,15 +1305,11 @@ struct MBOUpdateBuilder {
   void add_action(roq::fbs::OrderUpdateAction action) {
     fbb_.AddElement<uint8_t>(MBOUpdate::VT_ACTION, static_cast<uint8_t>(action), 0);
   }
-  void add_priority(uint32_t priority) {
-    fbb_.AddElement<uint32_t>(MBOUpdate::VT_PRIORITY, priority, 0);
-  }
+  void add_priority(uint32_t priority) { fbb_.AddElement<uint32_t>(MBOUpdate::VT_PRIORITY, priority, 0); }
   void add_order_id(flatbuffers::Offset<flatbuffers::String> order_id) {
     fbb_.AddOffset(MBOUpdate::VT_ORDER_ID, order_id);
   }
-  explicit MBOUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit MBOUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MBOUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MBOUpdate>(end);
@@ -1397,9 +1347,7 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdateDirect(
 struct MBPUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef MBPUpdateBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_PRICE = 4, VT_QUANTITY = 6 };
-  double price() const {
-    return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
+  double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double quantity() const { return GetField<double>(VT_QUANTITY, 0.0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_PRICE) &&
@@ -1414,12 +1362,8 @@ struct MBPUpdateBuilder {
   void add_price(double price) {
     fbb_.AddElement<double>(MBPUpdate::VT_PRICE, price, std::numeric_limits<double>::quiet_NaN());
   }
-  void add_quantity(double quantity) {
-    fbb_.AddElement<double>(MBPUpdate::VT_QUANTITY, quantity, 0.0);
-  }
-  explicit MBPUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  void add_quantity(double quantity) { fbb_.AddElement<double>(MBPUpdate::VT_QUANTITY, quantity, 0.0); }
+  explicit MBPUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MBPUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MBPUpdate>(end);
@@ -1445,18 +1389,13 @@ struct Statistics FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_BEGIN_TIME_UTC = 8,
     VT_END_TIME_UTC = 10
   };
-  roq::fbs::StatisticsType type() const {
-    return static_cast<roq::fbs::StatisticsType>(GetField<uint8_t>(VT_TYPE, 0));
-  }
-  double value() const {
-    return GetField<double>(VT_VALUE, std::numeric_limits<double>::quiet_NaN());
-  }
+  roq::fbs::StatisticsType type() const { return static_cast<roq::fbs::StatisticsType>(GetField<uint8_t>(VT_TYPE, 0)); }
+  double value() const { return GetField<double>(VT_VALUE, std::numeric_limits<double>::quiet_NaN()); }
   int64_t begin_time_utc() const { return GetField<int64_t>(VT_BEGIN_TIME_UTC, 0); }
   int64_t end_time_utc() const { return GetField<int64_t>(VT_END_TIME_UTC, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint8_t>(verifier, VT_TYPE) &&
-           VerifyField<double>(verifier, VT_VALUE) &&
-           VerifyField<int64_t>(verifier, VT_BEGIN_TIME_UTC) &&
+           VerifyField<double>(verifier, VT_VALUE) && VerifyField<int64_t>(verifier, VT_BEGIN_TIME_UTC) &&
            VerifyField<int64_t>(verifier, VT_END_TIME_UTC) && verifier.EndTable();
   }
 };
@@ -1477,9 +1416,7 @@ struct StatisticsBuilder {
   void add_end_time_utc(int64_t end_time_utc) {
     fbb_.AddElement<int64_t>(Statistics::VT_END_TIME_UTC, end_time_utc, 0);
   }
-  explicit StatisticsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit StatisticsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Statistics> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Statistics>(end);
@@ -1510,18 +1447,13 @@ struct Trade FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TRADE_ID = 10
   };
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
-  double price() const {
-    return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
+  double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double quantity() const { return GetField<double>(VT_QUANTITY, 0.0); }
-  const flatbuffers::String *trade_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_TRADE_ID);
-  }
+  const flatbuffers::String *trade_id() const { return GetPointer<const flatbuffers::String *>(VT_TRADE_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint8_t>(verifier, VT_SIDE) &&
            VerifyField<double>(verifier, VT_PRICE) && VerifyField<double>(verifier, VT_QUANTITY) &&
-           VerifyOffset(verifier, VT_TRADE_ID) && verifier.VerifyString(trade_id()) &&
-           verifier.EndTable();
+           VerifyOffset(verifier, VT_TRADE_ID) && verifier.VerifyString(trade_id()) && verifier.EndTable();
   }
 };
 
@@ -1529,19 +1461,13 @@ struct TradeBuilder {
   typedef Trade Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_side(roq::fbs::Side side) {
-    fbb_.AddElement<uint8_t>(Trade::VT_SIDE, static_cast<uint8_t>(side), 0);
-  }
+  void add_side(roq::fbs::Side side) { fbb_.AddElement<uint8_t>(Trade::VT_SIDE, static_cast<uint8_t>(side), 0); }
   void add_price(double price) {
     fbb_.AddElement<double>(Trade::VT_PRICE, price, std::numeric_limits<double>::quiet_NaN());
   }
   void add_quantity(double quantity) { fbb_.AddElement<double>(Trade::VT_QUANTITY, quantity, 0.0); }
-  void add_trade_id(flatbuffers::Offset<flatbuffers::String> trade_id) {
-    fbb_.AddOffset(Trade::VT_TRADE_ID, trade_id);
-  }
-  explicit TradeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  void add_trade_id(flatbuffers::Offset<flatbuffers::String> trade_id) { fbb_.AddOffset(Trade::VT_TRADE_ID, trade_id); }
+  explicit TradeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Trade> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Trade>(end);
@@ -1576,12 +1502,10 @@ inline flatbuffers::Offset<Trade> CreateTradeDirect(
 struct CancelAllOrders FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef CancelAllOrdersBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_ACCOUNT = 4 };
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) && verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
+           verifier.EndTable();
   }
 };
 
@@ -1592,9 +1516,7 @@ struct CancelAllOrdersBuilder {
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(CancelAllOrders::VT_ACCOUNT, account);
   }
-  explicit CancelAllOrdersBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit CancelAllOrdersBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<CancelAllOrders> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CancelAllOrders>(end);
@@ -1622,18 +1544,13 @@ struct CancelOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ORDER_ID = 6,
     VT_ROUTING_ID = 8
   };
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  const flatbuffers::String *routing_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID);
-  }
+  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) && VerifyField<uint32_t>(verifier, VT_ORDER_ID) &&
-           VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
-           verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_ROUTING_ID) &&
+           verifier.VerifyString(routing_id()) && verifier.EndTable();
   }
 };
 
@@ -1644,15 +1561,11 @@ struct CancelOrderBuilder {
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(CancelOrder::VT_ACCOUNT, account);
   }
-  void add_order_id(uint32_t order_id) {
-    fbb_.AddElement<uint32_t>(CancelOrder::VT_ORDER_ID, order_id, 0);
-  }
+  void add_order_id(uint32_t order_id) { fbb_.AddElement<uint32_t>(CancelOrder::VT_ORDER_ID, order_id, 0); }
   void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
     fbb_.AddOffset(CancelOrder::VT_ROUTING_ID, routing_id);
   }
-  explicit CancelOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit CancelOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<CancelOrder> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CancelOrder>(end);
@@ -1701,23 +1614,15 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STOP_PRICE = 30,
     VT_ROUTING_ID = 32
   };
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
   roq::fbs::PositionEffect position_effect() const {
     return static_cast<roq::fbs::PositionEffect>(GetField<uint8_t>(VT_POSITION_EFFECT, 0));
   }
-  double quantity() const {
-    return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN());
-  }
+  double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
   double max_show_quantity() const {
     return GetField<double>(VT_MAX_SHOW_QUANTITY, std::numeric_limits<double>::quiet_NaN());
   }
@@ -1728,35 +1633,23 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<roq::fbs::TimeInForce>(GetField<uint8_t>(VT_TIME_IN_FORCE, 0));
   }
   roq::fbs::ExecutionInstruction execution_instruction() const {
-    return static_cast<roq::fbs::ExecutionInstruction>(
-        GetField<uint8_t>(VT_EXECUTION_INSTRUCTION, 0));
+    return static_cast<roq::fbs::ExecutionInstruction>(GetField<uint8_t>(VT_EXECUTION_INSTRUCTION, 0));
   }
   const flatbuffers::String *order_template() const {
     return GetPointer<const flatbuffers::String *>(VT_ORDER_TEMPLATE);
   }
-  double price() const {
-    return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
-  double stop_price() const {
-    return GetField<double>(VT_STOP_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
-  const flatbuffers::String *routing_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID);
-  }
+  double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
+  double stop_price() const { return GetField<double>(VT_STOP_PRICE, std::numeric_limits<double>::quiet_NaN()); }
+  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) && VerifyField<uint32_t>(verifier, VT_ORDER_ID) &&
-           VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
-           VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyField<uint8_t>(verifier, VT_SIDE) &&
-           VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
-           VerifyField<double>(verifier, VT_QUANTITY) &&
-           VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) &&
-           VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) &&
-           VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
-           VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION) &&
-           VerifyOffset(verifier, VT_ORDER_TEMPLATE) && verifier.VerifyString(order_template()) &&
-           VerifyField<double>(verifier, VT_PRICE) &&
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_EXCHANGE) &&
+           verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
+           VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
+           VerifyField<double>(verifier, VT_QUANTITY) && VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) &&
+           VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) && VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
+           VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION) && VerifyOffset(verifier, VT_ORDER_TEMPLATE) &&
+           verifier.VerifyString(order_template()) && VerifyField<double>(verifier, VT_PRICE) &&
            VerifyField<double>(verifier, VT_STOP_PRICE) && VerifyOffset(verifier, VT_ROUTING_ID) &&
            verifier.VerifyString(routing_id()) && verifier.EndTable();
   }
@@ -1769,31 +1662,21 @@ struct CreateOrderBuilder {
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(CreateOrder::VT_ACCOUNT, account);
   }
-  void add_order_id(uint32_t order_id) {
-    fbb_.AddElement<uint32_t>(CreateOrder::VT_ORDER_ID, order_id, 0);
-  }
+  void add_order_id(uint32_t order_id) { fbb_.AddElement<uint32_t>(CreateOrder::VT_ORDER_ID, order_id, 0); }
   void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
     fbb_.AddOffset(CreateOrder::VT_EXCHANGE, exchange);
   }
-  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
-    fbb_.AddOffset(CreateOrder::VT_SYMBOL, symbol);
-  }
-  void add_side(roq::fbs::Side side) {
-    fbb_.AddElement<uint8_t>(CreateOrder::VT_SIDE, static_cast<uint8_t>(side), 0);
-  }
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) { fbb_.AddOffset(CreateOrder::VT_SYMBOL, symbol); }
+  void add_side(roq::fbs::Side side) { fbb_.AddElement<uint8_t>(CreateOrder::VT_SIDE, static_cast<uint8_t>(side), 0); }
   void add_position_effect(roq::fbs::PositionEffect position_effect) {
-    fbb_.AddElement<uint8_t>(
-        CreateOrder::VT_POSITION_EFFECT, static_cast<uint8_t>(position_effect), 0);
+    fbb_.AddElement<uint8_t>(CreateOrder::VT_POSITION_EFFECT, static_cast<uint8_t>(position_effect), 0);
   }
   void add_quantity(double quantity) {
-    fbb_.AddElement<double>(
-        CreateOrder::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(CreateOrder::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_max_show_quantity(double max_show_quantity) {
     fbb_.AddElement<double>(
-        CreateOrder::VT_MAX_SHOW_QUANTITY,
-        max_show_quantity,
-        std::numeric_limits<double>::quiet_NaN());
+        CreateOrder::VT_MAX_SHOW_QUANTITY, max_show_quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_order_type(roq::fbs::OrderType order_type) {
     fbb_.AddElement<uint8_t>(CreateOrder::VT_ORDER_TYPE, static_cast<uint8_t>(order_type), 0);
@@ -1802,8 +1685,7 @@ struct CreateOrderBuilder {
     fbb_.AddElement<uint8_t>(CreateOrder::VT_TIME_IN_FORCE, static_cast<uint8_t>(time_in_force), 0);
   }
   void add_execution_instruction(roq::fbs::ExecutionInstruction execution_instruction) {
-    fbb_.AddElement<uint8_t>(
-        CreateOrder::VT_EXECUTION_INSTRUCTION, static_cast<uint8_t>(execution_instruction), 0);
+    fbb_.AddElement<uint8_t>(CreateOrder::VT_EXECUTION_INSTRUCTION, static_cast<uint8_t>(execution_instruction), 0);
   }
   void add_order_template(flatbuffers::Offset<flatbuffers::String> order_template) {
     fbb_.AddOffset(CreateOrder::VT_ORDER_TEMPLATE, order_template);
@@ -1812,15 +1694,12 @@ struct CreateOrderBuilder {
     fbb_.AddElement<double>(CreateOrder::VT_PRICE, price, std::numeric_limits<double>::quiet_NaN());
   }
   void add_stop_price(double stop_price) {
-    fbb_.AddElement<double>(
-        CreateOrder::VT_STOP_PRICE, stop_price, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(CreateOrder::VT_STOP_PRICE, stop_price, std::numeric_limits<double>::quiet_NaN());
   }
   void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
     fbb_.AddOffset(CreateOrder::VT_ROUTING_ID, routing_id);
   }
-  explicit CreateOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit CreateOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<CreateOrder> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CreateOrder>(end);
@@ -1908,12 +1787,10 @@ inline flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
 struct DownloadBegin FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DownloadBeginBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_ACCOUNT = 4 };
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) && verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
+           verifier.EndTable();
   }
 };
 
@@ -1924,9 +1801,7 @@ struct DownloadBeginBuilder {
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(DownloadBegin::VT_ACCOUNT, account);
   }
-  explicit DownloadBeginBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit DownloadBeginBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<DownloadBegin> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<DownloadBegin>(end);
@@ -1949,18 +1824,12 @@ inline flatbuffers::Offset<DownloadBegin> CreateDownloadBeginDirect(
 
 struct DownloadEnd FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DownloadEndBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ACCOUNT = 4,
-    VT_MAX_ORDER_ID = 6
-  };
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_ACCOUNT = 4, VT_MAX_ORDER_ID = 6 };
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint32_t max_order_id() const { return GetField<uint32_t>(VT_MAX_ORDER_ID, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) && VerifyField<uint32_t>(verifier, VT_MAX_ORDER_ID) &&
-           verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
+           VerifyField<uint32_t>(verifier, VT_MAX_ORDER_ID) && verifier.EndTable();
   }
 };
 
@@ -1974,9 +1843,7 @@ struct DownloadEndBuilder {
   void add_max_order_id(uint32_t max_order_id) {
     fbb_.AddElement<uint32_t>(DownloadEnd::VT_MAX_ORDER_ID, max_order_id, 0);
   }
-  explicit DownloadEndBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit DownloadEndBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<DownloadEnd> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<DownloadEnd>(end);
@@ -1995,19 +1862,14 @@ inline flatbuffers::Offset<DownloadEnd> CreateDownloadEnd(
 }
 
 inline flatbuffers::Offset<DownloadEnd> CreateDownloadEndDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const char *account = nullptr,
-    uint32_t max_order_id = 0) {
+    flatbuffers::FlatBufferBuilder &_fbb, const char *account = nullptr, uint32_t max_order_id = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   return roq::fbs::CreateDownloadEnd(_fbb, account__, max_order_id);
 }
 
 struct ExternalLatency FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ExternalLatencyBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_STREAM_ID = 4,
-    VT_LATENCY = 6
-  };
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_STREAM_ID = 4, VT_LATENCY = 6 };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   int64_t latency() const { return GetField<int64_t>(VT_LATENCY, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -2020,15 +1882,9 @@ struct ExternalLatencyBuilder {
   typedef ExternalLatency Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(ExternalLatency::VT_STREAM_ID, stream_id, 0);
-  }
-  void add_latency(int64_t latency) {
-    fbb_.AddElement<int64_t>(ExternalLatency::VT_LATENCY, latency, 0);
-  }
-  explicit ExternalLatencyBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(ExternalLatency::VT_STREAM_ID, stream_id, 0); }
+  void add_latency(int64_t latency) { fbb_.AddElement<int64_t>(ExternalLatency::VT_LATENCY, latency, 0); }
+  explicit ExternalLatencyBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<ExternalLatency> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ExternalLatency>(end);
@@ -2055,18 +1911,10 @@ struct FundsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXTERNAL_ACCOUNT = 14
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
-  const flatbuffers::String *currency() const {
-    return GetPointer<const flatbuffers::String *>(VT_CURRENCY);
-  }
-  double balance() const {
-    return GetField<double>(VT_BALANCE, std::numeric_limits<double>::quiet_NaN());
-  }
-  double hold() const {
-    return GetField<double>(VT_HOLD, std::numeric_limits<double>::quiet_NaN());
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  const flatbuffers::String *currency() const { return GetPointer<const flatbuffers::String *>(VT_CURRENCY); }
+  double balance() const { return GetField<double>(VT_BALANCE, std::numeric_limits<double>::quiet_NaN()); }
+  double hold() const { return GetField<double>(VT_HOLD, std::numeric_limits<double>::quiet_NaN()); }
   const flatbuffers::String *external_account() const {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
   }
@@ -2075,8 +1923,8 @@ struct FundsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            VerifyOffset(verifier, VT_CURRENCY) && verifier.VerifyString(currency()) &&
            VerifyField<double>(verifier, VT_BALANCE) && VerifyField<double>(verifier, VT_HOLD) &&
-           VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
-           verifier.VerifyString(external_account()) && verifier.EndTable();
+           VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) && verifier.VerifyString(external_account()) &&
+           verifier.EndTable();
   }
 };
 
@@ -2084,9 +1932,7 @@ struct FundsUpdateBuilder {
   typedef FundsUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(FundsUpdate::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(FundsUpdate::VT_STREAM_ID, stream_id, 0); }
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(FundsUpdate::VT_ACCOUNT, account);
   }
@@ -2094,8 +1940,7 @@ struct FundsUpdateBuilder {
     fbb_.AddOffset(FundsUpdate::VT_CURRENCY, currency);
   }
   void add_balance(double balance) {
-    fbb_.AddElement<double>(
-        FundsUpdate::VT_BALANCE, balance, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(FundsUpdate::VT_BALANCE, balance, std::numeric_limits<double>::quiet_NaN());
   }
   void add_hold(double hold) {
     fbb_.AddElement<double>(FundsUpdate::VT_HOLD, hold, std::numeric_limits<double>::quiet_NaN());
@@ -2103,9 +1948,7 @@ struct FundsUpdateBuilder {
   void add_external_account(flatbuffers::Offset<flatbuffers::String> external_account) {
     fbb_.AddOffset(FundsUpdate::VT_EXTERNAL_ACCOUNT, external_account);
   }
-  explicit FundsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit FundsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<FundsUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<FundsUpdate>(end);
@@ -2142,8 +1985,7 @@ inline flatbuffers::Offset<FundsUpdate> CreateFundsUpdateDirect(
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto currency__ = currency ? _fbb.CreateString(currency) : 0;
   auto external_account__ = external_account ? _fbb.CreateString(external_account) : 0;
-  return roq::fbs::CreateFundsUpdate(
-      _fbb, stream_id, account__, currency__, balance, hold, external_account__);
+  return roq::fbs::CreateFundsUpdate(_fbb, stream_id, account__, currency__, balance, hold, external_account__);
 }
 
 struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -2156,15 +1998,9 @@ struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SUPPORTS = 12
   };
   uint32_t mbp_max_depth() const { return GetField<uint32_t>(VT_MBP_MAX_DEPTH, 0); }
-  bool mbp_allow_price_inversion() const {
-    return GetField<uint8_t>(VT_MBP_ALLOW_PRICE_INVERSION, 0) != 0;
-  }
-  bool mbp_allow_fractional_tick_size() const {
-    return GetField<uint8_t>(VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE, 0) != 0;
-  }
-  bool mbp_allow_remove_non_existing() const {
-    return GetField<uint8_t>(VT_MBP_ALLOW_REMOVE_NON_EXISTING, 0) != 0;
-  }
+  bool mbp_allow_price_inversion() const { return GetField<uint8_t>(VT_MBP_ALLOW_PRICE_INVERSION, 0) != 0; }
+  bool mbp_allow_fractional_tick_size() const { return GetField<uint8_t>(VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE, 0) != 0; }
+  bool mbp_allow_remove_non_existing() const { return GetField<uint8_t>(VT_MBP_ALLOW_REMOVE_NON_EXISTING, 0) != 0; }
   uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_MBP_MAX_DEPTH) &&
@@ -2184,28 +2020,18 @@ struct GatewaySettingsBuilder {
   }
   void add_mbp_allow_price_inversion(bool mbp_allow_price_inversion) {
     fbb_.AddElement<uint8_t>(
-        GatewaySettings::VT_MBP_ALLOW_PRICE_INVERSION,
-        static_cast<uint8_t>(mbp_allow_price_inversion),
-        0);
+        GatewaySettings::VT_MBP_ALLOW_PRICE_INVERSION, static_cast<uint8_t>(mbp_allow_price_inversion), 0);
   }
   void add_mbp_allow_fractional_tick_size(bool mbp_allow_fractional_tick_size) {
     fbb_.AddElement<uint8_t>(
-        GatewaySettings::VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE,
-        static_cast<uint8_t>(mbp_allow_fractional_tick_size),
-        0);
+        GatewaySettings::VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE, static_cast<uint8_t>(mbp_allow_fractional_tick_size), 0);
   }
   void add_mbp_allow_remove_non_existing(bool mbp_allow_remove_non_existing) {
     fbb_.AddElement<uint8_t>(
-        GatewaySettings::VT_MBP_ALLOW_REMOVE_NON_EXISTING,
-        static_cast<uint8_t>(mbp_allow_remove_non_existing),
-        0);
+        GatewaySettings::VT_MBP_ALLOW_REMOVE_NON_EXISTING, static_cast<uint8_t>(mbp_allow_remove_non_existing), 0);
   }
-  void add_supports(uint64_t supports) {
-    fbb_.AddElement<uint64_t>(GatewaySettings::VT_SUPPORTS, supports, 0);
-  }
-  explicit GatewaySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  void add_supports(uint64_t supports) { fbb_.AddElement<uint64_t>(GatewaySettings::VT_SUPPORTS, supports, 0); }
+  explicit GatewaySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<GatewaySettings> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<GatewaySettings>(end);
@@ -2237,16 +2063,13 @@ struct GatewayStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_AVAILABLE = 8,
     VT_UNAVAILABLE = 10
   };
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint64_t supported() const { return GetField<uint64_t>(VT_SUPPORTED, 0); }
   uint64_t available() const { return GetField<uint64_t>(VT_AVAILABLE, 0); }
   uint64_t unavailable() const { return GetField<uint64_t>(VT_UNAVAILABLE, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) && VerifyField<uint64_t>(verifier, VT_SUPPORTED) &&
-           VerifyField<uint64_t>(verifier, VT_AVAILABLE) &&
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
+           VerifyField<uint64_t>(verifier, VT_SUPPORTED) && VerifyField<uint64_t>(verifier, VT_AVAILABLE) &&
            VerifyField<uint64_t>(verifier, VT_UNAVAILABLE) && verifier.EndTable();
   }
 };
@@ -2258,18 +2081,12 @@ struct GatewayStatusBuilder {
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(GatewayStatus::VT_ACCOUNT, account);
   }
-  void add_supported(uint64_t supported) {
-    fbb_.AddElement<uint64_t>(GatewayStatus::VT_SUPPORTED, supported, 0);
-  }
-  void add_available(uint64_t available) {
-    fbb_.AddElement<uint64_t>(GatewayStatus::VT_AVAILABLE, available, 0);
-  }
+  void add_supported(uint64_t supported) { fbb_.AddElement<uint64_t>(GatewayStatus::VT_SUPPORTED, supported, 0); }
+  void add_available(uint64_t available) { fbb_.AddElement<uint64_t>(GatewayStatus::VT_AVAILABLE, available, 0); }
   void add_unavailable(uint64_t unavailable) {
     fbb_.AddElement<uint64_t>(GatewayStatus::VT_UNAVAILABLE, unavailable, 0);
   }
-  explicit GatewayStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit GatewayStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<GatewayStatus> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<GatewayStatus>(end);
@@ -2313,31 +2130,24 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_EXCHANGE_TIME_UTC = 16
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *bids() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *>(
-        VT_BIDS);
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *>(VT_BIDS);
   }
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *asks() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *>(
-        VT_ASKS);
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *>(VT_ASKS);
   }
   bool snapshot() const { return GetField<uint8_t>(VT_SNAPSHOT, 0) != 0; }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
-           VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyOffset(verifier, VT_BIDS) && verifier.VerifyVector(bids()) &&
-           verifier.VerifyVectorOfTables(bids()) && VerifyOffset(verifier, VT_ASKS) &&
+           VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) && VerifyOffset(verifier, VT_BIDS) &&
+           verifier.VerifyVector(bids()) && verifier.VerifyVectorOfTables(bids()) && VerifyOffset(verifier, VT_ASKS) &&
            verifier.VerifyVector(asks()) && verifier.VerifyVectorOfTables(asks()) &&
-           VerifyField<uint8_t>(verifier, VT_SNAPSHOT) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_SNAPSHOT) && VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) &&
+           verifier.EndTable();
   }
 };
 
@@ -2345,21 +2155,17 @@ struct MarketByOrderUpdateBuilder {
   typedef MarketByOrderUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(MarketByOrderUpdate::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(MarketByOrderUpdate::VT_STREAM_ID, stream_id, 0); }
   void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
     fbb_.AddOffset(MarketByOrderUpdate::VT_EXCHANGE, exchange);
   }
   void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
     fbb_.AddOffset(MarketByOrderUpdate::VT_SYMBOL, symbol);
   }
-  void add_bids(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> bids) {
+  void add_bids(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> bids) {
     fbb_.AddOffset(MarketByOrderUpdate::VT_BIDS, bids);
   }
-  void add_asks(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> asks) {
+  void add_asks(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> asks) {
     fbb_.AddOffset(MarketByOrderUpdate::VT_ASKS, asks);
   }
   void add_snapshot(bool snapshot) {
@@ -2368,9 +2174,7 @@ struct MarketByOrderUpdateBuilder {
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(MarketByOrderUpdate::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
-  explicit MarketByOrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit MarketByOrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MarketByOrderUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MarketByOrderUpdate>(end);
@@ -2427,31 +2231,24 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_EXCHANGE_TIME_UTC = 16
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *bids() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *>(
-        VT_BIDS);
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *>(VT_BIDS);
   }
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *asks() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *>(
-        VT_ASKS);
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *>(VT_ASKS);
   }
   bool snapshot() const { return GetField<uint8_t>(VT_SNAPSHOT, 0) != 0; }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
-           VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyOffset(verifier, VT_BIDS) && verifier.VerifyVector(bids()) &&
-           verifier.VerifyVectorOfTables(bids()) && VerifyOffset(verifier, VT_ASKS) &&
+           VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) && VerifyOffset(verifier, VT_BIDS) &&
+           verifier.VerifyVector(bids()) && verifier.VerifyVectorOfTables(bids()) && VerifyOffset(verifier, VT_ASKS) &&
            verifier.VerifyVector(asks()) && verifier.VerifyVectorOfTables(asks()) &&
-           VerifyField<uint8_t>(verifier, VT_SNAPSHOT) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_SNAPSHOT) && VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) &&
+           verifier.EndTable();
   }
 };
 
@@ -2459,21 +2256,17 @@ struct MarketByPriceUpdateBuilder {
   typedef MarketByPriceUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(MarketByPriceUpdate::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(MarketByPriceUpdate::VT_STREAM_ID, stream_id, 0); }
   void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
     fbb_.AddOffset(MarketByPriceUpdate::VT_EXCHANGE, exchange);
   }
   void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
     fbb_.AddOffset(MarketByPriceUpdate::VT_SYMBOL, symbol);
   }
-  void add_bids(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>>> bids) {
+  void add_bids(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>>> bids) {
     fbb_.AddOffset(MarketByPriceUpdate::VT_BIDS, bids);
   }
-  void add_asks(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>>> asks) {
+  void add_asks(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>>> asks) {
     fbb_.AddOffset(MarketByPriceUpdate::VT_ASKS, asks);
   }
   void add_snapshot(bool snapshot) {
@@ -2482,9 +2275,7 @@ struct MarketByPriceUpdateBuilder {
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(MarketByPriceUpdate::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
-  explicit MarketByPriceUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit MarketByPriceUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MarketByPriceUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MarketByPriceUpdate>(end);
@@ -2538,12 +2329,8 @@ struct MarketStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TRADING_STATUS = 10
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   roq::fbs::TradingStatus trading_status() const {
     return static_cast<roq::fbs::TradingStatus>(GetField<uint8_t>(VT_TRADING_STATUS, 0));
   }
@@ -2559,22 +2346,15 @@ struct MarketStatusBuilder {
   typedef MarketStatus Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(MarketStatus::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(MarketStatus::VT_STREAM_ID, stream_id, 0); }
   void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
     fbb_.AddOffset(MarketStatus::VT_EXCHANGE, exchange);
   }
-  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
-    fbb_.AddOffset(MarketStatus::VT_SYMBOL, symbol);
-  }
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) { fbb_.AddOffset(MarketStatus::VT_SYMBOL, symbol); }
   void add_trading_status(roq::fbs::TradingStatus trading_status) {
-    fbb_.AddElement<uint8_t>(
-        MarketStatus::VT_TRADING_STATUS, static_cast<uint8_t>(trading_status), 0);
+    fbb_.AddElement<uint8_t>(MarketStatus::VT_TRADING_STATUS, static_cast<uint8_t>(trading_status), 0);
   }
-  explicit MarketStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit MarketStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MarketStatus> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MarketStatus>(end);
@@ -2616,25 +2396,16 @@ struct ModifyOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_PRICE = 10,
     VT_ROUTING_ID = 12
   };
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  double quantity() const {
-    return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN());
-  }
-  double price() const {
-    return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
-  const flatbuffers::String *routing_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID);
-  }
+  double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
+  double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
+  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) && VerifyField<uint32_t>(verifier, VT_ORDER_ID) &&
-           VerifyField<double>(verifier, VT_QUANTITY) && VerifyField<double>(verifier, VT_PRICE) &&
-           VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
-           verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyField<double>(verifier, VT_QUANTITY) &&
+           VerifyField<double>(verifier, VT_PRICE) && VerifyOffset(verifier, VT_ROUTING_ID) &&
+           verifier.VerifyString(routing_id()) && verifier.EndTable();
   }
 };
 
@@ -2645,12 +2416,9 @@ struct ModifyOrderBuilder {
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(ModifyOrder::VT_ACCOUNT, account);
   }
-  void add_order_id(uint32_t order_id) {
-    fbb_.AddElement<uint32_t>(ModifyOrder::VT_ORDER_ID, order_id, 0);
-  }
+  void add_order_id(uint32_t order_id) { fbb_.AddElement<uint32_t>(ModifyOrder::VT_ORDER_ID, order_id, 0); }
   void add_quantity(double quantity) {
-    fbb_.AddElement<double>(
-        ModifyOrder::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(ModifyOrder::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_price(double price) {
     fbb_.AddElement<double>(ModifyOrder::VT_PRICE, price, std::numeric_limits<double>::quiet_NaN());
@@ -2658,9 +2426,7 @@ struct ModifyOrderBuilder {
   void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
     fbb_.AddOffset(ModifyOrder::VT_ROUTING_ID, routing_id);
   }
-  explicit ModifyOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit ModifyOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<ModifyOrder> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ModifyOrder>(end);
@@ -2713,47 +2479,31 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_REQUEST_ID = 26
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  roq::fbs::RequestType type() const {
-    return static_cast<roq::fbs::RequestType>(GetField<uint8_t>(VT_TYPE, 0));
-  }
-  roq::fbs::Origin origin() const {
-    return static_cast<roq::fbs::Origin>(GetField<uint8_t>(VT_ORIGIN, 0));
-  }
+  roq::fbs::RequestType type() const { return static_cast<roq::fbs::RequestType>(GetField<uint8_t>(VT_TYPE, 0)); }
+  roq::fbs::Origin origin() const { return static_cast<roq::fbs::Origin>(GetField<uint8_t>(VT_ORIGIN, 0)); }
   roq::fbs::RequestStatus status() const {
     return static_cast<roq::fbs::RequestStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
-  roq::fbs::Error error() const {
-    return static_cast<roq::fbs::Error>(GetField<uint8_t>(VT_ERROR, 0));
-  }
-  const flatbuffers::String *text() const {
-    return GetPointer<const flatbuffers::String *>(VT_TEXT);
-  }
+  roq::fbs::Error error() const { return static_cast<roq::fbs::Error>(GetField<uint8_t>(VT_ERROR, 0)); }
+  const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(VT_TEXT); }
   const flatbuffers::String *external_account() const {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
   }
   const flatbuffers::String *external_order_id() const {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ORDER_ID);
   }
-  const flatbuffers::String *routing_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID);
-  }
-  const flatbuffers::String *request_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_REQUEST_ID);
-  }
+  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
+  const flatbuffers::String *request_id() const { return GetPointer<const flatbuffers::String *>(VT_REQUEST_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint32_t>(verifier, VT_ORDER_ID) &&
-           VerifyField<uint8_t>(verifier, VT_TYPE) && VerifyField<uint8_t>(verifier, VT_ORIGIN) &&
-           VerifyField<uint8_t>(verifier, VT_STATUS) && VerifyField<uint8_t>(verifier, VT_ERROR) &&
-           VerifyOffset(verifier, VT_TEXT) && verifier.VerifyString(text()) &&
-           VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
-           verifier.VerifyString(external_account()) &&
-           VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyField<uint8_t>(verifier, VT_TYPE) &&
+           VerifyField<uint8_t>(verifier, VT_ORIGIN) && VerifyField<uint8_t>(verifier, VT_STATUS) &&
+           VerifyField<uint8_t>(verifier, VT_ERROR) && VerifyOffset(verifier, VT_TEXT) &&
+           verifier.VerifyString(text()) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
+           verifier.VerifyString(external_account()) && VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
            verifier.VerifyString(external_order_id()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
            verifier.VerifyString(routing_id()) && VerifyOffset(verifier, VT_REQUEST_ID) &&
            verifier.VerifyString(request_id()) && verifier.EndTable();
@@ -2764,15 +2514,9 @@ struct OrderAckBuilder {
   typedef OrderAck Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(OrderAck::VT_STREAM_ID, stream_id, 0);
-  }
-  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
-    fbb_.AddOffset(OrderAck::VT_ACCOUNT, account);
-  }
-  void add_order_id(uint32_t order_id) {
-    fbb_.AddElement<uint32_t>(OrderAck::VT_ORDER_ID, order_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(OrderAck::VT_STREAM_ID, stream_id, 0); }
+  void add_account(flatbuffers::Offset<flatbuffers::String> account) { fbb_.AddOffset(OrderAck::VT_ACCOUNT, account); }
+  void add_order_id(uint32_t order_id) { fbb_.AddElement<uint32_t>(OrderAck::VT_ORDER_ID, order_id, 0); }
   void add_type(roq::fbs::RequestType type) {
     fbb_.AddElement<uint8_t>(OrderAck::VT_TYPE, static_cast<uint8_t>(type), 0);
   }
@@ -2785,9 +2529,7 @@ struct OrderAckBuilder {
   void add_error(roq::fbs::Error error) {
     fbb_.AddElement<uint8_t>(OrderAck::VT_ERROR, static_cast<uint8_t>(error), 0);
   }
-  void add_text(flatbuffers::Offset<flatbuffers::String> text) {
-    fbb_.AddOffset(OrderAck::VT_TEXT, text);
-  }
+  void add_text(flatbuffers::Offset<flatbuffers::String> text) { fbb_.AddOffset(OrderAck::VT_TEXT, text); }
   void add_external_account(flatbuffers::Offset<flatbuffers::String> external_account) {
     fbb_.AddOffset(OrderAck::VT_EXTERNAL_ACCOUNT, external_account);
   }
@@ -2800,9 +2542,7 @@ struct OrderAckBuilder {
   void add_request_id(flatbuffers::Offset<flatbuffers::String> request_id) {
     fbb_.AddOffset(OrderAck::VT_REQUEST_ID, request_id);
   }
-  explicit OrderAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit OrderAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<OrderAck> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<OrderAck>(end);
@@ -2908,23 +2648,15 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_LAST_LIQUIDITY = 56
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
   roq::fbs::PositionEffect position_effect() const {
     return static_cast<roq::fbs::PositionEffect>(GetField<uint8_t>(VT_POSITION_EFFECT, 0));
   }
-  double quantity() const {
-    return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN());
-  }
+  double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
   double max_show_quantity() const {
     return GetField<double>(VT_MAX_SHOW_QUANTITY, std::numeric_limits<double>::quiet_NaN());
   }
@@ -2935,8 +2667,7 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<roq::fbs::TimeInForce>(GetField<uint8_t>(VT_TIME_IN_FORCE, 0));
   }
   roq::fbs::ExecutionInstruction execution_instruction() const {
-    return static_cast<roq::fbs::ExecutionInstruction>(
-        GetField<uint8_t>(VT_EXECUTION_INSTRUCTION, 0));
+    return static_cast<roq::fbs::ExecutionInstruction>(GetField<uint8_t>(VT_EXECUTION_INSTRUCTION, 0));
   }
   const flatbuffers::String *order_template() const {
     return GetPointer<const flatbuffers::String *>(VT_ORDER_TEMPLATE);
@@ -2949,18 +2680,10 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *external_order_id() const {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ORDER_ID);
   }
-  const flatbuffers::String *routing_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID);
-  }
-  roq::fbs::OrderStatus status() const {
-    return static_cast<roq::fbs::OrderStatus>(GetField<uint8_t>(VT_STATUS, 0));
-  }
-  double price() const {
-    return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
-  double stop_price() const {
-    return GetField<double>(VT_STOP_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
+  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
+  roq::fbs::OrderStatus status() const { return static_cast<roq::fbs::OrderStatus>(GetField<uint8_t>(VT_STATUS, 0)); }
+  double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
+  double stop_price() const { return GetField<double>(VT_STOP_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double remaining_quantity() const {
     return GetField<double>(VT_REMAINING_QUANTITY, std::numeric_limits<double>::quiet_NaN());
   }
@@ -2983,26 +2706,18 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_EXCHANGE) &&
-           verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) &&
-           verifier.VerifyString(symbol()) && VerifyField<uint8_t>(verifier, VT_SIDE) &&
-           VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
-           VerifyField<double>(verifier, VT_QUANTITY) &&
-           VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) &&
-           VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) &&
-           VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
-           VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION) &&
-           VerifyOffset(verifier, VT_ORDER_TEMPLATE) && verifier.VerifyString(order_template()) &&
-           VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC) &&
-           VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC) &&
-           VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
-           verifier.VerifyString(external_account()) &&
-           VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
+           verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
+           VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
+           VerifyField<double>(verifier, VT_QUANTITY) && VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) &&
+           VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) && VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
+           VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION) && VerifyOffset(verifier, VT_ORDER_TEMPLATE) &&
+           verifier.VerifyString(order_template()) && VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC) &&
+           VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
+           verifier.VerifyString(external_account()) && VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
            verifier.VerifyString(external_order_id()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
            verifier.VerifyString(routing_id()) && VerifyField<uint8_t>(verifier, VT_STATUS) &&
-           VerifyField<double>(verifier, VT_PRICE) &&
-           VerifyField<double>(verifier, VT_STOP_PRICE) &&
-           VerifyField<double>(verifier, VT_REMAINING_QUANTITY) &&
-           VerifyField<double>(verifier, VT_TRADED_QUANTITY) &&
+           VerifyField<double>(verifier, VT_PRICE) && VerifyField<double>(verifier, VT_STOP_PRICE) &&
+           VerifyField<double>(verifier, VT_REMAINING_QUANTITY) && VerifyField<double>(verifier, VT_TRADED_QUANTITY) &&
            VerifyField<double>(verifier, VT_AVERAGE_TRADED_PRICE) &&
            VerifyField<double>(verifier, VT_LAST_TRADED_PRICE) &&
            VerifyField<double>(verifier, VT_LAST_TRADED_QUANTITY) &&
@@ -3014,37 +2729,25 @@ struct OrderUpdateBuilder {
   typedef OrderUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(OrderUpdate::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(OrderUpdate::VT_STREAM_ID, stream_id, 0); }
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(OrderUpdate::VT_ACCOUNT, account);
   }
-  void add_order_id(uint32_t order_id) {
-    fbb_.AddElement<uint32_t>(OrderUpdate::VT_ORDER_ID, order_id, 0);
-  }
+  void add_order_id(uint32_t order_id) { fbb_.AddElement<uint32_t>(OrderUpdate::VT_ORDER_ID, order_id, 0); }
   void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
     fbb_.AddOffset(OrderUpdate::VT_EXCHANGE, exchange);
   }
-  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
-    fbb_.AddOffset(OrderUpdate::VT_SYMBOL, symbol);
-  }
-  void add_side(roq::fbs::Side side) {
-    fbb_.AddElement<uint8_t>(OrderUpdate::VT_SIDE, static_cast<uint8_t>(side), 0);
-  }
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) { fbb_.AddOffset(OrderUpdate::VT_SYMBOL, symbol); }
+  void add_side(roq::fbs::Side side) { fbb_.AddElement<uint8_t>(OrderUpdate::VT_SIDE, static_cast<uint8_t>(side), 0); }
   void add_position_effect(roq::fbs::PositionEffect position_effect) {
-    fbb_.AddElement<uint8_t>(
-        OrderUpdate::VT_POSITION_EFFECT, static_cast<uint8_t>(position_effect), 0);
+    fbb_.AddElement<uint8_t>(OrderUpdate::VT_POSITION_EFFECT, static_cast<uint8_t>(position_effect), 0);
   }
   void add_quantity(double quantity) {
-    fbb_.AddElement<double>(
-        OrderUpdate::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(OrderUpdate::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_max_show_quantity(double max_show_quantity) {
     fbb_.AddElement<double>(
-        OrderUpdate::VT_MAX_SHOW_QUANTITY,
-        max_show_quantity,
-        std::numeric_limits<double>::quiet_NaN());
+        OrderUpdate::VT_MAX_SHOW_QUANTITY, max_show_quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_order_type(roq::fbs::OrderType order_type) {
     fbb_.AddElement<uint8_t>(OrderUpdate::VT_ORDER_TYPE, static_cast<uint8_t>(order_type), 0);
@@ -3053,8 +2756,7 @@ struct OrderUpdateBuilder {
     fbb_.AddElement<uint8_t>(OrderUpdate::VT_TIME_IN_FORCE, static_cast<uint8_t>(time_in_force), 0);
   }
   void add_execution_instruction(roq::fbs::ExecutionInstruction execution_instruction) {
-    fbb_.AddElement<uint8_t>(
-        OrderUpdate::VT_EXECUTION_INSTRUCTION, static_cast<uint8_t>(execution_instruction), 0);
+    fbb_.AddElement<uint8_t>(OrderUpdate::VT_EXECUTION_INSTRUCTION, static_cast<uint8_t>(execution_instruction), 0);
   }
   void add_order_template(flatbuffers::Offset<flatbuffers::String> order_template) {
     fbb_.AddOffset(OrderUpdate::VT_ORDER_TEMPLATE, order_template);
@@ -3081,44 +2783,31 @@ struct OrderUpdateBuilder {
     fbb_.AddElement<double>(OrderUpdate::VT_PRICE, price, std::numeric_limits<double>::quiet_NaN());
   }
   void add_stop_price(double stop_price) {
-    fbb_.AddElement<double>(
-        OrderUpdate::VT_STOP_PRICE, stop_price, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(OrderUpdate::VT_STOP_PRICE, stop_price, std::numeric_limits<double>::quiet_NaN());
   }
   void add_remaining_quantity(double remaining_quantity) {
     fbb_.AddElement<double>(
-        OrderUpdate::VT_REMAINING_QUANTITY,
-        remaining_quantity,
-        std::numeric_limits<double>::quiet_NaN());
+        OrderUpdate::VT_REMAINING_QUANTITY, remaining_quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_traded_quantity(double traded_quantity) {
-    fbb_.AddElement<double>(
-        OrderUpdate::VT_TRADED_QUANTITY, traded_quantity, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(OrderUpdate::VT_TRADED_QUANTITY, traded_quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_average_traded_price(double average_traded_price) {
     fbb_.AddElement<double>(
-        OrderUpdate::VT_AVERAGE_TRADED_PRICE,
-        average_traded_price,
-        std::numeric_limits<double>::quiet_NaN());
+        OrderUpdate::VT_AVERAGE_TRADED_PRICE, average_traded_price, std::numeric_limits<double>::quiet_NaN());
   }
   void add_last_traded_price(double last_traded_price) {
     fbb_.AddElement<double>(
-        OrderUpdate::VT_LAST_TRADED_PRICE,
-        last_traded_price,
-        std::numeric_limits<double>::quiet_NaN());
+        OrderUpdate::VT_LAST_TRADED_PRICE, last_traded_price, std::numeric_limits<double>::quiet_NaN());
   }
   void add_last_traded_quantity(double last_traded_quantity) {
     fbb_.AddElement<double>(
-        OrderUpdate::VT_LAST_TRADED_QUANTITY,
-        last_traded_quantity,
-        std::numeric_limits<double>::quiet_NaN());
+        OrderUpdate::VT_LAST_TRADED_QUANTITY, last_traded_quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_last_liquidity(roq::fbs::Liquidity last_liquidity) {
-    fbb_.AddElement<uint8_t>(
-        OrderUpdate::VT_LAST_LIQUIDITY, static_cast<uint8_t>(last_liquidity), 0);
+    fbb_.AddElement<uint8_t>(OrderUpdate::VT_LAST_LIQUIDITY, static_cast<uint8_t>(last_liquidity), 0);
   }
-  explicit OrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit OrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<OrderUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<OrderUpdate>(end);
@@ -3269,23 +2958,13 @@ struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXTERNAL_ACCOUNT = 24
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
-  double position() const {
-    return GetField<double>(VT_POSITION, std::numeric_limits<double>::quiet_NaN());
-  }
+  double position() const { return GetField<double>(VT_POSITION, std::numeric_limits<double>::quiet_NaN()); }
   uint32_t last_trade_id() const { return GetField<uint32_t>(VT_LAST_TRADE_ID, 0); }
-  double position_cost() const {
-    return GetField<double>(VT_POSITION_COST, std::numeric_limits<double>::quiet_NaN());
-  }
+  double position_cost() const { return GetField<double>(VT_POSITION_COST, std::numeric_limits<double>::quiet_NaN()); }
   double position_yesterday() const {
     return GetField<double>(VT_POSITION_YESTERDAY, std::numeric_limits<double>::quiet_NaN());
   }
@@ -3301,11 +2980,9 @@ struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
            VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<double>(verifier, VT_POSITION) &&
-           VerifyField<uint32_t>(verifier, VT_LAST_TRADE_ID) &&
-           VerifyField<double>(verifier, VT_POSITION_COST) &&
+           VerifyField<uint32_t>(verifier, VT_LAST_TRADE_ID) && VerifyField<double>(verifier, VT_POSITION_COST) &&
            VerifyField<double>(verifier, VT_POSITION_YESTERDAY) &&
-           VerifyField<double>(verifier, VT_POSITION_COST_YESTERDAY) &&
-           VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
+           VerifyField<double>(verifier, VT_POSITION_COST_YESTERDAY) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
            verifier.VerifyString(external_account()) && verifier.EndTable();
   }
 };
@@ -3314,9 +2991,7 @@ struct PositionUpdateBuilder {
   typedef PositionUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(PositionUpdate::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(PositionUpdate::VT_STREAM_ID, stream_id, 0); }
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(PositionUpdate::VT_ACCOUNT, account);
   }
@@ -3330,34 +3005,26 @@ struct PositionUpdateBuilder {
     fbb_.AddElement<uint8_t>(PositionUpdate::VT_SIDE, static_cast<uint8_t>(side), 0);
   }
   void add_position(double position) {
-    fbb_.AddElement<double>(
-        PositionUpdate::VT_POSITION, position, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(PositionUpdate::VT_POSITION, position, std::numeric_limits<double>::quiet_NaN());
   }
   void add_last_trade_id(uint32_t last_trade_id) {
     fbb_.AddElement<uint32_t>(PositionUpdate::VT_LAST_TRADE_ID, last_trade_id, 0);
   }
   void add_position_cost(double position_cost) {
-    fbb_.AddElement<double>(
-        PositionUpdate::VT_POSITION_COST, position_cost, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(PositionUpdate::VT_POSITION_COST, position_cost, std::numeric_limits<double>::quiet_NaN());
   }
   void add_position_yesterday(double position_yesterday) {
     fbb_.AddElement<double>(
-        PositionUpdate::VT_POSITION_YESTERDAY,
-        position_yesterday,
-        std::numeric_limits<double>::quiet_NaN());
+        PositionUpdate::VT_POSITION_YESTERDAY, position_yesterday, std::numeric_limits<double>::quiet_NaN());
   }
   void add_position_cost_yesterday(double position_cost_yesterday) {
     fbb_.AddElement<double>(
-        PositionUpdate::VT_POSITION_COST_YESTERDAY,
-        position_cost_yesterday,
-        std::numeric_limits<double>::quiet_NaN());
+        PositionUpdate::VT_POSITION_COST_YESTERDAY, position_cost_yesterday, std::numeric_limits<double>::quiet_NaN());
   }
   void add_external_account(flatbuffers::Offset<flatbuffers::String> external_account) {
     fbb_.AddOffset(PositionUpdate::VT_EXTERNAL_ACCOUNT, external_account);
   }
-  explicit PositionUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit PositionUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<PositionUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<PositionUpdate>(end);
@@ -3427,10 +3094,7 @@ inline flatbuffers::Offset<PositionUpdate> CreatePositionUpdateDirect(
 
 struct RateLimitUsage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef RateLimitUsageBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_STREAM_ID = 4,
-    VT_ABOVE_HIGH_WATER_MARK = 6
-  };
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_STREAM_ID = 4, VT_ABOVE_HIGH_WATER_MARK = 6 };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   bool above_high_water_mark() const { return GetField<uint8_t>(VT_ABOVE_HIGH_WATER_MARK, 0) != 0; }
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -3443,16 +3107,11 @@ struct RateLimitUsageBuilder {
   typedef RateLimitUsage Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(RateLimitUsage::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(RateLimitUsage::VT_STREAM_ID, stream_id, 0); }
   void add_above_high_water_mark(bool above_high_water_mark) {
-    fbb_.AddElement<uint8_t>(
-        RateLimitUsage::VT_ABOVE_HIGH_WATER_MARK, static_cast<uint8_t>(above_high_water_mark), 0);
+    fbb_.AddElement<uint8_t>(RateLimitUsage::VT_ABOVE_HIGH_WATER_MARK, static_cast<uint8_t>(above_high_water_mark), 0);
   }
-  explicit RateLimitUsageBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit RateLimitUsageBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<RateLimitUsage> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<RateLimitUsage>(end);
@@ -3461,9 +3120,7 @@ struct RateLimitUsageBuilder {
 };
 
 inline flatbuffers::Offset<RateLimitUsage> CreateRateLimitUsage(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t stream_id = 0,
-    bool above_high_water_mark = false) {
+    flatbuffers::FlatBufferBuilder &_fbb, uint16_t stream_id = 0, bool above_high_water_mark = false) {
   RateLimitUsageBuilder builder_(_fbb);
   builder_.add_stream_id(stream_id);
   builder_.add_above_high_water_mark(above_high_water_mark);
@@ -3495,51 +3152,31 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXPIRY_DATETIME_UTC = 42
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
-  const flatbuffers::String *description() const {
-    return GetPointer<const flatbuffers::String *>(VT_DESCRIPTION);
-  }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
+  const flatbuffers::String *description() const { return GetPointer<const flatbuffers::String *>(VT_DESCRIPTION); }
   roq::fbs::SecurityType security_type() const {
     return static_cast<roq::fbs::SecurityType>(GetField<uint8_t>(VT_SECURITY_TYPE, 0));
   }
-  const flatbuffers::String *currency() const {
-    return GetPointer<const flatbuffers::String *>(VT_CURRENCY);
-  }
+  const flatbuffers::String *currency() const { return GetPointer<const flatbuffers::String *>(VT_CURRENCY); }
   const flatbuffers::String *settlement_currency() const {
     return GetPointer<const flatbuffers::String *>(VT_SETTLEMENT_CURRENCY);
   }
   const flatbuffers::String *commission_currency() const {
     return GetPointer<const flatbuffers::String *>(VT_COMMISSION_CURRENCY);
   }
-  double tick_size() const {
-    return GetField<double>(VT_TICK_SIZE, std::numeric_limits<double>::quiet_NaN());
-  }
-  double multiplier() const {
-    return GetField<double>(VT_MULTIPLIER, std::numeric_limits<double>::quiet_NaN());
-  }
-  double min_trade_vol() const {
-    return GetField<double>(VT_MIN_TRADE_VOL, std::numeric_limits<double>::quiet_NaN());
-  }
+  double tick_size() const { return GetField<double>(VT_TICK_SIZE, std::numeric_limits<double>::quiet_NaN()); }
+  double multiplier() const { return GetField<double>(VT_MULTIPLIER, std::numeric_limits<double>::quiet_NaN()); }
+  double min_trade_vol() const { return GetField<double>(VT_MIN_TRADE_VOL, std::numeric_limits<double>::quiet_NaN()); }
   roq::fbs::OptionType option_type() const {
     return static_cast<roq::fbs::OptionType>(GetField<uint8_t>(VT_OPTION_TYPE, 0));
   }
   const flatbuffers::String *strike_currency() const {
     return GetPointer<const flatbuffers::String *>(VT_STRIKE_CURRENCY);
   }
-  double strike_price() const {
-    return GetField<double>(VT_STRIKE_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
-  const flatbuffers::String *underlying() const {
-    return GetPointer<const flatbuffers::String *>(VT_UNDERLYING);
-  }
-  const flatbuffers::String *time_zone() const {
-    return GetPointer<const flatbuffers::String *>(VT_TIME_ZONE);
-  }
+  double strike_price() const { return GetField<double>(VT_STRIKE_PRICE, std::numeric_limits<double>::quiet_NaN()); }
+  const flatbuffers::String *underlying() const { return GetPointer<const flatbuffers::String *>(VT_UNDERLYING); }
+  const flatbuffers::String *time_zone() const { return GetPointer<const flatbuffers::String *>(VT_TIME_ZONE); }
   int32_t issue_date() const { return GetField<int32_t>(VT_ISSUE_DATE, 0); }
   int32_t settlement_date() const { return GetField<int32_t>(VT_SETTLEMENT_DATE, 0); }
   int64_t expiry_datetime() const { return GetField<int64_t>(VT_EXPIRY_DATETIME, 0); }
@@ -3549,22 +3186,16 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
            VerifyOffset(verifier, VT_DESCRIPTION) && verifier.VerifyString(description()) &&
-           VerifyField<uint8_t>(verifier, VT_SECURITY_TYPE) &&
-           VerifyOffset(verifier, VT_CURRENCY) && verifier.VerifyString(currency()) &&
-           VerifyOffset(verifier, VT_SETTLEMENT_CURRENCY) &&
-           verifier.VerifyString(settlement_currency()) &&
-           VerifyOffset(verifier, VT_COMMISSION_CURRENCY) &&
-           verifier.VerifyString(commission_currency()) &&
-           VerifyField<double>(verifier, VT_TICK_SIZE) &&
-           VerifyField<double>(verifier, VT_MULTIPLIER) &&
-           VerifyField<double>(verifier, VT_MIN_TRADE_VOL) &&
-           VerifyField<uint8_t>(verifier, VT_OPTION_TYPE) &&
-           VerifyOffset(verifier, VT_STRIKE_CURRENCY) && verifier.VerifyString(strike_currency()) &&
-           VerifyField<double>(verifier, VT_STRIKE_PRICE) &&
+           VerifyField<uint8_t>(verifier, VT_SECURITY_TYPE) && VerifyOffset(verifier, VT_CURRENCY) &&
+           verifier.VerifyString(currency()) && VerifyOffset(verifier, VT_SETTLEMENT_CURRENCY) &&
+           verifier.VerifyString(settlement_currency()) && VerifyOffset(verifier, VT_COMMISSION_CURRENCY) &&
+           verifier.VerifyString(commission_currency()) && VerifyField<double>(verifier, VT_TICK_SIZE) &&
+           VerifyField<double>(verifier, VT_MULTIPLIER) && VerifyField<double>(verifier, VT_MIN_TRADE_VOL) &&
+           VerifyField<uint8_t>(verifier, VT_OPTION_TYPE) && VerifyOffset(verifier, VT_STRIKE_CURRENCY) &&
+           verifier.VerifyString(strike_currency()) && VerifyField<double>(verifier, VT_STRIKE_PRICE) &&
            VerifyOffset(verifier, VT_UNDERLYING) && verifier.VerifyString(underlying()) &&
            VerifyOffset(verifier, VT_TIME_ZONE) && verifier.VerifyString(time_zone()) &&
-           VerifyField<int32_t>(verifier, VT_ISSUE_DATE) &&
-           VerifyField<int32_t>(verifier, VT_SETTLEMENT_DATE) &&
+           VerifyField<int32_t>(verifier, VT_ISSUE_DATE) && VerifyField<int32_t>(verifier, VT_SETTLEMENT_DATE) &&
            VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME) &&
            VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME_UTC) && verifier.EndTable();
   }
@@ -3574,21 +3205,16 @@ struct ReferenceDataBuilder {
   typedef ReferenceData Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(ReferenceData::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(ReferenceData::VT_STREAM_ID, stream_id, 0); }
   void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
     fbb_.AddOffset(ReferenceData::VT_EXCHANGE, exchange);
   }
-  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
-    fbb_.AddOffset(ReferenceData::VT_SYMBOL, symbol);
-  }
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) { fbb_.AddOffset(ReferenceData::VT_SYMBOL, symbol); }
   void add_description(flatbuffers::Offset<flatbuffers::String> description) {
     fbb_.AddOffset(ReferenceData::VT_DESCRIPTION, description);
   }
   void add_security_type(roq::fbs::SecurityType security_type) {
-    fbb_.AddElement<uint8_t>(
-        ReferenceData::VT_SECURITY_TYPE, static_cast<uint8_t>(security_type), 0);
+    fbb_.AddElement<uint8_t>(ReferenceData::VT_SECURITY_TYPE, static_cast<uint8_t>(security_type), 0);
   }
   void add_currency(flatbuffers::Offset<flatbuffers::String> currency) {
     fbb_.AddOffset(ReferenceData::VT_CURRENCY, currency);
@@ -3600,16 +3226,13 @@ struct ReferenceDataBuilder {
     fbb_.AddOffset(ReferenceData::VT_COMMISSION_CURRENCY, commission_currency);
   }
   void add_tick_size(double tick_size) {
-    fbb_.AddElement<double>(
-        ReferenceData::VT_TICK_SIZE, tick_size, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(ReferenceData::VT_TICK_SIZE, tick_size, std::numeric_limits<double>::quiet_NaN());
   }
   void add_multiplier(double multiplier) {
-    fbb_.AddElement<double>(
-        ReferenceData::VT_MULTIPLIER, multiplier, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(ReferenceData::VT_MULTIPLIER, multiplier, std::numeric_limits<double>::quiet_NaN());
   }
   void add_min_trade_vol(double min_trade_vol) {
-    fbb_.AddElement<double>(
-        ReferenceData::VT_MIN_TRADE_VOL, min_trade_vol, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(ReferenceData::VT_MIN_TRADE_VOL, min_trade_vol, std::numeric_limits<double>::quiet_NaN());
   }
   void add_option_type(roq::fbs::OptionType option_type) {
     fbb_.AddElement<uint8_t>(ReferenceData::VT_OPTION_TYPE, static_cast<uint8_t>(option_type), 0);
@@ -3618,8 +3241,7 @@ struct ReferenceDataBuilder {
     fbb_.AddOffset(ReferenceData::VT_STRIKE_CURRENCY, strike_currency);
   }
   void add_strike_price(double strike_price) {
-    fbb_.AddElement<double>(
-        ReferenceData::VT_STRIKE_PRICE, strike_price, std::numeric_limits<double>::quiet_NaN());
+    fbb_.AddElement<double>(ReferenceData::VT_STRIKE_PRICE, strike_price, std::numeric_limits<double>::quiet_NaN());
   }
   void add_underlying(flatbuffers::Offset<flatbuffers::String> underlying) {
     fbb_.AddOffset(ReferenceData::VT_UNDERLYING, underlying);
@@ -3627,9 +3249,7 @@ struct ReferenceDataBuilder {
   void add_time_zone(flatbuffers::Offset<flatbuffers::String> time_zone) {
     fbb_.AddOffset(ReferenceData::VT_TIME_ZONE, time_zone);
   }
-  void add_issue_date(int32_t issue_date) {
-    fbb_.AddElement<int32_t>(ReferenceData::VT_ISSUE_DATE, issue_date, 0);
-  }
+  void add_issue_date(int32_t issue_date) { fbb_.AddElement<int32_t>(ReferenceData::VT_ISSUE_DATE, issue_date, 0); }
   void add_settlement_date(int32_t settlement_date) {
     fbb_.AddElement<int32_t>(ReferenceData::VT_SETTLEMENT_DATE, settlement_date, 0);
   }
@@ -3639,9 +3259,7 @@ struct ReferenceDataBuilder {
   void add_expiry_datetime_utc(int64_t expiry_datetime_utc) {
     fbb_.AddElement<int64_t>(ReferenceData::VT_EXPIRY_DATETIME_UTC, expiry_datetime_utc, 0);
   }
-  explicit ReferenceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit ReferenceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<ReferenceData> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ReferenceData>(end);
@@ -3761,15 +3379,10 @@ struct StatisticsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXCHANGE_TIME_UTC = 14
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>> *statistics() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>> *>(
-        VT_STATISTICS);
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>> *>(VT_STATISTICS);
   }
   bool snapshot() const { return GetField<uint8_t>(VT_SNAPSHOT, 0) != 0; }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
@@ -3778,8 +3391,7 @@ struct StatisticsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
            VerifyOffset(verifier, VT_STATISTICS) && verifier.VerifyVector(statistics()) &&
-           verifier.VerifyVectorOfTables(statistics()) &&
-           VerifyField<uint8_t>(verifier, VT_SNAPSHOT) &&
+           verifier.VerifyVectorOfTables(statistics()) && VerifyField<uint8_t>(verifier, VT_SNAPSHOT) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) && verifier.EndTable();
   }
 };
@@ -3788,18 +3400,14 @@ struct StatisticsUpdateBuilder {
   typedef StatisticsUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(StatisticsUpdate::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(StatisticsUpdate::VT_STREAM_ID, stream_id, 0); }
   void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
     fbb_.AddOffset(StatisticsUpdate::VT_EXCHANGE, exchange);
   }
   void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
     fbb_.AddOffset(StatisticsUpdate::VT_SYMBOL, symbol);
   }
-  void add_statistics(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>>>
-          statistics) {
+  void add_statistics(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>>> statistics) {
     fbb_.AddOffset(StatisticsUpdate::VT_STATISTICS, statistics);
   }
   void add_snapshot(bool snapshot) {
@@ -3808,9 +3416,7 @@ struct StatisticsUpdateBuilder {
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(StatisticsUpdate::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
-  explicit StatisticsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit StatisticsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<StatisticsUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<StatisticsUpdate>(end);
@@ -3823,8 +3429,7 @@ inline flatbuffers::Offset<StatisticsUpdate> CreateStatisticsUpdate(
     uint16_t stream_id = 0,
     flatbuffers::Offset<flatbuffers::String> exchange = 0,
     flatbuffers::Offset<flatbuffers::String> symbol = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>>> statistics =
-        0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>>> statistics = 0,
     bool snapshot = false,
     int64_t exchange_time_utc = 0) {
   StatisticsUpdateBuilder builder_(_fbb);
@@ -3847,8 +3452,7 @@ inline flatbuffers::Offset<StatisticsUpdate> CreateStatisticsUpdateDirect(
     int64_t exchange_time_utc = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
-  auto statistics__ =
-      statistics ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Statistics>>(*statistics) : 0;
+  auto statistics__ = statistics ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Statistics>>(*statistics) : 0;
   return roq::fbs::CreateStatisticsUpdate(
       _fbb, stream_id, exchange__, symbol__, statistics__, snapshot, exchange_time_utc);
 }
@@ -3864,25 +3468,19 @@ struct StreamStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_PRIORITY = 14
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
   roq::fbs::ConnectionStatus status() const {
     return static_cast<roq::fbs::ConnectionStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
-  roq::fbs::StreamType type() const {
-    return static_cast<roq::fbs::StreamType>(GetField<uint8_t>(VT_TYPE, 0));
-  }
-  roq::fbs::Priority priority() const {
-    return static_cast<roq::fbs::Priority>(GetField<uint32_t>(VT_PRIORITY, 0));
-  }
+  roq::fbs::StreamType type() const { return static_cast<roq::fbs::StreamType>(GetField<uint8_t>(VT_TYPE, 0)); }
+  roq::fbs::Priority priority() const { return static_cast<roq::fbs::Priority>(GetField<uint32_t>(VT_PRIORITY, 0)); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint64_t>(verifier, VT_SUPPORTS) &&
-           VerifyField<uint8_t>(verifier, VT_STATUS) && VerifyField<uint8_t>(verifier, VT_TYPE) &&
-           VerifyField<uint32_t>(verifier, VT_PRIORITY) && verifier.EndTable();
+           VerifyField<uint64_t>(verifier, VT_SUPPORTS) && VerifyField<uint8_t>(verifier, VT_STATUS) &&
+           VerifyField<uint8_t>(verifier, VT_TYPE) && VerifyField<uint32_t>(verifier, VT_PRIORITY) &&
+           verifier.EndTable();
   }
 };
 
@@ -3890,15 +3488,11 @@ struct StreamStatusBuilder {
   typedef StreamStatus Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(StreamStatus::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(StreamStatus::VT_STREAM_ID, stream_id, 0); }
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(StreamStatus::VT_ACCOUNT, account);
   }
-  void add_supports(uint64_t supports) {
-    fbb_.AddElement<uint64_t>(StreamStatus::VT_SUPPORTS, supports, 0);
-  }
+  void add_supports(uint64_t supports) { fbb_.AddElement<uint64_t>(StreamStatus::VT_SUPPORTS, supports, 0); }
   void add_status(roq::fbs::ConnectionStatus status) {
     fbb_.AddElement<uint8_t>(StreamStatus::VT_STATUS, static_cast<uint8_t>(status), 0);
   }
@@ -3908,9 +3502,7 @@ struct StreamStatusBuilder {
   void add_priority(roq::fbs::Priority priority) {
     fbb_.AddElement<uint32_t>(StreamStatus::VT_PRIORITY, static_cast<uint32_t>(priority), 0);
   }
-  explicit StreamStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit StreamStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<StreamStatus> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<StreamStatus>(end);
@@ -3959,21 +3551,16 @@ struct TopOfBook FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXCHANGE_TIME_UTC = 14
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   const roq::fbs::Layer *layer() const { return GetPointer<const roq::fbs::Layer *>(VT_LAYER); }
   bool snapshot() const { return GetField<uint8_t>(VT_SNAPSHOT, 0) != 0; }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
-           VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyOffset(verifier, VT_LAYER) && verifier.VerifyTable(layer()) &&
-           VerifyField<uint8_t>(verifier, VT_SNAPSHOT) &&
+           VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) && VerifyOffset(verifier, VT_LAYER) &&
+           verifier.VerifyTable(layer()) && VerifyField<uint8_t>(verifier, VT_SNAPSHOT) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) && verifier.EndTable();
   }
 };
@@ -3982,27 +3569,19 @@ struct TopOfBookBuilder {
   typedef TopOfBook Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(TopOfBook::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(TopOfBook::VT_STREAM_ID, stream_id, 0); }
   void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
     fbb_.AddOffset(TopOfBook::VT_EXCHANGE, exchange);
   }
-  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
-    fbb_.AddOffset(TopOfBook::VT_SYMBOL, symbol);
-  }
-  void add_layer(flatbuffers::Offset<roq::fbs::Layer> layer) {
-    fbb_.AddOffset(TopOfBook::VT_LAYER, layer);
-  }
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) { fbb_.AddOffset(TopOfBook::VT_SYMBOL, symbol); }
+  void add_layer(flatbuffers::Offset<roq::fbs::Layer> layer) { fbb_.AddOffset(TopOfBook::VT_LAYER, layer); }
   void add_snapshot(bool snapshot) {
     fbb_.AddElement<uint8_t>(TopOfBook::VT_SNAPSHOT, static_cast<uint8_t>(snapshot), 0);
   }
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(TopOfBook::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
-  explicit TopOfBookBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit TopOfBookBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<TopOfBook> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TopOfBook>(end);
@@ -4038,8 +3617,7 @@ inline flatbuffers::Offset<TopOfBook> CreateTopOfBookDirect(
     int64_t exchange_time_utc = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
-  return roq::fbs::CreateTopOfBook(
-      _fbb, stream_id, exchange__, symbol__, layer, snapshot, exchange_time_utc);
+  return roq::fbs::CreateTopOfBook(_fbb, stream_id, exchange__, symbol__, layer, snapshot, exchange_time_utc);
 }
 
 struct TradeSummary FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4052,12 +3630,8 @@ struct TradeSummary FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXCHANGE_TIME_UTC = 12
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Trade>> *trades() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Trade>> *>(VT_TRADES);
   }
@@ -4065,9 +3639,8 @@ struct TradeSummary FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
-           VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyOffset(verifier, VT_TRADES) && verifier.VerifyVector(trades()) &&
-           verifier.VerifyVectorOfTables(trades()) &&
+           VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) && VerifyOffset(verifier, VT_TRADES) &&
+           verifier.VerifyVector(trades()) && verifier.VerifyVectorOfTables(trades()) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) && verifier.EndTable();
   }
 };
@@ -4076,25 +3649,18 @@ struct TradeSummaryBuilder {
   typedef TradeSummary Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(TradeSummary::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(TradeSummary::VT_STREAM_ID, stream_id, 0); }
   void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
     fbb_.AddOffset(TradeSummary::VT_EXCHANGE, exchange);
   }
-  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
-    fbb_.AddOffset(TradeSummary::VT_SYMBOL, symbol);
-  }
-  void add_trades(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Trade>>> trades) {
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) { fbb_.AddOffset(TradeSummary::VT_SYMBOL, symbol); }
+  void add_trades(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Trade>>> trades) {
     fbb_.AddOffset(TradeSummary::VT_TRADES, trades);
   }
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(TradeSummary::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
-  explicit TradeSummaryBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit TradeSummaryBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<TradeSummary> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TradeSummary>(end);
@@ -4128,8 +3694,7 @@ inline flatbuffers::Offset<TradeSummary> CreateTradeSummaryDirect(
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto trades__ = trades ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Trade>>(*trades) : 0;
-  return roq::fbs::CreateTradeSummary(
-      _fbb, stream_id, exchange__, symbol__, trades__, exchange_time_utc);
+  return roq::fbs::CreateTradeSummary(_fbb, stream_id, exchange__, symbol__, trades__, exchange_time_utc);
 }
 
 struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4150,16 +3715,10 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_FILLS = 28
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const {
-    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
-  }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  const flatbuffers::String *exchange() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
-  }
-  const flatbuffers::String *symbol() const {
-    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
-  }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
   roq::fbs::PositionEffect position_effect() const {
     return static_cast<roq::fbs::PositionEffect>(GetField<uint8_t>(VT_POSITION_EFFECT, 0));
@@ -4172,9 +3731,7 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *external_order_id() const {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ORDER_ID);
   }
-  const flatbuffers::String *routing_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID);
-  }
+  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>> *fills() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>> *>(VT_FILLS);
   }
@@ -4182,18 +3739,14 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_EXCHANGE) &&
-           verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) &&
-           verifier.VerifyString(symbol()) && VerifyField<uint8_t>(verifier, VT_SIDE) &&
-           VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
-           VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC) &&
-           VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC) &&
-           VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
-           verifier.VerifyString(external_account()) &&
-           VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
-           verifier.VerifyString(external_order_id()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && VerifyOffset(verifier, VT_FILLS) &&
-           verifier.VerifyVector(fills()) && verifier.VerifyVectorOfTables(fills()) &&
-           verifier.EndTable();
+           verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
+           VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
+           VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC) && VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC) &&
+           VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) && verifier.VerifyString(external_account()) &&
+           VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) && verifier.VerifyString(external_order_id()) &&
+           VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
+           VerifyOffset(verifier, VT_FILLS) && verifier.VerifyVector(fills()) &&
+           verifier.VerifyVectorOfTables(fills()) && verifier.EndTable();
   }
 };
 
@@ -4201,27 +3754,18 @@ struct TradeUpdateBuilder {
   typedef TradeUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) {
-    fbb_.AddElement<uint16_t>(TradeUpdate::VT_STREAM_ID, stream_id, 0);
-  }
+  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(TradeUpdate::VT_STREAM_ID, stream_id, 0); }
   void add_account(flatbuffers::Offset<flatbuffers::String> account) {
     fbb_.AddOffset(TradeUpdate::VT_ACCOUNT, account);
   }
-  void add_order_id(uint32_t order_id) {
-    fbb_.AddElement<uint32_t>(TradeUpdate::VT_ORDER_ID, order_id, 0);
-  }
+  void add_order_id(uint32_t order_id) { fbb_.AddElement<uint32_t>(TradeUpdate::VT_ORDER_ID, order_id, 0); }
   void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
     fbb_.AddOffset(TradeUpdate::VT_EXCHANGE, exchange);
   }
-  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
-    fbb_.AddOffset(TradeUpdate::VT_SYMBOL, symbol);
-  }
-  void add_side(roq::fbs::Side side) {
-    fbb_.AddElement<uint8_t>(TradeUpdate::VT_SIDE, static_cast<uint8_t>(side), 0);
-  }
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) { fbb_.AddOffset(TradeUpdate::VT_SYMBOL, symbol); }
+  void add_side(roq::fbs::Side side) { fbb_.AddElement<uint8_t>(TradeUpdate::VT_SIDE, static_cast<uint8_t>(side), 0); }
   void add_position_effect(roq::fbs::PositionEffect position_effect) {
-    fbb_.AddElement<uint8_t>(
-        TradeUpdate::VT_POSITION_EFFECT, static_cast<uint8_t>(position_effect), 0);
+    fbb_.AddElement<uint8_t>(TradeUpdate::VT_POSITION_EFFECT, static_cast<uint8_t>(position_effect), 0);
   }
   void add_create_time_utc(int64_t create_time_utc) {
     fbb_.AddElement<int64_t>(TradeUpdate::VT_CREATE_TIME_UTC, create_time_utc, 0);
@@ -4238,13 +3782,10 @@ struct TradeUpdateBuilder {
   void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
     fbb_.AddOffset(TradeUpdate::VT_ROUTING_ID, routing_id);
   }
-  void add_fills(
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>>> fills) {
+  void add_fills(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>>> fills) {
     fbb_.AddOffset(TradeUpdate::VT_FILLS, fills);
   }
-  explicit TradeUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit TradeUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<TradeUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TradeUpdate>(end);
@@ -4335,30 +3876,19 @@ struct Handshake FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_PASSWORD = 16
   };
   uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
-  const flatbuffers::String *application() const {
-    return GetPointer<const flatbuffers::String *>(VT_APPLICATION);
-  }
-  const flatbuffers::String *hostname() const {
-    return GetPointer<const flatbuffers::String *>(VT_HOSTNAME);
-  }
+  const flatbuffers::String *application() const { return GetPointer<const flatbuffers::String *>(VT_APPLICATION); }
+  const flatbuffers::String *hostname() const { return GetPointer<const flatbuffers::String *>(VT_HOSTNAME); }
   uint32_t pid() const { return GetField<uint32_t>(VT_PID, 0); }
-  const flatbuffers::String *uuid() const {
-    return GetPointer<const flatbuffers::String *>(VT_UUID);
-  }
-  const flatbuffers::String *login() const {
-    return GetPointer<const flatbuffers::String *>(VT_LOGIN);
-  }
-  const flatbuffers::String *password() const {
-    return GetPointer<const flatbuffers::String *>(VT_PASSWORD);
-  }
+  const flatbuffers::String *uuid() const { return GetPointer<const flatbuffers::String *>(VT_UUID); }
+  const flatbuffers::String *login() const { return GetPointer<const flatbuffers::String *>(VT_LOGIN); }
+  const flatbuffers::String *password() const { return GetPointer<const flatbuffers::String *>(VT_PASSWORD); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
            VerifyOffset(verifier, VT_APPLICATION) && verifier.VerifyString(application()) &&
            VerifyOffset(verifier, VT_HOSTNAME) && verifier.VerifyString(hostname()) &&
            VerifyField<uint32_t>(verifier, VT_PID) && VerifyOffset(verifier, VT_UUID) &&
-           verifier.VerifyString(uuid()) && VerifyOffset(verifier, VT_LOGIN) &&
-           verifier.VerifyString(login()) && VerifyOffset(verifier, VT_PASSWORD) &&
-           verifier.VerifyString(password()) && verifier.EndTable();
+           verifier.VerifyString(uuid()) && VerifyOffset(verifier, VT_LOGIN) && verifier.VerifyString(login()) &&
+           VerifyOffset(verifier, VT_PASSWORD) && verifier.VerifyString(password()) && verifier.EndTable();
   }
 };
 
@@ -4366,9 +3896,7 @@ struct HandshakeBuilder {
   typedef Handshake Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_version(uint32_t version) {
-    fbb_.AddElement<uint32_t>(Handshake::VT_VERSION, version, 0);
-  }
+  void add_version(uint32_t version) { fbb_.AddElement<uint32_t>(Handshake::VT_VERSION, version, 0); }
   void add_application(flatbuffers::Offset<flatbuffers::String> application) {
     fbb_.AddOffset(Handshake::VT_APPLICATION, application);
   }
@@ -4376,18 +3904,12 @@ struct HandshakeBuilder {
     fbb_.AddOffset(Handshake::VT_HOSTNAME, hostname);
   }
   void add_pid(uint32_t pid) { fbb_.AddElement<uint32_t>(Handshake::VT_PID, pid, 0); }
-  void add_uuid(flatbuffers::Offset<flatbuffers::String> uuid) {
-    fbb_.AddOffset(Handshake::VT_UUID, uuid);
-  }
-  void add_login(flatbuffers::Offset<flatbuffers::String> login) {
-    fbb_.AddOffset(Handshake::VT_LOGIN, login);
-  }
+  void add_uuid(flatbuffers::Offset<flatbuffers::String> uuid) { fbb_.AddOffset(Handshake::VT_UUID, uuid); }
+  void add_login(flatbuffers::Offset<flatbuffers::String> login) { fbb_.AddOffset(Handshake::VT_LOGIN, login); }
   void add_password(flatbuffers::Offset<flatbuffers::String> password) {
     fbb_.AddOffset(Handshake::VT_PASSWORD, password);
   }
-  explicit HandshakeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit HandshakeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Handshake> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Handshake>(end);
@@ -4429,8 +3951,7 @@ inline flatbuffers::Offset<Handshake> CreateHandshakeDirect(
   auto uuid__ = uuid ? _fbb.CreateString(uuid) : 0;
   auto login__ = login ? _fbb.CreateString(login) : 0;
   auto password__ = password ? _fbb.CreateString(password) : 0;
-  return roq::fbs::CreateHandshake(
-      _fbb, version, application__, hostname__, pid, uuid__, login__, password__);
+  return roq::fbs::CreateHandshake(_fbb, version, application__, hostname__, pid, uuid__, login__, password__);
 }
 
 struct HandshakeAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4447,23 +3968,15 @@ struct HandshakeAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_USER_ID = 20
   };
   uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
-  const flatbuffers::String *application() const {
-    return GetPointer<const flatbuffers::String *>(VT_APPLICATION);
-  }
-  const flatbuffers::String *hostname() const {
-    return GetPointer<const flatbuffers::String *>(VT_HOSTNAME);
-  }
+  const flatbuffers::String *application() const { return GetPointer<const flatbuffers::String *>(VT_APPLICATION); }
+  const flatbuffers::String *hostname() const { return GetPointer<const flatbuffers::String *>(VT_HOSTNAME); }
   uint32_t pid() const { return GetField<uint32_t>(VT_PID, 0); }
   bool failure() const { return GetField<uint8_t>(VT_FAILURE, 0) != 0; }
   const flatbuffers::String *failure_reason() const {
     return GetPointer<const flatbuffers::String *>(VT_FAILURE_REASON);
   }
-  const flatbuffers::String *uuid() const {
-    return GetPointer<const flatbuffers::String *>(VT_UUID);
-  }
-  const flatbuffers::String *name() const {
-    return GetPointer<const flatbuffers::String *>(VT_NAME);
-  }
+  const flatbuffers::String *uuid() const { return GetPointer<const flatbuffers::String *>(VT_UUID); }
+  const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(VT_NAME); }
   uint8_t user_id() const { return GetField<uint8_t>(VT_USER_ID, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
@@ -4471,9 +3984,8 @@ struct HandshakeAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_HOSTNAME) && verifier.VerifyString(hostname()) &&
            VerifyField<uint32_t>(verifier, VT_PID) && VerifyField<uint8_t>(verifier, VT_FAILURE) &&
            VerifyOffset(verifier, VT_FAILURE_REASON) && verifier.VerifyString(failure_reason()) &&
-           VerifyOffset(verifier, VT_UUID) && verifier.VerifyString(uuid()) &&
-           VerifyOffset(verifier, VT_NAME) && verifier.VerifyString(name()) &&
-           VerifyField<uint8_t>(verifier, VT_USER_ID) && verifier.EndTable();
+           VerifyOffset(verifier, VT_UUID) && verifier.VerifyString(uuid()) && VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) && VerifyField<uint8_t>(verifier, VT_USER_ID) && verifier.EndTable();
   }
 };
 
@@ -4481,9 +3993,7 @@ struct HandshakeAckBuilder {
   typedef HandshakeAck Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_version(uint32_t version) {
-    fbb_.AddElement<uint32_t>(HandshakeAck::VT_VERSION, version, 0);
-  }
+  void add_version(uint32_t version) { fbb_.AddElement<uint32_t>(HandshakeAck::VT_VERSION, version, 0); }
   void add_application(flatbuffers::Offset<flatbuffers::String> application) {
     fbb_.AddOffset(HandshakeAck::VT_APPLICATION, application);
   }
@@ -4497,18 +4007,10 @@ struct HandshakeAckBuilder {
   void add_failure_reason(flatbuffers::Offset<flatbuffers::String> failure_reason) {
     fbb_.AddOffset(HandshakeAck::VT_FAILURE_REASON, failure_reason);
   }
-  void add_uuid(flatbuffers::Offset<flatbuffers::String> uuid) {
-    fbb_.AddOffset(HandshakeAck::VT_UUID, uuid);
-  }
-  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
-    fbb_.AddOffset(HandshakeAck::VT_NAME, name);
-  }
-  void add_user_id(uint8_t user_id) {
-    fbb_.AddElement<uint8_t>(HandshakeAck::VT_USER_ID, user_id, 0);
-  }
-  explicit HandshakeAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  void add_uuid(flatbuffers::Offset<flatbuffers::String> uuid) { fbb_.AddOffset(HandshakeAck::VT_UUID, uuid); }
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) { fbb_.AddOffset(HandshakeAck::VT_NAME, name); }
+  void add_user_id(uint8_t user_id) { fbb_.AddElement<uint8_t>(HandshakeAck::VT_USER_ID, user_id, 0); }
+  explicit HandshakeAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<HandshakeAck> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<HandshakeAck>(end);
@@ -4557,32 +4059,19 @@ inline flatbuffers::Offset<HandshakeAck> CreateHandshakeAckDirect(
   auto uuid__ = uuid ? _fbb.CreateString(uuid) : 0;
   auto name__ = name ? _fbb.CreateString(name) : 0;
   return roq::fbs::CreateHandshakeAck(
-      _fbb,
-      version,
-      application__,
-      hostname__,
-      pid,
-      failure,
-      failure_reason__,
-      uuid__,
-      name__,
-      user_id);
+      _fbb, version, application__, hostname__, pid, failure, failure_reason__, uuid__, name__, user_id);
 }
 
 struct Subscribe FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SubscribeBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && verifier.EndTable();
-  }
+  bool Verify(flatbuffers::Verifier &verifier) const { return VerifyTableStart(verifier) && verifier.EndTable(); }
 };
 
 struct SubscribeBuilder {
   typedef Subscribe Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit SubscribeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit SubscribeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Subscribe> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Subscribe>(end);
@@ -4597,18 +4086,14 @@ inline flatbuffers::Offset<Subscribe> CreateSubscribe(flatbuffers::FlatBufferBui
 
 struct BatchBegin FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef BatchBeginBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && verifier.EndTable();
-  }
+  bool Verify(flatbuffers::Verifier &verifier) const { return VerifyTableStart(verifier) && verifier.EndTable(); }
 };
 
 struct BatchBeginBuilder {
   typedef BatchBegin Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit BatchBeginBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit BatchBeginBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<BatchBegin> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<BatchBegin>(end);
@@ -4623,18 +4108,14 @@ inline flatbuffers::Offset<BatchBegin> CreateBatchBegin(flatbuffers::FlatBufferB
 
 struct BatchEnd FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef BatchEndBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && verifier.EndTable();
-  }
+  bool Verify(flatbuffers::Verifier &verifier) const { return VerifyTableStart(verifier) && verifier.EndTable(); }
 };
 
 struct BatchEndBuilder {
   typedef BatchEnd Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  explicit BatchEndBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  explicit BatchEndBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<BatchEnd> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<BatchEnd>(end);
@@ -4663,10 +4144,9 @@ struct SourceInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint64_t create_time() const { return GetField<uint64_t>(VT_CREATE_TIME, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint64_t>(verifier, VT_SEQNO) &&
-           VerifyField<uint64_t>(verifier, VT_SEND_TIME_UTC) &&
-           VerifyField<uint64_t>(verifier, VT_CREATE_TIME_UTC) &&
-           VerifyField<uint64_t>(verifier, VT_SEND_TIME) &&
-           VerifyField<uint64_t>(verifier, VT_CREATE_TIME) && verifier.EndTable();
+           VerifyField<uint64_t>(verifier, VT_SEND_TIME_UTC) && VerifyField<uint64_t>(verifier, VT_CREATE_TIME_UTC) &&
+           VerifyField<uint64_t>(verifier, VT_SEND_TIME) && VerifyField<uint64_t>(verifier, VT_CREATE_TIME) &&
+           verifier.EndTable();
   }
 };
 
@@ -4681,15 +4161,9 @@ struct SourceInfoBuilder {
   void add_create_time_utc(uint64_t create_time_utc) {
     fbb_.AddElement<uint64_t>(SourceInfo::VT_CREATE_TIME_UTC, create_time_utc, 0);
   }
-  void add_send_time(uint64_t send_time) {
-    fbb_.AddElement<uint64_t>(SourceInfo::VT_SEND_TIME, send_time, 0);
-  }
-  void add_create_time(uint64_t create_time) {
-    fbb_.AddElement<uint64_t>(SourceInfo::VT_CREATE_TIME, create_time, 0);
-  }
-  explicit SourceInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  void add_send_time(uint64_t send_time) { fbb_.AddElement<uint64_t>(SourceInfo::VT_SEND_TIME, send_time, 0); }
+  void add_create_time(uint64_t create_time) { fbb_.AddElement<uint64_t>(SourceInfo::VT_CREATE_TIME, create_time, 0); }
+  explicit SourceInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<SourceInfo> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<SourceInfo>(end);
@@ -4720,9 +4194,7 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MESSAGE_TYPE = 6,
     VT_MESSAGE = 8
   };
-  const roq::fbs::SourceInfo *source_info() const {
-    return GetPointer<const roq::fbs::SourceInfo *>(VT_SOURCE_INFO);
-  }
+  const roq::fbs::SourceInfo *source_info() const { return GetPointer<const roq::fbs::SourceInfo *>(VT_SOURCE_INFO); }
   roq::fbs::Message message_type() const {
     return static_cast<roq::fbs::Message>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
   }
@@ -4730,39 +4202,31 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   template <typename T>
   const T *message_as() const;
   const roq::fbs::Handshake *message_as_Handshake() const {
-    return message_type() == roq::fbs::Message_Handshake
-               ? static_cast<const roq::fbs::Handshake *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_Handshake ? static_cast<const roq::fbs::Handshake *>(message())
+                                                         : nullptr;
   }
   const roq::fbs::HandshakeAck *message_as_HandshakeAck() const {
-    return message_type() == roq::fbs::Message_HandshakeAck
-               ? static_cast<const roq::fbs::HandshakeAck *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_HandshakeAck ? static_cast<const roq::fbs::HandshakeAck *>(message())
+                                                            : nullptr;
   }
   const roq::fbs::Subscribe *message_as_Subscribe() const {
-    return message_type() == roq::fbs::Message_Subscribe
-               ? static_cast<const roq::fbs::Subscribe *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_Subscribe ? static_cast<const roq::fbs::Subscribe *>(message())
+                                                         : nullptr;
   }
   const roq::fbs::BatchBegin *message_as_BatchBegin() const {
-    return message_type() == roq::fbs::Message_BatchBegin
-               ? static_cast<const roq::fbs::BatchBegin *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_BatchBegin ? static_cast<const roq::fbs::BatchBegin *>(message())
+                                                          : nullptr;
   }
   const roq::fbs::BatchEnd *message_as_BatchEnd() const {
-    return message_type() == roq::fbs::Message_BatchEnd
-               ? static_cast<const roq::fbs::BatchEnd *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_BatchEnd ? static_cast<const roq::fbs::BatchEnd *>(message()) : nullptr;
   }
   const roq::fbs::DownloadBegin *message_as_DownloadBegin() const {
-    return message_type() == roq::fbs::Message_DownloadBegin
-               ? static_cast<const roq::fbs::DownloadBegin *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_DownloadBegin ? static_cast<const roq::fbs::DownloadBegin *>(message())
+                                                             : nullptr;
   }
   const roq::fbs::DownloadEnd *message_as_DownloadEnd() const {
-    return message_type() == roq::fbs::Message_DownloadEnd
-               ? static_cast<const roq::fbs::DownloadEnd *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_DownloadEnd ? static_cast<const roq::fbs::DownloadEnd *>(message())
+                                                           : nullptr;
   }
   const roq::fbs::GatewaySettings *message_as_GatewaySettings() const {
     return message_type() == roq::fbs::Message_GatewaySettings
@@ -4770,9 +4234,8 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
                : nullptr;
   }
   const roq::fbs::StreamStatus *message_as_StreamStatus() const {
-    return message_type() == roq::fbs::Message_StreamStatus
-               ? static_cast<const roq::fbs::StreamStatus *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_StreamStatus ? static_cast<const roq::fbs::StreamStatus *>(message())
+                                                            : nullptr;
   }
   const roq::fbs::ExternalLatency *message_as_ExternalLatency() const {
     return message_type() == roq::fbs::Message_ExternalLatency
@@ -4780,29 +4243,24 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
                : nullptr;
   }
   const roq::fbs::RateLimitUsage *message_as_RateLimitUsage() const {
-    return message_type() == roq::fbs::Message_RateLimitUsage
-               ? static_cast<const roq::fbs::RateLimitUsage *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_RateLimitUsage ? static_cast<const roq::fbs::RateLimitUsage *>(message())
+                                                              : nullptr;
   }
   const roq::fbs::GatewayStatus *message_as_GatewayStatus() const {
-    return message_type() == roq::fbs::Message_GatewayStatus
-               ? static_cast<const roq::fbs::GatewayStatus *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_GatewayStatus ? static_cast<const roq::fbs::GatewayStatus *>(message())
+                                                             : nullptr;
   }
   const roq::fbs::ReferenceData *message_as_ReferenceData() const {
-    return message_type() == roq::fbs::Message_ReferenceData
-               ? static_cast<const roq::fbs::ReferenceData *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_ReferenceData ? static_cast<const roq::fbs::ReferenceData *>(message())
+                                                             : nullptr;
   }
   const roq::fbs::MarketStatus *message_as_MarketStatus() const {
-    return message_type() == roq::fbs::Message_MarketStatus
-               ? static_cast<const roq::fbs::MarketStatus *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_MarketStatus ? static_cast<const roq::fbs::MarketStatus *>(message())
+                                                            : nullptr;
   }
   const roq::fbs::TopOfBook *message_as_TopOfBook() const {
-    return message_type() == roq::fbs::Message_TopOfBook
-               ? static_cast<const roq::fbs::TopOfBook *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_TopOfBook ? static_cast<const roq::fbs::TopOfBook *>(message())
+                                                         : nullptr;
   }
   const roq::fbs::MarketByPriceUpdate *message_as_MarketByPriceUpdate() const {
     return message_type() == roq::fbs::Message_MarketByPriceUpdate
@@ -4815,9 +4273,8 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
                : nullptr;
   }
   const roq::fbs::TradeSummary *message_as_TradeSummary() const {
-    return message_type() == roq::fbs::Message_TradeSummary
-               ? static_cast<const roq::fbs::TradeSummary *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_TradeSummary ? static_cast<const roq::fbs::TradeSummary *>(message())
+                                                            : nullptr;
   }
   const roq::fbs::StatisticsUpdate *message_as_StatisticsUpdate() const {
     return message_type() == roq::fbs::Message_StatisticsUpdate
@@ -4825,19 +4282,16 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
                : nullptr;
   }
   const roq::fbs::CreateOrder *message_as_CreateOrder() const {
-    return message_type() == roq::fbs::Message_CreateOrder
-               ? static_cast<const roq::fbs::CreateOrder *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_CreateOrder ? static_cast<const roq::fbs::CreateOrder *>(message())
+                                                           : nullptr;
   }
   const roq::fbs::ModifyOrder *message_as_ModifyOrder() const {
-    return message_type() == roq::fbs::Message_ModifyOrder
-               ? static_cast<const roq::fbs::ModifyOrder *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_ModifyOrder ? static_cast<const roq::fbs::ModifyOrder *>(message())
+                                                           : nullptr;
   }
   const roq::fbs::CancelOrder *message_as_CancelOrder() const {
-    return message_type() == roq::fbs::Message_CancelOrder
-               ? static_cast<const roq::fbs::CancelOrder *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_CancelOrder ? static_cast<const roq::fbs::CancelOrder *>(message())
+                                                           : nullptr;
   }
   const roq::fbs::CancelAllOrders *message_as_CancelAllOrders() const {
     return message_type() == roq::fbs::Message_CancelAllOrders
@@ -4845,35 +4299,29 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
                : nullptr;
   }
   const roq::fbs::OrderAck *message_as_OrderAck() const {
-    return message_type() == roq::fbs::Message_OrderAck
-               ? static_cast<const roq::fbs::OrderAck *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_OrderAck ? static_cast<const roq::fbs::OrderAck *>(message()) : nullptr;
   }
   const roq::fbs::OrderUpdate *message_as_OrderUpdate() const {
-    return message_type() == roq::fbs::Message_OrderUpdate
-               ? static_cast<const roq::fbs::OrderUpdate *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_OrderUpdate ? static_cast<const roq::fbs::OrderUpdate *>(message())
+                                                           : nullptr;
   }
   const roq::fbs::TradeUpdate *message_as_TradeUpdate() const {
-    return message_type() == roq::fbs::Message_TradeUpdate
-               ? static_cast<const roq::fbs::TradeUpdate *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_TradeUpdate ? static_cast<const roq::fbs::TradeUpdate *>(message())
+                                                           : nullptr;
   }
   const roq::fbs::PositionUpdate *message_as_PositionUpdate() const {
-    return message_type() == roq::fbs::Message_PositionUpdate
-               ? static_cast<const roq::fbs::PositionUpdate *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_PositionUpdate ? static_cast<const roq::fbs::PositionUpdate *>(message())
+                                                              : nullptr;
   }
   const roq::fbs::FundsUpdate *message_as_FundsUpdate() const {
-    return message_type() == roq::fbs::Message_FundsUpdate
-               ? static_cast<const roq::fbs::FundsUpdate *>(message())
-               : nullptr;
+    return message_type() == roq::fbs::Message_FundsUpdate ? static_cast<const roq::fbs::FundsUpdate *>(message())
+                                                           : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_SOURCE_INFO) &&
            verifier.VerifyTable(source_info()) && VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE) &&
-           VerifyOffset(verifier, VT_MESSAGE) &&
-           VerifyMessage(verifier, message(), message_type()) && verifier.EndTable();
+           VerifyOffset(verifier, VT_MESSAGE) && VerifyMessage(verifier, message(), message_type()) &&
+           verifier.EndTable();
   }
 };
 
@@ -4953,14 +4401,12 @@ inline const roq::fbs::TopOfBook *Event::message_as<roq::fbs::TopOfBook>() const
 }
 
 template <>
-inline const roq::fbs::MarketByPriceUpdate *Event::message_as<roq::fbs::MarketByPriceUpdate>()
-    const {
+inline const roq::fbs::MarketByPriceUpdate *Event::message_as<roq::fbs::MarketByPriceUpdate>() const {
   return message_as_MarketByPriceUpdate();
 }
 
 template <>
-inline const roq::fbs::MarketByOrderUpdate *Event::message_as<roq::fbs::MarketByOrderUpdate>()
-    const {
+inline const roq::fbs::MarketByOrderUpdate *Event::message_as<roq::fbs::MarketByOrderUpdate>() const {
   return message_as_MarketByOrderUpdate();
 }
 
@@ -5029,12 +4475,8 @@ struct EventBuilder {
   void add_message_type(roq::fbs::Message message_type) {
     fbb_.AddElement<uint8_t>(Event::VT_MESSAGE_TYPE, static_cast<uint8_t>(message_type), 0);
   }
-  void add_message(flatbuffers::Offset<void> message) {
-    fbb_.AddOffset(Event::VT_MESSAGE, message);
-  }
-  explicit EventBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
+  void add_message(flatbuffers::Offset<void> message) { fbb_.AddOffset(Event::VT_MESSAGE, message); }
+  explicit EventBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Event> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Event>(end);
@@ -5208,8 +4650,7 @@ inline bool VerifySizePrefixedEventBuffer(flatbuffers::Verifier &verifier) {
   return verifier.VerifySizePrefixedBuffer<roq::fbs::Event>(nullptr);
 }
 
-inline void FinishEventBuffer(
-    flatbuffers::FlatBufferBuilder &fbb, flatbuffers::Offset<roq::fbs::Event> root) {
+inline void FinishEventBuffer(flatbuffers::FlatBufferBuilder &fbb, flatbuffers::Offset<roq::fbs::Event> root) {
   fbb.Finish(root);
 }
 

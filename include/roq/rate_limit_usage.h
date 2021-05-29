@@ -23,9 +23,8 @@ namespace roq {
 
 //! Rate-limit usage vs high-water mark
 struct ROQ_PUBLIC RateLimitUsage final {
-  uint16_t stream_id = {};  //!< Stream identifier
-  bool above_high_water_mark =
-      false;  //!< true when there is an increased probability that the next request could fail
+  uint16_t stream_id = {};             //!< Stream identifier
+  bool above_high_water_mark = false;  //!< true when there is an increased probability that the next request could fail
 };
 
 }  // namespace roq

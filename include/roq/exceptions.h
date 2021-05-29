@@ -64,8 +64,7 @@ class ROQ_PUBLIC SystemError : public RuntimeError, public std::system_error {
 
 template <typename ErrorCode, typename... Args>
 struct SystemErrorException final : public SystemError {
-  SystemErrorException(
-      ErrorCode ec, Args &&...args, const source_location &loc = source_location::current())
+  SystemErrorException(ErrorCode ec, Args &&...args, const source_location &loc = source_location::current())
       : SystemError(loc, ec, roq::format(std::forward<Args>(args)...)) {}
 };
 
@@ -78,8 +77,7 @@ class ROQ_PUBLIC RangeError : public RuntimeError, public std::range_error {
   char const *what() const noexcept override { return std::range_error::what(); }
 
  protected:
-  RangeError(const source_location &loc, const std::string &what)
-      : RuntimeError(loc, what), std::range_error(what) {}
+  RangeError(const source_location &loc, const std::string &what) : RuntimeError(loc, what), std::range_error(what) {}
 };
 
 template <typename... Args>
@@ -166,8 +164,7 @@ class ROQ_PUBLIC OutOfRange : public LogicError, public std::out_of_range {
   char const *what() const noexcept override { return std::out_of_range::what(); }
 
  protected:
-  OutOfRange(const source_location &loc, const std::string &what)
-      : LogicError(loc, what), std::out_of_range(what) {}
+  OutOfRange(const source_location &loc, const std::string &what) : LogicError(loc, what), std::out_of_range(what) {}
 };
 
 template <typename... Args>
@@ -185,8 +182,7 @@ class ROQ_PUBLIC LengthError : public LogicError, public std::length_error {
   char const *what() const noexcept override { return std::length_error::what(); }
 
  protected:
-  LengthError(const source_location &loc, const std::string &what)
-      : LogicError(loc, what), std::length_error(what) {}
+  LengthError(const source_location &loc, const std::string &what) : LogicError(loc, what), std::length_error(what) {}
 };
 
 template <typename... Args>
@@ -277,8 +273,7 @@ class ROQ_PUBLIC ConnectionRefused : public TransportError {
 
 template <typename... Args>
 struct ConnectionRefusedException final : public ConnectionRefused {
-  ConnectionRefusedException(
-      Args &&...args, const source_location &loc = source_location::current())
+  ConnectionRefusedException(Args &&...args, const source_location &loc = source_location::current())
       : ConnectionRefused(loc, roq::format(std::forward<Args>(args)...)) {}
 };
 

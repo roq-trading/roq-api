@@ -45,10 +45,9 @@ class UUID final {
     // XXX not constexpr until c++20
     // return std::all_of(uuid_.begin(), uuid_.end(), [](char c) { c == 0; });
     // note! compilers can easily optimize this
-    return uuid_[0] == 0 && uuid_[1] == 0 && uuid_[2] == 0 && uuid_[3] == 0 && uuid_[4] == 0 &&
-           uuid_[5] == 0 && uuid_[6] == 0 && uuid_[7] == 0 && uuid_[8] == 0 && uuid_[9] == 0 &&
-           uuid_[10] == 0 && uuid_[11] == 0 && uuid_[12] == 0 && uuid_[13] == 0 && uuid_[14] == 0 &&
-           uuid_[15] == 0;
+    return uuid_[0] == 0 && uuid_[1] == 0 && uuid_[2] == 0 && uuid_[3] == 0 && uuid_[4] == 0 && uuid_[5] == 0 &&
+           uuid_[6] == 0 && uuid_[7] == 0 && uuid_[8] == 0 && uuid_[9] == 0 && uuid_[10] == 0 && uuid_[11] == 0 &&
+           uuid_[12] == 0 && uuid_[13] == 0 && uuid_[14] == 0 && uuid_[15] == 0;
   }
 
   // XXX c++20 spaceship

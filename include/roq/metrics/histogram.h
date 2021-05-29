@@ -40,13 +40,7 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
       const std::string_view &label_value_1,
       const std::string_view &label_name_2,
       const std::string_view &label_value_2)
-      : labels_(create_labels(
-            label_name_0,
-            label_value_0,
-            label_name_1,
-            label_value_1,
-            label_name_2,
-            label_value_2)) {}
+      : labels_(create_labels(label_name_0, label_value_0, label_name_1, label_value_1, label_name_2, label_value_2)) {}
 
   Histogram(const Histogram &) = delete;
   Histogram(Histogram &&) = delete;
@@ -78,13 +72,10 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
   }
 
   //! Write formatted output
-  Writer &write(Writer &writer, const std::string_view &name) const {
-    return write(writer, name, labels_);
-  }
+  Writer &write(Writer &writer, const std::string_view &name) const { return write(writer, name, labels_); }
 
   //! Write formatted output
-  Writer &write(
-      Writer &writer, const std::string_view &name, const std::string_view &labels) const {
+  Writer &write(Writer &writer, const std::string_view &name, const std::string_view &labels) const {
     using namespace roq::literals;
     auto sum = data_.sum.load(std::memory_order_acquire);
     auto bucket_0 = data_.bucket_0;

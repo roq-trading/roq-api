@@ -31,8 +31,7 @@ class Mask final {
   }
 
   template <typename... Args>
-  constexpr Mask(const Mask &other, Args &&...args)
-      : value_(other.value_ | Mask{std::forward<Args>(args)...}.get()) {}
+  constexpr Mask(const Mask &other, Args &&...args) : value_(other.value_ | Mask{std::forward<Args>(args)...}.get()) {}
 
   constexpr bool operator==(const Mask &rhs) const { return value_ == rhs.value_; }
   constexpr bool operator!=(const Mask &rhs) const { return value_ != rhs.value_; }
@@ -47,9 +46,7 @@ class Mask final {
 
   constexpr bool has(T flag) const { return value_ & static_cast<value_type>(flag); }
 
-  constexpr bool has_any(T flag) const {
-    return (value_ & static_cast<value_type>(flag)) != value_type{};
-  }
+  constexpr bool has_any(T flag) const { return (value_ & static_cast<value_type>(flag)) != value_type{}; }
 
   constexpr bool has_any(std::initializer_list<T> flags) const {
     value_type value = {};

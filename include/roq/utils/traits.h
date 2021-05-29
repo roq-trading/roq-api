@@ -34,8 +34,7 @@ struct is_integer : std::false_type {};
 template <typename T>
 struct is_integer<
     T,
-    typename std::enable_if<
-        std::is_integral<T>::value && !(is_bool<T>::value | is_char<T>::value)>::type>
+    typename std::enable_if<std::is_integral<T>::value && !(is_bool<T>::value | is_char<T>::value)>::type>
     : std::true_type {};
 
 template <class T>
@@ -67,8 +66,7 @@ struct is_string<
         std::is_same<char *, typename std::decay<T>::type>::value ||
         std::is_same<char const *, typename std::decay<T>::type>::value ||
         std::is_same<std::string, typename std::decay<T>::type>::value ||
-        std::is_same<std::string_view, typename std::decay<T>::type>::value>::type>
-    : public std::true_type {};
+        std::is_same<std::string_view, typename std::decay<T>::type>::value>::type> : public std::true_type {};
 #endif
 
 // is_pair + is_pair_v
@@ -107,9 +105,8 @@ using is_iterable = decltype(detail::is_iterable_impl<T>(0));
 //   https://stackoverflow.com/a/24011465
 
 template <typename T>
-using has_random_access_iterator = std::is_base_of<
-    std::random_access_iterator_tag,
-    typename std::iterator_traits<typename T::iterator>::iterator_category>;
+using has_random_access_iterator = std::
+    is_base_of<std::random_access_iterator_tag, typename std::iterator_traits<typename T::iterator>::iterator_category>;
 
 // is_duration
 // refrences:

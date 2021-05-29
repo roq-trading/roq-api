@@ -25,7 +25,7 @@
         },
         {
             "name": "FastMarket",
-	    "comment": "Same as Open, exchange may elect to adopt more relaxed settings (matching, quoting, etc.)"
+	    "comment": "Same as Open, some settings could be relaxed by the exchange"
         },
         {
             "name": "Halt",

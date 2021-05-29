@@ -192,8 +192,7 @@ auto encode([[maybe_unused]] B &builder, const roq::StatisticsType &value) {
 
 template <typename B>
 auto encode(B &builder, const roq::Layer &value) {
-  return CreateLayer(
-      builder, value.bid_price, value.bid_quantity, value.ask_price, value.ask_quantity);
+  return CreateLayer(builder, value.bid_price, value.bid_quantity, value.ask_price, value.ask_quantity);
 }
 
 template <typename B>
@@ -507,8 +506,7 @@ auto encode(B &builder, const roq::ModifyOrder &value) {
 
 template <typename B>
 auto encode(B &builder, const roq::CancelOrder &value) {
-  return CreateCancelOrder(
-      builder, encode(builder, value.account), value.order_id, encode(builder, value.routing_id));
+  return CreateCancelOrder(builder, encode(builder, value.account), value.order_id, encode(builder, value.routing_id));
 }
 
 template <typename B>
@@ -620,208 +618,139 @@ auto encode(B &builder, const roq::FundsUpdate &value) {
 template <typename B>
 flatbuffers::Offset<Event> encode(B &builder, const roq::Event<roq::DownloadBegin> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_DownloadBegin,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_DownloadBegin, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::DownloadEnd> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_DownloadEnd,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_DownloadEnd, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::GatewaySettings> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_GatewaySettings,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_GatewaySettings, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::StreamStatus> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_StreamStatus,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_StreamStatus, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::ExternalLatency> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_ExternalLatency,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_ExternalLatency, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::RateLimitUsage> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_RateLimitUsage,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_RateLimitUsage, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::GatewayStatus> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_GatewayStatus,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_GatewayStatus, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::ReferenceData> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_ReferenceData,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_ReferenceData, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::MarketStatus> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_MarketStatus,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_MarketStatus, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::TopOfBook> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_TopOfBook,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_TopOfBook, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::MarketByPriceUpdate> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_MarketByPriceUpdate,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_MarketByPriceUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::MarketByOrderUpdate> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_MarketByOrderUpdate,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_MarketByOrderUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::TradeSummary> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_TradeSummary,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_TradeSummary, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::StatisticsUpdate> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_StatisticsUpdate,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_StatisticsUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::CreateOrder> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_CreateOrder,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_CreateOrder, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::ModifyOrder> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_ModifyOrder,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_ModifyOrder, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::CancelOrder> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_CancelOrder,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_CancelOrder, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::CancelAllOrders> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_CancelAllOrders,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_CancelAllOrders, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::OrderAck> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_OrderAck,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_OrderAck, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::OrderUpdate> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_OrderUpdate,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_OrderUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::TradeUpdate> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_TradeUpdate,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_TradeUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::PositionUpdate> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_PositionUpdate,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_PositionUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
 auto encode(B &builder, const roq::Event<roq::FundsUpdate> &event) {
   return CreateEvent(
-      builder,
-      encode(builder, event.message_info),
-      Message_FundsUpdate,
-      encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_FundsUpdate, encode(builder, event.value).Union());
 }
 
 }  // namespace fbs

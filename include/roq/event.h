@@ -12,8 +12,7 @@ namespace roq {
 //! Event
 template <typename T>
 struct Event final {
-  Event(const MessageInfo &message_info, const T &value)
-      : message_info(message_info), value(value) {}
+  Event(const MessageInfo &message_info, const T &value) : message_info(message_info), value(value) {}
 
   Event(const Event &) = delete;
 
@@ -38,8 +37,7 @@ struct Event final {
 
 //! Create event and dispatch to handler
 template <typename H, typename T, typename... Args>
-inline void create_event_and_dispatch(
-    H &&handler, const MessageInfo &message_info, const T &value, Args &&...args) {
+inline void create_event_and_dispatch(H &&handler, const MessageInfo &message_info, const T &value, Args &&...args) {
   Event event(message_info, value);
   return event.template dispatch<void>(handler, std::forward<Args>(args)...);
 }

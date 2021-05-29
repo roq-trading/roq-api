@@ -24,8 +24,7 @@ struct ROQ_PACKED TradingStatus final {
     PRE_OPEN_NO_CANCEL,   //!< No matching, only new orders
     PRE_OPEN_FREEZE,      //!< Matching, no order actions
     OPEN,                 //!< Matching, all order actions
-    FAST_MARKET,          //!< Same as Open, exchange may elect to adopt more relaxed settings (matching,
-                          //!< quoting, etc.)
+    FAST_MARKET,          //!< Same as Open, some settings could be relaxed by the exchange
     HALT,                 //!< No matching, only order cancellation
     CLOSE_NOT_FINAL,      //!< Same as Close, state required to support mid-session PreOpen
     PRE_CLOSE,            //!< No matching, all order actions

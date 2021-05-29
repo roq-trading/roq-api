@@ -20,6 +20,7 @@ All notable changes will be documented in this file.
 * Extend `OrderUpdate` with more fields (required for FIX bridge and download)
 * `TradingStatus` has been completely reviewed to match the trading session state
   changes which can occur on most exchanges
+* `ExecutionInstruction` will now support bit-masks (future change)
 
 ### Changed
 

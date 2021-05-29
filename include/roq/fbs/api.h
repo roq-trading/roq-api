@@ -235,8 +235,8 @@ enum ExecutionInstruction : uint8_t {
   ExecutionInstruction_Undefined = 0,
   ExecutionInstruction_ParticipateDoNotInitiate = 1,
   ExecutionInstruction_CancelIfNotBest = 2,
-  ExecutionInstruction_DoNotIncrease = 3,
-  ExecutionInstruction_DoNotReduce = 4,
+  ExecutionInstruction_DoNotIncrease = 4,
+  ExecutionInstruction_DoNotReduce = 8,
   ExecutionInstruction_MIN = ExecutionInstruction_Undefined,
   ExecutionInstruction_MAX = ExecutionInstruction_DoNotReduce
 };
@@ -252,11 +252,15 @@ inline const ExecutionInstruction (&EnumValuesExecutionInstruction())[5] {
 }
 
 inline const char *const *EnumNamesExecutionInstruction() {
-  static const char *const names[6] = {
+  static const char *const names[10] = {
       "Undefined",
       "ParticipateDoNotInitiate",
       "CancelIfNotBest",
+      "",
       "DoNotIncrease",
+      "",
+      "",
+      "",
       "DoNotReduce",
       nullptr};
   return names;

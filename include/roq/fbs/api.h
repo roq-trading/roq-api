@@ -848,25 +848,67 @@ inline const char *EnumNameTimeInForce(TimeInForce e) {
 
 enum TradingStatus : uint8_t {
   TradingStatus_Undefined = 0,
-  TradingStatus_Closed = 1,
-  TradingStatus_Open = 2,
+  TradingStatus_StartOfDay = 1,
+  TradingStatus_PreOpen = 2,
+  TradingStatus_PreOpenNoCancel = 3,
+  TradingStatus_PreOpenFreeze = 4,
+  TradingStatus_Open = 5,
+  TradingStatus_FastMarket = 6,
+  TradingStatus_Halt = 7,
+  TradingStatus_CloseNotFinal = 8,
+  TradingStatus_PreClose = 9,
+  TradingStatus_PreCloseNoCancel = 10,
+  TradingStatus_PreCloseFreeze = 11,
+  TradingStatus_Close = 12,
+  TradingStatus_PostClose = 13,
+  TradingStatus_EndOfDay = 14,
   TradingStatus_MIN = TradingStatus_Undefined,
-  TradingStatus_MAX = TradingStatus_Open
+  TradingStatus_MAX = TradingStatus_EndOfDay
 };
 
-inline const TradingStatus (&EnumValuesTradingStatus())[3] {
+inline const TradingStatus (&EnumValuesTradingStatus())[15] {
   static const TradingStatus values[] = {
-      TradingStatus_Undefined, TradingStatus_Closed, TradingStatus_Open};
+      TradingStatus_Undefined,
+      TradingStatus_StartOfDay,
+      TradingStatus_PreOpen,
+      TradingStatus_PreOpenNoCancel,
+      TradingStatus_PreOpenFreeze,
+      TradingStatus_Open,
+      TradingStatus_FastMarket,
+      TradingStatus_Halt,
+      TradingStatus_CloseNotFinal,
+      TradingStatus_PreClose,
+      TradingStatus_PreCloseNoCancel,
+      TradingStatus_PreCloseFreeze,
+      TradingStatus_Close,
+      TradingStatus_PostClose,
+      TradingStatus_EndOfDay};
   return values;
 }
 
 inline const char *const *EnumNamesTradingStatus() {
-  static const char *const names[4] = {"Undefined", "Closed", "Open", nullptr};
+  static const char *const names[16] = {
+      "Undefined",
+      "StartOfDay",
+      "PreOpen",
+      "PreOpenNoCancel",
+      "PreOpenFreeze",
+      "Open",
+      "FastMarket",
+      "Halt",
+      "CloseNotFinal",
+      "PreClose",
+      "PreCloseNoCancel",
+      "PreCloseFreeze",
+      "Close",
+      "PostClose",
+      "EndOfDay",
+      nullptr};
   return names;
 }
 
 inline const char *EnumNameTradingStatus(TradingStatus e) {
-  if (flatbuffers::IsOutRange(e, TradingStatus_Undefined, TradingStatus_Open))
+  if (flatbuffers::IsOutRange(e, TradingStatus_Undefined, TradingStatus_EndOfDay))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTradingStatus()[index];

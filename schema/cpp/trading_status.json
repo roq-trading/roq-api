@@ -4,10 +4,60 @@
     "comment": "Enumeration of the tradig status of a symbol",
     "values": [
         {
-            "name": "Closed"
+            "name": "StartOfDay",
+	    "comment": "No matching, no order actions"
         },
         {
-            "name": "Open"
+            "name": "PreOpen",
+	    "comment": "No matching, all order actions"
+        },
+        {
+            "name": "PreOpenNoCancel",
+	    "comment": "No matching, only new orders"
+        },
+        {
+            "name": "PreOpenFreeze",
+	    "comment": "Matching, no order actions"
+        },
+        {
+            "name": "Open",
+	    "comment": "Matching, all order actions"
+        },
+        {
+            "name": "FastMarket",
+	    "comment": "Same as Open, exchange may elect to adopt more relaxed settings (matching, quoting, etc.)"
+        },
+        {
+            "name": "Halt",
+	    "comment": "No matching, only order cancellation"
+        },
+        {
+            "name": "CloseNotFinal",
+	    "comment": "Same as Close, state required to support mid-session PreOpen"
+        },
+        {
+            "name": "PreClose",
+	    "comment": "No matching, all order actions"
+        },
+        {
+            "name": "PreCloseNoCancel",
+	    "comment": "No matching, only new orders"
+        },
+        {
+            "name": "PreCloseFreeze",
+	    "comment": "Matching, no order actions"
+        },
+        {
+            "name": "Close",
+	    "comment": "No matching, no order actions, good-for-day orders automatically canceled"
+        },
+        {
+            "name": "PostClose",
+	    "comment": "No matching, all order actions (only with next-trading-day validity)"
+        },
+        {
+            "name": "EndOfDay",
+	    "comment": "No matching, no order actions"
         }
     ]
 }

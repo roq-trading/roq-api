@@ -19,8 +19,21 @@ struct ROQ_PACKED TradingStatus final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0,
-    CLOSED,
-    OPEN,
+    START_OF_DAY,        //!< No matching, no order actions
+    PRE_OPEN,            //!< No matching, all order actions
+    PRE_OPEN_NO_CANCEL,  //!< No matching, only new orders
+    PRE_OPEN_FREEZE,     //!< Matching, no order actions
+    OPEN,                //!< Matching, all order actions
+    FAST_MARKET,  //!< Same as Open, exchange may elect to adopt more relaxed settings (matching,
+                  //!< quoting, etc.)
+    HALT,         //!< No matching, only order cancellation
+    CLOSE_NOT_FINAL,      //!< Same as Close, state required to support mid-session PreOpen
+    PRE_CLOSE,            //!< No matching, all order actions
+    PRE_CLOSE_NO_CANCEL,  //!< No matching, only new orders
+    PRE_CLOSE_FREEZE,     //!< Matching, no order actions
+    CLOSE,       //!< No matching, no order actions, good-for-day orders automatically canceled
+    POST_CLOSE,  //!< No matching, all order actions (only with next-trading-day validity)
+    END_OF_DAY,  //!< No matching, no order actions
   };
 
   constexpr TradingStatus() = default;
@@ -38,10 +51,34 @@ struct ROQ_PACKED TradingStatus final {
     switch (type_) {
       case type_t::UNDEFINED:
         break;
-      case type_t::CLOSED:
-        return "CLOSED"_sv;
+      case type_t::START_OF_DAY:
+        return "START_OF_DAY"_sv;
+      case type_t::PRE_OPEN:
+        return "PRE_OPEN"_sv;
+      case type_t::PRE_OPEN_NO_CANCEL:
+        return "PRE_OPEN_NO_CANCEL"_sv;
+      case type_t::PRE_OPEN_FREEZE:
+        return "PRE_OPEN_FREEZE"_sv;
       case type_t::OPEN:
         return "OPEN"_sv;
+      case type_t::FAST_MARKET:
+        return "FAST_MARKET"_sv;
+      case type_t::HALT:
+        return "HALT"_sv;
+      case type_t::CLOSE_NOT_FINAL:
+        return "CLOSE_NOT_FINAL"_sv;
+      case type_t::PRE_CLOSE:
+        return "PRE_CLOSE"_sv;
+      case type_t::PRE_CLOSE_NO_CANCEL:
+        return "PRE_CLOSE_NO_CANCEL"_sv;
+      case type_t::PRE_CLOSE_FREEZE:
+        return "PRE_CLOSE_FREEZE"_sv;
+      case type_t::CLOSE:
+        return "CLOSE"_sv;
+      case type_t::POST_CLOSE:
+        return "POST_CLOSE"_sv;
+      case type_t::END_OF_DAY:
+        return "END_OF_DAY"_sv;
       default:
         assert(false);
     }
@@ -55,8 +92,20 @@ struct ROQ_PACKED TradingStatus final {
     auto result = static_cast<type_t>(type);
     switch (result) {
       case type_t::UNDEFINED:
-      case type_t::CLOSED:
+      case type_t::START_OF_DAY:
+      case type_t::PRE_OPEN:
+      case type_t::PRE_OPEN_NO_CANCEL:
+      case type_t::PRE_OPEN_FREEZE:
       case type_t::OPEN:
+      case type_t::FAST_MARKET:
+      case type_t::HALT:
+      case type_t::CLOSE_NOT_FINAL:
+      case type_t::PRE_CLOSE:
+      case type_t::PRE_CLOSE_NO_CANCEL:
+      case type_t::PRE_CLOSE_FREEZE:
+      case type_t::CLOSE:
+      case type_t::POST_CLOSE:
+      case type_t::END_OF_DAY:
         return result;
       default:
         assert(false);

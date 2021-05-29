@@ -18,6 +18,8 @@ All notable changes will be documented in this file.
 * `GatewaySettings.supports` to allow users to detect what is supported
 * Added `Liquidity` to indicate if last fill was as maker or taker
 * Extend `OrderUpdate` with more fields (required for FIX bridge and download)
+* `TradingStatus` has been completely reviewed to match the trading session state
+  changes which can occur on most exchanges
 
 ### Changed
 

@@ -1991,23 +1991,23 @@ inline flatbuffers::Offset<FundsUpdate> CreateFundsUpdateDirect(
 struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef GatewaySettingsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MBP_MAX_DEPTH = 4,
-    VT_MBP_ALLOW_PRICE_INVERSION = 6,
-    VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE = 8,
-    VT_MBP_ALLOW_REMOVE_NON_EXISTING = 10,
-    VT_SUPPORTS = 12
+    VT_SUPPORTS = 4,
+    VT_MBP_MAX_DEPTH = 6,
+    VT_MBP_ALLOW_PRICE_INVERSION = 8,
+    VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE = 10,
+    VT_MBP_ALLOW_REMOVE_NON_EXISTING = 12
   };
+  uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
   uint32_t mbp_max_depth() const { return GetField<uint32_t>(VT_MBP_MAX_DEPTH, 0); }
   bool mbp_allow_price_inversion() const { return GetField<uint8_t>(VT_MBP_ALLOW_PRICE_INVERSION, 0) != 0; }
   bool mbp_allow_fractional_tick_size() const { return GetField<uint8_t>(VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE, 0) != 0; }
   bool mbp_allow_remove_non_existing() const { return GetField<uint8_t>(VT_MBP_ALLOW_REMOVE_NON_EXISTING, 0) != 0; }
-  uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_MBP_MAX_DEPTH) &&
+    return VerifyTableStart(verifier) && VerifyField<uint64_t>(verifier, VT_SUPPORTS) &&
+           VerifyField<uint32_t>(verifier, VT_MBP_MAX_DEPTH) &&
            VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_PRICE_INVERSION) &&
            VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE) &&
-           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_REMOVE_NON_EXISTING) &&
-           VerifyField<uint64_t>(verifier, VT_SUPPORTS) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_REMOVE_NON_EXISTING) && verifier.EndTable();
   }
 };
 
@@ -2015,6 +2015,7 @@ struct GatewaySettingsBuilder {
   typedef GatewaySettings Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
+  void add_supports(uint64_t supports) { fbb_.AddElement<uint64_t>(GatewaySettings::VT_SUPPORTS, supports, 0); }
   void add_mbp_max_depth(uint32_t mbp_max_depth) {
     fbb_.AddElement<uint32_t>(GatewaySettings::VT_MBP_MAX_DEPTH, mbp_max_depth, 0);
   }
@@ -2030,7 +2031,6 @@ struct GatewaySettingsBuilder {
     fbb_.AddElement<uint8_t>(
         GatewaySettings::VT_MBP_ALLOW_REMOVE_NON_EXISTING, static_cast<uint8_t>(mbp_allow_remove_non_existing), 0);
   }
-  void add_supports(uint64_t supports) { fbb_.AddElement<uint64_t>(GatewaySettings::VT_SUPPORTS, supports, 0); }
   explicit GatewaySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<GatewaySettings> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -2041,11 +2041,11 @@ struct GatewaySettingsBuilder {
 
 inline flatbuffers::Offset<GatewaySettings> CreateGatewaySettings(
     flatbuffers::FlatBufferBuilder &_fbb,
+    uint64_t supports = 0,
     uint32_t mbp_max_depth = 0,
     bool mbp_allow_price_inversion = false,
     bool mbp_allow_fractional_tick_size = false,
-    bool mbp_allow_remove_non_existing = false,
-    uint64_t supports = 0) {
+    bool mbp_allow_remove_non_existing = false) {
   GatewaySettingsBuilder builder_(_fbb);
   builder_.add_supports(supports);
   builder_.add_mbp_max_depth(mbp_max_depth);

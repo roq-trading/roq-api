@@ -21,8 +21,7 @@ All notable changes will be documented in this file.
 * `TradingStatus` has been completely reviewed to match the trading session state
   changes which can occur on most exchanges
 * `ExecutionInstruction` will now support bit-masks (future change)
-* The layout of `CreateOrder`, `OrderAck`, `OrderUpdate` and `TradeUpdate` have
-  been changed
+* The layout of many structs have changed
 
 ### Changed
 

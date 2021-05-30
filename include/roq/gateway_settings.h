@@ -23,11 +23,11 @@ namespace roq {
 
 //! Gateway settings
 struct ROQ_PUBLIC GatewaySettings final {
+  uint64_t supports = {};                       //!< Support types (bit mask)
   uint32_t mbp_max_depth = {};                  //!< MBP max depth
   bool mbp_allow_price_inversion = false;       //!< MBP allow price inversion?
   bool mbp_allow_fractional_tick_size = false;  //!< MBP allow fractional tick-size?
   bool mbp_allow_remove_non_existing = false;   //!< MBP allow remove operation on non-existing level?
-  uint64_t supports = {};                       //!< Support types (bit mask)
 };
 
 }  // namespace roq
@@ -40,17 +40,17 @@ struct fmt::formatter<roq::GatewaySettings> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(supports={:#x}, )"
         R"(mbp_max_depth={}, )"
         R"(mbp_allow_price_inversion={}, )"
         R"(mbp_allow_fractional_tick_size={}, )"
-        R"(mbp_allow_remove_non_existing={}, )"
-        R"(supports={:#x})"
+        R"(mbp_allow_remove_non_existing={})"
         R"(}})"_fmt,
+        value.supports,
         value.mbp_max_depth,
         value.mbp_allow_price_inversion,
         value.mbp_allow_fractional_tick_size,
-        value.mbp_allow_remove_non_existing,
-        value.supports);
+        value.mbp_allow_remove_non_existing);
   }
 };
 template <>

@@ -4,6 +4,11 @@
     "comment": "Gateway settings",
     "values": [
         {
+            "name": "supports",
+            "type": "uint64_t",
+            "comment": "Support types (bit mask)"
+        },
+        {
             "name": "mbp_max_depth",
             "type": "uint32_t",
             "comment": "MBP max depth"
@@ -22,11 +27,6 @@
             "name": "mbp_allow_remove_non_existing",
             "type": "bool",
             "comment": "MBP allow remove operation on non-existing level?"
-        },
-        {
-            "name": "supports",
-            "type": "uint64_t",
-            "comment": "Support types (bit mask)"
         }
     ]
 }

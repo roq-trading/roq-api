@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.7.1 &ndash; 2021-05-30
+
 ### Added
 
 * `RateLimitUsage` to allow strategy to back off when it high-water mark on

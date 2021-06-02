@@ -2488,10 +2488,11 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STATUS = 14,
     VT_ERROR = 16,
     VT_TEXT = 18,
-    VT_EXTERNAL_ACCOUNT = 20,
-    VT_EXTERNAL_ORDER_ID = 22,
-    VT_ROUTING_ID = 24,
-    VT_REQUEST_ID = 26
+    VT_REQUEST_ID = 20,
+    VT_ROUTING_ID = 22,
+    VT_PREVIOUS_ROUTING_ID = 24,
+    VT_EXTERNAL_ACCOUNT = 26,
+    VT_EXTERNAL_ORDER_ID = 28
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
@@ -2503,25 +2504,29 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   roq::fbs::Error error() const { return static_cast<roq::fbs::Error>(GetField<uint8_t>(VT_ERROR, 0)); }
   const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(VT_TEXT); }
+  const flatbuffers::String *request_id() const { return GetPointer<const flatbuffers::String *>(VT_REQUEST_ID); }
+  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
+  const flatbuffers::String *previous_routing_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_PREVIOUS_ROUTING_ID);
+  }
   const flatbuffers::String *external_account() const {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
   }
   const flatbuffers::String *external_order_id() const {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ORDER_ID);
   }
-  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
-  const flatbuffers::String *request_id() const { return GetPointer<const flatbuffers::String *>(VT_REQUEST_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyField<uint8_t>(verifier, VT_TYPE) &&
            VerifyField<uint8_t>(verifier, VT_ORIGIN) && VerifyField<uint8_t>(verifier, VT_STATUS) &&
            VerifyField<uint8_t>(verifier, VT_ERROR) && VerifyOffset(verifier, VT_TEXT) &&
-           verifier.VerifyString(text()) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
+           verifier.VerifyString(text()) && VerifyOffset(verifier, VT_REQUEST_ID) &&
+           verifier.VerifyString(request_id()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
+           verifier.VerifyString(routing_id()) && VerifyOffset(verifier, VT_PREVIOUS_ROUTING_ID) &&
+           verifier.VerifyString(previous_routing_id()) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
            verifier.VerifyString(external_account()) && VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
-           verifier.VerifyString(external_order_id()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && VerifyOffset(verifier, VT_REQUEST_ID) &&
-           verifier.VerifyString(request_id()) && verifier.EndTable();
+           verifier.VerifyString(external_order_id()) && verifier.EndTable();
   }
 };
 
@@ -2545,17 +2550,20 @@ struct OrderAckBuilder {
     fbb_.AddElement<uint8_t>(OrderAck::VT_ERROR, static_cast<uint8_t>(error), 0);
   }
   void add_text(flatbuffers::Offset<flatbuffers::String> text) { fbb_.AddOffset(OrderAck::VT_TEXT, text); }
+  void add_request_id(flatbuffers::Offset<flatbuffers::String> request_id) {
+    fbb_.AddOffset(OrderAck::VT_REQUEST_ID, request_id);
+  }
+  void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
+    fbb_.AddOffset(OrderAck::VT_ROUTING_ID, routing_id);
+  }
+  void add_previous_routing_id(flatbuffers::Offset<flatbuffers::String> previous_routing_id) {
+    fbb_.AddOffset(OrderAck::VT_PREVIOUS_ROUTING_ID, previous_routing_id);
+  }
   void add_external_account(flatbuffers::Offset<flatbuffers::String> external_account) {
     fbb_.AddOffset(OrderAck::VT_EXTERNAL_ACCOUNT, external_account);
   }
   void add_external_order_id(flatbuffers::Offset<flatbuffers::String> external_order_id) {
     fbb_.AddOffset(OrderAck::VT_EXTERNAL_ORDER_ID, external_order_id);
-  }
-  void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
-    fbb_.AddOffset(OrderAck::VT_ROUTING_ID, routing_id);
-  }
-  void add_request_id(flatbuffers::Offset<flatbuffers::String> request_id) {
-    fbb_.AddOffset(OrderAck::VT_REQUEST_ID, request_id);
   }
   explicit OrderAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<OrderAck> Finish() {
@@ -2575,15 +2583,17 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAck(
     roq::fbs::RequestStatus status = roq::fbs::RequestStatus_Undefined,
     roq::fbs::Error error = roq::fbs::Error_Undefined,
     flatbuffers::Offset<flatbuffers::String> text = 0,
-    flatbuffers::Offset<flatbuffers::String> external_account = 0,
-    flatbuffers::Offset<flatbuffers::String> external_order_id = 0,
+    flatbuffers::Offset<flatbuffers::String> request_id = 0,
     flatbuffers::Offset<flatbuffers::String> routing_id = 0,
-    flatbuffers::Offset<flatbuffers::String> request_id = 0) {
+    flatbuffers::Offset<flatbuffers::String> previous_routing_id = 0,
+    flatbuffers::Offset<flatbuffers::String> external_account = 0,
+    flatbuffers::Offset<flatbuffers::String> external_order_id = 0) {
   OrderAckBuilder builder_(_fbb);
-  builder_.add_request_id(request_id);
-  builder_.add_routing_id(routing_id);
   builder_.add_external_order_id(external_order_id);
   builder_.add_external_account(external_account);
+  builder_.add_previous_routing_id(previous_routing_id);
+  builder_.add_routing_id(routing_id);
+  builder_.add_request_id(request_id);
   builder_.add_text(text);
   builder_.add_order_id(order_id);
   builder_.add_account(account);
@@ -2605,16 +2615,18 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     roq::fbs::RequestStatus status = roq::fbs::RequestStatus_Undefined,
     roq::fbs::Error error = roq::fbs::Error_Undefined,
     const char *text = nullptr,
-    const char *external_account = nullptr,
-    const char *external_order_id = nullptr,
+    const char *request_id = nullptr,
     const char *routing_id = nullptr,
-    const char *request_id = nullptr) {
+    const char *previous_routing_id = nullptr,
+    const char *external_account = nullptr,
+    const char *external_order_id = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto text__ = text ? _fbb.CreateString(text) : 0;
+  auto request_id__ = request_id ? _fbb.CreateString(request_id) : 0;
+  auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
+  auto previous_routing_id__ = previous_routing_id ? _fbb.CreateString(previous_routing_id) : 0;
   auto external_account__ = external_account ? _fbb.CreateString(external_account) : 0;
   auto external_order_id__ = external_order_id ? _fbb.CreateString(external_order_id) : 0;
-  auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
-  auto request_id__ = request_id ? _fbb.CreateString(request_id) : 0;
   return roq::fbs::CreateOrderAck(
       _fbb,
       stream_id,
@@ -2625,10 +2637,11 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
       status,
       error,
       text__,
-      external_account__,
-      external_order_id__,
+      request_id__,
       routing_id__,
-      request_id__);
+      previous_routing_id__,
+      external_account__,
+      external_order_id__);
 }
 
 struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

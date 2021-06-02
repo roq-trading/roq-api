@@ -7,6 +7,7 @@ All notable changes will be documented in this file.
 ### Changed
 
 * `Error` has been updated
+* `OrderAck` has been updated and extended with `previous_routing_id`
 
 ## 0.7.1 &ndash; 2021-05-30
 

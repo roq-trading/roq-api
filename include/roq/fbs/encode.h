@@ -526,10 +526,11 @@ auto encode(B &builder, const roq::OrderAck &value) {
       encode(builder, value.status),
       encode(builder, value.error),
       encode(builder, value.text),
-      encode(builder, value.external_account),
-      encode(builder, value.external_order_id),
+      encode(builder, value.request_id),
       encode(builder, value.routing_id),
-      encode(builder, value.request_id));
+      encode(builder, value.previous_routing_id),
+      encode(builder, value.external_account),
+      encode(builder, value.external_order_id));
 }
 
 template <typename B>

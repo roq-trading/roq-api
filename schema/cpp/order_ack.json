@@ -41,11 +41,7 @@
             "comment": "Descriptive text"
         },
         {
-            "name": "external_account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "external_order_id",
+            "name": "request_id",
             "type": "std::string_view"
         },
         {
@@ -53,7 +49,16 @@
             "type": "std::string_view"
         },
         {
-            "name": "request_id",
+            "name": "previous_routing_id",
+            "type": "std::string_view",
+	    "comment": "The last *accepted* routing_id (when available)"
+        },
+        {
+            "name": "external_account",
+            "type": "std::string_view"
+        },
+        {
+            "name": "external_order_id",
             "type": "std::string_view"
         }
     ]

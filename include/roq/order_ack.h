@@ -28,18 +28,19 @@ namespace roq {
 
 //! Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange
 struct ROQ_PUBLIC OrderAck final {
-  uint16_t stream_id = {};             //!< Stream identifier
-  std::string_view account;            //!< Account name (as known to the gateway)
-  uint32_t order_id = {};              //!< Order identifier (as known to client)
-  RequestType type = {};               //!< Request type
-  Origin origin = {};                  //!< Origin of ack
-  RequestStatus status = {};           //!< Request status
-  Error error = {};                    //!< Error code
-  std::string_view text;               //!< Descriptive text
-  std::string_view external_account;   //!< External account name (as known to broker or exchange)
-  std::string_view external_order_id;  //!< External order identifier (as known to broker or exchange)
-  std::string_view routing_id;         //!< Routing identifier
-  std::string_view request_id;         //!< Request identifier (as sent to broker or exchange)
+  uint16_t stream_id = {};               //!< Stream identifier
+  std::string_view account;              //!< Account name (as known to the gateway)
+  uint32_t order_id = {};                //!< Order identifier (as known to client)
+  RequestType type = {};                 //!< Request type
+  Origin origin = {};                    //!< Origin of ack
+  RequestStatus status = {};             //!< Request status
+  Error error = {};                      //!< Error code
+  std::string_view text;                 //!< Descriptive text
+  std::string_view request_id;           //!< Request identifier (as sent to broker or exchange)
+  std::string_view routing_id;           //!< Routing identifier
+  std::string_view previous_routing_id;  //!< The last *accepted* routing_id (when available)
+  std::string_view external_account;     //!< External account name (as known to broker or exchange)
+  std::string_view external_order_id;    //!< External order identifier (as known to broker or exchange)
 };
 
 }  // namespace roq
@@ -60,10 +61,11 @@ struct fmt::formatter<roq::OrderAck> : public roq::formatter {
         R"(status={}, )"
         R"(error={}, )"
         R"(text="{}", )"
-        R"(external_account="{}", )"
-        R"(external_order_id="{}", )"
+        R"(request_id="{}", )"
         R"(routing_id="{}", )"
-        R"(request_id="{}")"
+        R"(previous_routing_id="{}", )"
+        R"(external_account="{}", )"
+        R"(external_order_id="{}")"
         R"(}})"_fmt,
         value.stream_id,
         value.account,
@@ -73,10 +75,11 @@ struct fmt::formatter<roq::OrderAck> : public roq::formatter {
         value.status,
         value.error,
         value.text,
-        value.external_account,
-        value.external_order_id,
+        value.request_id,
         value.routing_id,
-        value.request_id);
+        value.previous_routing_id,
+        value.external_account,
+        value.external_order_id);
   }
 };
 template <>

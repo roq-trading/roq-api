@@ -156,69 +156,84 @@ inline const char *EnumNameConnectionStatus(ConnectionStatus e) {
 enum Error : uint8_t {
   Error_Undefined = 0,
   Error_Unknown = 1,
-  Error_GatewayNotReady = 2,
+  Error_NotSupported = 2,
   Error_InvalidAccount = 3,
-  Error_InvalidExchange = 4,
-  Error_InvalidSymbol = 5,
-  Error_InvalidOrderType = 6,
-  Error_InvalidTimeInForce = 7,
+  Error_InvalidOrderId = 4,
+  Error_InvalidExchange = 5,
+  Error_InvalidSymbol = 6,
+  Error_InvalidSide = 7,
   Error_InvalidPositionEffect = 8,
-  Error_InvalidOrderTemplate = 9,
-  Error_NetworkError = 10,
-  Error_UnknownErrorId = 11,
-  Error_UnknownExchangeOrderId = 12,
-  Error_ModifyOrderNotSupported = 13,
-  Error_InvalidOrderId = 14,
-  Error_ExecutionInstructionNotSupported = 15,
+  Error_InvalidQuantity = 9,
+  Error_InvalidMaxShowQuantity = 10,
+  Error_InvalidOrderType = 11,
+  Error_InvalidTimeInForce = 12,
+  Error_InvalidExecutionInstruction = 13,
+  Error_InvalidOrderTemplate = 14,
+  Error_InvalidPrice = 15,
+  Error_InvalidStopPrice = 16,
+  Error_UnknownExternalOrderId = 17,
+  Error_NotAuthorized = 18,
+  Error_GatewayNotReady = 19,
+  Error_NetworkError = 20,
   Error_MIN = Error_Undefined,
-  Error_MAX = Error_ExecutionInstructionNotSupported
+  Error_MAX = Error_NetworkError
 };
 
-inline const Error (&EnumValuesError())[16] {
+inline const Error (&EnumValuesError())[21] {
   static const Error values[] = {
       Error_Undefined,
       Error_Unknown,
-      Error_GatewayNotReady,
+      Error_NotSupported,
       Error_InvalidAccount,
+      Error_InvalidOrderId,
       Error_InvalidExchange,
       Error_InvalidSymbol,
+      Error_InvalidSide,
+      Error_InvalidPositionEffect,
+      Error_InvalidQuantity,
+      Error_InvalidMaxShowQuantity,
       Error_InvalidOrderType,
       Error_InvalidTimeInForce,
-      Error_InvalidPositionEffect,
+      Error_InvalidExecutionInstruction,
       Error_InvalidOrderTemplate,
-      Error_NetworkError,
-      Error_UnknownErrorId,
-      Error_UnknownExchangeOrderId,
-      Error_ModifyOrderNotSupported,
-      Error_InvalidOrderId,
-      Error_ExecutionInstructionNotSupported};
+      Error_InvalidPrice,
+      Error_InvalidStopPrice,
+      Error_UnknownExternalOrderId,
+      Error_NotAuthorized,
+      Error_GatewayNotReady,
+      Error_NetworkError};
   return values;
 }
 
 inline const char *const *EnumNamesError() {
-  static const char *const names[17] = {
+  static const char *const names[22] = {
       "Undefined",
       "Unknown",
-      "GatewayNotReady",
+      "NotSupported",
       "InvalidAccount",
+      "InvalidOrderId",
       "InvalidExchange",
       "InvalidSymbol",
+      "InvalidSide",
+      "InvalidPositionEffect",
+      "InvalidQuantity",
+      "InvalidMaxShowQuantity",
       "InvalidOrderType",
       "InvalidTimeInForce",
-      "InvalidPositionEffect",
+      "InvalidExecutionInstruction",
       "InvalidOrderTemplate",
+      "InvalidPrice",
+      "InvalidStopPrice",
+      "UnknownExternalOrderId",
+      "NotAuthorized",
+      "GatewayNotReady",
       "NetworkError",
-      "UnknownErrorId",
-      "UnknownExchangeOrderId",
-      "ModifyOrderNotSupported",
-      "InvalidOrderId",
-      "ExecutionInstructionNotSupported",
       nullptr};
   return names;
 }
 
 inline const char *EnumNameError(Error e) {
-  if (flatbuffers::IsOutRange(e, Error_Undefined, Error_ExecutionInstructionNotSupported))
+  if (flatbuffers::IsOutRange(e, Error_Undefined, Error_NetworkError))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesError()[index];

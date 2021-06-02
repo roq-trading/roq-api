@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `Error` has been updated
+
 ## 0.7.1 &ndash; 2021-05-30
 
 ### Added

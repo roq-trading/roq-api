@@ -15,8 +15,8 @@ table OrderAck {
   error:Error;
   text:string;
   request_id:string;
-  routing_id:string;
-  previous_routing_id:string;
   external_account:string;
   external_order_id:string;
+  routing_id:string;
+  previous_routing_id:string;
 }

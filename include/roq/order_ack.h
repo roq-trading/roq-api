@@ -37,10 +37,10 @@ struct ROQ_PUBLIC OrderAck final {
   Error error = {};                      //!< Error code
   std::string_view text;                 //!< Descriptive text
   std::string_view request_id;           //!< Request identifier (as sent to broker or exchange)
-  std::string_view routing_id;           //!< Routing identifier
-  std::string_view previous_routing_id;  //!< The last *accepted* routing_id (when available)
   std::string_view external_account;     //!< External account name (as known to broker or exchange)
   std::string_view external_order_id;    //!< External order identifier (as known to broker or exchange)
+  std::string_view routing_id;           //!< Routing identifier
+  std::string_view previous_routing_id;  //!< The last *accepted* routing_id (when available)
 };
 
 }  // namespace roq
@@ -62,10 +62,10 @@ struct fmt::formatter<roq::OrderAck> : public roq::formatter {
         R"(error={}, )"
         R"(text="{}", )"
         R"(request_id="{}", )"
-        R"(routing_id="{}", )"
-        R"(previous_routing_id="{}", )"
         R"(external_account="{}", )"
-        R"(external_order_id="{}")"
+        R"(external_order_id="{}", )"
+        R"(routing_id="{}", )"
+        R"(previous_routing_id="{}")"
         R"(}})"_fmt,
         value.stream_id,
         value.account,
@@ -76,10 +76,10 @@ struct fmt::formatter<roq::OrderAck> : public roq::formatter {
         value.error,
         value.text,
         value.request_id,
-        value.routing_id,
-        value.previous_routing_id,
         value.external_account,
-        value.external_order_id);
+        value.external_order_id,
+        value.routing_id,
+        value.previous_routing_id);
   }
 };
 template <>

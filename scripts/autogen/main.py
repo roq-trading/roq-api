@@ -107,7 +107,7 @@ def _format_helper(char, string, array, safe_name, accessor):
         safe_name, accessor
     )
     # required until Mask has been implemented
-    if safe_name in ('supports', 'supported', 'available', 'unavailable'):
+    if safe_name in ("supports", "supported", "available", "unavailable"):
         return ("{:#x}", value)
     if char:
         return ("'{}'", value)
@@ -120,32 +120,34 @@ def _format_helper(char, string, array, safe_name, accessor):
 
 def _find_default_comment(name):
     return dict(
-        account="Account name (as known to the gateway)",
-        commission_currency="Currency name",
+        account="Account name",
+        commission_currency="Currency",
+        conditional_on_version="Auto-reject if this version has positively failed (optional)",
         create_time_utc="Created timestamp (UTC)",
-        currency="Currency name",
-        exchange="Exchange name",
+        currency="Currency",
+        exchange="Exchange",
         exchange_time_utc="Exchange timestamp (UTC)",
         execution_instruction="Execution instruction",
-        external_account="External account name (as known to broker or exchange)",
-        external_order_id="External order identifier (as known to broker or exchange)",
-        external_trade_id="External trade identifier (as known to broker or exchange)",
-        gateway_order_id="Order identifier (as known to gateway)",
-        gateway_trade_id="Trade identifier (as known to gateway)",
-        order_id="Order identifier (as known to client)",
-        order_template="Order template (as known to the gateway)",
+        external_account="External account name",
+        external_order_id="External order identifier",
+        external_trade_id="External trade identifier",
+        gateway_order_id="Order identifier",
+        gateway_trade_id="Trade identifier",
+        order_id="Order identifier",
+        order_template="Order template",
         order_type="Order type",
         position_effect="Position effect",
-        request_id="Request identifier (as sent to broker or exchange)",
-        settlement_currency="Currency name",
+        request_id="Request identifier",
+        routing_id="Routing identifier",
+        settlement_currency="Currency",
         snapshot="Full update (possibly old) if true and otherwise an incremental update",
-        strike_currency="Currency name",
+        stream_id="Stream identifier",
+        strike_currency="Currency",
         symbol="Symbol",
         time_in_force="Time in force",
-        trade_id="Trade identifier (as known to client)",
+        trade_id="Trade identifier",
         update_time_utc="Updated timestamp (UTC)",
-        stream_id="Stream identifier",
-        routing_id="Routing identifier",
+        version="Version number (strictly increasing, optional)",
     ).get(name, "")
 
 
@@ -165,7 +167,9 @@ def _new_spec_helper(item):
     custom = item.get("custom", False)
     default = item.get("default", get_default_from_type(t))
     accessor = item.get("accessor", "")
-    format_string, format_value = _format_helper(char, string, array, safe_name, accessor)
+    format_string, format_value = _format_helper(
+        char, string, array, safe_name, accessor
+    )
     position = item.get("position", 0)
     return dict(
         raw_name=r,
@@ -210,7 +214,8 @@ def new_spec(path, namespaces, name, comment, spec, type_):
         if any([len(value["comment"]) == 0 for value in values]):
             raise RuntimeError(
                 "{} requires comments for following fields {}".format(
-                    name, [value["name"] for value in values if len(value["comment"]) == 0]
+                    name,
+                    [value["name"] for value in values if len(value["comment"]) == 0],
                 )
             )
 
@@ -243,7 +248,9 @@ def process(file_type, path, namespaces, templates):
         values = doc["values"]
         from jinja2 import Environment, FileSystemLoader
 
-        env = Environment(loader=FileSystemLoader(templates), trim_blocks=True, lstrip_blocks=True)
+        env = Environment(
+            loader=FileSystemLoader(templates), trim_blocks=True, lstrip_blocks=True
+        )
         template = env.get_template(".".join((type_, file_type)))
         spec = new_spec(path, namespaces, name, comment, values, type_)
         result = template.render(**spec)
@@ -253,7 +260,9 @@ def process(file_type, path, namespaces, templates):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--namespace", type=str, required=True, help="namespace")
-    parser.add_argument("--file-type", type=str, required=True, help="output file (h/cpp)")
+    parser.add_argument(
+        "--file-type", type=str, required=True, help="output file (h/cpp)"
+    )
     parser.add_argument("spec", type=str, help="spec file (.json)")
     args = parser.parse_args()
 

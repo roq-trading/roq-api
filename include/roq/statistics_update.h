@@ -26,7 +26,7 @@ namespace roq {
 //! Update relating to statistics published by the exchange
 struct ROQ_PUBLIC StatisticsUpdate final {
   uint16_t stream_id = {};           //!< Stream identifier
-  std::string_view exchange;         //!< Exchange name
+  std::string_view exchange;         //!< Exchange
   std::string_view symbol;           //!< Symbol
   roq::span<Statistics> statistics;  //!< List of statistics
   bool snapshot = false;             //!< Full update (possibly old) if true and otherwise an incremental update

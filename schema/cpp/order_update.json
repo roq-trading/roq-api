@@ -35,7 +35,7 @@
         {
             "name": "quantity",
             "type": "double",
-            "comment": "Original quantity"
+            "comment": "Quantity (total, indicative)"
         },
         {
             "name": "max_show_quantity",
@@ -75,10 +75,6 @@
             "type": "std::string_view"
         },
         {
-            "name": "routing_id",
-            "type": "std::string_view"
-        },
-        {
             "name": "status",
             "type": "OrderStatus",
             "comment": "Order status"
@@ -96,32 +92,51 @@
         {
             "name": "remaining_quantity",
             "type": "double",
-            "comment": "Remaining quantity"
+            "comment": "Quantity (remaining)"
         },
         {
             "name": "traded_quantity",
             "type": "double",
-            "comment": "Traded quantity"
+            "comment": "Quantity (total traded)"
         },
         {
             "name": "average_traded_price",
             "type": "double",
-            "comment": "Average price (for traded quantity)"
+            "comment": "Average price (total traded)"
         },
         {
             "name": "last_traded_price",
             "type": "double",
-            "comment": "Last traded price (for last quantity)"
+            "comment": "Traded price (last trade)"
         },
         {
             "name": "last_traded_quantity",
             "type": "double",
-            "comment": "Last traded quantity"
+            "comment": "Traded quantity (last trade)"
         },
         {
             "name": "last_liquidity",
             "type": "Liquidity",
-            "comment": "Liquidity indicator (for last trade)"
+            "comment": "Liquidity indicator (last trade)"
+        },
+        {
+            "name": "routing_id",
+            "type": "std::string_view"
+        },
+        {
+            "name": "max_request_version",
+            "type": "uint8_t",
+            "comment": "Last request version"
+        },
+        {
+            "name": "max_response_version",
+            "type": "uint8_t",
+            "comment": "Last response version"
+        },
+        {
+            "name": "max_accepted_version",
+            "type": "uint8_t",
+            "comment": "Last accepted version"
         }
     ]
 }

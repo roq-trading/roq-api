@@ -26,7 +26,7 @@ namespace roq {
 //! Update relating to top of book (aggregate price)
 struct ROQ_PUBLIC TopOfBook final {
   uint16_t stream_id = {};    //!< Stream identifier
-  std::string_view exchange;  //!< Exchange name
+  std::string_view exchange;  //!< Exchange
   std::string_view symbol;    //!< Symbol
   Layer layer;                //!< Top of book
   bool snapshot = false;      //!< Full update (possibly old) if true and otherwise an incremental update

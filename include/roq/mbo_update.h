@@ -27,7 +27,7 @@ struct ROQ_PUBLIC MBOUpdate final {
   double remaining_quantity = {};   //!< Remaining order quantity
   OrderUpdateAction action = {};    //!< Order update action
   uint32_t priority = {};           //!< Queue priority
-  roq::string_buffer<40> order_id;  //!< Order identifier (as known to client)
+  roq::string_buffer<40> order_id;  //!< Order identifier
 };
 
 }  // namespace roq

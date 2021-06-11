@@ -23,7 +23,7 @@ namespace roq {
 
 //! Identifies the end of a download sequence
 struct ROQ_PUBLIC DownloadEnd final {
-  std::string_view account;    //!< Account name (as known to the gateway)
+  std::string_view account;    //!< Account name
   uint32_t max_order_id = {};  //!< Highest previous order identifier (as seen by gateway)
 };
 

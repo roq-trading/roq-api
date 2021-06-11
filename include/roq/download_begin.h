@@ -23,7 +23,7 @@ namespace roq {
 
 //! Identifies the beginning of a download sequence
 struct ROQ_PUBLIC DownloadBegin final {
-  std::string_view account;  //!< Account name (as known to the gateway)
+  std::string_view account;  //!< Account name
 };
 
 }  // namespace roq

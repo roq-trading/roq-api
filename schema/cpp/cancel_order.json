@@ -14,6 +14,14 @@
         {
             "name": "routing_id",
             "type": "std::string_view"
+        },
+        {
+            "name": "version",
+            "type": "uint8_t"
+        },
+        {
+            "name": "conditional_on_version",
+            "type": "uint8_t"
         }
     ]
 }

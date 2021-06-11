@@ -35,6 +35,12 @@ struct ROQ_PACKED Error final {
     INVALID_ORDER_TEMPLATE,
     INVALID_PRICE,
     INVALID_STOP_PRICE,
+    INVALID_ROUTING_ID,
+    INVALID_REQUEST_VERSION,
+    INVALID_REQUEST_ID,
+    INVALID_REQUEST_TYPE,
+    INVALID_REQUEST_STATUS,
+    INVALID_REQUEST_ARGS,       //!< Request arguments did not meet validation rules
     UNKNOWN_EXTERNAL_ORDER_ID,  //!< An external order identifier has not yet been received
     NOT_AUTHORIZED,             //!< User is not authorized
     GATEWAY_NOT_READY,          //!< Gateway not ready (could be not connected or currently downloading)
@@ -88,6 +94,18 @@ struct ROQ_PACKED Error final {
         return "INVALID_PRICE"_sv;
       case type_t::INVALID_STOP_PRICE:
         return "INVALID_STOP_PRICE"_sv;
+      case type_t::INVALID_ROUTING_ID:
+        return "INVALID_ROUTING_ID"_sv;
+      case type_t::INVALID_REQUEST_VERSION:
+        return "INVALID_REQUEST_VERSION"_sv;
+      case type_t::INVALID_REQUEST_ID:
+        return "INVALID_REQUEST_ID"_sv;
+      case type_t::INVALID_REQUEST_TYPE:
+        return "INVALID_REQUEST_TYPE"_sv;
+      case type_t::INVALID_REQUEST_STATUS:
+        return "INVALID_REQUEST_STATUS"_sv;
+      case type_t::INVALID_REQUEST_ARGS:
+        return "INVALID_REQUEST_ARGS"_sv;
       case type_t::UNKNOWN_EXTERNAL_ORDER_ID:
         return "UNKNOWN_EXTERNAL_ORDER_ID"_sv;
       case type_t::NOT_AUTHORIZED:
@@ -125,6 +143,12 @@ struct ROQ_PACKED Error final {
       case type_t::INVALID_ORDER_TEMPLATE:
       case type_t::INVALID_PRICE:
       case type_t::INVALID_STOP_PRICE:
+      case type_t::INVALID_ROUTING_ID:
+      case type_t::INVALID_REQUEST_VERSION:
+      case type_t::INVALID_REQUEST_ID:
+      case type_t::INVALID_REQUEST_TYPE:
+      case type_t::INVALID_REQUEST_STATUS:
+      case type_t::INVALID_REQUEST_ARGS:
       case type_t::UNKNOWN_EXTERNAL_ORDER_ID:
       case type_t::NOT_AUTHORIZED:
       case type_t::GATEWAY_NOT_READY:

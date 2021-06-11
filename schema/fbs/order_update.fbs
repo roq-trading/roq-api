@@ -23,7 +23,6 @@ table OrderUpdate {
   update_time_utc:int64;
   external_account:string;
   external_order_id:string;
-  routing_id:string;
   status:OrderStatus;
   price:double = nan;
   stop_price:double = nan;
@@ -33,4 +32,8 @@ table OrderUpdate {
   last_traded_price:double = nan;
   last_traded_quantity:double = nan;
   last_liquidity:Liquidity;
+  routing_id:string;
+  max_request_version:uint8;
+  max_response_version:uint8;
+  max_accepted_version:uint8;
 }

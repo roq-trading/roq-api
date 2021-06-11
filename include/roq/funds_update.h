@@ -24,11 +24,11 @@ namespace roq {
 //! Update relating to available funds
 struct ROQ_PUBLIC FundsUpdate final {
   uint16_t stream_id = {};            //!< Stream identifier
-  std::string_view account;           //!< Account name (as known to the gateway)
-  std::string_view currency;          //!< Currency name
+  std::string_view account;           //!< Account name
+  std::string_view currency;          //!< Currency
   double balance = NaN;               //!< Current funds
   double hold = NaN;                  //!< Funds on hold
-  std::string_view external_account;  //!< External account name (as known to broker or exchange)
+  std::string_view external_account;  //!< External account name
 };
 
 }  // namespace roq

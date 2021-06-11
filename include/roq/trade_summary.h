@@ -26,7 +26,7 @@ namespace roq {
 //! Update relating to trade reporting by the exchange
 struct ROQ_PUBLIC TradeSummary final {
   uint16_t stream_id = {};                          //!< Stream identifier
-  std::string_view exchange;                        //!< Exchange name
+  std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
   roq::span<Trade> trades;                          //!< List of trades
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)

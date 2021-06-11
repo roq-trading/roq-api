@@ -26,7 +26,7 @@ namespace roq {
 //! Update relating to market by order
 struct ROQ_PUBLIC MarketByOrderUpdate final {
   uint16_t stream_id = {};    //!< Stream identifier
-  std::string_view exchange;  //!< Exchange name
+  std::string_view exchange;  //!< Exchange
   std::string_view symbol;    //!< Symbol
   roq::span<MBOUpdate> bids;  //!< List of bids
   roq::span<MBOUpdate> asks;  //!< List of asks

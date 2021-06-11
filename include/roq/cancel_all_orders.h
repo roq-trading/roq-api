@@ -23,7 +23,7 @@ namespace roq {
 
 //! Fields required to cancel all orders
 struct ROQ_PUBLIC CancelAllOrders final {
-  std::string_view account;  //!< Account name (as known to the gateway)
+  std::string_view account;  //!< Account name
 };
 
 }  // namespace roq

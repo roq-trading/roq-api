@@ -27,13 +27,13 @@ namespace roq {
 //! Update relating to the reference data for a symbol
 struct ROQ_PUBLIC ReferenceData final {
   uint16_t stream_id = {};                        //!< Stream identifier
-  std::string_view exchange;                      //!< Exchange name
+  std::string_view exchange;                      //!< Exchange
   std::string_view symbol;                        //!< Symbol
   std::string_view description;                   //!< Description
   SecurityType security_type = {};                //!< Security type
-  std::string_view currency;                      //!< Currency name
-  std::string_view settlement_currency;           //!< Currency name
-  std::string_view commission_currency;           //!< Currency name
+  std::string_view currency;                      //!< Currency
+  std::string_view settlement_currency;           //!< Currency
+  std::string_view commission_currency;           //!< Currency
   double tick_size = NaN;                         //!< Minimum price increment
   double multiplier = NaN;                        //!< Multiplier (notional)
   double min_trade_vol = NaN;                     //!< Minimum trade volume

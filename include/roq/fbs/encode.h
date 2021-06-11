@@ -501,12 +501,20 @@ auto encode(B &builder, const roq::ModifyOrder &value) {
       value.order_id,
       value.quantity,
       value.price,
-      encode(builder, value.routing_id));
+      encode(builder, value.routing_id),
+      value.version,
+      value.conditional_on_version);
 }
 
 template <typename B>
 auto encode(B &builder, const roq::CancelOrder &value) {
-  return CreateCancelOrder(builder, encode(builder, value.account), value.order_id, encode(builder, value.routing_id));
+  return CreateCancelOrder(
+      builder,
+      encode(builder, value.account),
+      value.order_id,
+      encode(builder, value.routing_id),
+      value.version,
+      value.conditional_on_version);
 }
 
 template <typename B>
@@ -530,7 +538,7 @@ auto encode(B &builder, const roq::OrderAck &value) {
       encode(builder, value.external_account),
       encode(builder, value.external_order_id),
       encode(builder, value.routing_id),
-      encode(builder, value.previous_routing_id));
+      value.version);
 }
 
 template <typename B>
@@ -554,7 +562,6 @@ auto encode(B &builder, const roq::OrderUpdate &value) {
       encode(builder, value.update_time_utc),
       encode(builder, value.external_account),
       encode(builder, value.external_order_id),
-      encode(builder, value.routing_id),
       encode(builder, value.status),
       value.price,
       value.stop_price,
@@ -563,7 +570,11 @@ auto encode(B &builder, const roq::OrderUpdate &value) {
       value.average_traded_price,
       value.last_traded_price,
       value.last_traded_quantity,
-      encode(builder, value.last_liquidity));
+      encode(builder, value.last_liquidity),
+      encode(builder, value.routing_id),
+      value.max_request_version,
+      value.max_response_version,
+      value.max_accepted_version);
 }
 
 template <typename B>

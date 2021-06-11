@@ -7,7 +7,11 @@ All notable changes will be documented in this file.
 ### Changed
 
 * `Error` has been updated
-* `OrderAck` has been updated and extended with `previous_routing_id`
+* `OrderAck` has been updated and extended with `version`
+* `OrderUpdate` has been updated and extended with `max_request_version`,
+  `max_response_version` and `max_accepted_version`
+* `ModifyOrder` and `CancelOrder` has been updated with `version` and
+  `conditional_on_version`
 
 ## 0.7.1 &ndash; 2021-05-30
 

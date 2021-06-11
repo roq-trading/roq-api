@@ -28,16 +28,16 @@ namespace roq {
 //! Update relating to order being partially or fully filled
 struct ROQ_PUBLIC TradeUpdate final {
   uint16_t stream_id = {};                        //!< Stream identifier
-  std::string_view account;                       //!< Account name (as known to the gateway)
-  uint32_t order_id = {};                         //!< Order identifier (as known to client)
-  std::string_view exchange;                      //!< Exchange name
+  std::string_view account;                       //!< Account name
+  uint32_t order_id = {};                         //!< Order identifier
+  std::string_view exchange;                      //!< Exchange
   std::string_view symbol;                        //!< Symbol
   Side side = {};                                 //!< Side
   PositionEffect position_effect = {};            //!< Position effect
   std::chrono::nanoseconds create_time_utc = {};  //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};  //!< Updated timestamp (UTC)
-  std::string_view external_account;              //!< External account name (as known to broker or exchange)
-  std::string_view external_order_id;             //!< External order identifier (as known to broker or exchange)
+  std::string_view external_account;              //!< External account name
+  std::string_view external_order_id;             //!< External order identifier
   std::string_view routing_id;                    //!< Routing identifier
   roq::span<Fill> fills;                          //!< List of fills
 };

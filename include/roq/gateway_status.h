@@ -23,7 +23,7 @@ namespace roq {
 
 //! Update relating to current gateway service status
 struct ROQ_PUBLIC GatewayStatus final {
-  std::string_view account;   //!< Account name (as known to the gateway)
+  std::string_view account;   //!< Account name
   uint64_t supported = {};    //!< Supported update types (bit mask)
   uint64_t available = {};    //!< Update types (bit mask) available from all streams
   uint64_t unavailable = {};  //!< Update types (bit mask) unavailable from one or more streams

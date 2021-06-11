@@ -53,6 +53,25 @@
             "name": "InvalidStopPrice"
         },
         {
+            "name": "InvalidRoutingId"
+        },
+        {
+            "name": "InvalidRequestVersion"
+        },
+        {
+            "name": "InvalidRequestId"
+        },
+        {
+            "name": "InvalidRequestType"
+        },
+        {
+            "name": "InvalidRequestStatus"
+        },
+        {
+            "name": "InvalidRequestArgs",
+	    "comment": "Request arguments did not meet validation rules"
+        },
+        {
             "name": "UnknownExternalOrderId",
 	    "comment": "An external order identifier has not yet been received"
         },

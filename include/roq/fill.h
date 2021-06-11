@@ -23,9 +23,9 @@ namespace roq {
 struct ROQ_PUBLIC Fill final {
   double quantity = NaN;                     //!< Quantity
   double price = NaN;                        //!< Price
-  uint32_t trade_id = {};                    //!< Trade identifier (as known to client)
-  uint32_t gateway_trade_id = {};            //!< Trade identifier (as known to gateway)
-  roq::string_buffer<40> external_trade_id;  //!< External trade identifier (as known to broker or exchange)
+  uint32_t trade_id = {};                    //!< Trade identifier
+  uint32_t gateway_trade_id = {};            //!< Trade identifier
+  roq::string_buffer<40> external_trade_id;  //!< External trade identifier
 };
 
 }  // namespace roq

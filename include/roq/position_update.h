@@ -26,8 +26,8 @@ namespace roq {
 //! Update relating to current position for a symbol/side/account
 struct ROQ_PUBLIC PositionUpdate final {
   uint16_t stream_id = {};               //!< Stream identifier
-  std::string_view account;              //!< Account name (as known to the gateway)
-  std::string_view exchange;             //!< Exchange name
+  std::string_view account;              //!< Account name
+  std::string_view exchange;             //!< Exchange
   std::string_view symbol;               //!< Symbol
   Side side = {};                        //!< Side
   double position = NaN;                 //!< Current position
@@ -35,7 +35,7 @@ struct ROQ_PUBLIC PositionUpdate final {
   double position_cost = NaN;            //!< Position cost
   double position_yesterday = NaN;       //!< Position as of yesterday
   double position_cost_yesterday = NaN;  //!< Position cost as of yesterday
-  std::string_view external_account;     //!< External account name (as known to broker or exchange)
+  std::string_view external_account;     //!< External account name
 };
 
 }  // namespace roq

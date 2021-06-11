@@ -23,11 +23,13 @@ namespace roq {
 
 //! Fields required to modify an existing order
 struct ROQ_PUBLIC ModifyOrder final {
-  std::string_view account;     //!< Account name (as known to the gateway)
-  uint32_t order_id = {};       //!< Order identifier (as known to client)
-  double quantity = NaN;        //!< New quantity
-  double price = NaN;           //!< New limit price
-  std::string_view routing_id;  //!< Routing identifier
+  std::string_view account;             //!< Account name
+  uint32_t order_id = {};               //!< Order identifier
+  double quantity = NaN;                //!< New (total) quantity
+  double price = NaN;                   //!< New limit price
+  std::string_view routing_id;          //!< Routing identifier
+  uint8_t version = {};                 //!< Version number (strictly increasing, optional)
+  uint8_t conditional_on_version = {};  //!< Auto-reject if this version has positively failed (optional)
 };
 
 }  // namespace roq
@@ -44,13 +46,17 @@ struct fmt::formatter<roq::ModifyOrder> : public roq::formatter {
         R"(order_id={}, )"
         R"(quantity={}, )"
         R"(price={}, )"
-        R"(routing_id="{}")"
+        R"(routing_id="{}", )"
+        R"(version={}, )"
+        R"(conditional_on_version={})"
         R"(}})"_fmt,
         value.account,
         value.order_id,
         value.quantity,
         value.price,
-        value.routing_id);
+        value.routing_id,
+        value.version,
+        value.conditional_on_version);
   }
 };
 template <>

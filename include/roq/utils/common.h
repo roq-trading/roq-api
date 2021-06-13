@@ -26,7 +26,7 @@ inline double price_from_side(const Layer &layer, Side side) {
 }
 
 //! Check if order has reached a final (completed) status
-inline bool is_order_complete(const OrderStatus &status) {
+inline bool is_order_complete(const OrderStatus status) {
   switch (status) {
     case OrderStatus::SENT:
     case OrderStatus::ACCEPTED:
@@ -45,18 +45,52 @@ inline bool is_order_complete(const OrderStatus &status) {
 }
 
 //! Check if request has reached a final (completed) status
-inline bool is_request_complete(const RequestStatus &status) {
+inline bool has_request_completed(const RequestStatus status) {
   switch (status) {
+    case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
-      return false;
+      break;
     case RequestStatus::ACCEPTED:
     case RequestStatus::REJECTED:
     case RequestStatus::TIMEOUT:
       return true;
     default:
-      // XXX throw?
-      return true;
+      break;
   }
+  return false;
+}
+
+//! Check if request has failed
+inline bool has_request_failed(const RequestStatus status) {
+  switch (status) {
+    case RequestStatus::UNDEFINED:
+    case RequestStatus::FORWARDED:
+    case RequestStatus::ACCEPTED:
+      break;
+    case RequestStatus::REJECTED:
+    case RequestStatus::TIMEOUT:
+      return true;
+    default:
+      break;
+  }
+  return false;
+}
+
+//! Check if request has succeeded
+inline bool has_request_succeeded(const RequestStatus status) {
+  switch (status) {
+    case RequestStatus::UNDEFINED:
+    case RequestStatus::FORWARDED:
+      break;
+    case RequestStatus::ACCEPTED:
+      return true;
+    case RequestStatus::REJECTED:
+    case RequestStatus::TIMEOUT:
+      break;
+    default:
+      break;
+  }
+  return false;
 }
 
 //! Get the opposite \ref Side.

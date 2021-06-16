@@ -13,7 +13,6 @@ table OrderUpdate {
   symbol:string;
   side:Side;
   position_effect:PositionEffect;
-  quantity:double = nan;
   max_show_quantity:double = nan;
   order_type:OrderType;
   time_in_force:TimeInForce;
@@ -24,6 +23,7 @@ table OrderUpdate {
   external_account:string;
   external_order_id:string;
   status:OrderStatus;
+  quantity:double = nan;
   price:double = nan;
   stop_price:double = nan;
   remaining_quantity:double = nan;

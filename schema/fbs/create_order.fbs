@@ -13,12 +13,12 @@ table CreateOrder {
   symbol:string;
   side:Side;
   position_effect:PositionEffect;
-  quantity:double = nan;
   max_show_quantity:double = nan;
   order_type:OrderType;
   time_in_force:TimeInForce;
   execution_instruction:ExecutionInstruction;
   order_template:string;
+  quantity:double = nan;
   price:double = nan;
   stop_price:double = nan;
   routing_id:string;

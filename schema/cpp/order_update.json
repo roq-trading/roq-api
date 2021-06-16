@@ -33,11 +33,6 @@
             "type": "PositionEffect"
         },
         {
-            "name": "quantity",
-            "type": "double",
-            "comment": "Quantity (total, indicative)"
-        },
-        {
             "name": "max_show_quantity",
             "type": "double",
             "comment": "Quantity visible to market (requires exchange support)"
@@ -78,6 +73,11 @@
             "name": "status",
             "type": "OrderStatus",
             "comment": "Order status"
+        },
+        {
+            "name": "quantity",
+            "type": "double",
+            "comment": "Quantity (total, indicative)"
         },
         {
             "name": "price",

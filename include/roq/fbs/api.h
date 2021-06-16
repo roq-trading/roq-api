@@ -1652,12 +1652,12 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SYMBOL = 10,
     VT_SIDE = 12,
     VT_POSITION_EFFECT = 14,
-    VT_QUANTITY = 16,
-    VT_MAX_SHOW_QUANTITY = 18,
-    VT_ORDER_TYPE = 20,
-    VT_TIME_IN_FORCE = 22,
-    VT_EXECUTION_INSTRUCTION = 24,
-    VT_ORDER_TEMPLATE = 26,
+    VT_MAX_SHOW_QUANTITY = 16,
+    VT_ORDER_TYPE = 18,
+    VT_TIME_IN_FORCE = 20,
+    VT_EXECUTION_INSTRUCTION = 22,
+    VT_ORDER_TEMPLATE = 24,
+    VT_QUANTITY = 26,
     VT_PRICE = 28,
     VT_STOP_PRICE = 30,
     VT_ROUTING_ID = 32
@@ -1670,7 +1670,6 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::PositionEffect position_effect() const {
     return static_cast<roq::fbs::PositionEffect>(GetField<uint8_t>(VT_POSITION_EFFECT, 0));
   }
-  double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
   double max_show_quantity() const {
     return GetField<double>(VT_MAX_SHOW_QUANTITY, std::numeric_limits<double>::quiet_NaN());
   }
@@ -1686,6 +1685,7 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *order_template() const {
     return GetPointer<const flatbuffers::String *>(VT_ORDER_TEMPLATE);
   }
+  double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
   double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double stop_price() const { return GetField<double>(VT_STOP_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
@@ -1694,12 +1694,12 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_EXCHANGE) &&
            verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
            VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
-           VerifyField<double>(verifier, VT_QUANTITY) && VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) &&
-           VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) && VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
+           VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) && VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) &&
+           VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
            VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION) && VerifyOffset(verifier, VT_ORDER_TEMPLATE) &&
-           verifier.VerifyString(order_template()) && VerifyField<double>(verifier, VT_PRICE) &&
-           VerifyField<double>(verifier, VT_STOP_PRICE) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && verifier.EndTable();
+           verifier.VerifyString(order_template()) && VerifyField<double>(verifier, VT_QUANTITY) &&
+           VerifyField<double>(verifier, VT_PRICE) && VerifyField<double>(verifier, VT_STOP_PRICE) &&
+           VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) && verifier.EndTable();
   }
 };
 
@@ -1719,9 +1719,6 @@ struct CreateOrderBuilder {
   void add_position_effect(roq::fbs::PositionEffect position_effect) {
     fbb_.AddElement<uint8_t>(CreateOrder::VT_POSITION_EFFECT, static_cast<uint8_t>(position_effect), 0);
   }
-  void add_quantity(double quantity) {
-    fbb_.AddElement<double>(CreateOrder::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
-  }
   void add_max_show_quantity(double max_show_quantity) {
     fbb_.AddElement<double>(
         CreateOrder::VT_MAX_SHOW_QUANTITY, max_show_quantity, std::numeric_limits<double>::quiet_NaN());
@@ -1737,6 +1734,9 @@ struct CreateOrderBuilder {
   }
   void add_order_template(flatbuffers::Offset<flatbuffers::String> order_template) {
     fbb_.AddOffset(CreateOrder::VT_ORDER_TEMPLATE, order_template);
+  }
+  void add_quantity(double quantity) {
+    fbb_.AddElement<double>(CreateOrder::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_price(double price) {
     fbb_.AddElement<double>(CreateOrder::VT_PRICE, price, std::numeric_limits<double>::quiet_NaN());
@@ -1763,20 +1763,20 @@ inline flatbuffers::Offset<CreateOrder> CreateCreateOrder(
     flatbuffers::Offset<flatbuffers::String> symbol = 0,
     roq::fbs::Side side = roq::fbs::Side_Undefined,
     roq::fbs::PositionEffect position_effect = roq::fbs::PositionEffect_Undefined,
-    double quantity = std::numeric_limits<double>::quiet_NaN(),
     double max_show_quantity = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::OrderType order_type = roq::fbs::OrderType_Undefined,
     roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce_Undefined,
     roq::fbs::ExecutionInstruction execution_instruction = roq::fbs::ExecutionInstruction_Undefined,
     flatbuffers::Offset<flatbuffers::String> order_template = 0,
+    double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
     flatbuffers::Offset<flatbuffers::String> routing_id = 0) {
   CreateOrderBuilder builder_(_fbb);
   builder_.add_stop_price(stop_price);
   builder_.add_price(price);
-  builder_.add_max_show_quantity(max_show_quantity);
   builder_.add_quantity(quantity);
+  builder_.add_max_show_quantity(max_show_quantity);
   builder_.add_routing_id(routing_id);
   builder_.add_order_template(order_template);
   builder_.add_symbol(symbol);
@@ -1799,12 +1799,12 @@ inline flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
     const char *symbol = nullptr,
     roq::fbs::Side side = roq::fbs::Side_Undefined,
     roq::fbs::PositionEffect position_effect = roq::fbs::PositionEffect_Undefined,
-    double quantity = std::numeric_limits<double>::quiet_NaN(),
     double max_show_quantity = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::OrderType order_type = roq::fbs::OrderType_Undefined,
     roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce_Undefined,
     roq::fbs::ExecutionInstruction execution_instruction = roq::fbs::ExecutionInstruction_Undefined,
     const char *order_template = nullptr,
+    double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
     const char *routing_id = nullptr) {
@@ -1821,12 +1821,12 @@ inline flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
       symbol__,
       side,
       position_effect,
-      quantity,
       max_show_quantity,
       order_type,
       time_in_force,
       execution_instruction,
       order_template__,
+      quantity,
       price,
       stop_price,
       routing_id__);
@@ -2697,17 +2697,17 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SYMBOL = 12,
     VT_SIDE = 14,
     VT_POSITION_EFFECT = 16,
-    VT_QUANTITY = 18,
-    VT_MAX_SHOW_QUANTITY = 20,
-    VT_ORDER_TYPE = 22,
-    VT_TIME_IN_FORCE = 24,
-    VT_EXECUTION_INSTRUCTION = 26,
-    VT_ORDER_TEMPLATE = 28,
-    VT_CREATE_TIME_UTC = 30,
-    VT_UPDATE_TIME_UTC = 32,
-    VT_EXTERNAL_ACCOUNT = 34,
-    VT_EXTERNAL_ORDER_ID = 36,
-    VT_STATUS = 38,
+    VT_MAX_SHOW_QUANTITY = 18,
+    VT_ORDER_TYPE = 20,
+    VT_TIME_IN_FORCE = 22,
+    VT_EXECUTION_INSTRUCTION = 24,
+    VT_ORDER_TEMPLATE = 26,
+    VT_CREATE_TIME_UTC = 28,
+    VT_UPDATE_TIME_UTC = 30,
+    VT_EXTERNAL_ACCOUNT = 32,
+    VT_EXTERNAL_ORDER_ID = 34,
+    VT_STATUS = 36,
+    VT_QUANTITY = 38,
     VT_PRICE = 40,
     VT_STOP_PRICE = 42,
     VT_REMAINING_QUANTITY = 44,
@@ -2730,7 +2730,6 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::PositionEffect position_effect() const {
     return static_cast<roq::fbs::PositionEffect>(GetField<uint8_t>(VT_POSITION_EFFECT, 0));
   }
-  double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
   double max_show_quantity() const {
     return GetField<double>(VT_MAX_SHOW_QUANTITY, std::numeric_limits<double>::quiet_NaN());
   }
@@ -2755,6 +2754,7 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ORDER_ID);
   }
   roq::fbs::OrderStatus status() const { return static_cast<roq::fbs::OrderStatus>(GetField<uint8_t>(VT_STATUS, 0)); }
+  double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
   double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double stop_price() const { return GetField<double>(VT_STOP_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double remaining_quantity() const {
@@ -2785,15 +2785,16 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_EXCHANGE) &&
            verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
            VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
-           VerifyField<double>(verifier, VT_QUANTITY) && VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) &&
-           VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) && VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
+           VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) && VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) &&
+           VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
            VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION) && VerifyOffset(verifier, VT_ORDER_TEMPLATE) &&
            verifier.VerifyString(order_template()) && VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC) &&
            VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
            verifier.VerifyString(external_account()) && VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
            verifier.VerifyString(external_order_id()) && VerifyField<uint8_t>(verifier, VT_STATUS) &&
-           VerifyField<double>(verifier, VT_PRICE) && VerifyField<double>(verifier, VT_STOP_PRICE) &&
-           VerifyField<double>(verifier, VT_REMAINING_QUANTITY) && VerifyField<double>(verifier, VT_TRADED_QUANTITY) &&
+           VerifyField<double>(verifier, VT_QUANTITY) && VerifyField<double>(verifier, VT_PRICE) &&
+           VerifyField<double>(verifier, VT_STOP_PRICE) && VerifyField<double>(verifier, VT_REMAINING_QUANTITY) &&
+           VerifyField<double>(verifier, VT_TRADED_QUANTITY) &&
            VerifyField<double>(verifier, VT_AVERAGE_TRADED_PRICE) &&
            VerifyField<double>(verifier, VT_LAST_TRADED_PRICE) &&
            VerifyField<double>(verifier, VT_LAST_TRADED_QUANTITY) &&
@@ -2820,9 +2821,6 @@ struct OrderUpdateBuilder {
   void add_side(roq::fbs::Side side) { fbb_.AddElement<uint8_t>(OrderUpdate::VT_SIDE, static_cast<uint8_t>(side), 0); }
   void add_position_effect(roq::fbs::PositionEffect position_effect) {
     fbb_.AddElement<uint8_t>(OrderUpdate::VT_POSITION_EFFECT, static_cast<uint8_t>(position_effect), 0);
-  }
-  void add_quantity(double quantity) {
-    fbb_.AddElement<double>(OrderUpdate::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_max_show_quantity(double max_show_quantity) {
     fbb_.AddElement<double>(
@@ -2854,6 +2852,9 @@ struct OrderUpdateBuilder {
   }
   void add_status(roq::fbs::OrderStatus status) {
     fbb_.AddElement<uint8_t>(OrderUpdate::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_quantity(double quantity) {
+    fbb_.AddElement<double>(OrderUpdate::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
   }
   void add_price(double price) {
     fbb_.AddElement<double>(OrderUpdate::VT_PRICE, price, std::numeric_limits<double>::quiet_NaN());
@@ -2912,7 +2913,6 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     flatbuffers::Offset<flatbuffers::String> symbol = 0,
     roq::fbs::Side side = roq::fbs::Side_Undefined,
     roq::fbs::PositionEffect position_effect = roq::fbs::PositionEffect_Undefined,
-    double quantity = std::numeric_limits<double>::quiet_NaN(),
     double max_show_quantity = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::OrderType order_type = roq::fbs::OrderType_Undefined,
     roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce_Undefined,
@@ -2923,6 +2923,7 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     flatbuffers::Offset<flatbuffers::String> external_account = 0,
     flatbuffers::Offset<flatbuffers::String> external_order_id = 0,
     roq::fbs::OrderStatus status = roq::fbs::OrderStatus_Undefined,
+    double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
     double remaining_quantity = std::numeric_limits<double>::quiet_NaN(),
@@ -2943,10 +2944,10 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
   builder_.add_remaining_quantity(remaining_quantity);
   builder_.add_stop_price(stop_price);
   builder_.add_price(price);
+  builder_.add_quantity(quantity);
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
   builder_.add_max_show_quantity(max_show_quantity);
-  builder_.add_quantity(quantity);
   builder_.add_routing_id(routing_id);
   builder_.add_external_order_id(external_order_id);
   builder_.add_external_account(external_account);
@@ -2978,7 +2979,6 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     const char *symbol = nullptr,
     roq::fbs::Side side = roq::fbs::Side_Undefined,
     roq::fbs::PositionEffect position_effect = roq::fbs::PositionEffect_Undefined,
-    double quantity = std::numeric_limits<double>::quiet_NaN(),
     double max_show_quantity = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::OrderType order_type = roq::fbs::OrderType_Undefined,
     roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce_Undefined,
@@ -2989,6 +2989,7 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     const char *external_account = nullptr,
     const char *external_order_id = nullptr,
     roq::fbs::OrderStatus status = roq::fbs::OrderStatus_Undefined,
+    double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
     double remaining_quantity = std::numeric_limits<double>::quiet_NaN(),
@@ -3017,7 +3018,6 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       symbol__,
       side,
       position_effect,
-      quantity,
       max_show_quantity,
       order_type,
       time_in_force,
@@ -3028,6 +3028,7 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       external_account__,
       external_order_id__,
       status,
+      quantity,
       price,
       stop_price,
       remaining_quantity,

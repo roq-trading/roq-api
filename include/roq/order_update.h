@@ -38,7 +38,6 @@ struct ROQ_PUBLIC OrderUpdate final {
   std::string_view symbol;                          //!< Symbol
   Side side = {};                                   //!< Side
   PositionEffect position_effect = {};              //!< Position effect
-  double quantity = NaN;                            //!< Quantity (total, indicative)
   double max_show_quantity = NaN;                   //!< Quantity visible to market (requires exchange support)
   OrderType order_type = {};                        //!< Order type
   TimeInForce time_in_force = {};                   //!< Time in force
@@ -49,6 +48,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   std::string_view external_account;                //!< External account name
   std::string_view external_order_id;               //!< External order identifier
   OrderStatus status = {};                          //!< Order status
+  double quantity = NaN;                            //!< Quantity (total, indicative)
   double price = NaN;                               //!< Price
   double stop_price = NaN;                          //!< Stop price (depends on order_type and time_in_force)
   double remaining_quantity = NaN;                  //!< Quantity (remaining)
@@ -80,7 +80,6 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         R"(symbol="{}", )"
         R"(side={}, )"
         R"(position_effect={}, )"
-        R"(quantity={}, )"
         R"(max_show_quantity={}, )"
         R"(order_type={}, )"
         R"(time_in_force={}, )"
@@ -91,6 +90,7 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(status={}, )"
+        R"(quantity={}, )"
         R"(price={}, )"
         R"(stop_price={}, )"
         R"(remaining_quantity={}, )"
@@ -111,7 +111,6 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         value.symbol,
         value.side,
         value.position_effect,
-        value.quantity,
         value.max_show_quantity,
         value.order_type,
         value.time_in_force,
@@ -122,6 +121,7 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         value.external_account,
         value.external_order_id,
         value.status,
+        value.quantity,
         value.price,
         value.stop_price,
         value.remaining_quantity,

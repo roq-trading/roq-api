@@ -12,6 +12,8 @@ All notable changes will be documented in this file.
   `max_response_version` and `max_accepted_version`
 * `ModifyOrder` and `CancelOrder` has been updated with `version` and
   `conditional_on_version`
+* `CreateOrder` and `OrderUpdate` has changed field ordering to better group
+  constant vs. possibly changing fields
 
 ## 0.7.1 &ndash; 2021-05-30
 

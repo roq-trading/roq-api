@@ -29,11 +29,6 @@
             "type": "PositionEffect"
         },
         {
-            "name": "quantity",
-            "type": "double",
-            "comment": "Order quantity"
-        },
-        {
             "name": "max_show_quantity",
             "type": "double",
             "comment": "Quantity visible to market (requires exchange support)"
@@ -53,6 +48,11 @@
         {
             "name": "order_template",
             "type": "std::string_view"
+        },
+        {
+            "name": "quantity",
+            "type": "double",
+            "comment": "Order quantity"
         },
         {
             "name": "price",

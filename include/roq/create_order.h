@@ -35,12 +35,12 @@ struct ROQ_PUBLIC CreateOrder final {
   std::string_view symbol;                          //!< Symbol
   Side side = {};                                   //!< Order side
   PositionEffect position_effect = {};              //!< Position effect
-  double quantity = NaN;                            //!< Order quantity
   double max_show_quantity = NaN;                   //!< Quantity visible to market (requires exchange support)
   OrderType order_type = {};                        //!< Order type
   TimeInForce time_in_force = {};                   //!< Time in force
   ExecutionInstruction execution_instruction = {};  //!< Execution instruction
   std::string_view order_template;                  //!< Order template
+  double quantity = NaN;                            //!< Order quantity
   double price = NaN;                               //!< Limit price (depends on order_type)
   double stop_price = NaN;                          //!< Stop price (depends on order_type and time_in_force)
   std::string_view routing_id;                      //!< Routing identifier
@@ -62,12 +62,12 @@ struct fmt::formatter<roq::CreateOrder> : public roq::formatter {
         R"(symbol="{}", )"
         R"(side={}, )"
         R"(position_effect={}, )"
-        R"(quantity={}, )"
         R"(max_show_quantity={}, )"
         R"(order_type={}, )"
         R"(time_in_force={}, )"
         R"(execution_instruction={}, )"
         R"(order_template="{}", )"
+        R"(quantity={}, )"
         R"(price={}, )"
         R"(stop_price={}, )"
         R"(routing_id="{}")"
@@ -78,12 +78,12 @@ struct fmt::formatter<roq::CreateOrder> : public roq::formatter {
         value.symbol,
         value.side,
         value.position_effect,
-        value.quantity,
         value.max_show_quantity,
         value.order_type,
         value.time_in_force,
         value.execution_instruction,
         value.order_template,
+        value.quantity,
         value.price,
         value.stop_price,
         value.routing_id);

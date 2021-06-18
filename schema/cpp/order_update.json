@@ -105,14 +105,14 @@
             "comment": "Average price (total traded)"
         },
         {
-            "name": "last_traded_price",
-            "type": "double",
-            "comment": "Traded price (last trade)"
-        },
-        {
             "name": "last_traded_quantity",
             "type": "double",
             "comment": "Traded quantity (last trade)"
+        },
+        {
+            "name": "last_traded_price",
+            "type": "double",
+            "comment": "Traded price (last trade)"
         },
         {
             "name": "last_liquidity",

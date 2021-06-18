@@ -16,6 +16,6 @@ table TradeUpdate {
   update_time_utc:int64;
   external_account:string;
   external_order_id:string;
-  routing_id:string;
   fills:[Fill];
+  routing_id:string;
 }

@@ -17,15 +17,16 @@
 #include "roq/string_buffer.h"
 #include "roq/uuid.h"
 
+#include "roq/liquidity.h"
+
 namespace roq {
 
 //! Represents a single fill (match) when an order is being partially or fully filled
 struct ROQ_PUBLIC Fill final {
+  roq::string_buffer<40> external_trade_id;  //!< External trade identifier
   double quantity = NaN;                     //!< Quantity
   double price = NaN;                        //!< Price
-  uint32_t trade_id = {};                    //!< Trade identifier
-  uint32_t gateway_trade_id = {};            //!< Trade identifier
-  roq::string_buffer<40> external_trade_id;  //!< External trade identifier
+  Liquidity liquidity = {};                  //!< Liquidity indicator
 };
 
 }  // namespace roq
@@ -38,16 +39,14 @@ struct fmt::formatter<roq::Fill> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(external_trade_id="{}", )"
         R"(quantity={}, )"
         R"(price={}, )"
-        R"(trade_id={}, )"
-        R"(gateway_trade_id={}, )"
-        R"(external_trade_id="{}")"
+        R"(liquidity={})"
         R"(}})"_fmt,
+        value.external_trade_id,
         value.quantity,
         value.price,
-        value.trade_id,
-        value.gateway_trade_id,
-        value.external_trade_id);
+        value.liquidity);
   }
 };

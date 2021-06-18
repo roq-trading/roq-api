@@ -225,11 +225,10 @@ template <typename B>
 auto encode(B &builder, const roq::Fill &value) {
   return CreateFill(
       builder,
+      encode(builder, static_cast<std::string_view>(value.external_trade_id)),
       value.quantity,
       value.price,
-      value.trade_id,
-      value.gateway_trade_id,
-      encode(builder, static_cast<std::string_view>(value.external_trade_id)));
+      encode(builder, value.liquidity));
 }
 
 template <typename B>
@@ -568,8 +567,8 @@ auto encode(B &builder, const roq::OrderUpdate &value) {
       value.remaining_quantity,
       value.traded_quantity,
       value.average_traded_price,
-      value.last_traded_price,
       value.last_traded_quantity,
+      value.last_traded_price,
       encode(builder, value.last_liquidity),
       encode(builder, value.routing_id),
       value.max_request_version,
@@ -592,8 +591,8 @@ auto encode(B &builder, const roq::TradeUpdate &value) {
       encode(builder, value.update_time_utc),
       encode(builder, value.external_account),
       encode(builder, value.external_order_id),
-      encode(builder, value.routing_id),
-      encode(builder, value.fills));
+      encode(builder, value.fills),
+      encode(builder, value.routing_id));
 }
 
 template <typename B>

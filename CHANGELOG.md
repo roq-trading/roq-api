@@ -14,6 +14,8 @@ All notable changes will be documented in this file.
   `conditional_on_version`
 * `CreateOrder` and `OrderUpdate` has changed field ordering to better group
   constant vs. possibly changing fields
+* `TradeUpdate` and `Fill` has changed field ordering and `Fill` has dropped
+  artificially generated `trade_id`'s
 
 ## 0.7.1 &ndash; 2021-05-30
 

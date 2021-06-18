@@ -4,6 +4,10 @@
     "comment": "Represents a single fill (match) when an order is being partially or fully filled",
     "values": [
         {
+            "name": "external_trade_id",
+            "type": "roq::string_buffer<40>"
+        },
+        {
             "name": "quantity",
             "type": "double",
             "comment": "Quantity"
@@ -14,16 +18,9 @@
             "comment": "Price"
         },
         {
-            "name": "trade_id",
-            "type": "uint32_t"
-        },
-        {
-            "name": "gateway_trade_id",
-            "type": "uint32_t"
-        },
-        {
-            "name": "external_trade_id",
-            "type": "roq::string_buffer<40>"
+            "name": "liquidity",
+            "type": "Liquidity",
+            "comment": "Liquidity indicator"
         }
     ]
 }

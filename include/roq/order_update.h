@@ -54,8 +54,8 @@ struct ROQ_PUBLIC OrderUpdate final {
   double remaining_quantity = NaN;                  //!< Quantity (remaining)
   double traded_quantity = NaN;                     //!< Quantity (total traded)
   double average_traded_price = NaN;                //!< Average price (total traded)
-  double last_traded_price = NaN;                   //!< Traded price (last trade)
   double last_traded_quantity = NaN;                //!< Traded quantity (last trade)
+  double last_traded_price = NaN;                   //!< Traded price (last trade)
   Liquidity last_liquidity = {};                    //!< Liquidity indicator (last trade)
   std::string_view routing_id;                      //!< Routing identifier
   uint8_t max_request_version = {};                 //!< Last request version
@@ -96,8 +96,8 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         R"(remaining_quantity={}, )"
         R"(traded_quantity={}, )"
         R"(average_traded_price={}, )"
-        R"(last_traded_price={}, )"
         R"(last_traded_quantity={}, )"
+        R"(last_traded_price={}, )"
         R"(last_liquidity={}, )"
         R"(routing_id="{}", )"
         R"(max_request_version={}, )"
@@ -127,8 +127,8 @@ struct fmt::formatter<roq::OrderUpdate> : public roq::formatter {
         value.remaining_quantity,
         value.traded_quantity,
         value.average_traded_price,
-        value.last_traded_price,
         value.last_traded_quantity,
+        value.last_traded_price,
         value.last_liquidity,
         value.routing_id,
         value.max_request_version,

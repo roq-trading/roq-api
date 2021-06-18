@@ -49,13 +49,13 @@
             "type": "std::string_view"
         },
         {
-            "name": "routing_id",
-            "type": "std::string_view"
-        },
-        {
             "name": "fills",
             "type": "roq::span<Fill>",
             "comment": "List of fills"
+        },
+        {
+            "name": "routing_id",
+            "type": "std::string_view"
         }
     ]
 }

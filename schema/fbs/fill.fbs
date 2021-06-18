@@ -1,9 +1,8 @@
 namespace roq.fbs;
 
 table Fill {
+  external_trade_id:string;
   quantity:double;
   price:double;
-  trade_id:uint32;
-  gateway_trade_id:uint32;
-  external_trade_id:string;
+  liquidity:Liquidity;
 }

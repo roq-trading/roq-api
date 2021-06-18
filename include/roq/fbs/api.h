@@ -1179,24 +1179,22 @@ bool VerifyMessageVector(
 struct Fill FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef FillBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_QUANTITY = 4,
-    VT_PRICE = 6,
-    VT_TRADE_ID = 8,
-    VT_GATEWAY_TRADE_ID = 10,
-    VT_EXTERNAL_TRADE_ID = 12
+    VT_EXTERNAL_TRADE_ID = 4,
+    VT_QUANTITY = 6,
+    VT_PRICE = 8,
+    VT_LIQUIDITY = 10
   };
-  double quantity() const { return GetField<double>(VT_QUANTITY, 0.0); }
-  double price() const { return GetField<double>(VT_PRICE, 0.0); }
-  uint32_t trade_id() const { return GetField<uint32_t>(VT_TRADE_ID, 0); }
-  uint32_t gateway_trade_id() const { return GetField<uint32_t>(VT_GATEWAY_TRADE_ID, 0); }
   const flatbuffers::String *external_trade_id() const {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_TRADE_ID);
   }
+  double quantity() const { return GetField<double>(VT_QUANTITY, 0.0); }
+  double price() const { return GetField<double>(VT_PRICE, 0.0); }
+  roq::fbs::Liquidity liquidity() const { return static_cast<roq::fbs::Liquidity>(GetField<uint8_t>(VT_LIQUIDITY, 0)); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_QUANTITY) &&
-           VerifyField<double>(verifier, VT_PRICE) && VerifyField<uint32_t>(verifier, VT_TRADE_ID) &&
-           VerifyField<uint32_t>(verifier, VT_GATEWAY_TRADE_ID) && VerifyOffset(verifier, VT_EXTERNAL_TRADE_ID) &&
-           verifier.VerifyString(external_trade_id()) && verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_EXTERNAL_TRADE_ID) &&
+           verifier.VerifyString(external_trade_id()) && VerifyField<double>(verifier, VT_QUANTITY) &&
+           VerifyField<double>(verifier, VT_PRICE) && VerifyField<uint8_t>(verifier, VT_LIQUIDITY) &&
+           verifier.EndTable();
   }
 };
 
@@ -1204,14 +1202,13 @@ struct FillBuilder {
   typedef Fill Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_quantity(double quantity) { fbb_.AddElement<double>(Fill::VT_QUANTITY, quantity, 0.0); }
-  void add_price(double price) { fbb_.AddElement<double>(Fill::VT_PRICE, price, 0.0); }
-  void add_trade_id(uint32_t trade_id) { fbb_.AddElement<uint32_t>(Fill::VT_TRADE_ID, trade_id, 0); }
-  void add_gateway_trade_id(uint32_t gateway_trade_id) {
-    fbb_.AddElement<uint32_t>(Fill::VT_GATEWAY_TRADE_ID, gateway_trade_id, 0);
-  }
   void add_external_trade_id(flatbuffers::Offset<flatbuffers::String> external_trade_id) {
     fbb_.AddOffset(Fill::VT_EXTERNAL_TRADE_ID, external_trade_id);
+  }
+  void add_quantity(double quantity) { fbb_.AddElement<double>(Fill::VT_QUANTITY, quantity, 0.0); }
+  void add_price(double price) { fbb_.AddElement<double>(Fill::VT_PRICE, price, 0.0); }
+  void add_liquidity(roq::fbs::Liquidity liquidity) {
+    fbb_.AddElement<uint8_t>(Fill::VT_LIQUIDITY, static_cast<uint8_t>(liquidity), 0);
   }
   explicit FillBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Fill> Finish() {
@@ -1223,29 +1220,26 @@ struct FillBuilder {
 
 inline flatbuffers::Offset<Fill> CreateFill(
     flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> external_trade_id = 0,
     double quantity = 0.0,
     double price = 0.0,
-    uint32_t trade_id = 0,
-    uint32_t gateway_trade_id = 0,
-    flatbuffers::Offset<flatbuffers::String> external_trade_id = 0) {
+    roq::fbs::Liquidity liquidity = roq::fbs::Liquidity_Undefined) {
   FillBuilder builder_(_fbb);
   builder_.add_price(price);
   builder_.add_quantity(quantity);
   builder_.add_external_trade_id(external_trade_id);
-  builder_.add_gateway_trade_id(gateway_trade_id);
-  builder_.add_trade_id(trade_id);
+  builder_.add_liquidity(liquidity);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<Fill> CreateFillDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
+    const char *external_trade_id = nullptr,
     double quantity = 0.0,
     double price = 0.0,
-    uint32_t trade_id = 0,
-    uint32_t gateway_trade_id = 0,
-    const char *external_trade_id = nullptr) {
+    roq::fbs::Liquidity liquidity = roq::fbs::Liquidity_Undefined) {
   auto external_trade_id__ = external_trade_id ? _fbb.CreateString(external_trade_id) : 0;
-  return roq::fbs::CreateFill(_fbb, quantity, price, trade_id, gateway_trade_id, external_trade_id__);
+  return roq::fbs::CreateFill(_fbb, external_trade_id__, quantity, price, liquidity);
 }
 
 struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -2713,8 +2707,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_REMAINING_QUANTITY = 44,
     VT_TRADED_QUANTITY = 46,
     VT_AVERAGE_TRADED_PRICE = 48,
-    VT_LAST_TRADED_PRICE = 50,
-    VT_LAST_TRADED_QUANTITY = 52,
+    VT_LAST_TRADED_QUANTITY = 50,
+    VT_LAST_TRADED_PRICE = 52,
     VT_LAST_LIQUIDITY = 54,
     VT_ROUTING_ID = 56,
     VT_MAX_REQUEST_VERSION = 58,
@@ -2766,11 +2760,11 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double average_traded_price() const {
     return GetField<double>(VT_AVERAGE_TRADED_PRICE, std::numeric_limits<double>::quiet_NaN());
   }
-  double last_traded_price() const {
-    return GetField<double>(VT_LAST_TRADED_PRICE, std::numeric_limits<double>::quiet_NaN());
-  }
   double last_traded_quantity() const {
     return GetField<double>(VT_LAST_TRADED_QUANTITY, std::numeric_limits<double>::quiet_NaN());
+  }
+  double last_traded_price() const {
+    return GetField<double>(VT_LAST_TRADED_PRICE, std::numeric_limits<double>::quiet_NaN());
   }
   roq::fbs::Liquidity last_liquidity() const {
     return static_cast<roq::fbs::Liquidity>(GetField<uint8_t>(VT_LAST_LIQUIDITY, 0));
@@ -2796,10 +2790,10 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<double>(verifier, VT_STOP_PRICE) && VerifyField<double>(verifier, VT_REMAINING_QUANTITY) &&
            VerifyField<double>(verifier, VT_TRADED_QUANTITY) &&
            VerifyField<double>(verifier, VT_AVERAGE_TRADED_PRICE) &&
-           VerifyField<double>(verifier, VT_LAST_TRADED_PRICE) &&
            VerifyField<double>(verifier, VT_LAST_TRADED_QUANTITY) &&
-           VerifyField<uint8_t>(verifier, VT_LAST_LIQUIDITY) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && VerifyField<uint8_t>(verifier, VT_MAX_REQUEST_VERSION) &&
+           VerifyField<double>(verifier, VT_LAST_TRADED_PRICE) && VerifyField<uint8_t>(verifier, VT_LAST_LIQUIDITY) &&
+           VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
+           VerifyField<uint8_t>(verifier, VT_MAX_REQUEST_VERSION) &&
            VerifyField<uint8_t>(verifier, VT_MAX_RESPONSE_VERSION) &&
            VerifyField<uint8_t>(verifier, VT_MAX_ACCEPTED_VERSION) && verifier.EndTable();
   }
@@ -2873,13 +2867,13 @@ struct OrderUpdateBuilder {
     fbb_.AddElement<double>(
         OrderUpdate::VT_AVERAGE_TRADED_PRICE, average_traded_price, std::numeric_limits<double>::quiet_NaN());
   }
-  void add_last_traded_price(double last_traded_price) {
-    fbb_.AddElement<double>(
-        OrderUpdate::VT_LAST_TRADED_PRICE, last_traded_price, std::numeric_limits<double>::quiet_NaN());
-  }
   void add_last_traded_quantity(double last_traded_quantity) {
     fbb_.AddElement<double>(
         OrderUpdate::VT_LAST_TRADED_QUANTITY, last_traded_quantity, std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_last_traded_price(double last_traded_price) {
+    fbb_.AddElement<double>(
+        OrderUpdate::VT_LAST_TRADED_PRICE, last_traded_price, std::numeric_limits<double>::quiet_NaN());
   }
   void add_last_liquidity(roq::fbs::Liquidity last_liquidity) {
     fbb_.AddElement<uint8_t>(OrderUpdate::VT_LAST_LIQUIDITY, static_cast<uint8_t>(last_liquidity), 0);
@@ -2929,16 +2923,16 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     double remaining_quantity = std::numeric_limits<double>::quiet_NaN(),
     double traded_quantity = std::numeric_limits<double>::quiet_NaN(),
     double average_traded_price = std::numeric_limits<double>::quiet_NaN(),
-    double last_traded_price = std::numeric_limits<double>::quiet_NaN(),
     double last_traded_quantity = std::numeric_limits<double>::quiet_NaN(),
+    double last_traded_price = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::Liquidity last_liquidity = roq::fbs::Liquidity_Undefined,
     flatbuffers::Offset<flatbuffers::String> routing_id = 0,
     uint8_t max_request_version = 0,
     uint8_t max_response_version = 0,
     uint8_t max_accepted_version = 0) {
   OrderUpdateBuilder builder_(_fbb);
-  builder_.add_last_traded_quantity(last_traded_quantity);
   builder_.add_last_traded_price(last_traded_price);
+  builder_.add_last_traded_quantity(last_traded_quantity);
   builder_.add_average_traded_price(average_traded_price);
   builder_.add_traded_quantity(traded_quantity);
   builder_.add_remaining_quantity(remaining_quantity);
@@ -2995,8 +2989,8 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     double remaining_quantity = std::numeric_limits<double>::quiet_NaN(),
     double traded_quantity = std::numeric_limits<double>::quiet_NaN(),
     double average_traded_price = std::numeric_limits<double>::quiet_NaN(),
-    double last_traded_price = std::numeric_limits<double>::quiet_NaN(),
     double last_traded_quantity = std::numeric_limits<double>::quiet_NaN(),
+    double last_traded_price = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::Liquidity last_liquidity = roq::fbs::Liquidity_Undefined,
     const char *routing_id = nullptr,
     uint8_t max_request_version = 0,
@@ -3034,8 +3028,8 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       remaining_quantity,
       traded_quantity,
       average_traded_price,
-      last_traded_price,
       last_traded_quantity,
+      last_traded_price,
       last_liquidity,
       routing_id__,
       max_request_version,
@@ -3812,8 +3806,8 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_UPDATE_TIME_UTC = 20,
     VT_EXTERNAL_ACCOUNT = 22,
     VT_EXTERNAL_ORDER_ID = 24,
-    VT_ROUTING_ID = 26,
-    VT_FILLS = 28
+    VT_FILLS = 26,
+    VT_ROUTING_ID = 28
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
@@ -3832,10 +3826,10 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *external_order_id() const {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ORDER_ID);
   }
-  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>> *fills() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>> *>(VT_FILLS);
   }
+  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
@@ -3845,9 +3839,9 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC) && VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC) &&
            VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) && verifier.VerifyString(external_account()) &&
            VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) && verifier.VerifyString(external_order_id()) &&
-           VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
            VerifyOffset(verifier, VT_FILLS) && verifier.VerifyVector(fills()) &&
-           verifier.VerifyVectorOfTables(fills()) && verifier.EndTable();
+           verifier.VerifyVectorOfTables(fills()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
+           verifier.VerifyString(routing_id()) && verifier.EndTable();
   }
 };
 
@@ -3880,11 +3874,11 @@ struct TradeUpdateBuilder {
   void add_external_order_id(flatbuffers::Offset<flatbuffers::String> external_order_id) {
     fbb_.AddOffset(TradeUpdate::VT_EXTERNAL_ORDER_ID, external_order_id);
   }
-  void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
-    fbb_.AddOffset(TradeUpdate::VT_ROUTING_ID, routing_id);
-  }
   void add_fills(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>>> fills) {
     fbb_.AddOffset(TradeUpdate::VT_FILLS, fills);
+  }
+  void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
+    fbb_.AddOffset(TradeUpdate::VT_ROUTING_ID, routing_id);
   }
   explicit TradeUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<TradeUpdate> Finish() {
@@ -3907,13 +3901,13 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdate(
     int64_t update_time_utc = 0,
     flatbuffers::Offset<flatbuffers::String> external_account = 0,
     flatbuffers::Offset<flatbuffers::String> external_order_id = 0,
-    flatbuffers::Offset<flatbuffers::String> routing_id = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>>> fills = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>>> fills = 0,
+    flatbuffers::Offset<flatbuffers::String> routing_id = 0) {
   TradeUpdateBuilder builder_(_fbb);
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
-  builder_.add_fills(fills);
   builder_.add_routing_id(routing_id);
+  builder_.add_fills(fills);
   builder_.add_external_order_id(external_order_id);
   builder_.add_external_account(external_account);
   builder_.add_symbol(symbol);
@@ -3939,15 +3933,15 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
     int64_t update_time_utc = 0,
     const char *external_account = nullptr,
     const char *external_order_id = nullptr,
-    const char *routing_id = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::Fill>> *fills = nullptr) {
+    const std::vector<flatbuffers::Offset<roq::fbs::Fill>> *fills = nullptr,
+    const char *routing_id = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto external_account__ = external_account ? _fbb.CreateString(external_account) : 0;
   auto external_order_id__ = external_order_id ? _fbb.CreateString(external_order_id) : 0;
-  auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
   auto fills__ = fills ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Fill>>(*fills) : 0;
+  auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
   return roq::fbs::CreateTradeUpdate(
       _fbb,
       stream_id,
@@ -3961,8 +3955,8 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
       update_time_utc,
       external_account__,
       external_order_id__,
-      routing_id__,
-      fills__);
+      fills__,
+      routing_id__);
 }
 
 struct Handshake FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

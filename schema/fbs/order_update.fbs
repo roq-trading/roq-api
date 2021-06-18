@@ -29,8 +29,8 @@ table OrderUpdate {
   remaining_quantity:double = nan;
   traded_quantity:double = nan;
   average_traded_price:double = nan;
-  last_traded_price:double = nan;
   last_traded_quantity:double = nan;
+  last_traded_price:double = nan;
   last_liquidity:Liquidity;
   routing_id:string;
   max_request_version:uint8;

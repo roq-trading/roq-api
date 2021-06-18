@@ -13,6 +13,24 @@
             "type": "double",
             "default": " = {}",
             "comment": "Total quantity available at price"
+        },
+        {
+            "name": "implied_quantity",
+            "type": "double",
+            "default": " = NaN",
+            "comment": "Total implied quantity at price (optional)"
+        },
+        {
+            "name": "price_level",
+            "type": "uint32_t",
+            "default": " = {}",
+            "comment": "Level of price (optional, 1-based indexing)"
+        },
+        {
+            "name": "number_of_orders",
+            "type": "uint32_t",
+            "default": " = {}",
+            "comment": "Number of orders at price (optional)"
         }
     ]
 }

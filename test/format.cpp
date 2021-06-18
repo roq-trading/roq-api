@@ -37,18 +37,18 @@ TEST(format, subscribe) {
 
 TEST(format, market_by_price) {
   roq::MBPUpdate bids[] = {
-      {.price = 1.0, .quantity = 2.0},
-      {.price = 2.0, .quantity = 4.0},
-      {.price = 3.0, .quantity = 8.0},
-      {.price = 4.0, .quantity = 10.0},
-      {.price = 5.0, .quantity = 12.0},
+      {.price = 1.0, .quantity = 2.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
+      {.price = 2.0, .quantity = 4.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
+      {.price = 3.0, .quantity = 8.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
+      {.price = 4.0, .quantity = 10.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
+      {.price = 5.0, .quantity = 12.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
   };
   roq::MBPUpdate asks[] = {
-      {.price = 1.0, .quantity = 2.0},
-      {.price = 2.0, .quantity = 4.0},
-      {.price = 3.0, .quantity = 8.0},
-      {.price = 4.0, .quantity = 10.0},
-      {.price = 5.0, .quantity = 12.0},
+      {.price = 1.0, .quantity = 2.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
+      {.price = 2.0, .quantity = 4.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
+      {.price = 3.0, .quantity = 8.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
+      {.price = 4.0, .quantity = 10.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
+      {.price = 5.0, .quantity = 12.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
   };
   roq::MarketByPriceUpdate market_by_price{
       .stream_id = {},
@@ -67,8 +67,8 @@ TEST(format, market_by_price) {
       R"(stream_id=0, )"
       R"(exchange="deribit", )"
       R"(symbol="BTC-27DEC19", )"
-      R"(bids=[{price=1.0, quantity=2.0}, {price=2.0, quantity=4.0}, {price=3.0, quantity=8.0}, {price=4.0, quantity=10.0}, {price=5.0, quantity=12.0}], )"
-      R"(asks=[{price=1.0, quantity=2.0}, {price=2.0, quantity=4.0}, {price=3.0, quantity=8.0}, {price=4.0, quantity=10.0}, {price=5.0, quantity=12.0}], )"
+      R"(bids=[{price=1.0, quantity=2.0, implied_quantity=3.0, price_level=1, number_of_orders=2}, {price=2.0, quantity=4.0, implied_quantity=3.0, price_level=1, number_of_orders=2}, {price=3.0, quantity=8.0, implied_quantity=3.0, price_level=1, number_of_orders=2}, {price=4.0, quantity=10.0, implied_quantity=3.0, price_level=1, number_of_orders=2}, {price=5.0, quantity=12.0, implied_quantity=3.0, price_level=1, number_of_orders=2}], )"
+      R"(asks=[{price=1.0, quantity=2.0, implied_quantity=3.0, price_level=1, number_of_orders=2}, {price=2.0, quantity=4.0, implied_quantity=3.0, price_level=1, number_of_orders=2}, {price=3.0, quantity=8.0, implied_quantity=3.0, price_level=1, number_of_orders=2}, {price=4.0, quantity=10.0, implied_quantity=3.0, price_level=1, number_of_orders=2}, {price=5.0, quantity=12.0, implied_quantity=3.0, price_level=1, number_of_orders=2}], )"
       R"(snapshot=true, )"
       R"(exchange_time_utc=0ns)"
       R"(})"_sv;
@@ -78,8 +78,8 @@ TEST(format, market_by_price) {
       R"(stream_id=0, )"
       R"(exchange="deribit", )"
       R"(symbol="BTC-27DEC19", )"
-      R"(bids=[{price=1, quantity=2}, {price=2, quantity=4}, {price=3, quantity=8}, {price=4, quantity=10}, {price=5, quantity=12}], )"
-      R"(asks=[{price=1, quantity=2}, {price=2, quantity=4}, {price=3, quantity=8}, {price=4, quantity=10}, {price=5, quantity=12}], )"
+      R"(bids=[{price=1, quantity=2, implied_quantity=3, price_level=1, number_of_orders=2}, {price=2, quantity=4, implied_quantity=3, price_level=1, number_of_orders=2}, {price=3, quantity=8, implied_quantity=3, price_level=1, number_of_orders=2}, {price=4, quantity=10, implied_quantity=3, price_level=1, number_of_orders=2}, {price=5, quantity=12, implied_quantity=3, price_level=1, number_of_orders=2}], )"
+      R"(asks=[{price=1, quantity=2, implied_quantity=3, price_level=1, number_of_orders=2}, {price=2, quantity=4, implied_quantity=3, price_level=1, number_of_orders=2}, {price=3, quantity=8, implied_quantity=3, price_level=1, number_of_orders=2}, {price=4, quantity=10, implied_quantity=3, price_level=1, number_of_orders=2}, {price=5, quantity=12, implied_quantity=3, price_level=1, number_of_orders=2}], )"
       R"(snapshot=true, )"
       R"(exchange_time_utc=0ns)"
       R"(})"_sv;

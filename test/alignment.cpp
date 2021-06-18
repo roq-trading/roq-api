@@ -15,7 +15,7 @@ TEST(alignment, layer) {
 TEST(alignment, mbp_update) {
   std::array<MBPUpdate, 2> value;
   auto offset = reinterpret_cast<uint8_t *>(&value[1]) - reinterpret_cast<uint8_t *>(&value[0]);
-  EXPECT_EQ(offset, std::ptrdiff_t{16});
+  EXPECT_EQ(offset, std::ptrdiff_t{32});
 }
 
 TEST(alignment, mbo_update) {

@@ -3,4 +3,7 @@ namespace roq.fbs;
 table MBPUpdate {
   price:double = nan;
   quantity:double = 0.0;
+  implied_quantity:double = 0.0;
+  price_level:uint32 = 0;
+  number_of_orders:uint32 = 0;
 }

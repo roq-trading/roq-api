@@ -16,6 +16,8 @@ All notable changes will be documented in this file.
   constant vs. possibly changing fields
 * `TradeUpdate` and `Fill` has changed field ordering and `Fill` has dropped
   artificially generated `trade_id`'s
+* `MBPUpdate` has been updated with `implied_quantity`, `price_level` and
+  `number_of_orders`
 
 ## 0.7.1 &ndash; 2021-05-30
 

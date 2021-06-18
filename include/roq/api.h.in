@@ -118,7 +118,7 @@ static const constexpr size_t MAX_LENGTH_REQUEST_ID = 36;
 // check that multiples can be cache aligned
 
 static_assert(sizeof(Layer) == 32);
-static_assert(sizeof(MBPUpdate) == 16);
+static_assert(sizeof(MBPUpdate) == 32);
 static_assert(sizeof(MBOUpdate) == 64);
 static_assert(sizeof(Trade) == 64);
 static_assert(sizeof(Fill) == 64);

@@ -21,8 +21,11 @@ namespace roq {
 
 //! Represents the update status of a single aggregate price level in the order book
 struct ROQ_PUBLIC MBPUpdate final {
-  double price = NaN;    //!< Price level
-  double quantity = {};  //!< Total quantity available at price
+  double price = NaN;              //!< Price level
+  double quantity = {};            //!< Total quantity available at price
+  double implied_quantity = NaN;   //!< Total implied quantity at price (optional)
+  uint32_t price_level = {};       //!< Level of price (optional, 1-based indexing)
+  uint32_t number_of_orders = {};  //!< Number of orders at price (optional)
 };
 
 }  // namespace roq
@@ -36,9 +39,15 @@ struct fmt::formatter<roq::MBPUpdate> : public roq::formatter {
         context.out(),
         R"({{)"
         R"(price={}, )"
-        R"(quantity={})"
+        R"(quantity={}, )"
+        R"(implied_quantity={}, )"
+        R"(price_level={}, )"
+        R"(number_of_orders={})"
         R"(}})"_fmt,
         value.price,
-        value.quantity);
+        value.quantity,
+        value.implied_quantity,
+        value.price_level,
+        value.number_of_orders);
   }
 };

@@ -125,17 +125,17 @@
         },
         {
             "name": "max_request_version",
-            "type": "uint8_t",
+            "type": "uint32_t",
             "comment": "Last request version"
         },
         {
             "name": "max_response_version",
-            "type": "uint8_t",
+            "type": "uint32_t",
             "comment": "Last response version"
         },
         {
             "name": "max_accepted_version",
-            "type": "uint8_t",
+            "type": "uint32_t",
             "comment": "Last accepted version"
         }
     ]

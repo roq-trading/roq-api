@@ -1600,13 +1600,13 @@ struct CancelOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
   const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
-  uint8_t version() const { return GetField<uint8_t>(VT_VERSION, 0); }
-  uint8_t conditional_on_version() const { return GetField<uint8_t>(VT_CONDITIONAL_ON_VERSION, 0); }
+  uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
+  uint32_t conditional_on_version() const { return GetField<uint32_t>(VT_CONDITIONAL_ON_VERSION, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && VerifyField<uint8_t>(verifier, VT_VERSION) &&
-           VerifyField<uint8_t>(verifier, VT_CONDITIONAL_ON_VERSION) && verifier.EndTable();
+           verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
+           VerifyField<uint32_t>(verifier, VT_CONDITIONAL_ON_VERSION) && verifier.EndTable();
   }
 };
 
@@ -1621,9 +1621,9 @@ struct CancelOrderBuilder {
   void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
     fbb_.AddOffset(CancelOrder::VT_ROUTING_ID, routing_id);
   }
-  void add_version(uint8_t version) { fbb_.AddElement<uint8_t>(CancelOrder::VT_VERSION, version, 0); }
-  void add_conditional_on_version(uint8_t conditional_on_version) {
-    fbb_.AddElement<uint8_t>(CancelOrder::VT_CONDITIONAL_ON_VERSION, conditional_on_version, 0);
+  void add_version(uint32_t version) { fbb_.AddElement<uint32_t>(CancelOrder::VT_VERSION, version, 0); }
+  void add_conditional_on_version(uint32_t conditional_on_version) {
+    fbb_.AddElement<uint32_t>(CancelOrder::VT_CONDITIONAL_ON_VERSION, conditional_on_version, 0);
   }
   explicit CancelOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<CancelOrder> Finish() {
@@ -1638,14 +1638,14 @@ inline flatbuffers::Offset<CancelOrder> CreateCancelOrder(
     flatbuffers::Offset<flatbuffers::String> account = 0,
     uint32_t order_id = 0,
     flatbuffers::Offset<flatbuffers::String> routing_id = 0,
-    uint8_t version = 0,
-    uint8_t conditional_on_version = 0) {
+    uint32_t version = 0,
+    uint32_t conditional_on_version = 0) {
   CancelOrderBuilder builder_(_fbb);
+  builder_.add_conditional_on_version(conditional_on_version);
+  builder_.add_version(version);
   builder_.add_routing_id(routing_id);
   builder_.add_order_id(order_id);
   builder_.add_account(account);
-  builder_.add_conditional_on_version(conditional_on_version);
-  builder_.add_version(version);
   return builder_.Finish();
 }
 
@@ -1654,8 +1654,8 @@ inline flatbuffers::Offset<CancelOrder> CreateCancelOrderDirect(
     const char *account = nullptr,
     uint32_t order_id = 0,
     const char *routing_id = nullptr,
-    uint8_t version = 0,
-    uint8_t conditional_on_version = 0) {
+    uint32_t version = 0,
+    uint32_t conditional_on_version = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
   return roq::fbs::CreateCancelOrder(_fbb, account__, order_id, routing_id__, version, conditional_on_version);
@@ -2469,14 +2469,14 @@ struct ModifyOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
   double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
-  uint8_t version() const { return GetField<uint8_t>(VT_VERSION, 0); }
-  uint8_t conditional_on_version() const { return GetField<uint8_t>(VT_CONDITIONAL_ON_VERSION, 0); }
+  uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
+  uint32_t conditional_on_version() const { return GetField<uint32_t>(VT_CONDITIONAL_ON_VERSION, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyField<double>(verifier, VT_QUANTITY) &&
            VerifyField<double>(verifier, VT_PRICE) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && VerifyField<uint8_t>(verifier, VT_VERSION) &&
-           VerifyField<uint8_t>(verifier, VT_CONDITIONAL_ON_VERSION) && verifier.EndTable();
+           verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
+           VerifyField<uint32_t>(verifier, VT_CONDITIONAL_ON_VERSION) && verifier.EndTable();
   }
 };
 
@@ -2497,9 +2497,9 @@ struct ModifyOrderBuilder {
   void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
     fbb_.AddOffset(ModifyOrder::VT_ROUTING_ID, routing_id);
   }
-  void add_version(uint8_t version) { fbb_.AddElement<uint8_t>(ModifyOrder::VT_VERSION, version, 0); }
-  void add_conditional_on_version(uint8_t conditional_on_version) {
-    fbb_.AddElement<uint8_t>(ModifyOrder::VT_CONDITIONAL_ON_VERSION, conditional_on_version, 0);
+  void add_version(uint32_t version) { fbb_.AddElement<uint32_t>(ModifyOrder::VT_VERSION, version, 0); }
+  void add_conditional_on_version(uint32_t conditional_on_version) {
+    fbb_.AddElement<uint32_t>(ModifyOrder::VT_CONDITIONAL_ON_VERSION, conditional_on_version, 0);
   }
   explicit ModifyOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<ModifyOrder> Finish() {
@@ -2516,16 +2516,16 @@ inline flatbuffers::Offset<ModifyOrder> CreateModifyOrder(
     double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
     flatbuffers::Offset<flatbuffers::String> routing_id = 0,
-    uint8_t version = 0,
-    uint8_t conditional_on_version = 0) {
+    uint32_t version = 0,
+    uint32_t conditional_on_version = 0) {
   ModifyOrderBuilder builder_(_fbb);
   builder_.add_price(price);
   builder_.add_quantity(quantity);
+  builder_.add_conditional_on_version(conditional_on_version);
+  builder_.add_version(version);
   builder_.add_routing_id(routing_id);
   builder_.add_order_id(order_id);
   builder_.add_account(account);
-  builder_.add_conditional_on_version(conditional_on_version);
-  builder_.add_version(version);
   return builder_.Finish();
 }
 
@@ -2536,8 +2536,8 @@ inline flatbuffers::Offset<ModifyOrder> CreateModifyOrderDirect(
     double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
     const char *routing_id = nullptr,
-    uint8_t version = 0,
-    uint8_t conditional_on_version = 0) {
+    uint32_t version = 0,
+    uint32_t conditional_on_version = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
   return roq::fbs::CreateModifyOrder(
@@ -2579,7 +2579,7 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ORDER_ID);
   }
   const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
-  uint8_t version() const { return GetField<uint8_t>(VT_VERSION, 0); }
+  uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
@@ -2590,7 +2590,7 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(request_id()) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
            verifier.VerifyString(external_account()) && VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
            verifier.VerifyString(external_order_id()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && VerifyField<uint8_t>(verifier, VT_VERSION) && verifier.EndTable();
+           verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_VERSION) && verifier.EndTable();
   }
 };
 
@@ -2626,7 +2626,7 @@ struct OrderAckBuilder {
   void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
     fbb_.AddOffset(OrderAck::VT_ROUTING_ID, routing_id);
   }
-  void add_version(uint8_t version) { fbb_.AddElement<uint8_t>(OrderAck::VT_VERSION, version, 0); }
+  void add_version(uint32_t version) { fbb_.AddElement<uint32_t>(OrderAck::VT_VERSION, version, 0); }
   explicit OrderAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<OrderAck> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -2649,8 +2649,9 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAck(
     flatbuffers::Offset<flatbuffers::String> external_account = 0,
     flatbuffers::Offset<flatbuffers::String> external_order_id = 0,
     flatbuffers::Offset<flatbuffers::String> routing_id = 0,
-    uint8_t version = 0) {
+    uint32_t version = 0) {
   OrderAckBuilder builder_(_fbb);
+  builder_.add_version(version);
   builder_.add_routing_id(routing_id);
   builder_.add_external_order_id(external_order_id);
   builder_.add_external_account(external_account);
@@ -2659,7 +2660,6 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAck(
   builder_.add_order_id(order_id);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
-  builder_.add_version(version);
   builder_.add_error(error);
   builder_.add_status(status);
   builder_.add_origin(origin);
@@ -2681,7 +2681,7 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     const char *external_account = nullptr,
     const char *external_order_id = nullptr,
     const char *routing_id = nullptr,
-    uint8_t version = 0) {
+    uint32_t version = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto text__ = text ? _fbb.CreateString(text) : 0;
   auto request_id__ = request_id ? _fbb.CreateString(request_id) : 0;
@@ -2794,9 +2794,9 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<roq::fbs::Liquidity>(GetField<uint8_t>(VT_LAST_LIQUIDITY, 0));
   }
   const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
-  uint8_t max_request_version() const { return GetField<uint8_t>(VT_MAX_REQUEST_VERSION, 0); }
-  uint8_t max_response_version() const { return GetField<uint8_t>(VT_MAX_RESPONSE_VERSION, 0); }
-  uint8_t max_accepted_version() const { return GetField<uint8_t>(VT_MAX_ACCEPTED_VERSION, 0); }
+  uint32_t max_request_version() const { return GetField<uint32_t>(VT_MAX_REQUEST_VERSION, 0); }
+  uint32_t max_response_version() const { return GetField<uint32_t>(VT_MAX_RESPONSE_VERSION, 0); }
+  uint32_t max_accepted_version() const { return GetField<uint32_t>(VT_MAX_ACCEPTED_VERSION, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
@@ -2817,9 +2817,9 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<double>(verifier, VT_LAST_TRADED_QUANTITY) &&
            VerifyField<double>(verifier, VT_LAST_TRADED_PRICE) && VerifyField<uint8_t>(verifier, VT_LAST_LIQUIDITY) &&
            VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
-           VerifyField<uint8_t>(verifier, VT_MAX_REQUEST_VERSION) &&
-           VerifyField<uint8_t>(verifier, VT_MAX_RESPONSE_VERSION) &&
-           VerifyField<uint8_t>(verifier, VT_MAX_ACCEPTED_VERSION) && verifier.EndTable();
+           VerifyField<uint32_t>(verifier, VT_MAX_REQUEST_VERSION) &&
+           VerifyField<uint32_t>(verifier, VT_MAX_RESPONSE_VERSION) &&
+           VerifyField<uint32_t>(verifier, VT_MAX_ACCEPTED_VERSION) && verifier.EndTable();
   }
 };
 
@@ -2905,14 +2905,14 @@ struct OrderUpdateBuilder {
   void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
     fbb_.AddOffset(OrderUpdate::VT_ROUTING_ID, routing_id);
   }
-  void add_max_request_version(uint8_t max_request_version) {
-    fbb_.AddElement<uint8_t>(OrderUpdate::VT_MAX_REQUEST_VERSION, max_request_version, 0);
+  void add_max_request_version(uint32_t max_request_version) {
+    fbb_.AddElement<uint32_t>(OrderUpdate::VT_MAX_REQUEST_VERSION, max_request_version, 0);
   }
-  void add_max_response_version(uint8_t max_response_version) {
-    fbb_.AddElement<uint8_t>(OrderUpdate::VT_MAX_RESPONSE_VERSION, max_response_version, 0);
+  void add_max_response_version(uint32_t max_response_version) {
+    fbb_.AddElement<uint32_t>(OrderUpdate::VT_MAX_RESPONSE_VERSION, max_response_version, 0);
   }
-  void add_max_accepted_version(uint8_t max_accepted_version) {
-    fbb_.AddElement<uint8_t>(OrderUpdate::VT_MAX_ACCEPTED_VERSION, max_accepted_version, 0);
+  void add_max_accepted_version(uint32_t max_accepted_version) {
+    fbb_.AddElement<uint32_t>(OrderUpdate::VT_MAX_ACCEPTED_VERSION, max_accepted_version, 0);
   }
   explicit OrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<OrderUpdate> Finish() {
@@ -2951,9 +2951,9 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     double last_traded_price = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::Liquidity last_liquidity = roq::fbs::Liquidity_Undefined,
     flatbuffers::Offset<flatbuffers::String> routing_id = 0,
-    uint8_t max_request_version = 0,
-    uint8_t max_response_version = 0,
-    uint8_t max_accepted_version = 0) {
+    uint32_t max_request_version = 0,
+    uint32_t max_response_version = 0,
+    uint32_t max_accepted_version = 0) {
   OrderUpdateBuilder builder_(_fbb);
   builder_.add_last_traded_price(last_traded_price);
   builder_.add_last_traded_quantity(last_traded_quantity);
@@ -2966,6 +2966,9 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
   builder_.add_max_show_quantity(max_show_quantity);
+  builder_.add_max_accepted_version(max_accepted_version);
+  builder_.add_max_response_version(max_response_version);
+  builder_.add_max_request_version(max_request_version);
   builder_.add_routing_id(routing_id);
   builder_.add_external_order_id(external_order_id);
   builder_.add_external_account(external_account);
@@ -2975,9 +2978,6 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
   builder_.add_order_id(order_id);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
-  builder_.add_max_accepted_version(max_accepted_version);
-  builder_.add_max_response_version(max_response_version);
-  builder_.add_max_request_version(max_request_version);
   builder_.add_last_liquidity(last_liquidity);
   builder_.add_status(status);
   builder_.add_execution_instruction(execution_instruction);
@@ -3017,9 +3017,9 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     double last_traded_price = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::Liquidity last_liquidity = roq::fbs::Liquidity_Undefined,
     const char *routing_id = nullptr,
-    uint8_t max_request_version = 0,
-    uint8_t max_response_version = 0,
-    uint8_t max_accepted_version = 0) {
+    uint32_t max_request_version = 0,
+    uint32_t max_response_version = 0,
+    uint32_t max_accepted_version = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;

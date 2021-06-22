@@ -40,7 +40,7 @@ struct ROQ_PUBLIC OrderAck final {
   std::string_view external_account;   //!< External account name
   std::string_view external_order_id;  //!< External order identifier
   std::string_view routing_id;         //!< Routing identifier
-  uint8_t version = {};                //!< Version number (strictly increasing, optional)
+  uint32_t version = {};               //!< Version number (strictly increasing, optional)
 };
 
 }  // namespace roq

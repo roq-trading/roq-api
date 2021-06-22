@@ -4,6 +4,13 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `OrderAck`, `OrderUpdate`, `ModifyOrder` and `CancelOrder`
+   now use `uint32_t` for all version fields
+
+* `Error` has been updated
+
 ## 0.7.2 &ndash; 2021-06-20
 
 ### Changed

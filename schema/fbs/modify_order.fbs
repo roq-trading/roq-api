@@ -6,6 +6,6 @@ table ModifyOrder {
   quantity:double = nan;
   price:double = nan;
   routing_id:string;
-  version:uint8;
-  conditional_on_version:uint8;
+  version:uint32;
+  conditional_on_version:uint32;
 }

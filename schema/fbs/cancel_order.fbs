@@ -4,6 +4,6 @@ table CancelOrder {
   account:string;
   order_id:uint32;
   routing_id:string;
-  version:uint8;
-  conditional_on_version:uint8;
+  version:uint32;
+  conditional_on_version:uint32;
 }

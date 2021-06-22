@@ -58,9 +58,9 @@ struct ROQ_PUBLIC OrderUpdate final {
   double last_traded_price = NaN;                   //!< Traded price (last trade)
   Liquidity last_liquidity = {};                    //!< Liquidity indicator (last trade)
   std::string_view routing_id;                      //!< Routing identifier
-  uint8_t max_request_version = {};                 //!< Last request version
-  uint8_t max_response_version = {};                //!< Last response version
-  uint8_t max_accepted_version = {};                //!< Last accepted version
+  uint32_t max_request_version = {};                //!< Last request version
+  uint32_t max_response_version = {};               //!< Last response version
+  uint32_t max_accepted_version = {};               //!< Last accepted version
 };
 
 }  // namespace roq

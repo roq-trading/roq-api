@@ -18,5 +18,5 @@ table OrderAck {
   external_account:string;
   external_order_id:string;
   routing_id:string;
-  version:uint8;
+  version:uint32;
 }

@@ -17,11 +17,11 @@
         },
         {
             "name": "version",
-            "type": "uint8_t"
+            "type": "uint32_t"
         },
         {
             "name": "conditional_on_version",
-            "type": "uint8_t"
+            "type": "uint32_t"
         }
     ]
 }

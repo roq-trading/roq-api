@@ -21,7 +21,7 @@ requirements:
     - flatbuffers
     - make
   host:
-    - fmt
+    - fmt <8
     - roq-oss-date
     - roq-oss-magic_enum
     - roq-oss-span-lite

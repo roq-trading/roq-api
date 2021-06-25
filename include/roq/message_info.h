@@ -57,7 +57,7 @@ struct fmt::formatter<roq::MessageInfo> : public roq::formatter {
         R"(origin_create_time_utc={}, )"
         R"(is_last={}, )"
         R"(opaque={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.source,
         value.source_name,
         value.source_session_id,

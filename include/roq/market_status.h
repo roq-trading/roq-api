@@ -45,7 +45,7 @@ struct fmt::formatter<roq::MarketStatus> : public roq::formatter {
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(trading_status={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -62,7 +62,7 @@ struct fmt::formatter<roq::Event<roq::MarketStatus> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(market_status={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

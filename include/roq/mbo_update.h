@@ -45,7 +45,7 @@ struct fmt::formatter<roq::MBOUpdate> : public roq::formatter {
         R"(action={}, )"
         R"(priority={}, )"
         R"(order_id="{}")"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.price,
         value.remaining_quantity,
         value.action,

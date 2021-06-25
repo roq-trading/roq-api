@@ -71,7 +71,7 @@ struct fmt::formatter<roq::CreateOrder> : public roq::formatter {
         R"(price={}, )"
         R"(stop_price={}, )"
         R"(routing_id="{}")"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.account,
         value.order_id,
         value.exchange,
@@ -99,7 +99,7 @@ struct fmt::formatter<roq::Event<roq::CreateOrder> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(create_order={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

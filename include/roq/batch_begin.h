@@ -44,7 +44,7 @@ struct fmt::formatter<roq::Event<roq::BatchBegin> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(batch_begin={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

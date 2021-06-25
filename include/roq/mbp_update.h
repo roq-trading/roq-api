@@ -43,7 +43,7 @@ struct fmt::formatter<roq::MBPUpdate> : public roq::formatter {
         R"(implied_quantity={}, )"
         R"(price_level={}, )"
         R"(number_of_orders={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.price,
         value.quantity,
         value.implied_quantity,

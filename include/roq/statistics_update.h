@@ -49,7 +49,7 @@ struct fmt::formatter<roq::StatisticsUpdate> : public roq::formatter {
         R"(statistics=[{}], )"
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -68,7 +68,7 @@ struct fmt::formatter<roq::Event<roq::StatisticsUpdate> > : public roq::formatte
         R"({{)"
         R"(message_info={}, )"
         R"(statistics_update={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

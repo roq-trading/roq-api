@@ -49,7 +49,7 @@ struct fmt::formatter<roq::TopOfBook> : public roq::formatter {
         R"(layer={}, )"
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -68,7 +68,7 @@ struct fmt::formatter<roq::Event<roq::TopOfBook> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(top_of_book={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

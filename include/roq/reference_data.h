@@ -78,7 +78,7 @@ struct fmt::formatter<roq::ReferenceData> : public roq::formatter {
         R"(settlement_date={}, )"
         R"(expiry_datetime={}, )"
         R"(expiry_datetime_utc={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -111,7 +111,7 @@ struct fmt::formatter<roq::Event<roq::ReferenceData> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(reference_data={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

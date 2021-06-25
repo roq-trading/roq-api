@@ -47,7 +47,7 @@ struct fmt::formatter<roq::FundsUpdate> : public roq::formatter {
         R"(balance={}, )"
         R"(hold={}, )"
         R"(external_account="{}")"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.account,
         value.currency,
@@ -66,7 +66,7 @@ struct fmt::formatter<roq::Event<roq::FundsUpdate> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(funds_update={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

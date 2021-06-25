@@ -59,7 +59,7 @@ struct fmt::formatter<roq::PositionUpdate> : public roq::formatter {
         R"(position_yesterday={}, )"
         R"(position_cost_yesterday={}, )"
         R"(external_account="{}")"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.account,
         value.exchange,
@@ -83,7 +83,7 @@ struct fmt::formatter<roq::Event<roq::PositionUpdate> > : public roq::formatter 
         R"({{)"
         R"(message_info={}, )"
         R"(position_update={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

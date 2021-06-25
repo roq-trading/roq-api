@@ -39,7 +39,7 @@ struct fmt::formatter<roq::Disconnected> : public roq::formatter {
         context.out(),
         R"({{)"
         R"(cancel_policy={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.cancel_policy);
   }
 };
@@ -53,7 +53,7 @@ struct fmt::formatter<roq::Event<roq::Disconnected> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(disconnected={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

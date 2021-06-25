@@ -43,7 +43,7 @@ struct fmt::formatter<roq::Statistics> : public roq::formatter {
         R"(value={}, )"
         R"(begin_time_utc={}, )"
         R"(end_time_utc={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.type,
         value.value,
         value.begin_time_utc,

@@ -43,7 +43,7 @@ struct fmt::formatter<roq::Trade> : public roq::formatter {
         R"(price={}, )"
         R"(quantity={}, )"
         R"(trade_id="{}")"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.side,
         value.price,
         value.quantity,

@@ -342,7 +342,7 @@ struct fmt::formatter<roq::Exception> : public roq::formatter {
         R"(what="{}", )"
         R"(file="{}", )"
         R"(line={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.what(),
         value.file(),
         value.line());

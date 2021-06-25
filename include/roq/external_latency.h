@@ -39,7 +39,7 @@ struct fmt::formatter<roq::ExternalLatency> : public roq::formatter {
         R"({{)"
         R"(stream_id={}, )"
         R"(latency={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.latency);
   }
@@ -54,7 +54,7 @@ struct fmt::formatter<roq::Event<roq::ExternalLatency> > : public roq::formatter
         R"({{)"
         R"(message_info={}, )"
         R"(external_latency={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

@@ -39,7 +39,7 @@ struct fmt::formatter<roq::DownloadEnd> : public roq::formatter {
         R"({{)"
         R"(account="{}", )"
         R"(max_order_id={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.account,
         value.max_order_id);
   }
@@ -54,7 +54,7 @@ struct fmt::formatter<roq::Event<roq::DownloadEnd> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(download_end={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

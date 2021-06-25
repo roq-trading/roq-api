@@ -45,7 +45,7 @@ struct fmt::formatter<roq::CancelOrder> : public roq::formatter {
         R"(routing_id="{}", )"
         R"(version={}, )"
         R"(conditional_on_version={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.account,
         value.order_id,
         value.routing_id,
@@ -63,7 +63,7 @@ struct fmt::formatter<roq::Event<roq::CancelOrder> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(cancel_order={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

@@ -94,7 +94,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> : public roq::f
     using namespace roq::literals;
     return roq::format_to(
         context.out(),
-        "{}"_fmt,
+        "{}"_sv,
         value.name());
   }
 };

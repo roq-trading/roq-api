@@ -51,7 +51,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> : public roq::formatter {
         R"(asks=[{}], )"
         R"(snapshot={}, )"
         R"(exchange_time_utc={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -71,7 +71,7 @@ struct fmt::formatter<roq::Event<roq::MarketByOrderUpdate> > : public roq::forma
         R"({{)"
         R"(message_info={}, )"
         R"(market_by_order_update={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

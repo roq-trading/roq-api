@@ -37,7 +37,7 @@ struct fmt::formatter<roq::DownloadBegin> : public roq::formatter {
         context.out(),
         R"({{)"
         R"(account="{}")"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.account);
   }
 };
@@ -51,7 +51,7 @@ struct fmt::formatter<roq::Event<roq::DownloadBegin> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(download_begin={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

@@ -37,7 +37,7 @@ struct fmt::formatter<roq::Timer> : public roq::formatter {
         context.out(),
         R"({{)"
         R"(now={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.now);
   }
 };
@@ -51,7 +51,7 @@ struct fmt::formatter<roq::Event<roq::Timer> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(timer={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

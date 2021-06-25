@@ -90,7 +90,7 @@ struct fmt::formatter<roq::UUID> : public roq::formatter {
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
-        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"_fmt,
+        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"_sv,
         data[0],
         data[1],
         data[2],

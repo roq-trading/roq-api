@@ -19,7 +19,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> : public roq::f
         R"({{ variable.name }}={{ variable.format_string }}{{ ', ' if not loop.last }})"
 {%- endfor %}
 {%- raw %}
-        R"(}})"_fmt,
+        R"(}})"_sv,
 {%- endraw %}
 {%- for variable in variables %}
         {{ variable.format_value }}{{ ',' if not loop.last else ');' }}

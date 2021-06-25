@@ -27,7 +27,7 @@ struct fmt::formatter<roq::client::CustomMessage> : public roq::formatter {
         context.out(),
         R"({{)"
         R"(length={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.length);
   }
 };
@@ -42,7 +42,7 @@ struct fmt::formatter<roq::Event<roq::client::CustomMessage> > : public roq::for
         R"({{)"
         R"(message_info={}, )"
         R"(custom_message={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

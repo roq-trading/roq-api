@@ -49,7 +49,7 @@ struct fmt::formatter<roq::ModifyOrder> : public roq::formatter {
         R"(routing_id="{}", )"
         R"(version={}, )"
         R"(conditional_on_version={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.account,
         value.order_id,
         value.quantity,
@@ -69,7 +69,7 @@ struct fmt::formatter<roq::Event<roq::ModifyOrder> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(modify_order={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

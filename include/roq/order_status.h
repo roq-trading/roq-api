@@ -111,6 +111,6 @@ struct fmt::formatter<roq::OrderStatus> : public roq::formatter {
   template <typename Context>
   auto format(const roq::OrderStatus &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(context.out(), "{}"_fmt, value.name());
+    return roq::format_to(context.out(), "{}"_sv, value.name());
   }
 };

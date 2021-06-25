@@ -65,7 +65,7 @@ struct fmt::formatter<roq::TradeUpdate> : public roq::formatter {
         R"(external_order_id="{}", )"
         R"(fills=[{}], )"
         R"(routing_id="{}")"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.account,
         value.order_id,
@@ -91,7 +91,7 @@ struct fmt::formatter<roq::Event<roq::TradeUpdate> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(trade_update={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

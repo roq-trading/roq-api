@@ -45,7 +45,7 @@ struct fmt::formatter<roq::GatewaySettings> : public roq::formatter {
         R"(mbp_allow_price_inversion={}, )"
         R"(mbp_allow_fractional_tick_size={}, )"
         R"(mbp_allow_remove_non_existing={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.supports,
         value.mbp_max_depth,
         value.mbp_allow_price_inversion,
@@ -63,7 +63,7 @@ struct fmt::formatter<roq::Event<roq::GatewaySettings> > : public roq::formatter
         R"({{)"
         R"(message_info={}, )"
         R"(gateway_settings={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

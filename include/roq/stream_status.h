@@ -51,7 +51,7 @@ struct fmt::formatter<roq::StreamStatus> : public roq::formatter {
         R"(status={}, )"
         R"(type={}, )"
         R"(priority={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.account,
         value.supports,
@@ -70,7 +70,7 @@ struct fmt::formatter<roq::Event<roq::StreamStatus> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(stream_status={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

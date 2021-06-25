@@ -101,7 +101,7 @@ class ROQ_PACKED string_buffer final {
       auto last = std::copy(text.begin(), text.end(), buffer_.begin());
       std::fill(last, buffer_.end(), '\0');
     } else {
-      throw LengthErrorException(R"(can't copy: len(text="{}")={} exceeds size={})"_fmt, text, len, size());
+      throw LengthErrorException(R"(can't copy: len(text="{}")={} exceeds size={})"_sv, text, len, size());
     }
   }
 
@@ -121,6 +121,6 @@ struct fmt::formatter<roq::string_buffer<N> > : public roq::formatter {
   template <typename Context>
   auto format(const roq::string_buffer<N> &value, Context &ctx) {
     using namespace roq::literals;
-    return roq::format_to(ctx.out(), "{}"_fmt, static_cast<std::string_view>(value));
+    return roq::format_to(ctx.out(), "{}"_sv, static_cast<std::string_view>(value));
   }
 };

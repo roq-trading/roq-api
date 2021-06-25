@@ -34,7 +34,7 @@ struct fmt::formatter<date::year_month_day> : public roq::formatter {
         R"(year="{}", )"
         R"(month={}, )"
         R"(day={} )"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         static_cast<int>(value.year()),
         static_cast<unsigned>(value.month()),
         static_cast<unsigned>(value.day()));
@@ -53,7 +53,7 @@ struct fmt::formatter<date::hh_mm_ss<std::chrono::milliseconds>> : public roq::f
         R"(minutes={}, )"
         R"(seconds={} )"
         R"(milliseconds={} )"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.hours().count(),
         value.minutes().count(),
         value.seconds().count(),

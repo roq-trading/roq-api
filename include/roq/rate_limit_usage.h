@@ -39,7 +39,7 @@ struct fmt::formatter<roq::RateLimitUsage> : public roq::formatter {
         R"({{)"
         R"(stream_id={}, )"
         R"(above_high_water_mark={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.above_high_water_mark);
   }
@@ -54,7 +54,7 @@ struct fmt::formatter<roq::Event<roq::RateLimitUsage> > : public roq::formatter 
         R"({{)"
         R"(message_info={}, )"
         R"(rate_limit_usage={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

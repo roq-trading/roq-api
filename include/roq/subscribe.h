@@ -42,7 +42,7 @@ struct fmt::formatter<roq::Subscribe> : public roq::formatter {
         "accounts={}, "
         "symbols_by_exchange={}, "
         "cancel_policy={}"
-        "}}"_fmt,
+        "}}"_sv,
         value.accounts,
         value.symbols_by_exchange,
         value.cancel_policy);
@@ -59,7 +59,7 @@ struct fmt::formatter<roq::Event<roq::Subscribe> > : public roq::formatter {
         "{{"
         "message_info={}, "
         "subscribe={}"
-        "}}"_fmt,
+        "}}"_sv,
         event.message_info,
         event.value);
   }

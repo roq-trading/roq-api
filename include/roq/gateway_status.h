@@ -43,7 +43,7 @@ struct fmt::formatter<roq::GatewayStatus> : public roq::formatter {
         R"(supported={:#x}, )"
         R"(available={:#x}, )"
         R"(unavailable={:#x})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.account,
         value.supported,
         value.available,
@@ -60,7 +60,7 @@ struct fmt::formatter<roq::Event<roq::GatewayStatus> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(gateway_status={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

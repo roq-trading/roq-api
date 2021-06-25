@@ -47,7 +47,7 @@ struct fmt::formatter<roq::TradeSummary> : public roq::formatter {
         R"(symbol="{}", )"
         R"(trades=[{}], )"
         R"(exchange_time_utc={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -65,7 +65,7 @@ struct fmt::formatter<roq::Event<roq::TradeSummary> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(trade_summary={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

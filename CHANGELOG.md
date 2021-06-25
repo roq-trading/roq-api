@@ -8,8 +8,13 @@ All notable changes will be documented in this file.
 
 * `OrderAck`, `OrderUpdate`, `ModifyOrder` and `CancelOrder`
    now use `uint32_t` for all version fields
+* The format functions no longer require use of the `_fmt` literal
 
-* `Error` has been updated
+### Removed
+
+* The `_fmt` literal
+* The `format_str` wrapper class has been moved to the roq-logging library
+
 
 ## 0.7.2 &ndash; 2021-06-20
 

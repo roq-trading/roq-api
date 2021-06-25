@@ -41,7 +41,7 @@ struct fmt::formatter<roq::Layer> : public roq::formatter {
         R"(bid_quantity={}, )"
         R"(ask_price={}, )"
         R"(ask_quantity={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.bid_price,
         value.bid_quantity,
         value.ask_price,

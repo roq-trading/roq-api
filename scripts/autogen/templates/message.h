@@ -45,7 +45,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
         R"(message_info={}, )"
         R"({{ filename }}={})"
 {%- raw %}
-        R"(}})"_fmt,
+        R"(}})"_sv,
 {%- endraw %}
         event.message_info,
         event.value);

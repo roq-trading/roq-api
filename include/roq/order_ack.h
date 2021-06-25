@@ -66,7 +66,7 @@ struct fmt::formatter<roq::OrderAck> : public roq::formatter {
         R"(external_order_id="{}", )"
         R"(routing_id="{}", )"
         R"(version={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         value.stream_id,
         value.account,
         value.order_id,
@@ -92,7 +92,7 @@ struct fmt::formatter<roq::Event<roq::OrderAck> > : public roq::formatter {
         R"({{)"
         R"(message_info={}, )"
         R"(order_ack={})"
-        R"(}})"_fmt,
+        R"(}})"_sv,
         event.message_info,
         event.value);
   }

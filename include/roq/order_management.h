@@ -19,7 +19,7 @@ struct ROQ_PACKED OrderManagement final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0,
-    FIX,  //!< Client must provide a globally unique routing_id
+    FIX,  //!< Client provides a globally unique routing_id
   };
 
   constexpr OrderManagement() = default;

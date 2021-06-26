@@ -7,12 +7,14 @@ All notable changes will be documented in this file.
 ### Added
 
 * `OrderManagement` used to instruct a gateway of the order management style
+* `MAX_ORDER_ID` and `MAX_REQUEST_VERSION` to reflect 24 bit limits
 
 ### Changed
 
 * `OrderAck`, `OrderUpdate`, `ModifyOrder` and `CancelOrder`
    now use `uint32_t` for all version fields
 * The format functions no longer require use of the `_fmt` literal
+* Reduced `MAX_LENGTH_ROUTING_ID` to 16
 
 ### Removed
 

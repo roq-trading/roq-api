@@ -1,7 +1,7 @@
 {
-    "name": "CancelPolicy",
+    "name": "OrderCancelPolicy",
     "type": "enum",
-    "comment": "Enumeration of cancel policies",
+    "comment": "Enumeration of order cancel policies",
     "values": [
         {
             "name": "ManagedOrders"

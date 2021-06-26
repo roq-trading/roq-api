@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `OrderManagement` used to instruct a gateway of the order management style
+
 ### Changed
 
 * `OrderAck`, `OrderUpdate`, `ModifyOrder` and `CancelOrder`

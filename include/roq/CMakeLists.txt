@@ -7,7 +7,6 @@ set(SOURCES
     batch_end.json
     cancel_all_orders.json
     cancel_order.json
-    cancel_policy.json
     connected.json
     connection_status.json
     create_order.json
@@ -32,6 +31,8 @@ set(SOURCES
     modify_order.json
     option_type.json
     order_ack.json
+    order_cancel_policy.json
+    order_management.json
     order_status.json
     order_type.json
     order_update.json

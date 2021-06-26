@@ -14,8 +14,8 @@
 
 namespace roq {
 
-//! Enumeration of cancel policies
-struct ROQ_PACKED CancelPolicy final {
+//! Enumeration of order cancel policies
+struct ROQ_PACKED OrderCancelPolicy final {
   //! helper
   enum type_t : uint8_t {
     UNDEFINED = 0,
@@ -23,13 +23,13 @@ struct ROQ_PACKED CancelPolicy final {
     BY_ACCOUNT,
   };
 
-  constexpr CancelPolicy() = default;
+  constexpr OrderCancelPolicy() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr CancelPolicy(type_t type)  // NOLINT (allow implicit)
+  constexpr OrderCancelPolicy(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr CancelPolicy(uint8_t type) : type_(validate(type)) {}
+  explicit constexpr OrderCancelPolicy(uint8_t type) : type_(validate(type)) {}
 
   constexpr operator type_t() const { return type_; }
 
@@ -71,17 +71,17 @@ struct ROQ_PACKED CancelPolicy final {
 }  // namespace roq
 
 template <>
-struct std::is_enum<roq::CancelPolicy> : std::true_type {};
+struct std::is_enum<roq::OrderCancelPolicy> : std::true_type {};
 
 template <>
-struct std::underlying_type<roq::CancelPolicy> {
+struct std::underlying_type<roq::OrderCancelPolicy> {
   using type = uint8_t;
 };
 
 template <>
-struct fmt::formatter<roq::CancelPolicy> : public roq::formatter {
+struct fmt::formatter<roq::OrderCancelPolicy> : public roq::formatter {
   template <typename Context>
-  auto format(const roq::CancelPolicy &value, Context &context) {
+  auto format(const roq::OrderCancelPolicy &value, Context &context) {
     using namespace roq::literals;
     return roq::format_to(context.out(), "{}"_sv, value.name());
   }

@@ -19,13 +19,13 @@
 #include "roq/span.h"
 #include "roq/string_buffer.h"
 
-#include "roq/cancel_policy.h"
+#include "roq/order_cancel_policy.h"
 
 namespace roq {
 
 //! Disconnected
 struct ROQ_PUBLIC Disconnected final {
-  CancelPolicy cancel_policy = {};  //!< Cancel orders on disconnect?
+  OrderCancelPolicy order_cancel_policy = {};  //!< Cancel orders on disconnect?
 };
 
 }  // namespace roq
@@ -38,9 +38,9 @@ struct fmt::formatter<roq::Disconnected> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
-        R"(cancel_policy={})"
+        R"(order_cancel_policy={})"
         R"(}})"_sv,
-        value.cancel_policy);
+        value.order_cancel_policy);
   }
 };
 template <>

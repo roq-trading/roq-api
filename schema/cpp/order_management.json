@@ -1,0 +1,11 @@
+{
+    "name": "OrderManagement",
+    "type": "enum",
+    "comment": "Enumeration of a specific order management style",
+    "values": [
+        {
+            "name": "FIX",
+	    "comment": "Client provides a globally unique routing_id"
+        }
+    ]
+}

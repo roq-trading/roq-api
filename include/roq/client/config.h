@@ -4,15 +4,17 @@
 
 #include <string_view>
 
-#include "roq/cancel_policy.h"
 #include "roq/compat.h"
+#include "roq/order_cancel_policy.h"
+#include "roq/order_management.h"
 
 namespace roq {
 namespace client {
 
 //! Settings
 struct ROQ_PUBLIC Settings {
-  CancelPolicy cancel_policy = {};  //!< Cancel orders on disconnect?
+  OrderCancelPolicy order_cancel_policy = {};  //!< Cancel orders on disconnect?
+  OrderManagement order_management = {};       //!< Order management style
 };
 
 //! Account regex

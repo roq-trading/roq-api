@@ -12,16 +12,18 @@
 #include "roq/format.h"
 #include "roq/literals.h"
 
-#include "roq/cancel_policy.h"
 #include "roq/event.h"
 #include "roq/message_info.h"
+#include "roq/order_cancel_policy.h"
+#include "roq/order_management.h"
 
 namespace roq {
 
 struct ROQ_PUBLIC Subscribe final {
   std::set<std::string> accounts;
   std::map<std::string, std::set<std::string> > symbols_by_exchange;
-  CancelPolicy cancel_policy = {};
+  OrderCancelPolicy order_cancel_policy = {};
+  OrderManagement order_management = {};
 };
 
 struct ROQ_PUBLIC SubscribeEvent final {
@@ -41,11 +43,13 @@ struct fmt::formatter<roq::Subscribe> : public roq::formatter {
         "{{"
         "accounts={}, "
         "symbols_by_exchange={}, "
-        "cancel_policy={}"
+        "order_cancel_policy={}, "
+        "order_management={}"
         "}}"_sv,
         value.accounts,
         value.symbols_by_exchange,
-        value.cancel_policy);
+        value.order_cancel_policy,
+        value.order_management);
   }
 };
 

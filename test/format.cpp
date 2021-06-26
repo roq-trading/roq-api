@@ -22,7 +22,8 @@ TEST(format, subscribe) {
           {
               {"abc"_s, {"123"_s, "234"_s}},
           },
-      .cancel_policy = CancelPolicy::MANAGED_ORDERS,
+      .order_cancel_policy = OrderCancelPolicy::MANAGED_ORDERS,
+      .order_management = OrderManagement::FIX,
   };
   auto result = format("{}"_sv, subscribe);
   EXPECT_GT(result.length(), size_t{0});
@@ -31,7 +32,8 @@ TEST(format, subscribe) {
       R"({)"
       R"(accounts={"abc", "test"}, )"
       R"(symbols_by_exchange={("abc", {"123", "234"})}, )"
-      R"(cancel_policy=MANAGED_ORDERS)"
+      R"(order_cancel_policy=MANAGED_ORDERS, )"
+      R"(order_management=FIX)"
       R"(})"_sv);
 }
 

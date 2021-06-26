@@ -2061,19 +2061,25 @@ struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MBP_MAX_DEPTH = 6,
     VT_MBP_ALLOW_PRICE_INVERSION = 8,
     VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE = 10,
-    VT_MBP_ALLOW_REMOVE_NON_EXISTING = 12
+    VT_MBP_ALLOW_REMOVE_NON_EXISTING = 12,
+    VT_OMS_DOWNLOAD_HAS_STATE = 14,
+    VT_OMS_DOWNLOAD_HAS_ROUTING_ID = 16
   };
   uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
   uint32_t mbp_max_depth() const { return GetField<uint32_t>(VT_MBP_MAX_DEPTH, 0); }
   bool mbp_allow_price_inversion() const { return GetField<uint8_t>(VT_MBP_ALLOW_PRICE_INVERSION, 0) != 0; }
   bool mbp_allow_fractional_tick_size() const { return GetField<uint8_t>(VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE, 0) != 0; }
   bool mbp_allow_remove_non_existing() const { return GetField<uint8_t>(VT_MBP_ALLOW_REMOVE_NON_EXISTING, 0) != 0; }
+  bool oms_download_has_state() const { return GetField<uint8_t>(VT_OMS_DOWNLOAD_HAS_STATE, 0) != 0; }
+  bool oms_download_has_routing_id() const { return GetField<uint8_t>(VT_OMS_DOWNLOAD_HAS_ROUTING_ID, 0) != 0; }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint64_t>(verifier, VT_SUPPORTS) &&
            VerifyField<uint32_t>(verifier, VT_MBP_MAX_DEPTH) &&
            VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_PRICE_INVERSION) &&
            VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_FRACTIONAL_TICK_SIZE) &&
-           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_REMOVE_NON_EXISTING) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_REMOVE_NON_EXISTING) &&
+           VerifyField<uint8_t>(verifier, VT_OMS_DOWNLOAD_HAS_STATE) &&
+           VerifyField<uint8_t>(verifier, VT_OMS_DOWNLOAD_HAS_ROUTING_ID) && verifier.EndTable();
   }
 };
 
@@ -2097,6 +2103,14 @@ struct GatewaySettingsBuilder {
     fbb_.AddElement<uint8_t>(
         GatewaySettings::VT_MBP_ALLOW_REMOVE_NON_EXISTING, static_cast<uint8_t>(mbp_allow_remove_non_existing), 0);
   }
+  void add_oms_download_has_state(bool oms_download_has_state) {
+    fbb_.AddElement<uint8_t>(
+        GatewaySettings::VT_OMS_DOWNLOAD_HAS_STATE, static_cast<uint8_t>(oms_download_has_state), 0);
+  }
+  void add_oms_download_has_routing_id(bool oms_download_has_routing_id) {
+    fbb_.AddElement<uint8_t>(
+        GatewaySettings::VT_OMS_DOWNLOAD_HAS_ROUTING_ID, static_cast<uint8_t>(oms_download_has_routing_id), 0);
+  }
   explicit GatewaySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<GatewaySettings> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -2111,10 +2125,14 @@ inline flatbuffers::Offset<GatewaySettings> CreateGatewaySettings(
     uint32_t mbp_max_depth = 0,
     bool mbp_allow_price_inversion = false,
     bool mbp_allow_fractional_tick_size = false,
-    bool mbp_allow_remove_non_existing = false) {
+    bool mbp_allow_remove_non_existing = false,
+    bool oms_download_has_state = false,
+    bool oms_download_has_routing_id = false) {
   GatewaySettingsBuilder builder_(_fbb);
   builder_.add_supports(supports);
   builder_.add_mbp_max_depth(mbp_max_depth);
+  builder_.add_oms_download_has_routing_id(oms_download_has_routing_id);
+  builder_.add_oms_download_has_state(oms_download_has_state);
   builder_.add_mbp_allow_remove_non_existing(mbp_allow_remove_non_existing);
   builder_.add_mbp_allow_fractional_tick_size(mbp_allow_fractional_tick_size);
   builder_.add_mbp_allow_price_inversion(mbp_allow_price_inversion);

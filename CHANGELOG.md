@@ -15,6 +15,8 @@ All notable changes will be documented in this file.
    now use `uint32_t` for all version fields
 * The format functions no longer require use of the `_fmt` literal
 * Reduced `MAX_LENGTH_ROUTING_ID` to 16
+* `GatewaySettings` now includes `oms_download_has_state` and
+  `oms_download_has_routing_id`
 
 ### Removed
 

@@ -28,6 +28,8 @@ struct ROQ_PUBLIC GatewaySettings final {
   bool mbp_allow_price_inversion = false;       //!< MBP allow price inversion?
   bool mbp_allow_fractional_tick_size = false;  //!< MBP allow fractional tick-size?
   bool mbp_allow_remove_non_existing = false;   //!< MBP allow remove operation on non-existing level?
+  bool oms_download_has_state = false;          //!< OMS download includes state information?
+  bool oms_download_has_routing_id = false;     //!< OMS download includes routing_id?
 };
 
 }  // namespace roq
@@ -44,13 +46,17 @@ struct fmt::formatter<roq::GatewaySettings> : public roq::formatter {
         R"(mbp_max_depth={}, )"
         R"(mbp_allow_price_inversion={}, )"
         R"(mbp_allow_fractional_tick_size={}, )"
-        R"(mbp_allow_remove_non_existing={})"
+        R"(mbp_allow_remove_non_existing={}, )"
+        R"(oms_download_has_state={}, )"
+        R"(oms_download_has_routing_id={})"
         R"(}})"_sv,
         value.supports,
         value.mbp_max_depth,
         value.mbp_allow_price_inversion,
         value.mbp_allow_fractional_tick_size,
-        value.mbp_allow_remove_non_existing);
+        value.mbp_allow_remove_non_existing,
+        value.oms_download_has_state,
+        value.oms_download_has_routing_id);
   }
 };
 template <>

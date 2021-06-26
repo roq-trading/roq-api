@@ -6,4 +6,6 @@ table GatewaySettings {
   mbp_allow_price_inversion:bool;
   mbp_allow_fractional_tick_size:bool;
   mbp_allow_remove_non_existing:bool;
+  oms_download_has_state:bool;
+  oms_download_has_routing_id:bool;
 }

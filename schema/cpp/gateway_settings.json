@@ -27,6 +27,16 @@
             "name": "mbp_allow_remove_non_existing",
             "type": "bool",
             "comment": "MBP allow remove operation on non-existing level?"
+        },
+        {
+            "name": "oms_download_has_state",
+            "type": "bool",
+            "comment": "OMS download includes state information?"
+        },
+        {
+            "name": "oms_download_has_routing_id",
+            "type": "bool",
+            "comment": "OMS download includes routing_id?"
         }
     ]
 }

@@ -44,9 +44,6 @@
         },
         {
             "name": "FundingRate"
-        },
-        {
-            "name": "DailyFundingRate"
         }
     ]
 }

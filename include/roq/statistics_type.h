@@ -33,7 +33,6 @@ struct ROQ_PACKED StatisticsType final {
     INDEX_VALUE,
     MARGIN_RATE,
     FUNDING_RATE,
-    DAILY_FUNDING_RATE,
   };
 
   constexpr StatisticsType() = default;
@@ -79,8 +78,6 @@ struct ROQ_PACKED StatisticsType final {
         return "MARGIN_RATE"_sv;
       case type_t::FUNDING_RATE:
         return "FUNDING_RATE"_sv;
-      case type_t::DAILY_FUNDING_RATE:
-        return "DAILY_FUNDING_RATE"_sv;
       default:
         assert(false);
     }
@@ -108,7 +105,6 @@ struct ROQ_PACKED StatisticsType final {
       case type_t::INDEX_VALUE:
       case type_t::MARGIN_RATE:
       case type_t::FUNDING_RATE:
-      case type_t::DAILY_FUNDING_RATE:
         return result;
       default:
         assert(false);

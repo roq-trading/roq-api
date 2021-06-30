@@ -105,14 +105,19 @@ namespace roq {
 
 static const constexpr uint8_t SOURCE_SELF = 255;
 
+// limits
+
+static const constexpr size_t MAX_LENGTH_USER = 16;
 static const constexpr size_t MAX_LENGTH_ACCOUNT = 32;
 static const constexpr size_t MAX_LENGTH_EXCHANGE = 32;
 static const constexpr size_t MAX_LENGTH_SYMBOL = 32;
+
 static const constexpr size_t MAX_LENGTH_ORDER_TEMPLATE = 16;
 static const constexpr size_t MAX_LENGTH_EXTERNAL_ACCOUNT = 64;
 static const constexpr size_t MAX_LENGTH_EXTERNAL_ORDER_ID = 64;
 static const constexpr size_t MAX_LENGTH_EXTERNAL_TRADE_ID = 40;
 static const constexpr size_t MAX_LENGTH_ROUTING_ID = 16;
+
 static const constexpr size_t MAX_LENGTH_CL_ORD_ID = 36;
 static const constexpr size_t MAX_LENGTH_REQUEST_ID = 36;
 

@@ -32,11 +32,11 @@ struct ROQ_PACKED {{ name }} final {
   }
 
   explicit constexpr {{ name }}(uint8_t value)
-      : type_(validate(value)) {
+      : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {
   }
 
   explicit constexpr {{ name }}(const std::string_view& value)
-      : type_(validate(value)) {
+      : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {
   }
 
   constexpr operator type_t() const {
@@ -66,13 +66,6 @@ struct ROQ_PACKED {{ name }} final {
   constexpr size_t to_index() const {
     auto result = magic_enum::enum_index(type_); // std::optional
     return result.value();  // note! could throw
-  }
-
- protected:
-  template <typename T>
-  constexpr type_t validate(T value) {
-    auto result = magic_enum::enum_cast<type_t>(value);
-    return result.has_value() ? result.value() : type_t::UNDEFINED;
   }
 
  private:

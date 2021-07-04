@@ -35,9 +35,11 @@ struct ROQ_PACKED ConnectionStatus final {
   constexpr ConnectionStatus(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr ConnectionStatus(uint8_t value) : type_(validate(value)) {}
+  explicit constexpr ConnectionStatus(uint8_t value)
+      : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr ConnectionStatus(const std::string_view &value) : type_(validate(value)) {}
+  explicit constexpr ConnectionStatus(const std::string_view &value)
+      : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }
 
@@ -54,13 +56,6 @@ struct ROQ_PACKED ConnectionStatus final {
   constexpr size_t to_index() const {
     auto result = magic_enum::enum_index(type_);  // std::optional
     return result.value();                        // note! could throw
-  }
-
- protected:
-  template <typename T>
-  constexpr type_t validate(T value) {
-    auto result = magic_enum::enum_cast<type_t>(value);
-    return result.has_value() ? result.value() : type_t::UNDEFINED;
   }
 
  private:

@@ -65,6 +65,8 @@ struct ROQ_PACKED Error final {
 
   constexpr operator std::string_view() const { return name(); }
 
+  static constexpr auto values() { return magic_enum::enum_values<type_t>(); }
+
   static constexpr size_t count() { return magic_enum::enum_count<type_t>(); }
 
   static constexpr Error from_index(size_t index) { return magic_enum::enum_value<type_t>(index); }

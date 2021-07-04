@@ -51,6 +51,10 @@ struct ROQ_PACKED {{ name }} final {
     return name();
   }
 
+  static constexpr auto values() {
+    return magic_enum::enum_values<type_t>();
+  }
+
   static constexpr size_t count() {
     return magic_enum::enum_count<type_t>();
   }

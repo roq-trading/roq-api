@@ -31,8 +31,12 @@ struct ROQ_PACKED {{ name }} final {
       : type_(type) {
   }
 
-  explicit constexpr {{ name }}(uint8_t type)
-      : type_(validate(type)) {
+  explicit constexpr {{ name }}(uint8_t value)
+      : type_(validate(value)) {
+  }
+
+  explicit constexpr {{ name }}(const std::string_view& value)
+      : type_(validate(value)) {
   }
 
   constexpr operator type_t() const {
@@ -61,8 +65,9 @@ struct ROQ_PACKED {{ name }} final {
   }
 
  protected:
-  constexpr type_t validate(uint8_t type) {
-    auto result = magic_enum::enum_cast<type_t>(type);
+  template <typename T>
+  constexpr type_t validate(T value) {
+    auto result = magic_enum::enum_cast<type_t>(value);
     return result.has_value() ? result.value() : type_t::UNDEFINED;
   }
 

@@ -31,7 +31,9 @@ struct ROQ_PACKED Liquidity final {
   constexpr Liquidity(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr Liquidity(uint8_t type) : type_(validate(type)) {}
+  explicit constexpr Liquidity(uint8_t value) : type_(validate(value)) {}
+
+  explicit constexpr Liquidity(const std::string_view &value) : type_(validate(value)) {}
 
   constexpr operator type_t() const { return type_; }
 
@@ -49,8 +51,9 @@ struct ROQ_PACKED Liquidity final {
   }
 
  protected:
-  constexpr type_t validate(uint8_t type) {
-    auto result = magic_enum::enum_cast<type_t>(type);
+  template <typename T>
+  constexpr type_t validate(T value) {
+    auto result = magic_enum::enum_cast<type_t>(value);
     return result.has_value() ? result.value() : type_t::UNDEFINED;
   }
 

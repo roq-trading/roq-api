@@ -8,6 +8,8 @@
 #include <string_view>
 #include <type_traits>
 
+#include <magic_enum.hpp>
+
 #include "roq/compat.h"
 #include "roq/format.h"
 #include "roq/literals.h"
@@ -40,56 +42,23 @@ struct ROQ_PACKED OrderStatus final {
 
   constexpr operator type_t() const { return type_; }
 
-  constexpr std::string_view name() const {
-    using namespace roq::literals;
-    switch (type_) {
-      case type_t::UNDEFINED:
-        break;
-      case type_t::SENT:
-        return "SENT"_sv;
-      case type_t::ACCEPTED:
-        return "ACCEPTED"_sv;
-      case type_t::SUSPENDED:
-        return "SUSPENDED"_sv;
-      case type_t::WORKING:
-        return "WORKING"_sv;
-      case type_t::STOPPED:
-        return "STOPPED"_sv;
-      case type_t::COMPLETED:
-        return "COMPLETED"_sv;
-      case type_t::EXPIRED:
-        return "EXPIRED"_sv;
-      case type_t::CANCELED:
-        return "CANCELED"_sv;
-      case type_t::REJECTED:
-        return "REJECTED"_sv;
-      default:
-        assert(false);
-    }
-    return "UNDEFINED"_sv;
-  }
+  constexpr std::string_view name() const { return magic_enum::enum_name(type_); }
 
   constexpr operator std::string_view() const { return name(); }
 
+  static constexpr size_t count() { return magic_enum::enum_count<type_t>(); }
+
+  static constexpr OrderStatus from_index(size_t index) { return magic_enum::enum_value<type_t>(index); }
+
+  constexpr size_t to_index() const {
+    auto result = magic_enum::enum_index(type_);  // std::optional
+    return result.value();                        // note! could throw
+  }
+
  protected:
   constexpr type_t validate(uint8_t type) {
-    auto result = static_cast<type_t>(type);
-    switch (result) {
-      case type_t::UNDEFINED:
-      case type_t::SENT:
-      case type_t::ACCEPTED:
-      case type_t::SUSPENDED:
-      case type_t::WORKING:
-      case type_t::STOPPED:
-      case type_t::COMPLETED:
-      case type_t::EXPIRED:
-      case type_t::CANCELED:
-      case type_t::REJECTED:
-        return result;
-      default:
-        assert(false);
-        return type_t::UNDEFINED;
-    }
+    auto result = magic_enum::enum_cast<type_t>(type);
+    return result.has_value() ? result.value() : type_t::UNDEFINED;
   }
 
  private:

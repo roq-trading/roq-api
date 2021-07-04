@@ -8,6 +8,8 @@
 #include <string_view>
 #include <type_traits>
 
+#include <magic_enum.hpp>
+
 #include "roq/compat.h"
 #include "roq/format.h"
 #include "roq/literals.h"
@@ -45,71 +47,23 @@ struct ROQ_PACKED StatisticsType final {
 
   constexpr operator type_t() const { return type_; }
 
-  constexpr std::string_view name() const {
-    using namespace roq::literals;
-    switch (type_) {
-      case type_t::UNDEFINED:
-        break;
-      case type_t::OPEN_PRICE:
-        return "OPEN_PRICE"_sv;
-      case type_t::SETTLEMENT_PRICE:
-        return "SETTLEMENT_PRICE"_sv;
-      case type_t::CLOSE_PRICE:
-        return "CLOSE_PRICE"_sv;
-      case type_t::OPEN_INTEREST:
-        return "OPEN_INTEREST"_sv;
-      case type_t::PRE_OPEN_INTEREST:
-        return "PRE_OPEN_INTEREST"_sv;
-      case type_t::PRE_SETTLEMENT_PRICE:
-        return "PRE_SETTLEMENT_PRICE"_sv;
-      case type_t::PRE_CLOSE_PRICE:
-        return "PRE_CLOSE_PRICE"_sv;
-      case type_t::HIGHEST_TRADED_PRICE:
-        return "HIGHEST_TRADED_PRICE"_sv;
-      case type_t::LOWEST_TRADED_PRICE:
-        return "LOWEST_TRADED_PRICE"_sv;
-      case type_t::UPPER_LIMIT_PRICE:
-        return "UPPER_LIMIT_PRICE"_sv;
-      case type_t::LOWER_LIMIT_PRICE:
-        return "LOWER_LIMIT_PRICE"_sv;
-      case type_t::INDEX_VALUE:
-        return "INDEX_VALUE"_sv;
-      case type_t::MARGIN_RATE:
-        return "MARGIN_RATE"_sv;
-      case type_t::FUNDING_RATE:
-        return "FUNDING_RATE"_sv;
-      default:
-        assert(false);
-    }
-    return "UNDEFINED"_sv;
-  }
+  constexpr std::string_view name() const { return magic_enum::enum_name(type_); }
 
   constexpr operator std::string_view() const { return name(); }
 
+  static constexpr size_t count() { return magic_enum::enum_count<type_t>(); }
+
+  static constexpr StatisticsType from_index(size_t index) { return magic_enum::enum_value<type_t>(index); }
+
+  constexpr size_t to_index() const {
+    auto result = magic_enum::enum_index(type_);  // std::optional
+    return result.value();                        // note! could throw
+  }
+
  protected:
   constexpr type_t validate(uint8_t type) {
-    auto result = static_cast<type_t>(type);
-    switch (result) {
-      case type_t::UNDEFINED:
-      case type_t::OPEN_PRICE:
-      case type_t::SETTLEMENT_PRICE:
-      case type_t::CLOSE_PRICE:
-      case type_t::OPEN_INTEREST:
-      case type_t::PRE_OPEN_INTEREST:
-      case type_t::PRE_SETTLEMENT_PRICE:
-      case type_t::PRE_CLOSE_PRICE:
-      case type_t::HIGHEST_TRADED_PRICE:
-      case type_t::LOWEST_TRADED_PRICE:
-      case type_t::UPPER_LIMIT_PRICE:
-      case type_t::LOWER_LIMIT_PRICE:
-      case type_t::INDEX_VALUE:
-      case type_t::MARGIN_RATE:
-      case type_t::FUNDING_RATE:
-        return result;
-      default:
-        assert(false);
-        return type_t::UNDEFINED;
-    }
+    auto result = magic_enum::enum_cast<type_t>(type);
+    return result.has_value() ? result.value() : type_t::UNDEFINED;
   }
 
  private:

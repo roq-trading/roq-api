@@ -8,6 +8,8 @@
 #include <string_view>
 #include <type_traits>
 
+#include <magic_enum.hpp>
+
 #include "roq/compat.h"
 #include "roq/format.h"
 #include "roq/literals.h"
@@ -57,107 +59,23 @@ struct ROQ_PACKED Error final {
 
   constexpr operator type_t() const { return type_; }
 
-  constexpr std::string_view name() const {
-    using namespace roq::literals;
-    switch (type_) {
-      case type_t::UNDEFINED:
-        break;
-      case type_t::UNKNOWN:
-        return "UNKNOWN"_sv;
-      case type_t::NOT_SUPPORTED:
-        return "NOT_SUPPORTED"_sv;
-      case type_t::INVALID_ACCOUNT:
-        return "INVALID_ACCOUNT"_sv;
-      case type_t::INVALID_ORDER_ID:
-        return "INVALID_ORDER_ID"_sv;
-      case type_t::INVALID_EXCHANGE:
-        return "INVALID_EXCHANGE"_sv;
-      case type_t::INVALID_SYMBOL:
-        return "INVALID_SYMBOL"_sv;
-      case type_t::INVALID_SIDE:
-        return "INVALID_SIDE"_sv;
-      case type_t::INVALID_POSITION_EFFECT:
-        return "INVALID_POSITION_EFFECT"_sv;
-      case type_t::INVALID_QUANTITY:
-        return "INVALID_QUANTITY"_sv;
-      case type_t::INVALID_MAX_SHOW_QUANTITY:
-        return "INVALID_MAX_SHOW_QUANTITY"_sv;
-      case type_t::INVALID_ORDER_TYPE:
-        return "INVALID_ORDER_TYPE"_sv;
-      case type_t::INVALID_TIME_IN_FORCE:
-        return "INVALID_TIME_IN_FORCE"_sv;
-      case type_t::INVALID_EXECUTION_INSTRUCTION:
-        return "INVALID_EXECUTION_INSTRUCTION"_sv;
-      case type_t::INVALID_ORDER_TEMPLATE:
-        return "INVALID_ORDER_TEMPLATE"_sv;
-      case type_t::INVALID_PRICE:
-        return "INVALID_PRICE"_sv;
-      case type_t::INVALID_STOP_PRICE:
-        return "INVALID_STOP_PRICE"_sv;
-      case type_t::INVALID_ROUTING_ID:
-        return "INVALID_ROUTING_ID"_sv;
-      case type_t::INVALID_REQUEST_VERSION:
-        return "INVALID_REQUEST_VERSION"_sv;
-      case type_t::INVALID_REQUEST_ID:
-        return "INVALID_REQUEST_ID"_sv;
-      case type_t::INVALID_REQUEST_TYPE:
-        return "INVALID_REQUEST_TYPE"_sv;
-      case type_t::INVALID_REQUEST_STATUS:
-        return "INVALID_REQUEST_STATUS"_sv;
-      case type_t::INVALID_REQUEST_ARGS:
-        return "INVALID_REQUEST_ARGS"_sv;
-      case type_t::UNKNOWN_EXTERNAL_ORDER_ID:
-        return "UNKNOWN_EXTERNAL_ORDER_ID"_sv;
-      case type_t::NOT_AUTHORIZED:
-        return "NOT_AUTHORIZED"_sv;
-      case type_t::GATEWAY_NOT_READY:
-        return "GATEWAY_NOT_READY"_sv;
-      case type_t::NETWORK_ERROR:
-        return "NETWORK_ERROR"_sv;
-      default:
-        assert(false);
-    }
-    return "UNDEFINED"_sv;
-  }
+  constexpr std::string_view name() const { return magic_enum::enum_name(type_); }
 
   constexpr operator std::string_view() const { return name(); }
 
+  static constexpr size_t count() { return magic_enum::enum_count<type_t>(); }
+
+  static constexpr Error from_index(size_t index) { return magic_enum::enum_value<type_t>(index); }
+
+  constexpr size_t to_index() const {
+    auto result = magic_enum::enum_index(type_);  // std::optional
+    return result.value();                        // note! could throw
+  }
+
  protected:
   constexpr type_t validate(uint8_t type) {
-    auto result = static_cast<type_t>(type);
-    switch (result) {
-      case type_t::UNDEFINED:
-      case type_t::UNKNOWN:
-      case type_t::NOT_SUPPORTED:
-      case type_t::INVALID_ACCOUNT:
-      case type_t::INVALID_ORDER_ID:
-      case type_t::INVALID_EXCHANGE:
-      case type_t::INVALID_SYMBOL:
-      case type_t::INVALID_SIDE:
-      case type_t::INVALID_POSITION_EFFECT:
-      case type_t::INVALID_QUANTITY:
-      case type_t::INVALID_MAX_SHOW_QUANTITY:
-      case type_t::INVALID_ORDER_TYPE:
-      case type_t::INVALID_TIME_IN_FORCE:
-      case type_t::INVALID_EXECUTION_INSTRUCTION:
-      case type_t::INVALID_ORDER_TEMPLATE:
-      case type_t::INVALID_PRICE:
-      case type_t::INVALID_STOP_PRICE:
-      case type_t::INVALID_ROUTING_ID:
-      case type_t::INVALID_REQUEST_VERSION:
-      case type_t::INVALID_REQUEST_ID:
-      case type_t::INVALID_REQUEST_TYPE:
-      case type_t::INVALID_REQUEST_STATUS:
-      case type_t::INVALID_REQUEST_ARGS:
-      case type_t::UNKNOWN_EXTERNAL_ORDER_ID:
-      case type_t::NOT_AUTHORIZED:
-      case type_t::GATEWAY_NOT_READY:
-      case type_t::NETWORK_ERROR:
-        return result;
-      default:
-        assert(false);
-        return type_t::UNDEFINED;
-    }
+    auto result = magic_enum::enum_cast<type_t>(type);
+    return result.has_value() ? result.value() : type_t::UNDEFINED;
   }
 
  private:

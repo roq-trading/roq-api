@@ -8,6 +8,8 @@
 #include <string_view>
 #include <type_traits>
 
+#include <magic_enum.hpp>
+
 #include "roq/compat.h"
 #include "roq/format.h"
 #include "roq/literals.h"
@@ -44,68 +46,23 @@ struct ROQ_PACKED TimeInForce final {
 
   constexpr operator type_t() const { return type_; }
 
-  constexpr std::string_view name() const {
-    using namespace roq::literals;
-    switch (type_) {
-      case type_t::UNDEFINED:
-        break;
-      case type_t::GFD:
-        return "GFD"_sv;
-      case type_t::GTC:
-        return "GTC"_sv;
-      case type_t::OPG:
-        return "OPG"_sv;
-      case type_t::IOC:
-        return "IOC"_sv;
-      case type_t::FOK:
-        return "FOK"_sv;
-      case type_t::GTX:
-        return "GTX"_sv;
-      case type_t::GTD:
-        return "GTD"_sv;
-      case type_t::AT_THE_CLOSE:
-        return "AT_THE_CLOSE"_sv;
-      case type_t::GOOD_THROUGH_CROSSING:
-        return "GOOD_THROUGH_CROSSING"_sv;
-      case type_t::AT_CROSSING:
-        return "AT_CROSSING"_sv;
-      case type_t::GOOD_FOR_TIME:
-        return "GOOD_FOR_TIME"_sv;
-      case type_t::GFA:
-        return "GFA"_sv;
-      case type_t::GFM:
-        return "GFM"_sv;
-      default:
-        assert(false);
-    }
-    return "UNDEFINED"_sv;
-  }
+  constexpr std::string_view name() const { return magic_enum::enum_name(type_); }
 
   constexpr operator std::string_view() const { return name(); }
 
+  static constexpr size_t count() { return magic_enum::enum_count<type_t>(); }
+
+  static constexpr TimeInForce from_index(size_t index) { return magic_enum::enum_value<type_t>(index); }
+
+  constexpr size_t to_index() const {
+    auto result = magic_enum::enum_index(type_);  // std::optional
+    return result.value();                        // note! could throw
+  }
+
  protected:
   constexpr type_t validate(uint8_t type) {
-    auto result = static_cast<type_t>(type);
-    switch (result) {
-      case type_t::UNDEFINED:
-      case type_t::GFD:
-      case type_t::GTC:
-      case type_t::OPG:
-      case type_t::IOC:
-      case type_t::FOK:
-      case type_t::GTX:
-      case type_t::GTD:
-      case type_t::AT_THE_CLOSE:
-      case type_t::GOOD_THROUGH_CROSSING:
-      case type_t::AT_CROSSING:
-      case type_t::GOOD_FOR_TIME:
-      case type_t::GFA:
-      case type_t::GFM:
-        return result;
-      default:
-        assert(false);
-        return type_t::UNDEFINED;
-    }
+    auto result = magic_enum::enum_cast<type_t>(type);
+    return result.has_value() ? result.value() : type_t::UNDEFINED;
   }
 
  private:

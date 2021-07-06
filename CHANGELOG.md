@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.7.3 &ndash; 2021-07-06
+
 ### Added
 
 * `OrderManagement` used to instruct a gateway of the order management style

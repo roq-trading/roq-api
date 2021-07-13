@@ -33,6 +33,17 @@ TEST(update, string) {
   EXPECT_EQ(value, "bar"_sv);
 }
 
+TEST(update, seconds) {
+  using namespace std::chrono_literals;
+  std::chrono::seconds value = {};
+  EXPECT_TRUE(update(value, 1s));
+  EXPECT_EQ(value, 1s);
+  EXPECT_FALSE(update(value, 1s));
+  EXPECT_EQ(value, 1s);
+  EXPECT_TRUE(update(value, 2s));
+  EXPECT_EQ(value, 2s);
+}
+
 // update_first()
 
 TEST(update, int_first) {

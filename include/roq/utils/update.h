@@ -61,13 +61,5 @@ constexpr bool update_if_not_empty(T &result, const U &value) {
   return update(result, value);
 }
 
-template <typename T, typename U>
-constexpr bool update_always(T &result, const U &value) {
-  if (compare(value, result) == 0)
-    return false;
-  result = value;
-  return true;
-}
-
 }  // namespace utils
 }  // namespace roq

@@ -40,7 +40,7 @@ struct safe_cast final {
     } else if constexpr (is_integer<value_type>::value) {
       // integer to ...
       if (!(value_ >= std::numeric_limits<result_type>::min() && value_ <= std::numeric_limits<result_type>::max()))
-        throw OverflowErrorException("overflow"_sv);
+        throw OverflowErrorException("overflow: value={}"_sv, value_);
       return static_cast<result_type>(value_);
     } else if constexpr (std::is_floating_point<value_type>::value) {
       // floating point to ...
@@ -50,7 +50,7 @@ struct safe_cast final {
         //   https://stackoverflow.com/a/30424410
         if (!(value_ > static_cast<double>(std::numeric_limits<result_type>::min()) &&
               value_ < static_cast<double>(std::numeric_limits<result_type>::max())))
-          throw OverflowErrorException("overflow"_sv);
+          throw OverflowErrorException("overflow: value={}"_sv, value_);
         return static_cast<result_type>(value_);
       } else {
         static_assert(detail::always_false<result_type>, "not implemented for unsigned");

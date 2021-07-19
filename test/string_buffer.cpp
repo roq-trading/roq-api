@@ -44,5 +44,5 @@ TEST(string_buffer, construct) {
   roq::string_buffer<4>("12"_sv);
   roq::string_buffer<4>("123"_sv);
   roq::string_buffer<4>("1234"_sv);
-  EXPECT_THROW(roq::string_buffer<4>("12345"_sv), std::length_error);
+  EXPECT_THROW(roq::string_buffer<4>("12345"_sv), LengthError);
 }

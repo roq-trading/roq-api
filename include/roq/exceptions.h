@@ -14,24 +14,32 @@
 
 namespace roq {
 
-//! Base class for roq exceptions
+// This class hierarchy is *similar to* that of std::exception,
+// but not trying to be a mirror!
+// The reason is that a mirrored exception hierarchy would require multiple
+// inheritance and then cause issues with catch handlers.
+// The implication is that you must implement two exception handlers,
+// e.g.
+//   try {
+//     ...
+//   } catch (std::overflow_error&) {
+//     ...
+//   } catch (roq::OverflowError&) {
+//     ...
+//   }
+
+//! Base
 class ROQ_PUBLIC Exception : public std::exception {
  public:
-  virtual const std::string_view file() const noexcept = 0;
-  virtual int line() const noexcept = 0;
-};
+  virtual const std::string_view file() const noexcept { return file_; }
+  virtual int line() const noexcept { return line_; }
 
-//! Runtime error
-class ROQ_PUBLIC RuntimeError : public Exception, public std::runtime_error {
- public:
-  char const *what() const noexcept override { return std::runtime_error::what(); }
-  const std::string_view file() const noexcept override { return file_; }
-  int line() const noexcept override { return line_; }
+  char const *what() const noexcept override { return what_.c_str(); }
 
  protected:
-  template <typename... Args>
-  RuntimeError(const source_location &loc, const std::string &what)
-      : std::runtime_error(what), file_(basename(loc.file_name())), line_(loc.line()) {}
+  explicit Exception(const source_location &loc) : file_(basename(loc.file_name())), line_(loc.line()) {}
+  Exception(const source_location &loc, const std::string &what)
+      : file_(basename(loc.file_name())), line_(loc.line()), what_(what) {}
 
   static /*consteval*/ constexpr std::string_view basename(const std::string_view &path) noexcept {
     auto pos = path.find_last_of('/');
@@ -41,6 +49,13 @@ class ROQ_PUBLIC RuntimeError : public Exception, public std::runtime_error {
  private:
   const std::string_view file_;
   const int line_;
+  const std::string what_;
+};
+
+//! Runtime error
+class ROQ_PUBLIC RuntimeError : public Exception {
+ protected:
+  using Exception::Exception;
 };
 
 template <typename... Args>
@@ -53,13 +68,16 @@ template <typename... Args>
 RuntimeErrorException(Args &&...) -> RuntimeErrorException<Args...>;
 
 //! SystemError
-class ROQ_PUBLIC SystemError : public RuntimeError, public std::system_error {
+class ROQ_PUBLIC SystemError : public RuntimeError {
  public:
-  char const *what() const noexcept override { return std::system_error::what(); }
+  const std::error_code &code() const noexcept { return ec_; }
 
  protected:
   SystemError(const source_location &loc, std::error_code ec, const std::string &what)
-      : RuntimeError(loc, what), std::system_error(ec, what) {}
+      : RuntimeError(loc, what), ec_(ec) {}
+
+ private:
+  const std::error_code ec_;
 };
 
 template <typename ErrorCode, typename... Args>
@@ -72,12 +90,9 @@ template <typename ErrorCode, typename... Args>
 SystemErrorException(ErrorCode, Args &&...) -> SystemErrorException<ErrorCode, Args...>;
 
 //! RangeError
-class ROQ_PUBLIC RangeError : public RuntimeError, public std::range_error {
- public:
-  char const *what() const noexcept override { return std::range_error::what(); }
-
+class ROQ_PUBLIC RangeError : public RuntimeError {
  protected:
-  RangeError(const source_location &loc, const std::string &what) : RuntimeError(loc, what), std::range_error(what) {}
+  using RuntimeError::RuntimeError;
 };
 
 template <typename... Args>
@@ -90,13 +105,9 @@ template <typename... Args>
 RangeErrorException(Args &&...) -> RangeErrorException<Args...>;
 
 //! OverflowError
-class ROQ_PUBLIC OverflowError : public RuntimeError, public std::overflow_error {
- public:
-  char const *what() const noexcept override { return std::overflow_error::what(); }
-
+class ROQ_PUBLIC OverflowError : public RuntimeError {
  protected:
-  OverflowError(const source_location &loc, const std::string &what)
-      : RuntimeError(loc, what), std::overflow_error(what) {}
+  using RuntimeError::RuntimeError;
 };
 
 template <typename... Args>
@@ -109,25 +120,9 @@ template <typename... Args>
 OverflowErrorException(Args &&...) -> OverflowErrorException<Args...>;
 
 //! LogicError
-class ROQ_PUBLIC LogicError : public Exception, public std::logic_error {
- public:
-  char const *what() const noexcept override { return std::logic_error::what(); }
-  const std::string_view file() const noexcept override { return file_; }
-  int line() const noexcept override { return line_; }
-
+class ROQ_PUBLIC LogicError : public Exception {
  protected:
-  template <typename... Args>
-  LogicError(const source_location &loc, const std::string &what)
-      : std::logic_error(what), file_(basename(loc.file_name())), line_(loc.line()) {}
-
-  static /*consteval*/ constexpr std::string_view basename(const std::string_view &path) noexcept {
-    auto pos = path.find_last_of('/');
-    return pos == path.npos ? path : path.substr(++pos);
-  }
-
- private:
-  const std::string_view file_;
-  const int line_;
+  using Exception::Exception;
 };
 
 template <typename... Args>
@@ -140,13 +135,9 @@ template <typename... Args>
 LogicErrorException(Args &&...) -> LogicErrorException<Args...>;
 
 //! InvalidArgument
-class ROQ_PUBLIC InvalidArgument : public LogicError, public std::invalid_argument {
- public:
-  char const *what() const noexcept override { return std::invalid_argument::what(); }
-
+class ROQ_PUBLIC InvalidArgument : public LogicError {
  protected:
-  InvalidArgument(const source_location &loc, const std::string &what)
-      : LogicError(loc, what), std::invalid_argument(what) {}
+  using LogicError::LogicError;
 };
 
 template <typename... Args>
@@ -159,12 +150,9 @@ template <typename... Args>
 InvalidArgumentException(Args &&...) -> InvalidArgumentException<Args...>;
 
 //! OutOfRange
-class ROQ_PUBLIC OutOfRange : public LogicError, public std::out_of_range {
- public:
-  char const *what() const noexcept override { return std::out_of_range::what(); }
-
+class ROQ_PUBLIC OutOfRange : public LogicError {
  protected:
-  OutOfRange(const source_location &loc, const std::string &what) : LogicError(loc, what), std::out_of_range(what) {}
+  using LogicError::LogicError;
 };
 
 template <typename... Args>
@@ -177,12 +165,9 @@ template <typename... Args>
 OutOfRangeException(Args &&...) -> OutOfRangeException<Args...>;
 
 //! LengthError
-class ROQ_PUBLIC LengthError : public LogicError, public std::length_error {
- public:
-  char const *what() const noexcept override { return std::length_error::what(); }
-
+class ROQ_PUBLIC LengthError : public LogicError {
  protected:
-  LengthError(const source_location &loc, const std::string &what) : LogicError(loc, what), std::length_error(what) {}
+  using LogicError::LogicError;
 };
 
 template <typename... Args>
@@ -198,6 +183,7 @@ LengthErrorException(Args &&...) -> LengthErrorException<Args...>;
 
 //! Fatal
 class ROQ_PUBLIC Fatal : public RuntimeError {
+ protected:
   using RuntimeError::RuntimeError;
 };
 
@@ -212,6 +198,7 @@ FatalException(Args &&...) -> FatalException<Args...>;
 
 //! File does not exist
 class ROQ_PUBLIC FileDoesNotExist : public RuntimeError {
+ protected:
   using RuntimeError::RuntimeError;
 };
 
@@ -226,6 +213,7 @@ FileDoesNotExistException(Args &&...) -> FileDoesNotExistException<Args...>;
 
 //! Not ready
 class ROQ_PUBLIC NotReady : public RuntimeError {
+ protected:
   using RuntimeError::RuntimeError;
 };
 
@@ -242,6 +230,7 @@ NotReadyException(Args &&...) -> NotReadyException<Args...>;
 
 //! Base class for network errors
 class ROQ_PUBLIC NetworkError : public RuntimeError {
+ protected:
   using RuntimeError::RuntimeError;
 };
 
@@ -249,11 +238,13 @@ class ROQ_PUBLIC NetworkError : public RuntimeError {
 
 //! Base class for transport errors
 class ROQ_PUBLIC TransportError : public NetworkError {
+ protected:
   using NetworkError::NetworkError;
 };
 
 //! Not connected
 class ROQ_PUBLIC NotConnected : public TransportError {
+ protected:
   using TransportError::TransportError;
 };
 
@@ -268,6 +259,7 @@ NotConnectedException(Args &&...) -> NotConnectedException<Args...>;
 
 //! Connection refused
 class ROQ_PUBLIC ConnectionRefused : public TransportError {
+ protected:
   using TransportError::TransportError;
 };
 
@@ -282,6 +274,7 @@ ConnectionRefusedException(Args &&...) -> ConnectionRefusedException<Args...>;
 
 //! Timed out
 class ROQ_PUBLIC TimedOut : public TransportError {
+ protected:
   using TransportError::TransportError;
 };
 
@@ -298,11 +291,13 @@ TimedOutException(Args &&...) -> TimedOutException<Args...>;
 
 //! Base class for session errors
 class ROQ_PUBLIC SessionError : public NetworkError {
+ protected:
   using NetworkError::NetworkError;
 };
 
 //! Permissions denied
 class ROQ_PUBLIC PermissionDenied : public SessionError {
+ protected:
   using SessionError::SessionError;
 };
 
@@ -317,6 +312,7 @@ PermissionDeniedException(Args &&...) -> PermissionDeniedException<Args...>;
 
 //! Order not live
 class ROQ_PUBLIC OrderNotLive : public SessionError {
+ protected:
   using SessionError::SessionError;
 };
 
@@ -339,12 +335,185 @@ struct fmt::formatter<roq::Exception> : public roq::formatter {
     return roq::format_to(
         context.out(),
         R"({{)"
+        R"(type="{}", )"
         R"(what="{}", )"
         R"(file="{}", )"
         R"(line={})"
         R"(}})"_sv,
+        typeid(value).name(),
         value.what(),
         value.file(),
         value.line());
+  }
+};
+
+template <>
+struct fmt::formatter<roq::RuntimeError> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::RuntimeError &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::SystemError> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::SystemError &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::RangeError> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::RangeError &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::OverflowError> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::OverflowError &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::LogicError> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::LogicError &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::InvalidArgument> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::InvalidArgument &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::OutOfRange> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::OutOfRange &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::LengthError> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::LengthError &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Fatal> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::Fatal &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::FileDoesNotExist> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::FileDoesNotExist &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::NotReady> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::NotReady &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::NetworkError> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::NetworkError &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::TransportError> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::TransportError &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::NotConnected> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::NotConnected &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::ConnectionRefused> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::ConnectionRefused &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::TimedOut> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::TimedOut &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::SessionError> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::SessionError &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::PermissionDenied> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::PermissionDenied &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::OrderNotLive> : public roq::formatter {
+  template <typename Context>
+  auto format(const roq::OrderNotLive &value, Context &context) {
+    using namespace roq::literals;
+    return roq::format_to(context.out(), "{}"_sv, static_cast<const roq::Exception &>(value));
   }
 };

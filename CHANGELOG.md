@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* The exception hierarchy no longer tries to mirror `std`.
+
 ## 0.7.3 &ndash; 2021-07-06
 
 ### Added

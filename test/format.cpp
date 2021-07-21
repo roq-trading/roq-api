@@ -30,8 +30,8 @@ TEST(format, subscribe) {
   EXPECT_EQ(
       result,
       R"({)"
-      R"(accounts={"abc", "test"}, )"
-      R"(symbols_by_exchange={("abc", {"123", "234"})}, )"
+      R"(accounts=["abc", "test"], )"
+      R"(symbols_by_exchange=[("abc", ["123", "234"])], )"
       R"(order_cancel_policy=MANAGED_ORDERS, )"
       R"(order_management=FIX)"
       R"(})"_sv);

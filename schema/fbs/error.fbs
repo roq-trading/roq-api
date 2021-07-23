@@ -27,5 +27,6 @@ enum Error:uint8 {
   UnknownExternalOrderId,
   NotAuthorized,
   GatewayNotReady,
-  NetworkError
+  NetworkError,
+  RequestRateLimitReached
 }

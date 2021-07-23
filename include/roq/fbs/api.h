@@ -181,11 +181,12 @@ enum Error : uint8_t {
   Error_NotAuthorized = 24,
   Error_GatewayNotReady = 25,
   Error_NetworkError = 26,
+  Error_RequestRateLimitReached = 27,
   Error_MIN = Error_Undefined,
-  Error_MAX = Error_NetworkError
+  Error_MAX = Error_RequestRateLimitReached
 };
 
-inline const Error (&EnumValuesError())[27] {
+inline const Error (&EnumValuesError())[28] {
   static const Error values[] = {
       Error_Undefined,
       Error_Unknown,
@@ -213,12 +214,13 @@ inline const Error (&EnumValuesError())[27] {
       Error_UnknownExternalOrderId,
       Error_NotAuthorized,
       Error_GatewayNotReady,
-      Error_NetworkError};
+      Error_NetworkError,
+      Error_RequestRateLimitReached};
   return values;
 }
 
 inline const char *const *EnumNamesError() {
-  static const char *const names[28] = {
+  static const char *const names[29] = {
       "Undefined",
       "Unknown",
       "NotSupported",
@@ -246,12 +248,13 @@ inline const char *const *EnumNamesError() {
       "NotAuthorized",
       "GatewayNotReady",
       "NetworkError",
+      "RequestRateLimitReached",
       nullptr};
   return names;
 }
 
 inline const char *EnumNameError(Error e) {
-  if (flatbuffers::IsOutRange(e, Error_Undefined, Error_NetworkError))
+  if (flatbuffers::IsOutRange(e, Error_Undefined, Error_RequestRateLimitReached))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesError()[index];

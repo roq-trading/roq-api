@@ -86,6 +86,10 @@
         {
             "name": "NetworkError",
             "comment": "Network connection is down (message is likely to be lost)"
+        },
+        {
+            "name": "RequestRateLimitReached",
+            "comment": "Request rate limit has been reached"
         }
     ]
 }

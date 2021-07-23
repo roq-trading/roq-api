@@ -42,11 +42,12 @@ struct ROQ_PACKED Error final {
     INVALID_REQUEST_ID,
     INVALID_REQUEST_TYPE,
     INVALID_REQUEST_STATUS,
-    INVALID_REQUEST_ARGS,       //!< Request arguments did not meet validation rules
-    UNKNOWN_EXTERNAL_ORDER_ID,  //!< An external order identifier has not yet been received
-    NOT_AUTHORIZED,             //!< User is not authorized
-    GATEWAY_NOT_READY,          //!< Gateway not ready (could be not connected or currently downloading)
-    NETWORK_ERROR,              //!< Network connection is down (message is likely to be lost)
+    INVALID_REQUEST_ARGS,        //!< Request arguments did not meet validation rules
+    UNKNOWN_EXTERNAL_ORDER_ID,   //!< An external order identifier has not yet been received
+    NOT_AUTHORIZED,              //!< User is not authorized
+    GATEWAY_NOT_READY,           //!< Gateway not ready (could be not connected or currently downloading)
+    NETWORK_ERROR,               //!< Network connection is down (message is likely to be lost)
+    REQUEST_RATE_LIMIT_REACHED,  //!< Request rate limit has been reached
   };
 
   constexpr Error() = default;

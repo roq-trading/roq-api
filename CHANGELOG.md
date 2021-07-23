@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `Error::REQUEST_RATE_LIMIT_REACHED`
+
 ## 0.7.4 &ndash; 2021-07-20
 
 ### Changed

@@ -4,6 +4,13 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Fixed
+
+* `DepthBuilder` was unsafe because the constructor cached a pointer to a span
+  of `Layer`s, aka. the depth.
+  This has been changed and applying a `MarketByPriceUpdate` will now require
+  you to also pass a reference to the depth.
+
 ### Added
 
 * `Error::REQUEST_RATE_LIMIT_REACHED`

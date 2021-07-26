@@ -20,13 +20,27 @@ class ROQ_PUBLIC DepthBuilder {
  public:
   virtual ~DepthBuilder() {}
 
-  virtual void update(const ReferenceData &reference_data) = 0;
-
-  virtual size_t update(const MarketByPriceUpdate &market_by_price, bool fill_zero = true) = 0;
-
-  virtual size_t update(const MarketByOrderUpdate &market_by_order, bool fill_zero = true) = 0;
-
   virtual void reset() = 0;
+
+  virtual void operator()(const ReferenceData &) = 0;
+
+  virtual size_t operator()(const MarketByPriceUpdate &, roq::span<Layer> &, bool fill_zero = true) = 0;
+
+  virtual size_t operator()(const MarketByOrderUpdate &, roq::span<Layer> &, bool fill_zero = true) = 0;
+
+  // helpers:
+
+  template <typename T>
+  size_t update(const T &update, Layer &depth, bool fill_zero = true) {
+    roq::span tmp(&depth, 1);
+    return (*this)(update, tmp, fill_zero);
+  }
+
+  template <typename T, typename Container>
+  size_t update(const T &update, Container &depth, bool fill_zero = true) {
+    roq::span tmp(std::data(depth), std::size(depth));
+    return (*this)(update, tmp, fill_zero);
+  }
 };
 
 }  // namespace client

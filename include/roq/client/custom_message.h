@@ -5,13 +5,13 @@
 #include "roq/event.h"
 #include "roq/format.h"
 #include "roq/literals.h"
+#include "roq/span.h"
 
 namespace roq {
 namespace client {
 
 struct ROQ_PUBLIC CustomMessage final {
-  void const *message;
-  size_t length;
+  roq::span<std::byte const> message;
 };
 
 }  // namespace client
@@ -28,7 +28,7 @@ struct fmt::formatter<roq::client::CustomMessage> : public roq::formatter {
         R"({{)"
         R"(length={})"
         R"(}})"_sv,
-        value.length);
+        std::size(value.message));
   }
 };
 

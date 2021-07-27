@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changes
+
+* `CustomMessage` now use `span` to represent the message
+
 ### Fixed
 
 * `DepthBuilder` was unsafe because the constructor cached a pointer to a span

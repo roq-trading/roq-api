@@ -24,7 +24,9 @@ struct ROQ_PACKED RequestStatus final {
     FORWARDED,
     ACCEPTED,
     REJECTED,
+    DISCONNECTED,
     TIMEOUT,
+    FAILED,  //!< Generic failure
   };
 
   constexpr RequestStatus() = default;

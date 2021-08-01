@@ -17,6 +17,10 @@
         },
         {
             "name": "Timeout"
+        },
+        {
+            "name": "Failed",
+	    "comment": "Generic failure"
         }
     ]
 }

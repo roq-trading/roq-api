@@ -514,28 +514,33 @@ enum RequestStatus : uint8_t {
   RequestStatus_Forwarded = 1,
   RequestStatus_Accepted = 2,
   RequestStatus_Rejected = 3,
-  RequestStatus_Timeout = 4,
+  RequestStatus_Disconnected = 4,
+  RequestStatus_Timeout = 5,
+  RequestStatus_Failed = 6,
   RequestStatus_MIN = RequestStatus_Undefined,
-  RequestStatus_MAX = RequestStatus_Timeout
+  RequestStatus_MAX = RequestStatus_Failed
 };
 
-inline const RequestStatus (&EnumValuesRequestStatus())[5] {
+inline const RequestStatus (&EnumValuesRequestStatus())[7] {
   static const RequestStatus values[] = {
       RequestStatus_Undefined,
       RequestStatus_Forwarded,
       RequestStatus_Accepted,
       RequestStatus_Rejected,
-      RequestStatus_Timeout};
+      RequestStatus_Disconnected,
+      RequestStatus_Timeout,
+      RequestStatus_Failed};
   return values;
 }
 
 inline const char *const *EnumNamesRequestStatus() {
-  static const char *const names[6] = {"Undefined", "Forwarded", "Accepted", "Rejected", "Timeout", nullptr};
+  static const char *const names[8] = {
+      "Undefined", "Forwarded", "Accepted", "Rejected", "Disconnected", "Timeout", "Failed", nullptr};
   return names;
 }
 
 inline const char *EnumNameRequestStatus(RequestStatus e) {
-  if (flatbuffers::IsOutRange(e, RequestStatus_Undefined, RequestStatus_Timeout))
+  if (flatbuffers::IsOutRange(e, RequestStatus_Undefined, RequestStatus_Failed))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRequestStatus()[index];

@@ -31,6 +31,8 @@ struct ROQ_PUBLIC OrderAck final {
   uint16_t stream_id = {};             //!< Stream identifier
   std::string_view account;            //!< Account name
   uint32_t order_id = {};              //!< Order identifier
+  std::string_view exchange;           //!< Exchange
+  std::string_view symbol;             //!< Symbol
   RequestType type = {};               //!< Request type
   Origin origin = {};                  //!< Origin of ack
   RequestStatus status = {};           //!< Request status
@@ -56,6 +58,8 @@ struct fmt::formatter<roq::OrderAck> : public roq::formatter {
         R"(stream_id={}, )"
         R"(account="{}", )"
         R"(order_id={}, )"
+        R"(exchange="{}", )"
+        R"(symbol="{}", )"
         R"(type={}, )"
         R"(origin={}, )"
         R"(status={}, )"
@@ -70,6 +74,8 @@ struct fmt::formatter<roq::OrderAck> : public roq::formatter {
         value.stream_id,
         value.account,
         value.order_id,
+        value.exchange,
+        value.symbol,
         value.type,
         value.origin,
         value.status,

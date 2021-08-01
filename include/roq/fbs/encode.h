@@ -531,6 +531,8 @@ auto encode(B &builder, const roq::OrderAck &value) {
       value.stream_id,
       encode(builder, value.account),
       value.order_id,
+      encode(builder, value.exchange),
+      encode(builder, value.symbol),
       encode(builder, value.type),
       encode(builder, value.origin),
       encode(builder, value.status),

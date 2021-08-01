@@ -2568,20 +2568,24 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STREAM_ID = 4,
     VT_ACCOUNT = 6,
     VT_ORDER_ID = 8,
-    VT_TYPE = 10,
-    VT_ORIGIN = 12,
-    VT_STATUS = 14,
-    VT_ERROR = 16,
-    VT_TEXT = 18,
-    VT_REQUEST_ID = 20,
-    VT_EXTERNAL_ACCOUNT = 22,
-    VT_EXTERNAL_ORDER_ID = 24,
-    VT_ROUTING_ID = 26,
-    VT_VERSION = 28
+    VT_EXCHANGE = 10,
+    VT_SYMBOL = 12,
+    VT_TYPE = 14,
+    VT_ORIGIN = 16,
+    VT_STATUS = 18,
+    VT_ERROR = 20,
+    VT_TEXT = 22,
+    VT_REQUEST_ID = 24,
+    VT_EXTERNAL_ACCOUNT = 26,
+    VT_EXTERNAL_ORDER_ID = 28,
+    VT_ROUTING_ID = 30,
+    VT_VERSION = 32
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
   roq::fbs::RequestType type() const { return static_cast<roq::fbs::RequestType>(GetField<uint8_t>(VT_TYPE, 0)); }
   roq::fbs::Origin origin() const { return static_cast<roq::fbs::Origin>(GetField<uint8_t>(VT_ORIGIN, 0)); }
   roq::fbs::RequestStatus status() const {
@@ -2601,10 +2605,11 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyField<uint8_t>(verifier, VT_TYPE) &&
-           VerifyField<uint8_t>(verifier, VT_ORIGIN) && VerifyField<uint8_t>(verifier, VT_STATUS) &&
-           VerifyField<uint8_t>(verifier, VT_ERROR) && VerifyOffset(verifier, VT_TEXT) &&
-           verifier.VerifyString(text()) && VerifyOffset(verifier, VT_REQUEST_ID) &&
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_EXCHANGE) &&
+           verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
+           VerifyField<uint8_t>(verifier, VT_TYPE) && VerifyField<uint8_t>(verifier, VT_ORIGIN) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS) && VerifyField<uint8_t>(verifier, VT_ERROR) &&
+           VerifyOffset(verifier, VT_TEXT) && verifier.VerifyString(text()) && VerifyOffset(verifier, VT_REQUEST_ID) &&
            verifier.VerifyString(request_id()) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
            verifier.VerifyString(external_account()) && VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
            verifier.VerifyString(external_order_id()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
@@ -2619,6 +2624,10 @@ struct OrderAckBuilder {
   void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(OrderAck::VT_STREAM_ID, stream_id, 0); }
   void add_account(flatbuffers::Offset<flatbuffers::String> account) { fbb_.AddOffset(OrderAck::VT_ACCOUNT, account); }
   void add_order_id(uint32_t order_id) { fbb_.AddElement<uint32_t>(OrderAck::VT_ORDER_ID, order_id, 0); }
+  void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
+    fbb_.AddOffset(OrderAck::VT_EXCHANGE, exchange);
+  }
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) { fbb_.AddOffset(OrderAck::VT_SYMBOL, symbol); }
   void add_type(roq::fbs::RequestType type) {
     fbb_.AddElement<uint8_t>(OrderAck::VT_TYPE, static_cast<uint8_t>(type), 0);
   }
@@ -2658,6 +2667,8 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAck(
     uint16_t stream_id = 0,
     flatbuffers::Offset<flatbuffers::String> account = 0,
     uint32_t order_id = 0,
+    flatbuffers::Offset<flatbuffers::String> exchange = 0,
+    flatbuffers::Offset<flatbuffers::String> symbol = 0,
     roq::fbs::RequestType type = roq::fbs::RequestType_Undefined,
     roq::fbs::Origin origin = roq::fbs::Origin_Undefined,
     roq::fbs::RequestStatus status = roq::fbs::RequestStatus_Undefined,
@@ -2675,6 +2686,8 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAck(
   builder_.add_external_account(external_account);
   builder_.add_request_id(request_id);
   builder_.add_text(text);
+  builder_.add_symbol(symbol);
+  builder_.add_exchange(exchange);
   builder_.add_order_id(order_id);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
@@ -2690,6 +2703,8 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     uint16_t stream_id = 0,
     const char *account = nullptr,
     uint32_t order_id = 0,
+    const char *exchange = nullptr,
+    const char *symbol = nullptr,
     roq::fbs::RequestType type = roq::fbs::RequestType_Undefined,
     roq::fbs::Origin origin = roq::fbs::Origin_Undefined,
     roq::fbs::RequestStatus status = roq::fbs::RequestStatus_Undefined,
@@ -2701,6 +2716,8 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     const char *routing_id = nullptr,
     uint32_t version = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
+  auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto text__ = text ? _fbb.CreateString(text) : 0;
   auto request_id__ = request_id ? _fbb.CreateString(request_id) : 0;
   auto external_account__ = external_account ? _fbb.CreateString(external_account) : 0;
@@ -2711,6 +2728,8 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
       stream_id,
       account__,
       order_id,
+      exchange__,
+      symbol__,
       type,
       origin,
       status,

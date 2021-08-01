@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changes
 
+* `OrderAck` now include `exchange` and `symbol`
 * `CustomMessage` now use `span` to represent the message
 
 ### Fixed

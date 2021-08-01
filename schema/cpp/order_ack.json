@@ -16,6 +16,14 @@
             "type": "uint32_t"
         },
         {
+            "name": "exchange",
+            "type": "std::string_view"
+        },
+        {
+            "name": "symbol",
+            "type": "std::string_view"
+        },
+        {
             "name": "type",
             "type": "RequestType",
             "comment": "Request type"

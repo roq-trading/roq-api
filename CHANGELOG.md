@@ -6,8 +6,9 @@ All notable changes will be documented in this file.
 
 ### Changes
 
-* `OrderAck` now include `exchange` and `symbol`
-* `CustomMessage` now use `span` to represent the message
+* `RequestStatus` now includes `DISCONNECTED`
+* `OrderAck` now includes `exchange` and `symbol`
+* `CustomMessage` now uses `span` to represent the message
 
 ### Fixed
 

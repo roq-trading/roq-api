@@ -50,10 +50,15 @@ inline bool has_request_completed(const RequestStatus status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
       break;
+      // note! definitely completed
     case RequestStatus::ACCEPTED:
     case RequestStatus::REJECTED:
-    case RequestStatus::TIMEOUT:
       return true;
+      // note! we don't know the real status for these
+    case RequestStatus::DISCONNECTED:
+    case RequestStatus::TIMEOUT:
+    case RequestStatus::FAILED:
+      break;
     default:
       break;
   }
@@ -67,8 +72,13 @@ inline bool has_request_failed(const RequestStatus status) {
     case RequestStatus::FORWARDED:
     case RequestStatus::ACCEPTED:
       break;
+      // note! definitely failed
     case RequestStatus::REJECTED:
+      return true;
+      // note! we don't know the real status for these
+    case RequestStatus::DISCONNECTED:
     case RequestStatus::TIMEOUT:
+    case RequestStatus::FAILED:
       return true;
     default:
       break;
@@ -82,10 +92,16 @@ inline bool has_request_succeeded(const RequestStatus status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
       break;
+      // note! definitely succeeded
     case RequestStatus::ACCEPTED:
       return true;
+      // note! definitely did *not* succeed
     case RequestStatus::REJECTED:
+      break;
+      // note! we don't know the real status for these
+    case RequestStatus::DISCONNECTED:
     case RequestStatus::TIMEOUT:
+    case RequestStatus::FAILED:
       break;
     default:
       break;

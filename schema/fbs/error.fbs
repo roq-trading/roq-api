@@ -26,7 +26,11 @@ enum Error:uint8 {
   InvalidRequestArgs,
   UnknownExternalOrderId,
   NotAuthorized,
+  RequestRateLimitReached,
   GatewayNotReady,
-  NetworkError,
-  RequestRateLimitReached
+  Disconnected,
+  Timeout,
+  Parse,
+  ModifyHasNoEffect,
+  TooLateToModifyOrCancel
 }

@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changes
 
+* `Error` has been extended to communicate certain exchange errors
 * `RequestStatus` now includes `DISCONNECTED`, `TIMEOUT`, and `FAILED`
 * `OrderAck` now includes `exchange` and `symbol`
 * `CustomMessage` now uses `span` to represent the message

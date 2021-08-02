@@ -179,14 +179,18 @@ enum Error : uint8_t {
   Error_InvalidRequestArgs = 22,
   Error_UnknownExternalOrderId = 23,
   Error_NotAuthorized = 24,
-  Error_GatewayNotReady = 25,
-  Error_NetworkError = 26,
-  Error_RequestRateLimitReached = 27,
+  Error_RequestRateLimitReached = 25,
+  Error_GatewayNotReady = 26,
+  Error_Disconnected = 27,
+  Error_Timeout = 28,
+  Error_Parse = 29,
+  Error_ModifyHasNoEffect = 30,
+  Error_TooLateToModifyOrCancel = 31,
   Error_MIN = Error_Undefined,
-  Error_MAX = Error_RequestRateLimitReached
+  Error_MAX = Error_TooLateToModifyOrCancel
 };
 
-inline const Error (&EnumValuesError())[28] {
+inline const Error (&EnumValuesError())[32] {
   static const Error values[] = {
       Error_Undefined,
       Error_Unknown,
@@ -213,14 +217,18 @@ inline const Error (&EnumValuesError())[28] {
       Error_InvalidRequestArgs,
       Error_UnknownExternalOrderId,
       Error_NotAuthorized,
+      Error_RequestRateLimitReached,
       Error_GatewayNotReady,
-      Error_NetworkError,
-      Error_RequestRateLimitReached};
+      Error_Disconnected,
+      Error_Timeout,
+      Error_Parse,
+      Error_ModifyHasNoEffect,
+      Error_TooLateToModifyOrCancel};
   return values;
 }
 
 inline const char *const *EnumNamesError() {
-  static const char *const names[29] = {
+  static const char *const names[33] = {
       "Undefined",
       "Unknown",
       "NotSupported",
@@ -246,15 +254,19 @@ inline const char *const *EnumNamesError() {
       "InvalidRequestArgs",
       "UnknownExternalOrderId",
       "NotAuthorized",
-      "GatewayNotReady",
-      "NetworkError",
       "RequestRateLimitReached",
+      "GatewayNotReady",
+      "Disconnected",
+      "Timeout",
+      "Parse",
+      "ModifyHasNoEffect",
+      "TooLateToModifyOrCancel",
       nullptr};
   return names;
 }
 
 inline const char *EnumNameError(Error e) {
-  if (flatbuffers::IsOutRange(e, Error_Undefined, Error_RequestRateLimitReached))
+  if (flatbuffers::IsOutRange(e, Error_Undefined, Error_TooLateToModifyOrCancel))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesError()[index];

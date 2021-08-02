@@ -22,7 +22,7 @@ struct ROQ_PACKED Error final {
   enum type_t : uint8_t {
     UNDEFINED = 0,
     UNKNOWN,
-    NOT_SUPPORTED,  //!< Unsupported request type
+    NOT_SUPPORTED,  //!< Request type not supported
     INVALID_ACCOUNT,
     INVALID_ORDER_ID,
     INVALID_EXCHANGE,
@@ -42,12 +42,16 @@ struct ROQ_PACKED Error final {
     INVALID_REQUEST_ID,
     INVALID_REQUEST_TYPE,
     INVALID_REQUEST_STATUS,
-    INVALID_REQUEST_ARGS,        //!< Request arguments did not meet validation rules
-    UNKNOWN_EXTERNAL_ORDER_ID,   //!< An external order identifier has not yet been received
-    NOT_AUTHORIZED,              //!< User is not authorized
-    GATEWAY_NOT_READY,           //!< Gateway not ready (could be not connected or currently downloading)
-    NETWORK_ERROR,               //!< Network connection is down (message is likely to be lost)
-    REQUEST_RATE_LIMIT_REACHED,  //!< Request rate limit has been reached
+    INVALID_REQUEST_ARGS,          //!< Request arguments did not meet validation rules
+    UNKNOWN_EXTERNAL_ORDER_ID,     //!< An external order identifier has not yet been received
+    NOT_AUTHORIZED,                //!< User is not authorized
+    REQUEST_RATE_LIMIT_REACHED,    //!< Request rate limit has been reached
+    GATEWAY_NOT_READY,             //!< Gateway not ready (could be disconnected or currently downloading)
+    DISCONNECTED,                  //!< Network disconnect event (unknown request/order status)
+    TIMEOUT,                       //!< Response has not been received (unknown request/order status)
+    PARSE,                         //!< Message parse error (unknown request/order status)
+    MODIFY_HAS_NO_EFFECT,          //!< Modify request has no effect on order
+    TOO_LATE_TO_MODIFY_OR_CANCEL,  //!< Too late to modify or cancel (order has been filled or is already canceled)
   };
 
   constexpr Error() = default;

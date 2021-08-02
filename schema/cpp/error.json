@@ -88,7 +88,7 @@
 	    "comment": "Gateway not ready (could be disconnected or currently downloading)"
         },
         {
-            "name": "Disconnected",
+            "name": "NetworkError",
             "comment": "Network disconnect event (unknown request/order status)"
         },
         {
@@ -96,7 +96,7 @@
             "comment": "Response has not been received (unknown request/order status)"
         },
         {
-            "name": "Parse",
+            "name": "ParseError",
             "comment": "Message parse error (unknown request/order status)"
         },
         {

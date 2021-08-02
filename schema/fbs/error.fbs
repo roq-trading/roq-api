@@ -28,9 +28,9 @@ enum Error:uint8 {
   NotAuthorized,
   RequestRateLimitReached,
   GatewayNotReady,
-  Disconnected,
+  NetworkError,
   Timeout,
-  Parse,
+  ParseError,
   ModifyHasNoEffect,
   TooLateToModifyOrCancel
 }

@@ -47,9 +47,9 @@ struct ROQ_PACKED Error final {
     NOT_AUTHORIZED,                //!< User is not authorized
     REQUEST_RATE_LIMIT_REACHED,    //!< Request rate limit has been reached
     GATEWAY_NOT_READY,             //!< Gateway not ready (could be disconnected or currently downloading)
-    DISCONNECTED,                  //!< Network disconnect event (unknown request/order status)
+    NETWORK_ERROR,                 //!< Network disconnect event (unknown request/order status)
     TIMEOUT,                       //!< Response has not been received (unknown request/order status)
-    PARSE,                         //!< Message parse error (unknown request/order status)
+    PARSE_ERROR,                   //!< Message parse error (unknown request/order status)
     MODIFY_HAS_NO_EFFECT,          //!< Modify request has no effect on order
     TOO_LATE_TO_MODIFY_OR_CANCEL,  //!< Too late to modify or cancel (order has been filled or is already canceled)
   };

@@ -15,5 +15,6 @@ enum StatisticsType:uint8 {
   LowerLimitPrice,
   IndexValue,
   MarginRate,
-  FundingRate
+  FundingRate,
+  FundingRatePrediction
 }

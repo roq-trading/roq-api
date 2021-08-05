@@ -21,6 +21,7 @@ All notable changes will be documented in this file.
 ### Added
 
 * `Error::REQUEST_RATE_LIMIT_REACHED`
+* `StatisticsType::FUNDING_RATE_PREDICTION`
 
 ## 0.7.4 &ndash; 2021-07-20
 

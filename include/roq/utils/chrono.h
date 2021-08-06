@@ -5,10 +5,11 @@
 #include <date/date.h>
 
 #include <fmt/chrono.h>
+#include <fmt/format.h>
 
 #include <utility>
 
-#include "roq/format.h"
+#include "roq/literals.h"
 
 namespace roq {
 namespace utils {
@@ -24,11 +25,15 @@ inline std::pair<date::year_month_day, date::hh_mm_ss<T>> split(U value) {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<date::year_month_day> : public roq::formatter {
+struct fmt::formatter<date::year_month_day> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const date::year_month_day &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         R"({{)"
         R"(year="{}", )"
@@ -42,11 +47,15 @@ struct fmt::formatter<date::year_month_day> : public roq::formatter {
 };
 
 template <>
-struct fmt::formatter<date::hh_mm_ss<std::chrono::milliseconds>> : public roq::formatter {
+struct fmt::formatter<date::hh_mm_ss<std::chrono::milliseconds>> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const date::hh_mm_ss<std::chrono::milliseconds> &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         R"({{)"
         R"(hours="{}", )"

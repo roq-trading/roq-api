@@ -5,6 +5,7 @@
 #pragma once
 
 #include <fmt/chrono.h>
+#include <fmt/format.h>
 
 #include <chrono>
 #include <string_view>
@@ -12,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
@@ -41,11 +41,15 @@ struct ROQ_PUBLIC PositionUpdate final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::PositionUpdate> : public roq::formatter {
+struct fmt::formatter<roq::PositionUpdate> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::PositionUpdate &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         R"({{)"
         R"(stream_id={}, )"
@@ -74,11 +78,15 @@ struct fmt::formatter<roq::PositionUpdate> : public roq::formatter {
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::PositionUpdate> > : public roq::formatter {
+struct fmt::formatter<roq::Event<roq::PositionUpdate> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::Event<roq::PositionUpdate> &event, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"

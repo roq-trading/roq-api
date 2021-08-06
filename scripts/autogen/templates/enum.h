@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <fmt/format.h>
+
 #include <cassert>
 #include <string_view>
 #include <type_traits>
@@ -9,7 +11,6 @@
 #include <magic_enum.hpp>
 
 #include "roq/compat.h"
-#include "roq/format.h"
 #include "roq/literals.h"
 
 {% include 'namespace_begin' %}
@@ -83,13 +84,17 @@ struct std::underlying_type<{{ namespaces | join('::') }}::{{ name }}> {
 };
 
 template <>
-struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> : public roq::formatter {
+struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(
       const {{ namespaces | join('::') }}::{{ name }}& value,
       Context& context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         "{}"_sv,
         value.name());

@@ -103,7 +103,7 @@ def _safe_enum(name):
 
 
 def _format_helper(char, string, array, safe_name, accessor):
-    value = ('roq::join(value.{}{}, ", "_sv)' if array else "value.{}{}").format(
+    value = ('fmt::join(value.{}{}, ", "_sv)' if array else "value.{}{}").format(
         safe_name, accessor
     )
     # required until Mask has been implemented

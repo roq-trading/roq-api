@@ -1,11 +1,15 @@
 template <>
-struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> : public roq::formatter {
+struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(
       const {{ namespaces | join('::') }}::{{ name }}& value,
       Context& context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
 {%- if variables | length == 0 %}
 {%- raw %}

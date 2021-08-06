@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <fmt/format.h>
+
 #include <algorithm>
 #include <array>
 #include <string>
@@ -10,7 +12,6 @@
 
 #include "roq/compat.h"
 #include "roq/exceptions.h"
-#include "roq/format.h"
 #include "roq/literals.h"
 
 namespace roq {
@@ -117,10 +118,14 @@ inline bool operator==(const string_buffer<N> &lhs, const string_buffer<N> &rhs)
 }  // namespace roq
 
 template <size_t N>
-struct fmt::formatter<roq::string_buffer<N> > : public roq::formatter {
+struct fmt::formatter<roq::string_buffer<N> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::string_buffer<N> &value, Context &ctx) {
     using namespace roq::literals;
-    return roq::format_to(ctx.out(), "{}"_sv, static_cast<std::string_view>(value));
+    return fmt::format_to(ctx.out(), "{}"_sv, static_cast<std::string_view>(value));
   }
 };

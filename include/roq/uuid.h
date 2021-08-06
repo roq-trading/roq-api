@@ -2,11 +2,12 @@
 
 #pragma once
 
+#include <fmt/format.h>
+
 #include <algorithm>
 #include <array>
 #include <utility>
 
-#include "roq/format.h"
 #include "roq/literals.h"
 
 namespace roq {
@@ -79,12 +80,16 @@ static_assert(sizeof(UUID) == 16);
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::UUID> : public roq::formatter {
+struct fmt::formatter<roq::UUID> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::UUID &value, Context &context) {
     using namespace roq::literals;
     auto data = value.data();
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         "{:02x}{:02x}{:02x}{:02x}-"
         "{:02x}{:02x}-"

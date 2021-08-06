@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/format.h>
 #include <fmt/ranges.h>
 
 #include <map>
@@ -9,7 +10,6 @@
 #include <string>
 
 #include "roq/compat.h"
-#include "roq/format.h"
 #include "roq/literals.h"
 
 #include "roq/event.h"
@@ -34,11 +34,15 @@ struct ROQ_PUBLIC SubscribeEvent final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::Subscribe> : public roq::formatter {
+struct fmt::formatter<roq::Subscribe> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::Subscribe &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         "{{"
         "accounts={}, "
@@ -54,11 +58,15 @@ struct fmt::formatter<roq::Subscribe> : public roq::formatter {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::Subscribe> > : public roq::formatter {
+struct fmt::formatter<roq::Event<roq::Subscribe> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::Event<roq::Subscribe> &event, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         "{{"
         "message_info={}, "

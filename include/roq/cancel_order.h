@@ -5,6 +5,7 @@
 #pragma once
 
 #include <fmt/chrono.h>
+#include <fmt/format.h>
 
 #include <chrono>
 #include <string_view>
@@ -12,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
@@ -33,11 +33,15 @@ struct ROQ_PUBLIC CancelOrder final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::CancelOrder> : public roq::formatter {
+struct fmt::formatter<roq::CancelOrder> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::CancelOrder &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         R"({{)"
         R"(account="{}", )"
@@ -54,11 +58,15 @@ struct fmt::formatter<roq::CancelOrder> : public roq::formatter {
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::CancelOrder> > : public roq::formatter {
+struct fmt::formatter<roq::Event<roq::CancelOrder> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::Event<roq::CancelOrder> &event, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"

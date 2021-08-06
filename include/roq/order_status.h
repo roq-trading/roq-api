@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <fmt/format.h>
+
 #include <cassert>
 #include <string_view>
 #include <type_traits>
@@ -11,7 +13,6 @@
 #include <magic_enum.hpp>
 
 #include "roq/compat.h"
-#include "roq/format.h"
 #include "roq/literals.h"
 
 namespace roq {
@@ -76,10 +77,14 @@ struct std::underlying_type<roq::OrderStatus> {
 };
 
 template <>
-struct fmt::formatter<roq::OrderStatus> : public roq::formatter {
+struct fmt::formatter<roq::OrderStatus> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::OrderStatus &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(context.out(), "{}"_sv, value.name());
+    return fmt::format_to(context.out(), "{}"_sv, value.name());
   }
 };

@@ -10,9 +10,9 @@ using namespace roq;
 using namespace roq::literals;
 
 TEST(format, Side) {
-  EXPECT_EQ(format("{}"_sv, Side{Side::UNDEFINED}), "UNDEFINED"_sv);
-  EXPECT_EQ(format("{}"_sv, Side{Side::BUY}), "BUY"_sv);
-  EXPECT_EQ(format("{}"_sv, Side{Side::SELL}), "SELL"_sv);
+  EXPECT_EQ(fmt::format("{}"_sv, Side{Side::UNDEFINED}), "UNDEFINED"_sv);
+  EXPECT_EQ(fmt::format("{}"_sv, Side{Side::BUY}), "BUY"_sv);
+  EXPECT_EQ(fmt::format("{}"_sv, Side{Side::SELL}), "SELL"_sv);
 }
 
 TEST(format, subscribe) {
@@ -25,7 +25,7 @@ TEST(format, subscribe) {
       .order_cancel_policy = OrderCancelPolicy::MANAGED_ORDERS,
       .order_management = OrderManagement::FIX,
   };
-  auto result = format("{}"_sv, subscribe);
+  auto result = fmt::format("{}"_sv, subscribe);
   EXPECT_GT(result.length(), size_t{0});
   EXPECT_EQ(
       result,
@@ -61,7 +61,7 @@ TEST(format, market_by_price) {
       .snapshot = true,
       .exchange_time_utc = {},
   };
-  auto result = format("{}"_sv, market_by_price);
+  auto result = fmt::format("{}"_sv, market_by_price);
   EXPECT_GT(result.length(), size_t{0});
 #if FMT_VERSION < 70000
   auto expected =

@@ -23,6 +23,11 @@ All notable changes will be documented in this file.
 * `Error::REQUEST_RATE_LIMIT_REACHED`
 * `StatisticsType::FUNDING_RATE_PREDICTION`
 
+### Removed
+
+* Dropped all wrappers for fmt. (Reason: `fmt::format_string` is now a template
+  solution -- previously it was a macro).
+
 ## 0.7.4 &ndash; 2021-07-20
 
 ### Changed

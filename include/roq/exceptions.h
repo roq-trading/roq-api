@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "roq/compat.h"
+#include "roq/format_str.h"
 #include "roq/literals.h"
 #include "roq/source_location.h"
 
@@ -62,15 +63,14 @@ class ROQ_PUBLIC RuntimeError : public Exception {
   using Exception::Exception;
 };
 
-template <typename... Args>
 struct RuntimeErrorException final : public RuntimeError {
-  RuntimeErrorException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : RuntimeError(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  RuntimeErrorException(const format_str &fmt, Args &&...args)
+      : RuntimeError(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-RuntimeErrorException(const fmt::format_string<Args...> &, Args &&...) -> RuntimeErrorException<Args...>;
 
 //! SystemError
 class ROQ_PUBLIC SystemError : public RuntimeError {
@@ -86,19 +86,15 @@ class ROQ_PUBLIC SystemError : public RuntimeError {
   const std::error_code ec_;
 };
 
-template <typename ErrorCode, typename... Args>
 struct SystemErrorException final : public SystemError {
-  SystemErrorException(
-      ErrorCode ec,
-      const fmt::format_string<Args...> &fmt,
-      Args &&...args,
-      const source_location &loc = source_location::current())
-      : SystemError(loc, ec, fmt, std::forward<Args>(args)...) {}
+  template <typename ErrorCode, typename... Args>
+  SystemErrorException(ErrorCode ec, const format_str &fmt, Args &&...args)
+      : SystemError(
+            static_cast<const source_location &>(fmt),
+            ec,
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename ErrorCode, typename... Args>
-SystemErrorException(ErrorCode, const fmt::format_string<Args...> &, Args &&...)
-    -> SystemErrorException<ErrorCode, Args...>;
 
 //! RangeError
 class ROQ_PUBLIC RangeError : public RuntimeError {
@@ -106,15 +102,14 @@ class ROQ_PUBLIC RangeError : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
-template <typename... Args>
 struct RangeErrorException final : public RangeError {
-  RangeErrorException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : RangeError(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  RangeErrorException(const format_str &fmt, Args &&...args)
+      : RangeError(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-RangeErrorException(const fmt::format_string<Args...> &, Args &&...) -> RangeErrorException<Args...>;
 
 //! OverflowError
 class ROQ_PUBLIC OverflowError : public RuntimeError {
@@ -122,15 +117,14 @@ class ROQ_PUBLIC OverflowError : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
-template <typename... Args>
 struct OverflowErrorException final : public OverflowError {
-  OverflowErrorException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : OverflowError(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  OverflowErrorException(const format_str &fmt, Args &&...args)
+      : OverflowError(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-OverflowErrorException(const fmt::format_string<Args...> &, Args &&...) -> OverflowErrorException<Args...>;
 
 //! LogicError
 class ROQ_PUBLIC LogicError : public Exception {
@@ -138,15 +132,14 @@ class ROQ_PUBLIC LogicError : public Exception {
   using Exception::Exception;
 };
 
-template <typename... Args>
 struct LogicErrorException final : public LogicError {
-  LogicErrorException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : LogicError(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  LogicErrorException(const format_str &fmt, Args &&...args)
+      : LogicError(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-LogicErrorException(const fmt::format_string<Args...> &, Args &&...) -> LogicErrorException<Args...>;
 
 //! InvalidArgument
 class ROQ_PUBLIC InvalidArgument : public LogicError {
@@ -154,15 +147,14 @@ class ROQ_PUBLIC InvalidArgument : public LogicError {
   using LogicError::LogicError;
 };
 
-template <typename... Args>
 struct InvalidArgumentException final : public InvalidArgument {
-  InvalidArgumentException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : InvalidArgument(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  InvalidArgumentException(const format_str &fmt, Args &&...args)
+      : InvalidArgument(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-InvalidArgumentException(const fmt::format_string<Args...> &, Args &&...) -> InvalidArgumentException<Args...>;
 
 //! OutOfRange
 class ROQ_PUBLIC OutOfRange : public LogicError {
@@ -170,15 +162,14 @@ class ROQ_PUBLIC OutOfRange : public LogicError {
   using LogicError::LogicError;
 };
 
-template <typename... Args>
 struct OutOfRangeException final : public OutOfRange {
-  OutOfRangeException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : OutOfRange(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  OutOfRangeException(const format_str &fmt, Args &&...args)
+      : OutOfRange(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-OutOfRangeException(const fmt::format_string<Args...> &, Args &&...) -> OutOfRangeException<Args...>;
 
 //! LengthError
 class ROQ_PUBLIC LengthError : public LogicError {
@@ -186,15 +177,14 @@ class ROQ_PUBLIC LengthError : public LogicError {
   using LogicError::LogicError;
 };
 
-template <typename... Args>
 struct LengthErrorException final : public LengthError {
-  LengthErrorException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : LengthError(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  LengthErrorException(const format_str &fmt, Args &&...args)
+      : LengthError(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-LengthErrorException(const fmt::format_string<Args...> &, Args &&...) -> LengthErrorException<Args...>;
 
 // ROQ SPECIFIC
 
@@ -204,15 +194,14 @@ class ROQ_PUBLIC Fatal : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
-template <typename... Args>
 struct FatalException final : public Fatal {
-  FatalException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : Fatal(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  FatalException(const format_str &fmt, Args &&...args)
+      : Fatal(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-FatalException(const fmt::format_string<Args...> &, Args &&...) -> FatalException<Args...>;
 
 //! File does not exist
 class ROQ_PUBLIC FileDoesNotExist : public RuntimeError {
@@ -220,15 +209,14 @@ class ROQ_PUBLIC FileDoesNotExist : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
-template <typename... Args>
 struct FileDoesNotExistException final : public FileDoesNotExist {
-  FileDoesNotExistException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : FileDoesNotExist(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  FileDoesNotExistException(const format_str &fmt, Args &&...args)
+      : FileDoesNotExist(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-FileDoesNotExistException(const fmt::format_string<Args...> &, Args &&...) -> FileDoesNotExistException<Args...>;
 
 //! Not ready
 class ROQ_PUBLIC NotReady : public RuntimeError {
@@ -236,15 +224,14 @@ class ROQ_PUBLIC NotReady : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
-template <typename... Args>
 struct NotReadyException final : public NotReady {
-  NotReadyException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : NotReady(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  NotReadyException(const format_str &fmt, Args &&...args)
+      : NotReady(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-NotReadyException(const fmt::format_string<Args...> &, Args &&...) -> NotReadyException<Args...>;
 
 // network errors
 
@@ -268,15 +255,14 @@ class ROQ_PUBLIC NotConnected : public TransportError {
   using TransportError::TransportError;
 };
 
-template <typename... Args>
 struct NotConnectedException final : public NotConnected {
-  NotConnectedException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : NotConnected(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  NotConnectedException(const format_str &fmt, Args &&...args)
+      : NotConnected(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-NotConnectedException(const fmt::format_string<Args...> &, Args &&...) -> NotConnectedException<Args...>;
 
 //! Connection refused
 class ROQ_PUBLIC ConnectionRefused : public TransportError {
@@ -284,15 +270,14 @@ class ROQ_PUBLIC ConnectionRefused : public TransportError {
   using TransportError::TransportError;
 };
 
-template <typename... Args>
 struct ConnectionRefusedException final : public ConnectionRefused {
-  ConnectionRefusedException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : ConnectionRefused(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  ConnectionRefusedException(const format_str &fmt, Args &&...args)
+      : ConnectionRefused(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-ConnectionRefusedException(const fmt::format_string<Args...> &, Args &&...) -> ConnectionRefusedException<Args...>;
 
 //! Timed out
 class ROQ_PUBLIC TimedOut : public TransportError {
@@ -300,15 +285,14 @@ class ROQ_PUBLIC TimedOut : public TransportError {
   using TransportError::TransportError;
 };
 
-template <typename... Args>
 struct TimedOutException final : public TimedOut {
-  TimedOutException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : TimedOut(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  TimedOutException(const format_str &fmt, Args &&...args)
+      : TimedOut(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-TimedOutException(const fmt::format_string<Args...> &, Args &&...) -> TimedOutException<Args...>;
 
 // session errors
 
@@ -324,15 +308,14 @@ class ROQ_PUBLIC PermissionDenied : public SessionError {
   using SessionError::SessionError;
 };
 
-template <typename... Args>
 struct PermissionDeniedException final : public PermissionDenied {
-  PermissionDeniedException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : PermissionDenied(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  PermissionDeniedException(const format_str &fmt, Args &&...args)
+      : PermissionDenied(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-PermissionDeniedException(const fmt::format_string<Args...> &, Args &&...) -> PermissionDeniedException<Args...>;
 
 //! Order not live
 class ROQ_PUBLIC OrderNotLive : public SessionError {
@@ -340,15 +323,14 @@ class ROQ_PUBLIC OrderNotLive : public SessionError {
   using SessionError::SessionError;
 };
 
-template <typename... Args>
 struct OrderNotLiveException final : public OrderNotLive {
-  OrderNotLiveException(
-      const fmt::format_string<Args...> &fmt, Args &&...args, const source_location &loc = source_location::current())
-      : OrderNotLive(loc, fmt, std::forward<Args>(args)...) {}
+  template <typename... Args>
+  OrderNotLiveException(const format_str &fmt, Args &&...args)
+      : OrderNotLive(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
 };
-
-template <typename... Args>
-OrderNotLiveException(const fmt::format_string<Args...> &, Args &&...) -> OrderNotLiveException<Args...>;
 
 }  // namespace roq
 

@@ -1,9 +1,10 @@
 /* Copyright (c) 2017-2021, Hans Erik Thrane */
 #pragma once
 
+#include <fmt/format.h>
+
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/format.h"
 #include "roq/literals.h"
 #include "roq/span.h"
 
@@ -19,11 +20,15 @@ struct ROQ_PUBLIC CustomMessage final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::client::CustomMessage> : public roq::formatter {
+struct fmt::formatter<roq::client::CustomMessage> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::client::CustomMessage &value, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         R"({{)"
         R"(length={})"
@@ -33,11 +38,15 @@ struct fmt::formatter<roq::client::CustomMessage> : public roq::formatter {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::client::CustomMessage> > : public roq::formatter {
+struct fmt::formatter<roq::Event<roq::client::CustomMessage> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
   template <typename Context>
   auto format(const roq::Event<roq::client::CustomMessage> &event, Context &context) {
     using namespace roq::literals;
-    return roq::format_to(
+    return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"

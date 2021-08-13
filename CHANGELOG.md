@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changes
+
+* The various interfaces used for simulation has been updated (#7)
+
 ## 0.7.5 &ndash; 2021-08-08
 
 ### Changes

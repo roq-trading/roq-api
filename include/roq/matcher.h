@@ -45,19 +45,6 @@ class ROQ_PUBLIC Matcher {
 
   virtual ~Matcher() {}
 
-  virtual std::string_view get_source_name() const = 0;
-
-  virtual std::chrono::nanoseconds get_market_data_latency() const = 0;
-  virtual std::chrono::nanoseconds get_order_management_latency() const = 0;
-
-  //! Process inbound messages
-  virtual void process(std::chrono::nanoseconds next_receive_time) = 0;
-
-  //! Dispatch outbound messages
-  virtual std::pair<bool, std::chrono::nanoseconds> peek_next_receive_time(
-      std::chrono::nanoseconds next_receive_time) = 0;
-  virtual void dispatch(Dispatcher &, std::chrono::nanoseconds next_receive_time) = 0;
-
   // config
   virtual void operator()(const Event<GatewaySettings> &) = 0;
 

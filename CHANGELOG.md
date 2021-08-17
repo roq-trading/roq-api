@@ -4,7 +4,11 @@ All notable changes will be documented in this file.
 
 ## Head
 
-### Changes
+### Added
+
+* `client::EventLogReader` interface (#10)
+
+### Changed
 
 * The various interfaces used for simulation has been updated (#7)
 

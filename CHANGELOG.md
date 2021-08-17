@@ -12,6 +12,10 @@ All notable changes will be documented in this file.
 
 * The various interfaces used for simulation has been updated (#7)
 
+### Removed
+
+* `Subscribe` has been removed from API
+
 ## 0.7.5 &ndash; 2021-08-08
 
 ### Changes

@@ -4,7 +4,6 @@
 
 #include "roq/market_by_price_update.h"
 #include "roq/side.h"
-#include "roq/subscribe.h"
 
 using namespace roq;
 using namespace roq::literals;
@@ -13,28 +12,6 @@ TEST(format, Side) {
   EXPECT_EQ(fmt::format("{}"_sv, Side{Side::UNDEFINED}), "UNDEFINED"_sv);
   EXPECT_EQ(fmt::format("{}"_sv, Side{Side::BUY}), "BUY"_sv);
   EXPECT_EQ(fmt::format("{}"_sv, Side{Side::SELL}), "SELL"_sv);
-}
-
-TEST(format, subscribe) {
-  Subscribe subscribe{
-      .accounts = {"test"_s, "abc"_s},
-      .symbols_by_exchange =
-          {
-              {"abc"_s, {"123"_s, "234"_s}},
-          },
-      .order_cancel_policy = OrderCancelPolicy::MANAGED_ORDERS,
-      .order_management = OrderManagement::FIX,
-  };
-  auto result = fmt::format("{}"_sv, subscribe);
-  EXPECT_GT(result.length(), size_t{0});
-  EXPECT_EQ(
-      result,
-      R"({)"
-      R"(accounts=["abc", "test"], )"
-      R"(symbols_by_exchange=[("abc", ["123", "234"])], )"
-      R"(order_cancel_policy=MANAGED_ORDERS, )"
-      R"(order_management=FIX)"
-      R"(})"_sv);
 }
 
 TEST(format, market_by_price) {

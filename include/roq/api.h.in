@@ -88,10 +88,6 @@
 #include "roq/trade_summary.h"
 #include "roq/trade_update.h"
 
-// messages (manual)
-
-#include "roq/subscribe.h"
-
 // misc
 
 #include "roq/exceptions.h"

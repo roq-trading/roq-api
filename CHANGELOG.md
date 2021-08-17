@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `OrderAck::side` (#11)
 * `client::EventLogReader` interface (#10)
 
 ### Changed

@@ -21,4 +21,6 @@ table OrderAck {
   external_order_id:string;
   routing_id:string;
   version:uint32;
+  // from here: not aligned with C++ schema
+  side:Side;
 }

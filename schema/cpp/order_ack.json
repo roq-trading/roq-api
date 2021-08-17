@@ -24,6 +24,11 @@
             "type": "std::string_view"
         },
         {
+            "name": "side",
+            "type": "Side",
+            "comment": "Side"
+        },
+        {
             "name": "type",
             "type": "RequestType",
             "comment": "Request type"

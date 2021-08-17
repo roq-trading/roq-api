@@ -23,6 +23,7 @@
 #include "roq/origin.h"
 #include "roq/request_status.h"
 #include "roq/request_type.h"
+#include "roq/side.h"
 
 namespace roq {
 
@@ -33,6 +34,7 @@ struct ROQ_PUBLIC OrderAck final {
   uint32_t order_id = {};              //!< Order identifier
   std::string_view exchange;           //!< Exchange
   std::string_view symbol;             //!< Symbol
+  Side side = {};                      //!< Side
   RequestType type = {};               //!< Request type
   Origin origin = {};                  //!< Origin of ack
   RequestStatus status = {};           //!< Request status
@@ -64,6 +66,7 @@ struct fmt::formatter<roq::OrderAck> {
         R"(order_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
+        R"(side={}, )"
         R"(type={}, )"
         R"(origin={}, )"
         R"(status={}, )"
@@ -80,6 +83,7 @@ struct fmt::formatter<roq::OrderAck> {
         value.order_id,
         value.exchange,
         value.symbol,
+        value.side,
         value.type,
         value.origin,
         value.status,

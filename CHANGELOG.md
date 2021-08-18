@@ -15,7 +15,7 @@ All notable changes will be documented in this file.
 
 ### Removed
 
-* `Subscribe` has been removed from API
+* `Subscribe` has been removed from API (#14)
 
 ## 0.7.5 &ndash; 2021-08-08
 

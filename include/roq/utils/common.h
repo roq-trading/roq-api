@@ -25,9 +25,28 @@ inline double price_from_side(const Layer &layer, Side side) {
   }
 }
 
+//! Check if order was received
+inline bool was_order_received(OrderStatus order_status) {
+  switch (order_status) {
+    case OrderStatus::SENT:
+      return false;
+    case OrderStatus::ACCEPTED:
+    case OrderStatus::SUSPENDED:
+    case OrderStatus::WORKING:
+    case OrderStatus::COMPLETED:
+    case OrderStatus::EXPIRED:
+    case OrderStatus::CANCELED:
+    case OrderStatus::REJECTED:
+      return true;
+    default:
+      // XXX throw?
+      return false;
+  }
+}
+
 //! Check if order has reached a final (completed) status
-inline bool is_order_complete(const OrderStatus status) {
-  switch (status) {
+inline bool is_order_complete(OrderStatus order_status) {
+  switch (order_status) {
     case OrderStatus::SENT:
     case OrderStatus::ACCEPTED:
     case OrderStatus::SUSPENDED:
@@ -44,9 +63,28 @@ inline bool is_order_complete(const OrderStatus status) {
   }
 }
 
+//! Map order status to request status
+inline RequestStatus to_request_status(OrderStatus order_status) {
+  switch (order_status) {
+    case OrderStatus::SENT:
+      return RequestStatus::FORWARDED;
+    case OrderStatus::ACCEPTED:
+    case OrderStatus::SUSPENDED:
+    case OrderStatus::WORKING:
+    case OrderStatus::COMPLETED:
+    case OrderStatus::EXPIRED:
+    case OrderStatus::CANCELED:
+      return RequestStatus::ACCEPTED;
+    case OrderStatus::REJECTED:
+      return RequestStatus::REJECTED;
+    default:
+      return {};
+  }
+}
+
 //! Check if request has reached a final (completed) status
-inline bool has_request_completed(const RequestStatus status) {
-  switch (status) {
+inline bool has_request_completed(RequestStatus request_status) {
+  switch (request_status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
       break;
@@ -66,8 +104,8 @@ inline bool has_request_completed(const RequestStatus status) {
 }
 
 //! Check if request has failed
-inline bool has_request_failed(const RequestStatus status) {
-  switch (status) {
+inline bool has_request_failed(RequestStatus request_status) {
+  switch (request_status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
     case RequestStatus::ACCEPTED:
@@ -87,8 +125,8 @@ inline bool has_request_failed(const RequestStatus status) {
 }
 
 //! Check if request has succeeded
-inline bool has_request_succeeded(const RequestStatus status) {
-  switch (status) {
+inline bool has_request_succeeded(RequestStatus request_status) {
+  switch (request_status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
       break;

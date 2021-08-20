@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `utils::was_order_received` and `utils::to_request_status` (#25)
 * `OrderAck::side` (#11)
 * `client::EventLogReader` interface (#10)
 

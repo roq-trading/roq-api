@@ -106,6 +106,13 @@
         {
             "name": "TooLateToModifyOrCancel",
             "comment": "Too late to modify or cancel (order has been filled or is already canceled)"
+        },
+        {
+            "name": "ConditionalRequestHasFailed",
+            "comment": "Happens when gateway detects chain failure"
+        },
+        {
+            "name": "UnknownOrderId"
         }
     ]
 }

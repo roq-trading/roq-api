@@ -43,16 +43,18 @@ struct ROQ_PACKED Error final {
     INVALID_REQUEST_ID,
     INVALID_REQUEST_TYPE,
     INVALID_REQUEST_STATUS,
-    INVALID_REQUEST_ARGS,          //!< Request arguments did not meet validation rules
-    UNKNOWN_EXTERNAL_ORDER_ID,     //!< An external order identifier has not yet been received
-    NOT_AUTHORIZED,                //!< User is not authorized
-    REQUEST_RATE_LIMIT_REACHED,    //!< Request rate limit has been reached
-    GATEWAY_NOT_READY,             //!< Gateway not ready (could be disconnected or currently downloading)
-    NETWORK_ERROR,                 //!< Network disconnect event (unknown request/order status)
-    TIMEOUT,                       //!< Response has not been received (unknown request/order status)
-    PARSE_ERROR,                   //!< Message parse error (unknown request/order status)
-    MODIFY_HAS_NO_EFFECT,          //!< Modify request has no effect on order
-    TOO_LATE_TO_MODIFY_OR_CANCEL,  //!< Too late to modify or cancel (order has been filled or is already canceled)
+    INVALID_REQUEST_ARGS,            //!< Request arguments did not meet validation rules
+    UNKNOWN_EXTERNAL_ORDER_ID,       //!< An external order identifier has not yet been received
+    NOT_AUTHORIZED,                  //!< User is not authorized
+    REQUEST_RATE_LIMIT_REACHED,      //!< Request rate limit has been reached
+    GATEWAY_NOT_READY,               //!< Gateway not ready (could be disconnected or currently downloading)
+    NETWORK_ERROR,                   //!< Network disconnect event (unknown request/order status)
+    TIMEOUT,                         //!< Response has not been received (unknown request/order status)
+    PARSE_ERROR,                     //!< Message parse error (unknown request/order status)
+    MODIFY_HAS_NO_EFFECT,            //!< Modify request has no effect on order
+    TOO_LATE_TO_MODIFY_OR_CANCEL,    //!< Too late to modify or cancel (order has been filled or is already canceled)
+    CONDITIONAL_REQUEST_HAS_FAILED,  //!< Happens when gateway detects chain failure
+    UNKNOWN_ORDER_ID,
   };
 
   constexpr Error() = default;

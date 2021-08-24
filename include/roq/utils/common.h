@@ -16,70 +16,75 @@ namespace utils {
 //! Extract price for \ref roq::Layer given \ref roq::Side.
 inline double price_from_side(const Layer &layer, Side side) {
   switch (side) {
+    case Side::UNDEFINED:
+      break;
     case Side::BUY:
       return layer.bid_price;
     case Side::SELL:
       return layer.ask_price;
-    default:
-      return NaN;
   }
+  return NaN;
 }
 
 //! Check if order was received
 inline bool was_order_received(OrderStatus order_status) {
   switch (order_status) {
+    case OrderStatus::UNDEFINED:
+      break;
     case OrderStatus::SENT:
       return false;
     case OrderStatus::ACCEPTED:
     case OrderStatus::SUSPENDED:
     case OrderStatus::WORKING:
+    case OrderStatus::STOPPED:
     case OrderStatus::COMPLETED:
     case OrderStatus::EXPIRED:
     case OrderStatus::CANCELED:
     case OrderStatus::REJECTED:
       return true;
-    default:
-      // XXX throw?
-      return false;
   }
+  return false;  // throw?
 }
 
 //! Check if order has reached a final (completed) status
 inline bool is_order_complete(OrderStatus order_status) {
   switch (order_status) {
+    case OrderStatus::UNDEFINED:
+      break;
     case OrderStatus::SENT:
     case OrderStatus::ACCEPTED:
     case OrderStatus::SUSPENDED:
     case OrderStatus::WORKING:
       return false;
+    case OrderStatus::STOPPED:
     case OrderStatus::COMPLETED:
     case OrderStatus::EXPIRED:
     case OrderStatus::CANCELED:
     case OrderStatus::REJECTED:
       return true;
-    default:
-      // XXX throw?
-      return true;
   }
+  return true;  // throw?
 }
 
 //! Map order status to request status
 inline RequestStatus to_request_status(OrderStatus order_status) {
   switch (order_status) {
+    case OrderStatus::UNDEFINED:
+      break;
     case OrderStatus::SENT:
       return RequestStatus::FORWARDED;
     case OrderStatus::ACCEPTED:
     case OrderStatus::SUSPENDED:
     case OrderStatus::WORKING:
+    case OrderStatus::STOPPED:
     case OrderStatus::COMPLETED:
     case OrderStatus::EXPIRED:
     case OrderStatus::CANCELED:
       return RequestStatus::ACCEPTED;
     case OrderStatus::REJECTED:
       return RequestStatus::REJECTED;
-    default:
-      return {};
   }
+  return {};
 }
 
 //! Check if request has reached a final (completed) status
@@ -150,25 +155,26 @@ inline bool has_request_succeeded(RequestStatus request_status) {
 //! Get the opposite \ref Side.
 inline Side invert(Side side) {
   switch (side) {
+    case Side::UNDEFINED:
     case Side::BUY:
       return Side::SELL;
     case Side::SELL:
       return Side::BUY;
-    default:
-      return side;
   }
+  return side;
 }
 
 //! Get notional sign given \ref roq::Side
 inline int sign(Side side) {
   switch (side) {
+    case Side::UNDEFINED:
+      break;
     case Side::BUY:
       return 1;
     case Side::SELL:
       return -1;
-    default:
-      return 0;
   }
+  return 0;
 }
 
 }  // namespace utils

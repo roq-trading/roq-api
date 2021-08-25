@@ -332,6 +332,18 @@ struct OrderNotLiveException final : public OrderNotLive {
             std::forward<Args>(args)...) {}
 };
 
+// other
+
+//! Not implemented
+class ROQ_PUBLIC NotImplemented : public RuntimeError {
+ protected:
+  using RuntimeError::RuntimeError;
+};
+
+struct NotImplementedException final : public NotImplemented {
+  NotImplementedException(const source_location &loc = source_location::current()) : NotImplemented(loc) {}
+};
+
 }  // namespace roq
 
 template <>

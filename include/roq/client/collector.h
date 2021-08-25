@@ -50,6 +50,9 @@ class Collector {
   virtual void operator()(const Event<ModifyOrder> &) {}
   virtual void operator()(const Event<CancelOrder> &) {}
   virtual void operator()(const Event<CancelAllOrders> &) {}
+
+  // custom
+  virtual void operator()(const Event<CustomMetrics> &) {}
 };
 
 }  // namespace client

@@ -28,6 +28,7 @@ include "fill.fbs";
 include "layer.fbs";
 include "mbo_update.fbs";
 include "mbp_update.fbs";
+include "measurement.fbs";
 include "statistics.fbs";
 include "trade.fbs";
 
@@ -36,6 +37,7 @@ include "trade.fbs";
 include "cancel_all_orders.fbs";
 include "cancel_order.fbs";
 include "create_order.fbs";
+include "custom_metrics.fbs";
 include "download_begin.fbs";
 include "download_end.fbs";
 include "external_latency.fbs";
@@ -126,7 +128,8 @@ union Message {
   OrderUpdate,
   TradeUpdate,
   PositionUpdate,
-  FundsUpdate
+  FundsUpdate,
+  CustomMetrics,
 }
 
 table SourceInfo {

@@ -8,6 +8,7 @@ set(SOURCES
     cancel_order.fbs
     connection_status.fbs
     create_order.fbs
+    custom_metrics.fbs
     download_begin.fbs
     download_end.fbs
     error.fbs
@@ -22,6 +23,7 @@ set(SOURCES
     market_status.fbs
     mbo_update.fbs
     mbp_update.fbs
+    measurement.fbs
     modify_order.fbs
     option_type.fbs
     order_ack.fbs

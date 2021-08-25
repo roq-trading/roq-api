@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `CustomMetrics` (#8)
 * `NotImplemented` exception.
 * `Error::CONDITIONAL_REQUEST_HAS_FAILED` and `Error::UNKNOWN_ORDER_ID` (#25)
 * `utils::was_order_received` and `utils::to_request_status` (#25)

@@ -45,6 +45,7 @@
 #include "roq/layer.h"
 #include "roq/mbo_update.h"
 #include "roq/mbp_update.h"
+#include "roq/measurement.h"
 #include "roq/statistics.h"
 #include "roq/trade.h"
 
@@ -67,6 +68,7 @@
 #include "roq/cancel_all_orders.h"
 #include "roq/cancel_order.h"
 #include "roq/create_order.h"
+#include "roq/custom_metrics.h"
 #include "roq/download_begin.h"
 #include "roq/download_end.h"
 #include "roq/external_latency.h"
@@ -127,5 +129,6 @@ static_assert(sizeof(MBOUpdate) == 64);
 static_assert(sizeof(Trade) == 64);
 static_assert(sizeof(Fill) == 64);
 static_assert(sizeof(Statistics) == 32);
+static_assert(sizeof(Measurement) == 16);
 
 }  // namespace roq

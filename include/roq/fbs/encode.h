@@ -242,6 +242,11 @@ auto encode(B &builder, const roq::Statistics &value) {
       encode(builder, value.end_time_utc));
 }
 
+template <typename B>
+auto encode(B &builder, const roq::Measurement &value) {
+  return CreateMeasurement(builder, encode(builder, static_cast<std::string_view>(value.name)), value.value);
+}
+
 // roq::span
 
 template <typename B>
@@ -299,6 +304,19 @@ auto encode(B &builder, const roq::span<roq::Fill> &value) {
 template <typename B>
 auto encode(B &builder, const roq::span<roq::Statistics> &value) {
   std::vector<flatbuffers::Offset<Statistics>> result;
+  auto size = value.size();
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, item));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const roq::span<roq::Measurement> &value) {
+  std::vector<flatbuffers::Offset<Measurement>> result;
   auto size = value.size();
   if (size) {
     result.reserve(size);
@@ -630,6 +648,17 @@ auto encode(B &builder, const roq::FundsUpdate &value) {
       encode(builder, value.external_account));
 }
 
+template <typename B>
+auto encode(B &builder, const roq::CustomMetrics &value) {
+  return CreateCustomMetrics(
+      builder,
+      encode(builder, value.label),
+      encode(builder, value.account),
+      encode(builder, value.exchange),
+      encode(builder, value.symbol),
+      encode(builder, value.measurements));
+}
+
 // events
 
 template <typename B>
@@ -768,6 +797,12 @@ template <typename B>
 auto encode(B &builder, const roq::Event<roq::FundsUpdate> &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_FundsUpdate, encode(builder, event.value).Union());
+}
+
+template <typename B>
+auto encode(B &builder, const roq::Event<roq::CustomMetrics> &event) {
+  return CreateEvent(
+      builder, encode(builder, event.message_info), Message_CustomMetrics, encode(builder, event.value).Union());
 }
 
 }  // namespace fbs

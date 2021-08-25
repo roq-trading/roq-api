@@ -20,6 +20,9 @@ struct MBOUpdateBuilder;
 struct MBPUpdate;
 struct MBPUpdateBuilder;
 
+struct Measurement;
+struct MeasurementBuilder;
+
 struct Statistics;
 struct StatisticsBuilder;
 
@@ -34,6 +37,9 @@ struct CancelOrderBuilder;
 
 struct CreateOrder;
 struct CreateOrderBuilder;
+
+struct CustomMetrics;
+struct CustomMetricsBuilder;
 
 struct DownloadBegin;
 struct DownloadBeginBuilder;
@@ -1012,11 +1018,12 @@ enum Message : uint8_t {
   Message_TradeUpdate = 26,
   Message_PositionUpdate = 27,
   Message_FundsUpdate = 28,
+  Message_CustomMetrics = 29,
   Message_MIN = Message_NONE,
-  Message_MAX = Message_FundsUpdate
+  Message_MAX = Message_CustomMetrics
 };
 
-inline const Message (&EnumValuesMessage())[29] {
+inline const Message (&EnumValuesMessage())[30] {
   static const Message values[] = {Message_NONE,           Message_Handshake,           Message_HandshakeAck,
                                    Message_Subscribe,      Message_BatchBegin,          Message_BatchEnd,
                                    Message_DownloadBegin,  Message_DownloadEnd,         Message_GatewaySettings,
@@ -1026,12 +1033,12 @@ inline const Message (&EnumValuesMessage())[29] {
                                    Message_TradeSummary,   Message_StatisticsUpdate,    Message_CreateOrder,
                                    Message_ModifyOrder,    Message_CancelOrder,         Message_CancelAllOrders,
                                    Message_OrderAck,       Message_OrderUpdate,         Message_TradeUpdate,
-                                   Message_PositionUpdate, Message_FundsUpdate};
+                                   Message_PositionUpdate, Message_FundsUpdate,         Message_CustomMetrics};
   return values;
 }
 
 inline const char *const *EnumNamesMessage() {
-  static const char *const names[30] = {"NONE",           "Handshake",           "HandshakeAck",
+  static const char *const names[31] = {"NONE",           "Handshake",           "HandshakeAck",
                                         "Subscribe",      "BatchBegin",          "BatchEnd",
                                         "DownloadBegin",  "DownloadEnd",         "GatewaySettings",
                                         "StreamStatus",   "ExternalLatency",     "RateLimitUsage",
@@ -1040,12 +1047,13 @@ inline const char *const *EnumNamesMessage() {
                                         "TradeSummary",   "StatisticsUpdate",    "CreateOrder",
                                         "ModifyOrder",    "CancelOrder",         "CancelAllOrders",
                                         "OrderAck",       "OrderUpdate",         "TradeUpdate",
-                                        "PositionUpdate", "FundsUpdate",         nullptr};
+                                        "PositionUpdate", "FundsUpdate",         "CustomMetrics",
+                                        nullptr};
   return names;
 }
 
 inline const char *EnumNameMessage(Message e) {
-  if (flatbuffers::IsOutRange(e, Message_NONE, Message_FundsUpdate))
+  if (flatbuffers::IsOutRange(e, Message_NONE, Message_CustomMetrics))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMessage()[index];
@@ -1194,6 +1202,11 @@ struct MessageTraits<roq::fbs::PositionUpdate> {
 template <>
 struct MessageTraits<roq::fbs::FundsUpdate> {
   static const Message enum_value = Message_FundsUpdate;
+};
+
+template <>
+struct MessageTraits<roq::fbs::CustomMetrics> {
+  static const Message enum_value = Message_CustomMetrics;
 };
 
 bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Message type);
@@ -1456,6 +1469,51 @@ inline flatbuffers::Offset<MBPUpdate> CreateMBPUpdate(
   builder_.add_number_of_orders(number_of_orders);
   builder_.add_price_level(price_level);
   return builder_.Finish();
+}
+
+struct Measurement FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef MeasurementBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_NAME = 4, VT_VALUE = 6 };
+  const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(VT_NAME); }
+  double value() const { return GetField<double>(VT_VALUE, std::numeric_limits<double>::quiet_NaN()); }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_NAME) && verifier.VerifyString(name()) &&
+           VerifyField<double>(verifier, VT_VALUE) && verifier.EndTable();
+  }
+};
+
+struct MeasurementBuilder {
+  typedef Measurement Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) { fbb_.AddOffset(Measurement::VT_NAME, name); }
+  void add_value(double value) {
+    fbb_.AddElement<double>(Measurement::VT_VALUE, value, std::numeric_limits<double>::quiet_NaN());
+  }
+  explicit MeasurementBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  flatbuffers::Offset<Measurement> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<Measurement>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<Measurement> CreateMeasurement(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    double value = std::numeric_limits<double>::quiet_NaN()) {
+  MeasurementBuilder builder_(_fbb);
+  builder_.add_value(value);
+  builder_.add_name(name);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<Measurement> CreateMeasurementDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *name = nullptr,
+    double value = std::numeric_limits<double>::quiet_NaN()) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return roq::fbs::CreateMeasurement(_fbb, name__, value);
 }
 
 struct Statistics FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -1874,6 +1932,87 @@ inline flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
       price,
       stop_price,
       routing_id__);
+}
+
+struct CustomMetrics FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CustomMetricsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LABEL = 4,
+    VT_ACCOUNT = 6,
+    VT_EXCHANGE = 8,
+    VT_SYMBOL = 10,
+    VT_MEASUREMENTS = 12
+  };
+  const flatbuffers::String *label() const { return GetPointer<const flatbuffers::String *>(VT_LABEL); }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
+  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *>(VT_MEASUREMENTS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_LABEL) && verifier.VerifyString(label()) &&
+           VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
+           VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
+           VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
+           VerifyOffset(verifier, VT_MEASUREMENTS) && verifier.VerifyVector(measurements()) &&
+           verifier.VerifyVectorOfTables(measurements()) && verifier.EndTable();
+  }
+};
+
+struct CustomMetricsBuilder {
+  typedef CustomMetrics Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_label(flatbuffers::Offset<flatbuffers::String> label) { fbb_.AddOffset(CustomMetrics::VT_LABEL, label); }
+  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
+    fbb_.AddOffset(CustomMetrics::VT_ACCOUNT, account);
+  }
+  void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
+    fbb_.AddOffset(CustomMetrics::VT_EXCHANGE, exchange);
+  }
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) { fbb_.AddOffset(CustomMetrics::VT_SYMBOL, symbol); }
+  void add_measurements(
+      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>>> measurements) {
+    fbb_.AddOffset(CustomMetrics::VT_MEASUREMENTS, measurements);
+  }
+  explicit CustomMetricsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  flatbuffers::Offset<CustomMetrics> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CustomMetrics>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CustomMetrics> CreateCustomMetrics(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> label = 0,
+    flatbuffers::Offset<flatbuffers::String> account = 0,
+    flatbuffers::Offset<flatbuffers::String> exchange = 0,
+    flatbuffers::Offset<flatbuffers::String> symbol = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>>> measurements = 0) {
+  CustomMetricsBuilder builder_(_fbb);
+  builder_.add_measurements(measurements);
+  builder_.add_symbol(symbol);
+  builder_.add_exchange(exchange);
+  builder_.add_account(account);
+  builder_.add_label(label);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<CustomMetrics> CreateCustomMetricsDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *label = nullptr,
+    const char *account = nullptr,
+    const char *exchange = nullptr,
+    const char *symbol = nullptr,
+    const std::vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements = nullptr) {
+  auto label__ = label ? _fbb.CreateString(label) : 0;
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
+  auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
+  auto measurements__ = measurements ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Measurement>>(*measurements) : 0;
+  return roq::fbs::CreateCustomMetrics(_fbb, label__, account__, exchange__, symbol__, measurements__);
 }
 
 struct DownloadBegin FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4507,6 +4646,10 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return message_type() == roq::fbs::Message_FundsUpdate ? static_cast<const roq::fbs::FundsUpdate *>(message())
                                                            : nullptr;
   }
+  const roq::fbs::CustomMetrics *message_as_CustomMetrics() const {
+    return message_type() == roq::fbs::Message_CustomMetrics ? static_cast<const roq::fbs::CustomMetrics *>(message())
+                                                             : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_SOURCE_INFO) &&
            verifier.VerifyTable(source_info()) && VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE) &&
@@ -4655,6 +4798,11 @@ inline const roq::fbs::FundsUpdate *Event::message_as<roq::fbs::FundsUpdate>() c
   return message_as_FundsUpdate();
 }
 
+template <>
+inline const roq::fbs::CustomMetrics *Event::message_as<roq::fbs::CustomMetrics>() const {
+  return message_as_CustomMetrics();
+}
+
 struct EventBuilder {
   typedef Event Table;
   flatbuffers::FlatBufferBuilder &fbb_;
@@ -4801,6 +4949,10 @@ inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Mess
     }
     case Message_FundsUpdate: {
       auto ptr = reinterpret_cast<const roq::fbs::FundsUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message_CustomMetrics: {
+      auto ptr = reinterpret_cast<const roq::fbs::CustomMetrics *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default:

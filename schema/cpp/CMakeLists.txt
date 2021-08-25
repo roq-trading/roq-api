@@ -10,6 +10,7 @@ set(SOURCES
     connected.json
     connection_status.json
     create_order.json
+    custom_metrics.json
     disconnected.json
     download_begin.json
     download_end.json
@@ -26,6 +27,7 @@ set(SOURCES
     market_status.json
     mbo_update.json
     mbp_update.json
+    measurement.json
     message_info.json
     modify_order.json
     option_type.json

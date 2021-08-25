@@ -1,0 +1,18 @@
+{
+    "name": "Measurement",
+    "type": "struct",
+    "comment": "A single measurement point",
+    "values": [
+        {
+            "name": "name",
+            "type": "roq::string_buffer<8>",
+            "comment": "Key"
+        },
+        {
+            "name": "value",
+            "type": "double",
+            "default": " = NaN",
+            "comment": "Value"
+        }
+    ]
+}

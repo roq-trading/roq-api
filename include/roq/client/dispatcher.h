@@ -37,6 +37,10 @@ class ROQ_PUBLIC Dispatcher {
   //! Send a request to cancel all orders
   virtual void send(const CancelAllOrders &, uint8_t source) = 0;
 
+  //! Broadcast custom metrics
+  virtual void send(const CustomMetrics &, uint8_t source) = 0;
+
+  //! Useful to communicate between threads
   virtual void enqueue(const CustomMessage &) = 0;
 };
 

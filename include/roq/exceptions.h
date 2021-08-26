@@ -344,6 +344,16 @@ struct NotImplementedException final : public NotImplemented {
   NotImplementedException(const source_location &loc = source_location::current()) : NotImplemented(loc) {}
 };
 
+//! Not supported
+class ROQ_PUBLIC NotSupported : public RuntimeError {
+ protected:
+  using RuntimeError::RuntimeError;
+};
+
+struct NotSupportedException final : public NotSupported {
+  NotSupportedException(const source_location &loc = source_location::current()) : NotSupported(loc) {}
+};
+
 }  // namespace roq
 
 template <>

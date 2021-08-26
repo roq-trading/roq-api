@@ -41,6 +41,9 @@ struct CreateOrderBuilder;
 struct CustomMetrics;
 struct CustomMetricsBuilder;
 
+struct CustomMetricsUpdate;
+struct CustomMetricsUpdateBuilder;
+
 struct DownloadBegin;
 struct DownloadBeginBuilder;
 
@@ -1019,41 +1022,86 @@ enum Message : uint8_t {
   Message_PositionUpdate = 27,
   Message_FundsUpdate = 28,
   Message_CustomMetrics = 29,
+  Message_CustomMetricsUpdate = 30,
   Message_MIN = Message_NONE,
-  Message_MAX = Message_CustomMetrics
+  Message_MAX = Message_CustomMetricsUpdate
 };
 
-inline const Message (&EnumValuesMessage())[30] {
-  static const Message values[] = {Message_NONE,           Message_Handshake,           Message_HandshakeAck,
-                                   Message_Subscribe,      Message_BatchBegin,          Message_BatchEnd,
-                                   Message_DownloadBegin,  Message_DownloadEnd,         Message_GatewaySettings,
-                                   Message_StreamStatus,   Message_ExternalLatency,     Message_RateLimitUsage,
-                                   Message_GatewayStatus,  Message_ReferenceData,       Message_MarketStatus,
-                                   Message_TopOfBook,      Message_MarketByPriceUpdate, Message_MarketByOrderUpdate,
-                                   Message_TradeSummary,   Message_StatisticsUpdate,    Message_CreateOrder,
-                                   Message_ModifyOrder,    Message_CancelOrder,         Message_CancelAllOrders,
-                                   Message_OrderAck,       Message_OrderUpdate,         Message_TradeUpdate,
-                                   Message_PositionUpdate, Message_FundsUpdate,         Message_CustomMetrics};
+inline const Message (&EnumValuesMessage())[31] {
+  static const Message values[] = {
+      Message_NONE,
+      Message_Handshake,
+      Message_HandshakeAck,
+      Message_Subscribe,
+      Message_BatchBegin,
+      Message_BatchEnd,
+      Message_DownloadBegin,
+      Message_DownloadEnd,
+      Message_GatewaySettings,
+      Message_StreamStatus,
+      Message_ExternalLatency,
+      Message_RateLimitUsage,
+      Message_GatewayStatus,
+      Message_ReferenceData,
+      Message_MarketStatus,
+      Message_TopOfBook,
+      Message_MarketByPriceUpdate,
+      Message_MarketByOrderUpdate,
+      Message_TradeSummary,
+      Message_StatisticsUpdate,
+      Message_CreateOrder,
+      Message_ModifyOrder,
+      Message_CancelOrder,
+      Message_CancelAllOrders,
+      Message_OrderAck,
+      Message_OrderUpdate,
+      Message_TradeUpdate,
+      Message_PositionUpdate,
+      Message_FundsUpdate,
+      Message_CustomMetrics,
+      Message_CustomMetricsUpdate};
   return values;
 }
 
 inline const char *const *EnumNamesMessage() {
-  static const char *const names[31] = {"NONE",           "Handshake",           "HandshakeAck",
-                                        "Subscribe",      "BatchBegin",          "BatchEnd",
-                                        "DownloadBegin",  "DownloadEnd",         "GatewaySettings",
-                                        "StreamStatus",   "ExternalLatency",     "RateLimitUsage",
-                                        "GatewayStatus",  "ReferenceData",       "MarketStatus",
-                                        "TopOfBook",      "MarketByPriceUpdate", "MarketByOrderUpdate",
-                                        "TradeSummary",   "StatisticsUpdate",    "CreateOrder",
-                                        "ModifyOrder",    "CancelOrder",         "CancelAllOrders",
-                                        "OrderAck",       "OrderUpdate",         "TradeUpdate",
-                                        "PositionUpdate", "FundsUpdate",         "CustomMetrics",
-                                        nullptr};
+  static const char *const names[32] = {
+      "NONE",
+      "Handshake",
+      "HandshakeAck",
+      "Subscribe",
+      "BatchBegin",
+      "BatchEnd",
+      "DownloadBegin",
+      "DownloadEnd",
+      "GatewaySettings",
+      "StreamStatus",
+      "ExternalLatency",
+      "RateLimitUsage",
+      "GatewayStatus",
+      "ReferenceData",
+      "MarketStatus",
+      "TopOfBook",
+      "MarketByPriceUpdate",
+      "MarketByOrderUpdate",
+      "TradeSummary",
+      "StatisticsUpdate",
+      "CreateOrder",
+      "ModifyOrder",
+      "CancelOrder",
+      "CancelAllOrders",
+      "OrderAck",
+      "OrderUpdate",
+      "TradeUpdate",
+      "PositionUpdate",
+      "FundsUpdate",
+      "CustomMetrics",
+      "CustomMetricsUpdate",
+      nullptr};
   return names;
 }
 
 inline const char *EnumNameMessage(Message e) {
-  if (flatbuffers::IsOutRange(e, Message_NONE, Message_CustomMetrics))
+  if (flatbuffers::IsOutRange(e, Message_NONE, Message_CustomMetricsUpdate))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMessage()[index];
@@ -1207,6 +1255,11 @@ struct MessageTraits<roq::fbs::FundsUpdate> {
 template <>
 struct MessageTraits<roq::fbs::CustomMetrics> {
   static const Message enum_value = Message_CustomMetrics;
+};
+
+template <>
+struct MessageTraits<roq::fbs::CustomMetricsUpdate> {
+  static const Message enum_value = Message_CustomMetricsUpdate;
 };
 
 bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Message type);
@@ -2013,6 +2066,98 @@ inline flatbuffers::Offset<CustomMetrics> CreateCustomMetricsDirect(
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto measurements__ = measurements ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Measurement>>(*measurements) : 0;
   return roq::fbs::CreateCustomMetrics(_fbb, label__, account__, exchange__, symbol__, measurements__);
+}
+
+struct CustomMetricsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef CustomMetricsUpdateBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_USER = 4,
+    VT_LABEL = 6,
+    VT_ACCOUNT = 8,
+    VT_EXCHANGE = 10,
+    VT_SYMBOL = 12,
+    VT_MEASUREMENTS = 14
+  };
+  const flatbuffers::String *user() const { return GetPointer<const flatbuffers::String *>(VT_USER); }
+  const flatbuffers::String *label() const { return GetPointer<const flatbuffers::String *>(VT_LABEL); }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
+  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
+  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *>(VT_MEASUREMENTS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_USER) && verifier.VerifyString(user()) &&
+           VerifyOffset(verifier, VT_LABEL) && verifier.VerifyString(label()) && VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) && VerifyOffset(verifier, VT_EXCHANGE) &&
+           verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
+           VerifyOffset(verifier, VT_MEASUREMENTS) && verifier.VerifyVector(measurements()) &&
+           verifier.VerifyVectorOfTables(measurements()) && verifier.EndTable();
+  }
+};
+
+struct CustomMetricsUpdateBuilder {
+  typedef CustomMetricsUpdate Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_user(flatbuffers::Offset<flatbuffers::String> user) { fbb_.AddOffset(CustomMetricsUpdate::VT_USER, user); }
+  void add_label(flatbuffers::Offset<flatbuffers::String> label) {
+    fbb_.AddOffset(CustomMetricsUpdate::VT_LABEL, label);
+  }
+  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
+    fbb_.AddOffset(CustomMetricsUpdate::VT_ACCOUNT, account);
+  }
+  void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
+    fbb_.AddOffset(CustomMetricsUpdate::VT_EXCHANGE, exchange);
+  }
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
+    fbb_.AddOffset(CustomMetricsUpdate::VT_SYMBOL, symbol);
+  }
+  void add_measurements(
+      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>>> measurements) {
+    fbb_.AddOffset(CustomMetricsUpdate::VT_MEASUREMENTS, measurements);
+  }
+  explicit CustomMetricsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  flatbuffers::Offset<CustomMetricsUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<CustomMetricsUpdate>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdate(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> user = 0,
+    flatbuffers::Offset<flatbuffers::String> label = 0,
+    flatbuffers::Offset<flatbuffers::String> account = 0,
+    flatbuffers::Offset<flatbuffers::String> exchange = 0,
+    flatbuffers::Offset<flatbuffers::String> symbol = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>>> measurements = 0) {
+  CustomMetricsUpdateBuilder builder_(_fbb);
+  builder_.add_measurements(measurements);
+  builder_.add_symbol(symbol);
+  builder_.add_exchange(exchange);
+  builder_.add_account(account);
+  builder_.add_label(label);
+  builder_.add_user(user);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdateDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *user = nullptr,
+    const char *label = nullptr,
+    const char *account = nullptr,
+    const char *exchange = nullptr,
+    const char *symbol = nullptr,
+    const std::vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements = nullptr) {
+  auto user__ = user ? _fbb.CreateString(user) : 0;
+  auto label__ = label ? _fbb.CreateString(label) : 0;
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
+  auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
+  auto measurements__ = measurements ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Measurement>>(*measurements) : 0;
+  return roq::fbs::CreateCustomMetricsUpdate(_fbb, user__, label__, account__, exchange__, symbol__, measurements__);
 }
 
 struct DownloadBegin FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4650,6 +4795,11 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return message_type() == roq::fbs::Message_CustomMetrics ? static_cast<const roq::fbs::CustomMetrics *>(message())
                                                              : nullptr;
   }
+  const roq::fbs::CustomMetricsUpdate *message_as_CustomMetricsUpdate() const {
+    return message_type() == roq::fbs::Message_CustomMetricsUpdate
+               ? static_cast<const roq::fbs::CustomMetricsUpdate *>(message())
+               : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_SOURCE_INFO) &&
            verifier.VerifyTable(source_info()) && VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE) &&
@@ -4803,6 +4953,11 @@ inline const roq::fbs::CustomMetrics *Event::message_as<roq::fbs::CustomMetrics>
   return message_as_CustomMetrics();
 }
 
+template <>
+inline const roq::fbs::CustomMetricsUpdate *Event::message_as<roq::fbs::CustomMetricsUpdate>() const {
+  return message_as_CustomMetricsUpdate();
+}
+
 struct EventBuilder {
   typedef Event Table;
   flatbuffers::FlatBufferBuilder &fbb_;
@@ -4953,6 +5108,10 @@ inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Mess
     }
     case Message_CustomMetrics: {
       auto ptr = reinterpret_cast<const roq::fbs::CustomMetrics *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message_CustomMetricsUpdate: {
+      auto ptr = reinterpret_cast<const roq::fbs::CustomMetricsUpdate *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default:

@@ -9,6 +9,7 @@ set(SOURCES
     connection_status.fbs
     create_order.fbs
     custom_metrics.fbs
+    custom_metrics_update.fbs
     download_begin.fbs
     download_end.fbs
     error.fbs

@@ -46,7 +46,7 @@ class ROQ_PUBLIC EventLogReader {
     virtual void operator()(const Event<FundsUpdate> &) = 0;
 
     // broadcast
-    virtual void operator()(const Event<CustomMetrics> &) = 0;
+    virtual void operator()(const Event<CustomMetricsUpdate> &) = 0;
   };
 
   virtual ~EventLogReader() {}

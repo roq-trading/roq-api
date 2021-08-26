@@ -1,8 +1,13 @@
 {
-    "name": "CustomMetrics",
+    "name": "CustomMetricsUpdate",
     "type": "message",
-    "comment": "Custom metrics (publish)",
+    "comment": "Custom metrics (receive)",
     "values": [
+        {
+            "name": "user",
+            "type": "std::string_view",
+            "comment": "User name (origin)"
+        },
         {
             "name": "label",
             "type": "std::string_view",

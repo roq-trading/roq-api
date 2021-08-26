@@ -659,6 +659,18 @@ auto encode(B &builder, const roq::CustomMetrics &value) {
       encode(builder, value.measurements));
 }
 
+template <typename B>
+auto encode(B &builder, const roq::CustomMetricsUpdate &value) {
+  return CreateCustomMetricsUpdate(
+      builder,
+      encode(builder, value.user),
+      encode(builder, value.label),
+      encode(builder, value.account),
+      encode(builder, value.exchange),
+      encode(builder, value.symbol),
+      encode(builder, value.measurements));
+}
+
 // events
 
 template <typename B>
@@ -803,6 +815,12 @@ template <typename B>
 auto encode(B &builder, const roq::Event<roq::CustomMetrics> &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_CustomMetrics, encode(builder, event.value).Union());
+}
+
+template <typename B>
+auto encode(B &builder, const roq::Event<roq::CustomMetricsUpdate> &event) {
+  return CreateEvent(
+      builder, encode(builder, event.message_info), Message_CustomMetricsUpdate, encode(builder, event.value).Union());
 }
 
 }  // namespace fbs

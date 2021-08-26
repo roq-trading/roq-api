@@ -11,6 +11,7 @@ set(SOURCES
     connection_status.json
     create_order.json
     custom_metrics.json
+    custom_metrics_update.json
     disconnected.json
     download_begin.json
     download_end.json

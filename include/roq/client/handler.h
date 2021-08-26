@@ -64,7 +64,7 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(const Event<FundsUpdate> &) {}
 
   // broadcast
-  virtual void operator()(const Event<CustomMetrics> &) {}
+  virtual void operator()(const Event<CustomMetricsUpdate> &) {}
 
   // ancillary
   virtual void operator()(const Event<CustomMessage> &) {}

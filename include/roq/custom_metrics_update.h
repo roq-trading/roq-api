@@ -23,8 +23,9 @@
 
 namespace roq {
 
-//! Custom metrics (publish)
-struct ROQ_PUBLIC CustomMetrics final {
+//! Custom metrics (receive)
+struct ROQ_PUBLIC CustomMetricsUpdate final {
+  std::string_view user;                //!< User name (origin)
   std::string_view label;               //!< Label
   std::string_view account;             //!< Account name
   std::string_view exchange;            //!< Exchange
@@ -35,23 +36,25 @@ struct ROQ_PUBLIC CustomMetrics final {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::CustomMetrics> {
+struct fmt::formatter<roq::CustomMetricsUpdate> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return context.begin();
   }
   template <typename Context>
-  auto format(const roq::CustomMetrics &value, Context &context) {
+  auto format(const roq::CustomMetricsUpdate &value, Context &context) {
     using namespace roq::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
+        R"(user="{}", )"
         R"(label="{}", )"
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(measurements=[{}])"
         R"(}})"_sv,
+        value.user,
         value.label,
         value.account,
         value.exchange,
@@ -60,19 +63,19 @@ struct fmt::formatter<roq::CustomMetrics> {
   }
 };
 template <>
-struct fmt::formatter<roq::Event<roq::CustomMetrics> > {
+struct fmt::formatter<roq::Event<roq::CustomMetricsUpdate> > {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return context.begin();
   }
   template <typename Context>
-  auto format(const roq::Event<roq::CustomMetrics> &event, Context &context) {
+  auto format(const roq::Event<roq::CustomMetricsUpdate> &event, Context &context) {
     using namespace roq::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
-        R"(custom_metrics={})"
+        R"(custom_metrics_update={})"
         R"(}})"_sv,
         event.message_info,
         event.value);

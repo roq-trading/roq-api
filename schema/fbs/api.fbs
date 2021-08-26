@@ -38,6 +38,7 @@ include "cancel_all_orders.fbs";
 include "cancel_order.fbs";
 include "create_order.fbs";
 include "custom_metrics.fbs";
+include "custom_metrics_update.fbs";
 include "download_begin.fbs";
 include "download_end.fbs";
 include "external_latency.fbs";
@@ -130,6 +131,7 @@ union Message {
   PositionUpdate,
   FundsUpdate,
   CustomMetrics,
+  CustomMetricsUpdate,
 }
 
 table SourceInfo {

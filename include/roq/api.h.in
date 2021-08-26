@@ -69,6 +69,7 @@
 #include "roq/cancel_order.h"
 #include "roq/create_order.h"
 #include "roq/custom_metrics.h"
+#include "roq/custom_metrics_update.h"
 #include "roq/download_begin.h"
 #include "roq/download_end.h"
 #include "roq/external_latency.h"

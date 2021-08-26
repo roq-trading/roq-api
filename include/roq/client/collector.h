@@ -51,8 +51,8 @@ class Collector {
   virtual void operator()(const Event<CancelOrder> &) {}
   virtual void operator()(const Event<CancelAllOrders> &) {}
 
-  // custom
-  virtual void operator()(const Event<CustomMetrics> &) {}
+  // broadcast
+  virtual void operator()(const Event<CustomMetricsUpdate> &) {}
 };
 
 }  // namespace client

@@ -44,7 +44,8 @@ set(SOURCES
     position_effect.json
     position_update.json
     priority.json
-    rate_limit_usage.json
+    rate_limit_trigger.json
+    rate_limit_type.json
     reference_data.json
     request_status.json
     request_type.json

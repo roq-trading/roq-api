@@ -29,6 +29,7 @@
 #include "roq/origin.h"
 #include "roq/position_effect.h"
 #include "roq/priority.h"
+#include "roq/rate_limit_type.h"
 #include "roq/request_status.h"
 #include "roq/request_type.h"
 #include "roq/security_type.h"
@@ -83,7 +84,7 @@
 #include "roq/order_ack.h"
 #include "roq/order_update.h"
 #include "roq/position_update.h"
-#include "roq/rate_limit_usage.h"
+#include "roq/rate_limit_trigger.h"
 #include "roq/reference_data.h"
 #include "roq/statistics_update.h"
 #include "roq/stream_status.h"
@@ -131,5 +132,8 @@ static_assert(sizeof(Trade) == 64);
 static_assert(sizeof(Fill) == 64);
 static_assert(sizeof(Statistics) == 32);
 static_assert(sizeof(Measurement) == 16);
+
+static_assert(sizeof(decltype(RateLimitTrigger::users)::value_type) == MAX_LENGTH_USER);
+static_assert(sizeof(decltype(RateLimitTrigger::accounts)::value_type) == MAX_LENGTH_ACCOUNT);
 
 }  // namespace roq

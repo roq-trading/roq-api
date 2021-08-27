@@ -125,6 +125,13 @@ auto encode([[maybe_unused]] B &builder, const roq::Priority &value) {
 }
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::RateLimitType &value) {
+  using result_type = RateLimitType;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::RequestStatus &value) {
   using result_type = RequestStatus;
   using value_type = std::underlying_type_t<result_type>;
@@ -327,6 +334,19 @@ auto encode(B &builder, const roq::span<roq::Measurement> &value) {
   return builder.CreateVector(result);
 }
 
+template <typename B, std::size_t N>
+auto encode(B &builder, const roq::span<roq::string_buffer<N>> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = value.size();
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
 // structs
 
 template <typename B>
@@ -381,8 +401,16 @@ auto encode(B &builder, const roq::ExternalLatency &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::RateLimitUsage &value) {
-  return CreateRateLimitUsage(builder, value.stream_id, value.above_high_water_mark);
+auto encode(B &builder, const roq::RateLimitTrigger &value) {
+  return CreateRateLimitTrigger(
+      builder,
+      encode(builder, value.name),
+      encode(builder, value.origin),
+      encode(builder, value.type),
+      encode(builder, value.users),
+      encode(builder, value.accounts),
+      encode(builder, value.ban_expires),
+      encode(builder, value.triggered_by));
 }
 
 template <typename B>
@@ -704,9 +732,9 @@ auto encode(B &builder, const roq::Event<roq::ExternalLatency> &event) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::RateLimitUsage> &event) {
+auto encode(B &builder, const roq::Event<roq::RateLimitTrigger> &event) {
   return CreateEvent(
-      builder, encode(builder, event.message_info), Message_RateLimitUsage, encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), Message_RateLimitTrigger, encode(builder, event.value).Union());
 }
 
 template <typename B>

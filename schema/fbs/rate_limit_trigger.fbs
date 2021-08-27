@@ -1,0 +1,14 @@
+include "origin.fbs";
+include "rate_limit_type.fbs";
+
+namespace roq.fbs;
+
+table RateLimitTrigger {
+  name:string;
+  origin:Origin;
+  type:RateLimitType;
+  users:[string];
+  accounts:[string];
+  ban_expires:int64;
+  triggered_by:string;
+}

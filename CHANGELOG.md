@@ -6,6 +6,8 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `RateLimitTrigger` replaces `RateLimitUsage` (#34)
+* Promoting `RateLimitType` to API (#34)
 * `NotSupported` exception (clean-up)
 * `CustomMetrics` (publish) and `CustomMetricsUpdate` (receive) (#8)
 * `NotImplemented` exception (clean-up)

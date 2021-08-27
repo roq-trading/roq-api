@@ -83,8 +83,8 @@ struct OrderUpdateBuilder;
 struct PositionUpdate;
 struct PositionUpdateBuilder;
 
-struct RateLimitUsage;
-struct RateLimitUsageBuilder;
+struct RateLimitTrigger;
+struct RateLimitTriggerBuilder;
 
 struct ReferenceData;
 struct ReferenceDataBuilder;
@@ -967,6 +967,31 @@ inline const char *EnumNameTradingStatus(TradingStatus e) {
   return EnumNamesTradingStatus()[index];
 }
 
+enum RateLimitType : uint8_t {
+  RateLimitType_Undefined = 0,
+  RateLimitType_OrderAction = 1,
+  RateLimitType_CreateOrder = 2,
+  RateLimitType_MIN = RateLimitType_Undefined,
+  RateLimitType_MAX = RateLimitType_CreateOrder
+};
+
+inline const RateLimitType (&EnumValuesRateLimitType())[3] {
+  static const RateLimitType values[] = {RateLimitType_Undefined, RateLimitType_OrderAction, RateLimitType_CreateOrder};
+  return values;
+}
+
+inline const char *const *EnumNamesRateLimitType() {
+  static const char *const names[4] = {"Undefined", "OrderAction", "CreateOrder", nullptr};
+  return names;
+}
+
+inline const char *EnumNameRateLimitType(RateLimitType e) {
+  if (flatbuffers::IsOutRange(e, RateLimitType_Undefined, RateLimitType_CreateOrder))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesRateLimitType()[index];
+}
+
 enum Priority : uint32_t {
   Priority_Undefined = 0,
   Priority_Primary = 1,
@@ -1003,7 +1028,7 @@ enum Message : uint8_t {
   Message_GatewaySettings = 8,
   Message_StreamStatus = 9,
   Message_ExternalLatency = 10,
-  Message_RateLimitUsage = 11,
+  Message_RateLimitTrigger = 11,
   Message_GatewayStatus = 12,
   Message_ReferenceData = 13,
   Message_MarketStatus = 14,
@@ -1040,7 +1065,7 @@ inline const Message (&EnumValuesMessage())[31] {
       Message_GatewaySettings,
       Message_StreamStatus,
       Message_ExternalLatency,
-      Message_RateLimitUsage,
+      Message_RateLimitTrigger,
       Message_GatewayStatus,
       Message_ReferenceData,
       Message_MarketStatus,
@@ -1076,7 +1101,7 @@ inline const char *const *EnumNamesMessage() {
       "GatewaySettings",
       "StreamStatus",
       "ExternalLatency",
-      "RateLimitUsage",
+      "RateLimitTrigger",
       "GatewayStatus",
       "ReferenceData",
       "MarketStatus",
@@ -1163,8 +1188,8 @@ struct MessageTraits<roq::fbs::ExternalLatency> {
 };
 
 template <>
-struct MessageTraits<roq::fbs::RateLimitUsage> {
-  static const Message enum_value = Message_RateLimitUsage;
+struct MessageTraits<roq::fbs::RateLimitTrigger> {
+  static const Message enum_value = Message_RateLimitTrigger;
 };
 
 template <>
@@ -3566,39 +3591,104 @@ inline flatbuffers::Offset<PositionUpdate> CreatePositionUpdateDirect(
       external_account__);
 }
 
-struct RateLimitUsage FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef RateLimitUsageBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_STREAM_ID = 4, VT_ABOVE_HIGH_WATER_MARK = 6 };
-  uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  bool above_high_water_mark() const { return GetField<uint8_t>(VT_ABOVE_HIGH_WATER_MARK, 0) != 0; }
+struct RateLimitTrigger FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef RateLimitTriggerBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_NAME = 4,
+    VT_ORIGIN = 6,
+    VT_TYPE = 8,
+    VT_USERS = 10,
+    VT_ACCOUNTS = 12,
+    VT_BAN_EXPIRES = 14,
+    VT_TRIGGERED_BY = 16
+  };
+  const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(VT_NAME); }
+  roq::fbs::Origin origin() const { return static_cast<roq::fbs::Origin>(GetField<uint8_t>(VT_ORIGIN, 0)); }
+  roq::fbs::RateLimitType type() const { return static_cast<roq::fbs::RateLimitType>(GetField<uint8_t>(VT_TYPE, 0)); }
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *users() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_USERS);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *accounts() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_ACCOUNTS);
+  }
+  int64_t ban_expires() const { return GetField<int64_t>(VT_BAN_EXPIRES, 0); }
+  const flatbuffers::String *triggered_by() const { return GetPointer<const flatbuffers::String *>(VT_TRIGGERED_BY); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
-           VerifyField<uint8_t>(verifier, VT_ABOVE_HIGH_WATER_MARK) && verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_NAME) && verifier.VerifyString(name()) &&
+           VerifyField<uint8_t>(verifier, VT_ORIGIN) && VerifyField<uint8_t>(verifier, VT_TYPE) &&
+           VerifyOffset(verifier, VT_USERS) && verifier.VerifyVector(users()) &&
+           verifier.VerifyVectorOfStrings(users()) && VerifyOffset(verifier, VT_ACCOUNTS) &&
+           verifier.VerifyVector(accounts()) && verifier.VerifyVectorOfStrings(accounts()) &&
+           VerifyField<int64_t>(verifier, VT_BAN_EXPIRES) && VerifyOffset(verifier, VT_TRIGGERED_BY) &&
+           verifier.VerifyString(triggered_by()) && verifier.EndTable();
   }
 };
 
-struct RateLimitUsageBuilder {
-  typedef RateLimitUsage Table;
+struct RateLimitTriggerBuilder {
+  typedef RateLimitTrigger Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(RateLimitUsage::VT_STREAM_ID, stream_id, 0); }
-  void add_above_high_water_mark(bool above_high_water_mark) {
-    fbb_.AddElement<uint8_t>(RateLimitUsage::VT_ABOVE_HIGH_WATER_MARK, static_cast<uint8_t>(above_high_water_mark), 0);
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) { fbb_.AddOffset(RateLimitTrigger::VT_NAME, name); }
+  void add_origin(roq::fbs::Origin origin) {
+    fbb_.AddElement<uint8_t>(RateLimitTrigger::VT_ORIGIN, static_cast<uint8_t>(origin), 0);
   }
-  explicit RateLimitUsageBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
-  flatbuffers::Offset<RateLimitUsage> Finish() {
+  void add_type(roq::fbs::RateLimitType type) {
+    fbb_.AddElement<uint8_t>(RateLimitTrigger::VT_TYPE, static_cast<uint8_t>(type), 0);
+  }
+  void add_users(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> users) {
+    fbb_.AddOffset(RateLimitTrigger::VT_USERS, users);
+  }
+  void add_accounts(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> accounts) {
+    fbb_.AddOffset(RateLimitTrigger::VT_ACCOUNTS, accounts);
+  }
+  void add_ban_expires(int64_t ban_expires) {
+    fbb_.AddElement<int64_t>(RateLimitTrigger::VT_BAN_EXPIRES, ban_expires, 0);
+  }
+  void add_triggered_by(flatbuffers::Offset<flatbuffers::String> triggered_by) {
+    fbb_.AddOffset(RateLimitTrigger::VT_TRIGGERED_BY, triggered_by);
+  }
+  explicit RateLimitTriggerBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
+  flatbuffers::Offset<RateLimitTrigger> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<RateLimitUsage>(end);
+    auto o = flatbuffers::Offset<RateLimitTrigger>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<RateLimitUsage> CreateRateLimitUsage(
-    flatbuffers::FlatBufferBuilder &_fbb, uint16_t stream_id = 0, bool above_high_water_mark = false) {
-  RateLimitUsageBuilder builder_(_fbb);
-  builder_.add_stream_id(stream_id);
-  builder_.add_above_high_water_mark(above_high_water_mark);
+inline flatbuffers::Offset<RateLimitTrigger> CreateRateLimitTrigger(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    roq::fbs::Origin origin = roq::fbs::Origin_Undefined,
+    roq::fbs::RateLimitType type = roq::fbs::RateLimitType_Undefined,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> users = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> accounts = 0,
+    int64_t ban_expires = 0,
+    flatbuffers::Offset<flatbuffers::String> triggered_by = 0) {
+  RateLimitTriggerBuilder builder_(_fbb);
+  builder_.add_ban_expires(ban_expires);
+  builder_.add_triggered_by(triggered_by);
+  builder_.add_accounts(accounts);
+  builder_.add_users(users);
+  builder_.add_name(name);
+  builder_.add_type(type);
+  builder_.add_origin(origin);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<RateLimitTrigger> CreateRateLimitTriggerDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *name = nullptr,
+    roq::fbs::Origin origin = roq::fbs::Origin_Undefined,
+    roq::fbs::RateLimitType type = roq::fbs::RateLimitType_Undefined,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *users = nullptr,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *accounts = nullptr,
+    int64_t ban_expires = 0,
+    const char *triggered_by = nullptr) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  auto users__ = users ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*users) : 0;
+  auto accounts__ = accounts ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*accounts) : 0;
+  auto triggered_by__ = triggered_by ? _fbb.CreateString(triggered_by) : 0;
+  return roq::fbs::CreateRateLimitTrigger(_fbb, name__, origin, type, users__, accounts__, ban_expires, triggered_by__);
 }
 
 struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4716,9 +4806,10 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
                ? static_cast<const roq::fbs::ExternalLatency *>(message())
                : nullptr;
   }
-  const roq::fbs::RateLimitUsage *message_as_RateLimitUsage() const {
-    return message_type() == roq::fbs::Message_RateLimitUsage ? static_cast<const roq::fbs::RateLimitUsage *>(message())
-                                                              : nullptr;
+  const roq::fbs::RateLimitTrigger *message_as_RateLimitTrigger() const {
+    return message_type() == roq::fbs::Message_RateLimitTrigger
+               ? static_cast<const roq::fbs::RateLimitTrigger *>(message())
+               : nullptr;
   }
   const roq::fbs::GatewayStatus *message_as_GatewayStatus() const {
     return message_type() == roq::fbs::Message_GatewayStatus ? static_cast<const roq::fbs::GatewayStatus *>(message())
@@ -4859,8 +4950,8 @@ inline const roq::fbs::ExternalLatency *Event::message_as<roq::fbs::ExternalLate
 }
 
 template <>
-inline const roq::fbs::RateLimitUsage *Event::message_as<roq::fbs::RateLimitUsage>() const {
-  return message_as_RateLimitUsage();
+inline const roq::fbs::RateLimitTrigger *Event::message_as<roq::fbs::RateLimitTrigger>() const {
+  return message_as_RateLimitTrigger();
 }
 
 template <>
@@ -5034,8 +5125,8 @@ inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Mess
       auto ptr = reinterpret_cast<const roq::fbs::ExternalLatency *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Message_RateLimitUsage: {
-      auto ptr = reinterpret_cast<const roq::fbs::RateLimitUsage *>(obj);
+    case Message_RateLimitTrigger: {
+      auto ptr = reinterpret_cast<const roq::fbs::RateLimitTrigger *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_GatewayStatus: {

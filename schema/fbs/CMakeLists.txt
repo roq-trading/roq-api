@@ -36,7 +36,8 @@ set(SOURCES
     position_effect.fbs
     position_update.fbs
     priority.fbs
-    rate_limit_usage.fbs
+    rate_limit_trigger.fbs
+    rate_limit_type.fbs
     reference_data.fbs
     request_status.fbs
     request_type.fbs

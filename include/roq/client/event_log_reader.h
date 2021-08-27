@@ -16,7 +16,7 @@ class ROQ_PUBLIC EventLogReader {
     // stream
     virtual void operator()(const Event<StreamStatus> &) = 0;
     virtual void operator()(const Event<ExternalLatency> &) = 0;
-    virtual void operator()(const Event<RateLimitUsage> &) = 0;
+    virtual void operator()(const Event<RateLimitTrigger> &) = 0;
 
     // service
     virtual void operator()(const Event<GatewayStatus> &) = 0;

@@ -22,7 +22,7 @@ class Collector {
   // stream
   virtual void operator()(const Event<StreamStatus> &) {}
   virtual void operator()(const Event<ExternalLatency> &) {}
-  virtual void operator()(const Event<RateLimitUsage> &) {}
+  virtual void operator()(const Event<RateLimitTrigger> &) {}
 
   // service
   virtual void operator()(const Event<GatewayStatus> &) {}

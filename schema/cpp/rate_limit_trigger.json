@@ -31,7 +31,7 @@
         {
             "name": "ban_expires",
             "type": "std::chrono::nanoseconds",
-	    "comment": "Time when ban expires (zero means: reset, i.e. not banned)"
+	    "comment": "System time when ban expires (zero means: ban is no longer effective)"
         },
         {
             "name": "triggered_by",

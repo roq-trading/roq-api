@@ -197,11 +197,12 @@ enum Error : uint8_t {
   Error_TooLateToModifyOrCancel = 31,
   Error_ConditionalRequestHasFailed = 32,
   Error_UnknownOrderId = 33,
+  Error_InsufficientFunds = 34,
   Error_MIN = Error_Undefined,
-  Error_MAX = Error_UnknownOrderId
+  Error_MAX = Error_InsufficientFunds
 };
 
-inline const Error (&EnumValuesError())[34] {
+inline const Error (&EnumValuesError())[35] {
   static const Error values[] = {
       Error_Undefined,
       Error_Unknown,
@@ -236,12 +237,13 @@ inline const Error (&EnumValuesError())[34] {
       Error_ModifyHasNoEffect,
       Error_TooLateToModifyOrCancel,
       Error_ConditionalRequestHasFailed,
-      Error_UnknownOrderId};
+      Error_UnknownOrderId,
+      Error_InsufficientFunds};
   return values;
 }
 
 inline const char *const *EnumNamesError() {
-  static const char *const names[35] = {
+  static const char *const names[36] = {
       "Undefined",
       "Unknown",
       "NotSupported",
@@ -276,12 +278,13 @@ inline const char *const *EnumNamesError() {
       "TooLateToModifyOrCancel",
       "ConditionalRequestHasFailed",
       "UnknownOrderId",
+      "InsufficientFunds",
       nullptr};
   return names;
 }
 
 inline const char *EnumNameError(Error e) {
-  if (flatbuffers::IsOutRange(e, Error_Undefined, Error_UnknownOrderId))
+  if (flatbuffers::IsOutRange(e, Error_Undefined, Error_InsufficientFunds))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesError()[index];

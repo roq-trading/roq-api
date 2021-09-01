@@ -113,6 +113,10 @@
         },
         {
             "name": "UnknownOrderId"
+        },
+        {
+            "name": "InsufficientFunds",
+            "comment": "Insufficient funds for order action"
         }
     ]
 }

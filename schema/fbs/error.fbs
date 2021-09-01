@@ -34,5 +34,6 @@ enum Error:uint8 {
   ModifyHasNoEffect,
   TooLateToModifyOrCancel,
   ConditionalRequestHasFailed,
-  UnknownOrderId
+  UnknownOrderId,
+  InsufficientFunds
 }

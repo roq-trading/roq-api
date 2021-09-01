@@ -55,6 +55,7 @@ struct ROQ_PACKED Error final {
     TOO_LATE_TO_MODIFY_OR_CANCEL,    //!< Too late to modify or cancel (order has been filled or is already canceled)
     CONDITIONAL_REQUEST_HAS_FAILED,  //!< Happens when gateway detects chain failure
     UNKNOWN_ORDER_ID,
+    INSUFFICIENT_FUNDS,  //!< Insufficient funds for order action
   };
 
   constexpr Error() = default;

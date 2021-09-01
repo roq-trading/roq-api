@@ -8,6 +8,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `Error::INSUFFICIENT_FUNDS` (#32)
 * `RateLimitTrigger` replaces `RateLimitUsage` (#34)
 * Promoting `RateLimitType` to API (#34)
 * `NotSupported` exception (clean-up)

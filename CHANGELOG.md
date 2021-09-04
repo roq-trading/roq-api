@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `RateLimitTrigger` must support const members (#34)
+
 ## 0.7.6 &ndash; 2021-09-02
 
 ### Added

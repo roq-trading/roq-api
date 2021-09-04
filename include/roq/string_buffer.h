@@ -63,6 +63,10 @@ class ROQ_PACKED string_buffer final {
     return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) == 0;
   }
 
+  bool operator<(const string_buffer<N> &rhs) const {
+    return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) < 0;
+  }
+
   template <typename... Args>
   int compare(Args &&...args) const {
     return static_cast<std::string_view>(*this).compare(std::forward<Args>(args)...);

@@ -111,10 +111,10 @@ def _format_helper(char, string, array, safe_name, accessor):
         return ("{:#x}", value)
     if char:
         return ("'{}'", value)
-    if string:
-        return ('"{}"', value)
     if array:
         return ("[{}]", value)
+    if string:
+        return ('"{}"', value)
     return ("{}", value)
 
 

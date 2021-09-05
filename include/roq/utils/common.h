@@ -152,6 +152,13 @@ inline bool has_request_succeeded(RequestStatus request_status) {
   return false;
 }
 
+//! Compare requests
+inline int compare_requests(RequestStatus lhs, RequestStatus rhs) {
+  if (lhs == rhs)
+    return 0;
+  return lhs < rhs ? -1 : 1;
+}
+
 //! Get the opposite \ref Side.
 inline Side invert(Side side) {
   switch (side) {

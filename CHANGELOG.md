@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Move OMS interfaces to API (#51)
 * `RateLimitTrigger` must support const members (#34)
 
 ## 0.7.6 &ndash; 2021-09-02

@@ -79,8 +79,9 @@ class ROQ_PACKED string_buffer final {
   constexpr std::size_t size() { return N; }
 
   inline std::size_t length() const {
-    auto iter = std::find(buffer_.begin(), buffer_.end(), '\0');
-    return iter - buffer_.begin();
+    if (buffer_[N - 2] == '\0')
+      return static_cast<std::size_t>(buffer_[N - 1]);
+    return N - (buffer_[N - 1] == '\0' ? 1 : 0);
   }
 
   inline bool empty() const { return buffer_[0] == '\0'; }
@@ -96,6 +97,19 @@ class ROQ_PACKED string_buffer final {
     buffer_.fill('\0');
   }
 
+  void push_back(value_type value) {
+    auto len = length();
+    if (ROQ_UNLIKELY(N <= len))
+      throw LengthErrorException("String buffer is full"_sv);
+    buffer_[len] = value;
+    ++len;
+    if (len < (N - 1)) {
+      buffer_[N - 1] = len;
+    } else if (len < N) {
+      buffer_[N - 1] = '\0';
+    }
+  }
+
  protected:
   value_type *data() { return buffer_.data(); }
 
@@ -104,7 +118,9 @@ class ROQ_PACKED string_buffer final {
     auto len = text.length();
     if (ROQ_LIKELY(len <= size())) {
       auto last = std::copy(text.begin(), text.end(), buffer_.begin());
-      std::fill(last, buffer_.end(), '\0');
+      std::fill(last, buffer_.end(), '\0');  // convenient, but we don't need to write the last byte
+      if (len < (N - 1))
+        buffer_[N - 1] = len;
     } else {
       throw LengthErrorException(R"(can't copy: len(text="{}")={} exceeds size={})"_sv, text, len, size());
     }

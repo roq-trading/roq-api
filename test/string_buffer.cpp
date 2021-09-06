@@ -27,7 +27,7 @@ TEST(string_buffer, partial) {
   EXPECT_EQ(sv, text);
 }
 
-TEST(string_buffer, full) {
+TEST(string_buffer, almost_full) {
   constexpr auto text = "123"_sv;
   roq::string_buffer<4> s = text;
   EXPECT_EQ(s.size(), 4);
@@ -38,6 +38,17 @@ TEST(string_buffer, full) {
   EXPECT_EQ(sv, text);
 }
 
+TEST(string_buffer, full) {
+  constexpr auto text = "1234"_sv;
+  roq::string_buffer<4> s = text;
+  EXPECT_EQ(s.size(), 4);
+  EXPECT_EQ(s.length(), 4);
+  auto sv = static_cast<std::string_view>(s);
+  EXPECT_FALSE(sv.empty());
+  EXPECT_EQ(sv.length(), 4);
+  EXPECT_EQ(sv, text);
+}
+
 TEST(string_buffer, construct) {
   roq::string_buffer<4>();
   roq::string_buffer<4>("1"_sv);
@@ -45,4 +56,18 @@ TEST(string_buffer, construct) {
   roq::string_buffer<4>("123"_sv);
   roq::string_buffer<4>("1234"_sv);
   EXPECT_THROW(roq::string_buffer<4>("12345"_sv), LengthError);
+}
+
+TEST(string_buffer, push_back) {
+  roq::string_buffer<4> s;
+  EXPECT_EQ(s.length(), 0);
+  s.push_back('1');
+  EXPECT_EQ(s.length(), 1);
+  s.push_back('2');
+  EXPECT_EQ(s.length(), 2);
+  s.push_back('3');
+  EXPECT_EQ(s.length(), 3);
+  s.push_back('4');
+  EXPECT_EQ(s.length(), 4);
+  EXPECT_THROW(s.push_back('5'), LengthError);
 }

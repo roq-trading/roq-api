@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* New `market::MarketByPrice` interface (#56)
+
 ### Changed
 
 * `string_buffer` did not have O(1) `length()` (#53)

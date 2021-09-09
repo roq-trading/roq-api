@@ -12,8 +12,13 @@ class ROQ_PUBLIC MarketByPrice {
  public:
   virtual ~MarketByPrice() {}
 
+  // increments
   virtual double tick_size() const = 0;
   virtual double min_trade_vol() const = 0;
+
+  // decimal places to show (-1 means undefined)
+  virtual int32_t price_decimals() const = 0;
+  virtual int32_t quantity_decimals() const = 0;
 
   virtual bool empty() const = 0;
   virtual void clear() = 0;

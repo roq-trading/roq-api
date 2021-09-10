@@ -377,10 +377,11 @@ auto encode(B &builder, const roq::GatewaySettings &value) {
       value.supports,  // note! using Mask<SupportType>
       value.mbp_max_depth,
       value.mbp_allow_price_inversion,
-      value.mbp_allow_fractional_tick_size,
       value.mbp_allow_remove_non_existing,
       value.oms_download_has_state,
-      value.oms_download_has_routing_id);
+      value.oms_download_has_routing_id,
+      value.mbp_tick_size_multiplier,
+      value.mbp_min_trade_vol_multiplier);
 }
 
 template <typename B>

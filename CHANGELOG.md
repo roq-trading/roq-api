@@ -10,6 +10,8 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `GatewaySettings` has changed structure and new fields (#56)
+* `client::DepthBuilder` now derives from `market::MarketByPrice` (#56)
 * `string_buffer` did not have O(1) `length()` (#53)
 * Move OMS interfaces to API (#51)
 * `RateLimitTrigger` must support const members (#34)

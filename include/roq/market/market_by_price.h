@@ -25,13 +25,15 @@ class ROQ_PUBLIC MarketByPrice {
 
   virtual bool is_bad() const = 0;
 
-  virtual void operator()(const roq::ReferenceData &) = 0;
-  virtual void operator()(const roq::MarketByPriceUpdate &) = 0;
+  template <typename T>
+  void operator()(const T &value) {
+    update_helper(value);
+  }
 
   // normalized update, e.g. unsorted update or "incremental" full image
   template <typename F>
   void operator()(
-      const roq::MarketByPriceUpdate &market_by_price_update,
+      const MarketByPriceUpdate &market_by_price_update,
       const roq::span<MBPUpdate> &final_bids,
       const roq::span<MBPUpdate> &final_asks,
       F callback) {
@@ -64,8 +66,12 @@ class ROQ_PUBLIC MarketByPrice {
   virtual roq::span<price_level_t const> asks() const = 0;
 
  protected:
+  virtual void update_helper(const GatewaySettings &) = 0;
+  virtual void update_helper(const ReferenceData &) = 0;
+  virtual void update_helper(const MarketByPriceUpdate &) = 0;
+
   virtual std::pair<size_t, size_t> update_helper(
-      const roq::MarketByPriceUpdate &, const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) = 0;
+      const MarketByPriceUpdate &, const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) = 0;
 };
 
 }  // namespace market

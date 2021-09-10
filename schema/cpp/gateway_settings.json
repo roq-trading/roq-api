@@ -14,19 +14,24 @@
             "comment": "MBP max depth"
         },
         {
-            "name": "mbp_allow_price_inversion",
-            "type": "bool",
-            "comment": "MBP allow price inversion?"
+            "name": "mbp_tick_size_multiplier",
+            "type": "double",
+            "comment": "MBP multiplier used to manage prices as integer"
         },
         {
-            "name": "mbp_allow_fractional_tick_size",
-            "type": "bool",
-            "comment": "MBP allow fractional tick-size?"
+            "name": "mbp_min_trade_vol_multiplier",
+            "type": "double",
+            "comment": "MBP multiplier used to manage quantities as integer"
         },
         {
             "name": "mbp_allow_remove_non_existing",
             "type": "bool",
             "comment": "MBP allow remove operation on non-existing level?"
+        },
+        {
+            "name": "mbp_allow_price_inversion",
+            "type": "bool",
+            "comment": "MBP allow price inversion?"
         },
         {
             "name": "oms_download_has_state",

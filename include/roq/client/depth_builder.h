@@ -4,6 +4,8 @@
 
 #include "roq/api.h"
 
+#include "roq/market/market_by_price.h"
+
 namespace roq {
 namespace client {
 
@@ -16,13 +18,14 @@ namespace client {
  * The `reset` method must be called following a disconnect.
  * (The next update is then expected to be a snapshot).
  */
-class ROQ_PUBLIC DepthBuilder {
+class ROQ_PUBLIC DepthBuilder : public market::MarketByPrice {
  public:
-  virtual ~DepthBuilder() {}
+  void reset() { clear(); }  // note! will be deprecated
 
-  virtual void reset() = 0;
-
-  virtual void operator()(const ReferenceData &) = 0;
+  template <typename T>
+  void operator()(const T &value) {
+    update_helper(value);
+  }
 
   virtual size_t operator()(const MarketByPriceUpdate &, roq::span<Layer> &, bool fill_zero = true) = 0;
 

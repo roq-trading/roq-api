@@ -4,8 +4,10 @@ table GatewaySettings {
   supports:uint64;
   mbp_max_depth:uint32;
   mbp_allow_price_inversion:bool;
-  mbp_allow_fractional_tick_size:bool;
+  mbp_allow_fractional_tick_size:bool (deprecated);
   mbp_allow_remove_non_existing:bool;
   oms_download_has_state:bool;
   oms_download_has_routing_id:bool;
+  mbp_tick_size_multiplier:double = nan;
+  mbp_min_trade_vol_multiplier:double = nan;
 }

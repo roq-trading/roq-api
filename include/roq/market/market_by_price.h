@@ -12,13 +12,18 @@ class ROQ_PUBLIC MarketByPrice {
  public:
   virtual ~MarketByPrice() {}
 
-  // increments
-  virtual double tick_size() const = 0;
-  virtual double min_trade_vol() const = 0;
+  virtual std::string_view exchange() const = 0;
+  virtual std::string_view symbol() const = 0;
 
-  // decimal places to show (-1 means undefined)
-  virtual int32_t price_decimals() const = 0;
-  virtual int32_t quantity_decimals() const = 0;
+  // increments (used to convert between integer and floating point representation)
+  // these values could be tick_size and min_trade_vol from ReferenceData, but
+  // not necessarily -- it depends on adjustments potentially required by GatewaySettings
+  virtual double price_increment() const = 0;
+  virtual double quantity_increment() const = 0;
+
+  // precision required to show all significant decimal places (-1 means undefined)
+  virtual int32_t price_decimals_precision() const = 0;
+  virtual int32_t quantity_decimals_precision() const = 0;
 
   virtual bool empty() const = 0;
   virtual void clear() = 0;

@@ -22,8 +22,8 @@ class ROQ_PUBLIC MarketByPrice {
   virtual double quantity_increment() const = 0;
 
   // precision required to show all significant decimal places (-1 means undefined)
-  virtual int32_t price_decimals_precision() const = 0;
-  virtual int32_t quantity_decimals_precision() const = 0;
+  virtual int32_t price_decimal_digits() const = 0;
+  virtual int32_t quantity_decimal_digits() const = 0;
 
   virtual bool empty() const = 0;
   virtual void clear() = 0;

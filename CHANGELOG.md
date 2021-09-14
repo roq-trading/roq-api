@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `RequestStatus::TIMEOUT` should not be a final order request state (#59)
 * `GatewaySettings` has changed structure and new fields (#56)
 * `client::DepthBuilder` now derives from `market::MarketByPrice` (#56)
 * `string_buffer` did not have O(1) `length()` (#53)

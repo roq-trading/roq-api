@@ -8,6 +8,7 @@ set(SOURCES
     format.cpp
     mask.cpp
     metrics.cpp
+    request_status.cpp
     safe_cast.cpp
     span.cpp
     string_buffer.cpp

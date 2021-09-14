@@ -87,7 +87,7 @@ inline RequestStatus to_request_status(OrderStatus order_status) {
   return {};
 }
 
-//! Check if request has reached a final (completed) status
+//! Check if request has positively reached a final (completed) state
 inline bool has_request_completed(RequestStatus request_status) {
   switch (request_status) {
     case RequestStatus::UNDEFINED:
@@ -108,8 +108,50 @@ inline bool has_request_completed(RequestStatus request_status) {
   return false;
 }
 
-//! Check if request has failed
+//! Check if request has maybe reached a final state (including "unknown" states)
+inline bool has_request_maybe_completed(RequestStatus request_status) {
+  switch (request_status) {
+    case RequestStatus::UNDEFINED:
+    case RequestStatus::FORWARDED:
+      break;
+      // note! definitely completed
+    case RequestStatus::ACCEPTED:
+    case RequestStatus::REJECTED:
+      return true;
+      // note! we don't know the real status for these
+    case RequestStatus::DISCONNECTED:
+    case RequestStatus::TIMEOUT:
+    case RequestStatus::FAILED:
+      return true;
+    default:
+      break;
+  }
+  return false;
+}
+
+//! Check if request has positively failed
 inline bool has_request_failed(RequestStatus request_status) {
+  switch (request_status) {
+    case RequestStatus::UNDEFINED:
+    case RequestStatus::FORWARDED:
+    case RequestStatus::ACCEPTED:
+      break;
+      // note! definitely failed
+    case RequestStatus::REJECTED:
+      return true;
+      // note! we don't know the real status for these
+    case RequestStatus::DISCONNECTED:
+    case RequestStatus::TIMEOUT:
+    case RequestStatus::FAILED:
+      break;
+    default:
+      break;
+  }
+  return false;
+}
+
+//! Check if request has maybe failed (including "unknown" states)
+inline bool has_request_maybe_failed(RequestStatus request_status) {
   switch (request_status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
@@ -129,7 +171,7 @@ inline bool has_request_failed(RequestStatus request_status) {
   return false;
 }
 
-//! Check if request has succeeded
+//! Check if request has positively succeeded
 inline bool has_request_succeeded(RequestStatus request_status) {
   switch (request_status) {
     case RequestStatus::UNDEFINED:
@@ -156,7 +198,18 @@ inline bool has_request_succeeded(RequestStatus request_status) {
 inline int compare_requests(RequestStatus lhs, RequestStatus rhs) {
   if (lhs == rhs)
     return 0;
-  return lhs < rhs ? -1 : 1;
+  static const std::array<int, RequestStatus::count()> priority{
+      0,
+      1,
+      4,
+      5,
+      2,
+      3,
+      6,
+  };
+  auto lhs_priority = priority[static_cast<RequestStatus::type_t>(lhs)];
+  auto rhs_priority = priority[static_cast<RequestStatus::type_t>(rhs)];
+  return lhs_priority < rhs_priority ? -1 : 1;
 }
 
 //! Get the opposite \ref Side.

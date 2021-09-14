@@ -11,8 +11,10 @@
 #include <utility>
 
 #include "roq/compat.h"
+#include "roq/error.h"
 #include "roq/format_str.h"
 #include "roq/literals.h"
+#include "roq/request_status.h"
 #include "roq/source_location.h"
 
 namespace roq {
@@ -237,8 +239,23 @@ struct NotReadyException final : public NotReady {
 
 //! Base class for network errors
 class ROQ_PUBLIC NetworkError : public RuntimeError {
+ public:
+  RequestStatus request_status() const noexcept { return request_status_; }
+  Error error() const noexcept { return error_; }
+
  protected:
-  using RuntimeError::RuntimeError;
+  template <typename... Args>
+  NetworkError(
+      const source_location &loc,
+      RequestStatus request_status,
+      Error error,
+      const fmt::format_string<Args...> &fmt,
+      Args &&...args)
+      : RuntimeError(loc, fmt, std::forward<Args>(args)...), request_status_(request_status), error_(error) {}
+
+ private:
+  const RequestStatus request_status_;
+  const Error error_;
 };
 
 // transport errors
@@ -260,6 +277,8 @@ struct NotConnectedException final : public NotConnected {
   NotConnectedException(const format_str &fmt, Args &&...args)
       : NotConnected(
             static_cast<const source_location &>(fmt),
+            RequestStatus::REJECTED,
+            Error::GATEWAY_NOT_READY,
             fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
             std::forward<Args>(args)...) {}
 };
@@ -275,6 +294,8 @@ struct ConnectionRefusedException final : public ConnectionRefused {
   ConnectionRefusedException(const format_str &fmt, Args &&...args)
       : ConnectionRefused(
             static_cast<const source_location &>(fmt),
+            RequestStatus::REJECTED,
+            Error::GATEWAY_NOT_READY,
             fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
             std::forward<Args>(args)...) {}
 };
@@ -290,6 +311,8 @@ struct TimedOutException final : public TimedOut {
   TimedOutException(const format_str &fmt, Args &&...args)
       : TimedOut(
             static_cast<const source_location &>(fmt),
+            RequestStatus::TIMEOUT,
+            Error::TIMEOUT,
             fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
             std::forward<Args>(args)...) {}
 };
@@ -302,7 +325,7 @@ class ROQ_PUBLIC SessionError : public NetworkError {
   using NetworkError::NetworkError;
 };
 
-//! Permissions denied
+//! Permissions denied (operating system)
 class ROQ_PUBLIC PermissionDenied : public SessionError {
  protected:
   using SessionError::SessionError;
@@ -313,6 +336,8 @@ struct PermissionDeniedException final : public PermissionDenied {
   PermissionDeniedException(const format_str &fmt, Args &&...args)
       : PermissionDenied(
             static_cast<const source_location &>(fmt),
+            RequestStatus::UNDEFINED,
+            Error::UNDEFINED,
             fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
             std::forward<Args>(args)...) {}
 };
@@ -328,6 +353,8 @@ struct OrderNotLiveException final : public OrderNotLive {
   OrderNotLiveException(const format_str &fmt, Args &&...args)
       : OrderNotLive(
             static_cast<const source_location &>(fmt),
+            RequestStatus::REJECTED,
+            Error::TOO_LATE_TO_MODIFY_OR_CANCEL,
             fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
             std::forward<Args>(args)...) {}
 };

@@ -17,6 +17,10 @@ All notable changes will be documented in this file.
 * Move OMS interfaces to API (#51)
 * `RateLimitTrigger` must support const members (#34)
 
+### Fixed
+
+* API exceptions should compile with C++14 (#69)
+
 ## 0.7.6 &ndash; 2021-09-02
 
 ### Added

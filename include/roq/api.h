@@ -102,6 +102,9 @@
 
 namespace roq {
 
+// user id's (restricted)
+
+static const constexpr uint8_t SOURCE_NONE = 0;
 static const constexpr uint8_t SOURCE_SELF = 255;
 
 // limits
@@ -123,6 +126,16 @@ static const constexpr size_t MAX_LENGTH_REQUEST_ID = 36;
 static const constexpr uint32_t MAX_ORDER_ID = (1 << 24) - 1;
 static const constexpr uint32_t MAX_REQUEST_VERSION = (1 << 24) - 1;
 
+static const constexpr size_t MAX_LENGTH_LABEL = 32;
+static const constexpr size_t MAX_LENGTH_MEASUREMENT_KEY = 8;
+
+// validate auto-generated code
+
+static_assert(sizeof(decltype(RateLimitTrigger::users)::value_type) == MAX_LENGTH_USER);
+static_assert(sizeof(decltype(RateLimitTrigger::accounts)::value_type) == MAX_LENGTH_ACCOUNT);
+
+static_assert(sizeof(decltype(Measurement::name)) == MAX_LENGTH_MEASUREMENT_KEY);
+
 // check that multiples can be cache aligned
 
 static_assert(sizeof(Layer) == 32);
@@ -132,8 +145,5 @@ static_assert(sizeof(Trade) == 64);
 static_assert(sizeof(Fill) == 64);
 static_assert(sizeof(Statistics) == 32);
 static_assert(sizeof(Measurement) == 16);
-
-static_assert(sizeof(decltype(RateLimitTrigger::users)::value_type) == MAX_LENGTH_USER);
-static_assert(sizeof(decltype(RateLimitTrigger::accounts)::value_type) == MAX_LENGTH_ACCOUNT);
 
 }  // namespace roq

@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Fixed
+
+* Utility functions did not correctly handle `RequestStatus::FAILED` (#82)
+
 ## 0.7.7 &ndash; 2021-09-20
 
 ### Added

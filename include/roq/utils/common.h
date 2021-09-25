@@ -96,11 +96,11 @@ inline bool has_request_completed(RequestStatus request_status) {
       // note! definitely completed
     case RequestStatus::ACCEPTED:
     case RequestStatus::REJECTED:
+    case RequestStatus::FAILED:
       return true;
       // note! we don't know the real status for these
     case RequestStatus::DISCONNECTED:
     case RequestStatus::TIMEOUT:
-    case RequestStatus::FAILED:
       break;
     default:
       break;
@@ -117,11 +117,11 @@ inline bool has_request_maybe_completed(RequestStatus request_status) {
       // note! definitely completed
     case RequestStatus::ACCEPTED:
     case RequestStatus::REJECTED:
+    case RequestStatus::FAILED:
       return true;
       // note! we don't know the real status for these
     case RequestStatus::DISCONNECTED:
     case RequestStatus::TIMEOUT:
-    case RequestStatus::FAILED:
       return true;
     default:
       break;
@@ -138,11 +138,11 @@ inline bool has_request_failed(RequestStatus request_status) {
       break;
       // note! definitely failed
     case RequestStatus::REJECTED:
+    case RequestStatus::FAILED:
       return true;
       // note! we don't know the real status for these
     case RequestStatus::DISCONNECTED:
     case RequestStatus::TIMEOUT:
-    case RequestStatus::FAILED:
       break;
     default:
       break;
@@ -159,11 +159,11 @@ inline bool has_request_maybe_failed(RequestStatus request_status) {
       break;
       // note! definitely failed
     case RequestStatus::REJECTED:
+    case RequestStatus::FAILED:
       return true;
       // note! we don't know the real status for these
     case RequestStatus::DISCONNECTED:
     case RequestStatus::TIMEOUT:
-    case RequestStatus::FAILED:
       return true;
     default:
       break;
@@ -182,11 +182,11 @@ inline bool has_request_succeeded(RequestStatus request_status) {
       return true;
       // note! definitely did *not* succeed
     case RequestStatus::REJECTED:
+    case RequestStatus::FAILED:
       break;
       // note! we don't know the real status for these
     case RequestStatus::DISCONNECTED:
     case RequestStatus::TIMEOUT:
-    case RequestStatus::FAILED:
       break;
     default:
       break;

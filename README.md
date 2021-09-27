@@ -55,7 +55,7 @@ wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Minifo
 bash Miniforge3-Linux-x86_64.sh -b -u -p ~/conda
 
 ~/conda/bin/conda install -y \
-    gxx_linux-64
+    gxx_linux-64>=11
 ```
 
 #### Linux / aarch64

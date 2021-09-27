@@ -16,5 +16,6 @@ enum StatisticsType:uint8 {
   IndexValue,
   MarginRate,
   FundingRate,
-  FundingRatePrediction
+  FundingRatePrediction,
+  TradeVolume
 }

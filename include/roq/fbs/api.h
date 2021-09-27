@@ -672,11 +672,12 @@ enum StatisticsType : uint8_t {
   StatisticsType_MarginRate = 13,
   StatisticsType_FundingRate = 14,
   StatisticsType_FundingRatePrediction = 15,
+  StatisticsType_TradeVolume = 16,
   StatisticsType_MIN = StatisticsType_Undefined,
-  StatisticsType_MAX = StatisticsType_FundingRatePrediction
+  StatisticsType_MAX = StatisticsType_TradeVolume
 };
 
-inline const StatisticsType (&EnumValuesStatisticsType())[16] {
+inline const StatisticsType (&EnumValuesStatisticsType())[17] {
   static const StatisticsType values[] = {
       StatisticsType_Undefined,
       StatisticsType_OpenPrice,
@@ -693,12 +694,13 @@ inline const StatisticsType (&EnumValuesStatisticsType())[16] {
       StatisticsType_IndexValue,
       StatisticsType_MarginRate,
       StatisticsType_FundingRate,
-      StatisticsType_FundingRatePrediction};
+      StatisticsType_FundingRatePrediction,
+      StatisticsType_TradeVolume};
   return values;
 }
 
 inline const char *const *EnumNamesStatisticsType() {
-  static const char *const names[17] = {
+  static const char *const names[18] = {
       "Undefined",
       "OpenPrice",
       "SettlementPrice",
@@ -715,12 +717,13 @@ inline const char *const *EnumNamesStatisticsType() {
       "MarginRate",
       "FundingRate",
       "FundingRatePrediction",
+      "TradeVolume",
       nullptr};
   return names;
 }
 
 inline const char *EnumNameStatisticsType(StatisticsType e) {
-  if (flatbuffers::IsOutRange(e, StatisticsType_Undefined, StatisticsType_FundingRatePrediction))
+  if (flatbuffers::IsOutRange(e, StatisticsType_Undefined, StatisticsType_TradeVolume))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStatisticsType()[index];

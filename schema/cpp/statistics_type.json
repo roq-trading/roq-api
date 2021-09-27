@@ -47,6 +47,9 @@
         },
         {
             "name": "FundingRatePrediction"
+        },
+        {
+            "name": "TradeVolume"
         }
     ]
 }

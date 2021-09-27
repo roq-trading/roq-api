@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* Add `StatisticsType::TRADE_VOLUME` (#88)
+
 ### Fixed
 
 * Utility functions did not correctly handle `RequestStatus::FAILED` (#82)

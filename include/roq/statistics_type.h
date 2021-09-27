@@ -37,6 +37,7 @@ struct ROQ_PACKED StatisticsType final {
     MARGIN_RATE,
     FUNDING_RATE,
     FUNDING_RATE_PREDICTION,
+    TRADE_VOLUME,
   };
 
   constexpr StatisticsType() = default;

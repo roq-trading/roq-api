@@ -8,6 +8,10 @@ All notable changes will be documented in this file.
 
 * Add `StatisticsType::TRADE_VOLUME` (#88)
 
+### Changed
+
+* Align `PositionUpdate` with the FIX protocol (#89)
+
 ### Fixed
 
 * Utility functions did not correctly handle `RequestStatus::FAILED` (#82)

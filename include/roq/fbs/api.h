@@ -3471,41 +3471,38 @@ struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ACCOUNT = 6,
     VT_EXCHANGE = 8,
     VT_SYMBOL = 10,
-    VT_SIDE = 12,
-    VT_POSITION = 14,
-    VT_LAST_TRADE_ID = 16,
-    VT_POSITION_COST = 18,
-    VT_POSITION_YESTERDAY = 20,
-    VT_POSITION_COST_YESTERDAY = 22,
-    VT_EXTERNAL_ACCOUNT = 24
+    VT_EXTERNAL_ACCOUNT = 24,
+    VT_LONG_QUANTITY = 26,
+    VT_SHORT_QUANTITY = 28,
+    VT_LONG_QUANTITY_BEGIN = 30,
+    VT_SHORT_QUANTITY_BEGIN = 32
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
   const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
-  roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
-  double position() const { return GetField<double>(VT_POSITION, std::numeric_limits<double>::quiet_NaN()); }
-  uint32_t last_trade_id() const { return GetField<uint32_t>(VT_LAST_TRADE_ID, 0); }
-  double position_cost() const { return GetField<double>(VT_POSITION_COST, std::numeric_limits<double>::quiet_NaN()); }
-  double position_yesterday() const {
-    return GetField<double>(VT_POSITION_YESTERDAY, std::numeric_limits<double>::quiet_NaN());
-  }
-  double position_cost_yesterday() const {
-    return GetField<double>(VT_POSITION_COST_YESTERDAY, std::numeric_limits<double>::quiet_NaN());
-  }
   const flatbuffers::String *external_account() const {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
+  }
+  double long_quantity() const { return GetField<double>(VT_LONG_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
+  double short_quantity() const {
+    return GetField<double>(VT_SHORT_QUANTITY, std::numeric_limits<double>::quiet_NaN());
+  }
+  double long_quantity_begin() const {
+    return GetField<double>(VT_LONG_QUANTITY_BEGIN, std::numeric_limits<double>::quiet_NaN());
+  }
+  double short_quantity_begin() const {
+    return GetField<double>(VT_SHORT_QUANTITY_BEGIN, std::numeric_limits<double>::quiet_NaN());
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<double>(verifier, VT_POSITION) &&
-           VerifyField<uint32_t>(verifier, VT_LAST_TRADE_ID) && VerifyField<double>(verifier, VT_POSITION_COST) &&
-           VerifyField<double>(verifier, VT_POSITION_YESTERDAY) &&
-           VerifyField<double>(verifier, VT_POSITION_COST_YESTERDAY) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
-           verifier.VerifyString(external_account()) && verifier.EndTable();
+           VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) && verifier.VerifyString(external_account()) &&
+           VerifyField<double>(verifier, VT_LONG_QUANTITY) && VerifyField<double>(verifier, VT_SHORT_QUANTITY) &&
+           VerifyField<double>(verifier, VT_LONG_QUANTITY_BEGIN) &&
+           VerifyField<double>(verifier, VT_SHORT_QUANTITY_BEGIN) && verifier.EndTable();
   }
 };
 
@@ -3523,28 +3520,23 @@ struct PositionUpdateBuilder {
   void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
     fbb_.AddOffset(PositionUpdate::VT_SYMBOL, symbol);
   }
-  void add_side(roq::fbs::Side side) {
-    fbb_.AddElement<uint8_t>(PositionUpdate::VT_SIDE, static_cast<uint8_t>(side), 0);
-  }
-  void add_position(double position) {
-    fbb_.AddElement<double>(PositionUpdate::VT_POSITION, position, std::numeric_limits<double>::quiet_NaN());
-  }
-  void add_last_trade_id(uint32_t last_trade_id) {
-    fbb_.AddElement<uint32_t>(PositionUpdate::VT_LAST_TRADE_ID, last_trade_id, 0);
-  }
-  void add_position_cost(double position_cost) {
-    fbb_.AddElement<double>(PositionUpdate::VT_POSITION_COST, position_cost, std::numeric_limits<double>::quiet_NaN());
-  }
-  void add_position_yesterday(double position_yesterday) {
-    fbb_.AddElement<double>(
-        PositionUpdate::VT_POSITION_YESTERDAY, position_yesterday, std::numeric_limits<double>::quiet_NaN());
-  }
-  void add_position_cost_yesterday(double position_cost_yesterday) {
-    fbb_.AddElement<double>(
-        PositionUpdate::VT_POSITION_COST_YESTERDAY, position_cost_yesterday, std::numeric_limits<double>::quiet_NaN());
-  }
   void add_external_account(flatbuffers::Offset<flatbuffers::String> external_account) {
     fbb_.AddOffset(PositionUpdate::VT_EXTERNAL_ACCOUNT, external_account);
+  }
+  void add_long_quantity(double long_quantity) {
+    fbb_.AddElement<double>(PositionUpdate::VT_LONG_QUANTITY, long_quantity, std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_short_quantity(double short_quantity) {
+    fbb_.AddElement<double>(
+        PositionUpdate::VT_SHORT_QUANTITY, short_quantity, std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_long_quantity_begin(double long_quantity_begin) {
+    fbb_.AddElement<double>(
+        PositionUpdate::VT_LONG_QUANTITY_BEGIN, long_quantity_begin, std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_short_quantity_begin(double short_quantity_begin) {
+    fbb_.AddElement<double>(
+        PositionUpdate::VT_SHORT_QUANTITY_BEGIN, short_quantity_begin, std::numeric_limits<double>::quiet_NaN());
   }
   explicit PositionUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<PositionUpdate> Finish() {
@@ -3560,25 +3552,21 @@ inline flatbuffers::Offset<PositionUpdate> CreatePositionUpdate(
     flatbuffers::Offset<flatbuffers::String> account = 0,
     flatbuffers::Offset<flatbuffers::String> exchange = 0,
     flatbuffers::Offset<flatbuffers::String> symbol = 0,
-    roq::fbs::Side side = roq::fbs::Side_Undefined,
-    double position = std::numeric_limits<double>::quiet_NaN(),
-    uint32_t last_trade_id = 0,
-    double position_cost = std::numeric_limits<double>::quiet_NaN(),
-    double position_yesterday = std::numeric_limits<double>::quiet_NaN(),
-    double position_cost_yesterday = std::numeric_limits<double>::quiet_NaN(),
-    flatbuffers::Offset<flatbuffers::String> external_account = 0) {
+    flatbuffers::Offset<flatbuffers::String> external_account = 0,
+    double long_quantity = std::numeric_limits<double>::quiet_NaN(),
+    double short_quantity = std::numeric_limits<double>::quiet_NaN(),
+    double long_quantity_begin = std::numeric_limits<double>::quiet_NaN(),
+    double short_quantity_begin = std::numeric_limits<double>::quiet_NaN()) {
   PositionUpdateBuilder builder_(_fbb);
-  builder_.add_position_cost_yesterday(position_cost_yesterday);
-  builder_.add_position_yesterday(position_yesterday);
-  builder_.add_position_cost(position_cost);
-  builder_.add_position(position);
+  builder_.add_short_quantity_begin(short_quantity_begin);
+  builder_.add_long_quantity_begin(long_quantity_begin);
+  builder_.add_short_quantity(short_quantity);
+  builder_.add_long_quantity(long_quantity);
   builder_.add_external_account(external_account);
-  builder_.add_last_trade_id(last_trade_id);
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
-  builder_.add_side(side);
   return builder_.Finish();
 }
 
@@ -3588,13 +3576,11 @@ inline flatbuffers::Offset<PositionUpdate> CreatePositionUpdateDirect(
     const char *account = nullptr,
     const char *exchange = nullptr,
     const char *symbol = nullptr,
-    roq::fbs::Side side = roq::fbs::Side_Undefined,
-    double position = std::numeric_limits<double>::quiet_NaN(),
-    uint32_t last_trade_id = 0,
-    double position_cost = std::numeric_limits<double>::quiet_NaN(),
-    double position_yesterday = std::numeric_limits<double>::quiet_NaN(),
-    double position_cost_yesterday = std::numeric_limits<double>::quiet_NaN(),
-    const char *external_account = nullptr) {
+    const char *external_account = nullptr,
+    double long_quantity = std::numeric_limits<double>::quiet_NaN(),
+    double short_quantity = std::numeric_limits<double>::quiet_NaN(),
+    double long_quantity_begin = std::numeric_limits<double>::quiet_NaN(),
+    double short_quantity_begin = std::numeric_limits<double>::quiet_NaN()) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -3605,13 +3591,11 @@ inline flatbuffers::Offset<PositionUpdate> CreatePositionUpdateDirect(
       account__,
       exchange__,
       symbol__,
-      side,
-      position,
-      last_trade_id,
-      position_cost,
-      position_yesterday,
-      position_cost_yesterday,
-      external_account__);
+      external_account__,
+      long_quantity,
+      short_quantity,
+      long_quantity_begin,
+      short_quantity_begin);
 }
 
 struct RateLimitTrigger FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

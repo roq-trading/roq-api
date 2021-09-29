@@ -7,11 +7,15 @@ table PositionUpdate {
   account:string;
   exchange:string;
   symbol:string;
-  side:Side;
-  position:double = nan;
-  last_trade_id:uint32;
-  position_cost:double = nan;
-  position_yesterday:double = nan;
-  position_cost_yesterday:double = nan;
+  side:Side (deprecated);
+  position:double = nan (deprecated);
+  last_trade_id:uint32 (deprecated);
+  position_cost:double = nan (deprecated);
+  position_yesterday:double = nan (deprecated);
+  position_cost_yesterday:double = nan (deprecated);
   external_account:string;
+  long_quantity:double = nan;
+  short_quantity:double = nan;
+  long_quantity_begin:double = nan;
+  short_quantity_begin:double = nan;
 }

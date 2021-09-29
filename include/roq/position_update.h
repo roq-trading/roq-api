@@ -19,23 +19,19 @@
 #include "roq/span.h"
 #include "roq/string_buffer.h"
 
-#include "roq/side.h"
-
 namespace roq {
 
 //! Update relating to current position for a symbol/side/account
 struct ROQ_PUBLIC PositionUpdate final {
-  uint16_t stream_id = {};               //!< Stream identifier
-  std::string_view account;              //!< Account name
-  std::string_view exchange;             //!< Exchange
-  std::string_view symbol;               //!< Symbol
-  Side side = {};                        //!< Side
-  double position = NaN;                 //!< Current position
-  uint32_t last_trade_id = {};           //!< Last processed trade identifier
-  double position_cost = NaN;            //!< Position cost
-  double position_yesterday = NaN;       //!< Position as of yesterday
-  double position_cost_yesterday = NaN;  //!< Position cost as of yesterday
-  std::string_view external_account;     //!< External account name
+  uint16_t stream_id = {};            //!< Stream identifier
+  std::string_view account;           //!< Account name
+  std::string_view exchange;          //!< Exchange
+  std::string_view symbol;            //!< Symbol
+  std::string_view external_account;  //!< External account name
+  double long_quantity = NaN;         //!< Current long position
+  double short_quantity = NaN;        //!< Current short position
+  double long_quantity_begin = NaN;   //!< Long position at period begin
+  double short_quantity_begin = NaN;  //!< Short position at period begin
 };
 
 }  // namespace roq
@@ -56,25 +52,21 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(side={}, )"
-        R"(position={}, )"
-        R"(last_trade_id={}, )"
-        R"(position_cost={}, )"
-        R"(position_yesterday={}, )"
-        R"(position_cost_yesterday={}, )"
-        R"(external_account="{}")"
+        R"(external_account="{}", )"
+        R"(long_quantity={}, )"
+        R"(short_quantity={}, )"
+        R"(long_quantity_begin={}, )"
+        R"(short_quantity_begin={})"
         R"(}})"_sv,
         value.stream_id,
         value.account,
         value.exchange,
         value.symbol,
-        value.side,
-        value.position,
-        value.last_trade_id,
-        value.position_cost,
-        value.position_yesterday,
-        value.position_cost_yesterday,
-        value.external_account);
+        value.external_account,
+        value.long_quantity,
+        value.short_quantity,
+        value.long_quantity_begin,
+        value.short_quantity_begin);
   }
 };
 template <>

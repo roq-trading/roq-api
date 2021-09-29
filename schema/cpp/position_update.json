@@ -20,38 +20,28 @@
             "type": "std::string_view"
         },
         {
-            "name": "side",
-            "type": "Side",
-            "comment": "Side"
-        },
-        {
-            "name": "position",
-            "type": "double",
-            "comment": "Current position"
-        },
-        {
-            "name": "last_trade_id",
-            "type": "uint32_t",
-            "comment": "Last processed trade identifier"
-        },
-        {
-            "name": "position_cost",
-            "type": "double",
-            "comment": "Position cost"
-        },
-        {
-            "name": "position_yesterday",
-            "type": "double",
-            "comment": "Position as of yesterday"
-        },
-        {
-            "name": "position_cost_yesterday",
-            "type": "double",
-            "comment": "Position cost as of yesterday"
-        },
-        {
             "name": "external_account",
             "type": "std::string_view"
+        },
+        {
+            "name": "long_quantity",
+            "type": "double",
+            "comment": "Current long position"
+        },
+        {
+            "name": "short_quantity",
+            "type": "double",
+            "comment": "Current short position"
+        },
+        {
+            "name": "long_quantity_begin",
+            "type": "double",
+            "comment": "Long position at period begin"
+        },
+        {
+            "name": "short_quantity_begin",
+            "type": "double",
+            "comment": "Short position at period begin"
         }
     ]
 }

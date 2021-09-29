@@ -656,13 +656,11 @@ auto encode(B &builder, const roq::PositionUpdate &value) {
       encode(builder, value.account),
       encode(builder, value.exchange),
       encode(builder, value.symbol),
-      encode(builder, value.side),
-      value.position,
-      value.last_trade_id,
-      value.position_cost,
-      value.position_yesterday,
-      value.position_cost_yesterday,
-      encode(builder, value.external_account));
+      encode(builder, value.external_account),
+      value.long_quantity,
+      value.short_quantity,
+      value.long_quantity_begin,
+      value.short_quantity_begin);
 }
 
 template <typename B>

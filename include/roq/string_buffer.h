@@ -72,6 +72,16 @@ class ROQ_PACKED string_buffer final {
     return static_cast<std::string_view>(*this).compare(std::forward<Args>(args)...);
   }
 
+  template <typename T>
+  bool operator<(const T &rhs) const {
+    return compare(rhs) < 0;
+  }
+
+  template <typename T>
+  bool operator>(const T &rhs) const {
+    return compare(rhs) > 0;
+  }
+
   value_type &operator[](size_t index) { return buffer_[index]; }
 
   value_type operator[](size_t index) const { return buffer_[index]; }

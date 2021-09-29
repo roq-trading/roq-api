@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Adding more `MAX_LENGTH` constants (#91)
 * Align `PositionUpdate` with the FIX protocol (#89)
 
 ### Fixed

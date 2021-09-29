@@ -88,7 +88,7 @@ constexpr int compare(const T &lhs, const U &rhs) {
   } else {
     if (lhs < rhs)
       return -1;
-    if (rhs < lhs)
+    if (lhs > rhs)
       return 1;
     return 0;
   }

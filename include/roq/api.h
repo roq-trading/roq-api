@@ -130,6 +130,9 @@ static const constexpr uint32_t MAX_REQUEST_VERSION = (1 << 24) - 1;
 static const constexpr size_t MAX_LENGTH_LABEL = 32;
 static const constexpr size_t MAX_LENGTH_MEASUREMENT_KEY = 8;
 
+static const constexpr size_t MAX_LENGTH_DESCRIPTION = 128;
+static const constexpr size_t MAX_LENGTH_TIME_ZONE = 32;
+
 // validate auto-generated code
 
 static_assert(sizeof(decltype(RateLimitTrigger::users)::value_type) == MAX_LENGTH_USER);

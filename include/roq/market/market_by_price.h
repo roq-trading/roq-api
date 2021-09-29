@@ -65,6 +65,8 @@ class ROQ_PUBLIC MarketByPrice {
 
   virtual size_t extract(const roq::span<Layer> &, bool fill_zero = false) const = 0;
 
+  void operator()(Side side, double price, double quantity) { update_helper(side, price, quantity); }
+
   // note! the following methods should not be considered stable
 
   using price_level_t = std::pair<int64_t, uint64_t>;
@@ -79,6 +81,8 @@ class ROQ_PUBLIC MarketByPrice {
 
   virtual std::pair<size_t, size_t> update_helper(
       const MarketByPriceUpdate &, const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) = 0;
+
+  virtual void update_helper(Side, double price, double quantity) = 0;
 };
 
 }  // namespace market

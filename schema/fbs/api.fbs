@@ -21,6 +21,7 @@ include "stream_type.fbs";
 include "support_type.fbs";
 include "time_in_force.fbs";
 include "trading_status.fbs";
+include "update_type.fbs";
 
 // - helpers
 

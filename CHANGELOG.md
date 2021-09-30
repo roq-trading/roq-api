@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* New `UpdateType` (will eventually be used with `MarketByPriceUpdate`) (#93)
 * Add `StatisticsType::TRADE_VOLUME` (#88)
 
 ### Changed

@@ -160,6 +160,13 @@ auto encode([[maybe_unused]] B &builder, const roq::Side &value) {
 }
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::StatisticsType &value) {
+  using result_type = StatisticsType;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::StreamType &value) {
   using result_type = StreamType;
   using value_type = std::underlying_type_t<result_type>;
@@ -189,8 +196,8 @@ auto encode([[maybe_unused]] B &builder, const roq::TradingStatus &value) {
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::StatisticsType &value) {
-  using result_type = StatisticsType;
+auto encode([[maybe_unused]] B &builder, const roq::UpdateType &value) {
+  using result_type = UpdateType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }

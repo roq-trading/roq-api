@@ -64,7 +64,8 @@ set(SOURCES
     trade.json
     trade_summary.json
     trade_update.json
-    trading_status.json)
+    trading_status.json
+    update_type.json)
 
 # install
 

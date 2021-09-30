@@ -1,0 +1,8 @@
+namespace roq.fbs;
+
+enum UpdateType:uint8 {
+  Undefined,
+  Snapshot,
+  Incremental,
+  Stale
+}

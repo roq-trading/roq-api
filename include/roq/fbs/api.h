@@ -973,6 +973,33 @@ inline const char *EnumNameTradingStatus(TradingStatus e) {
   return EnumNamesTradingStatus()[index];
 }
 
+enum UpdateType : uint8_t {
+  UpdateType_Undefined = 0,
+  UpdateType_Snapshot = 1,
+  UpdateType_Incremental = 2,
+  UpdateType_Stale = 3,
+  UpdateType_MIN = UpdateType_Undefined,
+  UpdateType_MAX = UpdateType_Stale
+};
+
+inline const UpdateType (&EnumValuesUpdateType())[4] {
+  static const UpdateType values[] = {
+      UpdateType_Undefined, UpdateType_Snapshot, UpdateType_Incremental, UpdateType_Stale};
+  return values;
+}
+
+inline const char *const *EnumNamesUpdateType() {
+  static const char *const names[5] = {"Undefined", "Snapshot", "Incremental", "Stale", nullptr};
+  return names;
+}
+
+inline const char *EnumNameUpdateType(UpdateType e) {
+  if (flatbuffers::IsOutRange(e, UpdateType_Undefined, UpdateType_Stale))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesUpdateType()[index];
+}
+
 enum RateLimitType : uint8_t {
   RateLimitType_Undefined = 0,
   RateLimitType_OrderAction = 1,

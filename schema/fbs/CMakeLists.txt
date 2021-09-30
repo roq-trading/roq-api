@@ -54,7 +54,8 @@ set(SOURCES
     trade.fbs
     trade_summary.fbs
     trade_update.fbs
-    trading_status.fbs)
+    trading_status.fbs
+    update_type.fbs)
 
 # install
 

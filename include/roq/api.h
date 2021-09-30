@@ -39,6 +39,7 @@
 #include "roq/support_type.h"
 #include "roq/time_in_force.h"
 #include "roq/trading_status.h"
+#include "roq/update_type.h"
 
 // helpers
 

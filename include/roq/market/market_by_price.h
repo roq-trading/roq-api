@@ -27,6 +27,16 @@ class ROQ_PUBLIC MarketByPrice {
   virtual int32_t price_decimal_digits() const = 0;
   virtual int32_t quantity_decimal_digits() const = 0;
 
+  // convert price/quantity to internal representation
+  // note! some events can change the internal representation, e.g. ReferenceData
+  virtual int64_t price_to_internal(double price) const = 0;
+  virtual uint64_t quantity_to_internal(double quantity) const = 0;
+
+  // convert internal representation to price/quantity
+  // note! some events can change the internal representation, e.g. ReferenceData
+  virtual double internal_to_price(int64_t price) const = 0;
+  virtual double internal_to_quantity(uint64_t quantity) const = 0;
+
   virtual bool empty() const = 0;
   virtual void clear() = 0;
 

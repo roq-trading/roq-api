@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* Price/quantity decimal digits added to `oms::Order` (#46)
 * Conversion to/from internal price used by `market::MarketByPrice` (#21)
 * Interface to extract bid/ask `MBPUpdate` from `market::MarketByPrice`
 * New `UpdateType` (will eventually be used with `MarketByPriceUpdate`) (#93)

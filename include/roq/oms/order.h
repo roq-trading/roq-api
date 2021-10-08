@@ -40,6 +40,8 @@ struct ROQ_PUBLIC Order final {
   uint32_t max_request_version = {};
   uint32_t max_response_version = {};
   uint32_t max_accepted_version = {};
+  int8_t price_decimal_digits = {};     // -1 means undefined
+  int8_t quantity_decimal_digits = {};  // -1 means undefined
 };
 
 }  // namespace oms
@@ -86,7 +88,9 @@ struct fmt::formatter<roq::oms::Order> {
         R"(routing_id="{}", )"
         R"(max_request_version={}, )"
         R"(max_response_version={}, )"
-        R"(max_accepted_version={})"
+        R"(max_accepted_version={}, )"
+        R"(price_decimals={}, )"
+        R"(quantity_decimals={})"
         R"(}})"_sv,
         value.user_id,
         value.account,
@@ -117,6 +121,8 @@ struct fmt::formatter<roq::oms::Order> {
         value.routing_id,
         value.max_request_version,
         value.max_response_version,
-        value.max_accepted_version);
+        value.max_accepted_version,
+        value.price_decimal_digits,
+        value.quantity_decimal_digits);
   }
 };

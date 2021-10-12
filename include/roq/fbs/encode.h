@@ -475,7 +475,7 @@ auto encode(B &builder, const roq::TopOfBook &value) {
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.layer),
-      value.snapshot,
+      encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc));
 }
 
@@ -488,7 +488,7 @@ auto encode(B &builder, const roq::MarketByPriceUpdate &value) {
       encode(builder, value.symbol),
       encode(builder, value.bids),
       encode(builder, value.asks),
-      value.snapshot,
+      encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc));
 }
 
@@ -501,7 +501,7 @@ auto encode(B &builder, const roq::MarketByOrderUpdate &value) {
       encode(builder, value.symbol),
       encode(builder, value.bids),
       encode(builder, value.asks),
-      value.snapshot,
+      encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc));
 }
 
@@ -524,7 +524,7 @@ auto encode(B &builder, const roq::StatisticsUpdate &value) {
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.statistics),
-      value.snapshot,
+      encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc));
 }
 

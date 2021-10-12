@@ -8,6 +8,6 @@ table MarketByPriceUpdate {
   symbol:string;
   bids:[MBPUpdate];
   asks:[MBPUpdate];
-  snapshot:bool;
+  update_type:UpdateType;
   exchange_time_utc:int64;
 }

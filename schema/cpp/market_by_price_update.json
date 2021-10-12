@@ -26,8 +26,9 @@
             "comment": "List of asks"
         },
         {
-            "name": "snapshot",
-            "type": "bool"
+            "name": "update_type",
+            "type": "UpdateType",
+            "comment": "Update type"
         },
         {
             "name": "exchange_time_utc",

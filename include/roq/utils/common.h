@@ -9,6 +9,7 @@
 #include "roq/order_status.h"
 #include "roq/request_status.h"
 #include "roq/side.h"
+#include "roq/update_type.h"
 
 namespace roq {
 namespace utils {
@@ -24,6 +25,21 @@ inline double price_from_side(const Layer &layer, Side side) {
       return layer.ask_price;
   }
   return NaN;
+}
+
+//! Test if update type is snapshot-like
+inline bool is_snapshot(UpdateType update_type) {
+  switch (update_type) {
+    case UpdateType::UNDEFINED:
+      break;  // note! false (== 0) was previously interpreted as incremental
+    case UpdateType::SNAPSHOT:
+      return true;
+    case UpdateType::INCREMENTAL:
+      break;
+    case UpdateType::STALE:
+      return true;  // note! should normally reset
+  }
+  return false;
 }
 
 //! Check if order was received

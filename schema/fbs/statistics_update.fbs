@@ -7,6 +7,6 @@ table StatisticsUpdate {
   exchange:string;
   symbol:string;
   statistics:[Statistics];
-  snapshot:bool;
+  update_type:UpdateType;
   exchange_time_utc:int64;
 }

@@ -66,7 +66,7 @@ class ROQ_PUBLIC MarketByPrice {
           .symbol = market_by_price_update.symbol,
           .bids = bids,
           .asks = asks,
-          .snapshot = market_by_price_update.snapshot,
+          .update_type = market_by_price_update.update_type,
           .exchange_time_utc = market_by_price_update.exchange_time_utc,
       };
       callback(final_market_by_price_update);

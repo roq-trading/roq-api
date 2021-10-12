@@ -20,17 +20,18 @@
 #include "roq/string_buffer.h"
 
 #include "roq/mbp_update.h"
+#include "roq/update_type.h"
 
 namespace roq {
 
 //! Update relating to market by price
 struct ROQ_PUBLIC MarketByPriceUpdate final {
-  uint16_t stream_id = {};    //!< Stream identifier
-  std::string_view exchange;  //!< Exchange
-  std::string_view symbol;    //!< Symbol
-  roq::span<MBPUpdate> bids;  //!< List of bids
-  roq::span<MBPUpdate> asks;  //!< List of asks
-  bool snapshot = false;      //!< Full update (possibly old) if true and otherwise an incremental update
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view exchange;                        //!< Exchange
+  std::string_view symbol;                          //!< Symbol
+  roq::span<MBPUpdate> bids;                        //!< List of bids
+  roq::span<MBPUpdate> asks;                        //!< List of asks
+  UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
 };
 
@@ -53,7 +54,7 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
         R"(symbol="{}", )"
         R"(bids=[{}], )"
         R"(asks=[{}], )"
-        R"(snapshot={}, )"
+        R"(update_type={}, )"
         R"(exchange_time_utc={})"
         R"(}})"_sv,
         value.stream_id,
@@ -61,7 +62,7 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
         value.symbol,
         fmt::join(value.bids, ", "_sv),
         fmt::join(value.asks, ", "_sv),
-        value.snapshot,
+        value.update_type,
         value.exchange_time_utc);
   }
 };

@@ -20,16 +20,17 @@
 #include "roq/string_buffer.h"
 
 #include "roq/statistics.h"
+#include "roq/update_type.h"
 
 namespace roq {
 
 //! Update relating to statistics published by the exchange
 struct ROQ_PUBLIC StatisticsUpdate final {
-  uint16_t stream_id = {};           //!< Stream identifier
-  std::string_view exchange;         //!< Exchange
-  std::string_view symbol;           //!< Symbol
-  roq::span<Statistics> statistics;  //!< List of statistics
-  bool snapshot = false;             //!< Full update (possibly old) if true and otherwise an incremental update
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view exchange;                        //!< Exchange
+  std::string_view symbol;                          //!< Symbol
+  roq::span<Statistics> statistics;                 //!< List of statistics
+  UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
 };
 
@@ -51,14 +52,14 @@ struct fmt::formatter<roq::StatisticsUpdate> {
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(statistics=[{}], )"
-        R"(snapshot={}, )"
+        R"(update_type={}, )"
         R"(exchange_time_utc={})"
         R"(}})"_sv,
         value.stream_id,
         value.exchange,
         value.symbol,
         fmt::join(value.statistics, ", "_sv),
-        value.snapshot,
+        value.update_type,
         value.exchange_time_utc);
   }
 };

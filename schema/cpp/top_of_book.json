@@ -22,8 +22,9 @@
             "comment": "Top of book"
         },
         {
-            "name": "snapshot",
-            "type": "bool"
+            "name": "update_type",
+            "type": "UpdateType",
+            "comment": "Update type"
         },
         {
             "name": "exchange_time_utc",

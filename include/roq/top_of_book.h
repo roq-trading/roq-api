@@ -20,16 +20,17 @@
 #include "roq/string_buffer.h"
 
 #include "roq/layer.h"
+#include "roq/update_type.h"
 
 namespace roq {
 
 //! Update relating to top of book (aggregate price)
 struct ROQ_PUBLIC TopOfBook final {
-  uint16_t stream_id = {};    //!< Stream identifier
-  std::string_view exchange;  //!< Exchange
-  std::string_view symbol;    //!< Symbol
-  Layer layer;                //!< Top of book
-  bool snapshot = false;      //!< Full update (possibly old) if true and otherwise an incremental update
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view exchange;                        //!< Exchange
+  std::string_view symbol;                          //!< Symbol
+  Layer layer;                                      //!< Top of book
+  UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
 };
 
@@ -51,14 +52,14 @@ struct fmt::formatter<roq::TopOfBook> {
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(layer={}, )"
-        R"(snapshot={}, )"
+        R"(update_type={}, )"
         R"(exchange_time_utc={})"
         R"(}})"_sv,
         value.stream_id,
         value.exchange,
         value.symbol,
         value.layer,
-        value.snapshot,
+        value.update_type,
         value.exchange_time_utc);
   }
 };

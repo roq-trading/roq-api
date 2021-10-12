@@ -9,11 +9,11 @@
         },
         {
             "name": "Incremental",
-	    "comment": "Incremental changes"
+	    "comment": "Incremental change"
         },
         {
             "name": "Stale",
-	    "comment": "The subject is now stale awaiting a snapshot"
+	    "comment": "Stale awaiting full snapshot"
         }
     ]
 }

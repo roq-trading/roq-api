@@ -14,6 +14,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Replace "snapshot" (bool) with "update_type" (UpdateType) (#97)
 * Align type used to represent decimal digits (#46)
 * Adding more `MAX_LENGTH` constants (#91)
 * Align `PositionUpdate` with the FIX protocol (#89)

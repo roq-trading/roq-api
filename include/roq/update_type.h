@@ -23,8 +23,8 @@ struct ROQ_PACKED UpdateType final {
   enum type_t : uint8_t {
     UNDEFINED = 0,
     SNAPSHOT,     //!< Full snapshot
-    INCREMENTAL,  //!< Incremental changes
-    STALE,        //!< The subject is now stale awaiting a snapshot
+    INCREMENTAL,  //!< Incremental change
+    STALE,        //!< Stale awaiting full snapshot
   };
 
   constexpr UpdateType() = default;

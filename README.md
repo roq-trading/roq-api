@@ -35,6 +35,9 @@ API for algorithmic and high-frequency trading (HFT).
 * [fmt](https://github.com/fmtlib/fmt) (MIT License)
 * [range-v3](https://github.com/ericniebler/range-v3) (BSL 1.0 License)
 * [span-lite](https://github.com/martinmoene/span-lite) (BSL 1.0 License)
+* [magic_enum](https://github.com/Neargye/magic_enum) (MIT License)
+* [date](https://github.com/HowardHinnant/date) (MIT License)
+* [jinja2](https://github.com/pallets/jinja) (BSD 3-Clause License)
 
 Optional
 
@@ -89,14 +92,16 @@ conda install -y \
     git \
     cmake \
     flatbuffers \
-    fmt
+    fmt \
+    jinja2 \
+    clang-format
 
 conda install -y --channel https://roq-trading.com/conda/stable \
     roq-oss-range-v3 \
-    roq-oss-span-lite
+    roq-oss-span-lite \
+    roq-oss-magic_enum \
+    roq-oss-date
 ```
-
-In addition, your system should provide `clang-format` (at least version 10).
 
 
 ## Building
@@ -104,9 +109,11 @@ In addition, your system should provide `clang-format` (at least version 10).
 ```bash
 git submodule update --init --recursive
 
-cmake .
+mkdir build && cd build
 
-make -j4
+cmake ..
+
+make -j
 
 make test
 ```

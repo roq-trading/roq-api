@@ -81,6 +81,9 @@ class ROQ_PUBLIC MarketByPrice {
   // atomic update to the order book (quantity == 0 means remove)
   void operator()(Side side, double price, double quantity) { update_helper(side, price, quantity); }
 
+  // apply incremental update
+  void operator()(const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) { update_helper(bids, asks); }
+
   // note! the following methods should not be considered stable
 
   using price_level_t = std::pair<int64_t, uint64_t>;
@@ -97,6 +100,8 @@ class ROQ_PUBLIC MarketByPrice {
       const MarketByPriceUpdate &, const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) = 0;
 
   virtual void update_helper(Side, double price, double quantity) = 0;
+
+  virtual void update_helper(const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) = 0;
 };
 
 }  // namespace market

@@ -55,6 +55,16 @@
             "comment": "Minimum trade volume"
         },
         {
+            "name": "max_trade_vol",
+            "type": "double",
+            "comment": "Maximum trade volume"
+        },
+        {
+            "name": "trade_vol_step_size",
+            "type": "double",
+            "comment": "Trade volume step size"
+        },
+        {
             "name": "option_type",
             "type": "OptionType",
             "comment": "Option type"

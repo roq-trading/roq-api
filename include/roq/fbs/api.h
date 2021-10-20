@@ -3751,7 +3751,9 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ISSUE_DATE = 36,
     VT_SETTLEMENT_DATE = 38,
     VT_EXPIRY_DATETIME = 40,
-    VT_EXPIRY_DATETIME_UTC = 42
+    VT_EXPIRY_DATETIME_UTC = 42,
+    VT_MAX_TRADE_VOL = 44,
+    VT_TRADE_VOL_STEP_SIZE = 46
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
@@ -3783,6 +3785,10 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t settlement_date() const { return GetField<int32_t>(VT_SETTLEMENT_DATE, 0); }
   int64_t expiry_datetime() const { return GetField<int64_t>(VT_EXPIRY_DATETIME, 0); }
   int64_t expiry_datetime_utc() const { return GetField<int64_t>(VT_EXPIRY_DATETIME_UTC, 0); }
+  double max_trade_vol() const { return GetField<double>(VT_MAX_TRADE_VOL, std::numeric_limits<double>::quiet_NaN()); }
+  double trade_vol_step_size() const {
+    return GetField<double>(VT_TRADE_VOL_STEP_SIZE, std::numeric_limits<double>::quiet_NaN());
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
@@ -3799,7 +3805,8 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_TIME_ZONE) && verifier.VerifyString(time_zone()) &&
            VerifyField<int32_t>(verifier, VT_ISSUE_DATE) && VerifyField<int32_t>(verifier, VT_SETTLEMENT_DATE) &&
            VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME) &&
-           VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME_UTC) && verifier.EndTable();
+           VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME_UTC) && VerifyField<double>(verifier, VT_MAX_TRADE_VOL) &&
+           VerifyField<double>(verifier, VT_TRADE_VOL_STEP_SIZE) && verifier.EndTable();
   }
 };
 
@@ -3861,6 +3868,13 @@ struct ReferenceDataBuilder {
   void add_expiry_datetime_utc(int64_t expiry_datetime_utc) {
     fbb_.AddElement<int64_t>(ReferenceData::VT_EXPIRY_DATETIME_UTC, expiry_datetime_utc, 0);
   }
+  void add_max_trade_vol(double max_trade_vol) {
+    fbb_.AddElement<double>(ReferenceData::VT_MAX_TRADE_VOL, max_trade_vol, std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_trade_vol_step_size(double trade_vol_step_size) {
+    fbb_.AddElement<double>(
+        ReferenceData::VT_TRADE_VOL_STEP_SIZE, trade_vol_step_size, std::numeric_limits<double>::quiet_NaN());
+  }
   explicit ReferenceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<ReferenceData> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -3890,8 +3904,12 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceData(
     int32_t issue_date = 0,
     int32_t settlement_date = 0,
     int64_t expiry_datetime = 0,
-    int64_t expiry_datetime_utc = 0) {
+    int64_t expiry_datetime_utc = 0,
+    double max_trade_vol = std::numeric_limits<double>::quiet_NaN(),
+    double trade_vol_step_size = std::numeric_limits<double>::quiet_NaN()) {
   ReferenceDataBuilder builder_(_fbb);
+  builder_.add_trade_vol_step_size(trade_vol_step_size);
+  builder_.add_max_trade_vol(max_trade_vol);
   builder_.add_expiry_datetime_utc(expiry_datetime_utc);
   builder_.add_expiry_datetime(expiry_datetime);
   builder_.add_strike_price(strike_price);
@@ -3936,7 +3954,9 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
     int32_t issue_date = 0,
     int32_t settlement_date = 0,
     int64_t expiry_datetime = 0,
-    int64_t expiry_datetime_utc = 0) {
+    int64_t expiry_datetime_utc = 0,
+    double max_trade_vol = std::numeric_limits<double>::quiet_NaN(),
+    double trade_vol_step_size = std::numeric_limits<double>::quiet_NaN()) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto description__ = description ? _fbb.CreateString(description) : 0;
@@ -3967,7 +3987,9 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
       issue_date,
       settlement_date,
       expiry_datetime,
-      expiry_datetime_utc);
+      expiry_datetime_utc,
+      max_trade_vol,
+      trade_vol_step_size);
 }
 
 struct StatisticsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

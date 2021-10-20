@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* Add `max_trade_vol` and `trade_vol_step_size` to ReferenceData (#100)
 * New method to update `market::MarketByPrice` (#17)
 * Price/quantity decimal digits added to `oms::Order` (#46)
 * Conversion to/from internal price used by `market::MarketByPrice` (#21)

@@ -37,6 +37,8 @@ struct ROQ_PUBLIC ReferenceData final {
   double tick_size = NaN;                         //!< Minimum price increment
   double multiplier = NaN;                        //!< Multiplier (notional)
   double min_trade_vol = NaN;                     //!< Minimum trade volume
+  double max_trade_vol = NaN;                     //!< Maximum trade volume
+  double trade_vol_step_size = NaN;               //!< Trade volume step size
   OptionType option_type = {};                    //!< Option type
   std::string_view strike_currency;               //!< Strike currency
   double strike_price = NaN;                      //!< Strike price
@@ -73,6 +75,8 @@ struct fmt::formatter<roq::ReferenceData> {
         R"(tick_size={}, )"
         R"(multiplier={}, )"
         R"(min_trade_vol={}, )"
+        R"(max_trade_vol={}, )"
+        R"(trade_vol_step_size={}, )"
         R"(option_type={}, )"
         R"(strike_currency="{}", )"
         R"(strike_price={}, )"
@@ -94,6 +98,8 @@ struct fmt::formatter<roq::ReferenceData> {
         value.tick_size,
         value.multiplier,
         value.min_trade_vol,
+        value.max_trade_vol,
+        value.trade_vol_step_size,
         value.option_type,
         value.strike_currency,
         value.strike_price,

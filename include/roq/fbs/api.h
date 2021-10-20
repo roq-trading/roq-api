@@ -3737,8 +3737,8 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SYMBOL = 8,
     VT_DESCRIPTION = 10,
     VT_SECURITY_TYPE = 12,
-    VT_CURRENCY = 14,
-    VT_SETTLEMENT_CURRENCY = 16,
+    VT_QUOTE_CURRENCY = 14,
+    VT_BASE_CURRENCY = 16,
     VT_COMMISSION_CURRENCY = 18,
     VT_TICK_SIZE = 20,
     VT_MULTIPLIER = 22,
@@ -3760,10 +3760,10 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::SecurityType security_type() const {
     return static_cast<roq::fbs::SecurityType>(GetField<uint8_t>(VT_SECURITY_TYPE, 0));
   }
-  const flatbuffers::String *currency() const { return GetPointer<const flatbuffers::String *>(VT_CURRENCY); }
-  const flatbuffers::String *settlement_currency() const {
-    return GetPointer<const flatbuffers::String *>(VT_SETTLEMENT_CURRENCY);
+  const flatbuffers::String *quote_currency() const {
+    return GetPointer<const flatbuffers::String *>(VT_QUOTE_CURRENCY);
   }
+  const flatbuffers::String *base_currency() const { return GetPointer<const flatbuffers::String *>(VT_BASE_CURRENCY); }
   const flatbuffers::String *commission_currency() const {
     return GetPointer<const flatbuffers::String *>(VT_COMMISSION_CURRENCY);
   }
@@ -3788,9 +3788,9 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
            VerifyOffset(verifier, VT_DESCRIPTION) && verifier.VerifyString(description()) &&
-           VerifyField<uint8_t>(verifier, VT_SECURITY_TYPE) && VerifyOffset(verifier, VT_CURRENCY) &&
-           verifier.VerifyString(currency()) && VerifyOffset(verifier, VT_SETTLEMENT_CURRENCY) &&
-           verifier.VerifyString(settlement_currency()) && VerifyOffset(verifier, VT_COMMISSION_CURRENCY) &&
+           VerifyField<uint8_t>(verifier, VT_SECURITY_TYPE) && VerifyOffset(verifier, VT_QUOTE_CURRENCY) &&
+           verifier.VerifyString(quote_currency()) && VerifyOffset(verifier, VT_BASE_CURRENCY) &&
+           verifier.VerifyString(base_currency()) && VerifyOffset(verifier, VT_COMMISSION_CURRENCY) &&
            verifier.VerifyString(commission_currency()) && VerifyField<double>(verifier, VT_TICK_SIZE) &&
            VerifyField<double>(verifier, VT_MULTIPLIER) && VerifyField<double>(verifier, VT_MIN_TRADE_VOL) &&
            VerifyField<uint8_t>(verifier, VT_OPTION_TYPE) && VerifyOffset(verifier, VT_STRIKE_CURRENCY) &&
@@ -3818,11 +3818,11 @@ struct ReferenceDataBuilder {
   void add_security_type(roq::fbs::SecurityType security_type) {
     fbb_.AddElement<uint8_t>(ReferenceData::VT_SECURITY_TYPE, static_cast<uint8_t>(security_type), 0);
   }
-  void add_currency(flatbuffers::Offset<flatbuffers::String> currency) {
-    fbb_.AddOffset(ReferenceData::VT_CURRENCY, currency);
+  void add_quote_currency(flatbuffers::Offset<flatbuffers::String> quote_currency) {
+    fbb_.AddOffset(ReferenceData::VT_QUOTE_CURRENCY, quote_currency);
   }
-  void add_settlement_currency(flatbuffers::Offset<flatbuffers::String> settlement_currency) {
-    fbb_.AddOffset(ReferenceData::VT_SETTLEMENT_CURRENCY, settlement_currency);
+  void add_base_currency(flatbuffers::Offset<flatbuffers::String> base_currency) {
+    fbb_.AddOffset(ReferenceData::VT_BASE_CURRENCY, base_currency);
   }
   void add_commission_currency(flatbuffers::Offset<flatbuffers::String> commission_currency) {
     fbb_.AddOffset(ReferenceData::VT_COMMISSION_CURRENCY, commission_currency);
@@ -3876,8 +3876,8 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceData(
     flatbuffers::Offset<flatbuffers::String> symbol = 0,
     flatbuffers::Offset<flatbuffers::String> description = 0,
     roq::fbs::SecurityType security_type = roq::fbs::SecurityType_Undefined,
-    flatbuffers::Offset<flatbuffers::String> currency = 0,
-    flatbuffers::Offset<flatbuffers::String> settlement_currency = 0,
+    flatbuffers::Offset<flatbuffers::String> quote_currency = 0,
+    flatbuffers::Offset<flatbuffers::String> base_currency = 0,
     flatbuffers::Offset<flatbuffers::String> commission_currency = 0,
     double tick_size = std::numeric_limits<double>::quiet_NaN(),
     double multiplier = std::numeric_limits<double>::quiet_NaN(),
@@ -3904,8 +3904,8 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceData(
   builder_.add_underlying(underlying);
   builder_.add_strike_currency(strike_currency);
   builder_.add_commission_currency(commission_currency);
-  builder_.add_settlement_currency(settlement_currency);
-  builder_.add_currency(currency);
+  builder_.add_base_currency(base_currency);
+  builder_.add_quote_currency(quote_currency);
   builder_.add_description(description);
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
@@ -3922,8 +3922,8 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
     const char *symbol = nullptr,
     const char *description = nullptr,
     roq::fbs::SecurityType security_type = roq::fbs::SecurityType_Undefined,
-    const char *currency = nullptr,
-    const char *settlement_currency = nullptr,
+    const char *quote_currency = nullptr,
+    const char *base_currency = nullptr,
     const char *commission_currency = nullptr,
     double tick_size = std::numeric_limits<double>::quiet_NaN(),
     double multiplier = std::numeric_limits<double>::quiet_NaN(),
@@ -3940,8 +3940,8 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto description__ = description ? _fbb.CreateString(description) : 0;
-  auto currency__ = currency ? _fbb.CreateString(currency) : 0;
-  auto settlement_currency__ = settlement_currency ? _fbb.CreateString(settlement_currency) : 0;
+  auto quote_currency__ = quote_currency ? _fbb.CreateString(quote_currency) : 0;
+  auto base_currency__ = base_currency ? _fbb.CreateString(base_currency) : 0;
   auto commission_currency__ = commission_currency ? _fbb.CreateString(commission_currency) : 0;
   auto strike_currency__ = strike_currency ? _fbb.CreateString(strike_currency) : 0;
   auto underlying__ = underlying ? _fbb.CreateString(underlying) : 0;
@@ -3953,8 +3953,8 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
       symbol__,
       description__,
       security_type,
-      currency__,
-      settlement_currency__,
+      quote_currency__,
+      base_currency__,
       commission_currency__,
       tick_size,
       multiplier,

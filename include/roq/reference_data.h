@@ -31,8 +31,8 @@ struct ROQ_PUBLIC ReferenceData final {
   std::string_view symbol;                        //!< Symbol
   std::string_view description;                   //!< Description
   SecurityType security_type = {};                //!< Security type
-  std::string_view currency;                      //!< Currency
-  std::string_view settlement_currency;           //!< Currency
+  std::string_view base_currency;                 //!< Base currency
+  std::string_view quote_currency;                //!< Quote currency
   std::string_view commission_currency;           //!< Currency
   double tick_size = NaN;                         //!< Minimum price increment
   double multiplier = NaN;                        //!< Multiplier (notional)
@@ -67,8 +67,8 @@ struct fmt::formatter<roq::ReferenceData> {
         R"(symbol="{}", )"
         R"(description="{}", )"
         R"(security_type={}, )"
-        R"(currency="{}", )"
-        R"(settlement_currency="{}", )"
+        R"(base_currency="{}", )"
+        R"(quote_currency="{}", )"
         R"(commission_currency="{}", )"
         R"(tick_size={}, )"
         R"(multiplier={}, )"
@@ -88,8 +88,8 @@ struct fmt::formatter<roq::ReferenceData> {
         value.symbol,
         value.description,
         value.security_type,
-        value.currency,
-        value.settlement_currency,
+        value.base_currency,
+        value.quote_currency,
         value.commission_currency,
         value.tick_size,
         value.multiplier,

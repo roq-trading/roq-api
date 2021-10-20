@@ -26,12 +26,14 @@
             "comment": "Security type"
         },
         {
-            "name": "currency",
-            "type": "std::string_view"
+            "name": "base_currency",
+            "type": "std::string_view",
+            "comment": "Base currency"
         },
         {
-            "name": "settlement_currency",
-            "type": "std::string_view"
+            "name": "quote_currency",
+            "type": "std::string_view",
+            "comment": "Quote currency"
         },
         {
             "name": "commission_currency",

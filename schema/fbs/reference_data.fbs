@@ -9,8 +9,8 @@ table ReferenceData {
   symbol:string;
   description:string;
   security_type:SecurityType;
-  currency:string;
-  settlement_currency:string;
+  quote_currency:string;  // note! order not aligned with c++
+  base_currency:string;  // note! order not aligned with c++
   commission_currency:string;
   tick_size:double = nan;
   multiplier:double = nan;

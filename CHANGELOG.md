@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* Add exchange sequence number to `MarketByPrice` and `MarketByOrder` (#101)
 * Add `max_trade_vol` and `trade_vol_step_size` to ReferenceData (#100)
 * New method to update `market::MarketByPrice` (#17)
 * Price/quantity decimal digits added to `oms::Order` (#46)

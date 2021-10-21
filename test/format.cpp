@@ -37,6 +37,7 @@ TEST(format, market_by_price) {
       .asks = {asks, std::size(asks)},
       .update_type = UpdateType::SNAPSHOT,
       .exchange_time_utc = {},
+      .exchange_sequence = 123,
   };
   auto result = fmt::format("{}"_sv, market_by_price);
   EXPECT_GT(result.length(), size_t{0});
@@ -48,7 +49,8 @@ TEST(format, market_by_price) {
       R"(bids=[{price=1, quantity=2, implied_quantity=3, price_level=1, number_of_orders=2}, {price=2, quantity=4, implied_quantity=3, price_level=1, number_of_orders=2}, {price=3, quantity=8, implied_quantity=3, price_level=1, number_of_orders=2}, {price=4, quantity=10, implied_quantity=3, price_level=1, number_of_orders=2}, {price=5, quantity=12, implied_quantity=3, price_level=1, number_of_orders=2}], )"
       R"(asks=[{price=1, quantity=2, implied_quantity=3, price_level=1, number_of_orders=2}, {price=2, quantity=4, implied_quantity=3, price_level=1, number_of_orders=2}, {price=3, quantity=8, implied_quantity=3, price_level=1, number_of_orders=2}, {price=4, quantity=10, implied_quantity=3, price_level=1, number_of_orders=2}, {price=5, quantity=12, implied_quantity=3, price_level=1, number_of_orders=2}], )"
       R"(update_type=SNAPSHOT, )"
-      R"(exchange_time_utc=0ns)"
+      R"(exchange_time_utc=0ns, )"
+      R"(exchange_sequence=123)"
       R"(})"_sv;
   EXPECT_EQ(result, expected);
 }

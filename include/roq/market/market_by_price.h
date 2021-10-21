@@ -42,6 +42,9 @@ class ROQ_PUBLIC MarketByPrice {
 
   virtual bool is_bad() const = 0;
 
+  virtual std::chrono::nanoseconds exchange_time_utc() const = 0;
+  virtual int64_t exchange_sequence() const = 0;
+
   template <typename T>
   void operator()(const T &value) {
     update_helper(value);

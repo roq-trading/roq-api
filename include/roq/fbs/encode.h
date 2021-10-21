@@ -491,7 +491,8 @@ auto encode(B &builder, const roq::MarketByPriceUpdate &value) {
       encode(builder, value.bids),
       encode(builder, value.asks),
       encode(builder, value.update_type),
-      encode(builder, value.exchange_time_utc));
+      encode(builder, value.exchange_time_utc),
+      value.exchange_sequence);
 }
 
 template <typename B>
@@ -504,7 +505,8 @@ auto encode(B &builder, const roq::MarketByOrderUpdate &value) {
       encode(builder, value.bids),
       encode(builder, value.asks),
       encode(builder, value.update_type),
-      encode(builder, value.exchange_time_utc));
+      encode(builder, value.exchange_time_utc),
+      value.exchange_sequence);
 }
 
 template <typename B>

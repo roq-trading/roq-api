@@ -33,6 +33,7 @@ struct ROQ_PUBLIC MarketByPriceUpdate final {
   roq::span<MBPUpdate> asks;                        //!< List of asks
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
+  int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
 };
 
 }  // namespace roq
@@ -55,7 +56,8 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
         R"(bids=[{}], )"
         R"(asks=[{}], )"
         R"(update_type={}, )"
-        R"(exchange_time_utc={})"
+        R"(exchange_time_utc={}, )"
+        R"(exchange_sequence={})"
         R"(}})"_sv,
         value.stream_id,
         value.exchange,
@@ -63,7 +65,8 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
         fmt::join(value.bids, ", "_sv),
         fmt::join(value.asks, ", "_sv),
         value.update_type,
-        value.exchange_time_utc);
+        value.exchange_time_utc,
+        value.exchange_sequence);
   }
 };
 template <>

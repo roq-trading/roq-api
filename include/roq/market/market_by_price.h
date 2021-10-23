@@ -71,6 +71,7 @@ class ROQ_PUBLIC MarketByPrice {
           .asks = asks,
           .update_type = market_by_price_update.update_type,
           .exchange_time_utc = market_by_price_update.exchange_time_utc,
+          .exchange_sequence = market_by_price_update.exchange_sequence,
       };
       callback(final_market_by_price_update);
     }

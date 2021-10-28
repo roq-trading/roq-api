@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include <tuple>
 #include <utility>
 
 #include "roq/message_info.h"
@@ -17,8 +16,8 @@ struct Event final {
   Event(const Event &) = delete;
 
   //! Dispatch to handler
-  template <typename R, typename H, typename... Args>
-  R dispatch(H &&handler, Args &&...args) {
+  template <typename Result, typename Handler, typename... Args>
+  Result dispatch(Handler &&handler, Args &&...args) {
     return handler(*this, std::forward<Args>(args)...);
   }
 
@@ -29,15 +28,16 @@ struct Event final {
   operator const T &() const { return value; }
 
   //! Structured binding
-  operator std::tuple<const MessageInfo &, const T &>() const { return {message_info, value}; }
+  operator std::pair<const MessageInfo &, const T &>() const { return {message_info, value}; }
 
   const MessageInfo &message_info;  //!< MessageInfo
   const T &value;                   //!< Message
 };
 
 //! Create event and dispatch to handler
-template <typename H, typename T, typename... Args>
-inline void create_event_and_dispatch(H &&handler, const MessageInfo &message_info, const T &value, Args &&...args) {
+template <typename Handler, typename T, typename... Args>
+inline void create_event_and_dispatch(
+    Handler &&handler, const MessageInfo &message_info, const T &value, Args &&...args) {
   Event event(message_info, value);
   return event.template dispatch<void>(handler, std::forward<Args>(args)...);
 }

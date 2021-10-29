@@ -9,7 +9,6 @@
 #include <string_view>
 
 #include "roq/chrono.h"
-#include "roq/literals.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
 #include "roq/string_buffer.h"

@@ -12,7 +12,6 @@
 
 #include "roq/compat.h"
 #include "roq/exceptions.h"
-#include "roq/literals.h"
 
 namespace roq {
 
@@ -108,9 +107,10 @@ class ROQ_PACKED string_buffer final {
   }
 
   void push_back(value_type value) {
+    using namespace std::literals;
     auto len = length();
     if (ROQ_UNLIKELY(N <= len))
-      throw LengthErrorException("String buffer is full"_sv);
+      throw LengthErrorException("String buffer is full"sv);
     buffer_[len] = value;
     ++len;
     if (len < (N - 1)) {
@@ -124,7 +124,7 @@ class ROQ_PACKED string_buffer final {
   value_type *data() { return buffer_.data(); }
 
   void copy(const std::string_view &text) {
-    using namespace roq::literals;
+    using namespace std::literals;
     auto len = text.length();
     if (ROQ_LIKELY(len <= size())) {
       auto last = std::copy(text.begin(), text.end(), buffer_.begin());
@@ -132,7 +132,7 @@ class ROQ_PACKED string_buffer final {
       if (len < (N - 1))
         buffer_[N - 1] = len;
     } else {
-      throw LengthErrorException(R"(can't copy: len(text="{}")={} exceeds size={})"_sv, text, len, size());
+      throw LengthErrorException(R"(can't copy: len(text="{}")={} exceeds size={})"sv, text, len, size());
     }
   }
 
@@ -155,7 +155,7 @@ struct fmt::formatter<roq::string_buffer<N> > {
   }
   template <typename Context>
   auto format(const roq::string_buffer<N> &value, Context &ctx) {
-    using namespace roq::literals;
-    return fmt::format_to(ctx.out(), "{}"_sv, static_cast<std::string_view>(value));
+    using namespace std::literals;
+    return fmt::format_to(ctx.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };

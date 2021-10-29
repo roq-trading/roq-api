@@ -13,8 +13,13 @@ namespace market {
 class ROQ_PUBLIC BadState : public RuntimeError {
  protected:
   BadState(const source_location &loc, const std::string_view &exchange, const std::string_view &symbol)
-      : RuntimeError(loc, R"("Order book in bad state (exchange="{}", symbol="{}"))"_sv, exchange, symbol),
-        exchange(exchange), symbol(symbol) {}
+      : RuntimeError(loc, format_string(), exchange, symbol), exchange(exchange), symbol(symbol) {}
+
+ private:
+  static std::string_view format_string() {
+    using namespace std::literals;
+    return R"("Order book in bad state (exchange="{}", symbol="{}"))"sv;
+  }
 
  public:
   const std::string_view exchange;

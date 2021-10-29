@@ -13,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
@@ -37,13 +36,13 @@ struct fmt::formatter<roq::DownloadEnd> {
   }
   template <typename Context>
   auto format(const roq::DownloadEnd &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(account="{}", )"
         R"(max_order_id={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.account,
         value.max_order_id);
   }
@@ -56,13 +55,13 @@ struct fmt::formatter<roq::Event<roq::DownloadEnd> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::DownloadEnd> &event, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(download_end={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

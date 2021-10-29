@@ -13,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
@@ -45,7 +44,7 @@ struct fmt::formatter<roq::RateLimitTrigger> {
   }
   template <typename Context>
   auto format(const roq::RateLimitTrigger &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -56,12 +55,12 @@ struct fmt::formatter<roq::RateLimitTrigger> {
         R"(accounts=[{}], )"
         R"(ban_expires={}, )"
         R"(triggered_by="{}")"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.name,
         value.origin,
         value.type,
-        fmt::join(value.users, ", "_sv),
-        fmt::join(value.accounts, ", "_sv),
+        fmt::join(value.users, ", "sv),
+        fmt::join(value.accounts, ", "sv),
         value.ban_expires,
         value.triggered_by);
   }
@@ -74,13 +73,13 @@ struct fmt::formatter<roq::Event<roq::RateLimitTrigger> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::RateLimitTrigger> &event, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(rate_limit_trigger={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

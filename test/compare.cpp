@@ -4,6 +4,8 @@
 
 #include "roq/utils/compare.h"
 
+using namespace std::literals;
+
 namespace roq {
 namespace utils {
 
@@ -48,15 +50,15 @@ TEST(compare, double) {
 
 TEST(compare, string_case_insensitive) {
   // same length
-  EXPECT_EQ(case_insensitive_compare(""_sv, ""_sv), 0);
-  EXPECT_EQ(case_insensitive_compare("abc123"_sv, "ABC123"_sv), 0);
-  EXPECT_EQ(case_insensitive_compare("abc123"_sv, "DEF456"_sv), -1);
-  EXPECT_EQ(case_insensitive_compare("def456"_sv, "ABC123"_sv), 1);
+  EXPECT_EQ(case_insensitive_compare(""sv, ""sv), 0);
+  EXPECT_EQ(case_insensitive_compare("abc123"sv, "ABC123"sv), 0);
+  EXPECT_EQ(case_insensitive_compare("abc123"sv, "DEF456"sv), -1);
+  EXPECT_EQ(case_insensitive_compare("def456"sv, "ABC123"sv), 1);
   // different length
-  EXPECT_EQ(case_insensitive_compare(""_sv, "ABC123"_sv), -1);
-  EXPECT_EQ(case_insensitive_compare("abc123"_sv, ""_sv), 1);
-  EXPECT_EQ(case_insensitive_compare("abc"_sv, "ABC123"_sv), -1);
-  EXPECT_EQ(case_insensitive_compare("abc123"_sv, "ABC"_sv), 1);
+  EXPECT_EQ(case_insensitive_compare(""sv, "ABC123"sv), -1);
+  EXPECT_EQ(case_insensitive_compare("abc123"sv, ""sv), 1);
+  EXPECT_EQ(case_insensitive_compare("abc"sv, "ABC123"sv), -1);
+  EXPECT_EQ(case_insensitive_compare("abc123"sv, "ABC"sv), 1);
 }
 
 TEST(compare, seconds) {

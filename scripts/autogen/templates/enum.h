@@ -11,7 +11,6 @@
 #include <magic_enum.hpp>
 
 #include "roq/compat.h"
-#include "roq/literals.h"
 
 {% include 'namespace_begin' %}
 
@@ -93,10 +92,10 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
   auto format(
       const {{ namespaces | join('::') }}::{{ name }}& value,
       Context& context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
-        "{}"_sv,
+        "{}"sv,
         value.name());
   }
 };

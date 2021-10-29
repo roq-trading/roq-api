@@ -13,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
@@ -43,7 +42,7 @@ struct fmt::formatter<roq::GatewaySettings> {
   }
   template <typename Context>
   auto format(const roq::GatewaySettings &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -55,7 +54,7 @@ struct fmt::formatter<roq::GatewaySettings> {
         R"(mbp_allow_price_inversion={}, )"
         R"(oms_download_has_state={}, )"
         R"(oms_download_has_routing_id={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.supports,
         value.mbp_max_depth,
         value.mbp_tick_size_multiplier,
@@ -74,13 +73,13 @@ struct fmt::formatter<roq::Event<roq::GatewaySettings> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::GatewaySettings> &event, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(gateway_settings={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

@@ -9,7 +9,6 @@
 #include <string_view>
 
 #include "roq/compat.h"
-#include "roq/literals.h"
 
 namespace roq {
 namespace metrics {
@@ -17,16 +16,16 @@ namespace metrics {
 //! Helper for all metrics collectors
 struct ROQ_PUBLIC Base {
   inline std::string create_labels(const std::string_view &label_name_0, const std::string_view &label_value_0) {
-    using namespace roq::literals;
-    return fmt::format(R"({}="{}")"_sv, label_name_0, label_value_0);
+    using namespace std::literals;
+    return fmt::format(R"({}="{}")"sv, label_name_0, label_value_0);
   }
   inline std::string create_labels(
       const std::string_view &label_name_0,
       const std::string_view &label_value_0,
       const std::string_view &label_name_1,
       const std::string_view &label_value_1) {
-    using namespace roq::literals;
-    return fmt::format(R"({}="{}", {}="{}")"_sv, label_name_0, label_value_0, label_name_1, label_value_1);
+    using namespace std::literals;
+    return fmt::format(R"({}="{}", {}="{}")"sv, label_name_0, label_value_0, label_name_1, label_value_1);
   }
   inline std::string create_labels(
       const std::string_view &label_name_0,
@@ -35,9 +34,9 @@ struct ROQ_PUBLIC Base {
       const std::string_view &label_value_1,
       const std::string_view &label_name_2,
       const std::string_view &label_value_2) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format(
-        R"({}="{}", {}="{}", {}="{}")"_sv,
+        R"({}="{}", {}="{}", {}="{}")"sv,
         label_name_0,
         label_value_0,
         label_name_1,

@@ -5,7 +5,6 @@
 
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/span.h"
 
 namespace roq {
@@ -27,12 +26,12 @@ struct fmt::formatter<roq::client::CustomMessage> {
   }
   template <typename Context>
   auto format(const roq::client::CustomMessage &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(length={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         std::size(value.message));
   }
 };
@@ -45,13 +44,13 @@ struct fmt::formatter<roq::Event<roq::client::CustomMessage> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::client::CustomMessage> &event, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(custom_message={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

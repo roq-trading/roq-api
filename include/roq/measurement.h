@@ -11,7 +11,6 @@
 #include <string_view>
 
 #include "roq/chrono.h"
-#include "roq/literals.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
 #include "roq/string_buffer.h"
@@ -35,13 +34,13 @@ struct fmt::formatter<roq::Measurement> {
   }
   template <typename Context>
   auto format(const roq::Measurement &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(name="{}", )"
         R"(value={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.name,
         value.value);
   }

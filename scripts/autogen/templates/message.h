@@ -11,7 +11,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
@@ -40,7 +39,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
   auto format(
       const {{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}>& event,
       Context& context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
 {%- raw %}
@@ -49,7 +48,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
         R"(message_info={}, )"
         R"({{ filename }}={})"
 {%- raw %}
-        R"(}})"_sv,
+        R"(}})"sv,
 {%- endraw %}
         event.message_info,
         event.value);

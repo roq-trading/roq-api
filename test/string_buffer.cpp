@@ -5,7 +5,7 @@
 #include "roq/string_buffer.h"
 
 using namespace roq;
-using namespace roq::literals;
+using namespace std::literals;
 
 TEST(string_buffer, empty) {
   roq::string_buffer<4> s;
@@ -17,7 +17,7 @@ TEST(string_buffer, empty) {
 }
 
 TEST(string_buffer, partial) {
-  constexpr auto text = "12"_sv;
+  constexpr auto text = "12"sv;
   roq::string_buffer<4> s = text;
   EXPECT_EQ(s.size(), 4);
   EXPECT_EQ(s.length(), 2);
@@ -28,7 +28,7 @@ TEST(string_buffer, partial) {
 }
 
 TEST(string_buffer, almost_full) {
-  constexpr auto text = "123"_sv;
+  constexpr auto text = "123"sv;
   roq::string_buffer<4> s = text;
   EXPECT_EQ(s.size(), 4);
   EXPECT_EQ(s.length(), 3);
@@ -39,7 +39,7 @@ TEST(string_buffer, almost_full) {
 }
 
 TEST(string_buffer, full) {
-  constexpr auto text = "1234"_sv;
+  constexpr auto text = "1234"sv;
   roq::string_buffer<4> s = text;
   EXPECT_EQ(s.size(), 4);
   EXPECT_EQ(s.length(), 4);
@@ -51,11 +51,11 @@ TEST(string_buffer, full) {
 
 TEST(string_buffer, construct) {
   roq::string_buffer<4>();
-  roq::string_buffer<4>("1"_sv);
-  roq::string_buffer<4>("12"_sv);
-  roq::string_buffer<4>("123"_sv);
-  roq::string_buffer<4>("1234"_sv);
-  EXPECT_THROW(roq::string_buffer<4>("12345"_sv), LengthError);
+  roq::string_buffer<4>("1"sv);
+  roq::string_buffer<4>("12"sv);
+  roq::string_buffer<4>("123"sv);
+  roq::string_buffer<4>("1234"sv);
+  EXPECT_THROW(roq::string_buffer<4>("12345"sv), LengthError);
 }
 
 TEST(string_buffer, push_back) {

@@ -13,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
@@ -34,8 +33,8 @@ struct fmt::formatter<roq::BatchEnd> {
   }
   template <typename Context>
   auto format(const roq::BatchEnd &value, Context &context) {
-    using namespace roq::literals;
-    return fmt::format_to(context.out(), R"({{}})"_sv);
+    using namespace std::literals;
+    return fmt::format_to(context.out(), R"({{}})"sv);
   }
 };
 template <>
@@ -46,13 +45,13 @@ struct fmt::formatter<roq::Event<roq::BatchEnd> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::BatchEnd> &event, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(batch_end={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

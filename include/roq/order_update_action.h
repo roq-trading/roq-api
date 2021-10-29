@@ -13,7 +13,6 @@
 #include <magic_enum.hpp>
 
 #include "roq/compat.h"
-#include "roq/literals.h"
 
 namespace roq {
 
@@ -78,7 +77,7 @@ struct fmt::formatter<roq::OrderUpdateAction> {
   }
   template <typename Context>
   auto format(const roq::OrderUpdateAction &value, Context &context) {
-    using namespace roq::literals;
-    return fmt::format_to(context.out(), "{}"_sv, value.name());
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, value.name());
   }
 };

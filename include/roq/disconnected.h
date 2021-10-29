@@ -13,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
@@ -38,12 +37,12 @@ struct fmt::formatter<roq::Disconnected> {
   }
   template <typename Context>
   auto format(const roq::Disconnected &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(order_cancel_policy={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.order_cancel_policy);
   }
 };
@@ -55,13 +54,13 @@ struct fmt::formatter<roq::Event<roq::Disconnected> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::Disconnected> &event, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(disconnected={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

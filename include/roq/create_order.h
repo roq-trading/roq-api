@@ -13,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
@@ -56,7 +55,7 @@ struct fmt::formatter<roq::CreateOrder> {
   }
   template <typename Context>
   auto format(const roq::CreateOrder &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -75,7 +74,7 @@ struct fmt::formatter<roq::CreateOrder> {
         R"(price={}, )"
         R"(stop_price={}, )"
         R"(routing_id="{}")"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.account,
         value.order_id,
         value.exchange,
@@ -101,13 +100,13 @@ struct fmt::formatter<roq::Event<roq::CreateOrder> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::CreateOrder> &event, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(create_order={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

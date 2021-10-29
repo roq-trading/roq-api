@@ -13,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
@@ -43,7 +42,7 @@ struct fmt::formatter<roq::CustomMetricsUpdate> {
   }
   template <typename Context>
   auto format(const roq::CustomMetricsUpdate &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -53,13 +52,13 @@ struct fmt::formatter<roq::CustomMetricsUpdate> {
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(measurements=[{}])"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.user,
         value.label,
         value.account,
         value.exchange,
         value.symbol,
-        fmt::join(value.measurements, ", "_sv));
+        fmt::join(value.measurements, ", "sv));
   }
 };
 template <>
@@ -70,13 +69,13 @@ struct fmt::formatter<roq::Event<roq::CustomMetricsUpdate> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::CustomMetricsUpdate> &event, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(custom_metrics_update={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

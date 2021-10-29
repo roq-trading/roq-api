@@ -11,7 +11,6 @@
 #include <type_traits>
 
 #include "roq/compat.h"
-#include "roq/literals.h"
 
 namespace roq {
 
@@ -38,22 +37,22 @@ struct ROQ_PACKED ExecutionInstruction final {
   constexpr operator type_t() const { return type_; }
 
   constexpr std::string_view name() const {
-    using namespace roq::literals;
+    using namespace std::literals;
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::PARTICIPATE_DO_NOT_INITIATE:
-        return "PARTICIPATE_DO_NOT_INITIATE"_sv;
+        return "PARTICIPATE_DO_NOT_INITIATE"sv;
       case type_t::CANCEL_IF_NOT_BEST:
-        return "CANCEL_IF_NOT_BEST"_sv;
+        return "CANCEL_IF_NOT_BEST"sv;
       case type_t::DO_NOT_INCREASE:
-        return "DO_NOT_INCREASE"_sv;
+        return "DO_NOT_INCREASE"sv;
       case type_t::DO_NOT_REDUCE:
-        return "DO_NOT_REDUCE"_sv;
+        return "DO_NOT_REDUCE"sv;
       default:
         assert(false);
     }
-    return "UNDEFINED"_sv;
+    return "UNDEFINED"sv;
   }
 
   constexpr operator std::string_view() const { return name(); }
@@ -96,7 +95,7 @@ struct fmt::formatter<roq::ExecutionInstruction> {
   }
   template <typename Context>
   auto format(const roq::ExecutionInstruction &value, Context &context) {
-    using namespace roq::literals;
-    return fmt::format_to(context.out(), "{}"_sv, value.name());
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, value.name());
   }
 };

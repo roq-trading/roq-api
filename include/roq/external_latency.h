@@ -13,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
@@ -37,13 +36,13 @@ struct fmt::formatter<roq::ExternalLatency> {
   }
   template <typename Context>
   auto format(const roq::ExternalLatency &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(stream_id={}, )"
         R"(latency={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.stream_id,
         value.latency);
   }
@@ -56,13 +55,13 @@ struct fmt::formatter<roq::Event<roq::ExternalLatency> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::ExternalLatency> &event, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(external_latency={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

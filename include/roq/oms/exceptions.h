@@ -12,8 +12,9 @@ namespace oms {
 class ROQ_PUBLIC Exception : public roq::Exception {
  public:
   char const *what() const noexcept override {
+    using namespace std::literals;
     if (what_.empty())  // lazy
-      what_ = fmt::format("OMS: {}"_sv, *this);
+      what_ = fmt::format("OMS: {}"sv, *this);
     return what_.c_str();
   }
 
@@ -73,12 +74,12 @@ struct fmt::formatter<roq::oms::Exception> {
   }
   template <typename Context>
   auto format(const roq::oms::Exception &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(error={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.error);
   }
 };

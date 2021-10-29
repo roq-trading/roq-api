@@ -8,8 +8,6 @@
 #include <array>
 #include <utility>
 
-#include "roq/literals.h"
-
 namespace roq {
 
 class UUID final {
@@ -87,7 +85,7 @@ struct fmt::formatter<roq::UUID> {
   }
   template <typename Context>
   auto format(const roq::UUID &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     auto data = value.data();
     return fmt::format_to(
         context.out(),
@@ -95,7 +93,7 @@ struct fmt::formatter<roq::UUID> {
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
-        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"_sv,
+        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"sv,
         data[0],
         data[1],
         data[2],

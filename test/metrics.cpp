@@ -5,7 +5,7 @@
 #include "roq/metrics.h"
 
 using namespace roq;
-using namespace roq::literals;
+using namespace std::literals;
 
 namespace {
 class Writer : public metrics::Writer {
@@ -25,5 +25,5 @@ TEST(histogram, simple) {
   metrics::Histogram<1, 2, 3, 4, 5, 6> histogram;
   histogram.update(3);
   Writer writer;
-  writer.write(histogram, "test"_sv);
+  writer.write(histogram, "test"sv);
 }

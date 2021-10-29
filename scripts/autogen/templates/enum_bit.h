@@ -9,7 +9,6 @@
 #include <type_traits>
 
 #include "roq/compat.h"
-#include "roq/literals.h"
 
 {% include 'namespace_begin' %}
 
@@ -39,18 +38,18 @@ struct ROQ_PACKED {{ name }} final {
   }
 
   constexpr std::string_view name() const {
-    using namespace roq::literals;
+    using namespace std::literals;
     switch (type_) {
       case type_t::UNDEFINED:
         break;
   {% for value in values %}
       case type_t::{{ value.enum_value }}:
-        return "{{ value.enum_value }}"_sv;
+        return "{{ value.enum_value }}"sv;
   {% endfor %}
       default:
         assert(false);
     }
-    return "UNDEFINED"_sv;
+    return "UNDEFINED"sv;
   }
 
   constexpr operator std::string_view() const {
@@ -96,10 +95,10 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
   auto format(
       const {{ namespaces | join('::') }}::{{ name }}& value,
       Context& context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
-        "{}"_sv,
+        "{}"sv,
         value.name());
   }
 };

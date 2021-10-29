@@ -6,12 +6,12 @@
 #include "roq/side.h"
 
 using namespace roq;
-using namespace roq::literals;
+using namespace std::literals;
 
 TEST(format, Side) {
-  EXPECT_EQ(fmt::format("{}"_sv, Side{Side::UNDEFINED}), "UNDEFINED"_sv);
-  EXPECT_EQ(fmt::format("{}"_sv, Side{Side::BUY}), "BUY"_sv);
-  EXPECT_EQ(fmt::format("{}"_sv, Side{Side::SELL}), "SELL"_sv);
+  EXPECT_EQ(fmt::format("{}"sv, Side{Side::UNDEFINED}), "UNDEFINED"sv);
+  EXPECT_EQ(fmt::format("{}"sv, Side{Side::BUY}), "BUY"sv);
+  EXPECT_EQ(fmt::format("{}"sv, Side{Side::SELL}), "SELL"sv);
 }
 
 TEST(format, market_by_price) {
@@ -31,15 +31,15 @@ TEST(format, market_by_price) {
   };
   roq::MarketByPriceUpdate market_by_price{
       .stream_id = {},
-      .exchange = "deribit"_sv,
-      .symbol = "BTC-27DEC19"_sv,
+      .exchange = "deribit"sv,
+      .symbol = "BTC-27DEC19"sv,
       .bids = {bids, std::size(bids)},
       .asks = {asks, std::size(asks)},
       .update_type = UpdateType::SNAPSHOT,
       .exchange_time_utc = {},
       .exchange_sequence = 123,
   };
-  auto result = fmt::format("{}"_sv, market_by_price);
+  auto result = fmt::format("{}"sv, market_by_price);
   EXPECT_GT(result.length(), size_t{0});
   auto expected =
       R"({)"
@@ -51,6 +51,6 @@ TEST(format, market_by_price) {
       R"(update_type=SNAPSHOT, )"
       R"(exchange_time_utc=0ns, )"
       R"(exchange_sequence=123)"
-      R"(})"_sv;
+      R"(})"sv;
   EXPECT_EQ(result, expected);
 }

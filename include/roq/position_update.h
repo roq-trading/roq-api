@@ -13,7 +13,6 @@
 #include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/literals.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
@@ -44,7 +43,7 @@ struct fmt::formatter<roq::PositionUpdate> {
   }
   template <typename Context>
   auto format(const roq::PositionUpdate &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -57,7 +56,7 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"(short_quantity={}, )"
         R"(long_quantity_begin={}, )"
         R"(short_quantity_begin={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.stream_id,
         value.account,
         value.exchange,
@@ -77,13 +76,13 @@ struct fmt::formatter<roq::Event<roq::PositionUpdate> > {
   }
   template <typename Context>
   auto format(const roq::Event<roq::PositionUpdate> &event, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(position_update={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

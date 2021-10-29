@@ -55,7 +55,7 @@ struct fmt::formatter<roq::oms::Order> {
   }
   template <typename C>
   auto format(const roq::oms::Order &value, C &ctx) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         ctx.out(),
         R"({{)"
@@ -91,7 +91,7 @@ struct fmt::formatter<roq::oms::Order> {
         R"(max_accepted_version={}, )"
         R"(price_decimals={}, )"
         R"(quantity_decimals={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.user_id,
         value.account,
         value.order_id,

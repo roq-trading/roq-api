@@ -9,8 +9,6 @@
 
 #include <utility>
 
-#include "roq/literals.h"
-
 namespace roq {
 namespace utils {
 
@@ -32,14 +30,14 @@ struct fmt::formatter<date::year_month_day> {
   }
   template <typename Context>
   auto format(const date::year_month_day &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(year="{}", )"
         R"(month={}, )"
         R"(day={} )"
-        R"(}})"_sv,
+        R"(}})"sv,
         static_cast<int>(value.year()),
         static_cast<unsigned>(value.month()),
         static_cast<unsigned>(value.day()));
@@ -54,7 +52,7 @@ struct fmt::formatter<date::hh_mm_ss<std::chrono::milliseconds>> {
   }
   template <typename Context>
   auto format(const date::hh_mm_ss<std::chrono::milliseconds> &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -62,7 +60,7 @@ struct fmt::formatter<date::hh_mm_ss<std::chrono::milliseconds>> {
         R"(minutes={}, )"
         R"(seconds={} )"
         R"(milliseconds={} )"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.hours().count(),
         value.minutes().count(),
         value.seconds().count(),

@@ -8,7 +8,7 @@
 
 using namespace roq;
 using namespace roq::utils;
-using namespace roq::literals;
+using namespace std::literals;
 
 TEST(safe_cast, int_to_int) {
   // int32_t --> int16_t

@@ -8,7 +8,7 @@
 
 using namespace roq;
 using namespace roq::utils;
-using namespace roq::literals;
+using namespace std::literals;
 
 // update()
 
@@ -25,12 +25,12 @@ TEST(update, double) {
 
 TEST(update, string) {
   std::string value;
-  EXPECT_TRUE(update(value, "foo"_sv));
-  EXPECT_EQ(value, "foo"_sv);
-  EXPECT_TRUE(update(value, "bar"_sv));
-  EXPECT_EQ(value, "bar"_sv);
-  EXPECT_FALSE(update(value, "bar"_sv));
-  EXPECT_EQ(value, "bar"_sv);
+  EXPECT_TRUE(update(value, "foo"sv));
+  EXPECT_EQ(value, "foo"sv);
+  EXPECT_TRUE(update(value, "bar"sv));
+  EXPECT_EQ(value, "bar"sv);
+  EXPECT_FALSE(update(value, "bar"sv));
+  EXPECT_EQ(value, "bar"sv);
 }
 
 TEST(update, seconds) {
@@ -105,12 +105,12 @@ TEST(update, enum_max) {
 
 TEST(update, string_if_not_empty) {
   std::string result;
-  utils::update_if_not_empty(result, "some_test"_sv);
-  EXPECT_EQ(result, "some_test"_sv);
-  utils::update_if_not_empty(result, ""_sv);
-  EXPECT_EQ(result, "some_test"_sv);
-  utils::update_if_not_empty(result, "foobar"_sv);
-  EXPECT_EQ(result, "foobar"_sv);
+  utils::update_if_not_empty(result, "some_test"sv);
+  EXPECT_EQ(result, "some_test"sv);
+  utils::update_if_not_empty(result, ""sv);
+  EXPECT_EQ(result, "some_test"sv);
+  utils::update_if_not_empty(result, "foobar"sv);
+  EXPECT_EQ(result, "foobar"sv);
 }
 
 TEST(update, double_if_not_empty) {

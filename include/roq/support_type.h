@@ -11,7 +11,6 @@
 #include <type_traits>
 
 #include "roq/compat.h"
-#include "roq/literals.h"
 
 namespace roq {
 
@@ -49,46 +48,46 @@ struct ROQ_PACKED SupportType final {
   constexpr operator type_t() const { return type_; }
 
   constexpr std::string_view name() const {
-    using namespace roq::literals;
+    using namespace std::literals;
     switch (type_) {
       case type_t::UNDEFINED:
         break;
       case type_t::REFERENCE_DATA:
-        return "REFERENCE_DATA"_sv;
+        return "REFERENCE_DATA"sv;
       case type_t::MARKET_STATUS:
-        return "MARKET_STATUS"_sv;
+        return "MARKET_STATUS"sv;
       case type_t::TOP_OF_BOOK:
-        return "TOP_OF_BOOK"_sv;
+        return "TOP_OF_BOOK"sv;
       case type_t::MARKET_BY_PRICE:
-        return "MARKET_BY_PRICE"_sv;
+        return "MARKET_BY_PRICE"sv;
       case type_t::MARKET_BY_ORDER:
-        return "MARKET_BY_ORDER"_sv;
+        return "MARKET_BY_ORDER"sv;
       case type_t::TRADE_SUMMARY:
-        return "TRADE_SUMMARY"_sv;
+        return "TRADE_SUMMARY"sv;
       case type_t::STATISTICS:
-        return "STATISTICS"_sv;
+        return "STATISTICS"sv;
       case type_t::CREATE_ORDER:
-        return "CREATE_ORDER"_sv;
+        return "CREATE_ORDER"sv;
       case type_t::MODIFY_ORDER:
-        return "MODIFY_ORDER"_sv;
+        return "MODIFY_ORDER"sv;
       case type_t::CANCEL_ORDER:
-        return "CANCEL_ORDER"_sv;
+        return "CANCEL_ORDER"sv;
       case type_t::ORDER_ACK:
-        return "ORDER_ACK"_sv;
+        return "ORDER_ACK"sv;
       case type_t::ORDER:
-        return "ORDER"_sv;
+        return "ORDER"sv;
       case type_t::ORDER_STATE:
-        return "ORDER_STATE"_sv;
+        return "ORDER_STATE"sv;
       case type_t::TRADE:
-        return "TRADE"_sv;
+        return "TRADE"sv;
       case type_t::POSITION:
-        return "POSITION"_sv;
+        return "POSITION"sv;
       case type_t::FUNDS:
-        return "FUNDS"_sv;
+        return "FUNDS"sv;
       default:
         assert(false);
     }
-    return "UNDEFINED"_sv;
+    return "UNDEFINED"sv;
   }
 
   constexpr operator std::string_view() const { return name(); }
@@ -143,7 +142,7 @@ struct fmt::formatter<roq::SupportType> {
   }
   template <typename Context>
   auto format(const roq::SupportType &value, Context &context) {
-    using namespace roq::literals;
-    return fmt::format_to(context.out(), "{}"_sv, value.name());
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, value.name());
   }
 };

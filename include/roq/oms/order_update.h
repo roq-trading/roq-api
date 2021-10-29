@@ -45,7 +45,7 @@ struct fmt::formatter<roq::oms::OrderUpdate> {
   }
   template <typename Context>
   auto format(const roq::oms::OrderUpdate &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -73,7 +73,7 @@ struct fmt::formatter<roq::oms::OrderUpdate> {
         R"(last_traded_quantity={}, )"
         R"(last_traded_price={}, )"
         R"(last_liquidity={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.account,
         value.exchange,
         value.symbol,

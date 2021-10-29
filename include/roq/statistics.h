@@ -11,7 +11,6 @@
 #include <string_view>
 
 #include "roq/chrono.h"
-#include "roq/literals.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
 #include "roq/string_buffer.h"
@@ -39,7 +38,7 @@ struct fmt::formatter<roq::Statistics> {
   }
   template <typename Context>
   auto format(const roq::Statistics &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -47,7 +46,7 @@ struct fmt::formatter<roq::Statistics> {
         R"(value={}, )"
         R"(begin_time_utc={}, )"
         R"(end_time_utc={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.type,
         value.value,
         value.begin_time_utc,

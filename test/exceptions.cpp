@@ -5,12 +5,12 @@
 #include "roq/exceptions.h"
 
 using namespace roq;
-using namespace roq::literals;
+using namespace std::literals;
 
 TEST(exceptions, simple_1) {
   auto ok = false;
   try {
-    throw NotReadyException("something's not right"_sv);
+    throw NotReadyException("something's not right"sv);
   } catch (std::exception &) {
     ok = true;
   }
@@ -20,7 +20,7 @@ TEST(exceptions, simple_1) {
 TEST(exceptions, simple_2) {
   auto ok = false;
   try {
-    throw NotReadyException("something's not right"_sv);
+    throw NotReadyException("something's not right"sv);
   } catch (Exception &) {
     ok = true;
   }
@@ -30,7 +30,7 @@ TEST(exceptions, simple_2) {
 TEST(exceptions, simple_3) {
   auto ok = false;
   try {
-    throw NotReadyException("something's not right"_sv);
+    throw NotReadyException("something's not right"sv);
   } catch (RuntimeError &) {
     ok = true;
   }
@@ -40,7 +40,7 @@ TEST(exceptions, simple_3) {
 TEST(exceptions, simple_4) {
   auto ok = false;
   try {
-    throw NotReadyException("something's not right"_sv);
+    throw NotReadyException("something's not right"sv);
   } catch (NotReady &) {
     ok = true;
   }

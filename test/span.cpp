@@ -2,11 +2,10 @@
 
 #include <gtest/gtest.h>
 
-#include "roq/literals.h"
 #include "roq/span.h"
 
 using namespace roq;
-using namespace roq::literals;
+using namespace std::literals;
 
 TEST(span, simple) {
   // initialize empty
@@ -33,10 +32,10 @@ TEST(span, simple) {
 
 TEST(span, string_view) {
   std::vector<std::string_view> raw{
-      "abc"_sv,
-      "def"_sv,
+      "abc"sv,
+      "def"sv,
   };
   roq::span span(raw);
-  EXPECT_EQ(span[0], "abc"_sv);
-  EXPECT_EQ(span[1], "def"_sv);
+  EXPECT_EQ(span[0], "abc"sv);
+  EXPECT_EQ(span[1], "def"sv);
 }

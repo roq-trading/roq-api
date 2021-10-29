@@ -11,7 +11,6 @@
 #include <string_view>
 
 #include "roq/chrono.h"
-#include "roq/literals.h"
 #include "roq/numbers.h"
 #include "roq/span.h"
 #include "roq/string_buffer.h"
@@ -38,7 +37,7 @@ struct fmt::formatter<roq::MBPUpdate> {
   }
   template <typename Context>
   auto format(const roq::MBPUpdate &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -47,7 +46,7 @@ struct fmt::formatter<roq::MBPUpdate> {
         R"(implied_quantity={}, )"
         R"(price_level={}, )"
         R"(number_of_orders={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.price,
         value.quantity,
         value.implied_quantity,

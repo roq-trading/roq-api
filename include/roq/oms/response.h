@@ -31,7 +31,7 @@ struct fmt::formatter<roq::oms::Response> {
   }
   template <typename Context>
   auto format(const roq::oms::Response &value, Context &context) {
-    using namespace roq::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -44,7 +44,7 @@ struct fmt::formatter<roq::oms::Response> {
         R"(request_id="{}", ")"
         R"(quantity={}, )"
         R"(price={})"
-        R"(}})"_sv,
+        R"(}})"sv,
         value.type,
         value.origin,
         value.status,

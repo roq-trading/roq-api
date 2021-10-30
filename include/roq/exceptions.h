@@ -252,6 +252,20 @@ struct NotSupportedException final : public NotSupported {
   NotSupportedException(const source_location &loc = source_location::current()) : NotSupported(loc) {}
 };
 
+//! Bad state
+class ROQ_PUBLIC BadState : public RuntimeError {
+ protected:
+  using RuntimeError::RuntimeError;
+};
+
+struct BadStateException final : public RangeError {
+  template <typename... Args>
+  BadStateException(const format_str &fmt, Args &&...args)
+      : RangeError(
+            static_cast<const source_location &>(fmt),
+            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
+            std::forward<Args>(args)...) {}
+};
 }  // namespace roq
 
 template <>
@@ -420,3 +434,17 @@ struct fmt::formatter<roq::NotReady> {
     return fmt::format_to(context.out(), "{}"sv, static_cast<const roq::Exception &>(value));
   }
 };
+
+template <>
+struct fmt::formatter<roq::BadState> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return context.begin();
+  }
+  template <typename Context>
+  auto format(const roq::BadState &value, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<const roq::Exception &>(value));
+  }
+};
+

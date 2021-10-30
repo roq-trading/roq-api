@@ -7,7 +7,7 @@
 #include "roq/api.h"
 
 namespace roq {
-namespace market {
+namespace cache {
 
 //! Interface
 class ROQ_PUBLIC MarketByPrice {
@@ -97,7 +97,7 @@ class ROQ_PUBLIC MarketByPrice {
 
  protected:
   virtual void update_helper(const GatewaySettings &) = 0;
-  virtual void update_helper(const ReferenceData &) = 0;
+  virtual void update_helper(const roq::ReferenceData &) = 0;
   virtual void update_helper(const MarketByPriceUpdate &) = 0;
 
   virtual std::pair<size_t, size_t> update_helper(
@@ -108,5 +108,5 @@ class ROQ_PUBLIC MarketByPrice {
   virtual void update_helper(const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) = 0;
 };
 
-}  // namespace market
+}  // namespace cache
 }  // namespace roq

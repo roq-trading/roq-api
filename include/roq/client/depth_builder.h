@@ -4,7 +4,7 @@
 
 #include "roq/api.h"
 
-#include "roq/market/market_by_price.h"
+#include "roq/cache/market_by_price.h"
 
 namespace roq {
 namespace client {
@@ -18,7 +18,7 @@ namespace client {
  * The `reset` method must be called following a disconnect.
  * (The next update is then expected to be a snapshot).
  */
-class ROQ_PUBLIC DepthBuilder : public market::MarketByPrice {
+class ROQ_PUBLIC DepthBuilder : public cache::MarketByPrice {
  public:
   void reset() { clear(); }  // note! will be deprecated
 

@@ -258,10 +258,10 @@ class ROQ_PUBLIC BadState : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
-struct BadStateException final : public RangeError {
+struct BadStateException final : public BadState {
   template <typename... Args>
   BadStateException(const format_str &fmt, Args &&...args)
-      : RangeError(
+      : BadState(
             static_cast<const source_location &>(fmt),
             fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
             std::forward<Args>(args)...) {}

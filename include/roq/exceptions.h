@@ -447,4 +447,3 @@ struct fmt::formatter<roq::BadState> {
     return fmt::format_to(context.out(), "{}"sv, static_cast<const roq::Exception &>(value));
   }
 };
-

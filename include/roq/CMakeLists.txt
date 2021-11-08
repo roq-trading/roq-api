@@ -12,6 +12,7 @@ set(SOURCES
     create_order.json
     custom_metrics.json
     custom_metrics_update.json
+    decimals.json
     disconnected.json
     download_begin.json
     download_end.json

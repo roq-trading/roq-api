@@ -162,6 +162,80 @@ inline const char *EnumNameConnectionStatus(ConnectionStatus e) {
   return EnumNamesConnectionStatus()[index];
 }
 
+enum Decimals : uint8_t {
+  Decimals_Undefined = 0,
+  Decimals__0 = 1,
+  Decimals__1 = 2,
+  Decimals__2 = 3,
+  Decimals__3 = 4,
+  Decimals__4 = 5,
+  Decimals__5 = 6,
+  Decimals__6 = 7,
+  Decimals__7 = 8,
+  Decimals__8 = 9,
+  Decimals__9 = 10,
+  Decimals__10 = 11,
+  Decimals__11 = 12,
+  Decimals__12 = 13,
+  Decimals__13 = 14,
+  Decimals__14 = 15,
+  Decimals__15 = 16,
+  Decimals_MIN = Decimals_Undefined,
+  Decimals_MAX = Decimals__15
+};
+
+inline const Decimals (&EnumValuesDecimals())[17] {
+  static const Decimals values[] = {
+      Decimals_Undefined,
+      Decimals__0,
+      Decimals__1,
+      Decimals__2,
+      Decimals__3,
+      Decimals__4,
+      Decimals__5,
+      Decimals__6,
+      Decimals__7,
+      Decimals__8,
+      Decimals__9,
+      Decimals__10,
+      Decimals__11,
+      Decimals__12,
+      Decimals__13,
+      Decimals__14,
+      Decimals__15};
+  return values;
+}
+
+inline const char *const *EnumNamesDecimals() {
+  static const char *const names[18] = {
+      "Undefined",
+      "_0",
+      "_1",
+      "_2",
+      "_3",
+      "_4",
+      "_5",
+      "_6",
+      "_7",
+      "_8",
+      "_9",
+      "_10",
+      "_11",
+      "_12",
+      "_13",
+      "_14",
+      "_15",
+      nullptr};
+  return names;
+}
+
+inline const char *EnumNameDecimals(Decimals e) {
+  if (flatbuffers::IsOutRange(e, Decimals_Undefined, Decimals__15))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesDecimals()[index];
+}
+
 enum Error : uint8_t {
   Error_Undefined = 0,
   Error_Unknown = 1,
@@ -2597,7 +2671,9 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_ASKS = 12,
     VT_UPDATE_TYPE = 14,
     VT_EXCHANGE_TIME_UTC = 16,
-    VT_EXCHANGE_SEQUENCE = 18
+    VT_EXCHANGE_SEQUENCE = 18,
+    VT_PRICE_DECIMALS = 20,
+    VT_QUANTITY_DECIMALS = 22
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
@@ -2613,6 +2689,12 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
   int64_t exchange_sequence() const { return GetField<int64_t>(VT_EXCHANGE_SEQUENCE, 0); }
+  roq::fbs::Decimals price_decimals() const {
+    return static_cast<roq::fbs::Decimals>(GetField<uint8_t>(VT_PRICE_DECIMALS, 0));
+  }
+  roq::fbs::Decimals quantity_decimals() const {
+    return static_cast<roq::fbs::Decimals>(GetField<uint8_t>(VT_QUANTITY_DECIMALS, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
@@ -2620,7 +2702,8 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
            verifier.VerifyVector(bids()) && verifier.VerifyVectorOfTables(bids()) && VerifyOffset(verifier, VT_ASKS) &&
            verifier.VerifyVector(asks()) && verifier.VerifyVectorOfTables(asks()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) && VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE) && verifier.EndTable();
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE) && VerifyField<uint8_t>(verifier, VT_PRICE_DECIMALS) &&
+           VerifyField<uint8_t>(verifier, VT_QUANTITY_DECIMALS) && verifier.EndTable();
   }
 };
 
@@ -2650,6 +2733,12 @@ struct MarketByOrderUpdateBuilder {
   void add_exchange_sequence(int64_t exchange_sequence) {
     fbb_.AddElement<int64_t>(MarketByOrderUpdate::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
   }
+  void add_price_decimals(roq::fbs::Decimals price_decimals) {
+    fbb_.AddElement<uint8_t>(MarketByOrderUpdate::VT_PRICE_DECIMALS, static_cast<uint8_t>(price_decimals), 0);
+  }
+  void add_quantity_decimals(roq::fbs::Decimals quantity_decimals) {
+    fbb_.AddElement<uint8_t>(MarketByOrderUpdate::VT_QUANTITY_DECIMALS, static_cast<uint8_t>(quantity_decimals), 0);
+  }
   explicit MarketByOrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MarketByOrderUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -2667,7 +2756,9 @@ inline flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdate(
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> asks = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0) {
+    int64_t exchange_sequence = 0,
+    roq::fbs::Decimals price_decimals = roq::fbs::Decimals_Undefined,
+    roq::fbs::Decimals quantity_decimals = roq::fbs::Decimals_Undefined) {
   MarketByOrderUpdateBuilder builder_(_fbb);
   builder_.add_exchange_sequence(exchange_sequence);
   builder_.add_exchange_time_utc(exchange_time_utc);
@@ -2676,6 +2767,8 @@ inline flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdate(
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
   builder_.add_stream_id(stream_id);
+  builder_.add_quantity_decimals(quantity_decimals);
+  builder_.add_price_decimals(price_decimals);
   builder_.add_update_type(update_type);
   return builder_.Finish();
 }
@@ -2689,13 +2782,25 @@ inline flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdateDirect(
     const std::vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *asks = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0) {
+    int64_t exchange_sequence = 0,
+    roq::fbs::Decimals price_decimals = roq::fbs::Decimals_Undefined,
+    roq::fbs::Decimals quantity_decimals = roq::fbs::Decimals_Undefined) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto bids__ = bids ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::MBOUpdate>>(*bids) : 0;
   auto asks__ = asks ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::MBOUpdate>>(*asks) : 0;
   return roq::fbs::CreateMarketByOrderUpdate(
-      _fbb, stream_id, exchange__, symbol__, bids__, asks__, update_type, exchange_time_utc, exchange_sequence);
+      _fbb,
+      stream_id,
+      exchange__,
+      symbol__,
+      bids__,
+      asks__,
+      update_type,
+      exchange_time_utc,
+      exchange_sequence,
+      price_decimals,
+      quantity_decimals);
 }
 
 struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -2708,7 +2813,9 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_ASKS = 12,
     VT_UPDATE_TYPE = 14,
     VT_EXCHANGE_TIME_UTC = 16,
-    VT_EXCHANGE_SEQUENCE = 18
+    VT_EXCHANGE_SEQUENCE = 18,
+    VT_PRICE_DECIMALS = 20,
+    VT_QUANTITY_DECIMALS = 22
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
@@ -2724,6 +2831,12 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
   int64_t exchange_sequence() const { return GetField<int64_t>(VT_EXCHANGE_SEQUENCE, 0); }
+  roq::fbs::Decimals price_decimals() const {
+    return static_cast<roq::fbs::Decimals>(GetField<uint8_t>(VT_PRICE_DECIMALS, 0));
+  }
+  roq::fbs::Decimals quantity_decimals() const {
+    return static_cast<roq::fbs::Decimals>(GetField<uint8_t>(VT_QUANTITY_DECIMALS, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
@@ -2731,7 +2844,8 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
            verifier.VerifyVector(bids()) && verifier.VerifyVectorOfTables(bids()) && VerifyOffset(verifier, VT_ASKS) &&
            verifier.VerifyVector(asks()) && verifier.VerifyVectorOfTables(asks()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) && VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE) && verifier.EndTable();
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE) && VerifyField<uint8_t>(verifier, VT_PRICE_DECIMALS) &&
+           VerifyField<uint8_t>(verifier, VT_QUANTITY_DECIMALS) && verifier.EndTable();
   }
 };
 
@@ -2761,6 +2875,12 @@ struct MarketByPriceUpdateBuilder {
   void add_exchange_sequence(int64_t exchange_sequence) {
     fbb_.AddElement<int64_t>(MarketByPriceUpdate::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
   }
+  void add_price_decimals(roq::fbs::Decimals price_decimals) {
+    fbb_.AddElement<uint8_t>(MarketByPriceUpdate::VT_PRICE_DECIMALS, static_cast<uint8_t>(price_decimals), 0);
+  }
+  void add_quantity_decimals(roq::fbs::Decimals quantity_decimals) {
+    fbb_.AddElement<uint8_t>(MarketByPriceUpdate::VT_QUANTITY_DECIMALS, static_cast<uint8_t>(quantity_decimals), 0);
+  }
   explicit MarketByPriceUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MarketByPriceUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -2778,7 +2898,9 @@ inline flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdate(
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>>> asks = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0) {
+    int64_t exchange_sequence = 0,
+    roq::fbs::Decimals price_decimals = roq::fbs::Decimals_Undefined,
+    roq::fbs::Decimals quantity_decimals = roq::fbs::Decimals_Undefined) {
   MarketByPriceUpdateBuilder builder_(_fbb);
   builder_.add_exchange_sequence(exchange_sequence);
   builder_.add_exchange_time_utc(exchange_time_utc);
@@ -2787,6 +2909,8 @@ inline flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdate(
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
   builder_.add_stream_id(stream_id);
+  builder_.add_quantity_decimals(quantity_decimals);
+  builder_.add_price_decimals(price_decimals);
   builder_.add_update_type(update_type);
   return builder_.Finish();
 }
@@ -2800,13 +2924,25 @@ inline flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdateDirect(
     const std::vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *asks = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0) {
+    int64_t exchange_sequence = 0,
+    roq::fbs::Decimals price_decimals = roq::fbs::Decimals_Undefined,
+    roq::fbs::Decimals quantity_decimals = roq::fbs::Decimals_Undefined) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto bids__ = bids ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::MBPUpdate>>(*bids) : 0;
   auto asks__ = asks ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::MBPUpdate>>(*asks) : 0;
   return roq::fbs::CreateMarketByPriceUpdate(
-      _fbb, stream_id, exchange__, symbol__, bids__, asks__, update_type, exchange_time_utc, exchange_sequence);
+      _fbb,
+      stream_id,
+      exchange__,
+      symbol__,
+      bids__,
+      asks__,
+      update_type,
+      exchange_time_utc,
+      exchange_sequence,
+      price_decimals,
+      quantity_decimals);
 }
 
 struct MarketStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

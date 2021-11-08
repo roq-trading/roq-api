@@ -38,9 +38,12 @@ TEST(format, market_by_price) {
       .update_type = UpdateType::SNAPSHOT,
       .exchange_time_utc = {},
       .exchange_sequence = 123,
+      .price_decimals = Decimals::_0,
+      .quantity_decimals = Decimals::_1,
   };
   auto result = fmt::format("{}"sv, market_by_price);
   EXPECT_GT(result.length(), size_t{0});
+  // note! Decimals are shown with the '_' prefix due to magic_enum
   auto expected =
       R"({)"
       R"(stream_id=0, )"
@@ -50,7 +53,9 @@ TEST(format, market_by_price) {
       R"(asks=[{price=1, quantity=2, implied_quantity=3, price_level=1, number_of_orders=2}, {price=2, quantity=4, implied_quantity=3, price_level=1, number_of_orders=2}, {price=3, quantity=8, implied_quantity=3, price_level=1, number_of_orders=2}, {price=4, quantity=10, implied_quantity=3, price_level=1, number_of_orders=2}, {price=5, quantity=12, implied_quantity=3, price_level=1, number_of_orders=2}], )"
       R"(update_type=SNAPSHOT, )"
       R"(exchange_time_utc=0ns, )"
-      R"(exchange_sequence=123)"
+      R"(exchange_sequence=123, )"
+      R"(price_decimals=_0, )"
+      R"(quantity_decimals=_1)"
       R"(})"sv;
   EXPECT_EQ(result, expected);
 }

@@ -55,6 +55,13 @@ auto encode([[maybe_unused]] B &builder, const roq::ConnectionStatus &value) {
 }
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::Decimals &value) {
+  using result_type = Decimals;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::Error &value) {
   using result_type = Error;
   using value_type = std::underlying_type_t<result_type>;
@@ -492,7 +499,9 @@ auto encode(B &builder, const roq::MarketByPriceUpdate &value) {
       encode(builder, value.asks),
       encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc),
-      value.exchange_sequence);
+      value.exchange_sequence,
+      encode(builder, value.price_decimals),
+      encode(builder, value.quantity_decimals));
 }
 
 template <typename B>
@@ -506,7 +515,9 @@ auto encode(B &builder, const roq::MarketByOrderUpdate &value) {
       encode(builder, value.asks),
       encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc),
-      value.exchange_sequence);
+      value.exchange_sequence,
+      encode(builder, value.price_decimals),
+      encode(builder, value.quantity_decimals));
 }
 
 template <typename B>

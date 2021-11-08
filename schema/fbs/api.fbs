@@ -3,6 +3,7 @@
 // - enums
 
 include "connection_status.fbs";
+include "decimals.fbs";
 include "error.fbs";
 include "execution_instruction.fbs";
 include "liquidity.fbs";

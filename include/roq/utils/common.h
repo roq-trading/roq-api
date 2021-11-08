@@ -4,6 +4,7 @@
 
 #include <limits>
 
+#include "roq/decimals.h"
 #include "roq/layer.h"
 #include "roq/numbers.h"
 #include "roq/order_status.h"
@@ -251,6 +252,53 @@ inline int sign(Side side) {
       return -1;
   }
   return 0;
+}
+
+//! Number of decimal digits
+inline constexpr int8_t decimal_digits(Decimals decimals) {
+  switch (decimals) {
+    case Decimals::UNDEFINED:
+      break;
+    case Decimals::_0:
+      return 0;
+    case Decimals::_1:
+      return 1;
+    case Decimals::_2:
+      return 2;
+    case Decimals::_3:
+      return 3;
+    case Decimals::_4:
+      return 4;
+    case Decimals::_5:
+      return 5;
+    case Decimals::_6:
+      return 6;
+    case Decimals::_7:
+      return 7;
+    case Decimals::_8:
+      return 8;
+    case Decimals::_9:
+      return 9;
+    case Decimals::_10:
+      return 10;
+    case Decimals::_11:
+      return 11;
+    case Decimals::_12:
+      return 12;
+    case Decimals::_13:
+      return 13;
+    case Decimals::_14:
+      return 14;
+    case Decimals::_15:
+      return 15;
+  }
+  return -1;
+}
+
+inline constexpr Decimals to_decimals(int8_t decimal_digits) {
+  if (decimal_digits < 0 || decimal_digits > 15)
+    return {};
+  return Decimals{static_cast<std::underlying_type<Decimals>::type>(decimal_digits + 1)};
 }
 
 }  // namespace utils

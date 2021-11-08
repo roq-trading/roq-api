@@ -18,6 +18,7 @@
 #include "roq/span.h"
 #include "roq/string_buffer.h"
 
+#include "roq/decimals.h"
 #include "roq/mbo_update.h"
 #include "roq/update_type.h"
 
@@ -33,6 +34,8 @@ struct ROQ_PUBLIC MarketByOrderUpdate final {
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
   int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
+  Decimals price_decimals = {};                     //!< Decimal digits required to represent prices
+  Decimals quantity_decimals = {};                  //!< Decimal digits required to represent quantities
 };
 
 }  // namespace roq
@@ -56,7 +59,9 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         R"(asks=[{}], )"
         R"(update_type={}, )"
         R"(exchange_time_utc={}, )"
-        R"(exchange_sequence={})"
+        R"(exchange_sequence={}, )"
+        R"(price_decimals={}, )"
+        R"(quantity_decimals={})"
         R"(}})"sv,
         value.stream_id,
         value.exchange,
@@ -65,7 +70,9 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         fmt::join(value.asks, ", "sv),
         value.update_type,
         value.exchange_time_utc,
-        value.exchange_sequence);
+        value.exchange_sequence,
+        value.price_decimals,
+        value.quantity_decimals);
   }
 };
 template <>

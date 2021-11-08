@@ -38,6 +38,16 @@
             "name": "exchange_sequence",
             "type": "int64_t",
             "comment": "Latest sequence number (from exchange)"
+        },
+        {
+            "name": "price_decimals",
+            "type": "Decimals",
+            "comment": "Decimal digits required to represent prices"
+        },
+        {
+            "name": "quantity_decimals",
+            "type": "Decimals",
+            "comment": "Decimal digits required to represent quantities"
         }
     ]
 }

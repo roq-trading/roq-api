@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `MarketByPriceUpdate` and `MarketByOrderUpdate` now include price/quantity decimals (#119)
+
 ## 0.7.8 &ndash; 2021-11-02
 
 ### Added

@@ -23,9 +23,9 @@ class ROQ_PUBLIC MarketByPrice {
   virtual double price_increment() const = 0;
   virtual double quantity_increment() const = 0;
 
-  // precision required to show all significant decimal places (-1 means undefined)
-  virtual int8_t price_decimal_digits() const = 0;
-  virtual int8_t quantity_decimal_digits() const = 0;
+  // precision required to show all significant decimal places
+  virtual Decimals price_decimals() const = 0;
+  virtual Decimals quantity_decimals() const = 0;
 
   // convert price/quantity to internal representation
   // note! some events can change the internal representation, e.g. ReferenceData
@@ -58,23 +58,21 @@ class ROQ_PUBLIC MarketByPrice {
       const roq::span<MBPUpdate> &final_asks,
       F callback) {
     auto [final_bids_size, final_asks_size] = update_helper(market_by_price_update, final_bids, final_asks);
-    if (final_bids_size == 0 && final_asks_size == 0) {
-      callback(market_by_price_update);
-    } else {
-      auto bids = final_bids_size ? roq::span{final_bids.data(), final_bids_size} : market_by_price_update.bids;
-      auto asks = final_asks_size ? roq::span{final_asks.data(), final_asks_size} : market_by_price_update.asks;
-      const MarketByPriceUpdate final_market_by_price_update{
-          .stream_id = market_by_price_update.stream_id,
-          .exchange = market_by_price_update.exchange,
-          .symbol = market_by_price_update.symbol,
-          .bids = bids,
-          .asks = asks,
-          .update_type = market_by_price_update.update_type,
-          .exchange_time_utc = market_by_price_update.exchange_time_utc,
-          .exchange_sequence = market_by_price_update.exchange_sequence,
-      };
-      callback(final_market_by_price_update);
-    }
+    auto bids = final_bids_size ? roq::span{std::data(final_bids), final_bids_size} : market_by_price_update.bids;
+    auto asks = final_asks_size ? roq::span{std::data(final_asks), final_asks_size} : market_by_price_update.asks;
+    const MarketByPriceUpdate final_market_by_price_update{
+        .stream_id = market_by_price_update.stream_id,
+        .exchange = market_by_price_update.exchange,
+        .symbol = market_by_price_update.symbol,
+        .bids = bids,
+        .asks = asks,
+        .update_type = market_by_price_update.update_type,
+        .exchange_time_utc = market_by_price_update.exchange_time_utc,
+        .exchange_sequence = market_by_price_update.exchange_sequence,
+        .price_decimals = price_decimals(),
+        .quantity_decimals = quantity_decimals(),
+    };
+    callback(final_market_by_price_update);
   }
 
   // copy-out

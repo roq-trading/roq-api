@@ -11,4 +11,6 @@ table MarketByOrderUpdate {
   update_type:UpdateType;
   exchange_time_utc:int64;
   exchange_sequence:int64;
+  price_decimals:Decimals;
+  quantity_decimals:Decimals;
 }

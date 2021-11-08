@@ -16,6 +16,7 @@
 // enums
 
 #include "roq/connection_status.h"
+#include "roq/decimals.h"
 #include "roq/error.h"
 #include "roq/execution_instruction.h"
 #include "roq/liquidity.h"

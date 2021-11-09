@@ -301,5 +301,9 @@ inline constexpr Decimals to_decimals(int8_t decimal_digits) {
   return Decimals{static_cast<std::underlying_type<Decimals>::type>(decimal_digits + 1)};
 }
 
+inline constexpr bool has_more_precision(Decimals lhs, Decimals rhs) {
+  return lhs != Decimals::UNDEFINED ? lhs > rhs : false;
+}
+
 }  // namespace utils
 }  // namespace roq

@@ -27,13 +27,13 @@ class ROQ_PUBLIC MarketByPrice {
   virtual Decimals price_decimals() const = 0;
   virtual Decimals quantity_decimals() const = 0;
 
+  // note! the internal representation can change at any time
+
   // convert price/quantity to internal representation
-  // note! some events can change the internal representation, e.g. ReferenceData
   virtual int64_t price_to_internal(double price) const = 0;
   virtual uint64_t quantity_to_internal(double quantity) const = 0;
 
   // convert internal representation to price/quantity
-  // note! some events can change the internal representation, e.g. ReferenceData
   virtual double internal_to_price(int64_t price) const = 0;
   virtual double internal_to_quantity(uint64_t quantity) const = 0;
 

@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `MarketByPriceUpdate` and `MarketByOrderUpdate` now include checksum (#74)
 * `MarketByPriceUpdate` and `MarketByOrderUpdate` now include price/quantity decimals (#119)
 
 ## 0.7.8 &ndash; 2021-11-02

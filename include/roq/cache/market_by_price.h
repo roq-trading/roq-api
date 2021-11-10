@@ -17,6 +17,9 @@ class ROQ_PUBLIC MarketByPrice {
   virtual std::string_view exchange() const = 0;
   virtual std::string_view symbol() const = 0;
 
+  // validation
+  virtual uint32_t checksum() const = 0;
+
   // increments (used to convert between integer and floating point representation)
   // these values could be tick_size and min_trade_vol from ReferenceData, but
   // not necessarily -- it depends on adjustments potentially required by GatewaySettings
@@ -71,6 +74,7 @@ class ROQ_PUBLIC MarketByPrice {
         .exchange_sequence = market_by_price_update.exchange_sequence,
         .price_decimals = price_decimals(),
         .quantity_decimals = quantity_decimals(),
+        .checksum = checksum(),
     };
     callback(final_market_by_price_update);
   }
@@ -94,8 +98,11 @@ class ROQ_PUBLIC MarketByPrice {
   virtual roq::span<price_level_t const> asks() const = 0;
 
  protected:
-  virtual void update_helper(const GatewaySettings &) = 0;
-  virtual void update_helper(const roq::ReferenceData &) = 0;
+  [[deprecated("gateways now communicate decimals directly")]] virtual void update_helper(const GatewaySettings &) = 0;
+
+  [[deprecated("gateways now communicate decimals directly")]] virtual void update_helper(
+      const roq::ReferenceData &) = 0;
+
   virtual void update_helper(const MarketByPriceUpdate &) = 0;
 
   virtual std::pair<size_t, size_t> update_helper(

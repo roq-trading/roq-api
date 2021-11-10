@@ -48,6 +48,11 @@
             "name": "quantity_decimals",
             "type": "Decimals",
             "comment": "Decimal digits required to represent quantities"
+        },
+        {
+            "name": "checksum",
+            "type": "uint32_t",
+            "comment": "Checksum (internal)"
         }
     ]
 }

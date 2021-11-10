@@ -13,4 +13,5 @@ table MarketByOrderUpdate {
   exchange_sequence:int64;
   price_decimals:Decimals;
   quantity_decimals:Decimals;
+  checksum:uint32;
 }

@@ -20,9 +20,7 @@ class ROQ_PUBLIC MarketByPrice {
   // validation
   virtual uint32_t checksum() const = 0;
 
-  // increments (used to convert between integer and floating point representation)
-  // these values could be tick_size and min_trade_vol from ReferenceData, but
-  // not necessarily -- it depends on adjustments potentially required by GatewaySettings
+  // increments used to convert between integer and floating point representation
   virtual double price_increment() const = 0;
   virtual double quantity_increment() const = 0;
 
@@ -98,10 +96,8 @@ class ROQ_PUBLIC MarketByPrice {
   virtual roq::span<price_level_t const> asks() const = 0;
 
  protected:
-  [[deprecated("gateways now communicate decimals directly")]] virtual void update_helper(const GatewaySettings &) = 0;
-
-  [[deprecated("gateways now communicate decimals directly")]] virtual void update_helper(
-      const roq::ReferenceData &) = 0;
+  // required to get max_depth
+  virtual void update_helper(const GatewaySettings &) = 0;
 
   virtual void update_helper(const MarketByPriceUpdate &) = 0;
 

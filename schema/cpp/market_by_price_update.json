@@ -50,6 +50,11 @@
             "comment": "Decimal digits required to represent quantities"
         },
         {
+            "name": "max_depth",
+            "type": "uint16_t",
+            "comment": "Maximum depth (used to maintain a view of top N price levels)"
+        },
+        {
             "name": "checksum",
             "type": "uint32_t",
             "comment": "Checksum (internal)"

@@ -2824,7 +2824,8 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_EXCHANGE_SEQUENCE = 18,
     VT_PRICE_DECIMALS = 20,
     VT_QUANTITY_DECIMALS = 22,
-    VT_CHECKSUM = 24
+    VT_MAX_DEPTH = 24,
+    VT_CHECKSUM = 26
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
@@ -2846,6 +2847,7 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   roq::fbs::Decimals quantity_decimals() const {
     return static_cast<roq::fbs::Decimals>(GetField<uint8_t>(VT_QUANTITY_DECIMALS, 0));
   }
+  uint16_t max_depth() const { return GetField<uint16_t>(VT_MAX_DEPTH, 0); }
   uint32_t checksum() const { return GetField<uint32_t>(VT_CHECKSUM, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
@@ -2855,8 +2857,8 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
            verifier.VerifyVector(asks()) && verifier.VerifyVectorOfTables(asks()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) && VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE) && VerifyField<uint8_t>(verifier, VT_PRICE_DECIMALS) &&
-           VerifyField<uint8_t>(verifier, VT_QUANTITY_DECIMALS) && VerifyField<uint32_t>(verifier, VT_CHECKSUM) &&
-           verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_QUANTITY_DECIMALS) && VerifyField<uint16_t>(verifier, VT_MAX_DEPTH) &&
+           VerifyField<uint32_t>(verifier, VT_CHECKSUM) && verifier.EndTable();
   }
 };
 
@@ -2892,6 +2894,7 @@ struct MarketByPriceUpdateBuilder {
   void add_quantity_decimals(roq::fbs::Decimals quantity_decimals) {
     fbb_.AddElement<uint8_t>(MarketByPriceUpdate::VT_QUANTITY_DECIMALS, static_cast<uint8_t>(quantity_decimals), 0);
   }
+  void add_max_depth(uint16_t max_depth) { fbb_.AddElement<uint16_t>(MarketByPriceUpdate::VT_MAX_DEPTH, max_depth, 0); }
   void add_checksum(uint32_t checksum) { fbb_.AddElement<uint32_t>(MarketByPriceUpdate::VT_CHECKSUM, checksum, 0); }
   explicit MarketByPriceUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MarketByPriceUpdate> Finish() {
@@ -2913,6 +2916,7 @@ inline flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdate(
     int64_t exchange_sequence = 0,
     roq::fbs::Decimals price_decimals = roq::fbs::Decimals_Undefined,
     roq::fbs::Decimals quantity_decimals = roq::fbs::Decimals_Undefined,
+    uint16_t max_depth = 0,
     uint32_t checksum = 0) {
   MarketByPriceUpdateBuilder builder_(_fbb);
   builder_.add_exchange_sequence(exchange_sequence);
@@ -2922,6 +2926,7 @@ inline flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdate(
   builder_.add_bids(bids);
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
+  builder_.add_max_depth(max_depth);
   builder_.add_stream_id(stream_id);
   builder_.add_quantity_decimals(quantity_decimals);
   builder_.add_price_decimals(price_decimals);
@@ -2941,6 +2946,7 @@ inline flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdateDirect(
     int64_t exchange_sequence = 0,
     roq::fbs::Decimals price_decimals = roq::fbs::Decimals_Undefined,
     roq::fbs::Decimals quantity_decimals = roq::fbs::Decimals_Undefined,
+    uint16_t max_depth = 0,
     uint32_t checksum = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -2958,6 +2964,7 @@ inline flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdateDirect(
       exchange_sequence,
       price_decimals,
       quantity_decimals,
+      max_depth,
       checksum);
 }
 

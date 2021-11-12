@@ -36,6 +36,7 @@ struct ROQ_PUBLIC MarketByPriceUpdate final {
   int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
   Decimals price_decimals = {};                     //!< Decimal digits required to represent prices
   Decimals quantity_decimals = {};                  //!< Decimal digits required to represent quantities
+  uint16_t max_depth = {};                          //!< Maximum depth (used to maintain a view of top N price levels)
   uint32_t checksum = {};                           //!< Checksum (internal)
 };
 
@@ -63,6 +64,7 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
         R"(exchange_sequence={}, )"
         R"(price_decimals={}, )"
         R"(quantity_decimals={}, )"
+        R"(max_depth={}, )"
         R"(checksum={})"
         R"(}})"sv,
         value.stream_id,
@@ -75,6 +77,7 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
         value.exchange_sequence,
         value.price_decimals,
         value.quantity_decimals,
+        value.max_depth,
         value.checksum);
   }
 };

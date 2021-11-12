@@ -502,6 +502,7 @@ auto encode(B &builder, const roq::MarketByPriceUpdate &value) {
       value.exchange_sequence,
       encode(builder, value.price_decimals),
       encode(builder, value.quantity_decimals),
+      value.max_depth,
       value.checksum);
 }
 

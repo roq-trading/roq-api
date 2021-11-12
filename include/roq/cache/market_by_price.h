@@ -28,6 +28,9 @@ class ROQ_PUBLIC MarketByPrice {
   virtual Decimals price_decimals() const = 0;
   virtual Decimals quantity_decimals() const = 0;
 
+  // view?
+  virtual uint16_t max_depth() const = 0;
+
   // note! the internal representation can change at any time
 
   // convert price/quantity to internal representation
@@ -72,6 +75,7 @@ class ROQ_PUBLIC MarketByPrice {
         .exchange_sequence = market_by_price_update.exchange_sequence,
         .price_decimals = price_decimals(),
         .quantity_decimals = quantity_decimals(),
+        .max_depth = max_depth(),
         .checksum = checksum(),
     };
     callback(final_market_by_price_update);

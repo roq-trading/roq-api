@@ -40,7 +40,8 @@ TEST(format, market_by_price) {
       .exchange_sequence = 123,
       .price_decimals = Decimals::_0,
       .quantity_decimals = Decimals::_1,
-      .checksum = 0,
+      .max_depth = 10,
+      .checksum = 123,
   };
   auto result = fmt::format("{}"sv, market_by_price);
   EXPECT_GT(result.length(), size_t{0});
@@ -57,7 +58,8 @@ TEST(format, market_by_price) {
       R"(exchange_sequence=123, )"
       R"(price_decimals=_0, )"
       R"(quantity_decimals=_1, )"
-      R"(checksum=0)"
+      R"(max_depth=10, )"
+      R"(checksum=123)"
       R"(})"sv;
   EXPECT_EQ(result, expected);
 }

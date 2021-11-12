@@ -28,7 +28,7 @@ class ROQ_PUBLIC MarketByPrice {
   virtual Decimals price_decimals() const = 0;
   virtual Decimals quantity_decimals() const = 0;
 
-  // view?
+  // max-depth (used when maintaining a view of the top N price levels)
   virtual uint16_t max_depth() const = 0;
 
   // note! the internal representation can change at any time
@@ -100,9 +100,6 @@ class ROQ_PUBLIC MarketByPrice {
   virtual roq::span<price_level_t const> asks() const = 0;
 
  protected:
-  // required to get max_depth
-  virtual void update_helper(const GatewaySettings &) = 0;
-
   virtual void update_helper(const MarketByPriceUpdate &) = 0;
 
   virtual std::pair<size_t, size_t> update_helper(

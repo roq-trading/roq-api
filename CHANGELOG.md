@@ -11,6 +11,10 @@ All notable changes will be documented in this file.
 * `MarketByPriceUpdate` and `MarketByOrderUpdate` now include checksum (#74)
 * `MarketByPriceUpdate` and `MarketByOrderUpdate` now include price/quantity decimals (#119)
 
+### Added
+
+* Starting to move object cache logic into API (#128)
+
 ## 0.7.8 &ndash; 2021-11-02
 
 ### Added

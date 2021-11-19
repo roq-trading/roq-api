@@ -29,6 +29,8 @@ struct TopOfBook final {
     return dirty;
   }
 
+  [[nodiscard]] bool operator()(const Event<roq::TopOfBook> &event) { return (*this)(event.value); }
+
   [[nodiscard]] operator roq::TopOfBook() const {
     return {
         .exchange = exchange,

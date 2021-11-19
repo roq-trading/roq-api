@@ -67,6 +67,8 @@ class ReferenceData final {
     return dirty;
   }
 
+  [[nodiscard]] bool operator()(const Event<roq::ReferenceData> &event) { return (*this)(event.value); }
+
   [[nodiscard]] operator roq::ReferenceData() const {
     return {
         .stream_id = stream_id,

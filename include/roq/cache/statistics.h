@@ -34,7 +34,7 @@ class Statistics final {
     }
   }
 
-  // note!
+  // note! (this is for server usage)
   // a storage container must be provided for storing *updated* statistics
   // the storage interface should support the emplace_back() method
   // the callback will only be called when there are updates
@@ -73,6 +73,24 @@ class Statistics final {
     }
     return dirty;
   }
+
+  [[nodiscard]] bool operator()(const StatisticsUpdate &statistics_update) {
+    bool dirty = false;
+    for (auto &iter : statistics_update.statistics) {
+      auto index = to_index(iter.type);
+      auto &tmp = statistics[index];
+      dirty |= utils::update(tmp.value, iter.value);
+      dirty |= utils::update(tmp.begin_time_utc, iter.begin_time_utc);
+      dirty |= utils::update(tmp.end_time_utc, iter.end_time_utc);
+    }
+    if (dirty) {
+      stream_id = statistics_update.stream_id;
+      exchange_time_utc = statistics_update.exchange_time_utc;
+    }
+    return dirty;
+  }
+
+  [[nodiscard]] bool operator()(const Event<StatisticsUpdate> &event) { return (*this)(event.value); }
 
   // note! this will include *all* statistics (whether empty or not)
   // use the extract method if you only care about non-empty statistics

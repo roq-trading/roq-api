@@ -27,6 +27,8 @@ struct MarketStatus final {
     return dirty;
   }
 
+  [[nodiscard]] bool operator()(const Event<roq::MarketStatus> &event) { return (*this)(event.value); }
+
   [[nodiscard]] operator roq::MarketStatus() const {
     return {
         .stream_id = stream_id,

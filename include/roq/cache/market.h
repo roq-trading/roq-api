@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "roq/api.h"
 
 #include "roq/cache/market_by_price.h"

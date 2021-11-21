@@ -2,12 +2,18 @@
 
 #pragma once
 
+#include <absl/container/flat_hash_map.h>
+
 #include <memory>
+#include <string>
+#include <utility>
 
 #include "roq/api.h"
 
+#include "roq/cache/funds.h"
 #include "roq/cache/market_by_price.h"
 #include "roq/cache/market_status.h"
+#include "roq/cache/position.h"
 #include "roq/cache/reference_data.h"
 #include "roq/cache/statistics.h"
 #include "roq/cache/top_of_book.h"
@@ -44,6 +50,45 @@ struct Market final {
   [[nodiscard]] bool operator()(const Event<StatisticsUpdate> &event) { return statistics(event); }
   // XXX TODO CustomMetrics
 
+  [[nodiscard]] bool operator()(const Event<FundsUpdate> &event) {
+    auto &[message_info, funds_update] = event;
+    auto account = funds_update.account;
+    auto iter = funds_by_account.find(account);
+    if (iter == funds_by_account.end()) {
+      Funds funds(account, funds_update.currency);
+      iter = funds_by_account.emplace(account, std::move(funds)).first;
+    }
+    return (*iter).second(event);
+  }
+  [[nodiscard]] bool operator()(const Event<PositionUpdate> &event) {
+    auto &[message_info, position_update] = event;
+    auto account = position_update.account;
+    auto iter = position_by_account.find(account);
+    if (iter == position_by_account.end()) {
+      Position position(account, position_update.exchange, position_update.symbol);
+      iter = position_by_account.emplace(account, std::move(position)).first;
+    }
+    return (*iter).second(event);
+  }
+
+  template <typename Callback>
+  bool get_funds(const std::string_view &account, Callback &&callback) {
+    auto iter = funds_by_account.find(account);
+    if (iter == funds_by_account.end())
+      return false;
+    callback((*iter).second);
+    return true;
+  }
+
+  template <typename Callback>
+  bool get_position(const std::string_view &account, Callback &&callback) {
+    auto iter = position_by_account.find(account);
+    if (iter == position_by_account.end())
+      return false;
+    callback((*iter).second);
+    return true;
+  }
+
   const uint32_t id;
   ReferenceData reference_data;
   MarketStatus market_status;
@@ -52,6 +97,8 @@ struct Market final {
   // std::unique_ptr<MarketByOrder> market_by_order;
   Statistics statistics;
   // XXX TODO CustomMetrics
+  absl::flat_hash_map<std::string, Funds> funds_by_account;
+  absl::flat_hash_map<std::string, Position> position_by_account;
 };
 
 }  // namespace cache

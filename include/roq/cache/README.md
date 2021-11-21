@@ -1,12 +1,13 @@
-> These interfaces are work in progress!
+# PLEASE READ THIS !!!
 
-Some updates will contain the full image, e.g. `ReferenceData`.
-Other updates are incremental, e.g. `MarketByPriceUpdate`.
+This directory contains utility classes useful for clients to manage a cache of
+objects.
+In particular, these classes are being used by the FIX and JSON bridges and are
+considered general-purpose.
 
-All updates will generally contain "views" of the underlying message storage
-and are therefore not valid outside the callback handler.
+> Note! Everything here is about "convenience" and not necessarily meant for low latency.
 
-The utility classes found here deal with incremental updates and "views" when
-last known state is needed outside the callback handler.
+Some effort has gone into reducing allocations by using heterogenous lookups
+and increased cache locality.
 
-> Not all caching logic is open source (in particular `MarketByPrice` and `MarketByOrder`).
+> This directory will likely later be moved to a separate utility library.

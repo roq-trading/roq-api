@@ -13,6 +13,7 @@
 #include "roq/cache/funds.h"
 #include "roq/cache/market_by_price.h"
 #include "roq/cache/market_status.h"
+#include "roq/cache/order.h"
 #include "roq/cache/position.h"
 #include "roq/cache/reference_data.h"
 #include "roq/cache/statistics.h"
@@ -70,6 +71,23 @@ struct Market final {
     }
     return (*iter).second(event);
   }
+  // note! assumes a single user_id
+  [[nodiscard]] bool operator()(const Event<OrderUpdate> &event) {
+    auto &[message_info, order_update] = event;
+    auto account = order_update.account;
+    auto order_id = order_update.order_id;
+    auto &tmp = orders_by_account[account];
+    auto iter = tmp.find(order_id);
+    if (iter == tmp.end()) {
+      Order order(account, order_update.exchange, order_update.symbol, order_id);
+      iter = tmp.emplace(order_id, std::move(order)).first;
+    }
+    return (*iter).second(event);
+  }
+  // note! assumes a single user_id
+  [[nodiscard]] bool operator()(const Event<TradeUpdate> &event) {
+    return true;  // note! always signal update (not currently cached)
+  }
 
   template <typename Callback>
   bool get_funds(const std::string_view &account, Callback &&callback) {
@@ -89,6 +107,20 @@ struct Market final {
     return true;
   }
 
+  // note! random ordering
+  template <typename Callback>
+  bool get_orders(const std::string_view &account, Callback &&callback) {
+    auto iter = orders_by_account.find(account);
+    if (iter == orders_by_account.end())
+      return false;
+    auto &tmp = (*iter).second;
+    if (std::empty(tmp))
+      return false;
+    for (auto &[order_id, order] : tmp)
+      callback(order);
+    return true;
+  }
+
   const uint32_t id;
   ReferenceData reference_data;
   MarketStatus market_status;
@@ -99,6 +131,7 @@ struct Market final {
   // XXX TODO CustomMetrics
   absl::flat_hash_map<std::string, Funds> funds_by_account;
   absl::flat_hash_map<std::string, Position> position_by_account;
+  absl::flat_hash_map<std::string, absl::flat_hash_map<uint32_t, Order>> orders_by_account;
 };
 
 }  // namespace cache

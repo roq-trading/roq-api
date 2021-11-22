@@ -13,6 +13,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* Capture request round-trip latency (#130)
 * Starting to move object cache logic into API (#128)
 
 ## 0.7.8 &ndash; 2021-11-02

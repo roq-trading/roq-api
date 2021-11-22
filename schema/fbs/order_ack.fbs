@@ -23,4 +23,5 @@ table OrderAck {
   version:uint32;
   // from here: not aligned with C++ schema
   side:Side;
+  round_trip_latency:int64;
 }

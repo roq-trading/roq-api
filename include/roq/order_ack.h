@@ -28,22 +28,23 @@ namespace roq {
 
 //! Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange
 struct ROQ_PUBLIC OrderAck final {
-  uint16_t stream_id = {};             //!< Stream identifier
-  std::string_view account;            //!< Account name
-  uint32_t order_id = {};              //!< Order identifier
-  std::string_view exchange;           //!< Exchange
-  std::string_view symbol;             //!< Symbol
-  Side side = {};                      //!< Side
-  RequestType type = {};               //!< Request type
-  Origin origin = {};                  //!< Origin of ack
-  RequestStatus status = {};           //!< Request status
-  Error error = {};                    //!< Error code
-  std::string_view text;               //!< Descriptive text
-  std::string_view request_id;         //!< Request identifier
-  std::string_view external_account;   //!< External account name
-  std::string_view external_order_id;  //!< External order identifier
-  std::string_view routing_id;         //!< Routing identifier
-  uint32_t version = {};               //!< Version number (strictly increasing, optional)
+  uint16_t stream_id = {};                           //!< Stream identifier
+  std::string_view account;                          //!< Account name
+  uint32_t order_id = {};                            //!< Order identifier
+  std::string_view exchange;                         //!< Exchange
+  std::string_view symbol;                           //!< Symbol
+  Side side = {};                                    //!< Side
+  RequestType type = {};                             //!< Request type
+  Origin origin = {};                                //!< Origin of ack
+  RequestStatus status = {};                         //!< Request status
+  Error error = {};                                  //!< Error code
+  std::string_view text;                             //!< Descriptive text
+  std::string_view request_id;                       //!< Request identifier
+  std::string_view external_account;                 //!< External account name
+  std::string_view external_order_id;                //!< External order identifier
+  std::string_view routing_id;                       //!< Routing identifier
+  uint32_t version = {};                             //!< Version number (strictly increasing, optional)
+  std::chrono::nanoseconds round_trip_latency = {};  //!< Round-trip latency between gateway and exchange
 };
 
 }  // namespace roq
@@ -75,7 +76,8 @@ struct fmt::formatter<roq::OrderAck> {
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(routing_id="{}", )"
-        R"(version={})"
+        R"(version={}, )"
+        R"(round_trip_latency={})"
         R"(}})"sv,
         value.stream_id,
         value.account,
@@ -92,7 +94,8 @@ struct fmt::formatter<roq::OrderAck> {
         value.external_account,
         value.external_order_id,
         value.routing_id,
-        value.version);
+        value.version,
+        value.round_trip_latency);
   }
 };
 template <>

@@ -3144,7 +3144,8 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXTERNAL_ORDER_ID = 28,
     VT_ROUTING_ID = 30,
     VT_VERSION = 32,
-    VT_SIDE = 34
+    VT_SIDE = 34,
+    VT_ROUND_TRIP_LATENCY = 36
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
@@ -3168,6 +3169,7 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
   uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
+  int64_t round_trip_latency() const { return GetField<int64_t>(VT_ROUND_TRIP_LATENCY, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
@@ -3180,7 +3182,8 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(external_account()) && VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
            verifier.VerifyString(external_order_id()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
            verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
-           VerifyField<uint8_t>(verifier, VT_SIDE) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<int64_t>(verifier, VT_ROUND_TRIP_LATENCY) &&
+           verifier.EndTable();
   }
 };
 
@@ -3222,6 +3225,9 @@ struct OrderAckBuilder {
   }
   void add_version(uint32_t version) { fbb_.AddElement<uint32_t>(OrderAck::VT_VERSION, version, 0); }
   void add_side(roq::fbs::Side side) { fbb_.AddElement<uint8_t>(OrderAck::VT_SIDE, static_cast<uint8_t>(side), 0); }
+  void add_round_trip_latency(int64_t round_trip_latency) {
+    fbb_.AddElement<int64_t>(OrderAck::VT_ROUND_TRIP_LATENCY, round_trip_latency, 0);
+  }
   explicit OrderAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<OrderAck> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -3247,8 +3253,10 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAck(
     flatbuffers::Offset<flatbuffers::String> external_order_id = 0,
     flatbuffers::Offset<flatbuffers::String> routing_id = 0,
     uint32_t version = 0,
-    roq::fbs::Side side = roq::fbs::Side_Undefined) {
+    roq::fbs::Side side = roq::fbs::Side_Undefined,
+    int64_t round_trip_latency = 0) {
   OrderAckBuilder builder_(_fbb);
+  builder_.add_round_trip_latency(round_trip_latency);
   builder_.add_version(version);
   builder_.add_routing_id(routing_id);
   builder_.add_external_order_id(external_order_id);
@@ -3285,7 +3293,8 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     const char *external_order_id = nullptr,
     const char *routing_id = nullptr,
     uint32_t version = 0,
-    roq::fbs::Side side = roq::fbs::Side_Undefined) {
+    roq::fbs::Side side = roq::fbs::Side_Undefined,
+    int64_t round_trip_latency = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -3311,7 +3320,8 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
       external_order_id__,
       routing_id__,
       version,
-      side);
+      side,
+      round_trip_latency);
 }
 
 struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

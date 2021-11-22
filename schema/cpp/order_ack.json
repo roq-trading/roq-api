@@ -72,6 +72,11 @@
         {
             "name": "version",
             "type": "uint32_t"
+        },
+        {
+            "name": "round_trip_latency",
+            "type": "std::chrono::nanoseconds",
+	    "comment": "Round-trip latency between gateway and exchange"
         }
     ]
 }

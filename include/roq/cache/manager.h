@@ -22,12 +22,12 @@ struct Manager final {
       : market_by_price_factory_(std::move(market_by_price_factory)) {}
 
   // always guaranteed to return (or throw)
-  Market &get_market_or_create(const std::string_view &exchange, const std::string_view &symbol) {
+  std::pair<Market &, bool> get_market_or_create(const std::string_view &exchange, const std::string_view &symbol) {
     auto market_id = find_market_id(exchange, symbol);
     if (market_id) {
       auto iter = markets_.find(market_id);
       if (iter != markets_.end())
-        return (*iter).second;
+        return {(*iter).second, false};
       assert(false);  // must be a bug
     } else {
       auto market_id = ++next_market_id_;
@@ -35,7 +35,7 @@ struct Manager final {
       Market market{market_id, exchange, symbol, market_by_price_factory_};
       auto res = markets_.emplace(market_id, std::move(market));
       assert(res.second);
-      return (*res.first).second;
+      return {(*res.first).second, true};
     }
     std::abort();  // must never get here
   }
@@ -65,10 +65,34 @@ struct Manager final {
   }
 
   // calls back with all existing markets
+
   template <typename Callback>
   void get_all_markets(Callback &&callback) {
     for (auto &[_, market] : markets_)
       callback(market);
+  }
+
+  template <typename Callback>
+  void get_all_markets(Callback &&callback) const {
+    for (auto &[_, market] : markets_)
+      callback(market);
+  }
+
+  template <typename Callback>
+  void get_all_exchanges(Callback &&callback) const {
+    for (auto &[exchange, _] : exchange_to_symbols_)
+      callback(exchange);
+  }
+
+  template <typename Callback>
+  bool get_all_symbols(const std::string_view &exchange, Callback &&callback) const {
+    auto iter = exchange_to_symbols_.find(exchange);
+    if (iter == exchange_to_symbols_.end())
+      return false;
+    auto &tmp = (*iter).second;
+    for (auto &[symbol, _] : tmp)
+      callback(symbol);
+    return true;
   }
 
  protected:

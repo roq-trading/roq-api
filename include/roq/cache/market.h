@@ -29,8 +29,9 @@ struct Market final {
       const std::string_view &exchange,
       const std::string_view &symbol,
       const MarketByPriceFactory &create_market_by_price)
-      : id(id), reference_data(exchange, symbol), market_status(exchange, symbol), top_of_book(exchange, symbol),
-        market_by_price(create_market_by_price(exchange, symbol)), statistics(exchange, symbol) {}
+      : id(id), exchange(exchange), symbol(symbol), reference_data(exchange, symbol), market_status(exchange, symbol),
+        top_of_book(exchange, symbol), market_by_price(create_market_by_price(exchange, symbol)),
+        statistics(exchange, symbol) {}
 
   Market() = delete;
   Market(const Market &) = delete;
@@ -122,6 +123,9 @@ struct Market final {
   }
 
   const uint32_t id;
+  const string_buffer<MAX_LENGTH_EXCHANGE> exchange;
+  const string_buffer<MAX_LENGTH_SYMBOL> symbol;
+
   ReferenceData reference_data;
   MarketStatus market_status;
   TopOfBook top_of_book;

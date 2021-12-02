@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #include <gtest/gtest.h>
 
@@ -8,7 +8,9 @@
 
 using namespace roq;
 using namespace roq::utils;
+
 using namespace std::literals;
+using namespace std::chrono_literals;
 
 // update()
 
@@ -67,10 +69,10 @@ TEST(update, enum_first) {
 TEST(update, chrono_first) {
   std::chrono::seconds value{};
   EXPECT_EQ(value, std::chrono::seconds{});
-  EXPECT_TRUE(update_first(value, std::chrono::seconds{1}));
-  EXPECT_EQ(value, std::chrono::seconds{1});
-  EXPECT_FALSE(update_first(value, std::chrono::seconds{2}));
-  EXPECT_EQ(value, std::chrono::seconds{1});
+  EXPECT_TRUE(update_first(value, 1s));
+  EXPECT_EQ(value, 1s);
+  EXPECT_FALSE(update_first(value, 2s));
+  EXPECT_EQ(value, 1s);
 }
 
 // update_max()

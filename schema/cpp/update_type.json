@@ -5,15 +5,15 @@
     "values": [
         {
             "name": "Snapshot",
-	    "comment": "Full snapshot"
+            "comment": "Full snapshot"
         },
         {
             "name": "Incremental",
-	    "comment": "Incremental change"
+            "comment": "Incremental change"
         },
         {
             "name": "Stale",
-	    "comment": "Stale awaiting full snapshot"
+            "comment": "Stale awaiting full snapshot"
         }
     ]
 }

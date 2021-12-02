@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -56,7 +56,7 @@ struct Market final {
     auto &[message_info, funds_update] = event;
     auto account = funds_update.account;
     auto iter = funds_by_account.find(account);
-    if (iter == funds_by_account.end()) {
+    if (iter == std::end(funds_by_account)) {
       Funds funds(account, funds_update.currency);
       iter = funds_by_account.emplace(account, std::move(funds)).first;
     }
@@ -66,7 +66,7 @@ struct Market final {
     auto &[message_info, position_update] = event;
     auto account = position_update.account;
     auto iter = position_by_account.find(account);
-    if (iter == position_by_account.end()) {
+    if (iter == std::end(position_by_account)) {
       Position position(account, position_update.exchange, position_update.symbol);
       iter = position_by_account.emplace(account, std::move(position)).first;
     }
@@ -79,7 +79,7 @@ struct Market final {
     auto order_id = order_update.order_id;
     auto &tmp = orders_by_account[account];
     auto iter = tmp.find(order_id);
-    if (iter == tmp.end()) {
+    if (iter == std::end(tmp)) {
       Order order(account, order_update.exchange, order_update.symbol, order_id);
       iter = tmp.emplace(order_id, std::move(order)).first;
     }
@@ -93,7 +93,7 @@ struct Market final {
   template <typename Callback>
   bool get_funds(const std::string_view &account, Callback &&callback) {
     auto iter = funds_by_account.find(account);
-    if (iter == funds_by_account.end())
+    if (iter == std::end(funds_by_account))
       return false;
     callback((*iter).second);
     return true;
@@ -102,7 +102,7 @@ struct Market final {
   template <typename Callback>
   bool get_position(const std::string_view &account, Callback &&callback) {
     auto iter = position_by_account.find(account);
-    if (iter == position_by_account.end())
+    if (iter == std::end(position_by_account))
       return false;
     callback((*iter).second);
     return true;
@@ -112,7 +112,7 @@ struct Market final {
   template <typename Callback>
   bool get_orders(const std::string_view &account, Callback &&callback) {
     auto iter = orders_by_account.find(account);
-    if (iter == orders_by_account.end())
+    if (iter == std::end(orders_by_account))
       return false;
     auto &tmp = (*iter).second;
     if (std::empty(tmp))

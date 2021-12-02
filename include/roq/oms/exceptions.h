@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -13,7 +13,7 @@ class ROQ_PUBLIC Exception : public roq::Exception {
  public:
   char const *what() const noexcept override {
     using namespace std::literals;
-    if (what_.empty())  // lazy
+    if (std::empty(what_))  // lazy
       what_ = fmt::format("OMS: {}"sv, *this);
     return what_.c_str();
   }
@@ -69,14 +69,14 @@ struct NotReadyException final : public NotReady {
 template <>
 struct fmt::formatter<roq::oms::Exception> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::oms::Exception &value, Context &context) {
+  auto format(const roq::oms::Exception &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(error={})"
         R"(}})"sv,

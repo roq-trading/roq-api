@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 #pragma once
 
 #include <fmt/format.h>
@@ -21,14 +21,14 @@ struct ROQ_PUBLIC CustomMessage final {
 template <>
 struct fmt::formatter<roq::client::CustomMessage> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::client::CustomMessage &value, Context &context) {
+  auto format(const roq::client::CustomMessage &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(length={})"
         R"(}})"sv,
@@ -39,14 +39,14 @@ struct fmt::formatter<roq::client::CustomMessage> {
 template <>
 struct fmt::formatter<roq::Event<roq::client::CustomMessage> > {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::client::CustomMessage> &event, Context &context) {
+  auto format(const roq::Event<roq::client::CustomMessage> &event, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(custom_message={})"

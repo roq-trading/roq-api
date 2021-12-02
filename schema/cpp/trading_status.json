@@ -5,59 +5,59 @@
     "values": [
         {
             "name": "StartOfDay",
-	    "comment": "No matching, no order actions"
+            "comment": "No matching, no order actions"
         },
         {
             "name": "PreOpen",
-	    "comment": "No matching, all order actions"
+            "comment": "No matching, all order actions"
         },
         {
             "name": "PreOpenNoCancel",
-	    "comment": "No matching, only new orders"
+            "comment": "No matching, only new orders"
         },
         {
             "name": "PreOpenFreeze",
-	    "comment": "Matching, no order actions"
+            "comment": "Matching, no order actions"
         },
         {
             "name": "Open",
-	    "comment": "Matching, all order actions"
+            "comment": "Matching, all order actions"
         },
         {
             "name": "FastMarket",
-	    "comment": "Same as Open, some settings could be relaxed by the exchange"
+            "comment": "Same as Open, some settings could be relaxed by the exchange"
         },
         {
             "name": "Halt",
-	    "comment": "No matching, only order cancellation"
+            "comment": "No matching, only order cancellation"
         },
         {
             "name": "CloseNotFinal",
-	    "comment": "Same as Close, state required to support mid-session PreOpen"
+            "comment": "Same as Close, state required to support mid-session PreOpen"
         },
         {
             "name": "PreClose",
-	    "comment": "No matching, all order actions"
+            "comment": "No matching, all order actions"
         },
         {
             "name": "PreCloseNoCancel",
-	    "comment": "No matching, only new orders"
+            "comment": "No matching, only new orders"
         },
         {
             "name": "PreCloseFreeze",
-	    "comment": "Matching, no order actions"
+            "comment": "Matching, no order actions"
         },
         {
             "name": "Close",
-	    "comment": "No matching, no order actions, good-for-day orders automatically canceled"
+            "comment": "No matching, no order actions, good-for-day orders automatically canceled"
         },
         {
             "name": "PostClose",
-	    "comment": "No matching, all order actions (only with next-trading-day validity)"
+            "comment": "No matching, all order actions (only with next-trading-day validity)"
         },
         {
             "name": "EndOfDay",
-	    "comment": "No matching, no order actions"
+            "comment": "No matching, no order actions"
         }
     ]
 }

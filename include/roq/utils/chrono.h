@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -25,14 +25,14 @@ inline std::pair<date::year_month_day, date::hh_mm_ss<T>> split(U value) {
 template <>
 struct fmt::formatter<date::year_month_day> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const date::year_month_day &value, Context &context) {
+  auto format(const date::year_month_day &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(year="{}", )"
         R"(month={}, )"
@@ -47,14 +47,14 @@ struct fmt::formatter<date::year_month_day> {
 template <>
 struct fmt::formatter<date::hh_mm_ss<std::chrono::milliseconds>> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const date::hh_mm_ss<std::chrono::milliseconds> &value, Context &context) {
+  auto format(const date::hh_mm_ss<std::chrono::milliseconds> &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(hours="{}", )"
         R"(minutes={}, )"

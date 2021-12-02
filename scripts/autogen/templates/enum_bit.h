@@ -88,16 +88,16 @@ struct std::underlying_type<{{ namespaces | join('::') }}::{{ name }}> {
 template <>
 struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
   auto format(
       const {{ namespaces | join('::') }}::{{ name }}& value,
-      Context& context) {
+      Context& ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         "{}"sv,
         value.name());
   }

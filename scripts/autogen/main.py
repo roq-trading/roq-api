@@ -1,18 +1,28 @@
 #!/usr/bin/env python
 
+"""
+Copyright (c) 2017-2022, Hans Erik Thrane
+
+Command-line tool to auto-generate source code files based on JSON spec and templates
+"""
+
 import argparse
 import json
 import re
 import os
 
+from jinja2 import Environment, FileSystemLoader
+
 
 def snake_case(name):
+    """convert to snake-case"""
     # https://stackoverflow.com/a/1176023
     name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
     return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
 
 
 def camel_case(word):
+    """convert to camel-case"""
     # https://www.w3resource.com/python-exercises/re/python-re-exercise-37.php
     return "".join(x.capitalize() or "_" for x in word.split("_"))
 
@@ -43,16 +53,19 @@ defaults = {
 
 
 def is_variable(type_):
+    """test if is a variable"""
     return type_ is not None
 
 
 def is_array(type_):
+    """test if is an array"""
     if type_ is None:
         return False
     return "roq::span<" in type_
 
 
 def sub_type(type_):
+    """find sub-type"""
     if type_ is not None:
         if "roq::span<" in type_:
             return type_[10:-1]
@@ -60,6 +73,7 @@ def sub_type(type_):
 
 
 def is_pod_or_std(type_):
+    """test if is plain-old-data or a std type"""
     return type_ is None or type_ in defaults or "std::" in type_
 
 
@@ -67,6 +81,7 @@ _string_like_types = {"std::string_view", "roq::string_buffer", "UUID"}
 
 
 def is_string_like(type_):
+    """test if is string-like"""
     if type_ is not None:
         for name in _string_like_types:
             if name in type_:
@@ -78,6 +93,7 @@ replace = {"private": "private_"}
 
 
 def get_default_from_type(type_):
+    """get default value from type"""
     if is_array(type_) or is_string_like(type_):
         return ""
     ret = defaults.get(type_)
@@ -85,6 +101,7 @@ def get_default_from_type(type_):
 
 
 def get_variable_name(name):
+    """get the variable name"""
     ret = replace.get(name)
     return ret if ret else name
 
@@ -93,19 +110,20 @@ keywords = {"private": "private_"}
 
 
 def _safe(name):
+    """make name safe (avoid restricted keywords)"""
     tmp = keywords.get(name)
     return tmp if tmp else name
 
 
 def _safe_enum(name):
-    c = name[0]
-    return "_" + name if c.isdigit() else name
+    """make safe enum string (can't start with a digit)"""
+    first_char = name[0]
+    return "_" + name if first_char.isdigit() else name
 
 
 def _format_helper(char, string, array, safe_name, accessor):
-    value = ('fmt::join(value.{}{}, ", "sv)' if array else "value.{}{}").format(
-        safe_name, accessor
-    )
+    """format helper"""
+    value = ('fmt::join(value.{}{}, ", "sv)' if array else "value.{}{}").format(safe_name, accessor)
     # required until Mask has been implemented
     if safe_name in ("supports", "supported", "available", "unavailable"):
         return ("{:#x}", value)
@@ -119,6 +137,7 @@ def _format_helper(char, string, array, safe_name, accessor):
 
 
 def _find_default_comment(name):
+    """some variable names are repeated many times"""
     return dict(
         account="Account name",
         commission_currency="Currency",
@@ -152,38 +171,37 @@ def _find_default_comment(name):
 
 
 def _new_spec_helper(item):
-    k = item["name"]
-    r = item.get("raw", k)
-    t = item.get("type")
-    comment = item.get("comment") or _find_default_comment(k)
-    name = _safe_enum(snake_case(k))
+    """aggregate the specification as a dict"""
+    name_ = item["name"]
+    raw_name = item.get("raw", name_)
+    type_ = item.get("type")
+    comment = item.get("comment") or _find_default_comment(name_)
+    name = _safe_enum(snake_case(name_))
     safe_name = _safe(name)
-    char = t == "char"
-    string = is_string_like(t)
-    array = is_array(t)
-    enum = not is_pod_or_std(t) and not array and not string
-    is_float = t == "double"
+    char = type_ == "char"
+    string = is_string_like(type_)
+    array = is_array(type_)
+    enum = not is_pod_or_std(type_) and not array and not string
+    is_float = type_ == "double"
     tag = item.get("tag", -1)
     custom = item.get("custom", False)
-    default = item.get("default", get_default_from_type(t))
+    default = item.get("default", get_default_from_type(type_))
     accessor = item.get("accessor", "")
-    format_string, format_value = _format_helper(
-        char, string, array, safe_name, accessor
-    )
+    format_string, format_value = _format_helper(char, string, array, safe_name, accessor)
     position = item.get("position", 0)
     return dict(
-        raw_name=r,
+        raw_name=raw_name,
         name=safe_name,
         enum_value=name.upper(),
         comment=comment,
-        is_variable=is_variable(t),
+        is_variable=is_variable(type_),
         tag=tag,
         custom=custom,
-        type=t,
+        type=type_,
         is_required=item.get("required", False),
         is_map=item.get("map", False),
         default=default,
-        include=t is not None,
+        include=type_ is not None,
         is_string=string,
         is_array=array,
         is_enum=enum,
@@ -195,6 +213,7 @@ def _new_spec_helper(item):
 
 
 def _include_helper(namespaces, variable):
+    """sometimes we need a custom include"""
     if variable["is_array"]:
         return namespaces + (snake_case(sub_type(variable["type"])),)
     if "::" not in variable["type"]:
@@ -203,6 +222,7 @@ def _include_helper(namespaces, variable):
 
 
 def new_spec(path, namespaces, name, comment, spec, type_):
+    """aggregate the spec as a dict"""
     filename = os.path.splitext(os.path.basename(path))[0]
 
     values = [_new_spec_helper(item) for item in spec]
@@ -210,14 +230,10 @@ def new_spec(path, namespaces, name, comment, spec, type_):
 
     if type_ != "enum":
         if len(comment) == 0:
-            raise RuntimeError("{} has no commens".format(name))
+            raise RuntimeError(f"{name} has no comments")
         if any([len(value["comment"]) == 0 for value in values]):
-            raise RuntimeError(
-                "{} requires comments for following fields {}".format(
-                    name,
-                    [value["name"] for value in values if len(value["comment"]) == 0],
-                )
-            )
+            fields = [value["name"] for value in values if len(value["comment"]) == 0]
+            raise RuntimeError(f"{name} requires comments for following fields {fields}")
 
     includes = sorted(
         {
@@ -240,29 +256,26 @@ def new_spec(path, namespaces, name, comment, spec, type_):
 
 
 def process(file_type, path, namespaces, templates):
-    with open(path) as fd:
-        doc = json.load(fd)
+    """generate the output file based on a template"""
+    with open(path) as file:
+        doc = json.load(file)
         type_ = doc["type"]
         name = doc["name"]
         comment = doc["comment"]
         values = doc["values"]
-        from jinja2 import Environment, FileSystemLoader
 
-        env = Environment(
-            loader=FileSystemLoader(templates), trim_blocks=True, lstrip_blocks=True
-        )
+        env = Environment(loader=FileSystemLoader(templates), trim_blocks=True, lstrip_blocks=True)
         template = env.get_template(".".join((type_, file_type)))
         spec = new_spec(path, namespaces, name, comment, values, type_)
         result = template.render(**spec)
         print(result)
 
 
-if __name__ == "__main__":
+def main():
+    """main function"""
     parser = argparse.ArgumentParser()
     parser.add_argument("--namespace", type=str, required=True, help="namespace")
-    parser.add_argument(
-        "--file-type", type=str, required=True, help="output file (h/cpp)"
-    )
+    parser.add_argument("--file-type", type=str, required=True, help="output file (h/cpp)")
     parser.add_argument("spec", type=str, help="spec file (.json)")
     args = parser.parse_args()
 
@@ -272,3 +285,7 @@ if __name__ == "__main__":
     templates = os.path.join(dirname, "templates")
 
     process(args.file_type, args.spec, namespaces, templates)
+
+
+if __name__ == "__main__":
+    main()

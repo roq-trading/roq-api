@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -95,7 +95,7 @@ class ROQ_PACKED string_buffer final {
 
   inline bool empty() const { return buffer_[0] == '\0'; }
 
-  value_type const *data() const { return buffer_.data(); }
+  value_type const *data() const { return std::data(buffer_); }
 
   operator std::string_view() const { return std::string_view(data(), length()); }
 
@@ -121,14 +121,14 @@ class ROQ_PACKED string_buffer final {
   }
 
  protected:
-  value_type *data() { return buffer_.data(); }
+  value_type *data() { return std::data(buffer_); }
 
   void copy(const std::string_view &text) {
     using namespace std::literals;
-    auto len = text.length();
+    auto len = std::size(text);
     if (ROQ_LIKELY(len <= size())) {
-      auto last = std::copy(text.begin(), text.end(), buffer_.begin());
-      std::fill(last, buffer_.end(), '\0');  // convenient, but we don't need to write the last byte
+      auto last = std::copy(std::begin(text), std::end(text), std::begin(buffer_));
+      std::fill(last, std::end(buffer_), '\0');  // convenient, but we don't need to write the last byte
       if (len < (N - 1))
         buffer_[N - 1] = len;
     } else {
@@ -150,8 +150,8 @@ inline bool operator==(const string_buffer<N> &lhs, const string_buffer<N> &rhs)
 template <size_t N>
 struct fmt::formatter<roq::string_buffer<N> > {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
   auto format(const roq::string_buffer<N> &value, Context &ctx) {

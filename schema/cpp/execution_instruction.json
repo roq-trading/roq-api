@@ -5,23 +5,23 @@
     "values": [
         {
             "name": "ParticipateDoNotInitiate",
-	    "comment": "Cancel if order would have executed on placement (i.e. not as maker)",
-	    "position": 0
+            "comment": "Cancel if order would have executed on placement (i.e. not as maker)",
+            "position": 0
         },
         {
             "name": "CancelIfNotBest",
-	    "comment": "Cancel if order can not be placed at best price",
-	    "position": 1
+            "comment": "Cancel if order can not be placed at best price",
+            "position": 1
         },
         {
             "name": "DoNotIncrease",
-	    "comment": "Order may only reduce net position, order quantity can automatically be reduced by exchange",
-	    "position": 2
+            "comment": "Order may only reduce net position, order quantity can automatically be reduced by exchange",
+            "position": 2
         },
         {
             "name": "DoNotReduce",
-	    "comment": "Order can not be partially filled, aka. all-or-none (AON) orders",
-	    "position": 3
+            "comment": "Order can not be partially filled, aka. all-or-none (AON) orders",
+            "position": 3
         }
     ]
 }

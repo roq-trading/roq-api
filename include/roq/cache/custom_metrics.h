@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -27,7 +27,7 @@ struct CustomMetrics final {
     for (auto &measurement : custom_metrics_update.measurements) {
       auto &[key, value] = measurement;
       auto iter = lookup_.find(key);
-      if (iter == lookup_.end()) {
+      if (iter == std::end(lookup_)) {
         auto res = lookup_.emplace(key, std::size(measurements));
         iter = res.first;
         measurements.emplace_back(measurement);

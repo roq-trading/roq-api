@@ -5,83 +5,83 @@
     "values": [
         {
             "name": "ReferenceData",
-	    "position": 0,
-	    "comment": "Reference data"
+            "position": 0,
+            "comment": "Reference data"
         },
         {
             "name": "MarketStatus",
-	    "position": 1,
-	    "comment": "Market status"
+            "position": 1,
+            "comment": "Market status"
         },
         {
             "name": "TopOfBook",
-	    "position": 2,
-	    "comment": "Top of book"
+            "position": 2,
+            "comment": "Top of book"
         },
         {
             "name": "MarketByPrice",
-	    "position": 3,
-	    "comment": "Market by price"
+            "position": 3,
+            "comment": "Market by price"
         },
         {
             "name": "MarketByOrder",
-	    "position": 4,
-	    "comment": "Market by order"
+            "position": 4,
+            "comment": "Market by order"
         },
         {
             "name": "TradeSummary",
-	    "position": 5,
-	    "comment": "Trade summary"
+            "position": 5,
+            "comment": "Trade summary"
         },
         {
             "name": "Statistics",
-	    "position": 6,
-	    "comment": "Statistics"
+            "position": 6,
+            "comment": "Statistics"
         },
         {
             "name": "CreateOrder",
-	    "position": 16,
-	    "comment": "Create order"
+            "position": 16,
+            "comment": "Create order"
         },
         {
             "name": "ModifyOrder",
-	    "position": 17,
-	    "comment": "Modify order"
+            "position": 17,
+            "comment": "Modify order"
         },
         {
             "name": "CancelOrder",
-	    "position": 18,
-	    "comment": "Cancel order"
+            "position": 18,
+            "comment": "Cancel order"
         },
         {
             "name": "OrderAck",
-	    "position": 19,
-	    "comment": "Order ack"
+            "position": 19,
+            "comment": "Order ack"
         },
         {
             "name": "Order",
-	    "position": 20,
-	    "comment": "Order"
+            "position": 20,
+            "comment": "Order"
         },
         {
             "name": "OrderState",
-	    "position": 23,
-	    "comment": "Order"
+            "position": 23,
+            "comment": "Order"
         },
         {
             "name": "Trade",
-	    "position": 21,
-	    "comment": "Trade"
+            "position": 21,
+            "comment": "Trade"
         },
         {
             "name": "Position",
-	    "position": 22,
-	    "comment": "Position"
+            "position": 22,
+            "comment": "Position"
         },
         {
             "name": "Funds",
-	    "position": 28,
-	    "comment": "Funds"
+            "position": 28,
+            "comment": "Funds"
         }
     ]
 }

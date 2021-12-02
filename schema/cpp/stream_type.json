@@ -5,15 +5,15 @@
     "values": [
         {
             "name": "FIX",
-	    "comment": "FIX"
+            "comment": "FIX"
         },
         {
             "name": "WebSocket",
-	    "comment": "Web-Socket"
+            "comment": "Web-Socket"
         },
         {
             "name": "REST",
-	    "comment": "REST"
+            "comment": "REST"
         }
     ]
 }

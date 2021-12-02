@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #include <gtest/gtest.h>
 
@@ -12,8 +12,8 @@ TEST(string_buffer, empty) {
   EXPECT_EQ(s.size(), 4);
   EXPECT_EQ(s.length(), 0);
   auto sv = static_cast<std::string_view>(s);
-  EXPECT_TRUE(sv.empty());
-  EXPECT_EQ(sv.length(), 0);
+  EXPECT_TRUE(std::empty(sv));
+  EXPECT_EQ(std::size(sv), 0);
 }
 
 TEST(string_buffer, partial) {
@@ -22,8 +22,8 @@ TEST(string_buffer, partial) {
   EXPECT_EQ(s.size(), 4);
   EXPECT_EQ(s.length(), 2);
   auto sv = static_cast<std::string_view>(s);
-  EXPECT_FALSE(sv.empty());
-  EXPECT_EQ(sv.length(), 2);
+  EXPECT_FALSE(std::empty(sv));
+  EXPECT_EQ(std::size(sv), 2);
   EXPECT_EQ(sv, text);
 }
 
@@ -33,8 +33,8 @@ TEST(string_buffer, almost_full) {
   EXPECT_EQ(s.size(), 4);
   EXPECT_EQ(s.length(), 3);
   auto sv = static_cast<std::string_view>(s);
-  EXPECT_FALSE(sv.empty());
-  EXPECT_EQ(sv.length(), 3);
+  EXPECT_FALSE(std::empty(sv));
+  EXPECT_EQ(std::size(sv), 3);
   EXPECT_EQ(sv, text);
 }
 
@@ -44,8 +44,8 @@ TEST(string_buffer, full) {
   EXPECT_EQ(s.size(), 4);
   EXPECT_EQ(s.length(), 4);
   auto sv = static_cast<std::string_view>(s);
-  EXPECT_FALSE(sv.empty());
-  EXPECT_EQ(sv.length(), 4);
+  EXPECT_FALSE(std::empty(sv));
+  EXPECT_EQ(std::size(sv), 4);
   EXPECT_EQ(sv, text);
 }
 

@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -25,15 +25,15 @@ struct Number final {
 template <>
 struct fmt::formatter<roq::utils::Number> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::utils::Number &value, Context &context) {
+  auto format(const roq::utils::Number &value, Context &ctx) {
     using namespace std::literals;
     auto decimal_digits = roq::utils::decimal_digits(value.decimals);
     if (decimal_digits < 0)
-      return fmt::format_to(context.out(), "{}"sv, value.value);
-    return fmt::format_to(context.out(), "{:.{}f}"sv, value.value, roq::utils::decimal_digits(value.decimals));
+      return fmt::format_to(ctx.out(), "{}"sv, value.value);
+    return fmt::format_to(ctx.out(), "{:.{}f}"sv, value.value, roq::utils::decimal_digits(value.decimals));
   }
 };

@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -26,7 +26,7 @@ struct Manager final {
     auto market_id = find_market_id(exchange, symbol);
     if (market_id) {
       auto iter = markets_.find(market_id);
-      if (iter != markets_.end())
+      if (iter != std::end(markets_))
         return {(*iter).second, false};
       assert(false);  // must be a bug
     } else {
@@ -44,7 +44,7 @@ struct Manager final {
   template <typename Callback>
   bool get_market(uint32_t market_id, Callback &&callback) {
     auto iter = markets_.find(market_id);
-    if (iter == markets_.end())
+    if (iter == std::end(markets_))
       return false;
     callback((*iter).second);
     return true;
@@ -56,7 +56,7 @@ struct Manager final {
     auto market_id = find_market_id(exchange, symbol);
     if (market_id) {
       auto iter = markets_.find(market_id);
-      if (iter != markets_.end()) {
+      if (iter != std::end(markets_)) {
         callback((*iter).second);
         return true;
       }
@@ -87,7 +87,7 @@ struct Manager final {
   template <typename Callback>
   bool get_all_symbols(const std::string_view &exchange, Callback &&callback) const {
     auto iter = exchange_to_symbols_.find(exchange);
-    if (iter == exchange_to_symbols_.end())
+    if (iter == std::end(exchange_to_symbols_))
       return false;
     auto &tmp = (*iter).second;
     for (auto &[symbol, _] : tmp)
@@ -98,11 +98,11 @@ struct Manager final {
  protected:
   uint32_t find_market_id(const std::string_view &exchange, const std::string_view &symbol) const {
     auto iter_1 = exchange_to_symbols_.find(exchange);
-    if (iter_1 == exchange_to_symbols_.end())
+    if (iter_1 == std::end(exchange_to_symbols_))
       return 0;
     auto &symbols = (*iter_1).second;
     auto iter_2 = symbols.find(symbol);
-    return iter_2 == symbols.end() ? 0 : (*iter_2).second;
+    return iter_2 == std::end(symbols) ? 0 : (*iter_2).second;
   }
 
  private:

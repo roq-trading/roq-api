@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 /* !!! THIS FILE HAS BEEN AUTO-GENERATED !!! */
 
@@ -38,14 +38,14 @@ struct ROQ_PUBLIC TopOfBook final {
 template <>
 struct fmt::formatter<roq::TopOfBook> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::TopOfBook &value, Context &context) {
+  auto format(const roq::TopOfBook &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(stream_id={}, )"
         R"(exchange="{}", )"
@@ -65,14 +65,14 @@ struct fmt::formatter<roq::TopOfBook> {
 template <>
 struct fmt::formatter<roq::Event<roq::TopOfBook> > {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::TopOfBook> &event, Context &context) {
+  auto format(const roq::Event<roq::TopOfBook> &event, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(top_of_book={})"

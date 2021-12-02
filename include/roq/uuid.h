@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -31,9 +31,9 @@ class UUID final {
 
   UUID &operator=(const UUID &) = default;
 
-  constexpr size_t size() const { return uuid_.size(); }
+  constexpr size_t size() const { return std::size(uuid_); }
 
-  constexpr value_type const *data() const { return uuid_.data(); }
+  constexpr value_type const *data() const { return std::data(uuid_); }
 
   constexpr value_type &operator[](std::size_t index) { return uuid_[index]; }
   constexpr const value_type &operator[](std::size_t index) const { return uuid_[index]; }
@@ -42,7 +42,7 @@ class UUID final {
 
   constexpr bool is_null() const {
     // XXX not constexpr until c++20
-    // return std::all_of(uuid_.begin(), uuid_.end(), [](char c) { c == 0; });
+    // return std::all_of(std::begin(uuid_), std::end(uuid_), [](char c) { c == 0; });
     // note! compilers can easily optimize this
     return uuid_[0] == 0 && uuid_[1] == 0 && uuid_[2] == 0 && uuid_[3] == 0 && uuid_[4] == 0 && uuid_[5] == 0 &&
            uuid_[6] == 0 && uuid_[7] == 0 && uuid_[8] == 0 && uuid_[9] == 0 && uuid_[10] == 0 && uuid_[11] == 0 &&
@@ -61,7 +61,7 @@ class UUID final {
   constexpr int compare(const UUID &rhs) const {
     // XXX no constexpr algos until c++20
     // note! compilers can easily optimize this
-    for (size_t i = 0; i < uuid_.size(); ++i) {
+    for (size_t i = 0; i < std::size(uuid_); ++i) {
       if (uuid_[i] != rhs.uuid_[i]) {
         return uuid_[i] < rhs.uuid_[i] ? -1 : 1;
       }
@@ -80,15 +80,15 @@ static_assert(sizeof(UUID) == 16);
 template <>
 struct fmt::formatter<roq::UUID> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::UUID &value, Context &context) {
+  auto format(const roq::UUID &value, Context &ctx) {
     using namespace std::literals;
-    auto data = value.data();
+    auto data = std::data(value);
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         "{:02x}{:02x}{:02x}{:02x}-"
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"

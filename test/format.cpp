@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #include <gtest/gtest.h>
 
@@ -6,6 +6,7 @@
 #include "roq/side.h"
 
 using namespace roq;
+
 using namespace std::literals;
 
 TEST(format, Side) {
@@ -44,7 +45,7 @@ TEST(format, market_by_price) {
       .checksum = 123,
   };
   auto result = fmt::format("{}"sv, market_by_price);
-  EXPECT_GT(result.length(), size_t{0});
+  EXPECT_GT(std::size(result), size_t{0});
   // note! Decimals are shown with the '_' prefix due to magic_enum
   auto expected =
       R"({)"

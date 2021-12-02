@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -50,7 +50,7 @@ constexpr bool update_if_not_empty(T &result, const U &value) {
   using lhs_type = typename std::decay<T>::type;
   using rhs_type = typename std::decay<U>::type;
   if constexpr (is_string<rhs_type>::value) {
-    if (value.empty())
+    if (std::empty(value))
       return false;
   } else if constexpr (std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
     // update() will do the right thing

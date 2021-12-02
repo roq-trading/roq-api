@@ -26,11 +26,11 @@ set(CMAKE_FIND_LIBRARY_SUFFIXES .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
 
 # c++
 
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
   message("Setting default visibility to hidden")
   set(CMAKE_CXX_VISIBILITY_PRESET hidden)
   set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
-endif (CMAKE_BUILD_TYPE STREQUAL "Release")
+endif(CMAKE_BUILD_TYPE STREQUAL "Release")
 
 # filesystem
 

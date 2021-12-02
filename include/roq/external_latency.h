@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 /* !!! THIS FILE HAS BEEN AUTO-GENERATED !!! */
 
@@ -31,14 +31,14 @@ struct ROQ_PUBLIC ExternalLatency final {
 template <>
 struct fmt::formatter<roq::ExternalLatency> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::ExternalLatency &value, Context &context) {
+  auto format(const roq::ExternalLatency &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(stream_id={}, )"
         R"(latency={})"
@@ -50,14 +50,14 @@ struct fmt::formatter<roq::ExternalLatency> {
 template <>
 struct fmt::formatter<roq::Event<roq::ExternalLatency> > {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::ExternalLatency> &event, Context &context) {
+  auto format(const roq::Event<roq::ExternalLatency> &event, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(external_latency={})"

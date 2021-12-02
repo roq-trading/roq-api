@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 /* !!! THIS FILE HAS BEEN AUTO-GENERATED !!! */
 
@@ -37,14 +37,14 @@ struct ROQ_PUBLIC CustomMetricsUpdate final {
 template <>
 struct fmt::formatter<roq::CustomMetricsUpdate> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::CustomMetricsUpdate &value, Context &context) {
+  auto format(const roq::CustomMetricsUpdate &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(user="{}", )"
         R"(label="{}", )"
@@ -64,14 +64,14 @@ struct fmt::formatter<roq::CustomMetricsUpdate> {
 template <>
 struct fmt::formatter<roq::Event<roq::CustomMetricsUpdate> > {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::CustomMetricsUpdate> &event, Context &context) {
+  auto format(const roq::Event<roq::CustomMetricsUpdate> &event, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(custom_metrics_update={})"

@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 /* !!! THIS FILE HAS BEEN AUTO-GENERATED !!! */
 
@@ -29,14 +29,14 @@ struct ROQ_PUBLIC Measurement final {
 template <>
 struct fmt::formatter<roq::Measurement> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::Measurement &value, Context &context) {
+  auto format(const roq::Measurement &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(name="{}", )"
         R"(value={})"

@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -273,7 +273,7 @@ auto encode(B &builder, const roq::Measurement &value) {
 template <typename B>
 auto encode(B &builder, const roq::span<roq::MBPUpdate> &value) {
   std::vector<flatbuffers::Offset<MBPUpdate>> result;
-  auto size = value.size();
+  auto size = std::size(value);
   if (size) {
     result.reserve(size);
     for (const auto &item : value) {
@@ -286,7 +286,7 @@ auto encode(B &builder, const roq::span<roq::MBPUpdate> &value) {
 template <typename B>
 auto encode(B &builder, const roq::span<roq::MBOUpdate> &value) {
   std::vector<flatbuffers::Offset<MBOUpdate>> result;
-  auto size = value.size();
+  auto size = std::size(value);
   if (size) {
     result.reserve(size);
     for (const auto &item : value) {
@@ -299,7 +299,7 @@ auto encode(B &builder, const roq::span<roq::MBOUpdate> &value) {
 template <typename B>
 auto encode(B &builder, const roq::span<roq::Trade> &value) {
   std::vector<flatbuffers::Offset<Trade>> result;
-  auto size = value.size();
+  auto size = std::size(value);
   if (size) {
     result.reserve(size);
     for (const auto &item : value) {
@@ -312,7 +312,7 @@ auto encode(B &builder, const roq::span<roq::Trade> &value) {
 template <typename B>
 auto encode(B &builder, const roq::span<roq::Fill> &value) {
   std::vector<flatbuffers::Offset<Fill>> result;
-  auto size = value.size();
+  auto size = std::size(value);
   if (size) {
     result.reserve(size);
     for (const auto &item : value) {
@@ -325,7 +325,7 @@ auto encode(B &builder, const roq::span<roq::Fill> &value) {
 template <typename B>
 auto encode(B &builder, const roq::span<roq::Statistics> &value) {
   std::vector<flatbuffers::Offset<Statistics>> result;
-  auto size = value.size();
+  auto size = std::size(value);
   if (size) {
     result.reserve(size);
     for (const auto &item : value) {
@@ -338,7 +338,7 @@ auto encode(B &builder, const roq::span<roq::Statistics> &value) {
 template <typename B>
 auto encode(B &builder, const roq::span<roq::Measurement> &value) {
   std::vector<flatbuffers::Offset<Measurement>> result;
-  auto size = value.size();
+  auto size = std::size(value);
   if (size) {
     result.reserve(size);
     for (const auto &item : value) {
@@ -351,7 +351,7 @@ auto encode(B &builder, const roq::span<roq::Measurement> &value) {
 template <typename B, std::size_t N>
 auto encode(B &builder, const roq::span<roq::string_buffer<N> const> &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = value.size();
+  auto size = std::size(value);
   if (size) {
     result.reserve(size);
     for (const auto &item : value) {

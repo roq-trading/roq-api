@@ -20,7 +20,7 @@
         },
         {
             "name": "Failed",
-	    "comment": "Generic failure"
+            "comment": "Generic failure"
         }
     ]
 }

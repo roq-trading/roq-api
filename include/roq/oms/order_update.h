@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 #pragma once
 
@@ -40,14 +40,14 @@ struct ROQ_PUBLIC OrderUpdate final {
 template <>
 struct fmt::formatter<roq::oms::OrderUpdate> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::oms::OrderUpdate &value, Context &context) {
+  auto format(const roq::oms::OrderUpdate &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(account="{}", )"
         R"(exchange="{}", )"

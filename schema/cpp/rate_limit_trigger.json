@@ -21,17 +21,17 @@
         {
             "name": "users",
             "type": "roq::span<roq::string_buffer<16> const>",
-	    "comment": "Sorted list of users being affected (empty list means: all)"
+            "comment": "Sorted list of users being affected (empty list means: all)"
         },
         {
             "name": "accounts",
             "type": "roq::span<roq::string_buffer<32> const>",
-	    "comment": "Sorted list of accounts being affected (empty list means: all)"
+            "comment": "Sorted list of accounts being affected (empty list means: all)"
         },
         {
             "name": "ban_expires",
             "type": "std::chrono::nanoseconds",
-	    "comment": "System time when ban expires (zero means: ban is no longer effective)"
+            "comment": "System time when ban expires (zero means: ban is no longer effective)"
         },
         {
             "name": "triggered_by",

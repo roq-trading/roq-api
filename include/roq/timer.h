@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2021, Hans Erik Thrane */
+/* Copyright (c) 2017-2022, Hans Erik Thrane */
 
 /* !!! THIS FILE HAS BEEN AUTO-GENERATED !!! */
 
@@ -30,14 +30,14 @@ struct ROQ_PUBLIC Timer final {
 template <>
 struct fmt::formatter<roq::Timer> {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::Timer &value, Context &context) {
+  auto format(const roq::Timer &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(now={})"
         R"(}})"sv,
@@ -47,14 +47,14 @@ struct fmt::formatter<roq::Timer> {
 template <>
 struct fmt::formatter<roq::Event<roq::Timer> > {
   template <typename Context>
-  constexpr auto parse(Context &context) {
-    return context.begin();
+  constexpr auto parse(Context &ctx) {
+    return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::Timer> &event, Context &context) {
+  auto format(const roq::Event<roq::Timer> &event, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
-        context.out(),
+        ctx.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(timer={})"

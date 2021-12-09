@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* Capture `origin_create_time` for externally triggered events (#140)
+
 ## 0.7.9 &ndash; 2021-12-08
 
 ### Changed

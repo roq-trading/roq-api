@@ -45,20 +45,20 @@ class ROQ_PUBLIC Dispatcher {
   //! Useful to communicate between threads
   virtual void enqueue(const CustomMessage &) = 0;
 
-  //! Make it possible to capture receive_time (origin_create_time_utc is optional)
+  //! Make it possible to populate origin_create_time and receive_time for external events
   template <typename Callback>
-  void create_trace_info(Callback &&callback, std::chrono::nanoseconds origin_create_time_utc = {}) {
-    TimeSetter time_setter(*this, origin_create_time_utc);
+  void create_trace_info(Callback &&callback) {
+    TimeSetter time_setter(*this);
     callback(static_cast<const server::TraceInfo &>(time_setter));
   }
 
  protected:
-  virtual server::TraceInfo create_trace_info(std::chrono::nanoseconds origin_create_time_utc = {}) = 0;
+  virtual server::TraceInfo create_trace_info() = 0;
   virtual void release_trace_info() = 0;
 
   struct TimeSetter final {
-    TimeSetter(Dispatcher &dispatcher, std::chrono::nanoseconds origin_create_time_utc)
-        : dispatcher_(dispatcher), trace_info_(dispatcher_.create_trace_info(origin_create_time_utc)) {}
+    explicit TimeSetter(Dispatcher &dispatcher)
+        : dispatcher_(dispatcher), trace_info_(dispatcher_.create_trace_info()) {}
 
     ~TimeSetter() {
       try {

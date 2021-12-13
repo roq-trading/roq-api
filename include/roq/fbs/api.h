@@ -682,23 +682,24 @@ enum SecurityType : uint8_t {
   SecurityType_Spot = 1,
   SecurityType_Futures = 2,
   SecurityType_Option = 3,
+  SecurityType_Swap = 4,
   SecurityType_MIN = SecurityType_Undefined,
-  SecurityType_MAX = SecurityType_Option
+  SecurityType_MAX = SecurityType_Swap
 };
 
-inline const SecurityType (&EnumValuesSecurityType())[4] {
+inline const SecurityType (&EnumValuesSecurityType())[5] {
   static const SecurityType values[] = {
-      SecurityType_Undefined, SecurityType_Spot, SecurityType_Futures, SecurityType_Option};
+      SecurityType_Undefined, SecurityType_Spot, SecurityType_Futures, SecurityType_Option, SecurityType_Swap};
   return values;
 }
 
 inline const char *const *EnumNamesSecurityType() {
-  static const char *const names[5] = {"Undefined", "Spot", "Futures", "Option", nullptr};
+  static const char *const names[6] = {"Undefined", "Spot", "Futures", "Option", "Swap", nullptr};
   return names;
 }
 
 inline const char *EnumNameSecurityType(SecurityType e) {
-  if (flatbuffers::IsOutRange(e, SecurityType_Undefined, SecurityType_Option))
+  if (flatbuffers::IsOutRange(e, SecurityType_Undefined, SecurityType_Swap))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSecurityType()[index];

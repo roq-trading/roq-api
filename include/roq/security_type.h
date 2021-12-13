@@ -24,6 +24,7 @@ struct ROQ_PACKED SecurityType final {
     SPOT,
     FUTURES,
     OPTION,
+    SWAP,
   };
 
   constexpr SecurityType() = default;

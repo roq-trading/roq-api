@@ -4,6 +4,7 @@ enum SecurityType:uint8 {
   Undefined,
   Spot,
   Futures,
-  Option
+  Option,
+  Swap,
 }
 

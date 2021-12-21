@@ -9,6 +9,10 @@ All notable changes will be documented in this file.
 * `SecurityType::SWAP`
 * Capture `origin_create_time` for externally triggered events (#140)
 
+### Changed
+
+* Preparing to support macOS/ARM64
+
 ## 0.7.9 &ndash; 2021-12-08
 
 ### Changed

@@ -3939,7 +3939,8 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXPIRY_DATETIME = 40,
     VT_EXPIRY_DATETIME_UTC = 42,
     VT_MAX_TRADE_VOL = 44,
-    VT_TRADE_VOL_STEP_SIZE = 46
+    VT_TRADE_VOL_STEP_SIZE = 46,
+    VT_MARGIN_CURRENCY = 48
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
@@ -3975,6 +3976,9 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double trade_vol_step_size() const {
     return GetField<double>(VT_TRADE_VOL_STEP_SIZE, std::numeric_limits<double>::quiet_NaN());
   }
+  const flatbuffers::String *margin_currency() const {
+    return GetPointer<const flatbuffers::String *>(VT_MARGIN_CURRENCY);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
@@ -3992,7 +3996,8 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<int32_t>(verifier, VT_ISSUE_DATE) && VerifyField<int32_t>(verifier, VT_SETTLEMENT_DATE) &&
            VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME) &&
            VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME_UTC) && VerifyField<double>(verifier, VT_MAX_TRADE_VOL) &&
-           VerifyField<double>(verifier, VT_TRADE_VOL_STEP_SIZE) && verifier.EndTable();
+           VerifyField<double>(verifier, VT_TRADE_VOL_STEP_SIZE) && VerifyOffset(verifier, VT_MARGIN_CURRENCY) &&
+           verifier.VerifyString(margin_currency()) && verifier.EndTable();
   }
 };
 
@@ -4061,6 +4066,9 @@ struct ReferenceDataBuilder {
     fbb_.AddElement<double>(
         ReferenceData::VT_TRADE_VOL_STEP_SIZE, trade_vol_step_size, std::numeric_limits<double>::quiet_NaN());
   }
+  void add_margin_currency(flatbuffers::Offset<flatbuffers::String> margin_currency) {
+    fbb_.AddOffset(ReferenceData::VT_MARGIN_CURRENCY, margin_currency);
+  }
   explicit ReferenceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<ReferenceData> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -4092,7 +4100,8 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceData(
     int64_t expiry_datetime = 0,
     int64_t expiry_datetime_utc = 0,
     double max_trade_vol = std::numeric_limits<double>::quiet_NaN(),
-    double trade_vol_step_size = std::numeric_limits<double>::quiet_NaN()) {
+    double trade_vol_step_size = std::numeric_limits<double>::quiet_NaN(),
+    flatbuffers::Offset<flatbuffers::String> margin_currency = 0) {
   ReferenceDataBuilder builder_(_fbb);
   builder_.add_trade_vol_step_size(trade_vol_step_size);
   builder_.add_max_trade_vol(max_trade_vol);
@@ -4102,6 +4111,7 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceData(
   builder_.add_min_trade_vol(min_trade_vol);
   builder_.add_multiplier(multiplier);
   builder_.add_tick_size(tick_size);
+  builder_.add_margin_currency(margin_currency);
   builder_.add_settlement_date(settlement_date);
   builder_.add_issue_date(issue_date);
   builder_.add_time_zone(time_zone);
@@ -4142,7 +4152,8 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
     int64_t expiry_datetime = 0,
     int64_t expiry_datetime_utc = 0,
     double max_trade_vol = std::numeric_limits<double>::quiet_NaN(),
-    double trade_vol_step_size = std::numeric_limits<double>::quiet_NaN()) {
+    double trade_vol_step_size = std::numeric_limits<double>::quiet_NaN(),
+    const char *margin_currency = nullptr) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto description__ = description ? _fbb.CreateString(description) : 0;
@@ -4152,6 +4163,7 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
   auto strike_currency__ = strike_currency ? _fbb.CreateString(strike_currency) : 0;
   auto underlying__ = underlying ? _fbb.CreateString(underlying) : 0;
   auto time_zone__ = time_zone ? _fbb.CreateString(time_zone) : 0;
+  auto margin_currency__ = margin_currency ? _fbb.CreateString(margin_currency) : 0;
   return roq::fbs::CreateReferenceData(
       _fbb,
       stream_id,
@@ -4175,7 +4187,8 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
       expiry_datetime,
       expiry_datetime_utc,
       max_trade_vol,
-      trade_vol_step_size);
+      trade_vol_step_size,
+      margin_currency__);
 }
 
 struct StatisticsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

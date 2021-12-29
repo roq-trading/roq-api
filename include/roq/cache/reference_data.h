@@ -25,6 +25,7 @@ class ReferenceData final {
     security_type = {};
     base_currency.clear();
     quote_currency.clear();
+    margin_currency.clear();
     commission_currency.clear();
     tick_size = NaN;
     multiplier = NaN;
@@ -49,6 +50,7 @@ class ReferenceData final {
     dirty |= utils::update(security_type, reference_data.security_type);
     dirty |= utils::update(base_currency, reference_data.base_currency);
     dirty |= utils::update(quote_currency, reference_data.quote_currency);
+    dirty |= utils::update(margin_currency, reference_data.margin_currency);
     dirty |= utils::update(commission_currency, reference_data.commission_currency);
     dirty |= utils::update(tick_size, reference_data.tick_size);
     dirty |= utils::update(multiplier, reference_data.multiplier);
@@ -78,6 +80,7 @@ class ReferenceData final {
         .security_type = security_type,
         .base_currency = base_currency,
         .quote_currency = quote_currency,
+        .margin_currency = margin_currency,
         .commission_currency = commission_currency,
         .tick_size = tick_size,
         .multiplier = multiplier,
@@ -103,6 +106,7 @@ class ReferenceData final {
   SecurityType security_type = {};
   string_buffer<MAX_LENGTH_CURRENCY> base_currency;
   string_buffer<MAX_LENGTH_CURRENCY> quote_currency;
+  string_buffer<MAX_LENGTH_CURRENCY> margin_currency;
   string_buffer<MAX_LENGTH_CURRENCY> commission_currency;
   double tick_size = NaN;
   double multiplier = NaN;

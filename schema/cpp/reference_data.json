@@ -36,8 +36,14 @@
             "comment": "Quote currency"
         },
         {
+            "name": "margin_currency",
+            "type": "std::string_view",
+            "comment": "Margin currency"
+        },
+        {
             "name": "commission_currency",
-            "type": "std::string_view"
+            "type": "std::string_view",
+            "comment": "Commission currency"
         },
         {
             "name": "tick_size",

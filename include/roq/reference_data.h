@@ -32,7 +32,8 @@ struct ROQ_PUBLIC ReferenceData final {
   SecurityType security_type = {};                //!< Security type
   std::string_view base_currency;                 //!< Base currency
   std::string_view quote_currency;                //!< Quote currency
-  std::string_view commission_currency;           //!< Currency
+  std::string_view margin_currency;               //!< Margin currency
+  std::string_view commission_currency;           //!< Commission currency
   double tick_size = NaN;                         //!< Minimum price increment
   double multiplier = NaN;                        //!< Multiplier (notional)
   double min_trade_vol = NaN;                     //!< Minimum trade volume
@@ -70,6 +71,7 @@ struct fmt::formatter<roq::ReferenceData> {
         R"(security_type={}, )"
         R"(base_currency="{}", )"
         R"(quote_currency="{}", )"
+        R"(margin_currency="{}", )"
         R"(commission_currency="{}", )"
         R"(tick_size={}, )"
         R"(multiplier={}, )"
@@ -93,6 +95,7 @@ struct fmt::formatter<roq::ReferenceData> {
         value.security_type,
         value.base_currency,
         value.quote_currency,
+        value.margin_currency,
         value.commission_currency,
         value.tick_size,
         value.multiplier,

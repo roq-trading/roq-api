@@ -11,7 +11,8 @@ All notable changes will be documented in this file.
 
 ### Changed
 
-* Preparing to support macOS/ARM64
+* `ReferenceData::margin_currency` (#150)
+* Support macOS/ARM64 (#149)
 
 ## 0.7.9 &ndash; 2021-12-08
 

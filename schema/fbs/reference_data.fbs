@@ -27,4 +27,5 @@ table ReferenceData {
   // not aligned from here
   max_trade_vol:double = nan;
   trade_vol_step_size:double = nan;
+  margin_currency:string;
 }

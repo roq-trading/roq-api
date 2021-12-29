@@ -83,6 +83,17 @@ bash Miniforge3-MacOSX-x86_64.sh -b -u -p ~/conda
    clang_osx-64
 ```
 
+#### macOS / arm64
+
+```bash
+wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh
+
+bash Miniforge3-MacOSX-arm64.sh -b -u -p ~/conda
+
+~/conda/bin/conda install -y \
+   clang_osx-64
+```
+
 ### Install Dependencies
 
 ```bash

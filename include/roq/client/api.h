@@ -24,5 +24,4 @@
 
 // utilities
 
-#include "roq/client/depth_builder.h"
 #include "roq/client/event_log_reader.h"

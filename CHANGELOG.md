@@ -15,6 +15,10 @@ All notable changes will be documented in this file.
 * `ReferenceData::margin_currency` (#150)
 * Support macOS/ARM64 (#149)
 
+### Removed
+
+* `client::DepthBuilder` (#152)
+
 ## 0.7.9 &ndash; 2021-12-08
 
 ### Changed

@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `cache::MarketByPrice::exists` (#153)
 * `SecurityType::SWAP`
 * Capture `origin_create_time` for externally triggered events (#140)
 

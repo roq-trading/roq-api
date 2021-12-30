@@ -92,7 +92,10 @@ class ROQ_PUBLIC MarketByPrice {
   // apply incremental update
   void operator()(const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) { update_helper(bids, asks); }
 
-  // note! the following methods should not be considered stable
+  // check if price exists
+  virtual bool exists(Side side, double price) const = 0;
+
+  // note! the following methods should **NOT** be considered stable
 
   using price_level_t = std::pair<int64_t, uint64_t>;
 

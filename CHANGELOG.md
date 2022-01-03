@@ -12,6 +12,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Increase `MAX_LENGTH_CURRENCY`
 * `ReferenceData::margin_currency` (#150)
 * Support macOS/ARM64 (#149)
 

@@ -2,31 +2,103 @@
 
 API for algorithmic and high-frequency trading (HFT).
 
-> Note!
-> This project does **not** contain the implementation of the C++ interfaces.
-> This is due to the ultra low latency communication protocol being closed
-> source.
+> This project does **not** contain the closed source implementation of the
+> C++ interfaces.
+
+
+## Links
+
+* [Roq GmbH (website)](https://roq-trading.com/)
+* [Contact (email)](mailto:info@roq-trading.com)
+* [Documentation](https://roq-trading.com/docs/)
+* [Releases](https://roq-trading.com/docs/releases/)
+* [Gateways](https://roq-trading.com/docs/introduction/gateways/)
+* [Samples](https://github.com/roq-trading/roq-samples/)
+* [Roadmap](https://roq-trading.com/docs/introduction/roadmap/)
+* [Pricing](https://roq-trading.com/#pricing)
+* [LinkedIn](https://www.linkedin.com/company/35447832/)
+* [Telegram](https://t.me/roq_trading/)
+
+
+## Design
+
+* Modular.
+* Predictable low latency.
+* Support all aspects required by a production environment.
+* Aim to reduce "glue" code and offer standard solutions for data capture,
+  monitoring, bridge solutions, etc.
+
+![Design](/doc/images/architecture_reference.png)
+
+* The **C++ API** allows clients (strategies) to
+  * communicate with gateways using a unified interface, or
+  * replay event-logs (exactly, for simulation and back-testing purposes).
+* The **FIX bridge** supports third-party solutions.
+* The **JSON bridge** supports other programming languages.
+* The **adapters** support third-party database solutions, e.g. ClickHouse.
+* The **metrics** interface supports third-party monitoring solutions, e.g. Prometheus,
+  Alertmanager and Grafana.
 
 
 ## Features
 
 * Open source interface (no need to sign an NDA to access or use).
 * Permissive license (anyone is free to copy and use for whatever purpose).
-* Unified interface for all markets.
+* Free to download and try (no need to contact or register).
+* Unified client interface to access any market.
 * Design is strongly inspired by standards and specific implementations used
   by major exchanges.
-* Allocation-free message decoding.
-* Auto-generated code based on schemas.
+* Strong preference for allocation-free message encoding/decoding.
+* Extensive use of auto-generated code based on schemas.
 * Strongly typed messages (events).
 * Asynchronous interfaces and implementations.
-* C++ for ultra low latency.
-* FlatBuffers as an optional interface when latency is not a concern.
+* C++ and shared memory for ultra low latency.
+* Automatic capture of all events.
+* Free to download tools and database adapters.
+
+
+## Support and Maintenance
+
+A SLA is required for production support.
+More information can be found [here](https://roq-trading.com/#pricing).
+
+Feel free to [contact us](mailto:info@roq-trading.com) with any questions
+you may have.
+
+
+## Gateways
+
+Currently supported Cryptocurrency exchanges include
+
+* Binance
+* BitMEX
+* Bitstamp
+* Bybit
+* Coinbase PRO
+* Deribit
+* Gemini
+* HitBTC
+* Huobi
+* Kraken
+* KuCoin
+* OKEx
+
+The full list can be found [here](https://roq-trading.com/docs/introduction/gateways/).
+
+> Instructions on how to install, configure and use the gateways can either
+> be found in the [samples](https://github.com/roq-trading/roq-samples) or
+> by consulting the [documentation](https://roq-trading.com/docs/tutorials/gateways/).
 
 
 ## Operating Systems
 
 * Linux (x86-64, AArch64)
-* macOS (x86-64)
+* macOS (x86-64, Arm64)
+
+> All listed combinations are regularly compiled but only Linux/x86-64 is continuously being tested.
+> If you require a specific combination, please [contact us](mailto:info@roq-trading.com) before using.
+
+> We plan to drop support for macOS/x86-64.
 
 
 ## Library/Package Dependencies
@@ -46,6 +118,11 @@ Optional
 
 ## Prerequisites
 
+> It is not very interesting to follow the instructions shown here due to this
+> project only containing interfaces.
+> The actual client implementation is closed source as mentioned elsewhere in
+> this document.
+
 The project is primarily designed to be compatible with the conda package manager.
 
 ### Download and Install Miniforge
@@ -61,7 +138,7 @@ bash Miniforge3-Linux-x86_64.sh -b -u -p ~/conda
     'gxx_linux-64>=11'
 ```
 
-#### Linux / aarch64
+#### Linux / AArch64
 
 ```bash
 wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
@@ -80,10 +157,10 @@ wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Minifo
 bash Miniforge3-MacOSX-x86_64.sh -b -u -p ~/conda
 
 ~/conda/bin/conda install -y \
-   clang_osx-64
+   clang_osx-64>=12
 ```
 
-#### macOS / arm64
+#### macOS / Arm64
 
 ```bash
 wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh
@@ -91,7 +168,7 @@ wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Minifo
 bash Miniforge3-MacOSX-arm64.sh -b -u -p ~/conda
 
 ~/conda/bin/conda install -y \
-   clang_osx-64
+   clang_osx-64>=12
 ```
 
 ### Install Dependencies
@@ -130,15 +207,9 @@ make test
 ```
 
 
-## Using
+### Using
 
-Documentation can be found [here](https://roq-trading.com/docs).
-
-### C++
-
-Although the API is open source, certain solutions are closed source.
-
-You can download the client library like this
+You can download the closed source client implementation like this
 
 ```bash
 conda install -y --channel https://roq-trading.com/conda/stable \
@@ -147,23 +218,7 @@ conda install -y --channel https://roq-trading.com/conda/stable \
 
 Samples can be found [here](https://github.com/roq-trading/roq-samples).
 
-![C++ design](/doc/images/roq-api-cpp-design.png)
-
-### FlatBuffers
-
-FlatBuffers is primarily used for the event-log storage format.
-
-![FlatBuffers design](/doc/images/roq-api-flatbuffers-design.png)
-
 
 ## License
 
 The project is released under the terms of the MIT license.
-
-
-## Links
-
-* [Roq GmbH](https://roq-trading.com/)
-* [Documentation](https://roq-trading.com/docs/)
-* [Issues](https://github.com/roq-trading/roq-issues/issues)
-* [Contact us](mailto:info@roq-trading.com)

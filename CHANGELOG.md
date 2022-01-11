@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.8.0 &ndash; 2022-01-12
+
 ### Added
 
 * `cache::MarketByPrice::exists` (#153)

@@ -9,21 +9,53 @@
 
 #include "roq/source_location.h"
 
+// note!
+// this class captures the source location + does compile-time format string checking (c++20, only)
+// strongly inspired by the discussion here: https://github.com/fmtlib/fmt/issues/2022
+
 namespace roq {
-
-struct format_str final {
+#if __cplusplus >= 202002L
+template <typename... Args>
+struct basic_format_str final {
   template <typename T>
-  constexpr format_str(const T &fmt, const source_location &loc = source_location::current()) : fmt_(fmt), loc_(loc) {}
+  consteval basic_format_str(const T &str, const source_location &loc = source_location::current())
+      : str_(static_cast<std::string_view>(str)), file_name_(basename(loc.file_name())), line_(loc.line()) {
+    if constexpr (sizeof...(Args) > 0) {
+      using checker =
+          fmt::detail::format_string_checker<char, fmt::detail::error_handler, fmt::remove_cvref_t<Args>...>;
+      fmt::detail::parse_format_string<true>(str_, checker(str_, {}));
+    }
+  }
 
-  constexpr format_str(format_str &&) = default;
-  constexpr format_str(const format_str &) = delete;
-
-  constexpr operator const std::string_view &() const { return fmt_; }
-  constexpr operator const source_location &() const { return loc_; }
+  const fmt::string_view str_;
+  const std::string_view file_name_;
+  const std::uint32_t line_;
 
  private:
-  const std::string_view fmt_;
-  const source_location loc_;
+  static consteval std::string_view basename(const std::string_view &path) {
+    auto pos = path.find_last_of('/');
+    return pos == path.npos ? path : path.substr(++pos);
+  }
 };
+#else
+template <typename... Args>
+struct basic_format_str {
+  basic_format_str(const std::string_view &str, const source_location &loc = source_location::current())
+      : str_(str), file_name_(basename(loc.file_name())), line_(loc.line()) {}
+
+  const fmt::string_view str_;
+  const std::string_view file_name_;
+  const std::uint32_t line_;
+
+ private:
+  static constexpr std::string_view basename(const std::string_view &path) {
+    auto pos = path.find_last_of('/');
+    return pos == path.npos ? path : path.substr(++pos);
+  }
+};
+#endif
+
+template <typename... Args>
+using format_str = basic_format_str<fmt::type_identity_t<Args>...>;
 
 }  // namespace roq

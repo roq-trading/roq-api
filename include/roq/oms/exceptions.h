@@ -9,18 +9,22 @@
 namespace roq {
 namespace oms {
 
-class ROQ_PUBLIC Exception : public roq::Exception {
- public:
+struct ROQ_PUBLIC Exception : public roq::Exception {
+  template <typename... Args>
+  Exception(Origin origin, RequestStatus status, Error error, const format_str<Args...> &fmt, Args &&...args)
+      : roq::Exception(fmt, std::forward<Args>(args)...), origin(origin), status(status), error(error) {}
+
   char const *what() const noexcept override {
     using namespace std::literals;
     if (std::empty(what_))  // lazy
-      what_ = fmt::format("OMS: {}"sv, *this);
+      what_ = fmt::format(
+          R"(OMS: )"
+          R"({{)"
+          R"(error={})"
+          R"(}})"sv,
+          error);
     return what_.c_str();
   }
-
- protected:
-  Exception(const source_location &loc, Origin origin, RequestStatus status, Error error)
-      : roq::Exception(loc), origin(origin), status(status), error(error) {}
 
  private:
   mutable std::string what_;  // lazy
@@ -32,35 +36,24 @@ class ROQ_PUBLIC Exception : public roq::Exception {
 };
 
 //! Rejected
-class ROQ_PUBLIC Rejected : public Exception {
- protected:
-  Rejected(const source_location &loc, Origin origin, Error error)
-      : Exception(loc, origin, RequestStatus::REJECTED, error) {}
-};
-
-struct RejectedException final : public Rejected {
-  RejectedException(Origin origin, Error error, const source_location &loc = source_location::current())
-      : Rejected(loc, origin, error) {}
+struct ROQ_PUBLIC Rejected : public Exception {
+  template <typename... Args>
+  Rejected(Origin origin, Error error, const format_str<Args...> &fmt, Args &&...args)
+      : Exception(origin, RequestStatus::REJECTED, error, fmt, std::forward<Args>(args)...) {}
 };
 
 //! NotSupported
-class ROQ_PUBLIC NotSupported : public Rejected {
- protected:
-  explicit NotSupported(const source_location &loc) : Rejected(loc, Origin::GATEWAY, Error::NOT_SUPPORTED) {}
-};
-
-struct NotSupportedException final : public NotSupported {
-  explicit NotSupportedException(const source_location &loc = source_location::current()) : NotSupported(loc) {}
+struct ROQ_PUBLIC NotSupported : public Rejected {
+  template <typename... Args>
+  NotSupported(const format_str<Args...> &fmt, Args &&...args)
+      : Rejected(Origin::GATEWAY, Error::NOT_SUPPORTED, fmt, std::forward<Args>(args)...) {}
 };
 
 //! NotReady
-class ROQ_PUBLIC NotReady : public Rejected {
- protected:
-  explicit NotReady(const source_location &loc) : Rejected(loc, Origin::GATEWAY, Error::GATEWAY_NOT_READY) {}
-};
-
-struct NotReadyException final : public NotReady {
-  explicit NotReadyException(const source_location &loc = source_location::current()) : NotReady(loc) {}
+struct ROQ_PUBLIC NotReady : public Rejected {
+  template <typename... Args>
+  NotReady(const format_str<Args...> &fmt, Args &&...args)
+      : Rejected(Origin::GATEWAY, Error::GATEWAY_NOT_READY, fmt, std::forward<Args>(args)...) {}
 };
 
 }  // namespace oms

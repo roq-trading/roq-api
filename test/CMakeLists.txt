@@ -28,7 +28,7 @@ add_dependencies(${TARGET_NAME} ${PROJECT_NAME}-include-fbs)
 
 target_link_libraries("${TARGET_NAME}" fmt::fmt gtest_main)
 
-target_compile_features("${TARGET_NAME}" PUBLIC cxx_std_17)
+target_compile_features("${TARGET_NAME}" PUBLIC cxx_std_20)
 
 # run
 

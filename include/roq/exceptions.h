@@ -31,241 +31,105 @@ namespace roq {
 //   }
 
 //! Base
-class ROQ_PUBLIC Exception : public std::exception {
- public:
-  virtual const std::string_view file() const noexcept { return file_; }
-  virtual int line() const noexcept { return line_; }
+struct ROQ_PUBLIC Exception : public std::exception {
+  template <typename... Args>
+  Exception(const format_str<Args...> &fmt, Args &&...args)
+      : file_name_(fmt.file_name_), line_(fmt.line_),
+        what_(
+            fmt.str_.size() == 0 ? std::string{}
+                                 : fmt::vformat(fmt.str_, fmt::make_format_args(std::forward<Args>(args)...))) {}
 
   char const *what() const noexcept override { return what_.c_str(); }
 
- protected:
-  explicit Exception(const source_location &loc) : file_(basename(loc.file_name())), line_(loc.line()) {}
-
-  template <typename... Args>
-  Exception(const source_location &loc, const fmt::format_string<Args...> &fmt, Args &&...args)
-      : file_(basename(loc.file_name())), line_(loc.line()), what_(fmt::format(fmt, std::forward<Args>(args)...)) {}
-
-  static /*consteval*/ constexpr std::string_view basename(const std::string_view &path) noexcept {
-    auto pos = path.find_last_of('/');
-    return pos == path.npos ? path : path.substr(++pos);
-  }
+  virtual const std::string_view file() const noexcept { return file_name_; }
+  virtual int line() const noexcept { return line_; }
 
  private:
-  const std::string_view file_;
+  const std::string_view file_name_;
   const int line_;
   const std::string what_;
 };
 
 //! Runtime error
-class ROQ_PUBLIC RuntimeError : public Exception {
- protected:
+struct ROQ_PUBLIC RuntimeError : public Exception {
   using Exception::Exception;
 };
 
-struct RuntimeErrorException final : public RuntimeError {
-  template <typename... Args>
-  RuntimeErrorException(const format_str &fmt, Args &&...args)
-      : RuntimeError(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
-};
-
 //! SystemError
-class ROQ_PUBLIC SystemError : public RuntimeError {
+struct ROQ_PUBLIC SystemError : public RuntimeError {
  public:
   const std::error_code &code() const noexcept { return ec_; }
 
- protected:
   template <typename... Args>
-  SystemError(const source_location &loc, std::error_code ec, const fmt::format_string<Args...> &fmt, Args &&...args)
-      : RuntimeError(loc, fmt, std::forward<Args>(args)...), ec_(ec) {}
+  SystemError(std::error_code ec, const format_str<Args...> &fmt, Args &&...args)
+      : RuntimeError(fmt, std::forward<Args>(args)...), ec_(ec) {}
 
  private:
   const std::error_code ec_;
 };
 
-struct SystemErrorException final : public SystemError {
-  template <typename ErrorCode, typename... Args>
-  SystemErrorException(ErrorCode ec, const format_str &fmt, Args &&...args)
-      : SystemError(
-            static_cast<const source_location &>(fmt),
-            ec,
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
-};
-
 //! RangeError
-class ROQ_PUBLIC RangeError : public RuntimeError {
- protected:
+struct ROQ_PUBLIC RangeError : public RuntimeError {
   using RuntimeError::RuntimeError;
-};
-
-struct RangeErrorException final : public RangeError {
-  template <typename... Args>
-  RangeErrorException(const format_str &fmt, Args &&...args)
-      : RangeError(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
 };
 
 //! OverflowError
-class ROQ_PUBLIC OverflowError : public RuntimeError {
- protected:
+struct ROQ_PUBLIC OverflowError : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
-struct OverflowErrorException final : public OverflowError {
-  template <typename... Args>
-  OverflowErrorException(const format_str &fmt, Args &&...args)
-      : OverflowError(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
-};
-
 //! LogicError
-class ROQ_PUBLIC LogicError : public Exception {
- protected:
+struct ROQ_PUBLIC LogicError : public Exception {
   using Exception::Exception;
 };
 
-struct LogicErrorException final : public LogicError {
-  template <typename... Args>
-  LogicErrorException(const format_str &fmt, Args &&...args)
-      : LogicError(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
-};
-
 //! InvalidArgument
-class ROQ_PUBLIC InvalidArgument : public LogicError {
- protected:
+struct ROQ_PUBLIC InvalidArgument : public LogicError {
   using LogicError::LogicError;
-};
-
-struct InvalidArgumentException final : public InvalidArgument {
-  template <typename... Args>
-  InvalidArgumentException(const format_str &fmt, Args &&...args)
-      : InvalidArgument(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
 };
 
 //! OutOfRange
-class ROQ_PUBLIC OutOfRange : public LogicError {
- protected:
+struct ROQ_PUBLIC OutOfRange : public LogicError {
   using LogicError::LogicError;
-};
-
-struct OutOfRangeException final : public OutOfRange {
-  template <typename... Args>
-  OutOfRangeException(const format_str &fmt, Args &&...args)
-      : OutOfRange(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
 };
 
 //! LengthError
-class ROQ_PUBLIC LengthError : public LogicError {
- protected:
+struct ROQ_PUBLIC LengthError : public LogicError {
   using LogicError::LogicError;
-};
-
-struct LengthErrorException final : public LengthError {
-  template <typename... Args>
-  LengthErrorException(const format_str &fmt, Args &&...args)
-      : LengthError(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
 };
 
 // ROQ SPECIFIC
 
 //! Fatal
-class ROQ_PUBLIC Fatal : public RuntimeError {
- protected:
+struct ROQ_PUBLIC Fatal : public RuntimeError {
   using RuntimeError::RuntimeError;
-};
-
-struct FatalException final : public Fatal {
-  template <typename... Args>
-  FatalException(const format_str &fmt, Args &&...args)
-      : Fatal(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
 };
 
 //! File does not exist
-class ROQ_PUBLIC FileDoesNotExist : public RuntimeError {
- protected:
+struct ROQ_PUBLIC FileDoesNotExist : public RuntimeError {
   using RuntimeError::RuntimeError;
-};
-
-struct FileDoesNotExistException final : public FileDoesNotExist {
-  template <typename... Args>
-  FileDoesNotExistException(const format_str &fmt, Args &&...args)
-      : FileDoesNotExist(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
 };
 
 //! Not ready
-class ROQ_PUBLIC NotReady : public RuntimeError {
- protected:
+struct ROQ_PUBLIC NotReady : public RuntimeError {
   using RuntimeError::RuntimeError;
-};
-
-struct NotReadyException final : public NotReady {
-  template <typename... Args>
-  NotReadyException(const format_str &fmt, Args &&...args)
-      : NotReady(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
 };
 
 //! Not implemented
-class ROQ_PUBLIC NotImplemented : public RuntimeError {
- protected:
+struct ROQ_PUBLIC NotImplemented : public RuntimeError {
   using RuntimeError::RuntimeError;
-};
-
-struct NotImplementedException final : public NotImplemented {
-  NotImplementedException(const source_location &loc = source_location::current()) : NotImplemented(loc) {}
 };
 
 //! Not supported
-class ROQ_PUBLIC NotSupported : public RuntimeError {
- protected:
+struct ROQ_PUBLIC NotSupported : public RuntimeError {
   using RuntimeError::RuntimeError;
-};
-
-struct NotSupportedException final : public NotSupported {
-  NotSupportedException(const source_location &loc = source_location::current()) : NotSupported(loc) {}
 };
 
 //! Bad state
-class ROQ_PUBLIC BadState : public RuntimeError {
- protected:
+struct ROQ_PUBLIC BadState : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
-struct BadStateException final : public BadState {
-  template <typename... Args>
-  BadStateException(const format_str &fmt, Args &&...args)
-      : BadState(
-            static_cast<const source_location &>(fmt),
-            fmt::format_string<Args...>(static_cast<const std::string_view &>(fmt)),
-            std::forward<Args>(args)...) {}
-};
 }  // namespace roq
 
 template <>

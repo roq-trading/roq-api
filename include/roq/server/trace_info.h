@@ -14,8 +14,6 @@ namespace roq {
 namespace server {
 
 struct ROQ_PUBLIC TraceInfo final {
-  TraceInfo() = delete;
-
   std::chrono::nanoseconds source_receive_time = {};
   std::chrono::nanoseconds origin_create_time = {};
   std::chrono::nanoseconds origin_create_time_utc = {};

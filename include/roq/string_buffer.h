@@ -110,7 +110,7 @@ class ROQ_PACKED string_buffer final {
     using namespace std::literals;
     auto len = length();
     if (ROQ_UNLIKELY(N <= len))
-      throw LengthErrorException("String buffer is full"sv);
+      throw LengthError("String buffer is full"sv);
     buffer_[len] = value;
     ++len;
     if (len < (N - 1)) {
@@ -132,7 +132,7 @@ class ROQ_PACKED string_buffer final {
       if (len < (N - 1))
         buffer_[N - 1] = len;
     } else {
-      throw LengthErrorException(R"(can't copy: len(text="{}")={} exceeds size={})"sv, text, len, size());
+      throw LengthError(R"(can't copy: len(text="{}")={} exceeds size={})"sv, text, len, size());
     }
   }
 

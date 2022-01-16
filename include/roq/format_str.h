@@ -19,7 +19,7 @@ template <typename... Args>
 struct basic_format_str final {
   template <typename T>
   consteval basic_format_str(const T &str, const source_location &loc = source_location::current())  // NOLINT
-      : str_(static_cast<std::string_view>(str)), file_name_(basename(loc.file_name())), line_(loc.line()) {
+      : str_(static_cast<std::string_view>(str)), file_name_(extract_basename(loc.file_name())), line_(loc.line()) {
     if constexpr (sizeof...(Args) > 0) {
       using checker =
           fmt::detail::format_string_checker<char, fmt::detail::error_handler, fmt::remove_cvref_t<Args>...>;
@@ -32,25 +32,39 @@ struct basic_format_str final {
   const std::uint32_t line_;
 
  private:
-  static consteval std::string_view basename(const std::string_view &path) {
-    auto pos = path.find_last_of('/');
-    return pos == path.npos ? path : path.substr(++pos);
+  static consteval std::string_view extract_basename(const char *path) {
+    if (path == nullptr)
+      return {};
+    std::string_view tmp{path};
+    if (std::empty(tmp))
+      return {};
+    auto pos = tmp.find_last_of('/');
+    if (pos == tmp.npos || pos == (std::size(tmp) - 1))
+      return tmp;
+    return tmp.substr(++pos);
   }
 };
 #else
 template <typename... Args>
 struct basic_format_str {
   basic_format_str(const std::string_view &str, const source_location &loc = source_location::current())  // NOLINT
-      : str_(str), file_name_(basename(loc.file_name())), line_(loc.line()) {}
+      : str_(str), file_name_(extract_basename(loc.file_name())), line_(loc.line()) {}
 
   const fmt::string_view str_;
   const std::string_view file_name_;
   const std::uint32_t line_;
 
  private:
-  static constexpr std::string_view basename(const std::string_view &path) {
-    auto pos = path.find_last_of('/');
-    return pos == path.npos ? path : path.substr(++pos);
+  static constexpr std::string_view extract_basename(const char *path) {
+    if (path == nullptr)
+      return {};
+    std::string_view tmp{path};
+    if (tmp.size() == 0)
+      return {};
+    auto pos = tmp.find_last_of('/');
+    if (pos == tmp.npos || pos == (tmp.size() - 1))
+      return tmp;
+    return tmp.substr(++pos);
   }
 };
 #endif

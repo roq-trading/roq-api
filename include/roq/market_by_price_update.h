@@ -8,14 +8,13 @@
 #include <fmt/format.h>
 
 #include <chrono>
+#include <span>
 #include <string_view>
 
-#include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
-#include "roq/span.h"
 #include "roq/string_buffer.h"
 
 #include "roq/decimals.h"
@@ -29,8 +28,8 @@ struct ROQ_PUBLIC MarketByPriceUpdate final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
-  roq::span<MBPUpdate> bids;                        //!< List of bids
-  roq::span<MBPUpdate> asks;                        //!< List of asks
+  std::span<MBPUpdate> bids;                        //!< List of bids
+  std::span<MBPUpdate> asks;                        //!< List of asks
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
   int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)

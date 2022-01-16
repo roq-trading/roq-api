@@ -97,12 +97,12 @@
         },
         {
             "name": "issue_date",
-            "type": "roq::chrono::days",
+            "type": "std::chrono::days",
             "comment": "Issue date"
         },
         {
             "name": "settlement_date",
-            "type": "roq::chrono::days",
+            "type": "std::chrono::days",
             "comment": "Settlement date"
         },
         {

@@ -41,10 +41,8 @@ include(GNUInstallDirs)
 find_package(Flatbuffers REQUIRED)
 find_package(PythonInterp REQUIRED)
 
-find_package(date REQUIRED)
 find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
-find_package(span-lite REQUIRED)
 
 find_program(CLANG_FORMAT clang-format REQUIRED)
 find_program(FLATBUFFERS_COMPILER flatc REQUIRED)
@@ -128,14 +126,3 @@ install(
   EXPORT ${PROJECT_NAME}-config
   NAMESPACE ${PROJECT_NAME}::
   DESTINATION "${CMAKE_LIB_DIR}")
-
-# debian
-
-option(BUILD_DEB "Enable debian packaging?" OFF)
-
-if(BUILD_DEB)
-  set(CPACK_GENERATOR "DEB")
-  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "thraneh@gmail.com")
-  set(CPACK_DEBIAN_PACKAGE_DEPENDS "libfmt-dev, librange-v3-dev, roq-oss-span-lite")
-  include(CPack)
-endif(BUILD_DEB)

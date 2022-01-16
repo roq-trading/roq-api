@@ -8,14 +8,13 @@
 #include <fmt/format.h>
 
 #include <chrono>
+#include <span>
 #include <string_view>
 
-#include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
-#include "roq/span.h"
 #include "roq/string_buffer.h"
 
 #include "roq/measurement.h"
@@ -28,7 +27,7 @@ struct ROQ_PUBLIC CustomMetrics final {
   std::string_view account;             //!< Account name
   std::string_view exchange;            //!< Exchange
   std::string_view symbol;              //!< Symbol
-  roq::span<Measurement> measurements;  //!< List of measurements
+  std::span<Measurement> measurements;  //!< List of measurements
 };
 
 }  // namespace roq

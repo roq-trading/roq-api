@@ -4,11 +4,6 @@
 
 #include "roq/compat.h"
 
-// preparing for C++20
-
-#include "roq/chrono.h"
-#include "roq/span.h"
-
 // convenience
 
 #include "roq/numbers.h"

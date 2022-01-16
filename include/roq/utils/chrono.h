@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <date/date.h>
-
 #include <fmt/chrono.h>
 #include <fmt/format.h>
 
@@ -13,9 +11,10 @@ namespace roq {
 namespace utils {
 
 template <typename T, typename U>
-inline std::pair<date::year_month_day, date::hh_mm_ss<T>> split(U value) {
-  date::sys_days date{std::chrono::duration_cast<date::days>(value)};
-  date::hh_mm_ss<T> time{std::chrono::duration_cast<T>(value % std::chrono::duration_cast<U>(date::days{1}))};
+inline std::pair<std::chrono::year_month_day, std::chrono::hh_mm_ss<T>> split(U value) {
+  std::chrono::sys_days date{std::chrono::duration_cast<std::chrono::days>(value)};
+  std::chrono::hh_mm_ss<T> time{
+      std::chrono::duration_cast<T>(value % std::chrono::duration_cast<U>(std::chrono::days{1}))};
   return {date, time};
 }
 
@@ -23,13 +22,13 @@ inline std::pair<date::year_month_day, date::hh_mm_ss<T>> split(U value) {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<date::year_month_day> {
+struct fmt::formatter<std::chrono::year_month_day> {
   template <typename Context>
   constexpr auto parse(Context &ctx) {
     return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const date::year_month_day &value, Context &ctx) {
+  auto format(const std::chrono::year_month_day &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
         ctx.out(),
@@ -45,13 +44,13 @@ struct fmt::formatter<date::year_month_day> {
 };
 
 template <>
-struct fmt::formatter<date::hh_mm_ss<std::chrono::milliseconds>> {
+struct fmt::formatter<std::chrono::hh_mm_ss<std::chrono::milliseconds>> {
   template <typename Context>
   constexpr auto parse(Context &ctx) {
     return std::begin(ctx);
   }
   template <typename Context>
-  auto format(const date::hh_mm_ss<std::chrono::milliseconds> &value, Context &ctx) {
+  auto format(const std::chrono::hh_mm_ss<std::chrono::milliseconds> &value, Context &ctx) {
     using namespace std::literals;
     return fmt::format_to(
         ctx.out(),

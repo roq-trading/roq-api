@@ -22,9 +22,7 @@ requirements:
     - make
   host:
     - fmt
-    - roq-oss-date
     - roq-oss-magic_enum
-    - roq-oss-span-lite
 
 about:
   home: https://roq-trading.com

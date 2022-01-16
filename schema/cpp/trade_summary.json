@@ -17,7 +17,7 @@
         },
         {
             "name": "trades",
-            "type": "roq::span<Trade>",
+            "type": "std::span<Trade>",
             "comment": "List of trades"
         },
         {

@@ -8,14 +8,13 @@
 #include <fmt/format.h>
 
 #include <chrono>
+#include <span>
 #include <string_view>
 
-#include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
-#include "roq/span.h"
 #include "roq/string_buffer.h"
 
 #include "roq/statistics.h"
@@ -28,7 +27,7 @@ struct ROQ_PUBLIC StatisticsUpdate final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
-  roq::span<Statistics> statistics;                 //!< List of statistics
+  std::span<Statistics> statistics;                 //!< List of statistics
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
 };

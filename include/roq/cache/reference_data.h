@@ -118,8 +118,8 @@ class ReferenceData final {
   double strike_price = NaN;
   string_buffer<MAX_LENGTH_SYMBOL> underlying;
   string_buffer<MAX_LENGTH_TIME_ZONE> time_zone;
-  roq::chrono::days issue_date = {};
-  roq::chrono::days settlement_date = {};
+  std::chrono::days issue_date = {};
+  std::chrono::days settlement_date = {};
   std::chrono::seconds expiry_datetime = {};
   std::chrono::seconds expiry_datetime_utc = {};
 };

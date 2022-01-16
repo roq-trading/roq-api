@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.8.1 &ndash; 2022-01-16
+
 ### Changed                                                                                                                
                                                                                                                            
 * Upgrade to C++20 (#158)

@@ -8,14 +8,13 @@
 #include <fmt/format.h>
 
 #include <chrono>
+#include <span>
 #include <string_view>
 
-#include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
-#include "roq/span.h"
 #include "roq/string_buffer.h"
 
 #include "roq/trade.h"
@@ -27,7 +26,7 @@ struct ROQ_PUBLIC TradeSummary final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
-  roq::span<Trade> trades;                          //!< List of trades
+  std::span<Trade> trades;                          //!< List of trades
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
 };
 

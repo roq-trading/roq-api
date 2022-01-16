@@ -50,7 +50,7 @@
         },
         {
             "name": "fills",
-            "type": "roq::span<Fill>",
+            "type": "std::span<Fill>",
             "comment": "List of fills"
         },
         {

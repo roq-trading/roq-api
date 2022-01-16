@@ -3,15 +3,16 @@
 
 #include <fmt/format.h>
 
+#include <span>
+
 #include "roq/compat.h"
 #include "roq/event.h"
-#include "roq/span.h"
 
 namespace roq {
 namespace client {
 
 struct ROQ_PUBLIC CustomMessage final {
-  roq::span<std::byte const> message;
+  std::span<std::byte const> message;
 };
 
 }  // namespace client

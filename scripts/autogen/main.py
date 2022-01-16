@@ -33,7 +33,6 @@ defaults = {
     "std::chrono::milliseconds": " = {}",
     "std::chrono::seconds": " = {}",
     "std::chrono::days": " = {}",
-    "roq::chrono::days": " = {}",
     "bool": " = false",
     "char": " = '\\0'",
     "int8_t": " = {}",
@@ -61,13 +60,13 @@ def is_array(type_):
     """test if is an array"""
     if type_ is None:
         return False
-    return "roq::span<" in type_
+    return "std::span<" in type_
 
 
 def sub_type(type_):
     """find sub-type"""
     if type_ is not None:
-        if "roq::span<" in type_:
+        if "std::span<" in type_:
             return type_[10:-1]
     return type_
 

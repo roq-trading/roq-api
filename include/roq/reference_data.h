@@ -8,14 +8,13 @@
 #include <fmt/format.h>
 
 #include <chrono>
+#include <span>
 #include <string_view>
 
-#include "roq/chrono.h"
 #include "roq/compat.h"
 #include "roq/event.h"
 #include "roq/message_info.h"
 #include "roq/numbers.h"
-#include "roq/span.h"
 #include "roq/string_buffer.h"
 
 #include "roq/option_type.h"
@@ -44,8 +43,8 @@ struct ROQ_PUBLIC ReferenceData final {
   double strike_price = NaN;                      //!< Strike price
   std::string_view underlying;                    //!< Underlying instrument
   std::string_view time_zone;                     //!< Time-zone
-  roq::chrono::days issue_date = {};              //!< Issue date
-  roq::chrono::days settlement_date = {};         //!< Settlement date
+  std::chrono::days issue_date = {};              //!< Issue date
+  std::chrono::days settlement_date = {};         //!< Settlement date
   std::chrono::seconds expiry_datetime = {};      //!< Expiry datetime
   std::chrono::seconds expiry_datetime_utc = {};  //!< Expiry datetime
 };

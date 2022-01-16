@@ -27,7 +27,7 @@
         },
         {
             "name": "measurements",
-            "type": "roq::span<Measurement>",
+            "type": "std::span<Measurement>",
             "comment": "List of measurements"
         }
     ]

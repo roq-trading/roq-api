@@ -58,12 +58,12 @@ class ROQ_PUBLIC MarketByPrice {
   template <typename F>
   void operator()(
       const MarketByPriceUpdate &market_by_price_update,
-      const roq::span<MBPUpdate> &final_bids,
-      const roq::span<MBPUpdate> &final_asks,
+      const std::span<MBPUpdate> &final_bids,
+      const std::span<MBPUpdate> &final_asks,
       F callback) {
     auto [final_bids_size, final_asks_size] = update_helper(market_by_price_update, final_bids, final_asks);
-    auto bids = final_bids_size ? roq::span{std::data(final_bids), final_bids_size} : market_by_price_update.bids;
-    auto asks = final_asks_size ? roq::span{std::data(final_asks), final_asks_size} : market_by_price_update.asks;
+    auto bids = final_bids_size ? std::span{std::data(final_bids), final_bids_size} : market_by_price_update.bids;
+    auto asks = final_asks_size ? std::span{std::data(final_asks), final_asks_size} : market_by_price_update.asks;
     const MarketByPriceUpdate final_market_by_price_update{
         .stream_id = market_by_price_update.stream_id,
         .exchange = market_by_price_update.exchange,
@@ -82,15 +82,15 @@ class ROQ_PUBLIC MarketByPrice {
   }
 
   // copy-out
-  virtual size_t extract(const roq::span<Layer> &, bool fill_zero = false) const = 0;
+  virtual size_t extract(const std::span<Layer> &, bool fill_zero = false) const = 0;
   virtual std::pair<size_t, size_t> extract(
-      const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) const = 0;
+      const std::span<MBPUpdate> &bids, const std::span<MBPUpdate> &asks) const = 0;
 
   // atomic update to the order book (quantity == 0 means remove)
   void operator()(Side side, double price, double quantity) { update_helper(side, price, quantity); }
 
   // apply incremental update
-  void operator()(const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) { update_helper(bids, asks); }
+  void operator()(const std::span<MBPUpdate> &bids, const std::span<MBPUpdate> &asks) { update_helper(bids, asks); }
 
   // check if price exists
   virtual bool exists(Side side, double price) const = 0;
@@ -99,18 +99,18 @@ class ROQ_PUBLIC MarketByPrice {
 
   using price_level_t = std::pair<int64_t, uint64_t>;
 
-  virtual roq::span<price_level_t const> bids() const = 0;
-  virtual roq::span<price_level_t const> asks() const = 0;
+  virtual std::span<price_level_t const> bids() const = 0;
+  virtual std::span<price_level_t const> asks() const = 0;
 
  protected:
   virtual void update_helper(const MarketByPriceUpdate &) = 0;
 
   virtual std::pair<size_t, size_t> update_helper(
-      const MarketByPriceUpdate &, const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) = 0;
+      const MarketByPriceUpdate &, const std::span<MBPUpdate> &bids, const std::span<MBPUpdate> &asks) = 0;
 
   virtual void update_helper(Side, double price, double quantity) = 0;
 
-  virtual void update_helper(const roq::span<MBPUpdate> &bids, const roq::span<MBPUpdate> &asks) = 0;
+  virtual void update_helper(const std::span<MBPUpdate> &bids, const std::span<MBPUpdate> &asks) = 0;
 };
 
 }  // namespace cache

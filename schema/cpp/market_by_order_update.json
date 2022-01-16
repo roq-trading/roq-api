@@ -17,12 +17,12 @@
         },
         {
             "name": "bids",
-            "type": "roq::span<MBOUpdate>",
+            "type": "std::span<MBOUpdate>",
             "comment": "List of bids"
         },
         {
             "name": "asks",
-            "type": "roq::span<MBOUpdate>",
+            "type": "std::span<MBOUpdate>",
             "comment": "List of asks"
         },
         {

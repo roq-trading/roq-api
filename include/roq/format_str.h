@@ -18,7 +18,7 @@ namespace roq {
 template <typename... Args>
 struct basic_format_str final {
   template <typename T>
-  consteval basic_format_str(const T &str, const source_location &loc = source_location::current())
+  consteval basic_format_str(const T &str, const source_location &loc = source_location::current())  // NOLINT
       : str_(static_cast<std::string_view>(str)), file_name_(basename(loc.file_name())), line_(loc.line()) {
     if constexpr (sizeof...(Args) > 0) {
       using checker =
@@ -40,7 +40,7 @@ struct basic_format_str final {
 #else
 template <typename... Args>
 struct basic_format_str {
-  basic_format_str(const std::string_view &str, const source_location &loc = source_location::current())
+  basic_format_str(const std::string_view &str, const source_location &loc = source_location::current())  // NOLINT
       : str_(str), file_name_(basename(loc.file_name())), line_(loc.line()) {}
 
   const fmt::string_view str_;

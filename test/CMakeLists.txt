@@ -4,6 +4,7 @@ set(SOURCES
     alignment.cpp
     chrono.cpp
     compare.cpp
+    compat.cpp
     exceptions.cpp
     format.cpp
     mask.cpp

@@ -33,7 +33,7 @@ namespace roq {
 //! Base
 struct ROQ_PUBLIC Exception : public std::exception {
   template <typename... Args>
-  Exception(const format_str<Args...> &fmt, Args &&...args)
+  explicit Exception(const format_str<Args...> &fmt, Args &&...args)
       : file_name_(fmt.file_name_), line_(fmt.line_),
         what_(
             fmt.str_.size() == 0 ? std::string{}

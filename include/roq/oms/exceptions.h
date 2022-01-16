@@ -3,6 +3,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 
 #include "roq/api.h"
 
@@ -45,14 +46,14 @@ struct ROQ_PUBLIC Rejected : public Exception {
 //! NotSupported
 struct ROQ_PUBLIC NotSupported : public Rejected {
   template <typename... Args>
-  NotSupported(const format_str<Args...> &fmt, Args &&...args)
+  explicit NotSupported(const format_str<Args...> &fmt, Args &&...args)
       : Rejected(Origin::GATEWAY, Error::NOT_SUPPORTED, fmt, std::forward<Args>(args)...) {}
 };
 
 //! NotReady
 struct ROQ_PUBLIC NotReady : public Rejected {
   template <typename... Args>
-  NotReady(const format_str<Args...> &fmt, Args &&...args)
+  explicit NotReady(const format_str<Args...> &fmt, Args &&...args)
       : Rejected(Origin::GATEWAY, Error::GATEWAY_NOT_READY, fmt, std::forward<Args>(args)...) {}
 };
 

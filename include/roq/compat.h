@@ -12,10 +12,6 @@
 #define ROQ_PACKED
 #endif
 
-#define ROQ_LIKELY(x) (__builtin_expect(false || (x), true))
-#define ROQ_UNLIKELY(x) (__builtin_expect(x, false))
-// c++20 uses the [[ likely ]] and [[ unlikely ]] attributes
-
 #if defined(__APPLE__)
 #if defined(__arm64__)
 #define ROQ_CACHELINE_SIZE 128

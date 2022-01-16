@@ -109,8 +109,9 @@ class ROQ_PACKED string_buffer final {
   void push_back(value_type value) {
     using namespace std::literals;
     auto len = length();
-    if (ROQ_UNLIKELY(N <= len))
+    if (N <= len) [[unlikely]] {
       throw LengthError("String buffer is full"sv);
+    }
     buffer_[len] = value;
     ++len;
     if (len < (N - 1)) {
@@ -126,7 +127,7 @@ class ROQ_PACKED string_buffer final {
   void copy(const std::string_view &text) {
     using namespace std::literals;
     auto len = std::size(text);
-    if (ROQ_LIKELY(len <= size())) {
+    if (len <= size()) [[likely]] {
       auto last = std::copy(std::begin(text), std::end(text), std::begin(buffer_));
       std::fill(last, std::end(buffer_), '\0');  // convenient, but we don't need to write the last byte
       if (len < (N - 1))

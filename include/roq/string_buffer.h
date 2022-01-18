@@ -32,81 +32,81 @@ class ROQ_PACKED string_buffer final {
  public:
   using value_type = char;
 
-  string_buffer() = default;
+  constexpr string_buffer() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  string_buffer(const std::string_view &text) {  // NOLINT (allow implicit)
+  constexpr string_buffer(const std::string_view &text) {  // NOLINT (allow implicit)
     copy(text);
   }
 
   // cppcheck-suppress noExplicitConstructor
-  string_buffer(const std::string &text) {  // NOLINT (allow implicit)
+  constexpr string_buffer(const std::string &text) {  // NOLINT (allow implicit)
     copy(text);
   }
 
   // cppcheck-suppress noExplicitConstructor
-  string_buffer(value_type const *text)  // NOLINT (allow implicit)
+  constexpr string_buffer(value_type const *text)  // NOLINT (allow implicit)
       : string_buffer(std::string_view(text)) {}
 
-  string_buffer &operator=(const std::string_view &text) {
+  constexpr string_buffer &operator=(const std::string_view &text) {
     copy(text);
     return *this;
   }
 
-  string_buffer &operator=(const std::string &text) {
+  constexpr string_buffer &operator=(const std::string &text) {
     copy(text);
     return *this;
   }
 
-  bool operator==(const string_buffer<N> &rhs) const {
+  constexpr bool operator==(const string_buffer<N> &rhs) const {
     return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) == 0;
   }
 
-  bool operator<(const string_buffer<N> &rhs) const {
+  constexpr bool operator<(const string_buffer<N> &rhs) const {
     return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) < 0;
   }
 
   template <typename... Args>
-  int compare(Args &&...args) const {
+  constexpr int compare(Args &&...args) const {
     return static_cast<std::string_view>(*this).compare(std::forward<Args>(args)...);
   }
 
   template <typename T>
-  bool operator<(const T &rhs) const {
+  constexpr bool operator<(const T &rhs) const {
     return compare(rhs) < 0;
   }
 
   template <typename T>
-  bool operator>(const T &rhs) const {
+  constexpr bool operator>(const T &rhs) const {
     return compare(rhs) > 0;
   }
 
-  value_type &operator[](size_t index) { return buffer_[index]; }
+  constexpr value_type &operator[](size_t index) { return buffer_[index]; }
 
-  value_type operator[](size_t index) const { return buffer_[index]; }
+  constexpr value_type operator[](size_t index) const { return buffer_[index]; }
 
   constexpr std::size_t size() { return N; }
 
-  inline std::size_t length() const {
+  inline constexpr std::size_t length() const {
     if (buffer_[N - 2] == '\0')
       return static_cast<std::size_t>(buffer_[N - 1]);
     return N - (buffer_[N - 1] == '\0' ? 1 : 0);
   }
 
-  inline bool empty() const { return buffer_[0] == '\0'; }
+  inline constexpr bool empty() const { return buffer_[0] == '\0'; }
 
-  value_type const *data() const { return std::data(buffer_); }
+  constexpr value_type const *data() const { return std::data(buffer_); }
 
-  operator std::string_view() const { return std::string_view(data(), length()); }
+  constexpr operator std::string_view() const { return std::string_view(data(), length()); }
 
-  void clear() {
+  constexpr void clear() {
     // note!
     // we prefer to clear the entire buffer (for security reasons)
     // even though it would be enough to only set the first element
     buffer_.fill('\0');
   }
 
-  void push_back(value_type value) {
+  constexpr void push_back(value_type value) {
     using namespace std::literals;
     auto len = length();
     if (N <= len) [[unlikely]] {
@@ -122,9 +122,9 @@ class ROQ_PACKED string_buffer final {
   }
 
  protected:
-  value_type *data() { return std::data(buffer_); }
+  constexpr value_type *data() { return std::data(buffer_); }
 
-  void copy(const std::string_view &text) {
+  constexpr void copy(const std::string_view &text) {
     using namespace std::literals;
     auto len = std::size(text);
     if (len <= size()) [[likely]] {

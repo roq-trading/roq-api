@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Source file name are now evaluated and stored at compile time (#160)
+
 ## 0.8.1 &ndash; 2022-01-16
 
 ### Changed                                                                                                                

@@ -45,7 +45,7 @@ struct ROQ_PUBLIC Exception : public std::exception {
   virtual int line() const noexcept { return line_; }
 
  private:
-  const std::string_view file_name_;
+  const detail::static_string<32> file_name_;
   const int line_;
   const std::string what_;
 };

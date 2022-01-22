@@ -21,22 +21,21 @@ template <std::size_t N>
 struct static_string final {
 #if __cplusplus >= 202002L
   consteval static_string(const std::string_view &sv)
-      : length_(std::min(N, std::size(sv))), buffer_(create(sv, length_)) {
+      : length_(std::min(N, std::size(sv))), buffer_(create(sv, length_)) {}
 #else
-  constexpr static_string(const std::string_view &sv)
-      : length_(std::min(N, sv.size())),
-        buffer_(create(sv, length_)){
+  constexpr static_string(const std::string_view &sv) : length_(std::min(N, sv.size())), buffer_(create(sv, length_)) {}
 #endif
-  }
 
   static_string(const static_string &) = default;
   static_string(static_string &&) = delete;
 
+  constexpr operator std::string_view() const {
 #if __cplusplus >= 202002L
-  constexpr operator std::string_view() const { return {std::data(buffer_), length_}; }
+    return {std::data(buffer_), length_};
 #else
-  constexpr operator std::string_view() const { return {buffer_.data(), length_}; }
+    return {buffer_.data(), length_};
 #endif
+  }
 
  protected:
   static constexpr auto create(const std::string_view &sv, std::size_t length) {

@@ -49,11 +49,11 @@ class ROQ_PUBLIC Dispatcher {
   template <typename Callback>
   void create_trace_info(Callback &&callback) {
     TimeSetter time_setter(*this);
-    callback(static_cast<const server::TraceInfo &>(time_setter));
+    callback(static_cast<const roq::server::TraceInfo &>(time_setter));
   }
 
  protected:
-  virtual server::TraceInfo create_trace_info() = 0;
+  virtual roq::server::TraceInfo create_trace_info() = 0;
   virtual void release_trace_info() = 0;
 
   struct TimeSetter final {
@@ -67,11 +67,11 @@ class ROQ_PUBLIC Dispatcher {
       }
     }
 
-    operator const server::TraceInfo &() const { return trace_info_; }
+    operator const roq::server::TraceInfo &() const { return trace_info_; }
 
    private:
     Dispatcher &dispatcher_;
-    server::TraceInfo trace_info_;
+    roq::server::TraceInfo trace_info_;
   };
 };
 

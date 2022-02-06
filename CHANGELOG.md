@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Added account to ExternalLatency (#170)
 * Source file name are now evaluated and stored at compile time (#160)
 
 ## 0.8.1 &ndash; 2022-01-16

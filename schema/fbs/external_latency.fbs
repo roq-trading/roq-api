@@ -3,4 +3,5 @@ namespace roq.fbs;
 table ExternalLatency {
   stream_id:uint16;
   latency:int64;
+  account:string;
 }

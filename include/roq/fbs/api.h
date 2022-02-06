@@ -2378,12 +2378,14 @@ inline flatbuffers::Offset<DownloadEnd> CreateDownloadEndDirect(
 
 struct ExternalLatency FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ExternalLatencyBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_STREAM_ID = 4, VT_LATENCY = 6 };
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_STREAM_ID = 4, VT_LATENCY = 6, VT_ACCOUNT = 8 };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   int64_t latency() const { return GetField<int64_t>(VT_LATENCY, 0); }
+  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
-           VerifyField<int64_t>(verifier, VT_LATENCY) && verifier.EndTable();
+           VerifyField<int64_t>(verifier, VT_LATENCY) && VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) && verifier.EndTable();
   }
 };
 
@@ -2393,6 +2395,9 @@ struct ExternalLatencyBuilder {
   flatbuffers::uoffset_t start_;
   void add_stream_id(uint16_t stream_id) { fbb_.AddElement<uint16_t>(ExternalLatency::VT_STREAM_ID, stream_id, 0); }
   void add_latency(int64_t latency) { fbb_.AddElement<int64_t>(ExternalLatency::VT_LATENCY, latency, 0); }
+  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
+    fbb_.AddOffset(ExternalLatency::VT_ACCOUNT, account);
+  }
   explicit ExternalLatencyBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<ExternalLatency> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -2402,11 +2407,21 @@ struct ExternalLatencyBuilder {
 };
 
 inline flatbuffers::Offset<ExternalLatency> CreateExternalLatency(
-    flatbuffers::FlatBufferBuilder &_fbb, uint16_t stream_id = 0, int64_t latency = 0) {
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t stream_id = 0,
+    int64_t latency = 0,
+    flatbuffers::Offset<flatbuffers::String> account = 0) {
   ExternalLatencyBuilder builder_(_fbb);
   builder_.add_latency(latency);
+  builder_.add_account(account);
   builder_.add_stream_id(stream_id);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ExternalLatency> CreateExternalLatencyDirect(
+    flatbuffers::FlatBufferBuilder &_fbb, uint16_t stream_id = 0, int64_t latency = 0, const char *account = nullptr) {
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  return roq::fbs::CreateExternalLatency(_fbb, stream_id, latency, account__);
 }
 
 struct FundsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

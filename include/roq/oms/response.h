@@ -41,7 +41,7 @@ struct fmt::formatter<roq::oms::Response> {
         R"(error={}, )"
         R"(text="{}", )"
         R"(version={}, )"
-        R"(request_id="{}", ")"
+        R"(request_id="{}", )"
         R"(quantity={}, )"
         R"(price={})"
         R"(}})"sv,

@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.8.2 &ndash; 2022-02-18
+
 ### Changed
 
 * Added account to ExternalLatency (#170)

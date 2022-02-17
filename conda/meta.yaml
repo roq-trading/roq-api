@@ -11,6 +11,8 @@ build:
   run_exports:
     strong:
       - {{ pin_subpackage('roq-api', max_pin='x.x') }}
+  script_env:                                                                                                              
+       - ROQ_BUILD_TYPE
 
 requirements:
   build:

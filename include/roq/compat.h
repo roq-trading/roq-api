@@ -2,11 +2,19 @@
 
 #pragma once
 
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(__GNUC__)
+// clang12 doesn't appear to support [[gnu::visibility]]
+#if defined(__clang__)
+#define ROQ_PUBLIC __attribute__((visibility("default")))
+#else  // not clang
 #define ROQ_PUBLIC [[gnu::visibility("default")]]
+#endif
 #define ROQ_HOT [[gnu::hot]]
 #define ROQ_PACKED [[gnu::packed]]
-#else  // not gcc or clang
+#else  // not gnuc
+#if defined(__clang__)
+#error "expected __clang__ to also define __GNUC__"
+#endif
 #define ROQ_PUBLIC
 #define ROQ_HOT
 #define ROQ_PACKED

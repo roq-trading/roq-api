@@ -137,6 +137,11 @@
             "name": "max_accepted_version",
             "type": "uint32_t",
             "comment": "Last accepted version"
+        },
+        {
+            "name": "update_type",
+            "type": "UpdateType",
+            "comment": "Update type"
         }
     ]
 }

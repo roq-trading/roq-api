@@ -18,4 +18,5 @@ table TradeUpdate {
   external_order_id:string;
   fills:[Fill];
   routing_id:string;
+  update_type:UpdateType;
 }

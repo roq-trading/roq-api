@@ -25,7 +25,7 @@ struct Position final {
     short_quantity_begin = NaN;
   }
 
-  [[nodiscard]] bool operator()(const roq::PositionUpdate &position_update) {
+  [[nodiscard]] bool operator()(const PositionUpdate &position_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, position_update.stream_id);
     dirty |= utils::update(external_account, position_update.external_account);
@@ -36,7 +36,7 @@ struct Position final {
     return dirty;
   }
 
-  [[nodiscard]] operator roq::PositionUpdate() const {
+  [[nodiscard]] operator PositionUpdate() const {
     return {
         .stream_id = stream_id,
         .account = account,

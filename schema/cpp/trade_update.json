@@ -56,6 +56,11 @@
         {
             "name": "routing_id",
             "type": "std::string_view"
+        },
+        {
+            "name": "update_type",
+            "type": "UpdateType",
+            "comment": "Update type"
         }
     ]
 }

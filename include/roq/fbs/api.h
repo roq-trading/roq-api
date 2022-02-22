@@ -3372,7 +3372,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ROUTING_ID = 56,
     VT_MAX_REQUEST_VERSION = 58,
     VT_MAX_RESPONSE_VERSION = 60,
-    VT_MAX_ACCEPTED_VERSION = 62
+    VT_MAX_ACCEPTED_VERSION = 62,
+    VT_UPDATE_TYPE = 64
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
@@ -3432,6 +3433,9 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t max_request_version() const { return GetField<uint32_t>(VT_MAX_REQUEST_VERSION, 0); }
   uint32_t max_response_version() const { return GetField<uint32_t>(VT_MAX_RESPONSE_VERSION, 0); }
   uint32_t max_accepted_version() const { return GetField<uint32_t>(VT_MAX_ACCEPTED_VERSION, 0); }
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
@@ -3454,7 +3458,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
            VerifyField<uint32_t>(verifier, VT_MAX_REQUEST_VERSION) &&
            VerifyField<uint32_t>(verifier, VT_MAX_RESPONSE_VERSION) &&
-           VerifyField<uint32_t>(verifier, VT_MAX_ACCEPTED_VERSION) && verifier.EndTable();
+           VerifyField<uint32_t>(verifier, VT_MAX_ACCEPTED_VERSION) && VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) &&
+           verifier.EndTable();
   }
 };
 
@@ -3549,6 +3554,9 @@ struct OrderUpdateBuilder {
   void add_max_accepted_version(uint32_t max_accepted_version) {
     fbb_.AddElement<uint32_t>(OrderUpdate::VT_MAX_ACCEPTED_VERSION, max_accepted_version, 0);
   }
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(OrderUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
   explicit OrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<OrderUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -3588,7 +3596,8 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     flatbuffers::Offset<flatbuffers::String> routing_id = 0,
     uint32_t max_request_version = 0,
     uint32_t max_response_version = 0,
-    uint32_t max_accepted_version = 0) {
+    uint32_t max_accepted_version = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined) {
   OrderUpdateBuilder builder_(_fbb);
   builder_.add_last_traded_price(last_traded_price);
   builder_.add_last_traded_quantity(last_traded_quantity);
@@ -3613,6 +3622,7 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
   builder_.add_order_id(order_id);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
+  builder_.add_update_type(update_type);
   builder_.add_last_liquidity(last_liquidity);
   builder_.add_status(status);
   builder_.add_execution_instruction(execution_instruction);
@@ -3654,7 +3664,8 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     const char *routing_id = nullptr,
     uint32_t max_request_version = 0,
     uint32_t max_response_version = 0,
-    uint32_t max_accepted_version = 0) {
+    uint32_t max_accepted_version = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -3693,7 +3704,8 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       routing_id__,
       max_request_version,
       max_response_version,
-      max_accepted_version);
+      max_accepted_version,
+      update_type);
 }
 
 struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4554,7 +4566,8 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXTERNAL_ACCOUNT = 22,
     VT_EXTERNAL_ORDER_ID = 24,
     VT_FILLS = 26,
-    VT_ROUTING_ID = 28
+    VT_ROUTING_ID = 28,
+    VT_UPDATE_TYPE = 30
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
@@ -4577,6 +4590,9 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>> *>(VT_FILLS);
   }
   const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
@@ -4588,7 +4604,7 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) && verifier.VerifyString(external_order_id()) &&
            VerifyOffset(verifier, VT_FILLS) && verifier.VerifyVector(fills()) &&
            verifier.VerifyVectorOfTables(fills()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && verifier.EndTable();
+           verifier.VerifyString(routing_id()) && VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) && verifier.EndTable();
   }
 };
 
@@ -4627,6 +4643,9 @@ struct TradeUpdateBuilder {
   void add_routing_id(flatbuffers::Offset<flatbuffers::String> routing_id) {
     fbb_.AddOffset(TradeUpdate::VT_ROUTING_ID, routing_id);
   }
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(TradeUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
   explicit TradeUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<TradeUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -4649,7 +4668,8 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdate(
     flatbuffers::Offset<flatbuffers::String> external_account = 0,
     flatbuffers::Offset<flatbuffers::String> external_order_id = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>>> fills = 0,
-    flatbuffers::Offset<flatbuffers::String> routing_id = 0) {
+    flatbuffers::Offset<flatbuffers::String> routing_id = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined) {
   TradeUpdateBuilder builder_(_fbb);
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
@@ -4662,6 +4682,7 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdate(
   builder_.add_order_id(order_id);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
+  builder_.add_update_type(update_type);
   builder_.add_position_effect(position_effect);
   builder_.add_side(side);
   return builder_.Finish();
@@ -4681,7 +4702,8 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
     const char *external_account = nullptr,
     const char *external_order_id = nullptr,
     const std::vector<flatbuffers::Offset<roq::fbs::Fill>> *fills = nullptr,
-    const char *routing_id = nullptr) {
+    const char *routing_id = nullptr,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -4703,7 +4725,8 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
       external_account__,
       external_order_id__,
       fills__,
-      routing_id__);
+      routing_id__,
+      update_type);
 }
 
 struct Handshake FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

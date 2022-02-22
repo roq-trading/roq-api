@@ -50,7 +50,7 @@ struct ROQ_PUBLIC Order final {
     max_accepted_version = {};
   }
 
-  [[nodiscard]] bool operator()(const roq::OrderUpdate &order_update) {
+  [[nodiscard]] bool operator()(const OrderUpdate &order_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, order_update.stream_id);
     dirty |= utils::update(side, order_update.side);
@@ -78,10 +78,23 @@ struct ROQ_PUBLIC Order final {
     dirty |= utils::update(max_request_version, order_update.max_request_version);
     dirty |= utils::update(max_response_version, order_update.max_response_version);
     dirty |= utils::update(max_accepted_version, order_update.max_accepted_version);
+    // some update types will always be published
+    switch (order_update.update_type) {
+      case UpdateType::UNDEFINED:
+        break;
+      case UpdateType::SNAPSHOT:
+        dirty = true;
+        break;
+      case UpdateType::INCREMENTAL:
+        break;
+      case UpdateType::STALE:
+        dirty = true;
+        break;
+    }
     return dirty;
   }
 
-  [[nodiscard]] operator roq::OrderUpdate() const {
+  [[nodiscard]] operator OrderUpdate() const {
     return {
         .stream_id = stream_id,
         .account = account,
@@ -113,6 +126,7 @@ struct ROQ_PUBLIC Order final {
         .max_request_version = max_request_version,
         .max_response_version = max_response_version,
         .max_accepted_version = max_accepted_version,
+        .update_type = UpdateType::SNAPSHOT,  // note!
     };
   }
 

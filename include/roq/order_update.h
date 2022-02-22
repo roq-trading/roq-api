@@ -24,6 +24,7 @@
 #include "roq/position_effect.h"
 #include "roq/side.h"
 #include "roq/time_in_force.h"
+#include "roq/update_type.h"
 
 namespace roq {
 
@@ -59,6 +60,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   uint32_t max_request_version = {};                //!< Last request version
   uint32_t max_response_version = {};               //!< Last response version
   uint32_t max_accepted_version = {};               //!< Last accepted version
+  UpdateType update_type = {};                      //!< Update type
 };
 
 }  // namespace roq
@@ -104,7 +106,8 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(routing_id="{}", )"
         R"(max_request_version={}, )"
         R"(max_response_version={}, )"
-        R"(max_accepted_version={})"
+        R"(max_accepted_version={}, )"
+        R"(update_type={})"
         R"(}})"sv,
         value.stream_id,
         value.account,
@@ -135,7 +138,8 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.routing_id,
         value.max_request_version,
         value.max_response_version,
-        value.max_accepted_version);
+        value.max_accepted_version,
+        value.update_type);
   }
 };
 template <>

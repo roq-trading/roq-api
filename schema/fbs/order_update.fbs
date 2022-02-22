@@ -36,4 +36,5 @@ table OrderUpdate {
   max_request_version:uint32;
   max_response_version:uint32;
   max_accepted_version:uint32;
+  update_type:UpdateType;
 }

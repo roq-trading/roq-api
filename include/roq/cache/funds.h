@@ -22,7 +22,7 @@ struct Funds final {
     external_account.clear();
   }
 
-  [[nodiscard]] bool operator()(const roq::FundsUpdate &funds_update) {
+  [[nodiscard]] bool operator()(const FundsUpdate &funds_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, funds_update.stream_id);
     dirty |= utils::update(balance, funds_update.balance);
@@ -31,7 +31,7 @@ struct Funds final {
     return dirty;
   }
 
-  [[nodiscard]] operator roq::FundsUpdate() const {
+  [[nodiscard]] operator FundsUpdate() const {
     return {
         .stream_id = stream_id,
         .account = account,

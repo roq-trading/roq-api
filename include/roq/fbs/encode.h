@@ -654,7 +654,8 @@ auto encode(B &builder, const roq::OrderUpdate &value) {
       encode(builder, value.routing_id),
       value.max_request_version,
       value.max_response_version,
-      value.max_accepted_version);
+      value.max_accepted_version,
+      encode(builder, value.update_type));
 }
 
 template <typename B>
@@ -673,7 +674,8 @@ auto encode(B &builder, const roq::TradeUpdate &value) {
       encode(builder, value.external_account),
       encode(builder, value.external_order_id),
       encode(builder, value.fills),
-      encode(builder, value.routing_id));
+      encode(builder, value.routing_id),
+      encode(builder, value.update_type));
 }
 
 template <typename B>

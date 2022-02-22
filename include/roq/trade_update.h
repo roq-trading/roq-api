@@ -20,6 +20,7 @@
 #include "roq/fill.h"
 #include "roq/position_effect.h"
 #include "roq/side.h"
+#include "roq/update_type.h"
 
 namespace roq {
 
@@ -38,6 +39,7 @@ struct ROQ_PUBLIC TradeUpdate final {
   std::string_view external_order_id;             //!< External order identifier
   std::span<Fill> fills;                          //!< List of fills
   std::string_view routing_id;                    //!< Routing identifier
+  UpdateType update_type = {};                    //!< Update type
 };
 
 }  // namespace roq
@@ -66,7 +68,8 @@ struct fmt::formatter<roq::TradeUpdate> {
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(fills=[{}], )"
-        R"(routing_id="{}")"
+        R"(routing_id="{}", )"
+        R"(update_type={})"
         R"(}})"sv,
         value.stream_id,
         value.account,
@@ -80,7 +83,8 @@ struct fmt::formatter<roq::TradeUpdate> {
         value.external_account,
         value.external_order_id,
         fmt::join(value.fills, ", "sv),
-        value.routing_id);
+        value.routing_id,
+        value.update_type);
   }
 };
 template <>

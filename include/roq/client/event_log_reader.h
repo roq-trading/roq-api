@@ -51,10 +51,14 @@ class ROQ_PUBLIC EventLogReader {
 
   virtual ~EventLogReader() {}
 
+  // all events have been dispatched and the producer has closed the file properly
+  // note! this state may never be reached if the producer did not terminate normally
+  // note! observing a "newer" file can be used to positively decide that this file has "finished"
   virtual bool finished() = 0;
 
-  // returns false when done
-  // note! handler is not guaranteed to be called on each invocation
+  // returns true when one or more events have been dispatched
+  // returns false when there are no more data available
+  // note! false could mean either the producer is buffering or the file was indeed closed
   virtual bool dispatch(Handler &) = 0;
 };
 

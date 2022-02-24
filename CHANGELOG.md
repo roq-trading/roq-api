@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Conda packaging should pin versions to match x.x.x (#189)
 * Added `update_type` to `OrderUpdate` and `TradeUpdate` (#39)
 
 ## 0.8.2 &ndash; 2022-02-18

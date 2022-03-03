@@ -1,6 +1,6 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include "roq/metrics.h"
 
@@ -21,7 +21,7 @@ class Writer : public metrics::Writer {
 };
 }  // namespace
 
-TEST(histogram, simple) {
+TEST_CASE("histogram_simple", "histogram") {
   metrics::Histogram<1, 2, 3, 4, 5, 6> histogram;
   histogram.update(3);
   Writer writer;

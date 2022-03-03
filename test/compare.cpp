@@ -1,6 +1,6 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include "roq/utils/compare.h"
 
@@ -31,40 +31,40 @@ static_assert(compare(NaN, 0.0) == -1);
 using namespace roq;
 using namespace roq::utils;
 
-TEST(compare, int) {
-  EXPECT_EQ(compare(0, 0), 0);
-  EXPECT_EQ(compare(0, 1), -1);
-  EXPECT_EQ(compare(0, -1), 1);
+TEST_CASE("compare_int", "compare") {
+  CHECK(compare(0, 0) == 0);
+  CHECK(compare(0, 1) == -1);
+  CHECK(compare(0, -1) == 1);
 }
 
-TEST(compare, double) {
-  EXPECT_EQ(compare(0.0, 0.0), 0);
-  EXPECT_EQ(compare(0.0, -0.0), 0);
-  EXPECT_EQ(compare(-0.0, 0.0), 0);
-  EXPECT_EQ(compare(0.0, 1.0), -1);
-  EXPECT_EQ(compare(0.0, -1.0), 1);
-  EXPECT_EQ(compare(NaN, NaN), 0);
-  EXPECT_EQ(compare(0.0, NaN), 1);
-  EXPECT_EQ(compare(NaN, 0.0), -1);
+TEST_CASE("compare_double", "compare") {
+  CHECK(compare(0.0, 0.0) == 0);
+  CHECK(compare(0.0, -0.0) == 0);
+  CHECK(compare(-0.0, 0.0) == 0);
+  CHECK(compare(0.0, 1.0) == -1);
+  CHECK(compare(0.0, -1.0) == 1);
+  CHECK(compare(NaN, NaN) == 0);
+  CHECK(compare(0.0, NaN) == 1);
+  CHECK(compare(NaN, 0.0) == -1);
 }
 
-TEST(compare, string_case_insensitive) {
+TEST_CASE("compare_string_case_insensitive", "compare") {
   // same length
-  EXPECT_EQ(case_insensitive_compare(""sv, ""sv), 0);
-  EXPECT_EQ(case_insensitive_compare("abc123"sv, "ABC123"sv), 0);
-  EXPECT_EQ(case_insensitive_compare("abc123"sv, "DEF456"sv), -1);
-  EXPECT_EQ(case_insensitive_compare("def456"sv, "ABC123"sv), 1);
+  CHECK(case_insensitive_compare(""sv, ""sv) == 0);
+  CHECK(case_insensitive_compare("abc123"sv, "ABC123"sv) == 0);
+  CHECK(case_insensitive_compare("abc123"sv, "DEF456"sv) == -1);
+  CHECK(case_insensitive_compare("def456"sv, "ABC123"sv) == 1);
   // different length
-  EXPECT_EQ(case_insensitive_compare(""sv, "ABC123"sv), -1);
-  EXPECT_EQ(case_insensitive_compare("abc123"sv, ""sv), 1);
-  EXPECT_EQ(case_insensitive_compare("abc"sv, "ABC123"sv), -1);
-  EXPECT_EQ(case_insensitive_compare("abc123"sv, "ABC"sv), 1);
+  CHECK(case_insensitive_compare(""sv, "ABC123"sv) == -1);
+  CHECK(case_insensitive_compare("abc123"sv, ""sv) == 1);
+  CHECK(case_insensitive_compare("abc"sv, "ABC123"sv) == -1);
+  CHECK(case_insensitive_compare("abc123"sv, "ABC"sv) == 1);
 }
 
-TEST(compare, seconds) {
+TEST_CASE("compare_seconds", "compare") {
   using namespace std::chrono_literals;
-  EXPECT_EQ(compare(std::chrono::seconds{}, 0s), 0);
-  EXPECT_EQ(compare(0s, 1s), -1);
-  EXPECT_EQ(compare(1s, 0s), 1);
-  EXPECT_EQ(compare(1s, 1s), 0);
+  CHECK(compare(std::chrono::seconds{}, 0s) == 0);
+  CHECK(compare(0s, 1s) == -1);
+  CHECK(compare(1s, 0s) == 1);
+  CHECK(compare(1s, 1s) == 0);
 }

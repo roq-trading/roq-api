@@ -1,73 +1,73 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include "roq/string_buffer.h"
 
 using namespace roq;
 using namespace std::literals;
 
-TEST(string_buffer, empty) {
+TEST_CASE("string_buffer_empty", "string_buffer") {
   roq::string_buffer<4> s;
-  EXPECT_EQ(s.size(), 4);
-  EXPECT_EQ(s.length(), 0);
+  CHECK(s.size() == 4);
+  CHECK(s.length() == 0);
   auto sv = static_cast<std::string_view>(s);
-  EXPECT_TRUE(std::empty(sv));
-  EXPECT_EQ(std::size(sv), 0);
+  CHECK(std::empty(sv) == true);
+  CHECK(std::size(sv) == 0);
 }
 
-TEST(string_buffer, partial) {
+TEST_CASE("string_buffer_partial", "string_buffer") {
   constexpr auto text = "12"sv;
   roq::string_buffer<4> s = text;
-  EXPECT_EQ(s.size(), 4);
-  EXPECT_EQ(s.length(), 2);
+  CHECK(s.size() == 4);
+  CHECK(s.length() == 2);
   auto sv = static_cast<std::string_view>(s);
-  EXPECT_FALSE(std::empty(sv));
-  EXPECT_EQ(std::size(sv), 2);
-  EXPECT_EQ(sv, text);
+  CHECK(std::empty(sv) == false);
+  CHECK(std::size(sv) == 2);
+  CHECK(sv == text);
 }
 
-TEST(string_buffer, almost_full) {
+TEST_CASE("string_buffer_almost_full", "string_buffer") {
   constexpr auto text = "123"sv;
   roq::string_buffer<4> s = text;
-  EXPECT_EQ(s.size(), 4);
-  EXPECT_EQ(s.length(), 3);
+  CHECK(s.size() == 4);
+  CHECK(s.length() == 3);
   auto sv = static_cast<std::string_view>(s);
-  EXPECT_FALSE(std::empty(sv));
-  EXPECT_EQ(std::size(sv), 3);
-  EXPECT_EQ(sv, text);
+  CHECK(std::empty(sv) == false);
+  CHECK(std::size(sv) == 3);
+  CHECK(sv == text);
 }
 
-TEST(string_buffer, full) {
+TEST_CASE("string_buffer_full", "string_buffer") {
   constexpr auto text = "1234"sv;
   roq::string_buffer<4> s = text;
-  EXPECT_EQ(s.size(), 4);
-  EXPECT_EQ(s.length(), 4);
+  CHECK(s.size() == 4);
+  CHECK(s.length() == 4);
   auto sv = static_cast<std::string_view>(s);
-  EXPECT_FALSE(std::empty(sv));
-  EXPECT_EQ(std::size(sv), 4);
-  EXPECT_EQ(sv, text);
+  CHECK(std::empty(sv) == false);
+  CHECK(std::size(sv) == 4);
+  CHECK(sv == text);
 }
 
-TEST(string_buffer, construct) {
+TEST_CASE("string_buffer_construct", "string_buffer") {
   roq::string_buffer<4>();
   roq::string_buffer<4>("1"sv);
   roq::string_buffer<4>("12"sv);
   roq::string_buffer<4>("123"sv);
   roq::string_buffer<4>("1234"sv);
-  EXPECT_THROW(roq::string_buffer<4>("12345"sv), LengthError);
+  CHECK_THROWS_AS(roq::string_buffer<4>("12345"sv), LengthError);
 }
 
-TEST(string_buffer, push_back) {
+TEST_CASE("string_buffer_push_back", "string_buffer") {
   roq::string_buffer<4> s;
-  EXPECT_EQ(s.length(), 0);
+  CHECK(s.length() == 0);
   s.push_back('1');
-  EXPECT_EQ(s.length(), 1);
+  CHECK(s.length() == 1);
   s.push_back('2');
-  EXPECT_EQ(s.length(), 2);
+  CHECK(s.length() == 2);
   s.push_back('3');
-  EXPECT_EQ(s.length(), 3);
+  CHECK(s.length() == 3);
   s.push_back('4');
-  EXPECT_EQ(s.length(), 4);
-  EXPECT_THROW(s.push_back('5'), LengthError);
+  CHECK(s.length() == 4);
+  CHECK_THROWS_AS(s.push_back('5'), LengthError);
 }

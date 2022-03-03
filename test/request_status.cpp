@@ -1,12 +1,12 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include "roq/utils/common.h"
 
 using namespace roq;
 using namespace std::literals;
 
-TEST(request_status, compare_requests) {
-  EXPECT_EQ(utils::compare_requests(RequestStatus::TIMEOUT, RequestStatus::ACCEPTED), -1);
+TEST_CASE("request_status_compare_requests", "request_status") {
+  CHECK(utils::compare_requests(RequestStatus::TIMEOUT, RequestStatus::ACCEPTED) == -1);
 }

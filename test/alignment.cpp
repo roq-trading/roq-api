@@ -1,37 +1,37 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include "roq/api.h"
 
 using namespace roq;
 
-TEST(alignment, layer) {
+TEST_CASE("alignment_layer", "alignment") {
   std::array<Layer, 2> value;
   auto offset = reinterpret_cast<uint8_t *>(&value[1]) - reinterpret_cast<uint8_t *>(&value[0]);
-  EXPECT_EQ(offset, std::ptrdiff_t{32});
+  CHECK(offset == std::ptrdiff_t{32});
 }
 
-TEST(alignment, mbp_update) {
+TEST_CASE("alignment_mbp_update", "alignment") {
   std::array<MBPUpdate, 2> value;
   auto offset = reinterpret_cast<uint8_t *>(&value[1]) - reinterpret_cast<uint8_t *>(&value[0]);
-  EXPECT_EQ(offset, std::ptrdiff_t{32});
+  CHECK(offset == std::ptrdiff_t{32});
 }
 
-TEST(alignment, mbo_update) {
+TEST_CASE("alignment_mbo_update", "alignment") {
   std::array<MBOUpdate, 2> value;
   auto offset = reinterpret_cast<uint8_t *>(&value[1]) - reinterpret_cast<uint8_t *>(&value[0]);
-  EXPECT_EQ(offset, std::ptrdiff_t{64});
+  CHECK(offset == std::ptrdiff_t{64});
 }
 
-TEST(alignment, trade) {
+TEST_CASE("alignment_trade", "alignment") {
   std::array<Trade, 2> value;
   auto offset = reinterpret_cast<uint8_t *>(&value[1]) - reinterpret_cast<uint8_t *>(&value[0]);
-  EXPECT_EQ(offset, std::ptrdiff_t{64});
+  CHECK(offset == std::ptrdiff_t{64});
 }
 
-TEST(alignment, fill) {
+TEST_CASE("alignment_fill", "alignment") {
   std::array<Fill, 2> value;
   auto offset = reinterpret_cast<uint8_t *>(&value[1]) - reinterpret_cast<uint8_t *>(&value[0]);
-  EXPECT_EQ(offset, std::ptrdiff_t{64});
+  CHECK(offset == std::ptrdiff_t{64});
 }

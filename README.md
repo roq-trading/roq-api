@@ -105,15 +105,12 @@ The full list can be found [here](https://roq-trading.com/docs/introduction/gate
 
 * [FlatBuffers](https://github.com/google/flatbuffers) (Apache 2.0 License)
 * [fmt](https://github.com/fmtlib/fmt) (MIT License)
-* [range-v3](https://github.com/ericniebler/range-v3) (BSL 1.0 License)
-* [span-lite](https://github.com/martinmoene/span-lite) (BSL 1.0 License)
 * [magic_enum](https://github.com/Neargye/magic_enum) (MIT License)
-* [date](https://github.com/HowardHinnant/date) (MIT License)
 * [jinja2](https://github.com/pallets/jinja) (BSD 3-Clause License)
 
 Optional
 
-* [Google Test](https://github.com/google/googletest) (BSD 3-Clause License)
+* [Catch2](https://github.com/catchorg/Catch2) (Boost Software License 1.0 License)
 
 
 ## Prerequisites
@@ -182,13 +179,11 @@ conda install -y \
     flatbuffers \
     fmt \
     jinja2 \
-    clang-format
+    clang-format \
+    catch2
 
 conda install -y --channel https://roq-trading.com/conda/stable \
-    roq-oss-range-v3 \
-    roq-oss-span-lite \
-    roq-oss-magic_enum \
-    roq-oss-date
+    roq-oss-magic_enum
 ```
 
 

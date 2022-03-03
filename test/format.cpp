@@ -1,6 +1,6 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include "roq/market_by_price_update.h"
 #include "roq/side.h"
@@ -9,13 +9,13 @@ using namespace roq;
 
 using namespace std::literals;
 
-TEST(format, Side) {
-  EXPECT_EQ(fmt::format("{}"sv, Side{Side::UNDEFINED}), "UNDEFINED"sv);
-  EXPECT_EQ(fmt::format("{}"sv, Side{Side::BUY}), "BUY"sv);
-  EXPECT_EQ(fmt::format("{}"sv, Side{Side::SELL}), "SELL"sv);
+TEST_CASE("format_Side", "format") {
+  CHECK(fmt::format("{}"sv, Side{Side::UNDEFINED}) == "UNDEFINED"sv);
+  CHECK(fmt::format("{}"sv, Side{Side::BUY}) == "BUY"sv);
+  CHECK(fmt::format("{}"sv, Side{Side::SELL}) == "SELL"sv);
 }
 
-TEST(format, market_by_price) {
+TEST_CASE("format_market_by_price", "format") {
   roq::MBPUpdate bids[] = {
       {.price = 1.0, .quantity = 2.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
       {.price = 2.0, .quantity = 4.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
@@ -45,7 +45,7 @@ TEST(format, market_by_price) {
       .checksum = 123,
   };
   auto result = fmt::format("{}"sv, market_by_price);
-  EXPECT_GT(std::size(result), size_t{0});
+  CHECK(std::size(result) > size_t{0});
   // note! Decimals are shown with the '_' prefix due to magic_enum
   auto expected =
       R"({)"
@@ -62,5 +62,5 @@ TEST(format, market_by_price) {
       R"(max_depth=10, )"
       R"(checksum=123)"
       R"(})"sv;
-  EXPECT_EQ(result, expected);
+  CHECK(result == expected);
 }

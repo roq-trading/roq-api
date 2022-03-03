@@ -1,77 +1,77 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include "roq/exceptions.h"
 
 using namespace roq;
 using namespace std::literals;
 
-TEST(exceptions, simple_1) {
+TEST_CASE("exceptions_simple_1", "exceptions") {
   auto ok = false;
   try {
     throw NotReady("something's not right"sv);
   } catch (std::exception &) {
     ok = true;
   }
-  EXPECT_TRUE(ok);
+  CHECK(ok == true);
 }
 
-TEST(exceptions, simple_2) {
+TEST_CASE("exceptions_simple_2", "exceptions") {
   auto ok = false;
   try {
     throw NotReady("something's not right"sv);
   } catch (Exception &) {
     ok = true;
   }
-  EXPECT_TRUE(ok);
+  CHECK(ok == true);
 }
 
-TEST(exceptions, simple_3) {
+TEST_CASE("exceptions_simple_3", "exceptions") {
   auto ok = false;
   try {
     throw NotReady("something's not right"sv);
   } catch (RuntimeError &) {
     ok = true;
   }
-  EXPECT_TRUE(ok);
+  CHECK(ok == true);
 }
 
-TEST(exceptions, simple_4) {
+TEST_CASE("exceptions_simple_4", "exceptions") {
   auto ok = false;
   try {
     throw NotReady("something's not right"sv);
   } catch (NotReady &) {
     ok = true;
   }
-  EXPECT_TRUE(ok);
+  CHECK(ok == true);
 }
 
-TEST(exceptions, simple_5) {
+TEST_CASE("exceptions_simple_5", "exceptions") {
   auto ok = false;
   try {
     throw RuntimeError("something's not right"sv);
   } catch (RuntimeError &) {
     ok = true;
   }
-  EXPECT_TRUE(ok);
+  CHECK(ok == true);
 }
 
-TEST(exceptions, what) {
+TEST_CASE("exceptions_what", "exceptions") {
   auto ok = false;
   try {
     throw NotReady("{}"sv, 123);
   } catch (NotReady &e) {
     ok = true;
-    EXPECT_EQ(e.what(), "123"sv);
+    CHECK(e.what() == "123"sv);
   }
-  EXPECT_TRUE(ok);
+  CHECK(ok == true);
   ok = false;
   try {
     throw NotReady("123"sv);
   } catch (NotReady &e) {
     ok = true;
-    EXPECT_EQ(e.what(), "123"sv);
+    CHECK(e.what() == "123"sv);
   }
-  EXPECT_TRUE(ok);
+  CHECK(ok == true);
 }

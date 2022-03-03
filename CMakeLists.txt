@@ -92,8 +92,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 endif()
 
 if(BUILD_TESTING)
-  include(GoogleTest)
-  add_subdirectory("${CMAKE_SOURCE_DIR}/third_party/googletest" EXCLUDE_FROM_ALL)
+  find_package(Catch2 REQUIRED)
   add_subdirectory("${CMAKE_SOURCE_DIR}/test")
 endif(BUILD_TESTING)
 

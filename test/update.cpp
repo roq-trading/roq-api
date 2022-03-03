@@ -1,6 +1,6 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include <chrono>
 
@@ -12,126 +12,128 @@ using namespace roq::utils;
 using namespace std::literals;
 using namespace std::chrono_literals;
 
+using namespace Catch::literals;
+
 // update()
 
-TEST(update, double) {
+TEST_CASE("update_double", "update") {
   double value = NaN;
-  EXPECT_TRUE(update(value, 1.0));
-  EXPECT_DOUBLE_EQ(value, 1.0);
-  EXPECT_TRUE(update(value, 2.0));
-  EXPECT_DOUBLE_EQ(value, 2.0);
+  CHECK(update(value, 1.0) == true);
+  CHECK(value == 1.0_a);
+  CHECK(update(value, 2.0) == true);
+  CHECK(value == 2.0_a);
   // shouldn't change
-  EXPECT_FALSE(update(value, NaN));
-  EXPECT_DOUBLE_EQ(value, 2.0);
+  CHECK(update(value, NaN) == false);
+  CHECK(value == 2.0_a);
 }
 
-TEST(update, string) {
+TEST_CASE("update_string", "update") {
   std::string value;
-  EXPECT_TRUE(update(value, "foo"sv));
-  EXPECT_EQ(value, "foo"sv);
-  EXPECT_TRUE(update(value, "bar"sv));
-  EXPECT_EQ(value, "bar"sv);
-  EXPECT_FALSE(update(value, "bar"sv));
-  EXPECT_EQ(value, "bar"sv);
+  CHECK(update(value, "foo"sv) == true);
+  CHECK(value == "foo"sv);
+  CHECK(update(value, "bar"sv) == true);
+  CHECK(value == "bar"sv);
+  CHECK(update(value, "bar"sv) == false);
+  CHECK(value == "bar"sv);
 }
 
-TEST(update, seconds) {
+TEST_CASE("update_seconds", "update") {
   using namespace std::chrono_literals;
   std::chrono::seconds value = {};
-  EXPECT_TRUE(update(value, 1s));
-  EXPECT_EQ(value, 1s);
-  EXPECT_FALSE(update(value, 1s));
-  EXPECT_EQ(value, 1s);
-  EXPECT_TRUE(update(value, 2s));
-  EXPECT_EQ(value, 2s);
+  CHECK(update(value, 1s) == true);
+  CHECK(value == 1s);
+  CHECK(update(value, 1s) == false);
+  CHECK(value == 1s);
+  CHECK(update(value, 2s) == true);
+  CHECK(value == 2s);
 }
 
 // update_first()
 
-TEST(update, int_first) {
+TEST_CASE("update_int_first", "update") {
   int value = 0;
-  EXPECT_EQ(value, 0);
-  EXPECT_TRUE(update_first(value, 1));
-  EXPECT_EQ(value, 1);
-  EXPECT_FALSE(update_first(value, 2));
-  EXPECT_EQ(value, 1);
+  CHECK(value == 0);
+  CHECK(update_first(value, 1) == true);
+  CHECK(value == 1);
+  CHECK(update_first(value, 2) == false);
+  CHECK(value == 1);
 }
 
-TEST(update, enum_first) {
+TEST_CASE("update_enum_first", "update") {
   enum class MyEnum { A, B, C } value = MyEnum::A;
-  EXPECT_EQ(value, MyEnum::A);
-  EXPECT_TRUE(update_first(value, MyEnum::B));
-  EXPECT_EQ(value, MyEnum::B);
-  EXPECT_FALSE(update_first(value, MyEnum::C));
-  EXPECT_EQ(value, MyEnum::B);
+  CHECK(value == MyEnum::A);
+  CHECK(update_first(value, MyEnum::B) == true);
+  CHECK(value == MyEnum::B);
+  CHECK(update_first(value, MyEnum::C) == false);
+  CHECK(value == MyEnum::B);
 }
 
-TEST(update, chrono_first) {
+TEST_CASE("update_chrono_first", "update") {
   std::chrono::seconds value{};
-  EXPECT_EQ(value, std::chrono::seconds{});
-  EXPECT_TRUE(update_first(value, 1s));
-  EXPECT_EQ(value, 1s);
-  EXPECT_FALSE(update_first(value, 2s));
-  EXPECT_EQ(value, 1s);
+  CHECK(value == std::chrono::seconds{});
+  CHECK(update_first(value, 1s) == true);
+  CHECK(value == 1s);
+  CHECK(update_first(value, 2s) == false);
+  CHECK(value == 1s);
 }
 
 // update_max()
 
-TEST(update, int_max) {
+TEST_CASE("update_int_max", "update") {
   int value = 0;
-  EXPECT_EQ(value, 0);
-  EXPECT_TRUE(update_max(value, 1));
-  EXPECT_EQ(value, 1);
-  EXPECT_FALSE(update_max(value, 1));
-  EXPECT_EQ(value, 1);
-  EXPECT_FALSE(update_max(value, 0));
-  EXPECT_EQ(value, 1);
-  EXPECT_TRUE(update_max(value, 2));
-  EXPECT_EQ(value, 2);
+  CHECK(value == 0);
+  CHECK(update_max(value, 1) == true);
+  CHECK(value == 1);
+  CHECK(update_max(value, 1) == false);
+  CHECK(value == 1);
+  CHECK(update_max(value, 0) == false);
+  CHECK(value == 1);
+  CHECK(update_max(value, 2) == true);
+  CHECK(value == 2);
 }
 
-TEST(update, enum_max) {
+TEST_CASE("update_enum_max", "update") {
   enum class MyEnum { A, B, C } value = MyEnum::A;
-  EXPECT_EQ(value, MyEnum::A);
-  EXPECT_TRUE(update_max(value, MyEnum::B));
-  EXPECT_EQ(value, MyEnum::B);
-  EXPECT_FALSE(update_max(value, MyEnum::B));
-  EXPECT_EQ(value, MyEnum::B);
-  EXPECT_FALSE(update_max(value, MyEnum::A));
-  EXPECT_EQ(value, MyEnum::B);
-  EXPECT_TRUE(update_max(value, MyEnum::C));
-  EXPECT_EQ(value, MyEnum::C);
+  CHECK(value == MyEnum::A);
+  CHECK(update_max(value, MyEnum::B) == true);
+  CHECK(value == MyEnum::B);
+  CHECK(update_max(value, MyEnum::B) == false);
+  CHECK(value == MyEnum::B);
+  CHECK(update_max(value, MyEnum::A) == false);
+  CHECK(value == MyEnum::B);
+  CHECK(update_max(value, MyEnum::C) == true);
+  CHECK(value == MyEnum::C);
 }
 
 // update_if_not_empty()
 
-TEST(update, string_if_not_empty) {
+TEST_CASE("update_string_if_not_empty", "update") {
   std::string result;
   utils::update_if_not_empty(result, "some_test"sv);
-  EXPECT_EQ(result, "some_test"sv);
+  CHECK(result == "some_test"sv);
   utils::update_if_not_empty(result, ""sv);
-  EXPECT_EQ(result, "some_test"sv);
+  CHECK(result == "some_test"sv);
   utils::update_if_not_empty(result, "foobar"sv);
-  EXPECT_EQ(result, "foobar"sv);
+  CHECK(result == "foobar"sv);
 }
 
-TEST(update, double_if_not_empty) {
+TEST_CASE("update_double_if_not_empty", "update") {
   double result = NaN;
   utils::update_if_not_empty(result, 1.0);
-  EXPECT_DOUBLE_EQ(result, 1.0);
+  CHECK(result == 1.0_a);
   utils::update_if_not_empty(result, NaN);
-  EXPECT_DOUBLE_EQ(result, 1.0);
+  CHECK(result == 1.0_a);
   utils::update_if_not_empty(result, 2.0);
-  EXPECT_DOUBLE_EQ(result, 2.0);
+  CHECK(result == 2.0_a);
 }
 
-TEST(update, enum_if_not_empty) {
+TEST_CASE("update_enum_if_not_empty", "update") {
   enum class MyEnum { A, B, C } value = MyEnum::A;  // A = 0 = "empty"
-  EXPECT_EQ(value, MyEnum::A);
-  EXPECT_TRUE(update_if_not_empty(value, MyEnum::B));
-  EXPECT_EQ(value, MyEnum::B);
-  EXPECT_FALSE(update_if_not_empty(value, MyEnum::A));
-  EXPECT_EQ(value, MyEnum::B);
-  EXPECT_TRUE(update_if_not_empty(value, MyEnum::C));
-  EXPECT_EQ(value, MyEnum::C);
+  CHECK(value == MyEnum::A);
+  CHECK(update_if_not_empty(value, MyEnum::B) == true);
+  CHECK(value == MyEnum::B);
+  CHECK(update_if_not_empty(value, MyEnum::A) == false);
+  CHECK(value == MyEnum::B);
+  CHECK(update_if_not_empty(value, MyEnum::C) == true);
+  CHECK(value == MyEnum::C);
 }

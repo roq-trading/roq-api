@@ -1,40 +1,42 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include <span>
 
 using namespace std::literals;
 
-TEST(span, simple) {
+using namespace Catch::literals;
+
+TEST_CASE("span_simple", "span") {
   // initialize empty
   std::vector<double> empty;
   std::span empty_span(empty);
-  EXPECT_TRUE(std::empty(empty_span));
+  CHECK(std::empty(empty_span) == true);
   // initialize non-empty
   std::array<double, 3> raw{0.0, 2.0, 3.0};
   std::span span(raw);
-  EXPECT_FALSE(std::empty(span));
+  CHECK(std::empty(span) == false);
   span[0] = 1.0;
-  EXPECT_DOUBLE_EQ(span[0], 1.0);
-  EXPECT_DOUBLE_EQ(span[1], 2.0);
-  EXPECT_DOUBLE_EQ(span[2], 3.0);
+  CHECK(span[0] == 1.0_a);
+  CHECK(span[1] == 2.0_a);
+  CHECK(span[2] == 3.0_a);
   // assignment
   std::span<double> span_2;
-  EXPECT_TRUE(std::empty(span_2));
+  CHECK(std::empty(span_2) == true);
   span_2 = span;
-  EXPECT_FALSE(std::empty(span_2));
-  EXPECT_DOUBLE_EQ(span_2[0], 1.0);
-  EXPECT_DOUBLE_EQ(span_2[1], 2.0);
-  EXPECT_DOUBLE_EQ(span_2[2], 3.0);
+  CHECK(std::empty(span_2) == false);
+  CHECK(span_2[0] == 1.0_a);
+  CHECK(span_2[1] == 2.0_a);
+  CHECK(span_2[2] == 3.0_a);
 }
 
-TEST(span, string_view) {
+TEST_CASE("span_string_view", "span") {
   std::vector<std::string_view> raw{
       "abc"sv,
       "def"sv,
   };
   std::span span(raw);
-  EXPECT_EQ(span[0], "abc"sv);
-  EXPECT_EQ(span[1], "def"sv);
+  CHECK(span[0] == "abc"sv);
+  CHECK(span[1] == "def"sv);
 }

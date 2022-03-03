@@ -1,6 +1,6 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include <chrono>
 
@@ -11,18 +11,18 @@ using namespace std::chrono_literals;
 namespace roq {
 namespace utils {
 
-TEST(chrono, split) {
+TEST_CASE("chrono_split", "chrono") {
   auto timestamp = 1622200274123456789ns;
   auto [date, time] = split<std::chrono::milliseconds>(timestamp);
   // date
-  EXPECT_EQ(static_cast<int>(date.year()), 2021);
-  EXPECT_EQ(static_cast<unsigned>(date.month()), 5);
-  EXPECT_EQ(static_cast<unsigned>(date.day()), 28);
+  CHECK(static_cast<int>(date.year()) == 2021);
+  CHECK(static_cast<unsigned>(date.month()) == 5);
+  CHECK(static_cast<unsigned>(date.day()) == 28);
   // time
-  EXPECT_EQ(time.hours().count(), 11);
-  EXPECT_EQ(time.minutes().count(), 11);
-  EXPECT_EQ(time.seconds().count(), 14);
-  EXPECT_EQ(time.subseconds().count(), 123);
+  CHECK(time.hours().count() == 11);
+  CHECK(time.minutes().count() == 11);
+  CHECK(time.seconds().count() == 14);
+  CHECK(time.subseconds().count() == 123);
 }
 
 }  // namespace utils

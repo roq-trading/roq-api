@@ -1,6 +1,6 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <gtest/gtest.h>
+#include <catch2/catch.hpp>
 
 #include "roq/utils/mask.h"
 
@@ -27,16 +27,16 @@ static_assert(Mask<E>{E::AB} == Mask<E>{}.set(E::A).set(E::B));
 
 // run-time checks
 
-TEST(mask, simple) {
+TEST_CASE("mask_simple", "mask") {
   Mask m1{
       E::A,
   };
-  EXPECT_TRUE(m1.has(E::A));
-  EXPECT_FALSE(m1.has(E::B));
+  CHECK(m1.has(E::A) == true);
+  CHECK(m1.has(E::B) == false);
   Mask m2{m1, E::B};
-  EXPECT_TRUE(m2.has(E::A));
-  EXPECT_TRUE(m2.has(E::B));
-  EXPECT_TRUE(m2.has_any(E::A));
-  EXPECT_TRUE(m2.has_any(E::AB));
-  EXPECT_TRUE(m2.has_any(E::ABC));
+  CHECK(m2.has(E::A) == true);
+  CHECK(m2.has(E::B) == true);
+  CHECK(m2.has_any(E::A) == true);
+  CHECK(m2.has_any(E::AB) == true);
+  CHECK(m2.has_any(E::ABC) == true);
 }

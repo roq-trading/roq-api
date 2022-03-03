@@ -23,6 +23,7 @@ requirements:
     - flatbuffers
     - make
   host:
+    - catch2
     - fmt
     - roq-oss-magic_enum
 

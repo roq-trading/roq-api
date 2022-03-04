@@ -1417,8 +1417,8 @@ struct Fill FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::Liquidity liquidity() const { return static_cast<roq::fbs::Liquidity>(GetField<uint8_t>(VT_LIQUIDITY, 0)); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_EXTERNAL_TRADE_ID) &&
-           verifier.VerifyString(external_trade_id()) && VerifyField<double>(verifier, VT_QUANTITY) &&
-           VerifyField<double>(verifier, VT_PRICE) && VerifyField<uint8_t>(verifier, VT_LIQUIDITY) &&
+           verifier.VerifyString(external_trade_id()) && VerifyField<double>(verifier, VT_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_PRICE, 8) && VerifyField<uint8_t>(verifier, VT_LIQUIDITY, 1) &&
            verifier.EndTable();
   }
 };
@@ -1480,9 +1480,9 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double ask_price() const { return GetField<double>(VT_ASK_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double ask_quantity() const { return GetField<double>(VT_ASK_QUANTITY, 0.0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_BID_PRICE) &&
-           VerifyField<double>(verifier, VT_BID_QUANTITY) && VerifyField<double>(verifier, VT_ASK_PRICE) &&
-           VerifyField<double>(verifier, VT_ASK_QUANTITY) && verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_BID_PRICE, 8) &&
+           VerifyField<double>(verifier, VT_BID_QUANTITY, 8) && VerifyField<double>(verifier, VT_ASK_PRICE, 8) &&
+           VerifyField<double>(verifier, VT_ASK_QUANTITY, 8) && verifier.EndTable();
   }
 };
 
@@ -1537,9 +1537,9 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t priority() const { return GetField<uint32_t>(VT_PRIORITY, 0); }
   const flatbuffers::String *order_id() const { return GetPointer<const flatbuffers::String *>(VT_ORDER_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_PRICE) &&
-           VerifyField<double>(verifier, VT_REMAINING_QUANTITY) && VerifyField<uint8_t>(verifier, VT_ACTION) &&
-           VerifyField<uint32_t>(verifier, VT_PRIORITY) && VerifyOffset(verifier, VT_ORDER_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_PRICE, 8) &&
+           VerifyField<double>(verifier, VT_REMAINING_QUANTITY, 8) && VerifyField<uint8_t>(verifier, VT_ACTION, 1) &&
+           VerifyField<uint32_t>(verifier, VT_PRIORITY, 4) && VerifyOffset(verifier, VT_ORDER_ID) &&
            verifier.VerifyString(order_id()) && verifier.EndTable();
   }
 };
@@ -1611,10 +1611,10 @@ struct MBPUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t price_level() const { return GetField<uint32_t>(VT_PRICE_LEVEL, 0); }
   uint32_t number_of_orders() const { return GetField<uint32_t>(VT_NUMBER_OF_ORDERS, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_PRICE) &&
-           VerifyField<double>(verifier, VT_QUANTITY) && VerifyField<double>(verifier, VT_IMPLIED_QUANTITY) &&
-           VerifyField<uint32_t>(verifier, VT_PRICE_LEVEL) && VerifyField<uint32_t>(verifier, VT_NUMBER_OF_ORDERS) &&
-           verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_PRICE, 8) &&
+           VerifyField<double>(verifier, VT_QUANTITY, 8) && VerifyField<double>(verifier, VT_IMPLIED_QUANTITY, 8) &&
+           VerifyField<uint32_t>(verifier, VT_PRICE_LEVEL, 4) &&
+           VerifyField<uint32_t>(verifier, VT_NUMBER_OF_ORDERS, 4) && verifier.EndTable();
   }
 };
 
@@ -1664,7 +1664,7 @@ struct Measurement FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double value() const { return GetField<double>(VT_VALUE, std::numeric_limits<double>::quiet_NaN()); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_NAME) && verifier.VerifyString(name()) &&
-           VerifyField<double>(verifier, VT_VALUE) && verifier.EndTable();
+           VerifyField<double>(verifier, VT_VALUE, 8) && verifier.EndTable();
   }
 };
 
@@ -1715,9 +1715,9 @@ struct Statistics FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int64_t begin_time_utc() const { return GetField<int64_t>(VT_BEGIN_TIME_UTC, 0); }
   int64_t end_time_utc() const { return GetField<int64_t>(VT_END_TIME_UTC, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint8_t>(verifier, VT_TYPE) &&
-           VerifyField<double>(verifier, VT_VALUE) && VerifyField<int64_t>(verifier, VT_BEGIN_TIME_UTC) &&
-           VerifyField<int64_t>(verifier, VT_END_TIME_UTC) && verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyField<uint8_t>(verifier, VT_TYPE, 1) &&
+           VerifyField<double>(verifier, VT_VALUE, 8) && VerifyField<int64_t>(verifier, VT_BEGIN_TIME_UTC, 8) &&
+           VerifyField<int64_t>(verifier, VT_END_TIME_UTC, 8) && verifier.EndTable();
   }
 };
 
@@ -1772,8 +1772,8 @@ struct Trade FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double quantity() const { return GetField<double>(VT_QUANTITY, 0.0); }
   const flatbuffers::String *trade_id() const { return GetPointer<const flatbuffers::String *>(VT_TRADE_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint8_t>(verifier, VT_SIDE) &&
-           VerifyField<double>(verifier, VT_PRICE) && VerifyField<double>(verifier, VT_QUANTITY) &&
+    return VerifyTableStart(verifier) && VerifyField<uint8_t>(verifier, VT_SIDE, 1) &&
+           VerifyField<double>(verifier, VT_PRICE, 8) && VerifyField<double>(verifier, VT_QUANTITY, 8) &&
            VerifyOffset(verifier, VT_TRADE_ID) && verifier.VerifyString(trade_id()) && verifier.EndTable();
   }
 };
@@ -1874,9 +1874,9 @@ struct CancelOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t conditional_on_version() const { return GetField<uint32_t>(VT_CONDITIONAL_ON_VERSION, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
-           VerifyField<uint32_t>(verifier, VT_CONDITIONAL_ON_VERSION) && verifier.EndTable();
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID, 4) && VerifyOffset(verifier, VT_ROUTING_ID) &&
+           verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
+           VerifyField<uint32_t>(verifier, VT_CONDITIONAL_ON_VERSION, 4) && verifier.EndTable();
   }
 };
 
@@ -1979,14 +1979,14 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_EXCHANGE) &&
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID, 4) && VerifyOffset(verifier, VT_EXCHANGE) &&
            verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
-           VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) && VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) &&
-           VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
-           VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION) && VerifyOffset(verifier, VT_ORDER_TEMPLATE) &&
-           verifier.VerifyString(order_template()) && VerifyField<double>(verifier, VT_QUANTITY) &&
-           VerifyField<double>(verifier, VT_PRICE) && VerifyField<double>(verifier, VT_STOP_PRICE) &&
+           VerifyField<uint8_t>(verifier, VT_SIDE, 1) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT, 1) &&
+           VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY, 8) && VerifyField<uint8_t>(verifier, VT_ORDER_TYPE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION, 1) && VerifyOffset(verifier, VT_ORDER_TEMPLATE) &&
+           verifier.VerifyString(order_template()) && VerifyField<double>(verifier, VT_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_PRICE, 8) && VerifyField<double>(verifier, VT_STOP_PRICE, 8) &&
            VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) && verifier.EndTable();
   }
 };
@@ -2338,7 +2338,7 @@ struct DownloadEnd FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t max_order_id() const { return GetField<uint32_t>(VT_MAX_ORDER_ID, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint32_t>(verifier, VT_MAX_ORDER_ID) && verifier.EndTable();
+           VerifyField<uint32_t>(verifier, VT_MAX_ORDER_ID, 4) && verifier.EndTable();
   }
 };
 
@@ -2383,8 +2383,8 @@ struct ExternalLatency FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int64_t latency() const { return GetField<int64_t>(VT_LATENCY, 0); }
   const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
-           VerifyField<int64_t>(verifier, VT_LATENCY) && VerifyOffset(verifier, VT_ACCOUNT) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
+           VerifyField<int64_t>(verifier, VT_LATENCY, 8) && VerifyOffset(verifier, VT_ACCOUNT) &&
            verifier.VerifyString(account()) && verifier.EndTable();
   }
 };
@@ -2443,10 +2443,10 @@ struct FundsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            VerifyOffset(verifier, VT_CURRENCY) && verifier.VerifyString(currency()) &&
-           VerifyField<double>(verifier, VT_BALANCE) && VerifyField<double>(verifier, VT_HOLD) &&
+           VerifyField<double>(verifier, VT_BALANCE, 8) && VerifyField<double>(verifier, VT_HOLD, 8) &&
            VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) && verifier.VerifyString(external_account()) &&
            verifier.EndTable();
   }
@@ -2537,14 +2537,14 @@ struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetField<double>(VT_MBP_MIN_TRADE_VOL_MULTIPLIER, std::numeric_limits<double>::quiet_NaN());
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint64_t>(verifier, VT_SUPPORTS) &&
-           VerifyField<uint32_t>(verifier, VT_MBP_MAX_DEPTH) &&
-           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_PRICE_INVERSION) &&
-           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_REMOVE_NON_EXISTING) &&
-           VerifyField<uint8_t>(verifier, VT_OMS_DOWNLOAD_HAS_STATE) &&
-           VerifyField<uint8_t>(verifier, VT_OMS_DOWNLOAD_HAS_ROUTING_ID) &&
-           VerifyField<double>(verifier, VT_MBP_TICK_SIZE_MULTIPLIER) &&
-           VerifyField<double>(verifier, VT_MBP_MIN_TRADE_VOL_MULTIPLIER) && verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyField<uint64_t>(verifier, VT_SUPPORTS, 8) &&
+           VerifyField<uint32_t>(verifier, VT_MBP_MAX_DEPTH, 4) &&
+           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_PRICE_INVERSION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_MBP_ALLOW_REMOVE_NON_EXISTING, 1) &&
+           VerifyField<uint8_t>(verifier, VT_OMS_DOWNLOAD_HAS_STATE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_OMS_DOWNLOAD_HAS_ROUTING_ID, 1) &&
+           VerifyField<double>(verifier, VT_MBP_TICK_SIZE_MULTIPLIER, 8) &&
+           VerifyField<double>(verifier, VT_MBP_MIN_TRADE_VOL_MULTIPLIER, 8) && verifier.EndTable();
   }
 };
 
@@ -2628,8 +2628,8 @@ struct GatewayStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint64_t unavailable() const { return GetField<uint64_t>(VT_UNAVAILABLE, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint64_t>(verifier, VT_SUPPORTED) && VerifyField<uint64_t>(verifier, VT_AVAILABLE) &&
-           VerifyField<uint64_t>(verifier, VT_UNAVAILABLE) && verifier.EndTable();
+           VerifyField<uint64_t>(verifier, VT_SUPPORTED, 8) && VerifyField<uint64_t>(verifier, VT_AVAILABLE, 8) &&
+           VerifyField<uint64_t>(verifier, VT_UNAVAILABLE, 8) && verifier.EndTable();
   }
 };
 
@@ -2714,14 +2714,16 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   }
   uint32_t checksum() const { return GetField<uint32_t>(VT_CHECKSUM, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) && VerifyOffset(verifier, VT_BIDS) &&
            verifier.VerifyVector(bids()) && verifier.VerifyVectorOfTables(bids()) && VerifyOffset(verifier, VT_ASKS) &&
            verifier.VerifyVector(asks()) && verifier.VerifyVectorOfTables(asks()) &&
-           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) && VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE) && VerifyField<uint8_t>(verifier, VT_PRICE_DECIMALS) &&
-           VerifyField<uint8_t>(verifier, VT_QUANTITY_DECIMALS) && VerifyField<uint32_t>(verifier, VT_CHECKSUM) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
+           VerifyField<uint8_t>(verifier, VT_PRICE_DECIMALS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_QUANTITY_DECIMALS, 1) && VerifyField<uint32_t>(verifier, VT_CHECKSUM, 4) &&
            verifier.EndTable();
   }
 };
@@ -2866,15 +2868,18 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   uint16_t max_depth() const { return GetField<uint16_t>(VT_MAX_DEPTH, 0); }
   uint32_t checksum() const { return GetField<uint32_t>(VT_CHECKSUM, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) && VerifyOffset(verifier, VT_BIDS) &&
            verifier.VerifyVector(bids()) && verifier.VerifyVectorOfTables(bids()) && VerifyOffset(verifier, VT_ASKS) &&
            verifier.VerifyVector(asks()) && verifier.VerifyVectorOfTables(asks()) &&
-           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) && VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE) && VerifyField<uint8_t>(verifier, VT_PRICE_DECIMALS) &&
-           VerifyField<uint8_t>(verifier, VT_QUANTITY_DECIMALS) && VerifyField<uint16_t>(verifier, VT_MAX_DEPTH) &&
-           VerifyField<uint32_t>(verifier, VT_CHECKSUM) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
+           VerifyField<uint8_t>(verifier, VT_PRICE_DECIMALS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_QUANTITY_DECIMALS, 1) &&
+           VerifyField<uint16_t>(verifier, VT_MAX_DEPTH, 2) && VerifyField<uint32_t>(verifier, VT_CHECKSUM, 4) &&
+           verifier.EndTable();
   }
 };
 
@@ -2999,10 +3004,10 @@ struct MarketStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<roq::fbs::TradingStatus>(GetField<uint8_t>(VT_TRADING_STATUS, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyField<uint8_t>(verifier, VT_TRADING_STATUS) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_TRADING_STATUS, 1) && verifier.EndTable();
   }
 };
 
@@ -3071,10 +3076,10 @@ struct ModifyOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t conditional_on_version() const { return GetField<uint32_t>(VT_CONDITIONAL_ON_VERSION, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyField<double>(verifier, VT_QUANTITY) &&
-           VerifyField<double>(verifier, VT_PRICE) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
-           VerifyField<uint32_t>(verifier, VT_CONDITIONAL_ON_VERSION) && verifier.EndTable();
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID, 4) && VerifyField<double>(verifier, VT_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_PRICE, 8) && VerifyOffset(verifier, VT_ROUTING_ID) &&
+           verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
+           VerifyField<uint32_t>(verifier, VT_CONDITIONAL_ON_VERSION, 4) && verifier.EndTable();
   }
 };
 
@@ -3187,18 +3192,18 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
   int64_t round_trip_latency() const { return GetField<int64_t>(VT_ROUND_TRIP_LATENCY, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_EXCHANGE) &&
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID, 4) && VerifyOffset(verifier, VT_EXCHANGE) &&
            verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyField<uint8_t>(verifier, VT_TYPE) && VerifyField<uint8_t>(verifier, VT_ORIGIN) &&
-           VerifyField<uint8_t>(verifier, VT_STATUS) && VerifyField<uint8_t>(verifier, VT_ERROR) &&
+           VerifyField<uint8_t>(verifier, VT_TYPE, 1) && VerifyField<uint8_t>(verifier, VT_ORIGIN, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) && VerifyField<uint8_t>(verifier, VT_ERROR, 1) &&
            VerifyOffset(verifier, VT_TEXT) && verifier.VerifyString(text()) && VerifyOffset(verifier, VT_REQUEST_ID) &&
            verifier.VerifyString(request_id()) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
            verifier.VerifyString(external_account()) && VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
            verifier.VerifyString(external_order_id()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
-           VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<int64_t>(verifier, VT_ROUND_TRIP_LATENCY) &&
+           verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
+           VerifyField<uint8_t>(verifier, VT_SIDE, 1) && VerifyField<int64_t>(verifier, VT_ROUND_TRIP_LATENCY, 8) &&
            verifier.EndTable();
   }
 };
@@ -3437,29 +3442,29 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_EXCHANGE) &&
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID, 4) && VerifyOffset(verifier, VT_EXCHANGE) &&
            verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
-           VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY) && VerifyField<uint8_t>(verifier, VT_ORDER_TYPE) &&
-           VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE) &&
-           VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION) && VerifyOffset(verifier, VT_ORDER_TEMPLATE) &&
-           verifier.VerifyString(order_template()) && VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC) &&
-           VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
+           VerifyField<uint8_t>(verifier, VT_SIDE, 1) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT, 1) &&
+           VerifyField<double>(verifier, VT_MAX_SHOW_QUANTITY, 8) && VerifyField<uint8_t>(verifier, VT_ORDER_TYPE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_EXECUTION_INSTRUCTION, 1) && VerifyOffset(verifier, VT_ORDER_TEMPLATE) &&
+           verifier.VerifyString(order_template()) && VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC, 8) &&
+           VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC, 8) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
            verifier.VerifyString(external_account()) && VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
-           verifier.VerifyString(external_order_id()) && VerifyField<uint8_t>(verifier, VT_STATUS) &&
-           VerifyField<double>(verifier, VT_QUANTITY) && VerifyField<double>(verifier, VT_PRICE) &&
-           VerifyField<double>(verifier, VT_STOP_PRICE) && VerifyField<double>(verifier, VT_REMAINING_QUANTITY) &&
-           VerifyField<double>(verifier, VT_TRADED_QUANTITY) &&
-           VerifyField<double>(verifier, VT_AVERAGE_TRADED_PRICE) &&
-           VerifyField<double>(verifier, VT_LAST_TRADED_QUANTITY) &&
-           VerifyField<double>(verifier, VT_LAST_TRADED_PRICE) && VerifyField<uint8_t>(verifier, VT_LAST_LIQUIDITY) &&
-           VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
-           VerifyField<uint32_t>(verifier, VT_MAX_REQUEST_VERSION) &&
-           VerifyField<uint32_t>(verifier, VT_MAX_RESPONSE_VERSION) &&
-           VerifyField<uint32_t>(verifier, VT_MAX_ACCEPTED_VERSION) && VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) &&
-           verifier.EndTable();
+           verifier.VerifyString(external_order_id()) && VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyField<double>(verifier, VT_QUANTITY, 8) && VerifyField<double>(verifier, VT_PRICE, 8) &&
+           VerifyField<double>(verifier, VT_STOP_PRICE, 8) && VerifyField<double>(verifier, VT_REMAINING_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_TRADED_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_AVERAGE_TRADED_PRICE, 8) &&
+           VerifyField<double>(verifier, VT_LAST_TRADED_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_LAST_TRADED_PRICE, 8) &&
+           VerifyField<uint8_t>(verifier, VT_LAST_LIQUIDITY, 1) && VerifyOffset(verifier, VT_ROUTING_ID) &&
+           verifier.VerifyString(routing_id()) && VerifyField<uint32_t>(verifier, VT_MAX_REQUEST_VERSION, 4) &&
+           VerifyField<uint32_t>(verifier, VT_MAX_RESPONSE_VERSION, 4) &&
+           VerifyField<uint32_t>(verifier, VT_MAX_ACCEPTED_VERSION, 4) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) && verifier.EndTable();
   }
 };
 
@@ -3739,14 +3744,14 @@ struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetField<double>(VT_SHORT_QUANTITY_BEGIN, std::numeric_limits<double>::quiet_NaN());
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
            VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) && verifier.VerifyString(external_account()) &&
-           VerifyField<double>(verifier, VT_LONG_QUANTITY) && VerifyField<double>(verifier, VT_SHORT_QUANTITY) &&
-           VerifyField<double>(verifier, VT_LONG_QUANTITY_BEGIN) &&
-           VerifyField<double>(verifier, VT_SHORT_QUANTITY_BEGIN) && verifier.EndTable();
+           VerifyField<double>(verifier, VT_LONG_QUANTITY, 8) && VerifyField<double>(verifier, VT_SHORT_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_LONG_QUANTITY_BEGIN, 8) &&
+           VerifyField<double>(verifier, VT_SHORT_QUANTITY_BEGIN, 8) && verifier.EndTable();
   }
 };
 
@@ -3866,11 +3871,11 @@ struct RateLimitTrigger FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *triggered_by() const { return GetPointer<const flatbuffers::String *>(VT_TRIGGERED_BY); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_NAME) && verifier.VerifyString(name()) &&
-           VerifyField<uint8_t>(verifier, VT_ORIGIN) && VerifyField<uint8_t>(verifier, VT_TYPE) &&
+           VerifyField<uint8_t>(verifier, VT_ORIGIN, 1) && VerifyField<uint8_t>(verifier, VT_TYPE, 1) &&
            VerifyOffset(verifier, VT_USERS) && verifier.VerifyVector(users()) &&
            verifier.VerifyVectorOfStrings(users()) && VerifyOffset(verifier, VT_ACCOUNTS) &&
            verifier.VerifyVector(accounts()) && verifier.VerifyVectorOfStrings(accounts()) &&
-           VerifyField<int64_t>(verifier, VT_BAN_EXPIRES) && VerifyOffset(verifier, VT_TRIGGERED_BY) &&
+           VerifyField<int64_t>(verifier, VT_BAN_EXPIRES, 8) && VerifyOffset(verifier, VT_TRIGGERED_BY) &&
            verifier.VerifyString(triggered_by()) && verifier.EndTable();
   }
 };
@@ -4007,23 +4012,24 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const flatbuffers::String *>(VT_MARGIN_CURRENCY);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
            VerifyOffset(verifier, VT_DESCRIPTION) && verifier.VerifyString(description()) &&
-           VerifyField<uint8_t>(verifier, VT_SECURITY_TYPE) && VerifyOffset(verifier, VT_QUOTE_CURRENCY) &&
+           VerifyField<uint8_t>(verifier, VT_SECURITY_TYPE, 1) && VerifyOffset(verifier, VT_QUOTE_CURRENCY) &&
            verifier.VerifyString(quote_currency()) && VerifyOffset(verifier, VT_BASE_CURRENCY) &&
            verifier.VerifyString(base_currency()) && VerifyOffset(verifier, VT_COMMISSION_CURRENCY) &&
-           verifier.VerifyString(commission_currency()) && VerifyField<double>(verifier, VT_TICK_SIZE) &&
-           VerifyField<double>(verifier, VT_MULTIPLIER) && VerifyField<double>(verifier, VT_MIN_TRADE_VOL) &&
-           VerifyField<uint8_t>(verifier, VT_OPTION_TYPE) && VerifyOffset(verifier, VT_STRIKE_CURRENCY) &&
-           verifier.VerifyString(strike_currency()) && VerifyField<double>(verifier, VT_STRIKE_PRICE) &&
+           verifier.VerifyString(commission_currency()) && VerifyField<double>(verifier, VT_TICK_SIZE, 8) &&
+           VerifyField<double>(verifier, VT_MULTIPLIER, 8) && VerifyField<double>(verifier, VT_MIN_TRADE_VOL, 8) &&
+           VerifyField<uint8_t>(verifier, VT_OPTION_TYPE, 1) && VerifyOffset(verifier, VT_STRIKE_CURRENCY) &&
+           verifier.VerifyString(strike_currency()) && VerifyField<double>(verifier, VT_STRIKE_PRICE, 8) &&
            VerifyOffset(verifier, VT_UNDERLYING) && verifier.VerifyString(underlying()) &&
            VerifyOffset(verifier, VT_TIME_ZONE) && verifier.VerifyString(time_zone()) &&
-           VerifyField<int32_t>(verifier, VT_ISSUE_DATE) && VerifyField<int32_t>(verifier, VT_SETTLEMENT_DATE) &&
-           VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME) &&
-           VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME_UTC) && VerifyField<double>(verifier, VT_MAX_TRADE_VOL) &&
-           VerifyField<double>(verifier, VT_TRADE_VOL_STEP_SIZE) && VerifyOffset(verifier, VT_MARGIN_CURRENCY) &&
+           VerifyField<int32_t>(verifier, VT_ISSUE_DATE, 4) && VerifyField<int32_t>(verifier, VT_SETTLEMENT_DATE, 4) &&
+           VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME, 8) &&
+           VerifyField<int64_t>(verifier, VT_EXPIRY_DATETIME_UTC, 8) &&
+           VerifyField<double>(verifier, VT_MAX_TRADE_VOL, 8) &&
+           VerifyField<double>(verifier, VT_TRADE_VOL_STEP_SIZE, 8) && VerifyOffset(verifier, VT_MARGIN_CURRENCY) &&
            verifier.VerifyString(margin_currency()) && verifier.EndTable();
   }
 };
@@ -4239,12 +4245,12 @@ struct StatisticsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
            VerifyOffset(verifier, VT_STATISTICS) && verifier.VerifyVector(statistics()) &&
-           verifier.VerifyVectorOfTables(statistics()) && VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) && verifier.EndTable();
+           verifier.VerifyVectorOfTables(statistics()) && VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) && verifier.EndTable();
   }
 };
 
@@ -4328,10 +4334,10 @@ struct StreamStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::StreamType type() const { return static_cast<roq::fbs::StreamType>(GetField<uint8_t>(VT_TYPE, 0)); }
   roq::fbs::Priority priority() const { return static_cast<roq::fbs::Priority>(GetField<uint32_t>(VT_PRIORITY, 0)); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint64_t>(verifier, VT_SUPPORTS) && VerifyField<uint8_t>(verifier, VT_STATUS) &&
-           VerifyField<uint8_t>(verifier, VT_TYPE) && VerifyField<uint32_t>(verifier, VT_PRIORITY) &&
+           VerifyField<uint64_t>(verifier, VT_SUPPORTS, 8) && VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TYPE, 1) && VerifyField<uint32_t>(verifier, VT_PRIORITY, 4) &&
            verifier.EndTable();
   }
 };
@@ -4411,11 +4417,11 @@ struct TopOfBook FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) && VerifyOffset(verifier, VT_LAYER) &&
-           verifier.VerifyTable(layer()) && VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) && verifier.EndTable();
+           verifier.VerifyTable(layer()) && VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) && verifier.EndTable();
   }
 };
 
@@ -4491,11 +4497,11 @@ struct TradeSummary FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) && VerifyOffset(verifier, VT_TRADES) &&
            verifier.VerifyVector(trades()) && verifier.VerifyVectorOfTables(trades()) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC) && verifier.EndTable();
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) && verifier.EndTable();
   }
 };
 
@@ -4594,17 +4600,18 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID) &&
+    return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint32_t>(verifier, VT_ORDER_ID) && VerifyOffset(verifier, VT_EXCHANGE) &&
+           VerifyField<uint32_t>(verifier, VT_ORDER_ID, 4) && VerifyOffset(verifier, VT_EXCHANGE) &&
            verifier.VerifyString(exchange()) && VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) &&
-           VerifyField<uint8_t>(verifier, VT_SIDE) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT) &&
-           VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC) && VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC) &&
-           VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) && verifier.VerifyString(external_account()) &&
-           VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) && verifier.VerifyString(external_order_id()) &&
-           VerifyOffset(verifier, VT_FILLS) && verifier.VerifyVector(fills()) &&
-           verifier.VerifyVectorOfTables(fills()) && VerifyOffset(verifier, VT_ROUTING_ID) &&
-           verifier.VerifyString(routing_id()) && VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_SIDE, 1) && VerifyField<uint8_t>(verifier, VT_POSITION_EFFECT, 1) &&
+           VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC, 8) &&
+           VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC, 8) && VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
+           verifier.VerifyString(external_account()) && VerifyOffset(verifier, VT_EXTERNAL_ORDER_ID) &&
+           verifier.VerifyString(external_order_id()) && VerifyOffset(verifier, VT_FILLS) &&
+           verifier.VerifyVector(fills()) && verifier.VerifyVectorOfTables(fills()) &&
+           VerifyOffset(verifier, VT_ROUTING_ID) && verifier.VerifyString(routing_id()) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) && verifier.EndTable();
   }
 };
 
@@ -4748,10 +4755,10 @@ struct Handshake FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *login() const { return GetPointer<const flatbuffers::String *>(VT_LOGIN); }
   const flatbuffers::String *password() const { return GetPointer<const flatbuffers::String *>(VT_PASSWORD); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
+    return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
            VerifyOffset(verifier, VT_APPLICATION) && verifier.VerifyString(application()) &&
            VerifyOffset(verifier, VT_HOSTNAME) && verifier.VerifyString(hostname()) &&
-           VerifyField<uint32_t>(verifier, VT_PID) && VerifyOffset(verifier, VT_UUID) &&
+           VerifyField<uint32_t>(verifier, VT_PID, 4) && VerifyOffset(verifier, VT_UUID) &&
            verifier.VerifyString(uuid()) && VerifyOffset(verifier, VT_LOGIN) && verifier.VerifyString(login()) &&
            VerifyOffset(verifier, VT_PASSWORD) && verifier.VerifyString(password()) && verifier.EndTable();
   }
@@ -4844,13 +4851,13 @@ struct HandshakeAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(VT_NAME); }
   uint8_t user_id() const { return GetField<uint8_t>(VT_USER_ID, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
+    return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
            VerifyOffset(verifier, VT_APPLICATION) && verifier.VerifyString(application()) &&
            VerifyOffset(verifier, VT_HOSTNAME) && verifier.VerifyString(hostname()) &&
-           VerifyField<uint32_t>(verifier, VT_PID) && VerifyField<uint8_t>(verifier, VT_FAILURE) &&
+           VerifyField<uint32_t>(verifier, VT_PID, 4) && VerifyField<uint8_t>(verifier, VT_FAILURE, 1) &&
            VerifyOffset(verifier, VT_FAILURE_REASON) && verifier.VerifyString(failure_reason()) &&
            VerifyOffset(verifier, VT_UUID) && verifier.VerifyString(uuid()) && VerifyOffset(verifier, VT_NAME) &&
-           verifier.VerifyString(name()) && VerifyField<uint8_t>(verifier, VT_USER_ID) && verifier.EndTable();
+           verifier.VerifyString(name()) && VerifyField<uint8_t>(verifier, VT_USER_ID, 1) && verifier.EndTable();
   }
 };
 
@@ -5008,10 +5015,10 @@ struct SourceInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint64_t send_time() const { return GetField<uint64_t>(VT_SEND_TIME, 0); }
   uint64_t create_time() const { return GetField<uint64_t>(VT_CREATE_TIME, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyField<uint64_t>(verifier, VT_SEQNO) &&
-           VerifyField<uint64_t>(verifier, VT_SEND_TIME_UTC) && VerifyField<uint64_t>(verifier, VT_CREATE_TIME_UTC) &&
-           VerifyField<uint64_t>(verifier, VT_SEND_TIME) && VerifyField<uint64_t>(verifier, VT_CREATE_TIME) &&
-           verifier.EndTable();
+    return VerifyTableStart(verifier) && VerifyField<uint64_t>(verifier, VT_SEQNO, 8) &&
+           VerifyField<uint64_t>(verifier, VT_SEND_TIME_UTC, 8) &&
+           VerifyField<uint64_t>(verifier, VT_CREATE_TIME_UTC, 8) && VerifyField<uint64_t>(verifier, VT_SEND_TIME, 8) &&
+           VerifyField<uint64_t>(verifier, VT_CREATE_TIME, 8) && verifier.EndTable();
   }
 };
 
@@ -5194,7 +5201,7 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_SOURCE_INFO) &&
-           verifier.VerifyTable(source_info()) && VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE) &&
+           verifier.VerifyTable(source_info()) && VerifyField<uint8_t>(verifier, VT_MESSAGE_TYPE, 1) &&
            VerifyOffset(verifier, VT_MESSAGE) && VerifyMessage(verifier, message(), message_type()) &&
            verifier.EndTable();
   }

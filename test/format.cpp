@@ -9,13 +9,13 @@ using namespace roq;
 
 using namespace std::literals;
 
-TEST_CASE("format_Side", "format") {
+TEST_CASE("format_Side", "[format]") {
   CHECK(fmt::format("{}"sv, Side{Side::UNDEFINED}) == "UNDEFINED"sv);
   CHECK(fmt::format("{}"sv, Side{Side::BUY}) == "BUY"sv);
   CHECK(fmt::format("{}"sv, Side{Side::SELL}) == "SELL"sv);
 }
 
-TEST_CASE("format_market_by_price", "format") {
+TEST_CASE("format_market_by_price", "[format]") {
   roq::MBPUpdate bids[] = {
       {.price = 1.0, .quantity = 2.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},
       {.price = 2.0, .quantity = 4.0, .implied_quantity = 3.0, .price_level = 1, .number_of_orders = 2},

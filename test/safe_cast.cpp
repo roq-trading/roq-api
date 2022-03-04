@@ -10,7 +10,7 @@ using namespace roq;
 using namespace roq::utils;
 using namespace std::literals;
 
-TEST_CASE("safe_cast_int_to_int", "safe_cast") {
+TEST_CASE("safe_cast_int_to_int", "[safe_cast]") {
   // int32_t --> int16_t
   CHECK(static_cast<int16_t>(safe_cast<int32_t>(-32768)) == -32768);
   CHECK(static_cast<int16_t>(safe_cast<int32_t>(-1)) == -1);
@@ -28,7 +28,7 @@ TEST_CASE("safe_cast_int_to_int", "safe_cast") {
   CHECK(static_cast<int32_t>(safe_cast<int16_t>(32767)) == 32767);
 }
 
-TEST_CASE("safe_cast_float_to_int", "safe_cast") {
+TEST_CASE("safe_cast_float_to_int", "[safe_cast]") {
   // double --> int64_t
   // EXPECT_EQ(static_cast<int64_t>(safe_cast<double>(-9223372036854775807.0)),
   // -9223372036854775807);

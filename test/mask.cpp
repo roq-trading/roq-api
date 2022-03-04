@@ -27,7 +27,7 @@ static_assert(Mask<E>{E::AB} == Mask<E>{}.set(E::A).set(E::B));
 
 // run-time checks
 
-TEST_CASE("mask_simple", "mask") {
+TEST_CASE("mask_simple", "[mask]") {
   Mask m1{
       E::A,
   };

@@ -8,7 +8,7 @@ using namespace std::literals;
 
 using namespace Catch::literals;
 
-TEST_CASE("span_simple", "span") {
+TEST_CASE("span_simple", "[span]") {
   // initialize empty
   std::vector<double> empty;
   std::span empty_span(empty);
@@ -31,7 +31,7 @@ TEST_CASE("span_simple", "span") {
   CHECK(span_2[2] == 3.0_a);
 }
 
-TEST_CASE("span_string_view", "span") {
+TEST_CASE("span_string_view", "[span]") {
   std::vector<std::string_view> raw{
       "abc"sv,
       "def"sv,

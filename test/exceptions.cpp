@@ -7,7 +7,7 @@
 using namespace roq;
 using namespace std::literals;
 
-TEST_CASE("exceptions_simple_1", "exceptions") {
+TEST_CASE("exceptions_simple_1", "[exceptions]") {
   auto ok = false;
   try {
     throw NotReady("something's not right"sv);
@@ -17,7 +17,7 @@ TEST_CASE("exceptions_simple_1", "exceptions") {
   CHECK(ok == true);
 }
 
-TEST_CASE("exceptions_simple_2", "exceptions") {
+TEST_CASE("exceptions_simple_2", "[exceptions]") {
   auto ok = false;
   try {
     throw NotReady("something's not right"sv);
@@ -27,7 +27,7 @@ TEST_CASE("exceptions_simple_2", "exceptions") {
   CHECK(ok == true);
 }
 
-TEST_CASE("exceptions_simple_3", "exceptions") {
+TEST_CASE("exceptions_simple_3", "[exceptions]") {
   auto ok = false;
   try {
     throw NotReady("something's not right"sv);
@@ -37,7 +37,7 @@ TEST_CASE("exceptions_simple_3", "exceptions") {
   CHECK(ok == true);
 }
 
-TEST_CASE("exceptions_simple_4", "exceptions") {
+TEST_CASE("exceptions_simple_4", "[exceptions]") {
   auto ok = false;
   try {
     throw NotReady("something's not right"sv);
@@ -47,7 +47,7 @@ TEST_CASE("exceptions_simple_4", "exceptions") {
   CHECK(ok == true);
 }
 
-TEST_CASE("exceptions_simple_5", "exceptions") {
+TEST_CASE("exceptions_simple_5", "[exceptions]") {
   auto ok = false;
   try {
     throw RuntimeError("something's not right"sv);
@@ -57,7 +57,7 @@ TEST_CASE("exceptions_simple_5", "exceptions") {
   CHECK(ok == true);
 }
 
-TEST_CASE("exceptions_what", "exceptions") {
+TEST_CASE("exceptions_what", "[exceptions]") {
   auto ok = false;
   try {
     throw NotReady("{}"sv, 123);

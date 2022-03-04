@@ -37,7 +37,7 @@ void test_is_not_pair(const T &) {
 }
 }  // namespace
 
-TEST_CASE("traits_is_pair", "traits") {
+TEST_CASE("traits_is_pair", "[traits]") {
   test_is_pair(std::pair("abc", 123));
   test_is_not_pair(std::string("abc"));
 }
@@ -53,7 +53,7 @@ void test_is_not_iterable(const T &) {
 }
 }  // namespace
 
-TEST_CASE("traits_is_iterable", "traits") {
+TEST_CASE("traits_is_iterable", "[traits]") {
   test_is_iterable(std::vector{"abc", "def"});
   test_is_not_iterable(123);
 }
@@ -69,7 +69,7 @@ void test_has_no_random_access_iterator(const T &) {
 }
 }  // namespace
 
-TEST_CASE("traits_has_random_access_iterator", "traits") {
+TEST_CASE("traits_has_random_access_iterator", "[traits]") {
   test_has_random_access_iterator(std::vector{"abc", "def"});
   test_has_no_random_access_iterator(std::unordered_set<int>{1, 2});
 }

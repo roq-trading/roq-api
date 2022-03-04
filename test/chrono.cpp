@@ -11,7 +11,7 @@ using namespace std::chrono_literals;
 namespace roq {
 namespace utils {
 
-TEST_CASE("chrono_split", "chrono") {
+TEST_CASE("chrono_split", "[chrono]") {
   auto timestamp = 1622200274123456789ns;
   auto [date, time] = split<std::chrono::milliseconds>(timestamp);
   // date

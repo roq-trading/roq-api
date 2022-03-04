@@ -16,7 +16,7 @@ using namespace Catch::literals;
 
 // update()
 
-TEST_CASE("update_double", "update") {
+TEST_CASE("update_double", "[update]") {
   double value = NaN;
   CHECK(update(value, 1.0) == true);
   CHECK(value == 1.0_a);
@@ -27,7 +27,7 @@ TEST_CASE("update_double", "update") {
   CHECK(value == 2.0_a);
 }
 
-TEST_CASE("update_string", "update") {
+TEST_CASE("update_string", "[update]") {
   std::string value;
   CHECK(update(value, "foo"sv) == true);
   CHECK(value == "foo"sv);
@@ -37,7 +37,7 @@ TEST_CASE("update_string", "update") {
   CHECK(value == "bar"sv);
 }
 
-TEST_CASE("update_seconds", "update") {
+TEST_CASE("update_seconds", "[update]") {
   using namespace std::chrono_literals;
   std::chrono::seconds value = {};
   CHECK(update(value, 1s) == true);
@@ -50,7 +50,7 @@ TEST_CASE("update_seconds", "update") {
 
 // update_first()
 
-TEST_CASE("update_int_first", "update") {
+TEST_CASE("update_int_first", "[update]") {
   int value = 0;
   CHECK(value == 0);
   CHECK(update_first(value, 1) == true);
@@ -59,7 +59,7 @@ TEST_CASE("update_int_first", "update") {
   CHECK(value == 1);
 }
 
-TEST_CASE("update_enum_first", "update") {
+TEST_CASE("update_enum_first", "[update]") {
   enum class MyEnum { A, B, C } value = MyEnum::A;
   CHECK(value == MyEnum::A);
   CHECK(update_first(value, MyEnum::B) == true);
@@ -68,7 +68,7 @@ TEST_CASE("update_enum_first", "update") {
   CHECK(value == MyEnum::B);
 }
 
-TEST_CASE("update_chrono_first", "update") {
+TEST_CASE("update_chrono_first", "[update]") {
   std::chrono::seconds value{};
   CHECK(value == std::chrono::seconds{});
   CHECK(update_first(value, 1s) == true);
@@ -79,7 +79,7 @@ TEST_CASE("update_chrono_first", "update") {
 
 // update_max()
 
-TEST_CASE("update_int_max", "update") {
+TEST_CASE("update_int_max", "[update]") {
   int value = 0;
   CHECK(value == 0);
   CHECK(update_max(value, 1) == true);
@@ -92,7 +92,7 @@ TEST_CASE("update_int_max", "update") {
   CHECK(value == 2);
 }
 
-TEST_CASE("update_enum_max", "update") {
+TEST_CASE("update_enum_max", "[update]") {
   enum class MyEnum { A, B, C } value = MyEnum::A;
   CHECK(value == MyEnum::A);
   CHECK(update_max(value, MyEnum::B) == true);
@@ -107,7 +107,7 @@ TEST_CASE("update_enum_max", "update") {
 
 // update_if_not_empty()
 
-TEST_CASE("update_string_if_not_empty", "update") {
+TEST_CASE("update_string_if_not_empty", "[update]") {
   std::string result;
   utils::update_if_not_empty(result, "some_test"sv);
   CHECK(result == "some_test"sv);
@@ -117,7 +117,7 @@ TEST_CASE("update_string_if_not_empty", "update") {
   CHECK(result == "foobar"sv);
 }
 
-TEST_CASE("update_double_if_not_empty", "update") {
+TEST_CASE("update_double_if_not_empty", "[update]") {
   double result = NaN;
   utils::update_if_not_empty(result, 1.0);
   CHECK(result == 1.0_a);
@@ -127,7 +127,7 @@ TEST_CASE("update_double_if_not_empty", "update") {
   CHECK(result == 2.0_a);
 }
 
-TEST_CASE("update_enum_if_not_empty", "update") {
+TEST_CASE("update_enum_if_not_empty", "[update]") {
   enum class MyEnum { A, B, C } value = MyEnum::A;  // A = 0 = "empty"
   CHECK(value == MyEnum::A);
   CHECK(update_if_not_empty(value, MyEnum::B) == true);

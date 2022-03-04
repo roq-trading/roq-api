@@ -7,7 +7,7 @@
 using namespace roq;
 using namespace std::literals;
 
-TEST_CASE("utils_trade_id", "utils") {
+TEST_CASE("utils_trade_id", "[utils]") {
   Trade trade = {};
   auto &trade_id = trade.trade_id;
   std::string_view text_1;

@@ -21,7 +21,7 @@ class Writer : public metrics::Writer {
 };
 }  // namespace
 
-TEST_CASE("histogram_simple", "histogram") {
+TEST_CASE("histogram_simple", "[histogram]") {
   metrics::Histogram<1, 2, 3, 4, 5, 6> histogram;
   histogram.update(3);
   Writer writer;

@@ -7,7 +7,7 @@
 using namespace roq;
 using namespace std::literals;
 
-TEST_CASE("string_buffer_empty", "string_buffer") {
+TEST_CASE("string_buffer_empty", "[string_buffer]") {
   roq::string_buffer<4> s;
   CHECK(s.size() == 4);
   CHECK(s.length() == 0);
@@ -16,7 +16,7 @@ TEST_CASE("string_buffer_empty", "string_buffer") {
   CHECK(std::size(sv) == 0);
 }
 
-TEST_CASE("string_buffer_partial", "string_buffer") {
+TEST_CASE("string_buffer_partial", "[string_buffer]") {
   constexpr auto text = "12"sv;
   roq::string_buffer<4> s = text;
   CHECK(s.size() == 4);
@@ -27,7 +27,7 @@ TEST_CASE("string_buffer_partial", "string_buffer") {
   CHECK(sv == text);
 }
 
-TEST_CASE("string_buffer_almost_full", "string_buffer") {
+TEST_CASE("string_buffer_almost_full", "[string_buffer]") {
   constexpr auto text = "123"sv;
   roq::string_buffer<4> s = text;
   CHECK(s.size() == 4);
@@ -38,7 +38,7 @@ TEST_CASE("string_buffer_almost_full", "string_buffer") {
   CHECK(sv == text);
 }
 
-TEST_CASE("string_buffer_full", "string_buffer") {
+TEST_CASE("string_buffer_full", "[string_buffer]") {
   constexpr auto text = "1234"sv;
   roq::string_buffer<4> s = text;
   CHECK(s.size() == 4);
@@ -49,7 +49,7 @@ TEST_CASE("string_buffer_full", "string_buffer") {
   CHECK(sv == text);
 }
 
-TEST_CASE("string_buffer_construct", "string_buffer") {
+TEST_CASE("string_buffer_construct", "[string_buffer]") {
   roq::string_buffer<4>();
   roq::string_buffer<4>("1"sv);
   roq::string_buffer<4>("12"sv);
@@ -58,7 +58,7 @@ TEST_CASE("string_buffer_construct", "string_buffer") {
   CHECK_THROWS_AS(roq::string_buffer<4>("12345"sv), LengthError);
 }
 
-TEST_CASE("string_buffer_push_back", "string_buffer") {
+TEST_CASE("string_buffer_push_back", "[string_buffer]") {
   roq::string_buffer<4> s;
   CHECK(s.length() == 0);
   s.push_back('1');

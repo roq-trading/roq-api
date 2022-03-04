@@ -31,13 +31,13 @@ static_assert(compare(NaN, 0.0) == -1);
 using namespace roq;
 using namespace roq::utils;
 
-TEST_CASE("compare_int", "compare") {
+TEST_CASE("compare_int", "[compare]") {
   CHECK(compare(0, 0) == 0);
   CHECK(compare(0, 1) == -1);
   CHECK(compare(0, -1) == 1);
 }
 
-TEST_CASE("compare_double", "compare") {
+TEST_CASE("compare_double", "[compare]") {
   CHECK(compare(0.0, 0.0) == 0);
   CHECK(compare(0.0, -0.0) == 0);
   CHECK(compare(-0.0, 0.0) == 0);
@@ -48,7 +48,7 @@ TEST_CASE("compare_double", "compare") {
   CHECK(compare(NaN, 0.0) == -1);
 }
 
-TEST_CASE("compare_string_case_insensitive", "compare") {
+TEST_CASE("compare_string_case_insensitive", "[compare]") {
   // same length
   CHECK(case_insensitive_compare(""sv, ""sv) == 0);
   CHECK(case_insensitive_compare("abc123"sv, "ABC123"sv) == 0);
@@ -61,7 +61,7 @@ TEST_CASE("compare_string_case_insensitive", "compare") {
   CHECK(case_insensitive_compare("abc123"sv, "ABC"sv) == 1);
 }
 
-TEST_CASE("compare_seconds", "compare") {
+TEST_CASE("compare_seconds", "[compare]") {
   using namespace std::chrono_literals;
   CHECK(compare(std::chrono::seconds{}, 0s) == 0);
   CHECK(compare(0s, 1s) == -1);

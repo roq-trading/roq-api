@@ -2,8 +2,8 @@
 
 #include <catch2/catch.hpp>
 
-#include "roq/market_by_price_update.h"
-#include "roq/side.h"
+#include "roq/market_by_price_update.hpp"
+#include "roq/side.hpp"
 
 using namespace roq;
 

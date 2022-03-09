@@ -2,7 +2,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "roq/metrics.h"
+#include "roq/metrics.hpp"
 
 using namespace roq;
 using namespace std::literals;

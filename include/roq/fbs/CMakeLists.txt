@@ -6,7 +6,7 @@ set(TARGET_DIR "${CMAKE_INSTALL_INCLUDEDIR}/roq/fbs")
 
 set(API_FBS "${SCHEMA_DIR}/fbs/api.fbs")
 set(API_GENERATED_H "${CMAKE_BINARY_DIR}/${TARGET_DIR}/api_generated.h")
-set(API_H "${CMAKE_BINARY_DIR}/${TARGET_DIR}/api.h")
+set(API_HPP "${CMAKE_BINARY_DIR}/${TARGET_DIR}/api.hpp")
 
 # check flatbuffers version
 
@@ -22,9 +22,9 @@ if(${FLATC_VERSION} VERSION_LESS "1.11.0")
 else()
   # note! use --cpp-std=c++17 when we don't anymore have to support ubuntu 20.04 LTS
   add_custom_command(
-    OUTPUT "${API_H}"
+    OUTPUT "${API_HPP}"
     COMMAND "${FLATBUFFERS_COMPILER}" ARGS --binary ARGS --gen-all ARGS --cpp ARGS "${API_FBS}"
-    COMMAND ${CLANG_FORMAT} "${API_GENERATED_H}" > "${API_H}"
+    COMMAND ${CLANG_FORMAT} "${API_GENERATED_H}" > "${API_HPP}"
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${TARGET_DIR}"
     VERBATIM
     DEPENDS "${FLATBUFFERS_COMPILER}" "${API_FBS}")
@@ -32,8 +32,8 @@ endif()
 
 # target
 
-add_custom_target(${TARGET_NAME} ALL DEPENDS "${API_H}" "${GITIGNORE}")
+add_custom_target(${TARGET_NAME} ALL DEPENDS "${API_HPP}" "${GITIGNORE}")
 
 # install
 
-install(FILES "${API_H}" encode.h DESTINATION "${TARGET_DIR}")
+install(FILES "${API_HPP}" encode.hpp DESTINATION "${TARGET_DIR}")

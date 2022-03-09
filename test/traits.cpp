@@ -6,7 +6,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "roq/utils/traits.h"
+#include "roq/utils/traits.hpp"
 
 namespace roq {
 namespace utils {

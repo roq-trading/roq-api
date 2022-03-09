@@ -4,7 +4,7 @@
 
 #include <new>
 
-#include "roq/compat.h"
+#include "roq/compat.hpp"
 
 using namespace std::literals;
 

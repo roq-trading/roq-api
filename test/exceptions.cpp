@@ -2,7 +2,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "roq/exceptions.h"
+#include "roq/exceptions.hpp"
 
 using namespace roq;
 using namespace std::literals;

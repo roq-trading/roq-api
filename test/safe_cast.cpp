@@ -4,7 +4,7 @@
 
 #include <stdexcept>
 
-#include "roq/utils/safe_cast.h"
+#include "roq/utils/safe_cast.hpp"
 
 using namespace roq;
 using namespace roq::utils;

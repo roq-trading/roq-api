@@ -2,7 +2,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "roq/api.h"
+#include "roq/api.hpp"
 
 using namespace roq;
 

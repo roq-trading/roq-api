@@ -2,7 +2,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "roq/string_buffer.h"
+#include "roq/string_buffer.hpp"
 
 using namespace roq;
 using namespace std::literals;

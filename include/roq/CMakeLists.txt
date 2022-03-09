@@ -71,9 +71,9 @@ set(SOURCES
 
 # configure
 
-set(API_H "${CMAKE_BINARY_DIR}/${TARGET_DIR}/api.h")
+set(API_HPP "${CMAKE_BINARY_DIR}/${TARGET_DIR}/api.hpp")
 
-configure_file("api.h.in" "${API_H}" @ONLY)
+configure_file("api.hpp.in" "${API_HPP}" @ONLY)
 
 # auto-generate
 
@@ -82,10 +82,10 @@ unset(AUTOGEN_HEADERS)
 foreach(path ${SOURCES})
   set(source "${SCHEMA_DIR}/cpp/${path}")
   get_filename_component(name ${path} NAME_WE)
-  set(target "${CMAKE_BINARY_DIR}/${TARGET_DIR}/${name}.h")
+  set(target "${CMAKE_BINARY_DIR}/${TARGET_DIR}/${name}.hpp")
   add_custom_command(
     OUTPUT "${target}"
-    COMMAND ${PYTHON_EXECUTABLE} "${AUTOGEN_PY}" --namespace "roq" --file-type "h" "${source}" >
+    COMMAND ${PYTHON_EXECUTABLE} "${AUTOGEN_PY}" --namespace "roq" --file-type "hpp" "${source}" >
             "${target}"
     COMMAND ${CLANG_FORMAT} -i "${target}"
     VERBATIM
@@ -99,4 +99,4 @@ add_custom_target("${TARGET_NAME}" ALL DEPENDS ${AUTOGEN_HEADERS} "${GITIGNORE}"
 
 # install
 
-install(FILES ${AUTOGEN_HEADERS} "${API_H}" DESTINATION "${TARGET_DIR}")
+install(FILES ${AUTOGEN_HEADERS} "${API_HPP}" DESTINATION "${TARGET_DIR}")

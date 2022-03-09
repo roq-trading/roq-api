@@ -2,7 +2,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "roq/utils/compare.h"
+#include "roq/utils/compare.hpp"
 
 using namespace std::literals;
 

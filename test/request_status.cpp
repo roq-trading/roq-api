@@ -2,7 +2,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "roq/utils/common.h"
+#include "roq/utils/common.hpp"
 
 using namespace roq;
 using namespace std::literals;

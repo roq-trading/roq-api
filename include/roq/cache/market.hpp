@@ -4,6 +4,7 @@
 
 #include <absl/container/flat_hash_map.h>
 
+#include <cassert>
 #include <memory>
 #include <string>
 #include <utility>
@@ -25,13 +26,13 @@ namespace cache {
 struct Market final {
   template <typename MarketByPriceFactory>
   Market(
-      uint32_t id,
+      uint32_t market_id,
       const std::string_view &exchange,
       const std::string_view &symbol,
       const MarketByPriceFactory &create_market_by_price)
-      : id(id), exchange(exchange), symbol(symbol), reference_data(exchange, symbol), market_status(exchange, symbol),
-        top_of_book(exchange, symbol), market_by_price(create_market_by_price(exchange, symbol)),
-        statistics(exchange, symbol) {}
+      : market_id(market_id), exchange(exchange), symbol(symbol), reference_data(exchange, symbol),
+        market_status(exchange, symbol), top_of_book(exchange, symbol),
+        market_by_price(create_market_by_price(exchange, symbol)), statistics(exchange, symbol) {}
 
   Market() = delete;
   Market(const Market &) = delete;
@@ -91,7 +92,7 @@ struct Market final {
   }
 
   template <typename Callback>
-  bool get_funds(const std::string_view &account, Callback &&callback) {
+  bool get_funds(const std::string_view &account, Callback callback) {
     auto iter = funds_by_account.find(account);
     if (iter == std::end(funds_by_account))
       return false;
@@ -100,7 +101,7 @@ struct Market final {
   }
 
   template <typename Callback>
-  bool get_position(const std::string_view &account, Callback &&callback) {
+  bool get_position(const std::string_view &account, Callback callback) {
     auto iter = position_by_account.find(account);
     if (iter == std::end(position_by_account))
       return false;
@@ -110,7 +111,7 @@ struct Market final {
 
   // note! random ordering
   template <typename Callback>
-  bool get_orders(const std::string_view &account, Callback &&callback) {
+  bool get_orders(const std::string_view &account, Callback callback) {
     auto iter = orders_by_account.find(account);
     if (iter == std::end(orders_by_account))
       return false;
@@ -122,7 +123,7 @@ struct Market final {
     return true;
   }
 
-  const uint32_t id;
+  const uint32_t market_id;
   const string_buffer<MAX_LENGTH_EXCHANGE> exchange;
   const string_buffer<MAX_LENGTH_SYMBOL> symbol;
 

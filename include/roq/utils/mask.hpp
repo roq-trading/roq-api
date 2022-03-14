@@ -42,6 +42,8 @@ class Mask final {
 
   constexpr bool empty() const { return value_ == value_type{}; }
 
+  constexpr void reset() { value_ = value_type{}; }
+
   constexpr value_type get() const { return value_; }
 
   constexpr bool has(T flag) const { return value_ & static_cast<value_type>(flag); }

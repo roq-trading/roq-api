@@ -39,7 +39,7 @@ class Statistics final {
   // the storage interface should support the emplace_back() method
   // the callback will only be called when there are updates
   template <typename Storage, typename Callback>
-  bool update(const StatisticsUpdate &statistics_update, Storage &storage, Callback &&callback) {
+  bool update(const StatisticsUpdate &statistics_update, Storage &storage, Callback callback) {
     bool dirty = false;
     for (auto &iter : statistics_update.statistics) {
       auto index = to_index(iter.type);
@@ -135,7 +135,7 @@ class Statistics final {
 
   // note! a callback for each non-empty statistics
   template <typename Callback>
-  void dispatch(Callback &&callback) const {
+  void dispatch(Callback callback) const {
     for (auto &type : StatisticsType::values()) {
       auto index = to_index(type);
       auto &tmp = statistics[index];

@@ -47,7 +47,7 @@ class ROQ_PUBLIC Dispatcher {
 
   //! Make it possible to populate origin_create_time and receive_time for external events
   template <typename Callback>
-  void create_trace_info(Callback &&callback) {
+  void create_trace_info(Callback callback) {
     TimeSetter time_setter(*this);
     callback(static_cast<const roq::server::TraceInfo &>(time_setter));
   }

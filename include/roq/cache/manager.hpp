@@ -42,7 +42,7 @@ struct Manager final {
 
   // returns false if non-existing, calls back with market if exists
   template <typename Callback>
-  bool get_market(uint32_t market_id, Callback &&callback) {
+  bool get_market(uint32_t market_id, Callback callback) {
     auto iter = markets_.find(market_id);
     if (iter == std::end(markets_))
       return false;
@@ -52,7 +52,7 @@ struct Manager final {
 
   // returns false if non-existing, calls back with market if exists
   template <typename Callback>
-  bool get_market(const std::string_view &exchange, const std::string_view &symbol, Callback &&callback) {
+  bool get_market(const std::string_view &exchange, const std::string_view &symbol, Callback callback) {
     auto market_id = find_market_id(exchange, symbol);
     if (market_id) {
       auto iter = markets_.find(market_id);
@@ -67,25 +67,25 @@ struct Manager final {
   // calls back with all existing markets
 
   template <typename Callback>
-  void get_all_markets(Callback &&callback) {
+  void get_all_markets(Callback callback) {
     for (auto &[_, market] : markets_)
       callback(market);
   }
 
   template <typename Callback>
-  void get_all_markets(Callback &&callback) const {
+  void get_all_markets(Callback callback) const {
     for (auto &[_, market] : markets_)
       callback(market);
   }
 
   template <typename Callback>
-  void get_all_exchanges(Callback &&callback) const {
+  void get_all_exchanges(Callback callback) const {
     for (auto &[exchange, _] : exchange_to_symbols_)
       callback(exchange);
   }
 
   template <typename Callback>
-  bool get_all_symbols(const std::string_view &exchange, Callback &&callback) const {
+  bool get_all_symbols(const std::string_view &exchange, Callback callback) const {
     auto iter = exchange_to_symbols_.find(exchange);
     if (iter == std::end(exchange_to_symbols_))
       return false;

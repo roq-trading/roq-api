@@ -11,7 +11,7 @@ namespace roq {
 namespace cache {
 
 struct GatewayStatus final {
-  GatewayStatus() = default;
+  GatewayStatus() {}
   GatewayStatus(const std::string_view &account) : account(account) {}
 
   GatewayStatus(const GatewayStatus &) = delete;

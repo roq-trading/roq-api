@@ -4,7 +4,8 @@
 
 #include "roq/api.hpp"
 
-#include "roq/utils/mask.hpp"
+#include "roq/mask.hpp"
+
 #include "roq/utils/update.hpp"
 
 namespace roq {
@@ -25,9 +26,9 @@ struct GatewayStatus final {
 
   [[nodiscard]] bool operator()(const roq::GatewayStatus &gateway_status) {
     auto dirty = false;
-    dirty |= utils::update(supported, utils::Mask<SupportType>{gateway_status.supported});
-    dirty |= utils::update(available, utils::Mask<SupportType>{gateway_status.available});
-    dirty |= utils::update(unavailable, utils::Mask<SupportType>{gateway_status.unavailable});
+    dirty |= utils::update(supported, Mask<SupportType>{gateway_status.supported});
+    dirty |= utils::update(available, Mask<SupportType>{gateway_status.available});
+    dirty |= utils::update(unavailable, Mask<SupportType>{gateway_status.unavailable});
     return dirty;
   }
 
@@ -43,9 +44,9 @@ struct GatewayStatus final {
   }
 
   const string_buffer<MAX_LENGTH_ACCOUNT> account;
-  utils::Mask<SupportType> supported = {};
-  utils::Mask<SupportType> available = {};
-  utils::Mask<SupportType> unavailable = {};
+  Mask<SupportType> supported = {};
+  Mask<SupportType> available = {};
+  Mask<SupportType> unavailable = {};
 };
 
 }  // namespace cache

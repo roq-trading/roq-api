@@ -2,10 +2,9 @@
 
 #include <catch2/catch.hpp>
 
-#include "roq/utils/mask.hpp"
+#include "roq/mask.hpp"
 
 using namespace roq;
-using namespace roq::utils;
 
 namespace {
 enum class E : int {

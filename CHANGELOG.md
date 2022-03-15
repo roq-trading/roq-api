@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Promote Mask to API (from utils)
 * Rename headers to .hpp (#195)
 * Conda packaging should pin versions to match x.x.x (#189)
 * Added `update_type` to `OrderUpdate` and `TradeUpdate` (#39)

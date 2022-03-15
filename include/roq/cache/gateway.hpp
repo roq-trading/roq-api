@@ -49,10 +49,10 @@ struct Gateway final {
   }
 
   bool operator()(const SupportType &support) const { return settings.supports.has(support); }
-  bool operator()(const utils::Mask<SupportType> &expected) const { return settings.supports.has_all(expected); }
+  bool operator()(const Mask<SupportType> &expected) const { return settings.supports.has_all(expected); }
 
-  bool ready(const utils::Mask<SupportType> &expected) const { return ready(expected, state); }
-  bool ready(const utils::Mask<SupportType> &expected, const std::string_view &account) const {
+  bool ready(const Mask<SupportType> &expected) const { return ready(expected, state); }
+  bool ready(const Mask<SupportType> &expected, const std::string_view &account) const {
     auto iter = state_by_account.find(account);
     if (iter == std::end(state_by_account))
       return false;
@@ -76,7 +76,7 @@ struct Gateway final {
     return state_by_account[account];
   }
 
-  bool ready(const utils::Mask<SupportType> &expected, const State &state) const {
+  bool ready(const Mask<SupportType> &expected, const State &state) const {
     if (state.downloading)
       return false;
     return state.status.available.has_all(expected) && state.status.unavailable.has_none(expected);

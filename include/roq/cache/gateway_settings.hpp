@@ -4,7 +4,8 @@
 
 #include "roq/api.hpp"
 
-#include "roq/utils/mask.hpp"
+#include "roq/mask.hpp"
+
 #include "roq/utils/update.hpp"
 
 namespace roq {
@@ -20,7 +21,7 @@ struct GatewaySettings final {
 
   [[nodiscard]] bool operator()(const roq::GatewaySettings &gateway_settings) {
     auto dirty = false;
-    dirty |= utils::update(supports, utils::Mask<SupportType>{gateway_settings.supports});
+    dirty |= utils::update(supports, Mask<SupportType>{gateway_settings.supports});
     dirty |= utils::update(mbp_max_depth, gateway_settings.mbp_max_depth);
     dirty |= utils::update(mbp_tick_size_multiplier, gateway_settings.mbp_tick_size_multiplier);
     dirty |= utils::update(mbp_min_trade_vol_multiplier, gateway_settings.mbp_min_trade_vol_multiplier);
@@ -46,7 +47,7 @@ struct GatewaySettings final {
     };
   }
 
-  utils::Mask<SupportType> supports = {};
+  Mask<SupportType> supports = {};
   uint32_t mbp_max_depth = {};
   double mbp_tick_size_multiplier = NaN;
   double mbp_min_trade_vol_multiplier = NaN;

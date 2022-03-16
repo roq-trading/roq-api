@@ -12,7 +12,7 @@
 #include <string_view>
 
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 #include "roq/uuid.hpp"
 
 namespace roq {
@@ -31,14 +31,14 @@ struct ROQ_PUBLIC MBPUpdate final {
 template <>
 struct fmt::formatter<roq::MBPUpdate> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::MBPUpdate &value, Context &ctx) {
+  auto format(const roq::MBPUpdate &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(price={}, )"
         R"(quantity={}, )"

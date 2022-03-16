@@ -15,7 +15,7 @@
 #include "roq/event.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 
 #include "roq/execution_instruction.hpp"
 #include "roq/order_type.hpp"
@@ -49,14 +49,14 @@ struct ROQ_PUBLIC CreateOrder final {
 template <>
 struct fmt::formatter<roq::CreateOrder> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::CreateOrder &value, Context &ctx) {
+  auto format(const roq::CreateOrder &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(account="{}", )"
         R"(order_id={}, )"
@@ -94,14 +94,14 @@ struct fmt::formatter<roq::CreateOrder> {
 template <>
 struct fmt::formatter<roq::Event<roq::CreateOrder> > {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::CreateOrder> &event, Context &ctx) {
+  auto format(const roq::Event<roq::CreateOrder> &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(create_order={})"

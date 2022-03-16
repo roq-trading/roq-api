@@ -12,7 +12,7 @@ set(SOURCES
     request_status.cpp
     safe_cast.cpp
     span.cpp
-    string_buffer.cpp
+    string.cpp
     traits.cpp
     update.cpp
     utils.cpp

@@ -12,15 +12,15 @@
 #include <string_view>
 
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 #include "roq/uuid.hpp"
 
 namespace roq {
 
 //! A single measurement point
 struct ROQ_PUBLIC Measurement final {
-  roq::string_buffer<8> name;  //!< Key
-  double value = NaN;          //!< Value
+  string<8> name;      //!< Key
+  double value = NaN;  //!< Value
 };
 
 }  // namespace roq
@@ -28,14 +28,14 @@ struct ROQ_PUBLIC Measurement final {
 template <>
 struct fmt::formatter<roq::Measurement> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Measurement &value, Context &ctx) {
+  auto format(const roq::Measurement &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(name="{}", )"
         R"(value={})"

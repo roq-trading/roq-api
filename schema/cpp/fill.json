@@ -5,7 +5,7 @@
     "values": [
         {
             "name": "external_trade_id",
-            "type": "roq::string_buffer<40>"
+            "type": "string<40>"
         },
         {
             "name": "quantity",

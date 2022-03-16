@@ -15,7 +15,7 @@
 #include "roq/event.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 
 #include "roq/statistics.hpp"
 #include "roq/update_type.hpp"
@@ -37,14 +37,14 @@ struct ROQ_PUBLIC StatisticsUpdate final {
 template <>
 struct fmt::formatter<roq::StatisticsUpdate> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::StatisticsUpdate &value, Context &ctx) {
+  auto format(const roq::StatisticsUpdate &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(stream_id={}, )"
         R"(exchange="{}", )"
@@ -64,14 +64,14 @@ struct fmt::formatter<roq::StatisticsUpdate> {
 template <>
 struct fmt::formatter<roq::Event<roq::StatisticsUpdate> > {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::StatisticsUpdate> &event, Context &ctx) {
+  auto format(const roq::Event<roq::StatisticsUpdate> &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(statistics_update={})"

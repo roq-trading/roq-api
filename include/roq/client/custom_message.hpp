@@ -22,14 +22,14 @@ struct ROQ_PUBLIC CustomMessage final {
 template <>
 struct fmt::formatter<roq::client::CustomMessage> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::client::CustomMessage &value, Context &ctx) {
+  auto format(const roq::client::CustomMessage &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(length={})"
         R"(}})"sv,
@@ -40,14 +40,14 @@ struct fmt::formatter<roq::client::CustomMessage> {
 template <>
 struct fmt::formatter<roq::Event<roq::client::CustomMessage> > {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::client::CustomMessage> &event, Context &ctx) {
+  auto format(const roq::Event<roq::client::CustomMessage> &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(custom_message={})"

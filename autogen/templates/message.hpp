@@ -13,7 +13,7 @@
 #include "roq/event.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 
 {% include 'includes' %}
 
@@ -31,16 +31,16 @@ struct ROQ_PUBLIC {{ name }} final {
 template <>
 struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}> > {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
   auto format(
       const {{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}>& event,
-      Context& ctx) {
+      Context& context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
 {%- raw %}
         R"({{)"
 {%- endraw %}

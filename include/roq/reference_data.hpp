@@ -15,7 +15,7 @@
 #include "roq/event.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 
 #include "roq/option_type.hpp"
 #include "roq/security_type.hpp"
@@ -54,14 +54,14 @@ struct ROQ_PUBLIC ReferenceData final {
 template <>
 struct fmt::formatter<roq::ReferenceData> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::ReferenceData &value, Context &ctx) {
+  auto format(const roq::ReferenceData &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(stream_id={}, )"
         R"(exchange="{}", )"
@@ -115,14 +115,14 @@ struct fmt::formatter<roq::ReferenceData> {
 template <>
 struct fmt::formatter<roq::Event<roq::ReferenceData> > {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::ReferenceData> &event, Context &ctx) {
+  auto format(const roq::Event<roq::ReferenceData> &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(reference_data={})"

@@ -25,14 +25,14 @@ struct ROQ_PUBLIC TraceInfo final {
 template <>
 struct fmt::formatter<roq::server::TraceInfo> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::server::TraceInfo &value, Context &ctx) {
+  auto format(const roq::server::TraceInfo &value, Context &context) {
     using namespace std::literals::string_view_literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         "{{"
         "source_receive_time={}, "
         "origin_create_time={}, "

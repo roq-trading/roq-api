@@ -15,7 +15,7 @@
 #include "roq/event.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 
 namespace roq {
 
@@ -37,14 +37,14 @@ struct ROQ_PUBLIC PositionUpdate final {
 template <>
 struct fmt::formatter<roq::PositionUpdate> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::PositionUpdate &value, Context &ctx) {
+  auto format(const roq::PositionUpdate &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(stream_id={}, )"
         R"(account="{}", )"
@@ -70,14 +70,14 @@ struct fmt::formatter<roq::PositionUpdate> {
 template <>
 struct fmt::formatter<roq::Event<roq::PositionUpdate> > {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::PositionUpdate> &event, Context &ctx) {
+  auto format(const roq::Event<roq::PositionUpdate> &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(position_update={})"

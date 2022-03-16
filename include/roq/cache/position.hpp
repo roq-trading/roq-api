@@ -51,10 +51,10 @@ struct Position final {
   }
 
   uint16_t stream_id = {};
-  const string_buffer<MAX_LENGTH_ACCOUNT> account;
-  const string_buffer<MAX_LENGTH_EXCHANGE> exchange;
-  const string_buffer<MAX_LENGTH_SYMBOL> symbol;
-  string_buffer<MAX_LENGTH_EXTERNAL_ACCOUNT> external_account;
+  const string<MAX_LENGTH_ACCOUNT> account;
+  const string<MAX_LENGTH_EXCHANGE> exchange;
+  const string<MAX_LENGTH_SYMBOL> symbol;
+  string<MAX_LENGTH_EXTERNAL_ACCOUNT> external_account;
   double long_quantity = NaN;
   double short_quantity = NaN;
   double long_quantity_begin = NaN;

@@ -15,7 +15,7 @@
 #include "roq/event.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 
 namespace roq {
 
@@ -31,14 +31,14 @@ struct ROQ_PUBLIC ExternalLatency final {
 template <>
 struct fmt::formatter<roq::ExternalLatency> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::ExternalLatency &value, Context &ctx) {
+  auto format(const roq::ExternalLatency &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(stream_id={}, )"
         R"(account="{}", )"
@@ -52,14 +52,14 @@ struct fmt::formatter<roq::ExternalLatency> {
 template <>
 struct fmt::formatter<roq::Event<roq::ExternalLatency> > {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::ExternalLatency> &event, Context &ctx) {
+  auto format(const roq::Event<roq::ExternalLatency> &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(external_latency={})"

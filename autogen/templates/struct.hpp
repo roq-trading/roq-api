@@ -10,7 +10,7 @@
 #include <string_view>
 
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 #include "roq/uuid.hpp"
 
 {% include 'includes' %}

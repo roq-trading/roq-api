@@ -349,7 +349,7 @@ auto encode(B &builder, const std::span<roq::Measurement> &value) {
 }
 
 template <typename B, std::size_t N>
-auto encode(B &builder, const std::span<roq::string_buffer<N> const> &value) {
+auto encode(B &builder, const std::span<string<N> const> &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {

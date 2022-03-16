@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Rename `string` (from `string_buffer`)
 * Promote Mask to API (from utils)
 * Rename headers to .hpp (#195)
 * Conda packaging should pin versions to match x.x.x (#189)

@@ -12,7 +12,7 @@
 #include <string_view>
 
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 #include "roq/uuid.hpp"
 
 #include "roq/liquidity.hpp"
@@ -21,10 +21,10 @@ namespace roq {
 
 //! Represents a single fill (match) when an order is being partially or fully filled
 struct ROQ_PUBLIC Fill final {
-  roq::string_buffer<40> external_trade_id;  //!< External trade identifier
-  double quantity = NaN;                     //!< Quantity
-  double price = NaN;                        //!< Price
-  Liquidity liquidity = {};                  //!< Liquidity indicator
+  string<40> external_trade_id;  //!< External trade identifier
+  double quantity = NaN;         //!< Quantity
+  double price = NaN;            //!< Price
+  Liquidity liquidity = {};      //!< Liquidity indicator
 };
 
 }  // namespace roq
@@ -32,14 +32,14 @@ struct ROQ_PUBLIC Fill final {
 template <>
 struct fmt::formatter<roq::Fill> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Fill &value, Context &ctx) {
+  auto format(const roq::Fill &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(external_trade_id="{}", )"
         R"(quantity={}, )"

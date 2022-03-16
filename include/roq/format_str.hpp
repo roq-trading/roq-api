@@ -109,12 +109,12 @@ using format_str = basic_format_str<fmt::type_identity_t<Args>...>;
 template <size_t N>
 struct fmt::formatter<roq::detail::static_string<N> > {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::detail::static_string<N> &value, Context &ctx) {
+  auto format(const roq::detail::static_string<N> &value, Context &context) {
     using namespace std::literals;
-    return fmt::format_to(ctx.out(), "{}"sv, static_cast<std::string_view>(value));
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };

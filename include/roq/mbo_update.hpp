@@ -12,7 +12,7 @@
 #include <string_view>
 
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 #include "roq/uuid.hpp"
 
 #include "roq/order_update_action.hpp"
@@ -21,11 +21,11 @@ namespace roq {
 
 //! Represents the update status of a single order in the order book
 struct ROQ_PUBLIC MBOUpdate final {
-  double price = NaN;               //!< Order price
-  double remaining_quantity = {};   //!< Remaining order quantity
-  OrderUpdateAction action = {};    //!< Order update action
-  uint32_t priority = {};           //!< Queue priority
-  roq::string_buffer<40> order_id;  //!< Order identifier
+  double price = NaN;              //!< Order price
+  double remaining_quantity = {};  //!< Remaining order quantity
+  OrderUpdateAction action = {};   //!< Order update action
+  uint32_t priority = {};          //!< Queue priority
+  string<40> order_id;             //!< Order identifier
 };
 
 }  // namespace roq
@@ -33,14 +33,14 @@ struct ROQ_PUBLIC MBOUpdate final {
 template <>
 struct fmt::formatter<roq::MBOUpdate> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::MBOUpdate &value, Context &ctx) {
+  auto format(const roq::MBOUpdate &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(price={}, )"
         R"(remaining_quantity={}, )"

@@ -43,11 +43,11 @@ struct Funds final {
   }
 
   uint16_t stream_id = {};
-  const string_buffer<MAX_LENGTH_ACCOUNT> account;
-  const string_buffer<MAX_LENGTH_CURRENCY> currency;
+  const string<MAX_LENGTH_ACCOUNT> account;
+  const string<MAX_LENGTH_CURRENCY> currency;
   double balance = NaN;
   double hold = NaN;
-  string_buffer<MAX_LENGTH_EXTERNAL_ACCOUNT> external_account;
+  string<MAX_LENGTH_EXTERNAL_ACCOUNT> external_account;
 };
 
 }  // namespace cache

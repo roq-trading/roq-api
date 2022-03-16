@@ -15,7 +15,7 @@
 #include "roq/event.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 
 #include "roq/origin.hpp"
 #include "roq/rate_limit_type.hpp"
@@ -24,11 +24,11 @@ namespace roq {
 
 //! Rate-limit trigger
 struct ROQ_PUBLIC RateLimitTrigger final {
-  std::string_view name;                             //!< Configuration name
-  Origin origin = {};                                //!< Origin
-  RateLimitType type = {};                           //!< Rate-limit type
-  std::span<roq::string_buffer<16> const> users;     //!< Sorted list of users being affected (empty list means: all)
-  std::span<roq::string_buffer<32> const> accounts;  //!< Sorted list of accounts being affected (empty list means: all)
+  std::string_view name;                      //!< Configuration name
+  Origin origin = {};                         //!< Origin
+  RateLimitType type = {};                    //!< Rate-limit type
+  std::span<string<16> const> users;          //!< Sorted list of users being affected (empty list means: all)
+  std::span<string<32> const> accounts;       //!< Sorted list of accounts being affected (empty list means: all)
   std::chrono::nanoseconds ban_expires = {};  //!< System time when ban expires (zero means: ban is no longer effective)
   std::string_view triggered_by;              //!< Trigger activated by this user
 };
@@ -38,14 +38,14 @@ struct ROQ_PUBLIC RateLimitTrigger final {
 template <>
 struct fmt::formatter<roq::RateLimitTrigger> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::RateLimitTrigger &value, Context &ctx) {
+  auto format(const roq::RateLimitTrigger &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(name="{}", )"
         R"(origin={}, )"
@@ -67,14 +67,14 @@ struct fmt::formatter<roq::RateLimitTrigger> {
 template <>
 struct fmt::formatter<roq::Event<roq::RateLimitTrigger> > {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::RateLimitTrigger> &event, Context &ctx) {
+  auto format(const roq::Event<roq::RateLimitTrigger> &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(rate_limit_trigger={})"

@@ -12,7 +12,7 @@
 #include <string_view>
 
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 #include "roq/uuid.hpp"
 
 namespace roq {
@@ -38,14 +38,14 @@ struct ROQ_PUBLIC MessageInfo final {
 template <>
 struct fmt::formatter<roq::MessageInfo> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::MessageInfo &value, Context &ctx) {
+  auto format(const roq::MessageInfo &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(source={}, )"
         R"(source_name="{}", )"

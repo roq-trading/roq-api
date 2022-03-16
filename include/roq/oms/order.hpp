@@ -11,21 +11,21 @@ namespace oms {
 struct ROQ_PUBLIC Order final {
   uint8_t user_id = {};
   uint16_t stream_id = {};
-  string_buffer<MAX_LENGTH_ACCOUNT> account;
+  string<MAX_LENGTH_ACCOUNT> account;
   uint32_t order_id = {};
-  string_buffer<MAX_LENGTH_EXCHANGE> exchange;
-  string_buffer<MAX_LENGTH_SYMBOL> symbol;
+  string<MAX_LENGTH_EXCHANGE> exchange;
+  string<MAX_LENGTH_SYMBOL> symbol;
   Side side = {};
   PositionEffect position_effect = {};
   double max_show_quantity = NaN;
   OrderType order_type = {};
   TimeInForce time_in_force = {};
   ExecutionInstruction execution_instruction = {};
-  string_buffer<MAX_LENGTH_ORDER_TEMPLATE> order_template;
+  string<MAX_LENGTH_ORDER_TEMPLATE> order_template;
   std::chrono::nanoseconds create_time_utc = {};
   std::chrono::nanoseconds update_time_utc = {};
-  string_buffer<MAX_LENGTH_EXTERNAL_ACCOUNT> external_account;
-  string_buffer<MAX_LENGTH_EXTERNAL_ORDER_ID> external_order_id;
+  string<MAX_LENGTH_EXTERNAL_ACCOUNT> external_account;
+  string<MAX_LENGTH_EXTERNAL_ORDER_ID> external_order_id;
   OrderStatus status = {};
   double quantity = NaN;
   double price = NaN;
@@ -36,7 +36,7 @@ struct ROQ_PUBLIC Order final {
   double last_traded_price = NaN;
   double last_traded_quantity = NaN;
   Liquidity last_liquidity = {};
-  string_buffer<MAX_LENGTH_ROUTING_ID> routing_id;
+  string<MAX_LENGTH_ROUTING_ID> routing_id;
   uint32_t max_request_version = {};
   uint32_t max_response_version = {};
   uint32_t max_accepted_version = {};
@@ -51,14 +51,14 @@ struct ROQ_PUBLIC Order final {
 template <>
 struct fmt::formatter<roq::oms::Order> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename C>
-  auto format(const roq::oms::Order &value, C &ctx) {
+  auto format(const roq::oms::Order &value, C &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(user_id={}, )"
         R"(account="{}", )"

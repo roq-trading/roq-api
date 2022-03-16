@@ -15,7 +15,7 @@
 #include "roq/event.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
-#include "roq/string_buffer.hpp"
+#include "roq/string.hpp"
 
 namespace roq {
 
@@ -36,14 +36,14 @@ struct ROQ_PUBLIC GatewaySettings final {
 template <>
 struct fmt::formatter<roq::GatewaySettings> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::GatewaySettings &value, Context &ctx) {
+  auto format(const roq::GatewaySettings &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(supports={:#x}, )"
         R"(mbp_max_depth={}, )"
@@ -67,14 +67,14 @@ struct fmt::formatter<roq::GatewaySettings> {
 template <>
 struct fmt::formatter<roq::Event<roq::GatewaySettings> > {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::GatewaySettings> &event, Context &ctx) {
+  auto format(const roq::Event<roq::GatewaySettings> &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
-        ctx.out(),
+        context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(gateway_settings={})"

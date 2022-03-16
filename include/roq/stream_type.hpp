@@ -72,12 +72,12 @@ struct std::underlying_type<roq::StreamType> {
 template <>
 struct fmt::formatter<roq::StreamType> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::StreamType &value, Context &ctx) {
+  auto format(const roq::StreamType &value, Context &context) {
     using namespace std::literals;
-    return fmt::format_to(ctx.out(), "{}"sv, value.name());
+    return fmt::format_to(context.out(), "{}"sv, value.name());
   }
 };

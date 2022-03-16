@@ -5,7 +5,7 @@
     "values": [
         {
             "name": "name",
-            "type": "roq::string_buffer<8>",
+            "type": "string<8>",
             "comment": "Key"
         },
         {

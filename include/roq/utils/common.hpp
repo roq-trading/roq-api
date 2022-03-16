@@ -16,7 +16,7 @@ namespace roq {
 namespace utils {
 
 //! Extract price for \ref roq::Layer given \ref roq::Side.
-inline double price_from_side(const Layer &layer, Side side) {
+inline constexpr double price_from_side(const Layer &layer, Side side) {
   switch (side) {
     case Side::UNDEFINED:
       break;
@@ -29,7 +29,7 @@ inline double price_from_side(const Layer &layer, Side side) {
 }
 
 //! Test if update type is snapshot-like
-inline bool is_snapshot(UpdateType update_type) {
+inline constexpr bool is_snapshot(UpdateType update_type) {
   switch (update_type) {
     case UpdateType::UNDEFINED:
       break;  // note! false (== 0) was previously interpreted as incremental
@@ -44,7 +44,7 @@ inline bool is_snapshot(UpdateType update_type) {
 }
 
 //! Check if order was received
-inline bool was_order_received(OrderStatus order_status) {
+inline constexpr bool was_order_received(OrderStatus order_status) {
   switch (order_status) {
     case OrderStatus::UNDEFINED:
       break;
@@ -64,7 +64,7 @@ inline bool was_order_received(OrderStatus order_status) {
 }
 
 //! Check if order has reached a final (completed) status
-inline bool is_order_complete(OrderStatus order_status) {
+inline constexpr bool is_order_complete(OrderStatus order_status) {
   switch (order_status) {
     case OrderStatus::UNDEFINED:
       break;
@@ -84,7 +84,7 @@ inline bool is_order_complete(OrderStatus order_status) {
 }
 
 //! Map order status to request status
-inline RequestStatus to_request_status(OrderStatus order_status) {
+inline constexpr RequestStatus to_request_status(OrderStatus order_status) {
   switch (order_status) {
     case OrderStatus::UNDEFINED:
       break;
@@ -105,7 +105,7 @@ inline RequestStatus to_request_status(OrderStatus order_status) {
 }
 
 //! Check if request has positively reached a final (completed) state
-inline bool has_request_completed(RequestStatus request_status) {
+inline constexpr bool has_request_completed(RequestStatus request_status) {
   switch (request_status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
@@ -126,7 +126,7 @@ inline bool has_request_completed(RequestStatus request_status) {
 }
 
 //! Check if request has maybe reached a final state (including "unknown" states)
-inline bool has_request_maybe_completed(RequestStatus request_status) {
+inline constexpr bool has_request_maybe_completed(RequestStatus request_status) {
   switch (request_status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
@@ -147,7 +147,7 @@ inline bool has_request_maybe_completed(RequestStatus request_status) {
 }
 
 //! Check if request has positively failed
-inline bool has_request_failed(RequestStatus request_status) {
+inline constexpr bool has_request_failed(RequestStatus request_status) {
   switch (request_status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
@@ -168,7 +168,7 @@ inline bool has_request_failed(RequestStatus request_status) {
 }
 
 //! Check if request has maybe failed (including "unknown" states)
-inline bool has_request_maybe_failed(RequestStatus request_status) {
+inline constexpr bool has_request_maybe_failed(RequestStatus request_status) {
   switch (request_status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
@@ -189,7 +189,7 @@ inline bool has_request_maybe_failed(RequestStatus request_status) {
 }
 
 //! Check if request has positively succeeded
-inline bool has_request_succeeded(RequestStatus request_status) {
+inline constexpr bool has_request_succeeded(RequestStatus request_status) {
   switch (request_status) {
     case RequestStatus::UNDEFINED:
     case RequestStatus::FORWARDED:
@@ -212,10 +212,10 @@ inline bool has_request_succeeded(RequestStatus request_status) {
 }
 
 //! Compare requests
-inline int compare_requests(RequestStatus lhs, RequestStatus rhs) {
+inline constexpr int compare_requests(RequestStatus lhs, RequestStatus rhs) {
   if (lhs == rhs)
     return 0;
-  static const std::array<int, RequestStatus::count()> priority{
+  const constexpr std::array<int, RequestStatus::count()> priority{
       0,
       1,
       4,
@@ -224,13 +224,16 @@ inline int compare_requests(RequestStatus lhs, RequestStatus rhs) {
       3,
       6,
   };
+  static_assert(std::size(priority) == RequestStatus::count());
+  static_assert(priority[0] == 0);
+  static_assert(priority[RequestStatus::count() - 1] == 6);
   auto lhs_priority = priority[static_cast<RequestStatus::type_t>(lhs)];
   auto rhs_priority = priority[static_cast<RequestStatus::type_t>(rhs)];
   return lhs_priority < rhs_priority ? -1 : 1;
 }
 
 //! Get the opposite \ref Side.
-inline Side invert(Side side) {
+inline constexpr Side invert(Side side) {
   switch (side) {
     case Side::UNDEFINED:
     case Side::BUY:
@@ -242,7 +245,7 @@ inline Side invert(Side side) {
 }
 
 //! Get notional sign given \ref roq::Side
-inline int sign(Side side) {
+inline constexpr int sign(Side side) {
   switch (side) {
     case Side::UNDEFINED:
       break;

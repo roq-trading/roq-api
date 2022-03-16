@@ -72,12 +72,12 @@ struct std::underlying_type<roq::UpdateType> {
 template <>
 struct fmt::formatter<roq::UpdateType> {
   template <typename Context>
-  constexpr auto parse(Context &ctx) {
-    return std::begin(ctx);
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::UpdateType &value, Context &ctx) {
+  auto format(const roq::UpdateType &value, Context &context) {
     using namespace std::literals;
-    return fmt::format_to(ctx.out(), "{}"sv, value.name());
+    return fmt::format_to(context.out(), "{}"sv, value.name());
   }
 };

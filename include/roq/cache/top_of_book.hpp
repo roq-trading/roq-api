@@ -40,8 +40,8 @@ struct TopOfBook final {
     };
   }
 
-  const string<MAX_LENGTH_EXCHANGE> exchange;
-  const string<MAX_LENGTH_SYMBOL> symbol;
+  const String<MAX_LENGTH_EXCHANGE> exchange;
+  const String<MAX_LENGTH_SYMBOL> symbol;
   Layer layer = {};
   std::chrono::nanoseconds exchange_time_utc = {};
 };

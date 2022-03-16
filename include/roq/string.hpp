@@ -28,41 +28,41 @@ namespace roq {
  * The interface is a subset of \ref std::string and \ref std::string_view.
  */
 template <std::size_t N>
-class ROQ_PACKED string final {
+class ROQ_PACKED String final {
  public:
   using value_type = char;
 
-  constexpr string() = default;
+  constexpr String() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr string(const std::string_view &text) {  // NOLINT (allow implicit)
+  constexpr String(const std::string_view &text) {  // NOLINT (allow implicit)
     copy(text);
   }
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr string(const std::string &text) {  // NOLINT (allow implicit)
+  constexpr String(const std::string &text) {  // NOLINT (allow implicit)
     copy(text);
   }
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr string(value_type const *text)  // NOLINT (allow implicit)
-      : string(std::string_view(text)) {}
+  constexpr String(value_type const *text)  // NOLINT (allow implicit)
+      : String(std::string_view(text)) {}
 
-  constexpr string &operator=(const std::string_view &text) {
+  constexpr String &operator=(const std::string_view &text) {
     copy(text);
     return *this;
   }
 
-  constexpr string &operator=(const std::string &text) {
+  constexpr String &operator=(const std::string &text) {
     copy(text);
     return *this;
   }
 
-  constexpr bool operator==(const string<N> &rhs) const {
+  constexpr bool operator==(const String<N> &rhs) const {
     return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) == 0;
   }
 
-  constexpr bool operator<(const string<N> &rhs) const {
+  constexpr bool operator<(const String<N> &rhs) const {
     return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) < 0;
   }
 
@@ -142,20 +142,20 @@ class ROQ_PACKED string final {
 };
 
 template <std::size_t N>
-inline bool operator==(const string<N> &lhs, const string<N> &rhs) {
+inline bool operator==(const String<N> &lhs, const String<N> &rhs) {
   return lhs.operator==()(rhs);
 }
 
 }  // namespace roq
 
 template <size_t N>
-struct fmt::formatter<roq::string<N> > {
+struct fmt::formatter<roq::String<N> > {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::string<N> &value, Context &context) {
+  auto format(const roq::String<N> &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }

@@ -20,7 +20,7 @@
         },
         {
             "name": "trade_id",
-            "type": "string<40>"
+            "type": "String<40>"
         }
     ]
 }

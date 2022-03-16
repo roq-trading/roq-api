@@ -5,7 +5,7 @@
     "values": [
         {
             "name": "external_trade_id",
-            "type": "string<40>"
+            "type": "String<40>"
         },
         {
             "name": "quantity",

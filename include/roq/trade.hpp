@@ -24,7 +24,7 @@ struct ROQ_PUBLIC Trade final {
   Side side = {};         //!< Side (by convention: side of the taker)
   double price = NaN;     //!< Price
   double quantity = NaN;  //!< Quantity
-  string<40> trade_id;    //!< Trade identifier
+  String<40> trade_id;    //!< Trade identifier
 };
 
 }  // namespace roq

@@ -145,8 +145,8 @@ class Statistics final {
   }
 
   uint16_t stream_id = {};
-  string<MAX_LENGTH_EXCHANGE> exchange;
-  string<MAX_LENGTH_SYMBOL> symbol;
+  String<MAX_LENGTH_EXCHANGE> exchange;
+  String<MAX_LENGTH_SYMBOL> symbol;
   std::array<roq::Statistics, StatisticsType::count()> statistics;
   std::chrono::nanoseconds exchange_time_utc = {};
 

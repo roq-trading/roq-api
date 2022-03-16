@@ -100,24 +100,24 @@ class ReferenceData final {
   }
 
   uint16_t stream_id = {};
-  const string<MAX_LENGTH_EXCHANGE> exchange;
-  const string<MAX_LENGTH_SYMBOL> symbol;
-  string<MAX_LENGTH_DESCRIPTION> description;
+  const String<MAX_LENGTH_EXCHANGE> exchange;
+  const String<MAX_LENGTH_SYMBOL> symbol;
+  String<MAX_LENGTH_DESCRIPTION> description;
   SecurityType security_type = {};
-  string<MAX_LENGTH_CURRENCY> base_currency;
-  string<MAX_LENGTH_CURRENCY> quote_currency;
-  string<MAX_LENGTH_CURRENCY> margin_currency;
-  string<MAX_LENGTH_CURRENCY> commission_currency;
+  String<MAX_LENGTH_CURRENCY> base_currency;
+  String<MAX_LENGTH_CURRENCY> quote_currency;
+  String<MAX_LENGTH_CURRENCY> margin_currency;
+  String<MAX_LENGTH_CURRENCY> commission_currency;
   double tick_size = NaN;
   double multiplier = NaN;
   double min_trade_vol = NaN;
   double max_trade_vol = NaN;
   double trade_vol_step_size = NaN;
   OptionType option_type = {};
-  string<MAX_LENGTH_CURRENCY> strike_currency;
+  String<MAX_LENGTH_CURRENCY> strike_currency;
   double strike_price = NaN;
-  string<MAX_LENGTH_SYMBOL> underlying;
-  string<MAX_LENGTH_TIME_ZONE> time_zone;
+  String<MAX_LENGTH_SYMBOL> underlying;
+  String<MAX_LENGTH_TIME_ZONE> time_zone;
   std::chrono::days issue_date = {};
   std::chrono::days settlement_date = {};
   std::chrono::seconds expiry_datetime = {};

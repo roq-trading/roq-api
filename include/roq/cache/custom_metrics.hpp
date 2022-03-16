@@ -50,15 +50,15 @@ struct CustomMetrics final {
   }
 
   uint16_t stream_id = {};
-  const string<MAX_LENGTH_USER> user;
-  const string<MAX_LENGTH_LABEL> label;
-  const string<MAX_LENGTH_ACCOUNT> account;
-  const string<MAX_LENGTH_EXCHANGE> exchange;
-  const string<MAX_LENGTH_SYMBOL> symbol;
+  const String<MAX_LENGTH_USER> user;
+  const String<MAX_LENGTH_LABEL> label;
+  const String<MAX_LENGTH_ACCOUNT> account;
+  const String<MAX_LENGTH_EXCHANGE> exchange;
+  const String<MAX_LENGTH_SYMBOL> symbol;
   std::vector<Measurement> measurements;
 
  private:
-  // XXX using key_t = string<8>;
+  // XXX using key_t = String<8>;
   absl::flat_hash_map<std::string, size_t> lookup_;
 };
 

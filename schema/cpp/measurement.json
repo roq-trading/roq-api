@@ -5,7 +5,7 @@
     "values": [
         {
             "name": "name",
-            "type": "string<8>",
+            "type": "String<8>",
             "comment": "Key"
         },
         {

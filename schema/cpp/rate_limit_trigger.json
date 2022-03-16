@@ -20,12 +20,12 @@
         },
         {
             "name": "users",
-            "type": "std::span<string<16> const>",
+            "type": "std::span<String<16> const>",
             "comment": "Sorted list of users being affected (empty list means: all)"
         },
         {
             "name": "accounts",
-            "type": "std::span<string<32> const>",
+            "type": "std::span<String<32> const>",
             "comment": "Sorted list of accounts being affected (empty list means: all)"
         },
         {

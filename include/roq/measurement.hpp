@@ -19,7 +19,7 @@ namespace roq {
 
 //! A single measurement point
 struct ROQ_PUBLIC Measurement final {
-  string<8> name;      //!< Key
+  String<8> name;      //!< Key
   double value = NaN;  //!< Value
 };
 

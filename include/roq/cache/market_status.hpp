@@ -39,8 +39,8 @@ struct MarketStatus final {
   }
 
   uint16_t stream_id = {};
-  const String<MAX_LENGTH_EXCHANGE> exchange;
-  const String<MAX_LENGTH_SYMBOL> symbol;
+  const Exchange exchange;
+  const Symbol symbol;
   TradingStatus trading_status = {};
 };
 

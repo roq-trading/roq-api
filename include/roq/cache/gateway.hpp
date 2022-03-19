@@ -67,7 +67,7 @@ struct Gateway final {
 
   GatewaySettings settings = {};
   State state = {};
-  absl::flat_hash_map<std::string, State> state_by_account;
+  absl::flat_hash_map<Account, State> state_by_account;
 
  private:
   State &get_state(const std::string_view &account) {

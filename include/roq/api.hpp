@@ -129,6 +129,29 @@ static const constexpr size_t MAX_LENGTH_MEASUREMENT_KEY = 8;
 static const constexpr size_t MAX_LENGTH_DESCRIPTION = 128;
 static const constexpr size_t MAX_LENGTH_TIME_ZONE = 32;
 
+// fixed-length strings
+
+using User = String<MAX_LENGTH_USER>;
+using Account = String<MAX_LENGTH_ACCOUNT>;
+using Exchange = String<MAX_LENGTH_EXCHANGE>;
+using Symbol = String<MAX_LENGTH_SYMBOL>;
+using Currency = String<MAX_LENGTH_CURRENCY>;
+
+using OrderTemplate = String<MAX_LENGTH_ORDER_TEMPLATE>;
+using ExternalAccount = String<MAX_LENGTH_EXTERNAL_ACCOUNT>;
+using ExternalOrderId = String<MAX_LENGTH_EXTERNAL_ORDER_ID>;
+using ExternalTradeId = String<MAX_LENGTH_EXTERNAL_TRADE_ID>;
+using RoutingId = String<MAX_LENGTH_ROUTING_ID>;
+
+using ClOrdId = String<MAX_LENGTH_CL_ORD_ID>;
+using RequestId = String<MAX_LENGTH_REQUEST_ID>;
+
+using Label = String<MAX_LENGTH_LABEL>;
+using MeasurementKey = String<MAX_LENGTH_MEASUREMENT_KEY>;
+
+using Description = String<MAX_LENGTH_DESCRIPTION>;
+using TimeZone = String<MAX_LENGTH_TIME_ZONE>;
+
 // validate auto-generated code
 
 static_assert(sizeof(decltype(RateLimitTrigger::users)::value_type) == MAX_LENGTH_USER);

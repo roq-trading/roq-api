@@ -43,7 +43,7 @@ struct GatewayStatus final {
     };
   }
 
-  const String<MAX_LENGTH_ACCOUNT> account;
+  const Account account;
   Mask<SupportType> supported = {};
   Mask<SupportType> available = {};
   Mask<SupportType> unavailable = {};

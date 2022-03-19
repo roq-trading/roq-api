@@ -28,7 +28,7 @@ namespace roq {
  * The interface is a subset of \ref std::string and \ref std::string_view.
  */
 template <std::size_t N>
-class ROQ_PACKED String final {
+class ROQ_PACKED String {
  public:
   using value_type = char;
 
@@ -58,28 +58,32 @@ class ROQ_PACKED String final {
     return *this;
   }
 
-  constexpr bool operator==(const String<N> &rhs) const {
-    return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) == 0;
-  }
-
-  constexpr bool operator<(const String<N> &rhs) const {
-    return static_cast<std::string_view>(*this).compare(static_cast<std::string_view>(rhs)) < 0;
-  }
-
+  // comparison
   template <typename... Args>
   constexpr int compare(Args &&...args) const {
     return static_cast<std::string_view>(*this).compare(std::forward<Args>(args)...);
   }
 
-  template <typename T>
-  constexpr bool operator<(const T &rhs) const {
-    return compare(rhs) < 0;
-  }
+  constexpr bool operator==(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) == 0; }
+  constexpr bool operator!=(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) != 0; }
+  constexpr bool operator<(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) < 0; }
+  constexpr bool operator>(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) > 0; }
+  constexpr bool operator<=(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) <= 0; }
+  constexpr bool operator>=(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) >= 0; }
 
-  template <typename T>
-  constexpr bool operator>(const T &rhs) const {
-    return compare(rhs) > 0;
-  }
+  constexpr bool operator==(const std::string_view &rhs) const { return compare(rhs) == 0; }
+  constexpr bool operator!=(const std::string_view &rhs) const { return compare(rhs) != 0; }
+  constexpr bool operator<(const std::string_view &rhs) const { return compare(rhs) < 0; }
+  constexpr bool operator>(const std::string_view &rhs) const { return compare(rhs) > 0; }
+  constexpr bool operator<=(const std::string_view &rhs) const { return compare(rhs) <= 0; }
+  constexpr bool operator>=(const std::string_view &rhs) const { return compare(rhs) >= 0; }
+
+  constexpr bool operator==(const std::string &rhs) const { return compare(rhs) == 0; }
+  constexpr bool operator!=(const std::string &rhs) const { return compare(rhs) != 0; }
+  constexpr bool operator<(const std::string &rhs) const { return compare(rhs) < 0; }
+  constexpr bool operator>(const std::string &rhs) const { return compare(rhs) > 0; }
+  constexpr bool operator<=(const std::string &rhs) const { return compare(rhs) <= 0; }
+  constexpr bool operator>=(const std::string &rhs) const { return compare(rhs) >= 0; }
 
   constexpr value_type &operator[](size_t index) { return buffer_[index]; }
 

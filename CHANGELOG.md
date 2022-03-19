@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Enforce fixed-length strings for standard use-cases (account, exchange, symbol, ...)
 * Rename `string` (from `string_buffer`)
 * Promote Mask to API (from utils)
 * Rename headers to .hpp (#195)

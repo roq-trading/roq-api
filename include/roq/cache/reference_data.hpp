@@ -100,24 +100,24 @@ class ReferenceData final {
   }
 
   uint16_t stream_id = {};
-  const String<MAX_LENGTH_EXCHANGE> exchange;
-  const String<MAX_LENGTH_SYMBOL> symbol;
-  String<MAX_LENGTH_DESCRIPTION> description;
+  const Exchange exchange;
+  const Symbol symbol;
+  Description description;
   SecurityType security_type = {};
-  String<MAX_LENGTH_CURRENCY> base_currency;
-  String<MAX_LENGTH_CURRENCY> quote_currency;
-  String<MAX_LENGTH_CURRENCY> margin_currency;
-  String<MAX_LENGTH_CURRENCY> commission_currency;
+  Currency base_currency;
+  Currency quote_currency;
+  Currency margin_currency;
+  Currency commission_currency;
   double tick_size = NaN;
   double multiplier = NaN;
   double min_trade_vol = NaN;
   double max_trade_vol = NaN;
   double trade_vol_step_size = NaN;
   OptionType option_type = {};
-  String<MAX_LENGTH_CURRENCY> strike_currency;
+  Currency strike_currency;
   double strike_price = NaN;
-  String<MAX_LENGTH_SYMBOL> underlying;
-  String<MAX_LENGTH_TIME_ZONE> time_zone;
+  Symbol underlying;
+  TimeZone time_zone;
   std::chrono::days issue_date = {};
   std::chrono::days settlement_date = {};
   std::chrono::seconds expiry_datetime = {};

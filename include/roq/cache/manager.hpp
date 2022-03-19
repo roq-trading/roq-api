@@ -108,7 +108,7 @@ struct Manager final {
  private:
   const std::function<MarketByPriceFactory> market_by_price_factory_;
   uint32_t next_market_id_ = 0;
-  absl::flat_hash_map<std::string, absl::flat_hash_map<std::string, uint32_t>> exchange_to_symbols_;
+  absl::flat_hash_map<Exchange, absl::flat_hash_map<Symbol, uint32_t>> exchange_to_symbols_;
   absl::flat_hash_map<uint32_t, Market> markets_;
 };
 

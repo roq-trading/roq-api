@@ -124,8 +124,8 @@ struct Market final {
   }
 
   const uint32_t market_id;
-  const String<MAX_LENGTH_EXCHANGE> exchange;
-  const String<MAX_LENGTH_SYMBOL> symbol;
+  const Exchange exchange;
+  const Symbol symbol;
 
   ReferenceData reference_data;
   MarketStatus market_status;
@@ -134,9 +134,9 @@ struct Market final {
   // std::unique_ptr<MarketByOrder> market_by_order;
   Statistics statistics;
   // XXX TODO CustomMetrics
-  absl::flat_hash_map<std::string, Funds> funds_by_account;
-  absl::flat_hash_map<std::string, Position> position_by_account;
-  absl::flat_hash_map<std::string, absl::flat_hash_map<uint32_t, Order>> orders_by_account;
+  absl::flat_hash_map<Account, Funds> funds_by_account;
+  absl::flat_hash_map<Account, Position> position_by_account;
+  absl::flat_hash_map<Account, absl::flat_hash_map<uint32_t, Order>> orders_by_account;
 };
 
 }  // namespace cache

@@ -105,7 +105,9 @@ static const constexpr uint8_t SOURCE_SELF = 255;
 
 // limits
 
+static const constexpr size_t MAX_LENGTH_SOURCE = 16;
 static const constexpr size_t MAX_LENGTH_USER = 16;
+
 static const constexpr size_t MAX_LENGTH_ACCOUNT = 32;
 static const constexpr size_t MAX_LENGTH_EXCHANGE = 32;
 static const constexpr size_t MAX_LENGTH_SYMBOL = 32;
@@ -131,7 +133,9 @@ static const constexpr size_t MAX_LENGTH_TIME_ZONE = 32;
 
 // fixed-length strings
 
+using Source = String<MAX_LENGTH_USER>;
 using User = String<MAX_LENGTH_USER>;
+
 using Account = String<MAX_LENGTH_ACCOUNT>;
 using Exchange = String<MAX_LENGTH_EXCHANGE>;
 using Symbol = String<MAX_LENGTH_SYMBOL>;

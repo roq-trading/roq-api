@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <absl/hash/hash.h>
+
 #include <fmt/format.h>
 
 #include <algorithm>
@@ -56,6 +58,12 @@ class ROQ_PACKED String {
   constexpr String &operator=(const std::string &text) {
     copy(text);
     return *this;
+  }
+
+  // hash
+  template <typename H>
+  friend H AbslHashValue(H hash, const String<N> &rhs) {
+    return H::combine(std::move(hash), static_cast<std::string_view>(rhs));
   }
 
   // comparison

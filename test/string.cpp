@@ -2,12 +2,14 @@
 
 #include <catch2/catch.hpp>
 
+#include <string_view>
+
 #include "roq/string.hpp"
 
 using namespace roq;
 using namespace std::literals;
 
-TEST_CASE("string_buffer_empty", "[string_buffer]") {
+TEST_CASE("string_empty", "[string]") {
   String<4> s;
   CHECK(s.size() == 4);
   CHECK(s.length() == 0);
@@ -16,7 +18,7 @@ TEST_CASE("string_buffer_empty", "[string_buffer]") {
   CHECK(std::size(sv) == 0);
 }
 
-TEST_CASE("string_buffer_partial", "[string_buffer]") {
+TEST_CASE("string_partial", "[string]") {
   constexpr auto text = "12"sv;
   String<4> s = text;
   CHECK(s.size() == 4);
@@ -27,7 +29,7 @@ TEST_CASE("string_buffer_partial", "[string_buffer]") {
   CHECK(sv == text);
 }
 
-TEST_CASE("string_buffer_almost_full", "[string_buffer]") {
+TEST_CASE("string_almost_full", "[string]") {
   constexpr auto text = "123"sv;
   String<4> s = text;
   CHECK(s.size() == 4);
@@ -38,7 +40,7 @@ TEST_CASE("string_buffer_almost_full", "[string_buffer]") {
   CHECK(sv == text);
 }
 
-TEST_CASE("string_buffer_full", "[string_buffer]") {
+TEST_CASE("string_full", "[string]") {
   constexpr auto text = "1234"sv;
   String<4> s = text;
   CHECK(s.size() == 4);
@@ -49,7 +51,7 @@ TEST_CASE("string_buffer_full", "[string_buffer]") {
   CHECK(sv == text);
 }
 
-TEST_CASE("string_buffer_construct", "[string_buffer]") {
+TEST_CASE("string_construct", "[string]") {
   String<4>();
   String<4>("1"sv);
   String<4>("12"sv);
@@ -58,7 +60,7 @@ TEST_CASE("string_buffer_construct", "[string_buffer]") {
   CHECK_THROWS_AS(String<4>("12345"sv), LengthError);
 }
 
-TEST_CASE("string_buffer_push_back", "[string_buffer]") {
+TEST_CASE("string_push_back", "[string]") {
   String<4> s;
   CHECK(s.length() == 0);
   s.push_back('1');
@@ -70,4 +72,61 @@ TEST_CASE("string_buffer_push_back", "[string_buffer]") {
   s.push_back('4');
   CHECK(s.length() == 4);
   CHECK_THROWS_AS(s.push_back('5'), LengthError);
+}
+
+TEST_CASE("absl_hash_simple_4", "[string]") {
+  std::array<String<4>, 5> raw{
+      String<4>(),
+      String<4>("1"sv),
+      String<4>("12"sv),
+      String<4>("123"sv),
+      String<4>("1234"sv),
+  };
+  std::array<size_t, 5> raw_hash{
+      absl::HashOf(raw[0]),
+      absl::HashOf(raw[1]),
+      absl::HashOf(raw[2]),
+      absl::HashOf(raw[3]),
+      absl::HashOf(raw[4]),
+  };
+  std::array<std::string_view, 5> heterogenous{
+      ""sv,
+      "1"sv,
+      "12"sv,
+      "123"sv,
+      "1234"sv,
+  };
+  std::array<size_t, 5> heterogenous_hash{
+      absl::HashOf(heterogenous[0]),
+      absl::HashOf(heterogenous[1]),
+      absl::HashOf(heterogenous[2]),
+      absl::HashOf(heterogenous[3]),
+      absl::HashOf(heterogenous[4]),
+  };
+  // hash
+  // ... same
+  for (size_t i = 0; i < (std::size(raw_hash) - 1); ++i)
+    for (size_t j = i + 1; j < std::size(raw_hash); ++j)
+      CHECK(raw_hash[i] != raw_hash[j]);
+  // ... heterogenous
+  REQUIRE(std::size(raw_hash) == std::size(heterogenous_hash));
+  for (size_t i = 0; i < std::size(raw_hash); ++i)
+    CHECK(raw_hash[i] == heterogenous_hash[i]);
+  // comparison
+  // ... same
+  for (size_t i = 0; i < std::size(raw_hash); ++i) {
+    CHECK(raw[i] == raw[i]);
+    CHECK(!(raw[i] != raw[i]));
+  }
+  for (size_t i = 0; i < (std::size(raw_hash) - 1); ++i)
+    for (size_t j = i + 1; j < std::size(raw_hash); ++j) {
+      CHECK(!(raw[i] == raw[j]));
+      CHECK(raw[i] != raw[j]);
+    }
+  // ... heterogenous
+  REQUIRE(std::size(raw) == std::size(heterogenous));
+  for (size_t i = 0; i < std::size(raw_hash); ++i) {
+    CHECK(raw[i] == heterogenous[i]);
+    CHECK(!(raw[i] != heterogenous[i]));
+  }
 }

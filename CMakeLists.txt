@@ -41,6 +41,7 @@ include(GNUInstallDirs)
 find_package(Flatbuffers REQUIRED)
 find_package(PythonInterp REQUIRED)
 
+find_package(absl REQUIRED)
 find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
 

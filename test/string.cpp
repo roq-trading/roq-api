@@ -89,19 +89,19 @@ TEST_CASE("absl_hash_simple_4", "[string]") {
       absl::HashOf(raw[3]),
       absl::HashOf(raw[4]),
   };
-  std::array<std::string_view, 5> heterogenous{
+  std::array<std::string_view, 5> heterogeneous{
       ""sv,
       "1"sv,
       "12"sv,
       "123"sv,
       "1234"sv,
   };
-  std::array<size_t, 5> heterogenous_hash{
-      absl::HashOf(heterogenous[0]),
-      absl::HashOf(heterogenous[1]),
-      absl::HashOf(heterogenous[2]),
-      absl::HashOf(heterogenous[3]),
-      absl::HashOf(heterogenous[4]),
+  std::array<size_t, 5> heterogeneous_hash{
+      absl::HashOf(heterogeneous[0]),
+      absl::HashOf(heterogeneous[1]),
+      absl::HashOf(heterogeneous[2]),
+      absl::HashOf(heterogeneous[3]),
+      absl::HashOf(heterogeneous[4]),
   };
   // hash
   // ... same
@@ -109,9 +109,9 @@ TEST_CASE("absl_hash_simple_4", "[string]") {
     for (size_t j = i + 1; j < std::size(raw_hash); ++j)
       CHECK(raw_hash[i] != raw_hash[j]);
   // ... heterogenous
-  REQUIRE(std::size(raw_hash) == std::size(heterogenous_hash));
+  REQUIRE(std::size(raw_hash) == std::size(heterogeneous_hash));
   for (size_t i = 0; i < std::size(raw_hash); ++i)
-    CHECK(raw_hash[i] == heterogenous_hash[i]);
+    CHECK(raw_hash[i] == heterogeneous_hash[i]);
   // comparison
   // ... same
   for (size_t i = 0; i < std::size(raw_hash); ++i) {
@@ -124,9 +124,9 @@ TEST_CASE("absl_hash_simple_4", "[string]") {
       CHECK(raw[i] != raw[j]);
     }
   // ... heterogenous
-  REQUIRE(std::size(raw) == std::size(heterogenous));
+  REQUIRE(std::size(raw) == std::size(heterogeneous));
   for (size_t i = 0; i < std::size(raw_hash); ++i) {
-    CHECK(raw[i] == heterogenous[i]);
-    CHECK(!(raw[i] != heterogenous[i]));
+    CHECK(raw[i] == heterogeneous[i]);
+    CHECK(!(raw[i] != heterogeneous[i]));
   }
 }

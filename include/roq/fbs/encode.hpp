@@ -361,6 +361,229 @@ auto encode(B &builder, const std::span<String<N> const> &value) {
   return builder.CreateVector(result);
 }
 
+// XXX following is too much -- we need some templating here
+
+template <typename B>
+auto encode(B &builder, const std::span<Source const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<User const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<Account const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<Exchange const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<Symbol const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<Currency const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<OrderTemplate const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<ExternalAccount const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<ExternalOrderId const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<ExternalTradeId const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<RoutingId const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<ClOrdId const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<RequestId const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<Label const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<MeasurementKey const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<Description const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, const std::span<TimeZone const> &value) {
+  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (const auto &item : value) {
+      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
 // structs
 
 template <typename B>

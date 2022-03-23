@@ -91,6 +91,7 @@
 // misc
 
 #include "roq/exceptions.hpp"
+#include "roq/limits.hpp"
 
 // version
 
@@ -102,59 +103,6 @@ namespace roq {
 
 static const constexpr uint8_t SOURCE_NONE = 0;
 static const constexpr uint8_t SOURCE_SELF = 255;
-
-// limits
-
-static const constexpr size_t MAX_LENGTH_SOURCE = 16;
-static const constexpr size_t MAX_LENGTH_USER = 16;
-
-static const constexpr size_t MAX_LENGTH_ACCOUNT = 32;
-static const constexpr size_t MAX_LENGTH_EXCHANGE = 32;
-static const constexpr size_t MAX_LENGTH_SYMBOL = 32;
-static const constexpr size_t MAX_LENGTH_CURRENCY = 32;
-
-static const constexpr size_t MAX_LENGTH_ORDER_TEMPLATE = 16;
-static const constexpr size_t MAX_LENGTH_EXTERNAL_ACCOUNT = 64;
-static const constexpr size_t MAX_LENGTH_EXTERNAL_ORDER_ID = 64;
-static const constexpr size_t MAX_LENGTH_EXTERNAL_TRADE_ID = 40;
-static const constexpr size_t MAX_LENGTH_ROUTING_ID = 16;
-
-static const constexpr size_t MAX_LENGTH_CL_ORD_ID = 36;
-static const constexpr size_t MAX_LENGTH_REQUEST_ID = 36;
-
-static const constexpr uint32_t MAX_ORDER_ID = (1 << 24) - 1;
-static const constexpr uint32_t MAX_REQUEST_VERSION = (1 << 24) - 1;
-
-static const constexpr size_t MAX_LENGTH_LABEL = 32;
-static const constexpr size_t MAX_LENGTH_MEASUREMENT_KEY = 8;
-
-static const constexpr size_t MAX_LENGTH_DESCRIPTION = 128;
-static const constexpr size_t MAX_LENGTH_TIME_ZONE = 32;
-
-// fixed-length strings
-
-using Source = String<MAX_LENGTH_USER>;
-using User = String<MAX_LENGTH_USER>;
-
-using Account = String<MAX_LENGTH_ACCOUNT>;
-using Exchange = String<MAX_LENGTH_EXCHANGE>;
-using Symbol = String<MAX_LENGTH_SYMBOL>;
-using Currency = String<MAX_LENGTH_CURRENCY>;
-
-using OrderTemplate = String<MAX_LENGTH_ORDER_TEMPLATE>;
-using ExternalAccount = String<MAX_LENGTH_EXTERNAL_ACCOUNT>;
-using ExternalOrderId = String<MAX_LENGTH_EXTERNAL_ORDER_ID>;
-using ExternalTradeId = String<MAX_LENGTH_EXTERNAL_TRADE_ID>;
-using RoutingId = String<MAX_LENGTH_ROUTING_ID>;
-
-using ClOrdId = String<MAX_LENGTH_CL_ORD_ID>;
-using RequestId = String<MAX_LENGTH_REQUEST_ID>;
-
-using Label = String<MAX_LENGTH_LABEL>;
-using MeasurementKey = String<MAX_LENGTH_MEASUREMENT_KEY>;
-
-using Description = String<MAX_LENGTH_DESCRIPTION>;
-using TimeZone = String<MAX_LENGTH_TIME_ZONE>;
 
 // validate auto-generated code
 

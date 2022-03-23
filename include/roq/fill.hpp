@@ -21,10 +21,10 @@ namespace roq {
 
 //! Represents a single fill (match) when an order is being partially or fully filled
 struct ROQ_PUBLIC Fill final {
-  String<40> external_trade_id;  //!< External trade identifier
-  double quantity = NaN;         //!< Quantity
-  double price = NaN;            //!< Price
-  Liquidity liquidity = {};      //!< Liquidity indicator
+  ExternalTradeId external_trade_id;  //!< External trade identifier
+  double quantity = NaN;              //!< Quantity
+  double price = NaN;                 //!< Price
+  Liquidity liquidity = {};           //!< Liquidity indicator
 };
 
 }  // namespace roq

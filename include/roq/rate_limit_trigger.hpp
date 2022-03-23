@@ -27,8 +27,8 @@ struct ROQ_PUBLIC RateLimitTrigger final {
   std::string_view name;                      //!< Configuration name
   Origin origin = {};                         //!< Origin
   RateLimitType type = {};                    //!< Rate-limit type
-  std::span<String<16> const> users;          //!< Sorted list of users being affected (empty list means: all)
-  std::span<String<32> const> accounts;       //!< Sorted list of accounts being affected (empty list means: all)
+  std::span<User const> users;                //!< Sorted list of users being affected (empty list means: all)
+  std::span<Account const> accounts;          //!< Sorted list of accounts being affected (empty list means: all)
   std::chrono::nanoseconds ban_expires = {};  //!< System time when ban expires (zero means: ban is no longer effective)
   std::string_view triggered_by;              //!< Trigger activated by this user
 };

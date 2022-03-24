@@ -4,7 +4,7 @@
 
 #include "roq/api.hpp"
 
-#include "roq/server/trace_info.hpp"
+#include "roq/trace_info.hpp"
 
 #include "roq/client/custom_message.hpp"
 
@@ -49,11 +49,11 @@ class ROQ_PUBLIC Dispatcher {
   template <typename Callback>
   void create_trace_info(Callback callback) {
     TimeSetter time_setter(*this);
-    callback(static_cast<const roq::server::TraceInfo &>(time_setter));
+    callback(static_cast<const TraceInfo &>(time_setter));
   }
 
  protected:
-  virtual roq::server::TraceInfo create_trace_info() = 0;
+  virtual TraceInfo create_trace_info() = 0;
   virtual void release_trace_info() = 0;
 
   struct TimeSetter final {
@@ -67,11 +67,11 @@ class ROQ_PUBLIC Dispatcher {
       }
     }
 
-    operator const roq::server::TraceInfo &() const { return trace_info_; }
+    operator const TraceInfo &() const { return trace_info_; }
 
    private:
     Dispatcher &dispatcher_;
-    roq::server::TraceInfo trace_info_;
+    TraceInfo trace_info_;
   };
 };
 

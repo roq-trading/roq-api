@@ -11,7 +11,6 @@
 #include "roq/compat.hpp"
 
 namespace roq {
-namespace server {
 
 struct ROQ_PUBLIC TraceInfo final {
   std::chrono::nanoseconds source_receive_time = {};
@@ -19,17 +18,16 @@ struct ROQ_PUBLIC TraceInfo final {
   std::chrono::nanoseconds origin_create_time_utc = {};
 };
 
-}  // namespace server
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::server::TraceInfo> {
+struct fmt::formatter<roq::TraceInfo> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::server::TraceInfo &value, Context &context) {
+  auto format(const roq::TraceInfo &value, Context &context) {
     using namespace std::literals::string_view_literals;
     return fmt::format_to(
         context.out(),

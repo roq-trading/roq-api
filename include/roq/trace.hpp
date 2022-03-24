@@ -4,10 +4,9 @@
 
 #include <utility>
 
-#include "roq/server/trace_info.hpp"
+#include "roq/trace_info.hpp"
 
 namespace roq {
-namespace server {
 
 template <typename T>
 struct Trace final {
@@ -30,5 +29,4 @@ inline void create_trace_and_dispatch(Handler &&handler, const TraceInfo &trace_
   handler(trace, std::forward<Args>(args)...);
 }
 
-}  // namespace server
 }  // namespace roq

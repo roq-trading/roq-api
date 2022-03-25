@@ -1,35 +1,35 @@
 {
-    "name": "StreamStatus",
-    "type": "message",
-    "comment": "Update relating to current stream status",
-    "values": [
-        {
-            "name": "stream_id",
-            "type": "uint16_t"
-        },
-        {
-            "name": "account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "supports",
-            "type": "uint64_t",
-            "comment": "Support types (bit mask)"
-        },
-        {
-            "name": "status",
-            "type": "ConnectionStatus",
-            "comment": "Connection status"
-        },
-        {
-            "name": "type",
-            "type": "StreamType",
-            "comment": "Stream type"
-        },
-        {
-            "name": "priority",
-            "type": "Priority",
-            "comment": "Priority"
-        }
-    ]
+  "name": "StreamStatus",
+  "type": "message",
+  "comment": "Update relating to current stream status",
+  "values": [
+    {
+      "name": "stream_id",
+      "type": "uint16_t"
+    },
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "supports",
+      "type": "uint64_t",
+      "comment": "Support types (bit mask)"
+    },
+    {
+      "name": "status",
+      "type": "ConnectionStatus",
+      "comment": "Connection status"
+    },
+    {
+      "name": "type",
+      "type": "StreamType",
+      "comment": "Stream type"
+    },
+    {
+      "name": "priority",
+      "type": "Priority",
+      "comment": "Priority"
+    }
+  ]
 }

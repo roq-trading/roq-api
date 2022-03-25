@@ -1,15 +1,15 @@
 {
-    "name": "RateLimitType",
-    "type": "enum",
-    "comment": "Rate limit type",
-    "values": [
-        {
-            "name": "OrderAction",
-            "comment": "Any order action: create, modify, cancel, etc."
-        },
-        {
-            "name": "CreateOrder",
-            "comment": "Only create order"
-        }
-    ]
+  "name": "RateLimitType",
+  "type": "enum",
+  "comment": "Rate limit type",
+  "values": [
+    {
+      "name": "OrderAction",
+      "comment": "Any order action: create, modify, cancel, etc."
+    },
+    {
+      "name": "CreateOrder",
+      "comment": "Only create order"
+    }
+  ]
 }

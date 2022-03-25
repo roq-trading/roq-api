@@ -1,37 +1,37 @@
 {
-    "name": "ModifyOrder",
-    "type": "message",
-    "comment": "Fields required to modify an existing order",
-    "values": [
-        {
-            "name": "account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "order_id",
-            "type": "uint32_t"
-        },
-        {
-            "name": "quantity",
-            "type": "double",
-            "comment": "New (total) quantity"
-        },
-        {
-            "name": "price",
-            "type": "double",
-            "comment": "New limit price"
-        },
-        {
-            "name": "routing_id",
-            "type": "std::string_view"
-        },
-        {
-            "name": "version",
-            "type": "uint32_t"
-        },
-        {
-            "name": "conditional_on_version",
-            "type": "uint32_t"
-        }
-    ]
+  "name": "ModifyOrder",
+  "type": "message",
+  "comment": "Fields required to modify an existing order",
+  "values": [
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "order_id",
+      "type": "uint32_t"
+    },
+    {
+      "name": "quantity",
+      "type": "double",
+      "comment": "New (total) quantity"
+    },
+    {
+      "name": "price",
+      "type": "double",
+      "comment": "New limit price"
+    },
+    {
+      "name": "routing_id",
+      "type": "std::string_view"
+    },
+    {
+      "name": "version",
+      "type": "uint32_t"
+    },
+    {
+      "name": "conditional_on_version",
+      "type": "uint32_t"
+    }
+  ]
 }

@@ -1,11 +1,11 @@
 {
-    "name": "Priority",
-    "type": "enum",
-    "comment": "Enumeration of priority",
-    "values": [
-        {
-            "name": "Primary",
-            "comment": "Primary"
-        }
-    ]
+  "name": "Priority",
+  "type": "enum",
+  "comment": "Enumeration of priority",
+  "values": [
+    {
+      "name": "Primary",
+      "comment": "Primary"
+    }
+  ]
 }

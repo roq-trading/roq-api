@@ -1,33 +1,33 @@
 {
-    "name": "StatisticsUpdate",
-    "type": "message",
-    "comment": "Update relating to statistics published by the exchange",
-    "values": [
-        {
-            "name": "stream_id",
-            "type": "uint16_t"
-        },
-        {
-            "name": "exchange",
-            "type": "std::string_view"
-        },
-        {
-            "name": "symbol",
-            "type": "std::string_view"
-        },
-        {
-            "name": "statistics",
-            "type": "std::span<Statistics>",
-            "comment": "List of statistics"
-        },
-        {
-            "name": "update_type",
-            "type": "UpdateType",
-            "comment": "Update type"
-        },
-        {
-            "name": "exchange_time_utc",
-            "type": "std::chrono::nanoseconds"
-        }
-    ]
+  "name": "StatisticsUpdate",
+  "type": "message",
+  "comment": "Update relating to statistics published by the exchange",
+  "values": [
+    {
+      "name": "stream_id",
+      "type": "uint16_t"
+    },
+    {
+      "name": "exchange",
+      "type": "std::string_view"
+    },
+    {
+      "name": "symbol",
+      "type": "std::string_view"
+    },
+    {
+      "name": "statistics",
+      "type": "std::span<Statistics>",
+      "comment": "List of statistics"
+    },
+    {
+      "name": "update_type",
+      "type": "UpdateType",
+      "comment": "Update type"
+    },
+    {
+      "name": "exchange_time_utc",
+      "type": "std::chrono::nanoseconds"
+    }
+  ]
 }

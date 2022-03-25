@@ -1,18 +1,18 @@
 {
-    "name": "Measurement",
-    "type": "struct",
-    "comment": "A single measurement point",
-    "values": [
-        {
-            "name": "name",
-            "type": "MeasurementKey",
-            "comment": "Key"
-        },
-        {
-            "name": "value",
-            "type": "double",
-            "default": " = NaN",
-            "comment": "Value"
-        }
-    ]
+  "name": "Measurement",
+  "type": "struct",
+  "comment": "A single measurement point",
+  "values": [
+    {
+      "name": "name",
+      "type": "MeasurementKey",
+      "comment": "Key"
+    },
+    {
+      "name": "value",
+      "type": "double",
+      "default": " = NaN",
+      "comment": "Value"
+    }
+  ]
 }

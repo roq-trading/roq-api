@@ -1,32 +1,32 @@
 {
-    "name": "MBOUpdate",
-    "type": "struct",
-    "comment": "Represents the update status of a single order in the order book",
-    "values": [
-        {
-            "name": "price",
-            "type": "double",
-            "comment": "Order price"
-        },
-        {
-            "name": "remaining_quantity",
-            "type": "double",
-            "default": " = {}",
-            "comment": "Remaining order quantity"
-        },
-        {
-            "name": "action",
-            "type": "OrderUpdateAction",
-            "comment": "Order update action"
-        },
-        {
-            "name": "priority",
-            "type": "uint32_t",
-            "comment": "Queue priority"
-        },
-        {
-            "name": "order_id",
-            "type": "ExternalTradeId"
-        }
-    ]
+  "name": "MBOUpdate",
+  "type": "struct",
+  "comment": "Represents the update status of a single order in the order book",
+  "values": [
+    {
+      "name": "price",
+      "type": "double",
+      "comment": "Order price"
+    },
+    {
+      "name": "remaining_quantity",
+      "type": "double",
+      "default": " = {}",
+      "comment": "Remaining order quantity"
+    },
+    {
+      "name": "action",
+      "type": "OrderUpdateAction",
+      "comment": "Order update action"
+    },
+    {
+      "name": "priority",
+      "type": "uint32_t",
+      "comment": "Queue priority"
+    },
+    {
+      "name": "order_id",
+      "type": "ExternalTradeId"
+    }
+  ]
 }

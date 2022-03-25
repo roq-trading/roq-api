@@ -1,34 +1,34 @@
 {
-    "name": "TopOfBook",
-    "type": "message",
-    "comment": "Update relating to top of book (aggregate price)",
-    "values": [
-        {
-            "name": "stream_id",
-            "type": "uint16_t"
-        },
-        {
-            "name": "exchange",
-            "type": "std::string_view"
-        },
-        {
-            "name": "symbol",
-            "type": "std::string_view"
-        },
-        {
-            "name": "layer",
-            "type": "Layer",
-            "default": "",
-            "comment": "Top of book"
-        },
-        {
-            "name": "update_type",
-            "type": "UpdateType",
-            "comment": "Update type"
-        },
-        {
-            "name": "exchange_time_utc",
-            "type": "std::chrono::nanoseconds"
-        }
-    ]
+  "name": "TopOfBook",
+  "type": "message",
+  "comment": "Update relating to top of book (aggregate price)",
+  "values": [
+    {
+      "name": "stream_id",
+      "type": "uint16_t"
+    },
+    {
+      "name": "exchange",
+      "type": "std::string_view"
+    },
+    {
+      "name": "symbol",
+      "type": "std::string_view"
+    },
+    {
+      "name": "layer",
+      "type": "Layer",
+      "default": "",
+      "comment": "Top of book"
+    },
+    {
+      "name": "update_type",
+      "type": "UpdateType",
+      "comment": "Update type"
+    },
+    {
+      "name": "exchange_time_utc",
+      "type": "std::chrono::nanoseconds"
+    }
+  ]
 }

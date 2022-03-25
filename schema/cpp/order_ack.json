@@ -1,82 +1,82 @@
 {
-    "name": "OrderAck",
-    "type": "message",
-    "comment": "Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange",
-    "values": [
-        {
-            "name": "stream_id",
-            "type": "uint16_t"
-        },
-        {
-            "name": "account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "order_id",
-            "type": "uint32_t"
-        },
-        {
-            "name": "exchange",
-            "type": "std::string_view"
-        },
-        {
-            "name": "symbol",
-            "type": "std::string_view"
-        },
-        {
-            "name": "side",
-            "type": "Side",
-            "comment": "Side"
-        },
-        {
-            "name": "type",
-            "type": "RequestType",
-            "comment": "Request type"
-        },
-        {
-            "name": "origin",
-            "type": "Origin",
-            "comment": "Origin of ack"
-        },
-        {
-            "name": "status",
-            "type": "RequestStatus",
-            "comment": "Request status"
-        },
-        {
-            "name": "error",
-            "type": "Error",
-            "comment": "Error code"
-        },
-        {
-            "name": "text",
-            "type": "std::string_view",
-            "comment": "Descriptive text"
-        },
-        {
-            "name": "request_id",
-            "type": "std::string_view"
-        },
-        {
-            "name": "external_account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "external_order_id",
-            "type": "std::string_view"
-        },
-        {
-            "name": "routing_id",
-            "type": "std::string_view"
-        },
-        {
-            "name": "version",
-            "type": "uint32_t"
-        },
-        {
-            "name": "round_trip_latency",
-            "type": "std::chrono::nanoseconds",
-            "comment": "Round-trip latency between gateway and exchange"
-        }
-    ]
+  "name": "OrderAck",
+  "type": "message",
+  "comment": "Acknowledgement that a create/modify/cancel order request has been seen by gateway/exchange",
+  "values": [
+    {
+      "name": "stream_id",
+      "type": "uint16_t"
+    },
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "order_id",
+      "type": "uint32_t"
+    },
+    {
+      "name": "exchange",
+      "type": "std::string_view"
+    },
+    {
+      "name": "symbol",
+      "type": "std::string_view"
+    },
+    {
+      "name": "side",
+      "type": "Side",
+      "comment": "Side"
+    },
+    {
+      "name": "type",
+      "type": "RequestType",
+      "comment": "Request type"
+    },
+    {
+      "name": "origin",
+      "type": "Origin",
+      "comment": "Origin of ack"
+    },
+    {
+      "name": "status",
+      "type": "RequestStatus",
+      "comment": "Request status"
+    },
+    {
+      "name": "error",
+      "type": "Error",
+      "comment": "Error code"
+    },
+    {
+      "name": "text",
+      "type": "std::string_view",
+      "comment": "Descriptive text"
+    },
+    {
+      "name": "request_id",
+      "type": "std::string_view"
+    },
+    {
+      "name": "external_account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "external_order_id",
+      "type": "std::string_view"
+    },
+    {
+      "name": "routing_id",
+      "type": "std::string_view"
+    },
+    {
+      "name": "version",
+      "type": "uint32_t"
+    },
+    {
+      "name": "round_trip_latency",
+      "type": "std::chrono::nanoseconds",
+      "comment": "Round-trip latency between gateway and exchange"
+    }
+  ]
 }

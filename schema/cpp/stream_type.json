@@ -1,19 +1,19 @@
 {
-    "name": "StreamType",
-    "type": "enum",
-    "comment": "Enumeration of stream types",
-    "values": [
-        {
-            "name": "FIX",
-            "comment": "FIX"
-        },
-        {
-            "name": "WebSocket",
-            "comment": "Web-Socket"
-        },
-        {
-            "name": "REST",
-            "comment": "REST"
-        }
-    ]
+  "name": "StreamType",
+  "type": "enum",
+  "comment": "Enumeration of stream types",
+  "values": [
+    {
+      "name": "FIX",
+      "comment": "FIX"
+    },
+    {
+      "name": "WebSocket",
+      "comment": "Web-Socket"
+    },
+    {
+      "name": "REST",
+      "comment": "REST"
+    }
+  ]
 }

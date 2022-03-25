@@ -1,72 +1,72 @@
 {
-    "name": "CreateOrder",
-    "type": "message",
-    "comment": "Fields required to create an order",
-    "values": [
-        {
-            "name": "account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "order_id",
-            "type": "uint32_t"
-        },
-        {
-            "name": "exchange",
-            "type": "std::string_view"
-        },
-        {
-            "name": "symbol",
-            "type": "std::string_view"
-        },
-        {
-            "name": "side",
-            "type": "Side",
-            "comment": "Order side"
-        },
-        {
-            "name": "position_effect",
-            "type": "PositionEffect"
-        },
-        {
-            "name": "max_show_quantity",
-            "type": "double",
-            "comment": "Quantity visible to market (requires exchange support)"
-        },
-        {
-            "name": "order_type",
-            "type": "OrderType"
-        },
-        {
-            "name": "time_in_force",
-            "type": "TimeInForce"
-        },
-        {
-            "name": "execution_instruction",
-            "type": "ExecutionInstruction"
-        },
-        {
-            "name": "order_template",
-            "type": "std::string_view"
-        },
-        {
-            "name": "quantity",
-            "type": "double",
-            "comment": "Order quantity"
-        },
-        {
-            "name": "price",
-            "type": "double",
-            "comment": "Limit price (depends on order_type)"
-        },
-        {
-            "name": "stop_price",
-            "type": "double",
-            "comment": "Stop price (depends on order_type and time_in_force)"
-        },
-        {
-            "name": "routing_id",
-            "type": "std::string_view"
-        }
-    ]
+  "name": "CreateOrder",
+  "type": "message",
+  "comment": "Fields required to create an order",
+  "values": [
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "order_id",
+      "type": "uint32_t"
+    },
+    {
+      "name": "exchange",
+      "type": "std::string_view"
+    },
+    {
+      "name": "symbol",
+      "type": "std::string_view"
+    },
+    {
+      "name": "side",
+      "type": "Side",
+      "comment": "Order side"
+    },
+    {
+      "name": "position_effect",
+      "type": "PositionEffect"
+    },
+    {
+      "name": "max_show_quantity",
+      "type": "double",
+      "comment": "Quantity visible to market (requires exchange support)"
+    },
+    {
+      "name": "order_type",
+      "type": "OrderType"
+    },
+    {
+      "name": "time_in_force",
+      "type": "TimeInForce"
+    },
+    {
+      "name": "execution_instruction",
+      "type": "ExecutionInstruction"
+    },
+    {
+      "name": "order_template",
+      "type": "std::string_view"
+    },
+    {
+      "name": "quantity",
+      "type": "double",
+      "comment": "Order quantity"
+    },
+    {
+      "name": "price",
+      "type": "double",
+      "comment": "Limit price (depends on order_type)"
+    },
+    {
+      "name": "stop_price",
+      "type": "double",
+      "comment": "Stop price (depends on order_type and time_in_force)"
+    },
+    {
+      "name": "routing_id",
+      "type": "std::string_view"
+    }
+  ]
 }

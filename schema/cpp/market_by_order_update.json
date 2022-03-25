@@ -1,58 +1,58 @@
 {
-    "name": "MarketByOrderUpdate",
-    "type": "message",
-    "comment": "Update relating to market by order",
-    "values": [
-        {
-            "name": "stream_id",
-            "type": "uint16_t"
-        },
-        {
-            "name": "exchange",
-            "type": "std::string_view"
-        },
-        {
-            "name": "symbol",
-            "type": "std::string_view"
-        },
-        {
-            "name": "bids",
-            "type": "std::span<MBOUpdate>",
-            "comment": "List of bids"
-        },
-        {
-            "name": "asks",
-            "type": "std::span<MBOUpdate>",
-            "comment": "List of asks"
-        },
-        {
-            "name": "update_type",
-            "type": "UpdateType",
-            "comment": "Update type"
-        },
-        {
-            "name": "exchange_time_utc",
-            "type": "std::chrono::nanoseconds"
-        },
-        {
-            "name": "exchange_sequence",
-            "type": "int64_t",
-            "comment": "Latest sequence number (from exchange)"
-        },
-        {
-            "name": "price_decimals",
-            "type": "Decimals",
-            "comment": "Decimal digits required to represent prices"
-        },
-        {
-            "name": "quantity_decimals",
-            "type": "Decimals",
-            "comment": "Decimal digits required to represent quantities"
-        },
-        {
-            "name": "checksum",
-            "type": "uint32_t",
-            "comment": "Checksum (internal)"
-        }
-    ]
+  "name": "MarketByOrderUpdate",
+  "type": "message",
+  "comment": "Update relating to market by order",
+  "values": [
+    {
+      "name": "stream_id",
+      "type": "uint16_t"
+    },
+    {
+      "name": "exchange",
+      "type": "std::string_view"
+    },
+    {
+      "name": "symbol",
+      "type": "std::string_view"
+    },
+    {
+      "name": "bids",
+      "type": "std::span<MBOUpdate>",
+      "comment": "List of bids"
+    },
+    {
+      "name": "asks",
+      "type": "std::span<MBOUpdate>",
+      "comment": "List of asks"
+    },
+    {
+      "name": "update_type",
+      "type": "UpdateType",
+      "comment": "Update type"
+    },
+    {
+      "name": "exchange_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
+      "name": "exchange_sequence",
+      "type": "int64_t",
+      "comment": "Latest sequence number (from exchange)"
+    },
+    {
+      "name": "price_decimals",
+      "type": "Decimals",
+      "comment": "Decimal digits required to represent prices"
+    },
+    {
+      "name": "quantity_decimals",
+      "type": "Decimals",
+      "comment": "Decimal digits required to represent quantities"
+    },
+    {
+      "name": "checksum",
+      "type": "uint32_t",
+      "comment": "Checksum (internal)"
+    }
+  ]
 }

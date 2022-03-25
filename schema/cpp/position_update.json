@@ -1,47 +1,47 @@
 {
-    "name": "PositionUpdate",
-    "type": "message",
-    "comment": "Update relating to current position for a symbol/side/account",
-    "values": [
-        {
-            "name": "stream_id",
-            "type": "uint16_t"
-        },
-        {
-            "name": "account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "exchange",
-            "type": "std::string_view"
-        },
-        {
-            "name": "symbol",
-            "type": "std::string_view"
-        },
-        {
-            "name": "external_account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "long_quantity",
-            "type": "double",
-            "comment": "Current long position"
-        },
-        {
-            "name": "short_quantity",
-            "type": "double",
-            "comment": "Current short position"
-        },
-        {
-            "name": "long_quantity_begin",
-            "type": "double",
-            "comment": "Long position at period begin"
-        },
-        {
-            "name": "short_quantity_begin",
-            "type": "double",
-            "comment": "Short position at period begin"
-        }
-    ]
+  "name": "PositionUpdate",
+  "type": "message",
+  "comment": "Update relating to current position for a symbol/side/account",
+  "values": [
+    {
+      "name": "stream_id",
+      "type": "uint16_t"
+    },
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "exchange",
+      "type": "std::string_view"
+    },
+    {
+      "name": "symbol",
+      "type": "std::string_view"
+    },
+    {
+      "name": "external_account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "long_quantity",
+      "type": "double",
+      "comment": "Current long position"
+    },
+    {
+      "name": "short_quantity",
+      "type": "double",
+      "comment": "Current short position"
+    },
+    {
+      "name": "long_quantity_begin",
+      "type": "double",
+      "comment": "Long position at period begin"
+    },
+    {
+      "name": "short_quantity_begin",
+      "type": "double",
+      "comment": "Short position at period begin"
+    }
+  ]
 }

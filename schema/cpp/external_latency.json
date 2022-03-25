@@ -1,20 +1,20 @@
 {
-    "name": "ExternalLatency",
-    "type": "message",
-    "comment": "Update relating to external latency",
-    "values": [
-        {
-            "name": "stream_id",
-            "type": "uint16_t"
-        },
-        {
-            "name": "account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "latency",
-            "type": "std::chrono::nanoseconds",
-            "comment": "latency measurement (1-way)"
-        }
-    ]
+  "name": "ExternalLatency",
+  "type": "message",
+  "comment": "Update relating to external latency",
+  "values": [
+    {
+      "name": "stream_id",
+      "type": "uint16_t"
+    },
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "latency",
+      "type": "std::chrono::nanoseconds",
+      "comment": "latency measurement (1-way)"
+    }
+  ]
 }

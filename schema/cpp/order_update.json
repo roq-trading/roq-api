@@ -1,147 +1,147 @@
 {
-    "name": "OrderUpdate",
-    "type": "message",
-    "comment": "Update relating to current status of an order",
-    "values": [
-        {
-            "name": "stream_id",
-            "type": "uint16_t"
-        },
-        {
-            "name": "account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "order_id",
-            "type": "uint32_t"
-        },
-        {
-            "name": "exchange",
-            "type": "std::string_view"
-        },
-        {
-            "name": "symbol",
-            "type": "std::string_view"
-        },
-        {
-            "name": "side",
-            "type": "Side",
-            "comment": "Side"
-        },
-        {
-            "name": "position_effect",
-            "type": "PositionEffect"
-        },
-        {
-            "name": "max_show_quantity",
-            "type": "double",
-            "comment": "Quantity visible to market (requires exchange support)"
-        },
-        {
-            "name": "order_type",
-            "type": "OrderType"
-        },
-        {
-            "name": "time_in_force",
-            "type": "TimeInForce"
-        },
-        {
-            "name": "execution_instruction",
-            "type": "ExecutionInstruction"
-        },
-        {
-            "name": "order_template",
-            "type": "std::string_view"
-        },
-        {
-            "name": "create_time_utc",
-            "type": "std::chrono::nanoseconds"
-        },
-        {
-            "name": "update_time_utc",
-            "type": "std::chrono::nanoseconds"
-        },
-        {
-            "name": "external_account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "external_order_id",
-            "type": "std::string_view"
-        },
-        {
-            "name": "status",
-            "type": "OrderStatus",
-            "comment": "Order status"
-        },
-        {
-            "name": "quantity",
-            "type": "double",
-            "comment": "Quantity (total, indicative)"
-        },
-        {
-            "name": "price",
-            "type": "double",
-            "comment": "Price"
-        },
-        {
-            "name": "stop_price",
-            "type": "double",
-            "comment": "Stop price (depends on order_type and time_in_force)"
-        },
-        {
-            "name": "remaining_quantity",
-            "type": "double",
-            "comment": "Quantity (remaining)"
-        },
-        {
-            "name": "traded_quantity",
-            "type": "double",
-            "comment": "Quantity (total traded)"
-        },
-        {
-            "name": "average_traded_price",
-            "type": "double",
-            "comment": "Average price (total traded)"
-        },
-        {
-            "name": "last_traded_quantity",
-            "type": "double",
-            "comment": "Traded quantity (last trade)"
-        },
-        {
-            "name": "last_traded_price",
-            "type": "double",
-            "comment": "Traded price (last trade)"
-        },
-        {
-            "name": "last_liquidity",
-            "type": "Liquidity",
-            "comment": "Liquidity indicator (last trade)"
-        },
-        {
-            "name": "routing_id",
-            "type": "std::string_view"
-        },
-        {
-            "name": "max_request_version",
-            "type": "uint32_t",
-            "comment": "Last request version"
-        },
-        {
-            "name": "max_response_version",
-            "type": "uint32_t",
-            "comment": "Last response version"
-        },
-        {
-            "name": "max_accepted_version",
-            "type": "uint32_t",
-            "comment": "Last accepted version"
-        },
-        {
-            "name": "update_type",
-            "type": "UpdateType",
-            "comment": "Update type"
-        }
-    ]
+  "name": "OrderUpdate",
+  "type": "message",
+  "comment": "Update relating to current status of an order",
+  "values": [
+    {
+      "name": "stream_id",
+      "type": "uint16_t"
+    },
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "order_id",
+      "type": "uint32_t"
+    },
+    {
+      "name": "exchange",
+      "type": "std::string_view"
+    },
+    {
+      "name": "symbol",
+      "type": "std::string_view"
+    },
+    {
+      "name": "side",
+      "type": "Side",
+      "comment": "Side"
+    },
+    {
+      "name": "position_effect",
+      "type": "PositionEffect"
+    },
+    {
+      "name": "max_show_quantity",
+      "type": "double",
+      "comment": "Quantity visible to market (requires exchange support)"
+    },
+    {
+      "name": "order_type",
+      "type": "OrderType"
+    },
+    {
+      "name": "time_in_force",
+      "type": "TimeInForce"
+    },
+    {
+      "name": "execution_instruction",
+      "type": "ExecutionInstruction"
+    },
+    {
+      "name": "order_template",
+      "type": "std::string_view"
+    },
+    {
+      "name": "create_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
+      "name": "update_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
+      "name": "external_account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "external_order_id",
+      "type": "std::string_view"
+    },
+    {
+      "name": "status",
+      "type": "OrderStatus",
+      "comment": "Order status"
+    },
+    {
+      "name": "quantity",
+      "type": "double",
+      "comment": "Quantity (total, indicative)"
+    },
+    {
+      "name": "price",
+      "type": "double",
+      "comment": "Price"
+    },
+    {
+      "name": "stop_price",
+      "type": "double",
+      "comment": "Stop price (depends on order_type and time_in_force)"
+    },
+    {
+      "name": "remaining_quantity",
+      "type": "double",
+      "comment": "Quantity (remaining)"
+    },
+    {
+      "name": "traded_quantity",
+      "type": "double",
+      "comment": "Quantity (total traded)"
+    },
+    {
+      "name": "average_traded_price",
+      "type": "double",
+      "comment": "Average price (total traded)"
+    },
+    {
+      "name": "last_traded_quantity",
+      "type": "double",
+      "comment": "Traded quantity (last trade)"
+    },
+    {
+      "name": "last_traded_price",
+      "type": "double",
+      "comment": "Traded price (last trade)"
+    },
+    {
+      "name": "last_liquidity",
+      "type": "Liquidity",
+      "comment": "Liquidity indicator (last trade)"
+    },
+    {
+      "name": "routing_id",
+      "type": "std::string_view"
+    },
+    {
+      "name": "max_request_version",
+      "type": "uint32_t",
+      "comment": "Last request version"
+    },
+    {
+      "name": "max_response_version",
+      "type": "uint32_t",
+      "comment": "Last response version"
+    },
+    {
+      "name": "max_accepted_version",
+      "type": "uint32_t",
+      "comment": "Last accepted version"
+    },
+    {
+      "name": "update_type",
+      "type": "UpdateType",
+      "comment": "Update type"
+    }
+  ]
 }

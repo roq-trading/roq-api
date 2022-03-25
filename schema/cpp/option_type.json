@@ -1,13 +1,13 @@
 {
-    "name": "OptionType",
-    "type": "enum",
-    "comment": "Enumeration of option types",
-    "values": [
-        {
-            "name": "Call"
-        },
-        {
-            "name": "Put"
-        }
-    ]
+  "name": "OptionType",
+  "type": "enum",
+  "comment": "Enumeration of option types",
+  "values": [
+    {
+      "name": "Call"
+    },
+    {
+      "name": "Put"
+    }
+  ]
 }

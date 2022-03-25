@@ -1,11 +1,11 @@
 {
-    "name": "CancelAllOrders",
-    "type": "message",
-    "comment": "Fields required to cancel all orders",
-    "values": [
-        {
-            "name": "account",
-            "type": "std::string_view"
-        }
-    ]
+  "name": "CancelAllOrders",
+  "type": "message",
+  "comment": "Fields required to cancel all orders",
+  "values": [
+    {
+      "name": "account",
+      "type": "std::string_view"
+    }
+  ]
 }

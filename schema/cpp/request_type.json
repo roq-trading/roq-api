@@ -1,16 +1,16 @@
 {
-    "name": "RequestType",
-    "type": "enum",
-    "comment": "Enumeration of request types",
-    "values": [
-        {
-            "name": "CreateOrder"
-        },
-        {
-            "name": "ModifyOrder"
-        },
-        {
-            "name": "CancelOrder"
-        }
-    ]
+  "name": "RequestType",
+  "type": "enum",
+  "comment": "Enumeration of request types",
+  "values": [
+    {
+      "name": "CreateOrder"
+    },
+    {
+      "name": "ModifyOrder"
+    },
+    {
+      "name": "CancelOrder"
+    }
+  ]
 }

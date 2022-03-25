@@ -1,26 +1,26 @@
 {
-    "name": "RequestStatus",
-    "type": "enum",
-    "comment": "Enumeration of request status types",
-    "values": [
-        {
-            "name": "Forwarded"
-        },
-        {
-            "name": "Accepted"
-        },
-        {
-            "name": "Rejected"
-        },
-        {
-            "name": "Disconnected"
-        },
-        {
-            "name": "Timeout"
-        },
-        {
-            "name": "Failed",
-            "comment": "Generic failure"
-        }
-    ]
+  "name": "RequestStatus",
+  "type": "enum",
+  "comment": "Enumeration of request status types",
+  "values": [
+    {
+      "name": "Forwarded"
+    },
+    {
+      "name": "Accepted"
+    },
+    {
+      "name": "Rejected"
+    },
+    {
+      "name": "Disconnected"
+    },
+    {
+      "name": "Timeout"
+    },
+    {
+      "name": "Failed",
+      "comment": "Generic failure"
+    }
+  ]
 }

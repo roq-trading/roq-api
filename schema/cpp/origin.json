@@ -1,19 +1,19 @@
 {
-    "name": "Origin",
-    "type": "enum",
-    "comment": "Enumeration of origin types",
-    "values": [
-        {
-            "name": "Client"
-        },
-        {
-            "name": "Gateway"
-        },
-        {
-            "name": "Broker"
-        },
-        {
-            "name": "Exchange"
-        }
-    ]
+  "name": "Origin",
+  "type": "enum",
+  "comment": "Enumeration of origin types",
+  "values": [
+    {
+      "name": "Client"
+    },
+    {
+      "name": "Gateway"
+    },
+    {
+      "name": "Broker"
+    },
+    {
+      "name": "Exchange"
+    }
+  ]
 }

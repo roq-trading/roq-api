@@ -1,26 +1,26 @@
 {
-    "name": "Fill",
-    "type": "struct",
-    "comment": "Represents a single fill (match) when an order is being partially or fully filled",
-    "values": [
-        {
-            "name": "external_trade_id",
-            "type": "ExternalTradeId"
-        },
-        {
-            "name": "quantity",
-            "type": "double",
-            "comment": "Quantity"
-        },
-        {
-            "name": "price",
-            "type": "double",
-            "comment": "Price"
-        },
-        {
-            "name": "liquidity",
-            "type": "Liquidity",
-            "comment": "Liquidity indicator"
-        }
-    ]
+  "name": "Fill",
+  "type": "struct",
+  "comment": "Represents a single fill (match) when an order is being partially or fully filled",
+  "values": [
+    {
+      "name": "external_trade_id",
+      "type": "ExternalTradeId"
+    },
+    {
+      "name": "quantity",
+      "type": "double",
+      "comment": "Quantity"
+    },
+    {
+      "name": "price",
+      "type": "double",
+      "comment": "Price"
+    },
+    {
+      "name": "liquidity",
+      "type": "Liquidity",
+      "comment": "Liquidity indicator"
+    }
+  ]
 }

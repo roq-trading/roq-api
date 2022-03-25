@@ -1,43 +1,43 @@
 {
-    "name": "OrderStatus",
-    "type": "enum",
-    "comment": "Last known order status received from exchange",
-    "values": [
-        {
-            "name": "Sent",
-            "comment": "Order has been sent to exchange (no response has been received yet)"
-        },
-        {
-            "name": "Accepted",
-            "comment": "Order has been accepted by exchange and is not yet been activated"
-        },
-        {
-            "name": "Suspended",
-            "comment": "Order has been suspended and requires external action to re-activate"
-        },
-        {
-            "name": "Working",
-            "comment": "Order is working and has not yet been completely filled"
-        },
-        {
-            "name": "Stopped",
-            "comment": "Order has guaranteed fill at as of yet unknown price"
-        },
-        {
-            "name": "Completed",
-            "comment": "Order has been completely filled"
-        },
-        {
-            "name": "Expired",
-            "comment": "Order has expired"
-        },
-        {
-            "name": "Canceled",
-            "comment": "Order has been canceled"
-        },
-        {
-            "name": "Rejected",
-            "comment": "Order has been rejected"
-        }
-    ]
+  "name": "OrderStatus",
+  "type": "enum",
+  "comment": "Last known order status received from exchange",
+  "values": [
+    {
+      "name": "Sent",
+      "comment": "Order has been sent to exchange (no response has been received yet)"
+    },
+    {
+      "name": "Accepted",
+      "comment": "Order has been accepted by exchange and is not yet been activated"
+    },
+    {
+      "name": "Suspended",
+      "comment": "Order has been suspended and requires external action to re-activate"
+    },
+    {
+      "name": "Working",
+      "comment": "Order is working and has not yet been completely filled"
+    },
+    {
+      "name": "Stopped",
+      "comment": "Order has guaranteed fill at as of yet unknown price"
+    },
+    {
+      "name": "Completed",
+      "comment": "Order has been completely filled"
+    },
+    {
+      "name": "Expired",
+      "comment": "Order has expired"
+    },
+    {
+      "name": "Canceled",
+      "comment": "Order has been canceled"
+    },
+    {
+      "name": "Rejected",
+      "comment": "Order has been rejected"
+    }
+  ]
 }

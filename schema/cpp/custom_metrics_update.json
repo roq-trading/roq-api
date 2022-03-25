@@ -1,34 +1,34 @@
 {
-    "name": "CustomMetricsUpdate",
-    "type": "message",
-    "comment": "Custom metrics (receive)",
-    "values": [
-        {
-            "name": "user",
-            "type": "std::string_view",
-            "comment": "User name (origin)"
-        },
-        {
-            "name": "label",
-            "type": "std::string_view",
-            "comment": "Label"
-        },
-        {
-            "name": "account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "exchange",
-            "type": "std::string_view"
-        },
-        {
-            "name": "symbol",
-            "type": "std::string_view"
-        },
-        {
-            "name": "measurements",
-            "type": "std::span<Measurement>",
-            "comment": "List of measurements"
-        }
-    ]
+  "name": "CustomMetricsUpdate",
+  "type": "message",
+  "comment": "Custom metrics (receive)",
+  "values": [
+    {
+      "name": "user",
+      "type": "std::string_view",
+      "comment": "User name (origin)"
+    },
+    {
+      "name": "label",
+      "type": "std::string_view",
+      "comment": "Label"
+    },
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "exchange",
+      "type": "std::string_view"
+    },
+    {
+      "name": "symbol",
+      "type": "std::string_view"
+    },
+    {
+      "name": "measurements",
+      "type": "std::span<Measurement>",
+      "comment": "List of measurements"
+    }
+  ]
 }

@@ -1,122 +1,122 @@
 {
-    "name": "Error",
-    "type": "enum",
-    "comment": "Enumeration of error types",
-    "values": [
-        {
-            "name": "Unknown"
-        },
-        {
-            "name": "NotSupported",
-            "comment": "Request type not supported"
-        },
-        {
-            "name": "InvalidAccount"
-        },
-        {
-            "name": "InvalidOrderId"
-        },
-        {
-            "name": "InvalidExchange"
-        },
-        {
-            "name": "InvalidSymbol"
-        },
-        {
-            "name": "InvalidSide"
-        },
-        {
-            "name": "InvalidPositionEffect"
-        },
-        {
-            "name": "InvalidQuantity"
-        },
-        {
-            "name": "InvalidMaxShowQuantity"
-        },
-        {
-            "name": "InvalidOrderType"
-        },
-        {
-            "name": "InvalidTimeInForce"
-        },
-        {
-            "name": "InvalidExecutionInstruction"
-        },
-        {
-            "name": "InvalidOrderTemplate"
-        },
-        {
-            "name": "InvalidPrice"
-        },
-        {
-            "name": "InvalidStopPrice"
-        },
-        {
-            "name": "InvalidRoutingId"
-        },
-        {
-            "name": "InvalidRequestVersion"
-        },
-        {
-            "name": "InvalidRequestId"
-        },
-        {
-            "name": "InvalidRequestType"
-        },
-        {
-            "name": "InvalidRequestStatus"
-        },
-        {
-            "name": "InvalidRequestArgs",
-            "comment": "Request arguments did not meet validation rules"
-        },
-        {
-            "name": "UnknownExternalOrderId",
-            "comment": "An external order identifier has not yet been received"
-        },
-        {
-            "name": "NotAuthorized",
-            "comment": "User is not authorized"
-        },
-        {
-            "name": "RequestRateLimitReached",
-            "comment": "Request rate limit has been reached"
-        },
-        {
-            "name": "GatewayNotReady",
-            "comment": "Gateway not ready (could be disconnected or currently downloading)"
-        },
-        {
-            "name": "NetworkError",
-            "comment": "Network disconnect event (unknown request/order status)"
-        },
-        {
-            "name": "Timeout",
-            "comment": "Response has not been received (unknown request/order status)"
-        },
-        {
-            "name": "ParseError",
-            "comment": "Message parse error (unknown request/order status)"
-        },
-        {
-            "name": "ModifyHasNoEffect",
-            "comment": "Modify request has no effect on order"
-        },
-        {
-            "name": "TooLateToModifyOrCancel",
-            "comment": "Too late to modify or cancel (order has been filled or is already canceled)"
-        },
-        {
-            "name": "ConditionalRequestHasFailed",
-            "comment": "Happens when gateway detects chain failure"
-        },
-        {
-            "name": "UnknownOrderId"
-        },
-        {
-            "name": "InsufficientFunds",
-            "comment": "Insufficient funds for order action"
-        }
-    ]
+  "name": "Error",
+  "type": "enum",
+  "comment": "Enumeration of error types",
+  "values": [
+    {
+      "name": "Unknown"
+    },
+    {
+      "name": "NotSupported",
+      "comment": "Request type not supported"
+    },
+    {
+      "name": "InvalidAccount"
+    },
+    {
+      "name": "InvalidOrderId"
+    },
+    {
+      "name": "InvalidExchange"
+    },
+    {
+      "name": "InvalidSymbol"
+    },
+    {
+      "name": "InvalidSide"
+    },
+    {
+      "name": "InvalidPositionEffect"
+    },
+    {
+      "name": "InvalidQuantity"
+    },
+    {
+      "name": "InvalidMaxShowQuantity"
+    },
+    {
+      "name": "InvalidOrderType"
+    },
+    {
+      "name": "InvalidTimeInForce"
+    },
+    {
+      "name": "InvalidExecutionInstruction"
+    },
+    {
+      "name": "InvalidOrderTemplate"
+    },
+    {
+      "name": "InvalidPrice"
+    },
+    {
+      "name": "InvalidStopPrice"
+    },
+    {
+      "name": "InvalidRoutingId"
+    },
+    {
+      "name": "InvalidRequestVersion"
+    },
+    {
+      "name": "InvalidRequestId"
+    },
+    {
+      "name": "InvalidRequestType"
+    },
+    {
+      "name": "InvalidRequestStatus"
+    },
+    {
+      "name": "InvalidRequestArgs",
+      "comment": "Request arguments did not meet validation rules"
+    },
+    {
+      "name": "UnknownExternalOrderId",
+      "comment": "An external order identifier has not yet been received"
+    },
+    {
+      "name": "NotAuthorized",
+      "comment": "User is not authorized"
+    },
+    {
+      "name": "RequestRateLimitReached",
+      "comment": "Request rate limit has been reached"
+    },
+    {
+      "name": "GatewayNotReady",
+      "comment": "Gateway not ready (could be disconnected or currently downloading)"
+    },
+    {
+      "name": "NetworkError",
+      "comment": "Network disconnect event (unknown request/order status)"
+    },
+    {
+      "name": "Timeout",
+      "comment": "Response has not been received (unknown request/order status)"
+    },
+    {
+      "name": "ParseError",
+      "comment": "Message parse error (unknown request/order status)"
+    },
+    {
+      "name": "ModifyHasNoEffect",
+      "comment": "Modify request has no effect on order"
+    },
+    {
+      "name": "TooLateToModifyOrCancel",
+      "comment": "Too late to modify or cancel (order has been filled or is already canceled)"
+    },
+    {
+      "name": "ConditionalRequestHasFailed",
+      "comment": "Happens when gateway detects chain failure"
+    },
+    {
+      "name": "UnknownOrderId"
+    },
+    {
+      "name": "InsufficientFunds",
+      "comment": "Insufficient funds for order action"
+    }
+  ]
 }

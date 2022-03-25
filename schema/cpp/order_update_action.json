@@ -1,16 +1,16 @@
 {
-    "name": "OrderUpdateAction",
-    "type": "enum",
-    "comment": "Enumeration of order update action types",
-    "values": [
-        {
-            "name": "New"
-        },
-        {
-            "name": "Modify"
-        },
-        {
-            "name": "Remove"
-        }
-    ]
+  "name": "OrderUpdateAction",
+  "type": "enum",
+  "comment": "Enumeration of order update action types",
+  "values": [
+    {
+      "name": "New"
+    },
+    {
+      "name": "Modify"
+    },
+    {
+      "name": "Remove"
+    }
+  ]
 }

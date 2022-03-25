@@ -1,27 +1,27 @@
 {
-    "name": "CancelOrder",
-    "type": "message",
-    "comment": "Fields required to cancel an existing order",
-    "values": [
-        {
-            "name": "account",
-            "type": "std::string_view"
-        },
-        {
-            "name": "order_id",
-            "type": "uint32_t"
-        },
-        {
-            "name": "routing_id",
-            "type": "std::string_view"
-        },
-        {
-            "name": "version",
-            "type": "uint32_t"
-        },
-        {
-            "name": "conditional_on_version",
-            "type": "uint32_t"
-        }
-    ]
+  "name": "CancelOrder",
+  "type": "message",
+  "comment": "Fields required to cancel an existing order",
+  "values": [
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "order_id",
+      "type": "uint32_t"
+    },
+    {
+      "name": "routing_id",
+      "type": "std::string_view"
+    },
+    {
+      "name": "version",
+      "type": "uint32_t"
+    },
+    {
+      "name": "conditional_on_version",
+      "type": "uint32_t"
+    }
+  ]
 }

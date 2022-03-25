@@ -1,59 +1,59 @@
 {
-    "name": "TimeInForce",
-    "type": "enum",
-    "comment": "Order life-time, aka time in force",
-    "values": [
-        {
-            "name": "GFD",
-            "comment": "Good for day, aka DAY"
-        },
-        {
-            "name": "GTC",
-            "comment": "Good till canceled"
-        },
-        {
-            "name": "OPG",
-            "comment": "At the open"
-        },
-        {
-            "name": "IOC",
-            "comment": "Immediate or cancel"
-        },
-        {
-            "name": "FOK",
-            "comment": "Fill or kill"
-        },
-        {
-            "name": "GTX",
-            "comment": "Good till crossing"
-        },
-        {
-            "name": "GTD",
-            "comment": "Good till date"
-        },
-        {
-            "name": "AT_THE_CLOSE",
-            "comment": "At the close"
-        },
-        {
-            "name": "GOOD_THROUGH_CROSSING",
-            "comment": "Good through crossing"
-        },
-        {
-            "name": "AT_CROSSING",
-            "comment": "At crossing"
-        },
-        {
-            "name": "GOOD_FOR_TIME",
-            "comment": "Good for time"
-        },
-        {
-            "name": "GFA",
-            "comment": "Good for auction"
-        },
-        {
-            "name": "GFM",
-            "comment": "Good for this month"
-        }
-    ]
+  "name": "TimeInForce",
+  "type": "enum",
+  "comment": "Order life-time, aka time in force",
+  "values": [
+    {
+      "name": "GFD",
+      "comment": "Good for day, aka DAY"
+    },
+    {
+      "name": "GTC",
+      "comment": "Good till canceled"
+    },
+    {
+      "name": "OPG",
+      "comment": "At the open"
+    },
+    {
+      "name": "IOC",
+      "comment": "Immediate or cancel"
+    },
+    {
+      "name": "FOK",
+      "comment": "Fill or kill"
+    },
+    {
+      "name": "GTX",
+      "comment": "Good till crossing"
+    },
+    {
+      "name": "GTD",
+      "comment": "Good till date"
+    },
+    {
+      "name": "AT_THE_CLOSE",
+      "comment": "At the close"
+    },
+    {
+      "name": "GOOD_THROUGH_CROSSING",
+      "comment": "Good through crossing"
+    },
+    {
+      "name": "AT_CROSSING",
+      "comment": "At crossing"
+    },
+    {
+      "name": "GOOD_FOR_TIME",
+      "comment": "Good for time"
+    },
+    {
+      "name": "GFA",
+      "comment": "Good for auction"
+    },
+    {
+      "name": "GFM",
+      "comment": "Good for this month"
+    }
+  ]
 }

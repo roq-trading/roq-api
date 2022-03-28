@@ -10,8 +10,7 @@ namespace roq {
 namespace cache {
 
 struct Position final {
-  Position(const std::string_view &account, const std::string_view &exchange, const std::string_view &symbol)
-      : account(account), exchange(exchange), symbol(symbol) {}
+  Position() = default;
 
   Position(const Position &) = delete;
   Position(Position &&) = default;
@@ -36,12 +35,13 @@ struct Position final {
     return dirty;
   }
 
-  [[nodiscard]] operator PositionUpdate() const {
+  template <typename Context>
+  [[nodiscard]] PositionUpdate convert(const Context &context) const {
     return {
         .stream_id = stream_id,
-        .account = account,
-        .exchange = exchange,
-        .symbol = symbol,
+        .account = context.account,
+        .exchange = context.exchange,
+        .symbol = context.symbol,
         .external_account = external_account,
         .long_quantity = long_quantity,
         .short_quantity = short_quantity,
@@ -51,9 +51,7 @@ struct Position final {
   }
 
   uint16_t stream_id = {};
-  const Account account;
-  const Exchange exchange;
-  const Symbol symbol;
+
   ExternalAccount external_account;
   double long_quantity = NaN;
   double short_quantity = NaN;

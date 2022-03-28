@@ -12,7 +12,7 @@ namespace roq {
 namespace cache {
 
 struct TopOfBook final {
-  TopOfBook(const std::string_view &exchange, const std::string_view &symbol) : exchange(exchange), symbol(symbol) {}
+  TopOfBook() = default;
 
   TopOfBook(const TopOfBook &) = delete;
   TopOfBook(TopOfBook &&) = default;
@@ -31,17 +31,16 @@ struct TopOfBook final {
 
   [[nodiscard]] bool operator()(const Event<roq::TopOfBook> &event) { return (*this)(event.value); }
 
-  [[nodiscard]] operator roq::TopOfBook() const {
+  template <typename Context>
+  [[nodiscard]] roq::TopOfBook convert(const Context &context) const {
     return {
-        .exchange = exchange,
-        .symbol = symbol,
+        .exchange = context.exchange,
+        .symbol = context.symbol,
         .layer = layer,
         .exchange_time_utc = exchange_time_utc,
     };
   }
 
-  const Exchange exchange;
-  const Symbol symbol;
   Layer layer = {};
   std::chrono::nanoseconds exchange_time_utc = {};
 };

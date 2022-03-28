@@ -12,13 +12,14 @@
 
 #include "roq/api.hpp"
 
+#include "roq/utils/update.hpp"
+
 namespace roq {
 namespace cache {
 
 struct CustomMetrics final {
   explicit CustomMetrics(const CustomMetricsUpdate &custom_metrics_update)
-      : user(custom_metrics_update.user), label(custom_metrics_update.label), account(custom_metrics_update.account),
-        exchange(custom_metrics_update.exchange), symbol(custom_metrics_update.symbol) {}
+      : user(custom_metrics_update.user), label(custom_metrics_update.label) {}
 
   CustomMetrics(const CustomMetrics &) = delete;
   CustomMetrics(CustomMetrics &&) = default;
@@ -30,31 +31,34 @@ struct CustomMetrics final {
       if (iter == std::end(lookup_)) {
         auto res = lookup_.emplace(key, std::size(measurements));
         iter = res.first;
-        measurements.emplace_back(measurement);
+        measurements.push_back(measurement);
+        return true;
       } else {
-        measurements[(*iter).second].value = value;
+        auto index = (*iter).second;
+        auto &tmp = measurements[index];
+        auto changed = false;
+        changed |= utils::update(tmp.value, measurement.value);
+        return changed;
       }
     }
-    return true;  // XXX need dirty flag
   }
 
-  [[nodiscard]] operator CustomMetricsUpdate() {
+  template <typename Context>
+  [[nodiscard]] CustomMetricsUpdate convert(const Context &context) {
     return {
         .user = user,
         .label = label,
-        .account = account,
-        .exchange = exchange,
-        .symbol = symbol,
+        .account = context.account,
+        .exchange = context.exchange,
+        .symbol = context.symbol,
         .measurements = measurements,  // XXX reason for non-const method
     };
   }
 
   uint16_t stream_id = {};
+
   const User user;
   const Label label;
-  const Account account;
-  const Exchange exchange;
-  const Symbol symbol;
   std::vector<Measurement> measurements;
 
  private:

@@ -13,8 +13,7 @@ namespace cache {
 
 class ReferenceData final {
  public:
-  ReferenceData(const std::string_view &exchange, const std::string_view &symbol)
-      : exchange(exchange), symbol(symbol) {}
+  ReferenceData() = default;
 
   ReferenceData(const ReferenceData &) = delete;
   ReferenceData(ReferenceData &&) = default;
@@ -71,11 +70,12 @@ class ReferenceData final {
 
   [[nodiscard]] bool operator()(const Event<roq::ReferenceData> &event) { return (*this)(event.value); }
 
-  [[nodiscard]] operator roq::ReferenceData() const {
+  template <typename Context>
+  [[nodiscard]] roq::ReferenceData convert(const Context &context) const {
     return {
         .stream_id = stream_id,
-        .exchange = exchange,
-        .symbol = symbol,
+        .exchange = context.exchange,
+        .symbol = context.symbol,
         .description = description,
         .security_type = security_type,
         .base_currency = base_currency,
@@ -100,8 +100,7 @@ class ReferenceData final {
   }
 
   uint16_t stream_id = {};
-  const Exchange exchange;
-  const Symbol symbol;
+
   Description description;
   SecurityType security_type = {};
   Currency base_currency;

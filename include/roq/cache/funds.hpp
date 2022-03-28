@@ -10,7 +10,7 @@ namespace roq {
 namespace cache {
 
 struct Funds final {
-  Funds(const std::string_view &account, const std::string_view &currency) : account(account), currency(currency) {}
+  Funds() = default;
 
   Funds(const Funds &) = delete;
   Funds(Funds &&) = default;
@@ -31,11 +31,12 @@ struct Funds final {
     return dirty;
   }
 
-  [[nodiscard]] operator FundsUpdate() const {
+  template <typename Context>
+  [[nodiscard]] FundsUpdate convert(const Context &context) const {
     return {
         .stream_id = stream_id,
-        .account = account,
-        .currency = currency,
+        .account = context.account,
+        .currency = context.symbol,
         .balance = balance,
         .hold = hold,
         .external_account = external_account,
@@ -43,8 +44,7 @@ struct Funds final {
   }
 
   uint16_t stream_id = {};
-  const Account account;
-  const Currency currency;
+
   double balance = NaN;
   double hold = NaN;
   ExternalAccount external_account;

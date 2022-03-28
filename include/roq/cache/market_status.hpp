@@ -10,7 +10,7 @@ namespace roq {
 namespace cache {
 
 struct MarketStatus final {
-  MarketStatus(const std::string_view &exchange, const std::string_view &symbol) : exchange(exchange), symbol(symbol) {}
+  MarketStatus() = default;
 
   MarketStatus(const MarketStatus &) = delete;
   MarketStatus(MarketStatus &&) = default;
@@ -29,18 +29,18 @@ struct MarketStatus final {
 
   [[nodiscard]] bool operator()(const Event<roq::MarketStatus> &event) { return (*this)(event.value); }
 
-  [[nodiscard]] operator roq::MarketStatus() const {
+  template <typename Context>
+  [[nodiscard]] roq::MarketStatus convert(const Context &context) const {
     return {
         .stream_id = stream_id,
-        .exchange = exchange,
-        .symbol = symbol,
+        .exchange = context.exchange,
+        .symbol = context.symbol,
         .trading_status = trading_status,
     };
   }
 
   uint16_t stream_id = {};
-  const Exchange exchange;
-  const Symbol symbol;
+
   TradingStatus trading_status = {};
 };
 

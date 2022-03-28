@@ -11,12 +11,7 @@ namespace cache {
 
 //! Order (state)
 struct ROQ_PUBLIC Order final {
-  Order(
-      const std::string_view &account,
-      const std::string_view &exchange,
-      const std::string_view &symbol,
-      uint32_t order_id)
-      : account(account), order_id(order_id), exchange(exchange), symbol(symbol) {}
+  Order(uint32_t order_id) : order_id(order_id) {}
 
   Order(const Order &) = delete;
   Order(Order &&) = default;
@@ -94,13 +89,14 @@ struct ROQ_PUBLIC Order final {
     return dirty;
   }
 
-  [[nodiscard]] operator OrderUpdate() const {
+  template <typename Context>
+  [[nodiscard]] OrderUpdate convert(const Context &context) const {
     return {
         .stream_id = stream_id,
-        .account = account,
+        .account = context.account,
         .order_id = order_id,
-        .exchange = exchange,
-        .symbol = symbol,
+        .exchange = context.exchange,
+        .symbol = context.symbol,
         .side = side,
         .position_effect = position_effect,
         .max_show_quantity = max_show_quantity,
@@ -131,10 +127,8 @@ struct ROQ_PUBLIC Order final {
   }
 
   uint16_t stream_id = {};
-  const Account account;
+
   const uint32_t order_id = {};
-  const Exchange exchange;
-  const Symbol symbol;
   Side side = {};
   PositionEffect position_effect = {};
   double max_show_quantity = NaN;

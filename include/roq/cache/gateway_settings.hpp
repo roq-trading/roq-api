@@ -34,7 +34,7 @@ struct GatewaySettings final {
 
   [[nodiscard]] bool operator()(const Event<roq::GatewaySettings> &event) { return (*this)(event.value); }
 
-  [[nodiscard]] operator roq::GatewaySettings() const {
+  [[nodiscard]] roq::GatewaySettings convert() const {
     return {
         .supports = supports.get(),
         .mbp_max_depth = mbp_max_depth,

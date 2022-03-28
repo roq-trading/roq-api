@@ -13,6 +13,7 @@ include "order_type.fbs";
 include "order_update_action.fbs";
 include "origin.fbs";
 include "position_effect.fbs";
+include "request_id_type.fbs";
 include "request_status.fbs";
 include "request_type.fbs";
 include "security_type.fbs";

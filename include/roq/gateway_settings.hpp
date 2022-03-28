@@ -29,6 +29,7 @@ struct ROQ_PUBLIC GatewaySettings final {
   bool mbp_allow_price_inversion = false;      //!< MBP allow price inversion?
   bool oms_download_has_state = false;         //!< OMS download includes state information?
   bool oms_download_has_routing_id = false;    //!< OMS download includes routing_id?
+  RequestIdType request_id_type;               //!< Request identifier type
 };
 
 }  // namespace roq
@@ -52,7 +53,8 @@ struct fmt::formatter<roq::GatewaySettings> {
         R"(mbp_allow_remove_non_existing={}, )"
         R"(mbp_allow_price_inversion={}, )"
         R"(oms_download_has_state={}, )"
-        R"(oms_download_has_routing_id={})"
+        R"(oms_download_has_routing_id={}, )"
+        R"(request_id_type="{}")"
         R"(}})"sv,
         value.supports,
         value.mbp_max_depth,
@@ -61,7 +63,8 @@ struct fmt::formatter<roq::GatewaySettings> {
         value.mbp_allow_remove_non_existing,
         value.mbp_allow_price_inversion,
         value.oms_download_has_state,
-        value.oms_download_has_routing_id);
+        value.oms_download_has_routing_id,
+        value.request_id_type);
   }
 };
 template <>

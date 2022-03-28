@@ -39,8 +39,8 @@ set(SOURCES
     order_management.json
     order_status.json
     order_type.json
-    order_update.json
     order_update_action.json
+    order_update.json
     origin.json
     position_effect.json
     position_update.json
@@ -48,6 +48,7 @@ set(SOURCES
     rate_limit_trigger.json
     rate_limit_type.json
     reference_data.json
+    request_id_type.json
     request_status.json
     request_type.json
     security_type.json

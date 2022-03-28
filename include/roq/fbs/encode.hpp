@@ -139,6 +139,13 @@ auto encode([[maybe_unused]] B &builder, const roq::RateLimitType &value) {
 }
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::RequestIdType &value) {
+  using result_type = RequestIdType;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::RequestStatus &value) {
   using result_type = RequestStatus;
   using value_type = std::underlying_type_t<result_type>;
@@ -618,7 +625,8 @@ auto encode(B &builder, const roq::GatewaySettings &value) {
       value.oms_download_has_state,
       value.oms_download_has_routing_id,
       value.mbp_tick_size_multiplier,
-      value.mbp_min_trade_vol_multiplier);
+      value.mbp_min_trade_vol_multiplier,
+      encode(builder, value.request_id_type));
 }
 
 template <typename B>

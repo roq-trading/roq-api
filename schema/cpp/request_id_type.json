@@ -1,0 +1,19 @@
+{
+  "name": "RequestIdType",
+  "type": "enum",
+  "comment": "Request identifier",
+  "values": [
+    {
+      "name": "Base64"
+    },
+    {
+      "name": "Base32"
+    },
+    {
+      "name": "Simple"
+    },
+    {
+      "name": "UUID"
+    }
+  ]
+}

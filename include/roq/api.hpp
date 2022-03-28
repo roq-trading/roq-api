@@ -25,6 +25,7 @@
 #include "roq/position_effect.hpp"
 #include "roq/priority.hpp"
 #include "roq/rate_limit_type.hpp"
+#include "roq/request_id_type.hpp"
 #include "roq/request_status.hpp"
 #include "roq/request_type.hpp"
 #include "roq/security_type.hpp"

@@ -14,7 +14,7 @@ namespace cache {
 struct StreamStatus final {
   StreamStatus() {}
 
-  explicit StreamStatus(uint16_t stream_id, const std::string_view &account) : stream_id(stream_id), account(account) {}
+  StreamStatus(uint16_t stream_id, const std::string_view &account) : stream_id(stream_id), account(account) {}
 
   StreamStatus(const StreamStatus &) = delete;
   StreamStatus(StreamStatus &&) = default;

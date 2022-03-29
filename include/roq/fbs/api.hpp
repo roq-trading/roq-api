@@ -2551,7 +2551,7 @@ struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_OMS_DOWNLOAD_HAS_ROUTING_ID = 16,
     VT_MBP_TICK_SIZE_MULTIPLIER = 18,
     VT_MBP_MIN_TRADE_VOL_MULTIPLIER = 20,
-    VT_REQUEST_ID_TYPE = 22
+    VT_OMS_REQUEST_ID_TYPE = 22
   };
   uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
   uint32_t mbp_max_depth() const { return GetField<uint32_t>(VT_MBP_MAX_DEPTH, 0); }
@@ -2565,8 +2565,8 @@ struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double mbp_min_trade_vol_multiplier() const {
     return GetField<double>(VT_MBP_MIN_TRADE_VOL_MULTIPLIER, std::numeric_limits<double>::quiet_NaN());
   }
-  roq::fbs::RequestIdType request_id_type() const {
-    return static_cast<roq::fbs::RequestIdType>(GetField<uint8_t>(VT_REQUEST_ID_TYPE, 0));
+  roq::fbs::RequestIdType oms_request_id_type() const {
+    return static_cast<roq::fbs::RequestIdType>(GetField<uint8_t>(VT_OMS_REQUEST_ID_TYPE, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint64_t>(verifier, VT_SUPPORTS, 8) &&
@@ -2577,7 +2577,7 @@ struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_OMS_DOWNLOAD_HAS_ROUTING_ID, 1) &&
            VerifyField<double>(verifier, VT_MBP_TICK_SIZE_MULTIPLIER, 8) &&
            VerifyField<double>(verifier, VT_MBP_MIN_TRADE_VOL_MULTIPLIER, 8) &&
-           VerifyField<uint8_t>(verifier, VT_REQUEST_ID_TYPE, 1) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_OMS_REQUEST_ID_TYPE, 1) && verifier.EndTable();
   }
 };
 
@@ -2617,8 +2617,8 @@ struct GatewaySettingsBuilder {
         mbp_min_trade_vol_multiplier,
         std::numeric_limits<double>::quiet_NaN());
   }
-  void add_request_id_type(roq::fbs::RequestIdType request_id_type) {
-    fbb_.AddElement<uint8_t>(GatewaySettings::VT_REQUEST_ID_TYPE, static_cast<uint8_t>(request_id_type), 0);
+  void add_oms_request_id_type(roq::fbs::RequestIdType oms_request_id_type) {
+    fbb_.AddElement<uint8_t>(GatewaySettings::VT_OMS_REQUEST_ID_TYPE, static_cast<uint8_t>(oms_request_id_type), 0);
   }
   explicit GatewaySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<GatewaySettings> Finish() {
@@ -2638,13 +2638,13 @@ inline flatbuffers::Offset<GatewaySettings> CreateGatewaySettings(
     bool oms_download_has_routing_id = false,
     double mbp_tick_size_multiplier = std::numeric_limits<double>::quiet_NaN(),
     double mbp_min_trade_vol_multiplier = std::numeric_limits<double>::quiet_NaN(),
-    roq::fbs::RequestIdType request_id_type = roq::fbs::RequestIdType_Undefined) {
+    roq::fbs::RequestIdType oms_request_id_type = roq::fbs::RequestIdType_Undefined) {
   GatewaySettingsBuilder builder_(_fbb);
   builder_.add_mbp_min_trade_vol_multiplier(mbp_min_trade_vol_multiplier);
   builder_.add_mbp_tick_size_multiplier(mbp_tick_size_multiplier);
   builder_.add_supports(supports);
   builder_.add_mbp_max_depth(mbp_max_depth);
-  builder_.add_request_id_type(request_id_type);
+  builder_.add_oms_request_id_type(oms_request_id_type);
   builder_.add_oms_download_has_routing_id(oms_download_has_routing_id);
   builder_.add_oms_download_has_state(oms_download_has_state);
   builder_.add_mbp_allow_remove_non_existing(mbp_allow_remove_non_existing);

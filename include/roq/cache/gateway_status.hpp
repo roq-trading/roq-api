@@ -12,8 +12,7 @@ namespace roq {
 namespace cache {
 
 struct GatewayStatus final {
-  GatewayStatus() {}
-  GatewayStatus(const std::string_view &account) : account(account) {}
+  GatewayStatus() = default;
 
   GatewayStatus(const GatewayStatus &) = delete;
   GatewayStatus(GatewayStatus &&) = default;
@@ -34,16 +33,24 @@ struct GatewayStatus final {
 
   [[nodiscard]] bool operator()(const Event<roq::GatewayStatus> &event) { return (*this)(event.value); }
 
-  [[nodiscard]] operator roq::GatewayStatus() const {
+  template <typename Context>
+  [[nodiscard]] roq::GatewayStatus convert(const Context &context) const {
     return {
-        .account = account,
+        .account = context.account,
+        .supported = supported.get(),
+        .available = available.get(),
+        .unavailable = unavailable.get(),
+    };
+  }
+  [[nodiscard]] roq::GatewayStatus convert() const {
+    return {
+        .account = {},
         .supported = supported.get(),
         .available = available.get(),
         .unavailable = unavailable.get(),
     };
   }
 
-  const Account account;
   Mask<SupportType> supported = {};
   Mask<SupportType> available = {};
   Mask<SupportType> unavailable = {};

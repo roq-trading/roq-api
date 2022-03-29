@@ -44,9 +44,9 @@
       "comment": "OMS download includes routing_id?"
     },
     {
-      "name": "request_id_type",
+      "name": "oms_request_id_type",
       "type": "RequestIdType",
-      "comment": "Request identifier type"
+      "comment": "OMS request identifier type"
     }
   ]
 }

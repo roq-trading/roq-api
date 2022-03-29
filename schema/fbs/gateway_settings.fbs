@@ -10,5 +10,5 @@ table GatewaySettings {
   oms_download_has_routing_id:bool;
   mbp_tick_size_multiplier:double = nan;
   mbp_min_trade_vol_multiplier:double = nan;
-  request_id_type:RequestIdType;
+  oms_request_id_type:RequestIdType;
 }

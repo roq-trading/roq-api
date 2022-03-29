@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* RequestIdType added to GatewaySettings (from server)
+
 ### Changed
 
 * Promote Trace and TraceInfo to API (from server)

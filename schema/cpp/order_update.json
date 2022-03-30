@@ -46,8 +46,8 @@
       "type": "TimeInForce"
     },
     {
-      "name": "execution_instruction",
-      "type": "ExecutionInstruction"
+      "name": "execution_instructions",
+      "type": "Mask<ExecutionInstruction>"
     },
     {
       "name": "order_template",

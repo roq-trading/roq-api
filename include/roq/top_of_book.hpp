@@ -13,6 +13,7 @@
 
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
@@ -28,7 +29,7 @@ struct ROQ_PUBLIC TopOfBook final {
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
   Layer layer;                                      //!< Top of book
-  UpdateType update_type = {};                      //!< Update type
+  UpdateType update_type;                           //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
 };
 

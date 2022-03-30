@@ -618,7 +618,7 @@ template <typename B>
 auto encode(B &builder, const roq::GatewaySettings &value) {
   return CreateGatewaySettings(
       builder,
-      value.supports,  // note! using Mask<SupportType>
+      value.supports.get(),
       value.mbp_max_depth,
       value.mbp_allow_price_inversion,
       value.mbp_allow_remove_non_existing,
@@ -635,7 +635,7 @@ auto encode(B &builder, const roq::StreamStatus &value) {
       builder,
       value.stream_id,
       encode(builder, value.account),
-      value.supports,  // note! using Mask<SupportType>
+      value.supports.get(),
       encode(builder, value.status),
       encode(builder, value.type),
       encode(builder, value.priority));
@@ -792,12 +792,13 @@ auto encode(B &builder, const roq::CreateOrder &value) {
       value.max_show_quantity,
       encode(builder, value.order_type),
       encode(builder, value.time_in_force),
-      encode(builder, value.execution_instruction),
+      {},  // deprecated
       encode(builder, value.order_template),
       value.quantity,
       value.price,
       value.stop_price,
-      encode(builder, value.routing_id));
+      encode(builder, value.routing_id),
+      value.execution_instructions.get());
 }
 
 template <typename B>
@@ -866,7 +867,7 @@ auto encode(B &builder, const roq::OrderUpdate &value) {
       value.max_show_quantity,
       encode(builder, value.order_type),
       encode(builder, value.time_in_force),
-      encode(builder, value.execution_instruction),
+      {},  // deprecated
       encode(builder, value.order_template),
       encode(builder, value.create_time_utc),
       encode(builder, value.update_time_utc),
@@ -886,7 +887,8 @@ auto encode(B &builder, const roq::OrderUpdate &value) {
       value.max_request_version,
       value.max_response_version,
       value.max_accepted_version,
-      encode(builder, value.update_type));
+      encode(builder, value.update_type),
+      value.execution_instructions.get());
 }
 
 template <typename B>

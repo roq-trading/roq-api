@@ -21,7 +21,7 @@ struct GatewaySettings final {
 
   [[nodiscard]] bool operator()(const roq::GatewaySettings &gateway_settings) {
     auto dirty = false;
-    dirty |= utils::update(supports, Mask<SupportType>{gateway_settings.supports});
+    dirty |= utils::update(supports, gateway_settings.supports);
     dirty |= utils::update(mbp_max_depth, gateway_settings.mbp_max_depth);
     dirty |= utils::update(mbp_tick_size_multiplier, gateway_settings.mbp_tick_size_multiplier);
     dirty |= utils::update(mbp_min_trade_vol_multiplier, gateway_settings.mbp_min_trade_vol_multiplier);
@@ -36,7 +36,7 @@ struct GatewaySettings final {
 
   [[nodiscard]] roq::GatewaySettings convert() const {
     return {
-        .supports = supports.get(),
+        .supports = supports,
         .mbp_max_depth = mbp_max_depth,
         .mbp_tick_size_multiplier = mbp_tick_size_multiplier,
         .mbp_min_trade_vol_multiplier = mbp_min_trade_vol_multiplier,

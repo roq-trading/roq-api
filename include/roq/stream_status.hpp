@@ -13,6 +13,7 @@
 
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
@@ -20,17 +21,18 @@
 #include "roq/connection_status.hpp"
 #include "roq/priority.hpp"
 #include "roq/stream_type.hpp"
+#include "roq/support_type.hpp"
 
 namespace roq {
 
 //! Update relating to current stream status
 struct ROQ_PUBLIC StreamStatus final {
-  uint16_t stream_id = {};       //!< Stream identifier
-  std::string_view account;      //!< Account name
-  uint64_t supports = {};        //!< Support types (bit mask)
-  ConnectionStatus status = {};  //!< Connection status
-  StreamType type = {};          //!< Stream type
-  Priority priority = {};        //!< Priority
+  uint16_t stream_id = {};     //!< Stream identifier
+  std::string_view account;    //!< Account name
+  Mask<SupportType> supports;  //!< Support types (bit mask)
+  ConnectionStatus status;     //!< Connection status
+  StreamType type;             //!< Stream type
+  Priority priority;           //!< Priority
 };
 
 }  // namespace roq
@@ -49,7 +51,7 @@ struct fmt::formatter<roq::StreamStatus> {
         R"({{)"
         R"(stream_id={}, )"
         R"(account="{}", )"
-        R"(supports={:#x}, )"
+        R"(supports={}, )"
         R"(status={}, )"
         R"(type={}, )"
         R"(priority={})"

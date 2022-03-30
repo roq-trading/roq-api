@@ -13,15 +13,19 @@
 
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
+
+#include "roq/request_id_type.hpp"
+#include "roq/support_type.hpp"
 
 namespace roq {
 
 //! Gateway settings
 struct ROQ_PUBLIC GatewaySettings final {
-  uint64_t supports = {};                      //!< Support types (bit mask)
+  Mask<SupportType> supports;                  //!< Support types (bit mask)
   uint32_t mbp_max_depth = {};                 //!< MBP max depth
   double mbp_tick_size_multiplier = NaN;       //!< MBP multiplier used to manage prices as integer
   double mbp_min_trade_vol_multiplier = NaN;   //!< MBP multiplier used to manage quantities as integer
@@ -46,7 +50,7 @@ struct fmt::formatter<roq::GatewaySettings> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(supports={:#x}, )"
+        R"(supports={}, )"
         R"(mbp_max_depth={}, )"
         R"(mbp_tick_size_multiplier={}, )"
         R"(mbp_min_trade_vol_multiplier={}, )"
@@ -54,7 +58,7 @@ struct fmt::formatter<roq::GatewaySettings> {
         R"(mbp_allow_price_inversion={}, )"
         R"(oms_download_has_state={}, )"
         R"(oms_download_has_routing_id={}, )"
-        R"(oms_request_id_type="{}")"
+        R"(oms_request_id_type={})"
         R"(}})"sv,
         value.supports,
         value.mbp_max_depth,

@@ -16,7 +16,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   double max_show_quantity = NaN;
   OrderType order_type = {};
   TimeInForce time_in_force = {};
-  ExecutionInstruction execution_instruction = {};
+  Mask<ExecutionInstruction> execution_instructions = {};
   std::string_view order_template;
   std::chrono::nanoseconds create_time_utc = {};
   std::chrono::nanoseconds update_time_utc = {};
@@ -58,7 +58,7 @@ struct fmt::formatter<roq::oms::OrderUpdate> {
         R"(max_show_quantity={}, )"
         R"(order_type={}, )"
         R"(time_in_force={}, )"
-        R"(execution_instruction={}, )"
+        R"(execution_instructions={}, )"
         R"(order_template="{}", )"
         R"(create_time_utc={}, )"
         R"(update_time_utc={}, )"
@@ -84,7 +84,7 @@ struct fmt::formatter<roq::oms::OrderUpdate> {
         value.max_show_quantity,
         value.order_type,
         value.time_in_force,
-        value.execution_instruction,
+        value.execution_instructions,
         value.order_template,
         value.create_time_utc,
         value.update_time_utc,

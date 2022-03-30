@@ -5,7 +5,7 @@
   "values": [
     {
       "name": "supports",
-      "type": "uint64_t",
+      "type": "Mask<SupportType>",
       "comment": "Support types (bit mask)"
     },
     {

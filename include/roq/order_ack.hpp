@@ -13,6 +13,7 @@
 
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
@@ -32,11 +33,11 @@ struct ROQ_PUBLIC OrderAck final {
   uint32_t order_id = {};                            //!< Order identifier
   std::string_view exchange;                         //!< Exchange
   std::string_view symbol;                           //!< Symbol
-  Side side = {};                                    //!< Side
-  RequestType type = {};                             //!< Request type
-  Origin origin = {};                                //!< Origin of ack
-  RequestStatus status = {};                         //!< Request status
-  Error error = {};                                  //!< Error code
+  Side side;                                         //!< Side
+  RequestType type;                                  //!< Request type
+  Origin origin;                                     //!< Origin of ack
+  RequestStatus status;                              //!< Request status
+  Error error;                                       //!< Error code
   std::string_view text;                             //!< Descriptive text
   std::string_view request_id;                       //!< Request identifier
   std::string_view external_account;                 //!< External account name

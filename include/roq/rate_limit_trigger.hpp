@@ -13,6 +13,7 @@
 
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
@@ -25,8 +26,8 @@ namespace roq {
 //! Rate-limit trigger
 struct ROQ_PUBLIC RateLimitTrigger final {
   std::string_view name;                      //!< Configuration name
-  Origin origin = {};                         //!< Origin
-  RateLimitType type = {};                    //!< Rate-limit type
+  Origin origin;                              //!< Origin
+  RateLimitType type;                         //!< Rate-limit type
   std::span<User const> users;                //!< Sorted list of users being affected (empty list means: all)
   std::span<Account const> accounts;          //!< Sorted list of accounts being affected (empty list means: all)
   std::chrono::nanoseconds ban_expires = {};  //!< System time when ban expires (zero means: ban is no longer effective)

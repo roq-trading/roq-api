@@ -13,6 +13,7 @@
 
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
@@ -42,9 +43,9 @@ struct fmt::formatter<roq::GatewayStatus> {
         context.out(),
         R"({{)"
         R"(account="{}", )"
-        R"(supported={:#x}, )"
-        R"(available={:#x}, )"
-        R"(unavailable={:#x})"
+        R"(supported={}, )"
+        R"(available={}, )"
+        R"(unavailable={})"
         R"(}})"sv,
         value.account,
         value.supported,

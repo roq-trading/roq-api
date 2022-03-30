@@ -13,6 +13,7 @@
 
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
@@ -23,7 +24,7 @@ namespace roq {
 
 //! Disconnected
 struct ROQ_PUBLIC Disconnected final {
-  OrderCancelPolicy order_cancel_policy = {};  //!< Cancel orders on disconnect?
+  OrderCancelPolicy order_cancel_policy;  //!< Cancel orders on disconnect?
 };
 
 }  // namespace roq

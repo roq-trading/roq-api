@@ -1,6 +1,6 @@
 {
   "name": "ExecutionInstruction",
-  "type": "enum_bit_8",
+  "type": "enum_bit_32",
   "comment": "Enumeration of execution types",
   "values": [
     {

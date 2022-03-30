@@ -23,7 +23,7 @@ struct StreamStatus final {
 
   [[nodiscard]] bool operator()(const roq::StreamStatus &stream_status) {
     auto dirty = false;
-    dirty |= utils::update(supports, Mask<SupportType>{stream_status.supports});
+    dirty |= utils::update(supports, stream_status.supports);
     dirty |= utils::update(status, stream_status.status);
     dirty |= utils::update(type, stream_status.type);
     dirty |= utils::update(priority, stream_status.priority);
@@ -34,7 +34,7 @@ struct StreamStatus final {
     return {
         .stream_id = stream_id,
         .account = account,
-        .supports = supports.get(),
+        .supports = supports,
         .status = status,
         .type = type,
         .priority = priority,

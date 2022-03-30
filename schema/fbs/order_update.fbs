@@ -16,7 +16,7 @@ table OrderUpdate {
   max_show_quantity:double = nan;
   order_type:OrderType;
   time_in_force:TimeInForce;
-  execution_instruction:ExecutionInstruction;
+  zzz_execution_instructions:uint8;  // deprecated
   order_template:string;
   create_time_utc:int64;
   update_time_utc:int64;
@@ -37,4 +37,5 @@ table OrderUpdate {
   max_response_version:uint32;
   max_accepted_version:uint32;
   update_type:UpdateType;
+  execution_instructions:uint32;
 }

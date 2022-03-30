@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <fmt/format.h>
+
 #include <initializer_list>
 #include <type_traits>
 #include <utility>
@@ -125,3 +127,21 @@ class Mask final {
 };
 
 }  // namespace roq
+
+template <typename T>
+struct std::underlying_type<roq::Mask<T>> {
+  using type = typename roq::Mask<T>::value_type;
+};
+
+template <typename T>
+struct fmt::formatter<roq::Mask<T>> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Mask<T> &value, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), R"({:#x})"sv, value.get());
+  }
+};

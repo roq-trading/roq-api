@@ -13,6 +13,7 @@
 
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
@@ -30,11 +31,11 @@ struct ROQ_PUBLIC MarketByOrderUpdate final {
   std::string_view symbol;                          //!< Symbol
   std::span<MBOUpdate> bids;                        //!< List of bids
   std::span<MBOUpdate> asks;                        //!< List of asks
-  UpdateType update_type = {};                      //!< Update type
+  UpdateType update_type;                           //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
   int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
-  Decimals price_decimals = {};                     //!< Decimal digits required to represent prices
-  Decimals quantity_decimals = {};                  //!< Decimal digits required to represent quantities
+  Decimals price_decimals;                          //!< Decimal digits required to represent prices
+  Decimals quantity_decimals;                       //!< Decimal digits required to represent quantities
   uint32_t checksum = {};                           //!< Checksum (internal)
 };
 

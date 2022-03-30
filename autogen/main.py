@@ -56,6 +56,13 @@ def is_variable(type_):
     return type_ is not None
 
 
+def is_mask(type_):
+    """test if is a mask"""
+    if type_ is None:
+        return False
+    return "Mask<" in type_
+
+
 def is_array(type_):
     """test if is an array"""
     if type_ is None:
@@ -66,6 +73,8 @@ def is_array(type_):
 def sub_type(type_):
     """find sub-type"""
     if type_ is not None:
+        if "Mask<" in type_:
+            return type_[5:-1]
         if "std::span<" in type_:
             return type_[10:-1]
     return type_
@@ -102,9 +111,12 @@ _string_like_types = {
 
 def is_string_like(type_):
     """test if is string-like"""
+    if type_ is None:
+        return False
+    tmp = type_.split(" ")[0]
     if type_ is not None:
         for name in _string_like_types:
-            if name in type_:
+            if name == tmp:
                 return True
     return False
 
@@ -114,7 +126,9 @@ replace = {"private": "private_"}
 
 def get_default_from_type(type_):
     """get default value from type"""
-    if is_array(type_) or is_string_like(type_):
+    if is_mask(type_) or is_array(type_) or is_string_like(type_):
+        return ""
+    if not is_pod_or_std(type_):
         return ""
     ret = defaults.get(type_)
     return ret if isinstance(ret, str) else " = {}"
@@ -144,9 +158,6 @@ def _safe_enum(name):
 def _format_helper(char, string, array, safe_name, accessor):
     """format helper"""
     value = ('fmt::join(value.{}{}, ", "sv)' if array else "value.{}{}").format(safe_name, accessor)
-    # required until Mask has been implemented
-    if safe_name in ("supports", "supported", "available", "unavailable"):
-        return ("{:#x}", value)
     if char:
         return ("'{}'", value)
     if array:
@@ -166,7 +177,7 @@ def _find_default_comment(name):
         currency="Currency",
         exchange="Exchange",
         exchange_time_utc="Exchange timestamp (UTC)",
-        execution_instruction="Execution instruction",
+        execution_instructions="Execution instructions",
         external_account="External account name",
         external_order_id="External order identifier",
         external_trade_id="External trade identifier",
@@ -200,8 +211,9 @@ def _new_spec_helper(item):
     safe_name = _safe(name)
     char = type_ == "char"
     string = is_string_like(type_)
+    mask = is_mask(type_)
     array = is_array(type_)
-    enum = not is_pod_or_std(type_) and not array and not string
+    enum = not is_pod_or_std(type_) and not array and not string and not mask
     is_float = type_ == "double"
     tag = item.get("tag", -1)
     custom = item.get("custom", False)
@@ -223,6 +235,7 @@ def _new_spec_helper(item):
         default=default,
         include=type_ is not None,
         is_string=string,
+        is_mask=mask,
         is_array=array,
         is_enum=enum,
         is_float=is_float,
@@ -234,7 +247,7 @@ def _new_spec_helper(item):
 
 def _include_helper(namespaces, variable):
     """sometimes we need a custom include"""
-    if variable["is_array"]:
+    if variable["is_mask"] or variable["is_array"]:
         return namespaces + (snake_case(sub_type(variable["type"])),)
     if "::" not in variable["type"]:
         return namespaces + (snake_case(sub_type(variable["type"])),)
@@ -259,7 +272,10 @@ def new_spec(path, namespaces, name, comment, spec, type_):
         {
             _include_helper(namespaces, variable)
             for variable in variables
-            if (variable["is_array"] and not is_string_like(sub_type(variable["type"])))
+            if (
+                (variable["is_array"] or variable["is_mask"])
+                and not is_string_like(sub_type(variable["type"]))
+            )
             or variable["is_enum"]
         }
     )

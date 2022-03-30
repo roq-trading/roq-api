@@ -13,6 +13,7 @@
 
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
@@ -23,10 +24,10 @@ namespace roq {
 
 //! Update relating to current trading status of a symbol
 struct ROQ_PUBLIC MarketStatus final {
-  uint16_t stream_id = {};            //!< Stream identifier
-  std::string_view exchange;          //!< Exchange
-  std::string_view symbol;            //!< Symbol
-  TradingStatus trading_status = {};  //!< Trading status
+  uint16_t stream_id = {};       //!< Stream identifier
+  std::string_view exchange;     //!< Exchange
+  std::string_view symbol;       //!< Symbol
+  TradingStatus trading_status;  //!< Trading status
 };
 
 }  // namespace roq

@@ -23,7 +23,7 @@ struct ROQ_PUBLIC Order final {
     max_show_quantity = NaN;
     order_type = {};
     time_in_force = {};
-    execution_instruction = {};
+    execution_instructions = {};
     order_template.clear();
     create_time_utc = {};
     update_time_utc = {};
@@ -53,7 +53,7 @@ struct ROQ_PUBLIC Order final {
     dirty |= utils::update(max_show_quantity, order_update.max_show_quantity);
     dirty |= utils::update(order_type, order_update.order_type);
     dirty |= utils::update(time_in_force, order_update.time_in_force);
-    dirty |= utils::update(execution_instruction, order_update.execution_instruction);
+    dirty |= utils::update(execution_instructions, order_update.execution_instructions);
     dirty |= utils::update(order_template, order_update.order_template);
     dirty |= utils::update(create_time_utc, order_update.create_time_utc);
     dirty |= utils::update(update_time_utc, order_update.update_time_utc);
@@ -102,7 +102,7 @@ struct ROQ_PUBLIC Order final {
         .max_show_quantity = max_show_quantity,
         .order_type = order_type,
         .time_in_force = time_in_force,
-        .execution_instruction = execution_instruction,
+        .execution_instructions = execution_instructions,
         .order_template = order_template,
         .create_time_utc = create_time_utc,
         .update_time_utc = update_time_utc,
@@ -134,7 +134,7 @@ struct ROQ_PUBLIC Order final {
   double max_show_quantity = NaN;
   OrderType order_type = {};
   TimeInForce time_in_force = {};
-  ExecutionInstruction execution_instruction = {};
+  Mask<ExecutionInstruction> execution_instructions = {};
   OrderTemplate order_template;
   std::chrono::nanoseconds create_time_utc = {};
   std::chrono::nanoseconds update_time_utc = {};

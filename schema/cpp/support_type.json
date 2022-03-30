@@ -1,6 +1,6 @@
 {
   "name": "SupportType",
-  "type": "enum_bit",
+  "type": "enum_bit_64",
   "comment": "Enumeration of support types",
   "values": [
     {

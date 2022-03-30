@@ -13,6 +13,7 @@
 
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
@@ -30,37 +31,37 @@ namespace roq {
 
 //! Update relating to current status of an order
 struct ROQ_PUBLIC OrderUpdate final {
-  uint16_t stream_id = {};                          //!< Stream identifier
-  std::string_view account;                         //!< Account name
-  uint32_t order_id = {};                           //!< Order identifier
-  std::string_view exchange;                        //!< Exchange
-  std::string_view symbol;                          //!< Symbol
-  Side side = {};                                   //!< Side
-  PositionEffect position_effect = {};              //!< Position effect
-  double max_show_quantity = NaN;                   //!< Quantity visible to market (requires exchange support)
-  OrderType order_type = {};                        //!< Order type
-  TimeInForce time_in_force = {};                   //!< Time in force
-  ExecutionInstruction execution_instruction = {};  //!< Execution instruction
-  std::string_view order_template;                  //!< Order template
-  std::chrono::nanoseconds create_time_utc = {};    //!< Created timestamp (UTC)
-  std::chrono::nanoseconds update_time_utc = {};    //!< Updated timestamp (UTC)
-  std::string_view external_account;                //!< External account name
-  std::string_view external_order_id;               //!< External order identifier
-  OrderStatus status = {};                          //!< Order status
-  double quantity = NaN;                            //!< Quantity (total, indicative)
-  double price = NaN;                               //!< Price
-  double stop_price = NaN;                          //!< Stop price (depends on order_type and time_in_force)
-  double remaining_quantity = NaN;                  //!< Quantity (remaining)
-  double traded_quantity = NaN;                     //!< Quantity (total traded)
-  double average_traded_price = NaN;                //!< Average price (total traded)
-  double last_traded_quantity = NaN;                //!< Traded quantity (last trade)
-  double last_traded_price = NaN;                   //!< Traded price (last trade)
-  Liquidity last_liquidity = {};                    //!< Liquidity indicator (last trade)
-  std::string_view routing_id;                      //!< Routing identifier
-  uint32_t max_request_version = {};                //!< Last request version
-  uint32_t max_response_version = {};               //!< Last response version
-  uint32_t max_accepted_version = {};               //!< Last accepted version
-  UpdateType update_type = {};                      //!< Update type
+  uint16_t stream_id = {};                            //!< Stream identifier
+  std::string_view account;                           //!< Account name
+  uint32_t order_id = {};                             //!< Order identifier
+  std::string_view exchange;                          //!< Exchange
+  std::string_view symbol;                            //!< Symbol
+  Side side;                                          //!< Side
+  PositionEffect position_effect;                     //!< Position effect
+  double max_show_quantity = NaN;                     //!< Quantity visible to market (requires exchange support)
+  OrderType order_type;                               //!< Order type
+  TimeInForce time_in_force;                          //!< Time in force
+  Mask<ExecutionInstruction> execution_instructions;  //!< Execution instructions
+  std::string_view order_template;                    //!< Order template
+  std::chrono::nanoseconds create_time_utc = {};      //!< Created timestamp (UTC)
+  std::chrono::nanoseconds update_time_utc = {};      //!< Updated timestamp (UTC)
+  std::string_view external_account;                  //!< External account name
+  std::string_view external_order_id;                 //!< External order identifier
+  OrderStatus status;                                 //!< Order status
+  double quantity = NaN;                              //!< Quantity (total, indicative)
+  double price = NaN;                                 //!< Price
+  double stop_price = NaN;                            //!< Stop price (depends on order_type and time_in_force)
+  double remaining_quantity = NaN;                    //!< Quantity (remaining)
+  double traded_quantity = NaN;                       //!< Quantity (total traded)
+  double average_traded_price = NaN;                  //!< Average price (total traded)
+  double last_traded_quantity = NaN;                  //!< Traded quantity (last trade)
+  double last_traded_price = NaN;                     //!< Traded price (last trade)
+  Liquidity last_liquidity;                           //!< Liquidity indicator (last trade)
+  std::string_view routing_id;                        //!< Routing identifier
+  uint32_t max_request_version = {};                  //!< Last request version
+  uint32_t max_response_version = {};                 //!< Last response version
+  uint32_t max_accepted_version = {};                 //!< Last accepted version
+  UpdateType update_type;                             //!< Update type
 };
 
 }  // namespace roq
@@ -87,7 +88,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(max_show_quantity={}, )"
         R"(order_type={}, )"
         R"(time_in_force={}, )"
-        R"(execution_instruction={}, )"
+        R"(execution_instructions={}, )"
         R"(order_template="{}", )"
         R"(create_time_utc={}, )"
         R"(update_time_utc={}, )"
@@ -119,7 +120,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.max_show_quantity,
         value.order_type,
         value.time_in_force,
-        value.execution_instruction,
+        value.execution_instructions,
         value.order_template,
         value.create_time_utc,
         value.update_time_utc,

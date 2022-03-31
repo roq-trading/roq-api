@@ -45,10 +45,10 @@ struct ROQ_PACKED Decimals final {
   constexpr Decimals(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr Decimals(uint8_t value)
+  constexpr explicit Decimals(uint8_t value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr Decimals(const std::string_view &value)
+  constexpr explicit Decimals(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }

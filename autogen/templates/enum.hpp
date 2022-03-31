@@ -31,11 +31,11 @@ struct ROQ_PACKED {{ name }} final {
       : type_(type) {
   }
 
-  explicit constexpr {{ name }}(uint8_t value)
+  constexpr explicit {{ name }}(uint8_t value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {
   }
 
-  explicit constexpr {{ name }}(const std::string_view& value)
+  constexpr explicit {{ name }}(const std::string_view& value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {
   }
 

@@ -20,9 +20,11 @@ namespace detail {
 template <std::size_t N>
 struct static_string final {
 #if __cplusplus >= 202002L
+  // cppcheck-suppress noExplicitConstructor
   consteval static_string(const std::string_view &sv)
       : length_(std::min(N, std::size(sv))), buffer_(create(sv, length_)) {}
 #else
+  // cppcheck-suppress noExplicitConstructor
   constexpr static_string(const std::string_view &sv) : length_(std::min(N, sv.size())), buffer_(create(sv, length_)) {}
 #endif
 
@@ -58,8 +60,10 @@ struct basic_format_str final {
   using file_name_type = detail::static_string<32>;
   template <typename T>
 #if __cplusplus >= 202002L
+  // cppcheck-suppress noExplicitConstructor
   consteval basic_format_str(const T &str, const source_location &loc = source_location::current())  // NOLINT
 #else
+  // cppcheck-suppress noExplicitConstructor
   constexpr basic_format_str(
       const std::string_view &str, const source_location &loc = source_location::current())  // NOLINT
 #endif

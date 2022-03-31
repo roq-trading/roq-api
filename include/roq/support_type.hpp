@@ -43,7 +43,7 @@ struct ROQ_PACKED SupportType final {
   constexpr SupportType(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr SupportType(uint64_t type) : type_(validate(type)) {}
+  constexpr explicit SupportType(uint64_t type) : type_(validate(type)) {}
 
   constexpr operator type_t() const { return type_; }
 

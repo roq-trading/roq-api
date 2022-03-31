@@ -38,10 +38,10 @@ struct ROQ_PACKED OrderStatus final {
   constexpr OrderStatus(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr OrderStatus(uint8_t value)
+  constexpr explicit OrderStatus(uint8_t value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr OrderStatus(const std::string_view &value)
+  constexpr explicit OrderStatus(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }

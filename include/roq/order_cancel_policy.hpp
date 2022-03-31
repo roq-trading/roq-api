@@ -31,10 +31,10 @@ struct ROQ_PACKED OrderCancelPolicy final {
   constexpr OrderCancelPolicy(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr OrderCancelPolicy(uint8_t value)
+  constexpr explicit OrderCancelPolicy(uint8_t value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr OrderCancelPolicy(const std::string_view &value)
+  constexpr explicit OrderCancelPolicy(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }

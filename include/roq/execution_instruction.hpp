@@ -32,7 +32,7 @@ struct ROQ_PACKED ExecutionInstruction final {
   constexpr ExecutionInstruction(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr ExecutionInstruction(uint32_t type) : type_(validate(type)) {}
+  constexpr explicit ExecutionInstruction(uint32_t type) : type_(validate(type)) {}
 
   constexpr operator type_t() const { return type_; }
 

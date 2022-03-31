@@ -52,7 +52,6 @@ TEST_CASE("update_seconds", "[update]") {
 
 TEST_CASE("update_int_first", "[update]") {
   int value = 0;
-  CHECK(value == 0);
   CHECK(update_first(value, 1) == true);
   CHECK(value == 1);
   CHECK(update_first(value, 2) == false);
@@ -81,7 +80,6 @@ TEST_CASE("update_chrono_first", "[update]") {
 
 TEST_CASE("update_int_max", "[update]") {
   int value = 0;
-  CHECK(value == 0);
   CHECK(update_max(value, 1) == true);
   CHECK(value == 1);
   CHECK(update_max(value, 1) == false);

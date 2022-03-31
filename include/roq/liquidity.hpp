@@ -31,10 +31,10 @@ struct ROQ_PACKED Liquidity final {
   constexpr Liquidity(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr Liquidity(uint8_t value)
+  constexpr explicit Liquidity(uint8_t value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr Liquidity(const std::string_view &value)
+  constexpr explicit Liquidity(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }

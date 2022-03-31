@@ -115,8 +115,8 @@ TEST_CASE("absl_hash_simple_4", "[string]") {
   // comparison
   // ... same
   for (size_t i = 0; i < std::size(raw_hash); ++i) {
-    CHECK(raw[i] == raw[i]);
-    CHECK(!(raw[i] != raw[i]));
+    CHECK(raw[i] == heterogeneous[i]);
+    CHECK(!(raw[i] != heterogeneous[i]));
   }
   for (size_t i = 0; i < (std::size(raw_hash) - 1); ++i)
     for (size_t j = i + 1; j < std::size(raw_hash); ++j) {

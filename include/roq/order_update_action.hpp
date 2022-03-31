@@ -32,10 +32,10 @@ struct ROQ_PACKED OrderUpdateAction final {
   constexpr OrderUpdateAction(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr OrderUpdateAction(uint8_t value)
+  constexpr explicit OrderUpdateAction(uint8_t value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr OrderUpdateAction(const std::string_view &value)
+  constexpr explicit OrderUpdateAction(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }

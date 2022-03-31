@@ -32,10 +32,10 @@ struct ROQ_PACKED StreamType final {
   constexpr StreamType(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr StreamType(uint8_t value)
+  constexpr explicit StreamType(uint8_t value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr StreamType(const std::string_view &value)
+  constexpr explicit StreamType(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }

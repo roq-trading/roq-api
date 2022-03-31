@@ -35,10 +35,10 @@ struct ROQ_PACKED ConnectionStatus final {
   constexpr ConnectionStatus(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr ConnectionStatus(uint8_t value)
+  constexpr explicit ConnectionStatus(uint8_t value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr ConnectionStatus(const std::string_view &value)
+  constexpr explicit ConnectionStatus(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }

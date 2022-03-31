@@ -32,10 +32,10 @@ struct ROQ_PACKED RequestType final {
   constexpr RequestType(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr RequestType(uint8_t value)
+  constexpr explicit RequestType(uint8_t value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr RequestType(const std::string_view &value)
+  constexpr explicit RequestType(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }

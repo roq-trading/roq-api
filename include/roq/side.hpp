@@ -31,9 +31,9 @@ struct ROQ_PACKED Side final {
   constexpr Side(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr Side(uint8_t value) : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
+  constexpr explicit Side(uint8_t value) : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr Side(const std::string_view &value)
+  constexpr explicit Side(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }

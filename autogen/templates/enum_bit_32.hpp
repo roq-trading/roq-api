@@ -29,7 +29,7 @@ struct ROQ_PACKED {{ name }} final {
       : type_(type) {
   }
 
-  explicit constexpr {{ name }}(uint32_t type)
+  constexpr explicit {{ name }}(uint32_t type)
       : type_(validate(type)) {
   }
 

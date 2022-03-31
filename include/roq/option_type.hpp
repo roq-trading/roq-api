@@ -31,10 +31,10 @@ struct ROQ_PACKED OptionType final {
   constexpr OptionType(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  explicit constexpr OptionType(uint8_t value)
+  constexpr explicit OptionType(uint8_t value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
-  explicit constexpr OptionType(const std::string_view &value)
+  constexpr explicit OptionType(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr operator type_t() const { return type_; }

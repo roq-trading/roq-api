@@ -65,7 +65,7 @@ struct std::is_enum<roq::Enum<T>> : std::true_type {};
 
 template <typename T>
 struct std::underlying_type<roq::Enum<T>> {
-  using type = std::underlying_type<T>::type;
+  using type = typename std::underlying_type<T>::type;
 };
 
 template <typename T>

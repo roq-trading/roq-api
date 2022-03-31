@@ -18,7 +18,8 @@ enum class MyEnum : uint8_t {
 
 namespace {
 struct MyEnum final : public roq::Enum<detail::MyEnum> {
-  using enum type_t;  // https://stackoverflow.com/a/67000446
+  using enum detail::MyEnum;  // https://stackoverflow.com/a/67000446
+
   using base_t::base_t;
   using base_t::operator=;
 

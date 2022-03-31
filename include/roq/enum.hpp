@@ -29,7 +29,7 @@ namespace roq {
 template <typename T>
 struct ROQ_PACKED Enum {
   using type_t = T;
-  using value_t = std::underlying_type<T>::type;
+  using value_t = typename std::underlying_type<T>::type;
 
   constexpr Enum() = default;
 
@@ -78,7 +78,7 @@ struct std::is_enum<roq::Enum<T>> : std::true_type {};
 
 template <typename T>
 struct std::underlying_type<roq::Enum<T>> {
-  using type = roq::Enum<T>::type_t;
+  using type = typename roq::Enum<T>::type_t;
 };
 
 template <typename T>

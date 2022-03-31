@@ -15,11 +15,21 @@
 
 namespace roq {
 
-// note! https://stackoverflow.com/a/67000446
+// +++ EXPERIMENTAL DO NOT USE +++
+//
+// The idea is to have a single template class useful for all enums
+// However, current approach requires a derived class and may cause internal
+// compiler error (using gcc 11.2)
+
+// note!
+// this class must be derived
+// better would be "using MyEnum = Enum<T>", but this is not possible due to
+// https://stackoverflow.com/a/67000446
 
 template <typename T>
 struct ROQ_PACKED Enum {
   using type_t = T;
+  using value_t = std::underlying_type<T>::type;
 
   constexpr Enum() = default;
 
@@ -27,16 +37,18 @@ struct ROQ_PACKED Enum {
   constexpr Enum(type_t type)  // NOLINT (allow implicit)
       : type_(type) {}
 
-  constexpr explicit Enum(uint8_t value) : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
+  constexpr explicit Enum(value_t value) : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
 
   constexpr explicit Enum(const std::string_view &value)
       : type_(magic_enum::enum_cast<type_t>(value).value_or(type_t::UNDEFINED)) {}
+
   /*
-  constexpr Enum<T> &operator=(type_t type) {
+  constexpr Enum &operator=(type_t type) {
     type_ = type;
     return *this;
   }
   */
+
   constexpr operator type_t() const { return type_; }
 
   constexpr std::string_view name() const { return magic_enum::enum_name(type_); }
@@ -54,7 +66,8 @@ struct ROQ_PACKED Enum {
     return result.value();                        // note! could throw
   }
 
- private:
+ protected:
+  using base_t = Enum;
   type_t type_ = type_t::UNDEFINED;
 };
 
@@ -65,7 +78,7 @@ struct std::is_enum<roq::Enum<T>> : std::true_type {};
 
 template <typename T>
 struct std::underlying_type<roq::Enum<T>> {
-  using type = typename std::underlying_type<T>::type;
+  using type = roq::Enum<T>::type_t;
 };
 
 template <typename T>

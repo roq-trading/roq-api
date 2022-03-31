@@ -283,6 +283,7 @@ def new_spec(path, namespaces, name, comment, spec, type_):
     return dict(
         namespaces=namespaces,
         name=name,
+        snake_case_name=snake_case(name),
         comment=comment,
         filename=filename,
         variables=variables,

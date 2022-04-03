@@ -23,7 +23,7 @@ namespace roq {
 struct ROQ_PUBLIC MBOUpdate final {
   double price = NaN;              //!< Order price
   double remaining_quantity = {};  //!< Remaining order quantity
-  OrderUpdateAction action;        //!< Order update action
+  OrderUpdateAction action = {};   //!< Order update action
   uint32_t priority = {};          //!< Queue priority
   ExternalTradeId order_id;        //!< Order identifier
 };

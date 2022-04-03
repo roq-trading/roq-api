@@ -24,7 +24,7 @@ namespace roq {
 
 //! Disconnected
 struct ROQ_PUBLIC Disconnected final {
-  OrderCancelPolicy order_cancel_policy;  //!< Cancel orders on disconnect?
+  OrderCancelPolicy order_cancel_policy = {};  //!< Cancel orders on disconnect?
 };
 
 }  // namespace roq

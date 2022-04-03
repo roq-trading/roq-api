@@ -128,8 +128,6 @@ def get_default_from_type(type_):
     """get default value from type"""
     if is_mask(type_) or is_array(type_) or is_string_like(type_):
         return ""
-    if not is_pod_or_std(type_):
-        return ""
     ret = defaults.get(type_)
     return ret if isinstance(ret, str) else " = {}"
 

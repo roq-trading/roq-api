@@ -32,11 +32,11 @@ struct ROQ_PUBLIC CreateOrder final {
   uint32_t order_id = {};                             //!< Order identifier
   std::string_view exchange;                          //!< Exchange
   std::string_view symbol;                            //!< Symbol
-  Side side;                                          //!< Order side
-  PositionEffect position_effect;                     //!< Position effect
+  Side side = {};                                     //!< Order side
+  PositionEffect position_effect = {};                //!< Position effect
   double max_show_quantity = NaN;                     //!< Quantity visible to market (requires exchange support)
-  OrderType order_type;                               //!< Order type
-  TimeInForce time_in_force;                          //!< Time in force
+  OrderType order_type = {};                          //!< Order type
+  TimeInForce time_in_force = {};                     //!< Time in force
   Mask<ExecutionInstruction> execution_instructions;  //!< Execution instructions
   std::string_view order_template;                    //!< Order template
   double quantity = NaN;                              //!< Order quantity

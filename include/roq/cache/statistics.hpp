@@ -23,7 +23,7 @@ class Statistics final {
 
   void clear() {
     stream_id = {};
-    for (auto &type : StatisticsType::values()) {
+    for (auto &type : magic_enum::enum_values<StatisticsType>()) {
       auto index = to_index(type);
       new (&statistics[index]) roq::Statistics{
           .type = type,  // note!
@@ -106,7 +106,7 @@ class Statistics final {
   // the storage interface should support the emplace_back() method
   template <typename Context, typename Storage>
   [[nodiscard]] roq::StatisticsUpdate extract(const Context &context, Storage &storage) const {
-    for (auto &type : StatisticsType::values()) {
+    for (auto &type : magic_enum::enum_values<StatisticsType>()) {
       if (type == StatisticsType{})  // skip undefined
         continue;
       auto index = to_index(type);
@@ -127,7 +127,7 @@ class Statistics final {
   // note! a callback for each non-empty statistics
   template <typename Callback>
   void dispatch(Callback callback) const {
-    for (auto &type : StatisticsType::values()) {
+    for (auto &type : magic_enum::enum_values<StatisticsType>()) {
       auto index = to_index(type);
       auto &tmp = statistics[index];
       if (!is_empty(tmp))
@@ -137,7 +137,7 @@ class Statistics final {
 
   uint16_t stream_id = {};
 
-  std::array<roq::Statistics, StatisticsType::count()> statistics;
+  std::array<roq::Statistics, magic_enum::enum_count<StatisticsType>()> statistics;
   std::chrono::nanoseconds exchange_time_utc = {};
 
  private:

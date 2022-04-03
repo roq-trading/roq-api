@@ -24,7 +24,7 @@ struct ROQ_PUBLIC Fill final {
   ExternalTradeId external_trade_id;  //!< External trade identifier
   double quantity = NaN;              //!< Quantity
   double price = NaN;                 //!< Price
-  Liquidity liquidity;                //!< Liquidity indicator
+  Liquidity liquidity = {};           //!< Liquidity indicator
 };
 
 }  // namespace roq

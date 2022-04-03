@@ -21,7 +21,7 @@ namespace roq {
 
 //! Represents a single statistic
 struct ROQ_PUBLIC Statistics final {
-  StatisticsType type;                       //!< Statistics type
+  StatisticsType type = {};                  //!< Statistics type
   double value = NaN;                        //!< Value
   std::chrono::seconds begin_time_utc = {};  //!< Sample period begin time
   std::chrono::seconds end_time_utc = {};    //!< Sample period end time

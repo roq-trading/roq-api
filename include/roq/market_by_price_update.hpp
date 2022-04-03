@@ -31,11 +31,11 @@ struct ROQ_PUBLIC MarketByPriceUpdate final {
   std::string_view symbol;                          //!< Symbol
   std::span<MBPUpdate> bids;                        //!< List of bids
   std::span<MBPUpdate> asks;                        //!< List of asks
-  UpdateType update_type;                           //!< Update type
+  UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
   int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
-  Decimals price_decimals;                          //!< Decimal digits required to represent prices
-  Decimals quantity_decimals;                       //!< Decimal digits required to represent quantities
+  Decimals price_decimals = {};                     //!< Decimal digits required to represent prices
+  Decimals quantity_decimals = {};                  //!< Decimal digits required to represent quantities
   uint16_t max_depth = {};                          //!< Maximum depth (used to maintain a view of top N price levels)
   uint32_t checksum = {};                           //!< Checksum (internal)
 };

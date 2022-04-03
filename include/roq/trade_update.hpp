@@ -32,15 +32,15 @@ struct ROQ_PUBLIC TradeUpdate final {
   uint32_t order_id = {};                         //!< Order identifier
   std::string_view exchange;                      //!< Exchange
   std::string_view symbol;                        //!< Symbol
-  Side side;                                      //!< Side
-  PositionEffect position_effect;                 //!< Position effect
+  Side side = {};                                 //!< Side
+  PositionEffect position_effect = {};            //!< Position effect
   std::chrono::nanoseconds create_time_utc = {};  //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};  //!< Updated timestamp (UTC)
   std::string_view external_account;              //!< External account name
   std::string_view external_order_id;             //!< External order identifier
   std::span<Fill> fills;                          //!< List of fills
   std::string_view routing_id;                    //!< Routing identifier
-  UpdateType update_type;                         //!< Update type
+  UpdateType update_type = {};                    //!< Update type
 };
 
 }  // namespace roq

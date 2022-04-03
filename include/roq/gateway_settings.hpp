@@ -33,7 +33,7 @@ struct ROQ_PUBLIC GatewaySettings final {
   bool mbp_allow_price_inversion = false;      //!< MBP allow price inversion?
   bool oms_download_has_state = false;         //!< OMS download includes state information?
   bool oms_download_has_routing_id = false;    //!< OMS download includes routing_id?
-  RequestIdType oms_request_id_type;           //!< OMS request identifier type
+  RequestIdType oms_request_id_type = {};      //!< OMS request identifier type
 };
 
 }  // namespace roq

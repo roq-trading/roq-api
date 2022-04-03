@@ -29,7 +29,7 @@ struct ROQ_PUBLIC ReferenceData final {
   std::string_view exchange;                      //!< Exchange
   std::string_view symbol;                        //!< Symbol
   std::string_view description;                   //!< Description
-  SecurityType security_type;                     //!< Security type
+  SecurityType security_type = {};                //!< Security type
   std::string_view base_currency;                 //!< Base currency
   std::string_view quote_currency;                //!< Quote currency
   std::string_view margin_currency;               //!< Margin currency
@@ -39,7 +39,7 @@ struct ROQ_PUBLIC ReferenceData final {
   double min_trade_vol = NaN;                     //!< Minimum trade volume
   double max_trade_vol = NaN;                     //!< Maximum trade volume
   double trade_vol_step_size = NaN;               //!< Trade volume step size
-  OptionType option_type;                         //!< Option type
+  OptionType option_type = {};                    //!< Option type
   std::string_view strike_currency;               //!< Strike currency
   double strike_price = NaN;                      //!< Strike price
   std::string_view underlying;                    //!< Underlying instrument

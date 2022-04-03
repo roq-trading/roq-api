@@ -215,7 +215,7 @@ inline constexpr bool has_request_succeeded(RequestStatus request_status) {
 inline constexpr int compare_requests(RequestStatus lhs, RequestStatus rhs) {
   if (lhs == rhs)
     return 0;
-  const constexpr std::array<int, RequestStatus::count()> priority{
+  const constexpr std::array<int, magic_enum::enum_count<RequestStatus>()> priority{
       0,
       1,
       4,
@@ -224,11 +224,11 @@ inline constexpr int compare_requests(RequestStatus lhs, RequestStatus rhs) {
       3,
       6,
   };
-  static_assert(std::size(priority) == RequestStatus::count());
+  static_assert(std::size(priority) == magic_enum::enum_count<RequestStatus>());
   static_assert(priority[0] == 0);
-  static_assert(priority[RequestStatus::count() - 1] == 6);
-  auto lhs_priority = priority[static_cast<RequestStatus::type_t>(lhs)];
-  auto rhs_priority = priority[static_cast<RequestStatus::type_t>(rhs)];
+  static_assert(priority[magic_enum::enum_count<RequestStatus>() - 1] == 6);
+  auto lhs_priority = priority[static_cast<std::underlying_type<decltype(lhs)>::type>(lhs)];
+  auto rhs_priority = priority[static_cast<std::underlying_type<decltype(rhs)>::type>(rhs)];
   return lhs_priority < rhs_priority ? -1 : 1;
 }
 

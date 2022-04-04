@@ -18,14 +18,16 @@
 #include "roq/numbers.hpp"
 #include "roq/string.hpp"
 
+#include "roq/support_type.hpp"
+
 namespace roq {
 
 //! Update relating to current gateway service status
 struct ROQ_PUBLIC GatewayStatus final {
-  std::string_view account;   //!< Account name
-  uint64_t supported = {};    //!< Supported update types (bit mask)
-  uint64_t available = {};    //!< Update types (bit mask) available from all streams
-  uint64_t unavailable = {};  //!< Update types (bit mask) unavailable from one or more streams
+  std::string_view account;       //!< Account name
+  Mask<SupportType> supported;    //!< Supported update types
+  Mask<SupportType> available;    //!< Available update types (union of all streams, one or more available)
+  Mask<SupportType> unavailable;  //!< Unavailable update types (union of all streams, one or more unavailable)
 };
 
 }  // namespace roq

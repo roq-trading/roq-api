@@ -14,7 +14,7 @@
     {
       "name": "supports",
       "type": "Mask<SupportType>",
-      "comment": "Support types (bit mask)"
+      "comment": "Supported update types"
     },
     {
       "name": "status",

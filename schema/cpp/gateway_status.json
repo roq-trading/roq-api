@@ -9,18 +9,18 @@
     },
     {
       "name": "supported",
-      "type": "uint64_t",
-      "comment": "Supported update types (bit mask)"
+      "type": "Mask<SupportType>",
+      "comment": "Supported update types"
     },
     {
       "name": "available",
-      "type": "uint64_t",
-      "comment": "Update types (bit mask) available from all streams"
+      "type": "Mask<SupportType>",
+      "comment": "Available update types (union of all streams, one or more available)"
     },
     {
       "name": "unavailable",
-      "type": "uint64_t",
-      "comment": "Update types (bit mask) unavailable from one or more streams"
+      "type": "Mask<SupportType>",
+      "comment": "Unavailable update types (union of all streams, one or more unavailable)"
     }
   ]
 }

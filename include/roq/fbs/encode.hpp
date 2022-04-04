@@ -663,11 +663,7 @@ auto encode(B &builder, const roq::RateLimitTrigger &value) {
 template <typename B>
 auto encode(B &builder, const roq::GatewayStatus &value) {
   return CreateGatewayStatus(
-      builder,
-      encode(builder, value.account),
-      value.supported,     // note! using Mask<SupportType>
-      value.available,     // note! using Mask<SupportType>
-      value.unavailable);  // note! using Mask<SupportType>
+      builder, encode(builder, value.account), value.supported.get(), value.available.get(), value.unavailable.get());
 }
 
 template <typename B>

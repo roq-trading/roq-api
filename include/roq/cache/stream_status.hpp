@@ -44,7 +44,7 @@ struct StreamStatus final {
   const uint16_t stream_id = {};
   const Account account;
 
-  Mask<SupportType> supports = {};
+  Mask<SupportType> supports;
   ConnectionStatus status = {};
   StreamType type = {};
   Priority priority = {};

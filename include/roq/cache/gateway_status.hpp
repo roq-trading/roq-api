@@ -25,9 +25,9 @@ struct GatewayStatus final {
 
   [[nodiscard]] bool operator()(const roq::GatewayStatus &gateway_status) {
     auto dirty = false;
-    dirty |= utils::update(supported, Mask<SupportType>{gateway_status.supported});
-    dirty |= utils::update(available, Mask<SupportType>{gateway_status.available});
-    dirty |= utils::update(unavailable, Mask<SupportType>{gateway_status.unavailable});
+    dirty |= utils::update(supported, gateway_status.supported);
+    dirty |= utils::update(available, gateway_status.available);
+    dirty |= utils::update(unavailable, gateway_status.unavailable);
     return dirty;
   }
 
@@ -37,23 +37,23 @@ struct GatewayStatus final {
   [[nodiscard]] roq::GatewayStatus convert(const Context &context) const {
     return {
         .account = context.account,
-        .supported = supported.get(),
-        .available = available.get(),
-        .unavailable = unavailable.get(),
+        .supported = supported,
+        .available = available,
+        .unavailable = unavailable,
     };
   }
   [[nodiscard]] roq::GatewayStatus convert() const {
     return {
         .account = {},
-        .supported = supported.get(),
-        .available = available.get(),
-        .unavailable = unavailable.get(),
+        .supported = supported,
+        .available = available,
+        .unavailable = unavailable,
     };
   }
 
-  Mask<SupportType> supported = {};
-  Mask<SupportType> available = {};
-  Mask<SupportType> unavailable = {};
+  Mask<SupportType> supported;
+  Mask<SupportType> available;
+  Mask<SupportType> unavailable;
 };
 
 }  // namespace cache

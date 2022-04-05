@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <array>
+#include <compare>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -67,9 +68,21 @@ class ROQ_PACKED String {
     return H::combine(std::move(hash), static_cast<std::string_view>(rhs));
   }
 
-  constexpr auto operator==(const std::string_view &rhs) const { return static_cast<std::string_view>(*this) == rhs; }
-
+#if defined(__clang__)
+  constexpr bool operator==(const std::string_view &rhs) const {
+    return static_cast<std::string_view>(*this).compare(rhs) == 0;
+  }
+  constexpr auto operator<=>(const std::string_view &rhs) const {
+    auto lhs = static_cast<std::string_view>(*this);
+    auto diff = lhs.compare(rhs);
+    if (diff == 0)
+      return std::strong_ordering::equal;
+    return diff < 0 ? std::strong_ordering::less : std::strong_ordering::greater;
+  }
+#else
+  constexpr bool operator==(const std::string_view &rhs) const { return static_cast<std::string_view>(*this) == rhs; }
   constexpr auto operator<=>(const std::string_view &rhs) const { return static_cast<std::string_view>(*this) <=> rhs; }
+#endif
 
   constexpr auto operator<=>(const String<N> &rhs) const { return operator<=>(static_cast<std::string_view>(rhs)); }
 

@@ -45,7 +45,26 @@ class UUID final {
     return std::all_of(std::begin(uuid_), std::end(uuid_), [](auto v) { return v == 0; });
   }
 
+#if defined(__clang__)
+  constexpr bool operator==(const UUID &rhs) const {
+    for (size_t i = 0; i < sizeof(uuid_t); ++i) {
+      if (uuid_[i] != rhs.uuid_[i])
+        return false;
+    }
+    return true;
+  }
+  constexpr auto operator<=>(const UUID &rhs) const {
+    for (size_t i = 0; i < sizeof(uuid_t); ++i) {
+      int diff = uuid_[i] - rhs.uuid_[i];
+      if (diff == 0)
+        continue;
+      return diff < 0 ? std::strong_ordering::less : std::strong_ordering::greater;
+    }
+    return std::strong_ordering::equal;
+  }
+#else
   constexpr auto operator<=>(const UUID &) const = default;
+#endif
 
  private:
   uuid_t uuid_;

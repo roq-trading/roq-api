@@ -37,12 +37,9 @@ class Mask final {
   template <typename... Args>
   constexpr Mask(const Mask &other, Args &&...args) : value_(other.value_ | Mask{std::forward<Args>(args)...}.get()) {}
 
-  constexpr bool operator==(const Mask &rhs) const { return value_ == rhs.value_; }
-  constexpr bool operator!=(const Mask &rhs) const { return value_ != rhs.value_; }
-  constexpr bool operator<(const Mask &rhs) const { return value_ < rhs.value_; }
-  constexpr bool operator<=(const Mask &rhs) const { return value_ <= rhs.value_; }
-  constexpr bool operator>(const Mask &rhs) const { return value_ > rhs.value_; }
-  constexpr bool operator>=(const Mask &rhs) const { return value_ >= rhs.value_; }
+  constexpr auto operator==(const Mask &rhs) const { return value_ == rhs.value_; }
+
+  constexpr auto operator<=>(const Mask &) const = default;
 
   constexpr bool empty() const { return value_ == value_type{}; }
 

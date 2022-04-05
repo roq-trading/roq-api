@@ -16,7 +16,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   double max_show_quantity = NaN;
   OrderType order_type = {};
   TimeInForce time_in_force = {};
-  Mask<ExecutionInstruction> execution_instructions = {};
+  Mask<ExecutionInstruction> execution_instructions;
   std::string_view order_template;
   std::chrono::nanoseconds create_time_utc = {};
   std::chrono::nanoseconds update_time_utc = {};

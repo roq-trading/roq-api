@@ -67,32 +67,13 @@ class ROQ_PACKED String {
     return H::combine(std::move(hash), static_cast<std::string_view>(rhs));
   }
 
-  // comparison
-  template <typename... Args>
-  constexpr int compare(Args &&...args) const {
-    return static_cast<std::string_view>(*this).compare(std::forward<Args>(args)...);
-  }
+  constexpr auto operator==(const std::string_view &rhs) const { return static_cast<std::string_view>(*this) == rhs; }
 
-  constexpr bool operator==(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) == 0; }
-  constexpr bool operator!=(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) != 0; }
-  constexpr bool operator<(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) < 0; }
-  constexpr bool operator>(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) > 0; }
-  constexpr bool operator<=(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) <= 0; }
-  constexpr bool operator>=(const String<N> &rhs) const { return compare(static_cast<std::string_view>(rhs)) >= 0; }
+  constexpr auto operator<=>(const std::string_view &rhs) const { return static_cast<std::string_view>(*this) <=> rhs; }
 
-  constexpr bool operator==(const std::string_view &rhs) const { return compare(rhs) == 0; }
-  constexpr bool operator!=(const std::string_view &rhs) const { return compare(rhs) != 0; }
-  constexpr bool operator<(const std::string_view &rhs) const { return compare(rhs) < 0; }
-  constexpr bool operator>(const std::string_view &rhs) const { return compare(rhs) > 0; }
-  constexpr bool operator<=(const std::string_view &rhs) const { return compare(rhs) <= 0; }
-  constexpr bool operator>=(const std::string_view &rhs) const { return compare(rhs) >= 0; }
+  constexpr auto operator<=>(const String<N> &rhs) const { return operator<=>(static_cast<std::string_view>(rhs)); }
 
-  constexpr bool operator==(const std::string &rhs) const { return compare(rhs) == 0; }
-  constexpr bool operator!=(const std::string &rhs) const { return compare(rhs) != 0; }
-  constexpr bool operator<(const std::string &rhs) const { return compare(rhs) < 0; }
-  constexpr bool operator>(const std::string &rhs) const { return compare(rhs) > 0; }
-  constexpr bool operator<=(const std::string &rhs) const { return compare(rhs) <= 0; }
-  constexpr bool operator>=(const std::string &rhs) const { return compare(rhs) >= 0; }
+  constexpr auto operator<=>(const std::string &rhs) const { return operator<=>(std::string_view{rhs}); }
 
   constexpr value_type &operator[](size_t index) { return buffer_[index]; }
 
@@ -100,13 +81,13 @@ class ROQ_PACKED String {
 
   constexpr std::size_t size() { return N; }
 
-  inline constexpr std::size_t length() const {
+  constexpr std::size_t length() const {
     if (buffer_[N - 2] == '\0')
       return static_cast<std::size_t>(buffer_[N - 1]);
     return N - (buffer_[N - 1] == '\0' ? 1 : 0);
   }
 
-  inline constexpr bool empty() const { return buffer_[0] == '\0'; }
+  constexpr bool empty() const { return buffer_[0] == '\0'; }
 
   constexpr value_type const *data() const { return std::data(buffer_); }
 
@@ -154,10 +135,12 @@ class ROQ_PACKED String {
   std::array<value_type, N> buffer_ = {};
 };
 
+/*
 template <std::size_t N>
 inline bool operator==(const String<N> &lhs, const String<N> &rhs) {
   return lhs.operator==()(rhs);
 }
+*/
 
 // XXX following should be moved elsewhere
 

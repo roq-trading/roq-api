@@ -46,6 +46,8 @@ class UUID final {
   }
 
 #if defined(__clang__)
+  // note! clang13 does not yet support spaceship operator for std::array
+  // https://libcxx.llvm.org/Status/Spaceship.html
   constexpr bool operator==(const UUID &rhs) const {
     for (size_t i = 0; i < sizeof(uuid_t); ++i) {
       if (uuid_[i] != rhs.uuid_[i])

@@ -16,7 +16,7 @@
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
 #include "roq/numbers.hpp"
-#include "roq/string.hpp"
+#include "roq/string_types.hpp"
 
 #include "roq/error.hpp"
 #include "roq/origin.hpp"

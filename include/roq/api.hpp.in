@@ -92,7 +92,6 @@
 // misc
 
 #include "roq/exceptions.hpp"
-#include "roq/limits.hpp"
 
 // version
 
@@ -100,17 +99,22 @@
 
 namespace roq {
 
-// user id's (restricted)
+// user id's (restricted values)
 
 static const constexpr uint8_t SOURCE_NONE = 0;
 static const constexpr uint8_t SOURCE_SELF = 255;
 
+// order id's (upper limit)
+
+static const constexpr uint32_t MAX_ORDER_ID = (1 << 24) - 1;
+static const constexpr uint32_t MAX_REQUEST_VERSION = (1 << 24) - 1;
+
 // validate auto-generated code
 
-static_assert(sizeof(decltype(RateLimitTrigger::users)::value_type) == MAX_LENGTH_USER);
-static_assert(sizeof(decltype(RateLimitTrigger::accounts)::value_type) == MAX_LENGTH_ACCOUNT);
+static_assert(sizeof(decltype(RateLimitTrigger::users)::value_type) == sizeof(User));
+static_assert(sizeof(decltype(RateLimitTrigger::accounts)::value_type) == sizeof(Account));
 
-static_assert(sizeof(decltype(Measurement::name)) == MAX_LENGTH_MEASUREMENT_KEY);
+static_assert(sizeof(decltype(Measurement::name)) == sizeof(MeasurementKey));
 
 // check that multiples can be cache aligned
 

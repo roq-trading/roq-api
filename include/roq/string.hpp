@@ -15,7 +15,6 @@
 
 #include "roq/compat.hpp"
 #include "roq/exceptions.hpp"
-#include "roq/limits.hpp"
 
 namespace roq {
 
@@ -62,7 +61,7 @@ class ROQ_PACKED String {
     return *this;
   }
 
-  // hash
+  // abseil hash (heterogeneous lookup)
   template <typename H>
   friend H AbslHashValue(H hash, const String<N> &rhs) {
     return H::combine(std::move(hash), static_cast<std::string_view>(rhs));
@@ -94,7 +93,7 @@ class ROQ_PACKED String {
 
   constexpr value_type operator[](size_t index) const { return buffer_[index]; }
 
-  constexpr std::size_t size() { return N; }
+  constexpr std::size_t size() const { return N; }
 
   constexpr std::size_t length() const {
     if (buffer_[N - 2] == '\0')

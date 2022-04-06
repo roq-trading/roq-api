@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Comparisons now use (or return) `std::strong_ordering` (instead of `int`)
 * Simplify enums (#199)
 * Proper bit-mask support (#198)
 * Promote Trace and TraceInfo to API (from server)

@@ -212,9 +212,9 @@ inline constexpr bool has_request_succeeded(RequestStatus request_status) {
 }
 
 //! Compare requests
-inline constexpr int compare_requests(RequestStatus lhs, RequestStatus rhs) {
+inline constexpr std::strong_ordering compare_requests(RequestStatus lhs, RequestStatus rhs) {
   if (lhs == rhs)
-    return 0;
+    return std::strong_ordering::equal;
   const constexpr std::array<int, magic_enum::enum_count<RequestStatus>()> priority{
       0,
       1,
@@ -229,7 +229,9 @@ inline constexpr int compare_requests(RequestStatus lhs, RequestStatus rhs) {
   static_assert(priority[magic_enum::enum_count<RequestStatus>() - 1] == 6);
   auto lhs_priority = priority[static_cast<std::underlying_type<decltype(lhs)>::type>(lhs)];
   auto rhs_priority = priority[static_cast<std::underlying_type<decltype(rhs)>::type>(rhs)];
-  return lhs_priority < rhs_priority ? -1 : 1;
+  if (lhs_priority < rhs_priority)
+    return std::strong_ordering::less;
+  return std::strong_ordering::greater;
 }
 
 //! Get the opposite \ref Side.

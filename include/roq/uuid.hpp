@@ -60,7 +60,9 @@ class UUID final {
       int diff = uuid_[i] - rhs.uuid_[i];
       if (diff == 0)
         continue;
-      return diff < 0 ? std::strong_ordering::less : std::strong_ordering::greater;
+      if (diff < 0)
+        return std::strong_ordering::less;
+      return std::strong_ordering::greater;
     }
     return std::strong_ordering::equal;
   }

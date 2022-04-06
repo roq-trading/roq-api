@@ -57,7 +57,7 @@ struct Market final {
     return true;  // note! always updated
   }
   // bool operator()(const Event<MarketByOrderUpdate> &event) { (*market_by_order)(event.value); return true; }
-  [[nodiscard]] bool operator()(const Event<TradeSummary> &event) {
+  [[nodiscard]] bool operator()(const Event<TradeSummary> &) {
     return true;  // note! always signal update (never cached)
   }
   [[nodiscard]] bool operator()(const Event<StatisticsUpdate> &event) { return statistics(event); }
@@ -80,7 +80,7 @@ struct Market final {
     return (*iter_2).second(event);
   }
   // note! assumes a single user_id
-  [[nodiscard]] bool operator()(const Event<TradeUpdate> &event) {
+  [[nodiscard]] bool operator()(const Event<TradeUpdate> &) {
     return true;  // note! always signal update (not currently cached)
   }
 

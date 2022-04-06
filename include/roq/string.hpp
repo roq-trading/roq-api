@@ -16,6 +16,10 @@
 #include "roq/compat.hpp"
 #include "roq/exceptions.hpp"
 
+#if defined(__clang__)
+#include "roq/utils/compare.hpp"
+#endif
+
 namespace roq {
 
 // fixed length string buffer
@@ -49,7 +53,7 @@ class ROQ_PACKED String {
 
   // cppcheck-suppress noExplicitConstructor
   constexpr String(value_type const *text)  // NOLINT (allow implicit)
-      : String(std::string_view(text)) {}
+      : String(std::string_view{text}) {}
 
   constexpr String &operator=(const std::string_view &text) {
     copy(text);
@@ -75,10 +79,7 @@ class ROQ_PACKED String {
   }
   constexpr auto operator<=>(const std::string_view &rhs) const {
     auto lhs = static_cast<std::string_view>(*this);
-    auto diff = lhs.compare(rhs);
-    if (diff == 0)
-      return std::strong_ordering::equal;
-    return diff < 0 ? std::strong_ordering::less : std::strong_ordering::greater;
+    return utils::detail::to_strong_ordering(lhs.compare(rhs));
   }
 #else
   constexpr bool operator==(const std::string_view &rhs) const { return static_cast<std::string_view>(*this) == rhs; }
@@ -105,7 +106,7 @@ class ROQ_PACKED String {
 
   constexpr value_type const *data() const { return std::data(buffer_); }
 
-  constexpr operator std::string_view() const { return std::string_view(data(), length()); }
+  constexpr operator std::string_view() const { return {data(), length()}; }
 
   constexpr void clear() {
     // note!

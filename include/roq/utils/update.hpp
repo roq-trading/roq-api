@@ -18,10 +18,10 @@ constexpr bool update(T &result, const U &value) {
   using rhs_type = typename std::decay<U>::type;
   if constexpr (std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
     // special case for floating point: also drop NaN
-    if (compare(result, value) == 0 || compare(value, NaN) == 0)
+    if (compare(result, value) == std::strong_ordering::equal || compare(value, NaN) == std::strong_ordering::equal)
       return false;
   } else {
-    if (compare(result, value) == 0)
+    if (compare(result, value) == std::strong_ordering::equal)
       return false;
   }
   result = value;
@@ -30,7 +30,7 @@ constexpr bool update(T &result, const U &value) {
 
 template <typename T, typename U>
 constexpr bool update_max(T &result, const U &value) {
-  if (compare(value, result) <= 0)
+  if (!(compare(value, result) == std::strong_ordering::greater))
     return false;
   result = value;
   return true;
@@ -38,9 +38,9 @@ constexpr bool update_max(T &result, const U &value) {
 
 template <typename T, typename U>
 constexpr bool update_first(T &result, const U &value) {
-  if (compare(result, T{}) != 0)
+  if (compare(result, T{}) != std::strong_ordering::equal)
     return false;
-  if (compare(value, U{}) != 0)
+  if (compare(value, U{}) != std::strong_ordering::equal)
     result = value;
   return true;
 }
@@ -55,7 +55,7 @@ constexpr bool update_if_not_empty(T &result, const U &value) {
   } else if constexpr (std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
     // update() will do the right thing
   } else {
-    if (compare(value, U{}) == 0)
+    if (compare(value, U{}) == std::strong_ordering::equal)
       return false;
   }
   return update(result, value);

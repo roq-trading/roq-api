@@ -56,7 +56,7 @@ class Statistics final {
     if (dirty) {
       stream_id = statistics_update.stream_id;
       exchange_time_utc = statistics_update.exchange_time_utc;
-      roq::StatisticsUpdate result{
+      StatisticsUpdate result{
           .stream_id = stream_id,
           .exchange = statistics_update.exchange,
           .symbol = statistics_update.symbol,
@@ -90,7 +90,7 @@ class Statistics final {
   // note! this will include *all* statistics (whether empty or not)
   // use the extract method if you only care about non-empty statistics
   template <typename Context>
-  [[nodiscard]] roq::StatisticsUpdate convert(const Context &context) {
+  [[nodiscard]] StatisticsUpdate convert(const Context &context) {
     return {
         .stream_id = stream_id,
         .exchange = context.exchange,
@@ -105,7 +105,7 @@ class Statistics final {
   // a storage container must be provided for storing *non-empty* statistics
   // the storage interface should support the emplace_back() method
   template <typename Context, typename Storage>
-  [[nodiscard]] roq::StatisticsUpdate extract(const Context &context, Storage &storage) const {
+  [[nodiscard]] StatisticsUpdate extract(const Context &context, Storage &storage) const {
     for (auto &type : magic_enum::enum_values<StatisticsType>()) {
       if (type == StatisticsType{})  // skip undefined
         continue;

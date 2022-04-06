@@ -21,20 +21,20 @@ struct Gateway final {
   Gateway(const Gateway &) = delete;
   Gateway(Gateway &&) = default;
 
-  [[nodiscard]] bool operator()(const Event<roq::Connected> &) { return true; }
+  [[nodiscard]] bool operator()(const Event<Connected> &) { return true; }
 
-  [[nodiscard]] bool operator()(const Event<roq::Disconnected> &) {
+  [[nodiscard]] bool operator()(const Event<Disconnected> &) {
     new (this) Gateway{};
     return true;
   }
 
-  [[nodiscard]] bool operator()(const Event<roq::DownloadBegin> &event) {
+  [[nodiscard]] bool operator()(const Event<DownloadBegin> &event) {
     auto &[message_info, download_begin] = event;
     auto &state = get_state(download_begin.account);
     return utils::update(state.downloading, true);
   }
 
-  [[nodiscard]] bool operator()(const Event<roq::DownloadEnd> &event) {
+  [[nodiscard]] bool operator()(const Event<DownloadEnd> &event) {
     auto &[message_info, download_begin] = event;
     auto &state = get_state(download_begin.account);
     return utils::update(state.downloading, false);
@@ -48,7 +48,7 @@ struct Gateway final {
     return state.status(event);
   }
 
-  bool operator()(const SupportType &support) const { return settings.supports.has(support); }
+  bool operator()(SupportType support) const { return settings.supports.has(support); }
   bool operator()(const Mask<SupportType> &expected) const { return settings.supports.has_all(expected); }
 
   bool ready(const Mask<SupportType> &expected) const { return ready(expected, state); }

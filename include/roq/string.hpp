@@ -16,10 +16,6 @@
 #include "roq/compat.hpp"
 #include "roq/exceptions.hpp"
 
-#if defined(__clang__)
-#include "roq/utils/compare.hpp"
-#endif
-
 namespace roq {
 
 // fixed length string buffer
@@ -79,7 +75,12 @@ class ROQ_PACKED String {
   }
   constexpr auto operator<=>(const std::string_view &rhs) const {
     auto lhs = static_cast<std::string_view>(*this);
-    return utils::detail::to_strong_ordering(lhs.compare(rhs));
+    auto sign = lhs.compare(rhs);
+    if (sign == 0)
+      return std::strong_ordering::equal;
+    if (sign < 0)
+      return std::strong_ordering::less;
+    return std::strong_ordering::greater;
   }
 #else
   constexpr bool operator==(const std::string_view &rhs) const { return static_cast<std::string_view>(*this) == rhs; }

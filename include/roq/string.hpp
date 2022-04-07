@@ -74,7 +74,7 @@ class ROQ_PACKED String {
   // references:
   //   https://stackoverflow.com/a/4609795
   template <typename T>
-  inline constexpr int sign_helper(T value) {
+  static constexpr int sign_helper(T value) {
     return (T{} < value) - (value < T{});
   }
 

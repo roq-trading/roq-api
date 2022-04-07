@@ -45,12 +45,20 @@ constexpr bool signbit(T x) {
   // return x < 0.0;
 }
 
+// references:
+//   https://stackoverflow.com/a/4609795
+template <typename T, std::enable_if_t<std::is_signed_v<T>, int> = 0>
+constexpr int sign_helper(T value) {
+  return (T{} < value) - (value < T{});
+}
+
 constexpr std::strong_ordering to_strong_ordering(int sign) {
-  if (sign == 0)
-    return std::strong_ordering::equal;
-  if (sign < 0)
-    return std::strong_ordering::less;
-  return std::strong_ordering::greater;
+  const std::array lookup{
+      std::strong_ordering::less,
+      std::strong_ordering::equal,
+      std::strong_ordering::greater,
+  };
+  return lookup[sign_helper(sign) + 1];
 }
 
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>

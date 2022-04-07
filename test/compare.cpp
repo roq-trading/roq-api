@@ -25,6 +25,18 @@ static_assert(compare(NaN, NaN) == std::strong_ordering::equal);
 static_assert(compare(0.0, NaN) == std::strong_ordering::greater);
 static_assert(compare(NaN, 0.0) == std::strong_ordering::less);
 
+static_assert(detail::sign_helper(-2) == -1);
+static_assert(detail::sign_helper(-1) == -1);
+static_assert(detail::sign_helper(0) == 0);
+static_assert(detail::sign_helper(1) == 1);
+static_assert(detail::sign_helper(2) == 1);
+
+static_assert(detail::to_strong_ordering(-2) == std::strong_ordering::less);
+static_assert(detail::to_strong_ordering(-1) == std::strong_ordering::less);
+static_assert(detail::to_strong_ordering(0) == std::strong_ordering::equal);
+static_assert(detail::to_strong_ordering(1) == std::strong_ordering::greater);
+static_assert(detail::to_strong_ordering(2) == std::strong_ordering::greater);
+
 }  // namespace utils
 }  // namespace roq
 

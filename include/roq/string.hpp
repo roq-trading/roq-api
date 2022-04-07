@@ -68,6 +68,15 @@ class ROQ_PACKED String {
   }
 
 #if defined(__clang__)
+ protected:
+  // references:
+  //   https://stackoverflow.com/a/4609795
+  template <typename T>
+  constexpr int sign_helper(T value) {
+    return (T{} < value) - (value < T{});
+  }
+
+ public:
   // note! clang13 does not yet support spaceship operator for std::string_view
   // https://libcxx.llvm.org/Status/Spaceship.html
   constexpr bool operator==(const std::string_view &rhs) const {
@@ -76,11 +85,12 @@ class ROQ_PACKED String {
   constexpr auto operator<=>(const std::string_view &rhs) const {
     auto lhs = static_cast<std::string_view>(*this);
     auto sign = lhs.compare(rhs);
-    if (sign == 0)
-      return std::strong_ordering::equal;
-    if (sign < 0)
-      return std::strong_ordering::less;
-    return std::strong_ordering::greater;
+    const std::array lookup{
+        std::strong_ordering::less,
+        std::strong_ordering::equal,
+        std::strong_ordering::greater,
+    };
+    return lookup[sign_helper(sign) + 1];
   }
 #else
   constexpr bool operator==(const std::string_view &rhs) const { return static_cast<std::string_view>(*this) == rhs; }
@@ -113,7 +123,7 @@ class ROQ_PACKED String {
     // note!
     // we prefer to clear the entire buffer (for security reasons)
     // even though it would be enough to only set the first element
-    buffer_.fill('\0');
+    std::fill(std::begin(buffer_), std::end(buffer_), '\0');
   }
 
   constexpr void push_back(value_type value) {

@@ -9,6 +9,10 @@
 using namespace roq;
 using namespace std::literals;
 
+static_assert(String<4>{"12"sv} < "2"sv);
+static_assert(String<4>{"12"sv} == "12"sv);
+static_assert(String<4>{"2"sv} > "12"sv);
+
 TEST_CASE("string_empty", "[string]") {
   String<4> s;
   CHECK(s.size() == 4);

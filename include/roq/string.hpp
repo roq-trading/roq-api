@@ -114,7 +114,7 @@ class ROQ_PACKED String {
     return tmp;
   }
 
-  constexpr bool empty() const { return buffer_[0] == '\0'; }
+  constexpr bool empty() const { return length() == 0; }
 
   constexpr value_type const *data() const { return std::data(buffer_); }
 

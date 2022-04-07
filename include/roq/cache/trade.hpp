@@ -44,14 +44,15 @@ struct ROQ_PUBLIC Trade final {
     dirty |= utils::update(routing_id, trade_update.routing_id);
     // some update types will always be published
     switch (trade_update.update_type) {
-      case UpdateType::UNDEFINED:
+      using enum UpdateType;
+      case UNDEFINED:
         break;
-      case UpdateType::SNAPSHOT:
+      case SNAPSHOT:
         dirty = true;
         break;
-      case UpdateType::INCREMENTAL:
+      case INCREMENTAL:
         break;
-      case UpdateType::STALE:
+      case STALE:
         dirty = true;
         break;
     }

@@ -75,14 +75,15 @@ struct ROQ_PUBLIC Order final {
     dirty |= utils::update(max_accepted_version, order_update.max_accepted_version);
     // some update types will always be published
     switch (order_update.update_type) {
-      case UpdateType::UNDEFINED:
+      using enum UpdateType;
+      case UNDEFINED:
         break;
-      case UpdateType::SNAPSHOT:
+      case SNAPSHOT:
         dirty = true;
         break;
-      case UpdateType::INCREMENTAL:
+      case INCREMENTAL:
         break;
-      case UpdateType::STALE:
+      case STALE:
         dirty = true;
         break;
     }

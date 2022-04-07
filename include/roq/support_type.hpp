@@ -42,39 +42,40 @@ struct fmt::formatter<roq::SupportType> {
     using namespace std::literals;
     std::string_view name{[&]() {
       switch (value) {
-        case roq::SupportType::UNDEFINED:
+        using enum roq::SupportType;
+        case UNDEFINED:
           return "UNDEFINED"sv;
-        case roq::SupportType::REFERENCE_DATA:
+        case REFERENCE_DATA:
           return "REFERENCE_DATA"sv;
-        case roq::SupportType::MARKET_STATUS:
+        case MARKET_STATUS:
           return "MARKET_STATUS"sv;
-        case roq::SupportType::TOP_OF_BOOK:
+        case TOP_OF_BOOK:
           return "TOP_OF_BOOK"sv;
-        case roq::SupportType::MARKET_BY_PRICE:
+        case MARKET_BY_PRICE:
           return "MARKET_BY_PRICE"sv;
-        case roq::SupportType::MARKET_BY_ORDER:
+        case MARKET_BY_ORDER:
           return "MARKET_BY_ORDER"sv;
-        case roq::SupportType::TRADE_SUMMARY:
+        case TRADE_SUMMARY:
           return "TRADE_SUMMARY"sv;
-        case roq::SupportType::STATISTICS:
+        case STATISTICS:
           return "STATISTICS"sv;
-        case roq::SupportType::CREATE_ORDER:
+        case CREATE_ORDER:
           return "CREATE_ORDER"sv;
-        case roq::SupportType::MODIFY_ORDER:
+        case MODIFY_ORDER:
           return "MODIFY_ORDER"sv;
-        case roq::SupportType::CANCEL_ORDER:
+        case CANCEL_ORDER:
           return "CANCEL_ORDER"sv;
-        case roq::SupportType::ORDER_ACK:
+        case ORDER_ACK:
           return "ORDER_ACK"sv;
-        case roq::SupportType::ORDER:
+        case ORDER:
           return "ORDER"sv;
-        case roq::SupportType::ORDER_STATE:
+        case ORDER_STATE:
           return "ORDER_STATE"sv;
-        case roq::SupportType::TRADE:
+        case TRADE:
           return "TRADE"sv;
-        case roq::SupportType::POSITION:
+        case POSITION:
           return "POSITION"sv;
-        case roq::SupportType::FUNDS:
+        case FUNDS:
           return "FUNDS"sv;
         default:
           assert(false);

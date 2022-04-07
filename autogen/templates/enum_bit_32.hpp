@@ -29,10 +29,11 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
     using namespace std::literals;
     std::string_view name{[&]() {
       switch (value) {
-        case {{ namespaces | join('::') }}::{{ name }}::UNDEFINED:
+        using enum {{ namespaces | join('::') }}::{{ name }};
+        case UNDEFINED:
           return "UNDEFINED"sv;
     {% for value in values %}
-        case {{ namespaces | join('::') }}::{{ name }}::{{ value.enum_value }}:
+        case {{ value.enum_value }}:
           return "{{ value.enum_value }}"sv;
     {% endfor %}
         default:

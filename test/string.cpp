@@ -67,14 +67,19 @@ TEST_CASE("string_construct", "[string]") {
 TEST_CASE("string_push_back", "[string]") {
   String<4> s;
   CHECK(s.length() == 0);
+  CHECK(s == ""sv);
   s.push_back('1');
   CHECK(s.length() == 1);
+  CHECK(s == "1"sv);
   s.push_back('2');
   CHECK(s.length() == 2);
+  CHECK(s == "12"sv);
   s.push_back('3');
   CHECK(s.length() == 3);
+  CHECK(s == "123"sv);
   s.push_back('4');
   CHECK(s.length() == 4);
+  CHECK(s == "1234"sv);
   CHECK_THROWS_AS(s.push_back('5'), LengthError);
 }
 

@@ -67,6 +67,8 @@ class ROQ_PACKED String {
     return H::combine(std::move(hash), static_cast<std::string_view>(rhs));
   }
 
+  // note! clang13 does not yet support spaceship operator for std::string_view
+  // https://libcxx.llvm.org/Status/Spaceship.html
 #if defined(__clang__)
  protected:
   // references:
@@ -77,8 +79,6 @@ class ROQ_PACKED String {
   }
 
  public:
-  // note! clang13 does not yet support spaceship operator for std::string_view
-  // https://libcxx.llvm.org/Status/Spaceship.html
   constexpr bool operator==(const std::string_view &rhs) const {
     return static_cast<std::string_view>(*this).compare(rhs) == 0;
   }
@@ -108,9 +108,10 @@ class ROQ_PACKED String {
   constexpr std::size_t size() const { return N; }
 
   constexpr std::size_t length() const {
-    if (buffer_[N - 2] == '\0')
-      return static_cast<std::size_t>(buffer_[N - 1]);
-    return N - (buffer_[N - 1] == '\0' ? 1 : 0);
+    auto tmp = buffer_[N - 1];
+    if (buffer_[N - 2])
+      return N - (tmp ? 0 : 1);
+    return tmp;
   }
 
   constexpr bool empty() const { return buffer_[0] == '\0'; }
@@ -129,16 +130,10 @@ class ROQ_PACKED String {
   constexpr void push_back(value_type value) {
     using namespace std::literals;
     auto len = length();
-    if (N <= len) [[unlikely]] {
+    if (N <= len) [[unlikely]]
       throw LengthError("String buffer is full"sv);
-    }
     buffer_[len] = value;
-    ++len;
-    if (len < (N - 1)) {
-      buffer_[N - 1] = len;
-    } else if (len < N) {
-      buffer_[N - 1] = '\0';
-    }
+    set_length(++len);
   }
 
  protected:
@@ -147,13 +142,22 @@ class ROQ_PACKED String {
   constexpr void copy(const std::string_view &text) {
     using namespace std::literals;
     auto len = std::size(text);
-    if (len <= size()) [[likely]] {
-      auto last = std::copy(std::begin(text), std::end(text), std::begin(buffer_));
-      std::fill(last, std::end(buffer_), '\0');  // convenient, but we don't need to write the last byte
-      if (len < (N - 1))
-        buffer_[N - 1] = len;
-    } else {
-      throw LengthError(R"(can't copy: len(text="{}")={} exceeds size={})"sv, text, len, size());
+    if (N < len) [[unlikely]]
+      throw LengthError(R"(can't copy: len(text="{}")={} exceeds size={})"sv, text, len, N);
+    std::copy(std::begin(text), std::end(text), std::begin(buffer_));
+    set_length(len);
+  }
+
+  constexpr void set_length(size_t len) {
+    if (len < N) {
+      value_type last;
+      if (len < (N - 1)) {
+        buffer_[N - 2] = '\0';
+        last = len;
+      } else {
+        last = '\0';
+      }
+      buffer_[N - 1] = last;
     }
   }
 

@@ -37,6 +37,11 @@ static_assert(detail::to_strong_ordering(0) == std::strong_ordering::equal);
 static_assert(detail::to_strong_ordering(1) == std::strong_ordering::greater);
 static_assert(detail::to_strong_ordering(2) == std::strong_ordering::greater);
 
+static_assert(detail::ascii_to_lower('a') == 'a');
+static_assert(detail::ascii_to_lower('z') == 'z');
+static_assert(detail::ascii_to_lower('A') == 'a');
+static_assert(detail::ascii_to_lower('Z') == 'z');
+
 }  // namespace utils
 }  // namespace roq
 

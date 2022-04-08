@@ -88,6 +88,17 @@ constexpr std::strong_ordering compare(T lhs, T rhs) {
     return std::strong_ordering::equal;
   }
 }
+
+// note! std::tolower *not* constexpr
+// references:
+//   https://stackoverflow.com/a/50465851
+constexpr char ascii_to_lower(char value) {
+  static_assert('A' < 'a');
+  const auto offset = 'a' - 'A';
+  if (value >= 'A' && value <= 'Z')
+    return value + offset;
+  return value;
+}
 }  // namespace detail
 
 template <typename T, typename U>
@@ -122,24 +133,27 @@ constexpr std::strong_ordering compare(const T &lhs, const U &rhs) {
 // special functions
 
 template <typename T, typename U>
-typename std::enable_if<is_string<T>::value && is_string<U>::value, std::strong_ordering>::type
-case_insensitive_compare(const T &lhs, const U &rhs) {
+typename std::enable_if<is_string<T>::value && is_string<U>::value, std::strong_ordering>::
+    type constexpr case_insensitive_compare(const T &lhs, const U &rhs) {
   // cast both to std::string_view to avoid accidential allocation of std::string
   std::string_view lhs_tmp{lhs}, rhs_tmp{rhs};
-  // comparing using std::toupper
-  // otherwise following conventions from std::string/std::string_view
-  // references:
-  //   https://en.cppreference.com/w/cpp/string/basic_string/compare
-  auto size1 = std::size(lhs_tmp), size2 = std::size(rhs_tmp);
+  auto size1 = std::size(lhs_tmp);
+  auto size2 = std::size(rhs_tmp);
   auto rlen = std::min(size1, size2);
   for (size_t i = 0; i < rlen; ++i) {
-    auto l = std::toupper(lhs_tmp[i]), r = std::toupper(rhs_tmp[i]);
-    if (l != r)
-      return (l < r) ? std::strong_ordering::less : std::strong_ordering::greater;
+    auto l = detail::ascii_to_lower(lhs_tmp[i]);
+    auto r = detail::ascii_to_lower(rhs_tmp[i]);
+    if (l == r)
+      continue;
+    if (l < r)
+      return std::strong_ordering::less;
+    return std::strong_ordering::greater;
   }
-  if (size1 != size2)
-    return size1 < size2 ? std::strong_ordering::less : std::strong_ordering::greater;
-  return std::strong_ordering::equal;
+  if (size1 == size2)
+    return std::strong_ordering::equal;
+  if (size1 < size2)
+    return std::strong_ordering::less;
+  return std::strong_ordering::greater;
 }
 
 template <typename T>

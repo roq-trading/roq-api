@@ -46,3 +46,20 @@ class ROQ_PUBLIC Config {
 
 }  // namespace client
 }  // namespace roq
+
+template <>
+struct fmt::formatter<roq::client::Settings> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::client::Settings &value, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        "{{order_cancel_policy={}, order_management={}}}"sv,
+        value.order_cancel_policy,
+        value.order_management);
+  }
+};

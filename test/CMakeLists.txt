@@ -5,6 +5,7 @@ set(SOURCES
     chrono.cpp
     compare.cpp
     compat.cpp
+    debug.cpp
     exceptions.cpp
     format.cpp
     mask.cpp

@@ -2,7 +2,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "roq/debug/hex_escaped.hpp"
+#include "roq/debug/hex/message.hpp"
 
 using namespace std::literals;
 
@@ -20,12 +20,12 @@ std::array<std::byte, sizeof...(Ts)> make_bytes(Ts &&...args) noexcept {
 TEST_CASE("hex_escaped", "[debug]") {
   {
     std::array<std::byte, 0> buffer;
-    auto s = fmt::format("{}"sv, debug::HexEscaped{buffer});
+    auto s = fmt::format("{}"sv, debug::hex::Message{buffer});
     CHECK(s == ""sv);
   }
   {
     auto buffer = make_bytes(0x0, 0x1, 0xfe, 0xff);
-    auto s = fmt::format("{}"sv, debug::HexEscaped{buffer});
+    auto s = fmt::format("{}"sv, debug::hex::Message{buffer});
     CHECK(s == R"(\x00\x01\xfe\xff)"sv);
   }
 }

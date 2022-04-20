@@ -8,11 +8,12 @@
 
 namespace roq {
 namespace debug {
+namespace hex {
 
-class HexEscaped final {
- public:
-  explicit HexEscaped(const std::span<const std::byte> &buffer) : buffer_(buffer) {}
-  HexEscaped(std::byte const *data, size_t length) : HexEscaped{{data, length}} {}
+struct Message final {
+  explicit Message(const std::span<const std::byte> &buffer) : buffer_(buffer) {}
+
+  Message(std::byte const *data, size_t length) : Message{{data, length}} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -26,17 +27,18 @@ class HexEscaped final {
   const std::span<const std::byte> buffer_;
 };
 
+}  // namespace hex
 }  // namespace debug
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::debug::HexEscaped> {
+struct fmt::formatter<roq::debug::hex::Message> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::debug::HexEscaped &value, Context &context) {
+  auto format(const roq::debug::hex::Message &value, Context &context) {
     return value.format_to(context);
   }
 };

@@ -4,5 +4,6 @@ enum StreamType:uint8 {
   Undefined,
   FIX,
   WebSocket,
-  REST
+  REST,
+  SBE
 }

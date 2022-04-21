@@ -6,6 +6,10 @@
     {
       "name": "Primary",
       "comment": "Primary"
+    },
+    {
+      "name": "Secondary",
+      "comment": "Secondary"
     }
   ]
 }

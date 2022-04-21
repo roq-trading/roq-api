@@ -12,6 +12,7 @@ set(SOURCES
     custom_metrics_update.fbs
     download_begin.fbs
     download_end.fbs
+    encoding.fbs
     error.fbs
     execution_instruction.fbs
     fill.fbs
@@ -30,12 +31,13 @@ set(SOURCES
     order_ack.fbs
     order_status.fbs
     order_type.fbs
-    order_update.fbs
     order_update_action.fbs
+    order_update.fbs
     origin.fbs
     position_effect.fbs
     position_update.fbs
     priority.fbs
+    protocol.fbs
     rate_limit_trigger.fbs
     rate_limit_type.fbs
     reference_data.fbs
@@ -47,7 +49,6 @@ set(SOURCES
     statistics_type.fbs
     statistics_update.fbs
     stream_status.fbs
-    stream_type.fbs
     support_type.fbs
     time_in_force.fbs
     top_of_book.fbs
@@ -55,6 +56,7 @@ set(SOURCES
     trade_summary.fbs
     trade_update.fbs
     trading_status.fbs
+    transport.fbs
     update_type.fbs)
 
 # install

@@ -16,6 +16,7 @@ set(SOURCES
     disconnected.json
     download_begin.json
     download_end.json
+    encoding.json
     error.json
     execution_instruction.json
     external_latency.json
@@ -45,6 +46,7 @@ set(SOURCES
     position_effect.json
     position_update.json
     priority.json
+    protocol.json
     rate_limit_trigger.json
     rate_limit_type.json
     reference_data.json
@@ -59,7 +61,6 @@ set(SOURCES
     statistics_update.json
     stop.json
     stream_status.json
-    stream_type.json
     support_type.json
     time_in_force.json
     timer.json
@@ -68,6 +69,7 @@ set(SOURCES
     trade_summary.json
     trade_update.json
     trading_status.json
+    transport.json
     update_type.json)
 
 # configure

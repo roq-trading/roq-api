@@ -19,14 +19,16 @@ struct StreamStatus final {
   StreamStatus(const StreamStatus &) = delete;
   StreamStatus(StreamStatus &&) = default;
 
-  void clear() { status = {}; }
+  void clear() { connection_status = {}; }
 
   [[nodiscard]] bool operator()(const roq::StreamStatus &stream_status) {
     auto dirty = false;
     dirty |= utils::update(supports, stream_status.supports);
-    dirty |= utils::update(status, stream_status.status);
-    dirty |= utils::update(type, stream_status.type);
+    dirty |= utils::update(transport, stream_status.transport);
+    dirty |= utils::update(protocol, stream_status.protocol);
+    dirty |= utils::update(encoding, stream_status.encoding);
     dirty |= utils::update(priority, stream_status.priority);
+    dirty |= utils::update(connection_status, stream_status.connection_status);
     return dirty;
   }
 
@@ -35,9 +37,11 @@ struct StreamStatus final {
         .stream_id = stream_id,
         .account = account,
         .supports = supports,
-        .status = status,
-        .type = type,
+        .transport = transport,
+        .protocol = protocol,
+        .encoding = encoding,
         .priority = priority,
+        .connection_status = connection_status,
     };
   }
 
@@ -45,9 +49,11 @@ struct StreamStatus final {
   const Account account;
 
   Mask<SupportType> supports;
-  ConnectionStatus status = {};
-  StreamType type = {};
+  Transport transport = {};
+  Protocol protocol = {};
+  Encoding encoding = {};
   Priority priority = {};
+  ConnectionStatus connection_status = {};
 };
 
 }  // namespace cache

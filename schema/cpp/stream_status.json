@@ -17,19 +17,29 @@
       "comment": "Supported update types"
     },
     {
-      "name": "status",
-      "type": "ConnectionStatus",
-      "comment": "Connection status"
+      "name": "transport",
+      "type": "Transport",
+      "comment": "Transport type (layer 4)"
     },
     {
-      "name": "type",
-      "type": "StreamType",
-      "comment": "Stream type"
+      "name": "protocol",
+      "type": "Protocol",
+      "comment": "Communication protocol (layer 7)"
+    },
+    {
+      "name": "encoding",
+      "type": "Encoding",
+      "comment": "Message encoding"
     },
     {
       "name": "priority",
       "type": "Priority",
       "comment": "Priority"
+    },
+    {
+      "name": "connection_status",
+      "type": "ConnectionStatus",
+      "comment": "Connection status (when applicable)"
     }
   ]
 }

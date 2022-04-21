@@ -19,20 +19,24 @@
 #include "roq/string_types.hpp"
 
 #include "roq/connection_status.hpp"
+#include "roq/encoding.hpp"
 #include "roq/priority.hpp"
-#include "roq/stream_type.hpp"
+#include "roq/protocol.hpp"
 #include "roq/support_type.hpp"
+#include "roq/transport.hpp"
 
 namespace roq {
 
 //! Update relating to current stream status
 struct ROQ_PUBLIC StreamStatus final {
-  uint16_t stream_id = {};       //!< Stream identifier
-  std::string_view account;      //!< Account name
-  Mask<SupportType> supports;    //!< Supported update types
-  ConnectionStatus status = {};  //!< Connection status
-  StreamType type = {};          //!< Stream type
-  Priority priority = {};        //!< Priority
+  uint16_t stream_id = {};                  //!< Stream identifier
+  std::string_view account;                 //!< Account name
+  Mask<SupportType> supports;               //!< Supported update types
+  Transport transport = {};                 //!< Transport type (layer 4)
+  Protocol protocol = {};                   //!< Communication protocol (layer 7)
+  Encoding encoding = {};                   //!< Message encoding
+  Priority priority = {};                   //!< Priority
+  ConnectionStatus connection_status = {};  //!< Connection status (when applicable)
 };
 
 }  // namespace roq
@@ -52,16 +56,20 @@ struct fmt::formatter<roq::StreamStatus> {
         R"(stream_id={}, )"
         R"(account="{}", )"
         R"(supports={}, )"
-        R"(status={}, )"
-        R"(type={}, )"
-        R"(priority={})"
+        R"(transport={}, )"
+        R"(protocol={}, )"
+        R"(encoding={}, )"
+        R"(priority={}, )"
+        R"(connection_status={})"
         R"(}})"sv,
         value.stream_id,
         value.account,
         value.supports,
-        value.status,
-        value.type,
-        value.priority);
+        value.transport,
+        value.protocol,
+        value.encoding,
+        value.priority,
+        value.connection_status);
   }
 };
 template <>

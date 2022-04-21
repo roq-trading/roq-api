@@ -1,9 +1,9 @@
 namespace roq.fbs;
 
-enum StreamType:uint8 {
+enum Protocol:uint8 {
   Undefined,
   FIX,
-  WebSocket,
-  REST,
+  WS,
+  HTTP,
   SBE
 }

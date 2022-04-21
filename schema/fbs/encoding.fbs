@@ -1,0 +1,8 @@
+namespace roq.fbs;
+
+enum Encoding:uint32 {
+  Undefined = 0,
+  FIX = 1,
+  JSON = 2,
+  SBE = 4
+}

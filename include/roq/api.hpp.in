@@ -12,6 +12,7 @@
 
 #include "roq/connection_status.hpp"
 #include "roq/decimals.hpp"
+#include "roq/encoding.hpp"
 #include "roq/error.hpp"
 #include "roq/execution_instruction.hpp"
 #include "roq/liquidity.hpp"
@@ -24,6 +25,7 @@
 #include "roq/origin.hpp"
 #include "roq/position_effect.hpp"
 #include "roq/priority.hpp"
+#include "roq/protocol.hpp"
 #include "roq/rate_limit_type.hpp"
 #include "roq/request_id_type.hpp"
 #include "roq/request_status.hpp"
@@ -31,10 +33,10 @@
 #include "roq/security_type.hpp"
 #include "roq/side.hpp"
 #include "roq/statistics_type.hpp"
-#include "roq/stream_type.hpp"
 #include "roq/support_type.hpp"
 #include "roq/time_in_force.hpp"
 #include "roq/trading_status.hpp"
+#include "roq/transport.hpp"
 #include "roq/update_type.hpp"
 
 // helpers

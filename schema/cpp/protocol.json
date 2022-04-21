@@ -1,19 +1,19 @@
 {
-  "name": "StreamType",
+  "name": "Protocol",
   "type": "enum",
-  "comment": "Enumeration of stream types",
+  "comment": "Enumeration of protocol types (layer 7)",
   "values": [
     {
       "name": "FIX",
       "comment": "FIX"
     },
     {
-      "name": "WebSocket",
+      "name": "WS",
       "comment": "Web-Socket"
     },
     {
-      "name": "REST",
-      "comment": "REST"
+      "name": "HTTP",
+      "comment": "HTTP (REST)"
     },
     {
       "name": "SBE",

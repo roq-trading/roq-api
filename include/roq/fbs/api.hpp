@@ -236,6 +236,32 @@ inline const char *EnumNameDecimals(Decimals e) {
   return EnumNamesDecimals()[index];
 }
 
+enum Encoding : uint32_t {
+  Encoding_Undefined = 0,
+  Encoding_FIX = 1,
+  Encoding_JSON = 2,
+  Encoding_SBE = 4,
+  Encoding_MIN = Encoding_Undefined,
+  Encoding_MAX = Encoding_SBE
+};
+
+inline const Encoding (&EnumValuesEncoding())[4] {
+  static const Encoding values[] = {Encoding_Undefined, Encoding_FIX, Encoding_JSON, Encoding_SBE};
+  return values;
+}
+
+inline const char *const *EnumNamesEncoding() {
+  static const char *const names[6] = {"Undefined", "FIX", "JSON", "", "SBE", nullptr};
+  return names;
+}
+
+inline const char *EnumNameEncoding(Encoding e) {
+  if (flatbuffers::IsOutRange(e, Encoding_Undefined, Encoding_SBE))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesEncoding()[index];
+}
+
 enum Error : uint8_t {
   Error_Undefined = 0,
   Error_Unknown = 1,
@@ -613,6 +639,33 @@ inline const char *EnumNamePositionEffect(PositionEffect e) {
   return EnumNamesPositionEffect()[index];
 }
 
+enum Protocol : uint8_t {
+  Protocol_Undefined = 0,
+  Protocol_FIX = 1,
+  Protocol_WS = 2,
+  Protocol_HTTP = 3,
+  Protocol_SBE = 4,
+  Protocol_MIN = Protocol_Undefined,
+  Protocol_MAX = Protocol_SBE
+};
+
+inline const Protocol (&EnumValuesProtocol())[5] {
+  static const Protocol values[] = {Protocol_Undefined, Protocol_FIX, Protocol_WS, Protocol_HTTP, Protocol_SBE};
+  return values;
+}
+
+inline const char *const *EnumNamesProtocol() {
+  static const char *const names[6] = {"Undefined", "FIX", "WS", "HTTP", "SBE", nullptr};
+  return names;
+}
+
+inline const char *EnumNameProtocol(Protocol e) {
+  if (flatbuffers::IsOutRange(e, Protocol_Undefined, Protocol_SBE))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesProtocol()[index];
+}
+
 enum RequestIdType : uint8_t {
   RequestIdType_Undefined = 0,
   RequestIdType_Base64 = 1,
@@ -832,34 +885,6 @@ inline const char *EnumNameStatisticsType(StatisticsType e) {
   return EnumNamesStatisticsType()[index];
 }
 
-enum StreamType : uint8_t {
-  StreamType_Undefined = 0,
-  StreamType_FIX = 1,
-  StreamType_WebSocket = 2,
-  StreamType_REST = 3,
-  StreamType_SBE = 4,
-  StreamType_MIN = StreamType_Undefined,
-  StreamType_MAX = StreamType_SBE
-};
-
-inline const StreamType (&EnumValuesStreamType())[5] {
-  static const StreamType values[] = {
-      StreamType_Undefined, StreamType_FIX, StreamType_WebSocket, StreamType_REST, StreamType_SBE};
-  return values;
-}
-
-inline const char *const *EnumNamesStreamType() {
-  static const char *const names[6] = {"Undefined", "FIX", "WebSocket", "REST", "SBE", nullptr};
-  return names;
-}
-
-inline const char *EnumNameStreamType(StreamType e) {
-  if (flatbuffers::IsOutRange(e, StreamType_Undefined, StreamType_SBE))
-    return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesStreamType()[index];
-}
-
 enum SupportType : uint32_t {
   SupportType_Undefined = 0,
   SupportType_ReferenceData = 1,
@@ -1076,6 +1101,31 @@ inline const char *EnumNameTradingStatus(TradingStatus e) {
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTradingStatus()[index];
+}
+
+enum Transport : uint8_t {
+  Transport_Undefined = 0,
+  Transport_TCP = 1,
+  Transport_UDP = 2,
+  Transport_MIN = Transport_Undefined,
+  Transport_MAX = Transport_UDP
+};
+
+inline const Transport (&EnumValuesTransport())[3] {
+  static const Transport values[] = {Transport_Undefined, Transport_TCP, Transport_UDP};
+  return values;
+}
+
+inline const char *const *EnumNamesTransport() {
+  static const char *const names[4] = {"Undefined", "TCP", "UDP", nullptr};
+  return names;
+}
+
+inline const char *EnumNameTransport(Transport e) {
+  if (flatbuffers::IsOutRange(e, Transport_Undefined, Transport_UDP))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesTransport()[index];
 }
 
 enum UpdateType : uint8_t {
@@ -4380,23 +4430,28 @@ struct StreamStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STREAM_ID = 4,
     VT_ACCOUNT = 6,
     VT_SUPPORTS = 8,
-    VT_STATUS = 10,
-    VT_TYPE = 12,
-    VT_PRIORITY = 14
+    VT_CONNECTION_STATUS = 10,
+    VT_PROTOCOL = 12,
+    VT_PRIORITY = 14,
+    VT_TRANSPORT = 16,
+    VT_ENCODING = 18
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
   uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
-  roq::fbs::ConnectionStatus status() const {
-    return static_cast<roq::fbs::ConnectionStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  roq::fbs::ConnectionStatus connection_status() const {
+    return static_cast<roq::fbs::ConnectionStatus>(GetField<uint8_t>(VT_CONNECTION_STATUS, 0));
   }
-  roq::fbs::StreamType type() const { return static_cast<roq::fbs::StreamType>(GetField<uint8_t>(VT_TYPE, 0)); }
+  roq::fbs::Protocol protocol() const { return static_cast<roq::fbs::Protocol>(GetField<uint8_t>(VT_PROTOCOL, 0)); }
   roq::fbs::Priority priority() const { return static_cast<roq::fbs::Priority>(GetField<uint32_t>(VT_PRIORITY, 0)); }
+  roq::fbs::Transport transport() const { return static_cast<roq::fbs::Transport>(GetField<uint8_t>(VT_TRANSPORT, 0)); }
+  roq::fbs::Encoding encoding() const { return static_cast<roq::fbs::Encoding>(GetField<uint32_t>(VT_ENCODING, 0)); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
-           VerifyField<uint64_t>(verifier, VT_SUPPORTS, 8) && VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
-           VerifyField<uint8_t>(verifier, VT_TYPE, 1) && VerifyField<uint32_t>(verifier, VT_PRIORITY, 4) &&
+           VerifyField<uint64_t>(verifier, VT_SUPPORTS, 8) && VerifyField<uint8_t>(verifier, VT_CONNECTION_STATUS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_PROTOCOL, 1) && VerifyField<uint32_t>(verifier, VT_PRIORITY, 4) &&
+           VerifyField<uint8_t>(verifier, VT_TRANSPORT, 1) && VerifyField<uint32_t>(verifier, VT_ENCODING, 4) &&
            verifier.EndTable();
   }
 };
@@ -4410,14 +4465,20 @@ struct StreamStatusBuilder {
     fbb_.AddOffset(StreamStatus::VT_ACCOUNT, account);
   }
   void add_supports(uint64_t supports) { fbb_.AddElement<uint64_t>(StreamStatus::VT_SUPPORTS, supports, 0); }
-  void add_status(roq::fbs::ConnectionStatus status) {
-    fbb_.AddElement<uint8_t>(StreamStatus::VT_STATUS, static_cast<uint8_t>(status), 0);
+  void add_connection_status(roq::fbs::ConnectionStatus connection_status) {
+    fbb_.AddElement<uint8_t>(StreamStatus::VT_CONNECTION_STATUS, static_cast<uint8_t>(connection_status), 0);
   }
-  void add_type(roq::fbs::StreamType type) {
-    fbb_.AddElement<uint8_t>(StreamStatus::VT_TYPE, static_cast<uint8_t>(type), 0);
+  void add_protocol(roq::fbs::Protocol protocol) {
+    fbb_.AddElement<uint8_t>(StreamStatus::VT_PROTOCOL, static_cast<uint8_t>(protocol), 0);
   }
   void add_priority(roq::fbs::Priority priority) {
     fbb_.AddElement<uint32_t>(StreamStatus::VT_PRIORITY, static_cast<uint32_t>(priority), 0);
+  }
+  void add_transport(roq::fbs::Transport transport) {
+    fbb_.AddElement<uint8_t>(StreamStatus::VT_TRANSPORT, static_cast<uint8_t>(transport), 0);
+  }
+  void add_encoding(roq::fbs::Encoding encoding) {
+    fbb_.AddElement<uint32_t>(StreamStatus::VT_ENCODING, static_cast<uint32_t>(encoding), 0);
   }
   explicit StreamStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<StreamStatus> Finish() {
@@ -4432,16 +4493,20 @@ inline flatbuffers::Offset<StreamStatus> CreateStreamStatus(
     uint16_t stream_id = 0,
     flatbuffers::Offset<flatbuffers::String> account = 0,
     uint64_t supports = 0,
-    roq::fbs::ConnectionStatus status = roq::fbs::ConnectionStatus_Undefined,
-    roq::fbs::StreamType type = roq::fbs::StreamType_Undefined,
-    roq::fbs::Priority priority = roq::fbs::Priority_Undefined) {
+    roq::fbs::ConnectionStatus connection_status = roq::fbs::ConnectionStatus_Undefined,
+    roq::fbs::Protocol protocol = roq::fbs::Protocol_Undefined,
+    roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
+    roq::fbs::Transport transport = roq::fbs::Transport_Undefined,
+    roq::fbs::Encoding encoding = roq::fbs::Encoding_Undefined) {
   StreamStatusBuilder builder_(_fbb);
   builder_.add_supports(supports);
+  builder_.add_encoding(encoding);
   builder_.add_priority(priority);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
-  builder_.add_type(type);
-  builder_.add_status(status);
+  builder_.add_transport(transport);
+  builder_.add_protocol(protocol);
+  builder_.add_connection_status(connection_status);
   return builder_.Finish();
 }
 
@@ -4450,11 +4515,14 @@ inline flatbuffers::Offset<StreamStatus> CreateStreamStatusDirect(
     uint16_t stream_id = 0,
     const char *account = nullptr,
     uint64_t supports = 0,
-    roq::fbs::ConnectionStatus status = roq::fbs::ConnectionStatus_Undefined,
-    roq::fbs::StreamType type = roq::fbs::StreamType_Undefined,
-    roq::fbs::Priority priority = roq::fbs::Priority_Undefined) {
+    roq::fbs::ConnectionStatus connection_status = roq::fbs::ConnectionStatus_Undefined,
+    roq::fbs::Protocol protocol = roq::fbs::Protocol_Undefined,
+    roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
+    roq::fbs::Transport transport = roq::fbs::Transport_Undefined,
+    roq::fbs::Encoding encoding = roq::fbs::Encoding_Undefined) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
-  return roq::fbs::CreateStreamStatus(_fbb, stream_id, account__, supports, status, type, priority);
+  return roq::fbs::CreateStreamStatus(
+      _fbb, stream_id, account__, supports, connection_status, protocol, priority, transport, encoding);
 }
 
 struct TopOfBook FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

@@ -62,6 +62,13 @@ auto encode([[maybe_unused]] B &builder, const roq::Decimals &value) {
 }
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::Encoding &value) {
+  using result_type = Encoding;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::Error &value) {
   using result_type = Error;
   using value_type = std::underlying_type_t<result_type>;
@@ -132,6 +139,13 @@ auto encode([[maybe_unused]] B &builder, const roq::Priority &value) {
 }
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::Protocol &value) {
+  using result_type = Protocol;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::RateLimitType &value) {
   using result_type = RateLimitType;
   using value_type = std::underlying_type_t<result_type>;
@@ -180,13 +194,6 @@ auto encode([[maybe_unused]] B &builder, const roq::StatisticsType &value) {
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
-template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::StreamType &value) {
-  using result_type = StreamType;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
 // note! not used directly... redundant, really
 template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::SupportType &value) {
@@ -205,6 +212,13 @@ auto encode([[maybe_unused]] B &builder, const roq::TimeInForce &value) {
 template <typename B>
 auto encode([[maybe_unused]] B &builder, const roq::TradingStatus &value) {
   using result_type = TradingStatus;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
+auto encode([[maybe_unused]] B &builder, const roq::Transport &value) {
+  using result_type = Transport;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
@@ -636,9 +650,11 @@ auto encode(B &builder, const roq::StreamStatus &value) {
       value.stream_id,
       encode(builder, value.account),
       value.supports.get(),
-      encode(builder, value.status),
-      encode(builder, value.type),
-      encode(builder, value.priority));
+      encode(builder, value.connection_status),
+      encode(builder, value.protocol),
+      encode(builder, value.priority),
+      encode(builder, value.transport),
+      encode(builder, value.encoding));
 }
 
 template <typename B>

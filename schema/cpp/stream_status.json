@@ -28,7 +28,7 @@
     },
     {
       "name": "encoding",
-      "type": "Encoding",
+      "type": "Mask<Encoding>",
       "comment": "Message encoding"
     },
     {

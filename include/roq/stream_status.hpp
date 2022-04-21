@@ -34,7 +34,7 @@ struct ROQ_PUBLIC StreamStatus final {
   Mask<SupportType> supports;               //!< Supported update types
   Transport transport = {};                 //!< Transport type (layer 4)
   Protocol protocol = {};                   //!< Communication protocol (layer 7)
-  Encoding encoding = {};                   //!< Message encoding
+  Mask<Encoding> encoding;                  //!< Message encoding
   Priority priority = {};                   //!< Priority
   ConnectionStatus connection_status = {};  //!< Connection status (when applicable)
 };

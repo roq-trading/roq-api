@@ -654,7 +654,7 @@ auto encode(B &builder, const roq::StreamStatus &value) {
       encode(builder, value.protocol),
       encode(builder, value.priority),
       encode(builder, value.transport),
-      encode(builder, value.encoding));
+      value.encoding.get());
 }
 
 template <typename B>

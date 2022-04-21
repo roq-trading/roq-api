@@ -14,5 +14,5 @@ table StreamStatus {
   protocol:Protocol;
   priority:Priority;
   transport:Transport;
-  encoding:Encoding;
+  encoding:uint32;
 }

@@ -51,7 +51,7 @@ struct StreamStatus final {
   Mask<SupportType> supports;
   Transport transport = {};
   Protocol protocol = {};
-  Encoding encoding = {};
+  Mask<Encoding> encoding = {};
   Priority priority = {};
   ConnectionStatus connection_status = {};
 };

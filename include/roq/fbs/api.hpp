@@ -4445,7 +4445,7 @@ struct StreamStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::Protocol protocol() const { return static_cast<roq::fbs::Protocol>(GetField<uint8_t>(VT_PROTOCOL, 0)); }
   roq::fbs::Priority priority() const { return static_cast<roq::fbs::Priority>(GetField<uint32_t>(VT_PRIORITY, 0)); }
   roq::fbs::Transport transport() const { return static_cast<roq::fbs::Transport>(GetField<uint8_t>(VT_TRANSPORT, 0)); }
-  roq::fbs::Encoding encoding() const { return static_cast<roq::fbs::Encoding>(GetField<uint32_t>(VT_ENCODING, 0)); }
+  uint32_t encoding() const { return GetField<uint32_t>(VT_ENCODING, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
@@ -4477,9 +4477,7 @@ struct StreamStatusBuilder {
   void add_transport(roq::fbs::Transport transport) {
     fbb_.AddElement<uint8_t>(StreamStatus::VT_TRANSPORT, static_cast<uint8_t>(transport), 0);
   }
-  void add_encoding(roq::fbs::Encoding encoding) {
-    fbb_.AddElement<uint32_t>(StreamStatus::VT_ENCODING, static_cast<uint32_t>(encoding), 0);
-  }
+  void add_encoding(uint32_t encoding) { fbb_.AddElement<uint32_t>(StreamStatus::VT_ENCODING, encoding, 0); }
   explicit StreamStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<StreamStatus> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -4497,7 +4495,7 @@ inline flatbuffers::Offset<StreamStatus> CreateStreamStatus(
     roq::fbs::Protocol protocol = roq::fbs::Protocol_Undefined,
     roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
     roq::fbs::Transport transport = roq::fbs::Transport_Undefined,
-    roq::fbs::Encoding encoding = roq::fbs::Encoding_Undefined) {
+    uint32_t encoding = 0) {
   StreamStatusBuilder builder_(_fbb);
   builder_.add_supports(supports);
   builder_.add_encoding(encoding);
@@ -4519,7 +4517,7 @@ inline flatbuffers::Offset<StreamStatus> CreateStreamStatusDirect(
     roq::fbs::Protocol protocol = roq::fbs::Protocol_Undefined,
     roq::fbs::Priority priority = roq::fbs::Priority_Undefined,
     roq::fbs::Transport transport = roq::fbs::Transport_Undefined,
-    roq::fbs::Encoding encoding = roq::fbs::Encoding_Undefined) {
+    uint32_t encoding = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   return roq::fbs::CreateStreamStatus(
       _fbb, stream_id, account__, supports, connection_status, protocol, priority, transport, encoding);

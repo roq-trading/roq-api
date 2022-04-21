@@ -31,6 +31,7 @@ struct ROQ_PUBLIC TopOfBook final {
   Layer layer;                                      //!< Top of book
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
+  int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
 };
 
 }  // namespace roq
@@ -52,14 +53,16 @@ struct fmt::formatter<roq::TopOfBook> {
         R"(symbol="{}", )"
         R"(layer={}, )"
         R"(update_type={}, )"
-        R"(exchange_time_utc={})"
+        R"(exchange_time_utc={}, )"
+        R"(exchange_sequence={})"
         R"(}})"sv,
         value.stream_id,
         value.exchange,
         value.symbol,
         value.layer,
         value.update_type,
-        value.exchange_time_utc);
+        value.exchange_time_utc,
+        value.exchange_sequence);
   }
 };
 template <>

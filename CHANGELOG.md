@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `TopOfBook` now includes an exhange sequence number (to correlate with MbP updates)
 * `StreamStatus` now provides more detailed information
 * Promote `debug::hex::Message` and `debug::fix::Message` (from core library)
 * Comparisons now use (or return) `std::strong_ordering` (instead of `int`)

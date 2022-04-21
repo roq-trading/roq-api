@@ -4531,7 +4531,8 @@ struct TopOfBook FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SYMBOL = 8,
     VT_LAYER = 10,
     VT_UPDATE_TYPE = 12,
-    VT_EXCHANGE_TIME_UTC = 14
+    VT_EXCHANGE_TIME_UTC = 14,
+    VT_EXCHANGE_SEQUENCE = 16
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
@@ -4541,12 +4542,14 @@ struct TopOfBook FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
+  int64_t exchange_sequence() const { return GetField<int64_t>(VT_EXCHANGE_SEQUENCE, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyOffset(verifier, VT_EXCHANGE) && verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) && verifier.VerifyString(symbol()) && VerifyOffset(verifier, VT_LAYER) &&
            verifier.VerifyTable(layer()) && VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) && verifier.EndTable();
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) && verifier.EndTable();
   }
 };
 
@@ -4566,6 +4569,9 @@ struct TopOfBookBuilder {
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(TopOfBook::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
+  void add_exchange_sequence(int64_t exchange_sequence) {
+    fbb_.AddElement<int64_t>(TopOfBook::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
+  }
   explicit TopOfBookBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<TopOfBook> Finish() {
     const auto end = fbb_.EndTable(start_);
@@ -4581,8 +4587,10 @@ inline flatbuffers::Offset<TopOfBook> CreateTopOfBook(
     flatbuffers::Offset<flatbuffers::String> symbol = 0,
     flatbuffers::Offset<roq::fbs::Layer> layer = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined,
-    int64_t exchange_time_utc = 0) {
+    int64_t exchange_time_utc = 0,
+    int64_t exchange_sequence = 0) {
   TopOfBookBuilder builder_(_fbb);
+  builder_.add_exchange_sequence(exchange_sequence);
   builder_.add_exchange_time_utc(exchange_time_utc);
   builder_.add_layer(layer);
   builder_.add_symbol(symbol);
@@ -4599,10 +4607,12 @@ inline flatbuffers::Offset<TopOfBook> CreateTopOfBookDirect(
     const char *symbol = nullptr,
     flatbuffers::Offset<roq::fbs::Layer> layer = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined,
-    int64_t exchange_time_utc = 0) {
+    int64_t exchange_time_utc = 0,
+    int64_t exchange_sequence = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
-  return roq::fbs::CreateTopOfBook(_fbb, stream_id, exchange__, symbol__, layer, update_type, exchange_time_utc);
+  return roq::fbs::CreateTopOfBook(
+      _fbb, stream_id, exchange__, symbol__, layer, update_type, exchange_time_utc, exchange_sequence);
 }
 
 struct TradeSummary FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

@@ -730,7 +730,8 @@ auto encode(B &builder, const roq::TopOfBook &value) {
       encode(builder, value.symbol),
       encode(builder, value.layer),
       encode(builder, value.update_type),
-      encode(builder, value.exchange_time_utc));
+      encode(builder, value.exchange_time_utc),
+      value.exchange_sequence);
 }
 
 template <typename B>

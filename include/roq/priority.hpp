@@ -13,7 +13,8 @@ namespace roq {
 //! Enumeration of priority
 enum class Priority : uint8_t {
   UNDEFINED = 0,
-  PRIMARY,  //!< Primary
+  PRIMARY,    //!< Primary
+  SECONDARY,  //!< Secondary
 };
 
 }  // namespace roq

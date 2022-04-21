@@ -16,6 +16,7 @@ enum class StreamType : uint8_t {
   FIX,         //!< FIX
   WEB_SOCKET,  //!< Web-Socket
   REST,        //!< REST
+  SBE,         //!< Simple Binary Encoding
 };
 
 }  // namespace roq

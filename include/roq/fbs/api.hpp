@@ -837,22 +837,24 @@ enum StreamType : uint8_t {
   StreamType_FIX = 1,
   StreamType_WebSocket = 2,
   StreamType_REST = 3,
+  StreamType_SBE = 4,
   StreamType_MIN = StreamType_Undefined,
-  StreamType_MAX = StreamType_REST
+  StreamType_MAX = StreamType_SBE
 };
 
-inline const StreamType (&EnumValuesStreamType())[4] {
-  static const StreamType values[] = {StreamType_Undefined, StreamType_FIX, StreamType_WebSocket, StreamType_REST};
+inline const StreamType (&EnumValuesStreamType())[5] {
+  static const StreamType values[] = {
+      StreamType_Undefined, StreamType_FIX, StreamType_WebSocket, StreamType_REST, StreamType_SBE};
   return values;
 }
 
 inline const char *const *EnumNamesStreamType() {
-  static const char *const names[5] = {"Undefined", "FIX", "WebSocket", "REST", nullptr};
+  static const char *const names[6] = {"Undefined", "FIX", "WebSocket", "REST", "SBE", nullptr};
   return names;
 }
 
 inline const char *EnumNameStreamType(StreamType e) {
-  if (flatbuffers::IsOutRange(e, StreamType_Undefined, StreamType_REST))
+  if (flatbuffers::IsOutRange(e, StreamType_Undefined, StreamType_SBE))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesStreamType()[index];
@@ -1131,22 +1133,23 @@ inline const char *EnumNameRateLimitType(RateLimitType e) {
 enum Priority : uint32_t {
   Priority_Undefined = 0,
   Priority_Primary = 1,
+  Priority_Secondary = 2,
   Priority_MIN = Priority_Undefined,
-  Priority_MAX = Priority_Primary
+  Priority_MAX = Priority_Secondary
 };
 
-inline const Priority (&EnumValuesPriority())[2] {
-  static const Priority values[] = {Priority_Undefined, Priority_Primary};
+inline const Priority (&EnumValuesPriority())[3] {
+  static const Priority values[] = {Priority_Undefined, Priority_Primary, Priority_Secondary};
   return values;
 }
 
 inline const char *const *EnumNamesPriority() {
-  static const char *const names[3] = {"Undefined", "Primary", nullptr};
+  static const char *const names[4] = {"Undefined", "Primary", "Secondary", nullptr};
   return names;
 }
 
 inline const char *EnumNamePriority(Priority e) {
-  if (flatbuffers::IsOutRange(e, Priority_Undefined, Priority_Primary))
+  if (flatbuffers::IsOutRange(e, Priority_Undefined, Priority_Secondary))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesPriority()[index];

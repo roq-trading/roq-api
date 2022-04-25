@@ -56,7 +56,7 @@ class Statistics final {
     if (dirty) {
       stream_id = statistics_update.stream_id;
       exchange_time_utc = statistics_update.exchange_time_utc;
-      StatisticsUpdate result{
+      const auto result = StatisticsUpdate{
           .stream_id = stream_id,
           .exchange = statistics_update.exchange,
           .symbol = statistics_update.symbol,

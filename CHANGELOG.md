@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `Trace` now supports non-const (and retains const-safety when const)
 * `TopOfBook` now includes an exhange sequence number (to correlate with MbP updates)
 * `StreamStatus` now provides more detailed information
 * Promote `debug::hex::Message` and `debug::fix::Message` (from core library)

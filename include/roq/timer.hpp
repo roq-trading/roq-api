@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 namespace roq {
 
@@ -24,6 +26,12 @@ namespace roq {
 struct ROQ_PUBLIC Timer final {
   std::chrono::nanoseconds now = {};  //!< Current time (monotonic clock)
 };
+
+template <>
+inline constexpr std::string_view get_name<Timer>() {
+  using namespace std::literals;
+  return "timer"sv;
+}
 
 }  // namespace roq
 
@@ -44,6 +52,7 @@ struct fmt::formatter<roq::Timer> {
         value.now);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::Timer> > {
   template <typename Context>
@@ -60,6 +69,26 @@ struct fmt::formatter<roq::Event<roq::Timer> > {
         R"(timer={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::Timer const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::Timer const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(timer={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

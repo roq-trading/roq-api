@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 namespace roq {
 
@@ -26,6 +28,12 @@ struct ROQ_PUBLIC ExternalLatency final {
   std::string_view account;               //!< Account name
   std::chrono::nanoseconds latency = {};  //!< latency measurement (1-way)
 };
+
+template <>
+inline constexpr std::string_view get_name<ExternalLatency>() {
+  using namespace std::literals;
+  return "external_latency"sv;
+}
 
 }  // namespace roq
 
@@ -50,6 +58,7 @@ struct fmt::formatter<roq::ExternalLatency> {
         value.latency);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::ExternalLatency> > {
   template <typename Context>
@@ -66,6 +75,26 @@ struct fmt::formatter<roq::Event<roq::ExternalLatency> > {
         R"(external_latency={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::ExternalLatency const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::ExternalLatency const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(external_latency={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

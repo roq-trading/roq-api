@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 #include "roq/request_id_type.hpp"
 #include "roq/support_type.hpp"
@@ -35,6 +37,12 @@ struct ROQ_PUBLIC GatewaySettings final {
   bool oms_download_has_routing_id = false;    //!< OMS download includes routing_id?
   RequestIdType oms_request_id_type = {};      //!< OMS request identifier type
 };
+
+template <>
+inline constexpr std::string_view get_name<GatewaySettings>() {
+  using namespace std::literals;
+  return "gateway_settings"sv;
+}
 
 }  // namespace roq
 
@@ -71,6 +79,7 @@ struct fmt::formatter<roq::GatewaySettings> {
         value.oms_request_id_type);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::GatewaySettings> > {
   template <typename Context>
@@ -87,6 +96,26 @@ struct fmt::formatter<roq::Event<roq::GatewaySettings> > {
         R"(gateway_settings={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::GatewaySettings const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::GatewaySettings const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(gateway_settings={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 namespace roq {
 
@@ -30,6 +32,12 @@ struct ROQ_PUBLIC ModifyOrder final {
   uint32_t version = {};                 //!< Version number (strictly increasing, optional)
   uint32_t conditional_on_version = {};  //!< Auto-reject if this version has positively failed (optional)
 };
+
+template <>
+inline constexpr std::string_view get_name<ModifyOrder>() {
+  using namespace std::literals;
+  return "modify_order"sv;
+}
 
 }  // namespace roq
 
@@ -62,6 +70,7 @@ struct fmt::formatter<roq::ModifyOrder> {
         value.conditional_on_version);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::ModifyOrder> > {
   template <typename Context>
@@ -78,6 +87,26 @@ struct fmt::formatter<roq::Event<roq::ModifyOrder> > {
         R"(modify_order={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::ModifyOrder const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::ModifyOrder const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(modify_order={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

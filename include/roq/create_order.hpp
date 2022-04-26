@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 #include "roq/execution_instruction.hpp"
 #include "roq/order_type.hpp"
@@ -44,6 +46,12 @@ struct ROQ_PUBLIC CreateOrder final {
   double stop_price = NaN;                            //!< Stop price (depends on order_type and time_in_force)
   std::string_view routing_id;                        //!< Routing identifier
 };
+
+template <>
+inline constexpr std::string_view get_name<CreateOrder>() {
+  using namespace std::literals;
+  return "create_order"sv;
+}
 
 }  // namespace roq
 
@@ -92,6 +100,7 @@ struct fmt::formatter<roq::CreateOrder> {
         value.routing_id);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::CreateOrder> > {
   template <typename Context>
@@ -108,6 +117,26 @@ struct fmt::formatter<roq::Event<roq::CreateOrder> > {
         R"(create_order={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::CreateOrder const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::CreateOrder const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(create_order={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

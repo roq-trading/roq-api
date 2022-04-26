@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 #include "roq/support_type.hpp"
 
@@ -29,6 +31,12 @@ struct ROQ_PUBLIC GatewayStatus final {
   Mask<SupportType> available;    //!< Available update types (union of all streams, one or more available)
   Mask<SupportType> unavailable;  //!< Unavailable update types (union of all streams, one or more unavailable)
 };
+
+template <>
+inline constexpr std::string_view get_name<GatewayStatus>() {
+  using namespace std::literals;
+  return "gateway_status"sv;
+}
 
 }  // namespace roq
 
@@ -55,6 +63,7 @@ struct fmt::formatter<roq::GatewayStatus> {
         value.unavailable);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::GatewayStatus> > {
   template <typename Context>
@@ -71,6 +80,26 @@ struct fmt::formatter<roq::Event<roq::GatewayStatus> > {
         R"(gateway_status={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::GatewayStatus const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::GatewayStatus const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(gateway_status={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

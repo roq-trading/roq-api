@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 #include "roq/decimals.hpp"
 #include "roq/mbo_update.hpp"
@@ -38,6 +40,12 @@ struct ROQ_PUBLIC MarketByOrderUpdate final {
   Decimals quantity_decimals = {};                  //!< Decimal digits required to represent quantities
   uint32_t checksum = {};                           //!< Checksum (internal)
 };
+
+template <>
+inline constexpr std::string_view get_name<MarketByOrderUpdate>() {
+  using namespace std::literals;
+  return "market_by_order_update"sv;
+}
 
 }  // namespace roq
 
@@ -78,6 +86,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         value.checksum);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::MarketByOrderUpdate> > {
   template <typename Context>
@@ -94,6 +103,26 @@ struct fmt::formatter<roq::Event<roq::MarketByOrderUpdate> > {
         R"(market_by_order_update={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::MarketByOrderUpdate const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::MarketByOrderUpdate const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(market_by_order_update={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

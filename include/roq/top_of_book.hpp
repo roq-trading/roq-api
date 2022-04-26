@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 #include "roq/layer.hpp"
 #include "roq/update_type.hpp"
@@ -33,6 +35,12 @@ struct ROQ_PUBLIC TopOfBook final {
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
   int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
 };
+
+template <>
+inline constexpr std::string_view get_name<TopOfBook>() {
+  using namespace std::literals;
+  return "top_of_book"sv;
+}
 
 }  // namespace roq
 
@@ -65,6 +73,7 @@ struct fmt::formatter<roq::TopOfBook> {
         value.exchange_sequence);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::TopOfBook> > {
   template <typename Context>
@@ -81,6 +90,26 @@ struct fmt::formatter<roq::Event<roq::TopOfBook> > {
         R"(top_of_book={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::TopOfBook const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::TopOfBook const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(top_of_book={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

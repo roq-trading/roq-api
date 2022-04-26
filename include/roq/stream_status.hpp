@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 #include "roq/connection_status.hpp"
 #include "roq/encoding.hpp"
@@ -38,6 +40,12 @@ struct ROQ_PUBLIC StreamStatus final {
   Priority priority = {};                   //!< Priority
   ConnectionStatus connection_status = {};  //!< Connection status (when applicable)
 };
+
+template <>
+inline constexpr std::string_view get_name<StreamStatus>() {
+  using namespace std::literals;
+  return "stream_status"sv;
+}
 
 }  // namespace roq
 
@@ -72,6 +80,7 @@ struct fmt::formatter<roq::StreamStatus> {
         value.connection_status);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::StreamStatus> > {
   template <typename Context>
@@ -88,6 +97,26 @@ struct fmt::formatter<roq::Event<roq::StreamStatus> > {
         R"(stream_status={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::StreamStatus const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::StreamStatus const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(stream_status={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

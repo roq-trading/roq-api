@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 #include "roq/statistics.hpp"
 #include "roq/update_type.hpp"
@@ -32,6 +34,12 @@ struct ROQ_PUBLIC StatisticsUpdate final {
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
 };
+
+template <>
+inline constexpr std::string_view get_name<StatisticsUpdate>() {
+  using namespace std::literals;
+  return "statistics_update"sv;
+}
 
 }  // namespace roq
 
@@ -62,6 +70,7 @@ struct fmt::formatter<roq::StatisticsUpdate> {
         value.exchange_time_utc);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::StatisticsUpdate> > {
   template <typename Context>
@@ -78,6 +87,26 @@ struct fmt::formatter<roq::Event<roq::StatisticsUpdate> > {
         R"(statistics_update={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::StatisticsUpdate const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::StatisticsUpdate const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(statistics_update={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

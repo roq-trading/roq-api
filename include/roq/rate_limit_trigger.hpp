@@ -15,8 +15,10 @@
 #include "roq/event.hpp"
 #include "roq/mask.hpp"
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trace.hpp"
 
 #include "roq/origin.hpp"
 #include "roq/rate_limit_type.hpp"
@@ -33,6 +35,12 @@ struct ROQ_PUBLIC RateLimitTrigger final {
   std::chrono::nanoseconds ban_expires = {};  //!< System time when ban expires (zero means: ban is no longer effective)
   std::string_view triggered_by;              //!< Trigger activated by this user
 };
+
+template <>
+inline constexpr std::string_view get_name<RateLimitTrigger>() {
+  using namespace std::literals;
+  return "rate_limit_trigger"sv;
+}
 
 }  // namespace roq
 
@@ -65,6 +73,7 @@ struct fmt::formatter<roq::RateLimitTrigger> {
         value.triggered_by);
   }
 };
+
 template <>
 struct fmt::formatter<roq::Event<roq::RateLimitTrigger> > {
   template <typename Context>
@@ -81,6 +90,26 @@ struct fmt::formatter<roq::Event<roq::RateLimitTrigger> > {
         R"(rate_limit_trigger={})"
         R"(}})"sv,
         event.message_info,
+        event.value);
+  }
+};
+
+template <>
+struct fmt::formatter<roq::Trace<roq::RateLimitTrigger const> > {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(const roq::Trace<roq::RateLimitTrigger const> &event, Context &context) {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(trace_info={}, )"
+        R"(rate_limit_trigger={})"
+        R"(}})"sv,
+        event.trace_info,
         event.value);
   }
 };

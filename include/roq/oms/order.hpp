@@ -54,8 +54,8 @@ struct fmt::formatter<roq::oms::Order> {
   constexpr auto parse(Context &context) {
     return std::begin(context);
   }
-  template <typename C>
-  auto format(const roq::oms::Order &value, C &context) {
+  template <typename Context>
+  auto format(const roq::oms::Order &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

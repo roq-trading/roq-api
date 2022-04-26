@@ -25,8 +25,8 @@ struct Trace final {
 
 template <typename Handler, typename T, typename... Args>
 inline void create_trace_and_dispatch(Handler &&handler, const TraceInfo &trace_info, T &value, Args &&...args) {
-  Trace trace{trace_info, value};
-  handler(trace, std::forward<Args>(args)...);
+  const Trace event{trace_info, value};
+  handler(event, std::forward<Args>(args)...);
 }
 
 }  // namespace roq

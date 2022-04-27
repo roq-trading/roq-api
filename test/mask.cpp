@@ -86,4 +86,3 @@ TEST_CASE("mask_with_undefined", "[mask]") {
   CHECK(fmt::format("{}"sv, Mask{E2::A, E2::C}) == "A|C"sv);
   CHECK(fmt::format("{}"sv, Mask{E2::A, E2::B, E2::C}) == "A|B|C"sv);
 }
-

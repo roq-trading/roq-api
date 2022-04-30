@@ -3,8 +3,9 @@
 #pragma once
 
 #include <chrono>
-#include <span>
 #include <string_view>
+
+#include "roq/span.hpp"
 
 namespace roq {
 namespace client {

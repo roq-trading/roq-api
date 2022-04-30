@@ -8,10 +8,10 @@
 #include <fmt/format.h>
 
 #include <chrono>
-#include <span>
 #include <string_view>
 
 #include "roq/numbers.hpp"
+#include "roq/span.hpp"
 #include "roq/string_types.hpp"
 #include "roq/uuid.hpp"
 

@@ -4,6 +4,8 @@
 
 #include <fmt/format.h>
 
+#include <cassert>
+
 {% include 'namespace_begin' %}
 
 //! {{ comment }}
@@ -27,6 +29,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
       const {{ namespaces | join('::') }}::{{ name }}& value,
       Context& context) {
     using namespace std::literals;
+#if __cplusplus >= 202002L
     std::string_view name{[&]() {
       switch (value) {
         using enum {{ namespaces | join('::') }}::{{ name }};
@@ -41,6 +44,21 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
       }
       return "<UNKNOWN>"sv;
     }()};
+#else
+    std::string_view name{[&]() {
+      switch (value) {
+        case {{ namespaces | join('::') }}::{{ name }}::UNDEFINED:
+          return "UNDEFINED"sv;
+    {% for value in values %}
+        case {{ namespaces | join('::') }}::{{ name }}::{{ value.enum_value }}:
+          return "{{ value.enum_value }}"sv;
+    {% endfor %}
+        default:
+          assert(false);
+      }
+      return "<UNKNOWN>"sv;
+    }()};
+#endif
     return fmt::format_to(
         context.out(),
         "{}"sv,

@@ -93,7 +93,10 @@ class ROQ_PUBLIC MarketByPrice {
   void operator()(const std::span<MBPUpdate> &bids, const std::span<MBPUpdate> &asks) { update_helper(bids, asks); }
 
   // check if price exists
-  virtual bool exists(Side side, double price) const = 0;
+  virtual bool exists(Side, double price) const = 0;
+
+  // volume weighted average price (complexity depends on the number of required levels)
+  virtual Layer compute_vwap(double quantity) const = 0;
 
   // note! the following methods should **NOT** be considered stable
 

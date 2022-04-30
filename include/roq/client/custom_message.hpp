@@ -3,10 +3,9 @@
 
 #include <fmt/format.h>
 
-#include <span>
-
 #include "roq/compat.hpp"
 #include "roq/event.hpp"
+#include "roq/span.hpp"
 
 namespace roq {
 namespace client {

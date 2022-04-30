@@ -6,6 +6,8 @@
 
 #include <fmt/format.h>
 
+#include <cassert>
+
 namespace roq {
 
 //! Enumeration of message encoding types (informational, only)
@@ -27,6 +29,7 @@ struct fmt::formatter<roq::Encoding> {
   template <typename Context>
   auto format(const roq::Encoding &value, Context &context) {
     using namespace std::literals;
+#if __cplusplus >= 202002L
     std::string_view name{[&]() {
       switch (value) {
         using enum roq::Encoding;
@@ -43,6 +46,23 @@ struct fmt::formatter<roq::Encoding> {
       }
       return "<UNKNOWN>"sv;
     }()};
+#else
+    std::string_view name{[&]() {
+      switch (value) {
+        case roq::Encoding::UNDEFINED:
+          return "UNDEFINED"sv;
+        case roq::Encoding::FIX:
+          return "FIX"sv;
+        case roq::Encoding::JSON:
+          return "JSON"sv;
+        case roq::Encoding::SBE:
+          return "SBE"sv;
+        default:
+          assert(false);
+      }
+      return "<UNKNOWN>"sv;
+    }()};
+#endif
     return fmt::format_to(context.out(), "{}"sv, name);
   }
 };

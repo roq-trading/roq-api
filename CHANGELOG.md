@@ -6,10 +6,12 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `cache::MarketByPrice::compute_vwap`
 * RequestIdType added to GatewaySettings (from server)
 
 ### Changed
 
+* C++17 compatibility (std::span and "using enum" workarounds)
 * `Trace` now supports non-const (and retains const-safety when const)
 * `TopOfBook` now includes an exhange sequence number (to correlate with MbP updates)
 * `StreamStatus` now provides more detailed information

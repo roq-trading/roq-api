@@ -105,6 +105,13 @@ class ROQ_PUBLIC MarketByPrice {
   virtual std::span<price_level_t const> bids() const = 0;
   virtual std::span<price_level_t const> asks() const = 0;
 
+  // converts a full book update to a depth update
+  virtual std::pair<size_t, size_t> create_depth_update(
+      const MarketByPriceUpdate &,
+      size_t depth,
+      const std::span<MBPUpdate> &bids,
+      const std::span<MBPUpdate> &asks) const = 0;
+
  protected:
   virtual void update_helper(const MarketByPriceUpdate &) = 0;
 

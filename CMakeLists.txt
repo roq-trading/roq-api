@@ -58,7 +58,7 @@ include_directories("${CMAKE_SOURCE_DIR}/include" "${CMAKE_BINARY_DIR}/${CMAKE_I
 
 set(SCHEMA_DIR "${CMAKE_SOURCE_DIR}/schema")
 
-set(AUTOGEN_PY "${CMAKE_SOURCE_DIR}/autogen/main.py")
+set(AUTOGEN_PY "${CMAKE_SOURCE_DIR}/scripts/autogen/main.py")
 
 # sub-projects
 

@@ -95,6 +95,10 @@ class ROQ_PUBLIC MarketByPrice {
   // check if price exists
   virtual bool exists(Side, double price) const = 0;
 
+  // price-level index (if exists)
+  //   returns {index,exists}
+  virtual std::pair<size_t, bool> find_index(Side, double price) const = 0;
+
   // volume weighted average price (complexity depends on the number of required levels)
   virtual Layer compute_vwap(double quantity) const = 0;
 

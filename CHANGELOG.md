@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `cache::MarketByPrice::find_index`
 * `cache::MarketByPrice::compute_vwap`
 * RequestIdType added to GatewaySettings (from server)
 

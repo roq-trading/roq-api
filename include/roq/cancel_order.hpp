@@ -77,11 +77,11 @@ struct fmt::formatter<roq::Event<roq::CancelOrder> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(cancel_order={})"
+        R"(cancel_order={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -97,10 +97,10 @@ struct fmt::formatter<roq::Trace<roq::CancelOrder const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(cancel_order={})"
+        R"(cancel_order={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

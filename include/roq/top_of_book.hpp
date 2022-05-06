@@ -86,11 +86,11 @@ struct fmt::formatter<roq::Event<roq::TopOfBook> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(top_of_book={})"
+        R"(top_of_book={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -106,10 +106,10 @@ struct fmt::formatter<roq::Trace<roq::TopOfBook const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(top_of_book={})"
+        R"(top_of_book={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

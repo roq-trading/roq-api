@@ -58,11 +58,11 @@ struct fmt::formatter<roq::Event<roq::BatchBegin> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(batch_begin={})"
+        R"(batch_begin={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -78,10 +78,10 @@ struct fmt::formatter<roq::Trace<roq::BatchBegin const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(batch_begin={})"
+        R"(batch_begin={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

@@ -54,13 +54,13 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
 {%- raw %}
         R"({{)"
 {%- endraw %}
-        R"(message_info={}, )"
-        R"({{ filename }}={})"
+        R"({{ filename }}={}, )"
+        R"(message_info={})"
 {%- raw %}
         R"(}})"sv,
 {%- endraw %}
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -80,12 +80,12 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Trace<{{ namespaces | join(
 {%- raw %}
         R"({{)"
 {%- endraw %}
-        R"(trace_info={}, )"
-        R"({{ filename }}={})"
+        R"({{ filename }}={}, )"
+        R"(trace_info={})"
 {%- raw %}
         R"(}})"sv,
 {%- endraw %}
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

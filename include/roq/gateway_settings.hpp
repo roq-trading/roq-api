@@ -92,11 +92,11 @@ struct fmt::formatter<roq::Event<roq::GatewaySettings> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(gateway_settings={})"
+        R"(gateway_settings={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -112,10 +112,10 @@ struct fmt::formatter<roq::Trace<roq::GatewaySettings const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(gateway_settings={})"
+        R"(gateway_settings={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

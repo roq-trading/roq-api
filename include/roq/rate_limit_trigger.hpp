@@ -86,11 +86,11 @@ struct fmt::formatter<roq::Event<roq::RateLimitTrigger> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(rate_limit_trigger={})"
+        R"(rate_limit_trigger={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -106,10 +106,10 @@ struct fmt::formatter<roq::Trace<roq::RateLimitTrigger const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(rate_limit_trigger={})"
+        R"(rate_limit_trigger={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

@@ -65,11 +65,11 @@ struct fmt::formatter<roq::Event<roq::CancelAllOrders> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(cancel_all_orders={})"
+        R"(cancel_all_orders={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -85,10 +85,10 @@ struct fmt::formatter<roq::Trace<roq::CancelAllOrders const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(cancel_all_orders={})"
+        R"(cancel_all_orders={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

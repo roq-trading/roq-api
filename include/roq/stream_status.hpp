@@ -93,11 +93,11 @@ struct fmt::formatter<roq::Event<roq::StreamStatus> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(stream_status={})"
+        R"(stream_status={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -113,10 +113,10 @@ struct fmt::formatter<roq::Trace<roq::StreamStatus const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(stream_status={})"
+        R"(stream_status={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

@@ -71,11 +71,11 @@ struct fmt::formatter<roq::Event<roq::ExternalLatency> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(external_latency={})"
+        R"(external_latency={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -91,10 +91,10 @@ struct fmt::formatter<roq::Trace<roq::ExternalLatency const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(external_latency={})"
+        R"(external_latency={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

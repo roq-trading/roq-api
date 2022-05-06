@@ -102,11 +102,11 @@ struct fmt::formatter<roq::Event<roq::MarketByPriceUpdate> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(market_by_price_update={})"
+        R"(market_by_price_update={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -122,10 +122,10 @@ struct fmt::formatter<roq::Trace<roq::MarketByPriceUpdate const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(market_by_price_update={})"
+        R"(market_by_price_update={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

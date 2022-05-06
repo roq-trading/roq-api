@@ -79,11 +79,11 @@ struct fmt::formatter<roq::Event<roq::CustomMetrics> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(custom_metrics={})"
+        R"(custom_metrics={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -99,10 +99,10 @@ struct fmt::formatter<roq::Trace<roq::CustomMetrics const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(custom_metrics={})"
+        R"(custom_metrics={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

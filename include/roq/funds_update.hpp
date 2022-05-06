@@ -80,11 +80,11 @@ struct fmt::formatter<roq::Event<roq::FundsUpdate> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(funds_update={})"
+        R"(funds_update={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -100,10 +100,10 @@ struct fmt::formatter<roq::Trace<roq::FundsUpdate const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(funds_update={})"
+        R"(funds_update={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

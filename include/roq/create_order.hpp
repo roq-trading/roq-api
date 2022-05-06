@@ -113,11 +113,11 @@ struct fmt::formatter<roq::Event<roq::CreateOrder> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(message_info={}, )"
-        R"(create_order={})"
+        R"(create_order={}, )"
+        R"(message_info={})"
         R"(}})"sv,
-        event.message_info,
-        event.value);
+        event.value,
+        event.message_info);
   }
 };
 
@@ -133,10 +133,10 @@ struct fmt::formatter<roq::Trace<roq::CreateOrder const> > {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(trace_info={}, )"
-        R"(create_order={})"
+        R"(create_order={}, )"
+        R"(trace_info={})"
         R"(}})"sv,
-        event.trace_info,
-        event.value);
+        event.value,
+        event.trace_info);
   }
 };

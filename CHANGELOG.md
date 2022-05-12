@@ -12,6 +12,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Increase `Symbol` fixed-length size to 48 (#214)
 * `Event<>` and `Trace<>` formatting has move the value to the front
 * C++17 compatibility (std::span and "using enum" workarounds)
 * `Trace` now supports non-const (and retains const-safety when const)

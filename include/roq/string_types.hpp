@@ -12,7 +12,7 @@ static const constexpr size_t MAX_LENGTH_USER = 16;
 
 static const constexpr size_t MAX_LENGTH_ACCOUNT = 32;
 static const constexpr size_t MAX_LENGTH_EXCHANGE = 32;
-static const constexpr size_t MAX_LENGTH_SYMBOL = 32;
+static const constexpr size_t MAX_LENGTH_SYMBOL = 48;
 static const constexpr size_t MAX_LENGTH_CURRENCY = 32;
 
 static const constexpr size_t MAX_LENGTH_ORDER_TEMPLATE = 16;

@@ -22,10 +22,12 @@ struct static_string final {
 #if __cplusplus >= 202002L
   // cppcheck-suppress noExplicitConstructor
   consteval static_string(const std::string_view &sv)
-      : length_(std::min(N, std::size(sv))), buffer_(create(sv, length_)) {}
+      : length_(std::min(N, std::size(sv))), buffer_(create(sv, length_)) {
+  }
 #else
   // cppcheck-suppress noExplicitConstructor
-  constexpr static_string(const std::string_view &sv) : length_(std::min(N, sv.size())), buffer_(create(sv, length_)) {}
+  constexpr static_string(const std::string_view &sv) : length_(std::min(N, sv.size())), buffer_(create(sv, length_)) {
+  }
 #endif
 
   static_string(const static_string &) = default;

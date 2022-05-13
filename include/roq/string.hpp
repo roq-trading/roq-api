@@ -93,19 +93,33 @@ class ROQ_PACKED String {
     return lookup[sign_helper(sign) + 1];
   }
 #else
-  constexpr bool operator==(const std::string_view &rhs) const { return static_cast<std::string_view>(*this) == rhs; }
-  constexpr auto operator<=>(const std::string_view &rhs) const { return static_cast<std::string_view>(*this) <=> rhs; }
+  constexpr bool operator==(const std::string_view &rhs) const {
+    return static_cast<std::string_view>(*this) == rhs;
+  }
+  constexpr auto operator<=>(const std::string_view &rhs) const {
+    return static_cast<std::string_view>(*this) <=> rhs;
+  }
 #endif
 
-  constexpr auto operator<=>(const String<N> &rhs) const { return operator<=>(static_cast<std::string_view>(rhs)); }
+  constexpr auto operator<=>(const String<N> &rhs) const {
+    return operator<=>(static_cast<std::string_view>(rhs));
+  }
 
-  constexpr auto operator<=>(const std::string &rhs) const { return operator<=>(std::string_view{rhs}); }
+  constexpr auto operator<=>(const std::string &rhs) const {
+    return operator<=>(std::string_view{rhs});
+  }
 
-  constexpr value_type &operator[](size_t index) { return buffer_[index]; }
+  constexpr value_type &operator[](size_t index) {
+    return buffer_[index];
+  }
 
-  constexpr value_type operator[](size_t index) const { return buffer_[index]; }
+  constexpr value_type operator[](size_t index) const {
+    return buffer_[index];
+  }
 
-  constexpr std::size_t size() const { return N; }
+  constexpr std::size_t size() const {
+    return N;
+  }
 
   constexpr std::size_t length() const {
     auto tmp = buffer_[N - 1];
@@ -114,11 +128,17 @@ class ROQ_PACKED String {
     return tmp;
   }
 
-  constexpr bool empty() const { return length() == 0; }
+  constexpr bool empty() const {
+    return length() == 0;
+  }
 
-  constexpr value_type const *data() const { return std::data(buffer_); }
+  constexpr value_type const *data() const {
+    return std::data(buffer_);
+  }
 
-  constexpr operator std::string_view() const { return {data(), length()}; }
+  constexpr operator std::string_view() const {
+    return {data(), length()};
+  }
 
   constexpr void clear() {
     // note!
@@ -137,7 +157,9 @@ class ROQ_PACKED String {
   }
 
  protected:
-  constexpr value_type *data() { return std::data(buffer_); }
+  constexpr value_type *data() {
+    return std::data(buffer_);
+  }
 
   constexpr void copy(const std::string_view &text) {
     using namespace std::literals;

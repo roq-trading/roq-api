@@ -26,7 +26,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
   }
   template <typename Context>
   auto format(
-      const {{ namespaces | join('::') }}::{{ name }}& value,
+      {{ namespaces | join('::') }}::{{ name }} const& value,
       Context& context) {
     using namespace std::literals;
     return fmt::format_to(

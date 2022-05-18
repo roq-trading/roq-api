@@ -32,8 +32,8 @@ class Mask final {
     using reference = T;
     using iterator_category = std::forward_iterator_tag;
 
-    iterator(const Mask<T> &value) : value_(value) {}
-    bool operator==(const sentinel &) const {
+    iterator(Mask<T> const &value) : value_(value) {}
+    bool operator==(sentinel const &) const {
       for (; index_ < magic_enum::enum_count<T>(); ++index_) {
         // special case for "undefined"
         if constexpr (static_cast<value_type>(magic_enum::enum_value<T>(0)) == value_type{}) {
@@ -69,11 +69,11 @@ class Mask final {
   }
 
   template <typename... Args>
-  constexpr Mask(const Mask &other, Args &&...args) : value_(other.value_ | Mask{std::forward<Args>(args)...}.get()) {}
+  constexpr Mask(Mask const &other, Args &&...args) : value_(other.value_ | Mask{std::forward<Args>(args)...}.get()) {}
 
-  constexpr auto operator==(const Mask &rhs) const { return value_ == rhs.value_; }
+  constexpr auto operator==(Mask const &rhs) const { return value_ == rhs.value_; }
 
-  constexpr auto operator<=>(const Mask &) const = default;
+  constexpr auto operator<=>(Mask const &) const = default;
 
   constexpr bool empty() const { return value_ == value_type{}; }
 
@@ -180,7 +180,7 @@ struct fmt::formatter<roq::Mask<T>> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Mask<T> &value, Context &context) {
+  auto format(roq::Mask<T> const &value, Context &context) {
     using namespace std::literals;
     // special case for "undefined"
     using value_type = typename roq::Mask<T>::value_type;

@@ -12,7 +12,7 @@ namespace cache {
 struct MarketStatus final {
   MarketStatus() = default;
 
-  MarketStatus(const MarketStatus &) = delete;
+  MarketStatus(MarketStatus const &) = delete;
   MarketStatus(MarketStatus &&) = default;
 
   void clear() {
@@ -20,17 +20,17 @@ struct MarketStatus final {
     trading_status = {};
   }
 
-  [[nodiscard]] bool operator()(const roq::MarketStatus &market_status) {
+  [[nodiscard]] bool operator()(roq::MarketStatus const &market_status) {
     auto dirty = false;
     dirty |= utils::update(stream_id, market_status.stream_id);
     dirty |= utils::update(trading_status, market_status.trading_status);
     return dirty;
   }
 
-  [[nodiscard]] bool operator()(const Event<roq::MarketStatus> &event) { return (*this)(event.value); }
+  [[nodiscard]] bool operator()(Event<roq::MarketStatus> const &event) { return (*this)(event.value); }
 
   template <typename Context>
-  [[nodiscard]] roq::MarketStatus convert(const Context &context) const {
+  [[nodiscard]] roq::MarketStatus convert(Context const &context) const {
     return {
         .stream_id = stream_id,
         .exchange = context.exchange,

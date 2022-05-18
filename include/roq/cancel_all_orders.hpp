@@ -42,7 +42,7 @@ struct fmt::formatter<roq::CancelAllOrders> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::CancelAllOrders &value, Context &context) {
+  auto format(roq::CancelAllOrders const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -60,7 +60,7 @@ struct fmt::formatter<roq::Event<roq::CancelAllOrders> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::CancelAllOrders> &event, Context &context) {
+  auto format(roq::Event<roq::CancelAllOrders> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -80,7 +80,7 @@ struct fmt::formatter<roq::Trace<roq::CancelAllOrders const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Trace<roq::CancelAllOrders const> &event, Context &context) {
+  auto format(roq::Trace<roq::CancelAllOrders const> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

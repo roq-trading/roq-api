@@ -38,12 +38,12 @@ class ROQ_PACKED String {
   constexpr String() = default;
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr String(const std::string_view &text) {  // NOLINT (allow implicit)
+  constexpr String(std::string_view const &text) {  // NOLINT (allow implicit)
     copy(text);
   }
 
   // cppcheck-suppress noExplicitConstructor
-  constexpr String(const std::string &text) {  // NOLINT (allow implicit)
+  constexpr String(std::string const &text) {  // NOLINT (allow implicit)
     copy(text);
   }
 
@@ -51,19 +51,19 @@ class ROQ_PACKED String {
   constexpr String(value_type const *text)  // NOLINT (allow implicit)
       : String(std::string_view{text}) {}
 
-  constexpr String &operator=(const std::string_view &text) {
+  constexpr String &operator=(std::string_view const &text) {
     copy(text);
     return *this;
   }
 
-  constexpr String &operator=(const std::string &text) {
+  constexpr String &operator=(std::string const &text) {
     copy(text);
     return *this;
   }
 
   // abseil hash (heterogeneous lookup)
   template <typename H>
-  friend H AbslHashValue(H hash, const String<N> &rhs) {
+  friend H AbslHashValue(H hash, String<N> const &rhs) {
     return H::combine(std::move(hash), static_cast<std::string_view>(rhs));
   }
 
@@ -79,10 +79,10 @@ class ROQ_PACKED String {
   }
 
  public:
-  constexpr bool operator==(const std::string_view &rhs) const {
+  constexpr bool operator==(std::string_view const &rhs) const {
     return static_cast<std::string_view>(*this).compare(rhs) == 0;
   }
-  constexpr auto operator<=>(const std::string_view &rhs) const {
+  constexpr auto operator<=>(std::string_view const &rhs) const {
     auto lhs = static_cast<std::string_view>(*this);
     auto sign = lhs.compare(rhs);
     const std::array lookup{
@@ -93,19 +93,19 @@ class ROQ_PACKED String {
     return lookup[sign_helper(sign) + 1];
   }
 #else
-  constexpr bool operator==(const std::string_view &rhs) const {
+  constexpr bool operator==(std::string_view const &rhs) const {
     return static_cast<std::string_view>(*this) == rhs;
   }
-  constexpr auto operator<=>(const std::string_view &rhs) const {
+  constexpr auto operator<=>(std::string_view const &rhs) const {
     return static_cast<std::string_view>(*this) <=> rhs;
   }
 #endif
 
-  constexpr auto operator<=>(const String<N> &rhs) const {
+  constexpr auto operator<=>(String<N> const &rhs) const {
     return operator<=>(static_cast<std::string_view>(rhs));
   }
 
-  constexpr auto operator<=>(const std::string &rhs) const {
+  constexpr auto operator<=>(std::string const &rhs) const {
     return operator<=>(std::string_view{rhs});
   }
 
@@ -161,7 +161,7 @@ class ROQ_PACKED String {
     return std::data(buffer_);
   }
 
-  constexpr void copy(const std::string_view &text) {
+  constexpr void copy(std::string_view const &text) {
     using namespace std::literals;
     auto len = std::size(text);
     if (N < len) [[unlikely]]
@@ -196,7 +196,7 @@ struct fmt::formatter<roq::String<N> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::String<N> &value, Context &context) {
+  auto format(roq::String<N> const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }

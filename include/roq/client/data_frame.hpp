@@ -15,13 +15,13 @@ class DataFrame {
   class Handler {
    public:
     virtual void add_series(
-        const std::span<std::string_view> &values, const std::string_view &name, bool index, bool category) = 0;
+        std::span<std::string_view> const &values, std::string_view const &name, bool index, bool category) = 0;
     virtual void add_series(
-        const std::span<uint32_t> &values, const std::string_view &name, bool index, bool category) = 0;
+        std::span<uint32_t> const &values, std::string_view const &name, bool index, bool category) = 0;
     virtual void add_series(
-        const std::span<double> &values, const std::string_view &name, bool index, bool category) = 0;
+        std::span<double> const &values, std::string_view const &name, bool index, bool category) = 0;
     virtual void add_series(
-        const std::span<std::chrono::nanoseconds> &values, const std::string_view &name, bool index, bool category) = 0;
+        std::span<std::chrono::nanoseconds> const &values, std::string_view const &name, bool index, bool category) = 0;
   };
 };
 

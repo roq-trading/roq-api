@@ -44,7 +44,7 @@ struct fmt::formatter<roq::ExternalLatency> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::ExternalLatency &value, Context &context) {
+  auto format(roq::ExternalLatency const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -66,7 +66,7 @@ struct fmt::formatter<roq::Event<roq::ExternalLatency> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::ExternalLatency> &event, Context &context) {
+  auto format(roq::Event<roq::ExternalLatency> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -86,7 +86,7 @@ struct fmt::formatter<roq::Trace<roq::ExternalLatency const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Trace<roq::ExternalLatency const> &event, Context &context) {
+  auto format(roq::Trace<roq::ExternalLatency const> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

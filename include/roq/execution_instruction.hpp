@@ -29,7 +29,7 @@ struct fmt::formatter<roq::ExecutionInstruction> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::ExecutionInstruction &value, Context &context) {
+  auto format(roq::ExecutionInstruction const &value, Context &context) {
     using namespace std::literals;
 #if __cplusplus >= 202002L
     std::string_view name{[&]() {

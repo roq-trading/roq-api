@@ -18,13 +18,13 @@ namespace roq {
 namespace cache {
 
 struct CustomMetrics final {
-  explicit CustomMetrics(const CustomMetricsUpdate &custom_metrics_update)
+  explicit CustomMetrics(CustomMetricsUpdate const &custom_metrics_update)
       : user(custom_metrics_update.user), label(custom_metrics_update.label) {}
 
-  CustomMetrics(const CustomMetrics &) = delete;
+  CustomMetrics(CustomMetrics const &) = delete;
   CustomMetrics(CustomMetrics &&) = default;
 
-  [[nodiscard]] bool operator()(const CustomMetricsUpdate &custom_metrics_update) {
+  [[nodiscard]] bool operator()(CustomMetricsUpdate const &custom_metrics_update) {
     for (auto &measurement : custom_metrics_update.measurements) {
       auto &[key, value] = measurement;
       auto iter = lookup_.find(key);
@@ -44,7 +44,7 @@ struct CustomMetrics final {
   }
 
   template <typename Context>
-  [[nodiscard]] CustomMetricsUpdate convert(const Context &context) {
+  [[nodiscard]] CustomMetricsUpdate convert(Context const &context) {
     return {
         .user = user,
         .label = label,

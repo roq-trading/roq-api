@@ -44,7 +44,7 @@ struct fmt::formatter<roq::Disconnected> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Disconnected &value, Context &context) {
+  auto format(roq::Disconnected const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -62,7 +62,7 @@ struct fmt::formatter<roq::Event<roq::Disconnected> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::Disconnected> &event, Context &context) {
+  auto format(roq::Event<roq::Disconnected> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -82,7 +82,7 @@ struct fmt::formatter<roq::Trace<roq::Disconnected const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Trace<roq::Disconnected const> &event, Context &context) {
+  auto format(roq::Trace<roq::Disconnected const> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

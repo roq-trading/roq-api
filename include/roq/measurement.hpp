@@ -32,7 +32,7 @@ struct fmt::formatter<roq::Measurement> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Measurement &value, Context &context) {
+  auto format(roq::Measurement const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

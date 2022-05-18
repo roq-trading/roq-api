@@ -16,7 +16,7 @@ namespace roq {
 namespace utils {
 
 //! Extract price for \ref roq::Layer given \ref roq::Side.
-inline constexpr double price_from_side(const Layer &layer, Side side) {
+inline constexpr double price_from_side(Layer const &layer, Side side) {
   switch (side) {
     using enum Side;
     case UNDEFINED:

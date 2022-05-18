@@ -57,9 +57,9 @@ class ROQ_PUBLIC MarketByPrice {
   // normalized update, e.g. unsorted update or "incremental" full image
   template <typename F>
   void operator()(
-      const MarketByPriceUpdate &market_by_price_update,
-      const std::span<MBPUpdate> &final_bids,
-      const std::span<MBPUpdate> &final_asks,
+      MarketByPriceUpdate const &market_by_price_update,
+      std::span<MBPUpdate> const &final_bids,
+      std::span<MBPUpdate> const &final_asks,
       F callback) {
     auto [final_bids_size, final_asks_size] = update_helper(market_by_price_update, final_bids, final_asks);
     auto bids = final_bids_size ? std::span{std::data(final_bids), final_bids_size} : market_by_price_update.bids;
@@ -82,15 +82,15 @@ class ROQ_PUBLIC MarketByPrice {
   }
 
   // copy-out
-  virtual size_t extract(const std::span<Layer> &, bool fill_zero = false) const = 0;
+  virtual size_t extract(std::span<Layer> const &, bool fill_zero = false) const = 0;
   virtual std::pair<size_t, size_t> extract(
-      const std::span<MBPUpdate> &bids, const std::span<MBPUpdate> &asks) const = 0;
+      std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) const = 0;
 
   // atomic update to the order book (quantity == 0 means remove)
   void operator()(Side side, double price, double quantity) { update_helper(side, price, quantity); }
 
   // apply incremental update
-  void operator()(const std::span<MBPUpdate> &bids, const std::span<MBPUpdate> &asks) { update_helper(bids, asks); }
+  void operator()(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) { update_helper(bids, asks); }
 
   // check if price exists
   virtual bool exists(Side, double price) const = 0;
@@ -111,20 +111,20 @@ class ROQ_PUBLIC MarketByPrice {
 
   // converts a full book update to a depth update
   virtual std::pair<size_t, size_t> create_depth_update(
-      const MarketByPriceUpdate &,
+      MarketByPriceUpdate const &,
       size_t depth,
-      const std::span<MBPUpdate> &bids,
-      const std::span<MBPUpdate> &asks) const = 0;
+      std::span<MBPUpdate> const &bids,
+      std::span<MBPUpdate> const &asks) const = 0;
 
  protected:
-  virtual void update_helper(const MarketByPriceUpdate &) = 0;
+  virtual void update_helper(MarketByPriceUpdate const &) = 0;
 
   virtual std::pair<size_t, size_t> update_helper(
-      const MarketByPriceUpdate &, const std::span<MBPUpdate> &bids, const std::span<MBPUpdate> &asks) = 0;
+      MarketByPriceUpdate const &, std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
 
   virtual void update_helper(Side, double price, double quantity) = 0;
 
-  virtual void update_helper(const std::span<MBPUpdate> &bids, const std::span<MBPUpdate> &asks) = 0;
+  virtual void update_helper(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
 };
 
 }  // namespace cache

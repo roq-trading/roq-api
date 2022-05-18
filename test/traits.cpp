@@ -15,10 +15,10 @@ static_assert(is_string<char *>::value);
 static_assert(is_string<char const *>::value);
 static_assert(is_string<std::string>::value);
 static_assert(is_string<std::string &>::value);
-static_assert(is_string<const std::string &>::value);
+static_assert(is_string<std::string const &>::value);
 static_assert(is_string<std::string_view>::value);
 static_assert(is_string<std::string_view &>::value);
-static_assert(is_string<const std::string_view &>::value);
+static_assert(is_string<std::string_view const &>::value);
 
 }  // namespace utils
 }  // namespace roq

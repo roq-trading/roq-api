@@ -33,9 +33,9 @@ class ROQ_PUBLIC Config {
  public:
   class ROQ_PUBLIC Handler {
    public:
-    virtual void operator()(const Settings &) {}
-    virtual void operator()(const Account &) = 0;
-    virtual void operator()(const Symbol &) = 0;
+    virtual void operator()(Settings const &) {}
+    virtual void operator()(Account const &) = 0;
+    virtual void operator()(Symbol const &) = 0;
   };
 
   virtual ~Config() {}
@@ -54,7 +54,7 @@ struct fmt::formatter<roq::client::Settings> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::client::Settings &value, Context &context) {
+  auto format(roq::client::Settings const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

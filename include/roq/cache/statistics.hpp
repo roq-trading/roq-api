@@ -18,7 +18,7 @@ class Statistics final {
     clear();  // note! initialize array
   }
 
-  Statistics(const Statistics &) = delete;
+  Statistics(Statistics const &) = delete;
   Statistics(Statistics &&) = default;
 
   void clear() {
@@ -39,7 +39,7 @@ class Statistics final {
   // the storage interface should support the emplace_back() method
   // the callback will only be called when there are updates
   template <typename Storage, typename Callback>
-  bool update(const StatisticsUpdate &statistics_update, Storage &storage, Callback callback) {
+  bool update(StatisticsUpdate const &statistics_update, Storage &storage, Callback callback) {
     bool dirty = false;
     for (auto &iter : statistics_update.statistics) {
       auto index = to_index(iter.type);
@@ -56,7 +56,7 @@ class Statistics final {
     if (dirty) {
       stream_id = statistics_update.stream_id;
       exchange_time_utc = statistics_update.exchange_time_utc;
-      const auto result = StatisticsUpdate{
+      auto const result = StatisticsUpdate{
           .stream_id = stream_id,
           .exchange = statistics_update.exchange,
           .symbol = statistics_update.symbol,
@@ -69,7 +69,7 @@ class Statistics final {
     return dirty;
   }
 
-  [[nodiscard]] bool operator()(const StatisticsUpdate &statistics_update) {
+  [[nodiscard]] bool operator()(StatisticsUpdate const &statistics_update) {
     bool dirty = false;
     for (auto &iter : statistics_update.statistics) {
       auto index = to_index(iter.type);
@@ -85,12 +85,12 @@ class Statistics final {
     return dirty;
   }
 
-  [[nodiscard]] bool operator()(const Event<StatisticsUpdate> &event) { return (*this)(event.value); }
+  [[nodiscard]] bool operator()(Event<StatisticsUpdate> const &event) { return (*this)(event.value); }
 
   // note! this will include *all* statistics (whether empty or not)
   // use the extract method if you only care about non-empty statistics
   template <typename Context>
-  [[nodiscard]] StatisticsUpdate convert(const Context &context) {
+  [[nodiscard]] StatisticsUpdate convert(Context const &context) {
     return {
         .stream_id = stream_id,
         .exchange = context.exchange,
@@ -105,7 +105,7 @@ class Statistics final {
   // a storage container must be provided for storing *non-empty* statistics
   // the storage interface should support the emplace_back() method
   template <typename Context, typename Storage>
-  [[nodiscard]] StatisticsUpdate extract(const Context &context, Storage &storage) const {
+  [[nodiscard]] StatisticsUpdate extract(Context const &context, Storage &storage) const {
     for (auto &type : magic_enum::enum_values<StatisticsType>()) {
       if (type == StatisticsType{})  // skip undefined
         continue;
@@ -144,7 +144,7 @@ class Statistics final {
   static size_t to_index(StatisticsType type) {
     return static_cast<std::underlying_type<std::decay<decltype(type)>::type>::type>(type);
   }
-  static bool is_empty(const roq::Statistics &statistics) { return std::isnan(statistics.value); }
+  static bool is_empty(roq::Statistics const &statistics) { return std::isnan(statistics.value); }
 };
 
 }  // namespace cache

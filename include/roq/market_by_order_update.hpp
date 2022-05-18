@@ -56,7 +56,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::MarketByOrderUpdate &value, Context &context) {
+  auto format(roq::MarketByOrderUpdate const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -94,7 +94,7 @@ struct fmt::formatter<roq::Event<roq::MarketByOrderUpdate> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::MarketByOrderUpdate> &event, Context &context) {
+  auto format(roq::Event<roq::MarketByOrderUpdate> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -114,7 +114,7 @@ struct fmt::formatter<roq::Trace<roq::MarketByOrderUpdate const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Trace<roq::MarketByOrderUpdate const> &event, Context &context) {
+  auto format(roq::Trace<roq::MarketByOrderUpdate const> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

@@ -22,52 +22,52 @@ namespace client {
 class ROQ_PUBLIC Handler {
  public:
   // host
-  virtual void operator()(const Event<Start> &) {}
-  virtual void operator()(const Event<Stop> &) {}
-  virtual void operator()(const Event<Timer> &) {}
-  virtual void operator()(const Event<Connected> &) {}
-  virtual void operator()(const Event<Disconnected> &) {}
+  virtual void operator()(Event<Start> const &) {}
+  virtual void operator()(Event<Stop> const &) {}
+  virtual void operator()(Event<Timer> const &) {}
+  virtual void operator()(Event<Connected> const &) {}
+  virtual void operator()(Event<Disconnected> const &) {}
 
   // control
-  virtual void operator()(const Event<BatchBegin> &) {}
-  virtual void operator()(const Event<BatchEnd> &) {}
-  virtual void operator()(const Event<DownloadBegin> &) {}
-  virtual void operator()(const Event<DownloadEnd> &) {}
+  virtual void operator()(Event<BatchBegin> const &) {}
+  virtual void operator()(Event<BatchEnd> const &) {}
+  virtual void operator()(Event<DownloadBegin> const &) {}
+  virtual void operator()(Event<DownloadEnd> const &) {}
 
   // config
-  virtual void operator()(const Event<GatewaySettings> &) {}
+  virtual void operator()(Event<GatewaySettings> const &) {}
 
   // stream
-  virtual void operator()(const Event<StreamStatus> &) {}
-  virtual void operator()(const Event<ExternalLatency> &) {}
-  virtual void operator()(const Event<RateLimitTrigger> &) {}
+  virtual void operator()(Event<StreamStatus> const &) {}
+  virtual void operator()(Event<ExternalLatency> const &) {}
+  virtual void operator()(Event<RateLimitTrigger> const &) {}
 
   // service
-  virtual void operator()(const Event<GatewayStatus> &) {}
+  virtual void operator()(Event<GatewayStatus> const &) {}
 
   // market data
-  virtual void operator()(const Event<ReferenceData> &) {}
-  virtual void operator()(const Event<MarketStatus> &) {}
-  virtual void operator()(const Event<TopOfBook> &) {}
-  virtual void operator()(const Event<MarketByPriceUpdate> &) {}
-  virtual void operator()(const Event<MarketByOrderUpdate> &) {}
-  virtual void operator()(const Event<TradeSummary> &) {}
-  virtual void operator()(const Event<StatisticsUpdate> &) {}
+  virtual void operator()(Event<ReferenceData> const &) {}
+  virtual void operator()(Event<MarketStatus> const &) {}
+  virtual void operator()(Event<TopOfBook> const &) {}
+  virtual void operator()(Event<MarketByPriceUpdate> const &) {}
+  virtual void operator()(Event<MarketByOrderUpdate> const &) {}
+  virtual void operator()(Event<TradeSummary> const &) {}
+  virtual void operator()(Event<StatisticsUpdate> const &) {}
 
   // order management
-  virtual void operator()(const Event<OrderAck> &) {}
-  virtual void operator()(const Event<OrderUpdate> &) {}
-  virtual void operator()(const Event<TradeUpdate> &) {}
+  virtual void operator()(Event<OrderAck> const &) {}
+  virtual void operator()(Event<OrderUpdate> const &) {}
+  virtual void operator()(Event<TradeUpdate> const &) {}
 
   // account management
-  virtual void operator()(const Event<PositionUpdate> &) {}
-  virtual void operator()(const Event<FundsUpdate> &) {}
+  virtual void operator()(Event<PositionUpdate> const &) {}
+  virtual void operator()(Event<FundsUpdate> const &) {}
 
   // broadcast
-  virtual void operator()(const Event<CustomMetricsUpdate> &) {}
+  virtual void operator()(Event<CustomMetricsUpdate> const &) {}
 
   // ancillary
-  virtual void operator()(const Event<CustomMessage> &) {}
+  virtual void operator()(Event<CustomMessage> const &) {}
 
   // metrics
   virtual void operator()(metrics::Writer &) const {}

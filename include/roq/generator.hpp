@@ -15,26 +15,26 @@ class ROQ_PUBLIC Generator {
   class ROQ_PUBLIC Dispatcher {
    public:
     // config
-    virtual void operator()(const Event<GatewaySettings> &) = 0;
+    virtual void operator()(Event<GatewaySettings> const &) = 0;
 
     // stream
-    virtual void operator()(const Event<StreamStatus> &) = 0;
+    virtual void operator()(Event<StreamStatus> const &) = 0;
 
     // service
-    virtual void operator()(const Event<GatewayStatus> &) = 0;
+    virtual void operator()(Event<GatewayStatus> const &) = 0;
 
     // market data
-    virtual void operator()(const Event<ReferenceData> &) = 0;
-    virtual void operator()(const Event<MarketStatus> &) = 0;
-    virtual void operator()(const Event<TopOfBook> &) = 0;
-    virtual void operator()(const Event<MarketByPriceUpdate> &) = 0;
-    virtual void operator()(const Event<MarketByOrderUpdate> &) = 0;
-    virtual void operator()(const Event<TradeSummary> &) = 0;
-    virtual void operator()(const Event<StatisticsUpdate> &) = 0;
+    virtual void operator()(Event<ReferenceData> const &) = 0;
+    virtual void operator()(Event<MarketStatus> const &) = 0;
+    virtual void operator()(Event<TopOfBook> const &) = 0;
+    virtual void operator()(Event<MarketByPriceUpdate> const &) = 0;
+    virtual void operator()(Event<MarketByOrderUpdate> const &) = 0;
+    virtual void operator()(Event<TradeSummary> const &) = 0;
+    virtual void operator()(Event<StatisticsUpdate> const &) = 0;
 
     // account management
-    virtual void operator()(const Event<PositionUpdate> &) = 0;
-    virtual void operator()(const Event<FundsUpdate> &) = 0;
+    virtual void operator()(Event<PositionUpdate> const &) = 0;
+    virtual void operator()(Event<FundsUpdate> const &) = 0;
   };
 
   virtual ~Generator() {}

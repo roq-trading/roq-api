@@ -28,7 +28,7 @@ struct safe_cast final {
   explicit safe_cast(T value) : value_(value) {}
 
   safe_cast(safe_cast &&) = default;
-  safe_cast(const safe_cast &) = delete;
+  safe_cast(safe_cast const &) = delete;
 
   template <typename R>
   operator R() const {

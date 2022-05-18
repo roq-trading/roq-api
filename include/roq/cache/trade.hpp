@@ -13,12 +13,12 @@ namespace cache {
 struct ROQ_PUBLIC Trade final {
   Trade(uint32_t order_id) : order_id(order_id) {}
 
-  Trade(const Trade &) = delete;
+  Trade(Trade const &) = delete;
   Trade(Trade &&) = default;
 
   void clear() {}
 
-  [[nodiscard]] bool operator()(const TradeUpdate &trade_update) {
+  [[nodiscard]] bool operator()(TradeUpdate const &trade_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, trade_update.stream_id);
     dirty |= utils::update(side, trade_update.side);
@@ -60,7 +60,7 @@ struct ROQ_PUBLIC Trade final {
   }
 
   template <typename Context>
-  [[nodiscard]] TradeUpdate convert(const Context &context) {
+  [[nodiscard]] TradeUpdate convert(Context const &context) {
     return {
         .stream_id = stream_id,
         .account = context.account,

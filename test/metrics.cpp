@@ -10,13 +10,13 @@ using namespace std::literals;
 namespace {
 class Writer : public metrics::Writer {
  protected:
-  metrics::Writer &write_type(const std::string_view &, const std::string_view &) override { return *this; }
-  metrics::Writer &write_simple(const std::string_view &, const std::string_view &, uint64_t) override { return *this; }
-  metrics::Writer &write_bucket(const std::string_view &, const std::string_view &, double, uint64_t) override {
+  metrics::Writer &write_type(std::string_view const &, std::string_view const &) override { return *this; }
+  metrics::Writer &write_simple(std::string_view const &, std::string_view const &, uint64_t) override { return *this; }
+  metrics::Writer &write_bucket(std::string_view const &, std::string_view const &, double, uint64_t) override {
     return *this;
   }
-  metrics::Writer &write_sum(const std::string_view &, const std::string_view &, double) override { return *this; }
-  metrics::Writer &write_count(const std::string_view &, const std::string_view &, uint64_t) override { return *this; }
+  metrics::Writer &write_sum(std::string_view const &, std::string_view const &, double) override { return *this; }
+  metrics::Writer &write_count(std::string_view const &, std::string_view const &, uint64_t) override { return *this; }
   metrics::Writer &finish() override { return *this; }
 };
 }  // namespace

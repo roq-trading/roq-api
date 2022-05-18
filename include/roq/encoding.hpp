@@ -27,7 +27,7 @@ struct fmt::formatter<roq::Encoding> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Encoding &value, Context &context) {
+  auto format(roq::Encoding const &value, Context &context) {
     using namespace std::literals;
 #if __cplusplus >= 202002L
     std::string_view name{[&]() {

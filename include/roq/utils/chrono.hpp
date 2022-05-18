@@ -28,7 +28,7 @@ struct fmt::formatter<std::chrono::year_month_day> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const std::chrono::year_month_day &value, Context &context) {
+  auto format(std::chrono::year_month_day const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -50,7 +50,7 @@ struct fmt::formatter<std::chrono::hh_mm_ss<std::chrono::milliseconds>> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const std::chrono::hh_mm_ss<std::chrono::milliseconds> &value, Context &context) {
+  auto format(std::chrono::hh_mm_ss<std::chrono::milliseconds> const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

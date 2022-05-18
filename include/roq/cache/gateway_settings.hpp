@@ -14,12 +14,12 @@ namespace cache {
 struct GatewaySettings final {
   GatewaySettings() = default;
 
-  GatewaySettings(const GatewaySettings &) = delete;
+  GatewaySettings(GatewaySettings const &) = delete;
   GatewaySettings(GatewaySettings &&) = default;
 
   void clear() { new (this) GatewaySettings{}; }
 
-  [[nodiscard]] bool operator()(const roq::GatewaySettings &gateway_settings) {
+  [[nodiscard]] bool operator()(roq::GatewaySettings const &gateway_settings) {
     auto dirty = false;
     dirty |= utils::update(supports, gateway_settings.supports);
     dirty |= utils::update(mbp_max_depth, gateway_settings.mbp_max_depth);
@@ -32,7 +32,7 @@ struct GatewaySettings final {
     return dirty;
   }
 
-  [[nodiscard]] bool operator()(const Event<roq::GatewaySettings> &event) { return (*this)(event.value); }
+  [[nodiscard]] bool operator()(Event<roq::GatewaySettings> const &event) { return (*this)(event.value); }
 
   [[nodiscard]] roq::GatewaySettings convert() const {
     return {

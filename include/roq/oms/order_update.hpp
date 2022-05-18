@@ -45,7 +45,7 @@ struct fmt::formatter<roq::oms::OrderUpdate> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::oms::OrderUpdate &value, Context &context) {
+  auto format(roq::oms::OrderUpdate const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

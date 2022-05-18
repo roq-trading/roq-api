@@ -19,176 +19,176 @@ auto encode(B &b, const T &);
 // std::string_view
 
 template <typename B>
-auto encode(B &builder, const std::string_view &value) {
+auto encode(B &builder, std::string_view const &value) {
   return builder.CreateString(value);
 }
 
 // std::chrono::duration
 
 template <typename B>
-auto encode(B &, const std::chrono::nanoseconds &value) {
+auto encode(B &, std::chrono::nanoseconds const &value) {
   return value.count();
 }
 
 template <typename B>
-auto encode(B &, const std::chrono::milliseconds &value) {
+auto encode(B &, std::chrono::milliseconds const &value) {
   return value.count();
 }
 
 template <typename B>
-auto encode(B &, const std::chrono::seconds &value) {
+auto encode(B &, std::chrono::seconds const &value) {
   return value.count();
 }
 
 template <typename B>
-auto encode(B &, const std::chrono::days &value) {
+auto encode(B &, std::chrono::days const &value) {
   return value.count();
 }
 
 // enums
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::ConnectionStatus &value) {
+auto encode([[maybe_unused]] B &builder, roq::ConnectionStatus const &value) {
   using result_type = ConnectionStatus;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::Decimals &value) {
+auto encode([[maybe_unused]] B &builder, roq::Decimals const &value) {
   using result_type = Decimals;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::Encoding &value) {
+auto encode([[maybe_unused]] B &builder, roq::Encoding const &value) {
   using result_type = Encoding;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::Error &value) {
+auto encode([[maybe_unused]] B &builder, roq::Error const &value) {
   using result_type = Error;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::Liquidity &value) {
+auto encode([[maybe_unused]] B &builder, roq::Liquidity const &value) {
   using result_type = Liquidity;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::ExecutionInstruction &value) {
+auto encode([[maybe_unused]] B &builder, roq::ExecutionInstruction const &value) {
   using result_type = ExecutionInstruction;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::OptionType &value) {
+auto encode([[maybe_unused]] B &builder, roq::OptionType const &value) {
   using result_type = OptionType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::OrderStatus &value) {
+auto encode([[maybe_unused]] B &builder, roq::OrderStatus const &value) {
   using result_type = OrderStatus;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::OrderType &value) {
+auto encode([[maybe_unused]] B &builder, roq::OrderType const &value) {
   using result_type = OrderType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::OrderUpdateAction &value) {
+auto encode([[maybe_unused]] B &builder, roq::OrderUpdateAction const &value) {
   using result_type = OrderUpdateAction;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::Origin &value) {
+auto encode([[maybe_unused]] B &builder, roq::Origin const &value) {
   using result_type = Origin;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::PositionEffect &value) {
+auto encode([[maybe_unused]] B &builder, roq::PositionEffect const &value) {
   using result_type = PositionEffect;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::Priority &value) {
+auto encode([[maybe_unused]] B &builder, roq::Priority const &value) {
   using result_type = Priority;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::Protocol &value) {
+auto encode([[maybe_unused]] B &builder, roq::Protocol const &value) {
   using result_type = Protocol;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::RateLimitType &value) {
+auto encode([[maybe_unused]] B &builder, roq::RateLimitType const &value) {
   using result_type = RateLimitType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::RequestIdType &value) {
+auto encode([[maybe_unused]] B &builder, roq::RequestIdType const &value) {
   using result_type = RequestIdType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::RequestStatus &value) {
+auto encode([[maybe_unused]] B &builder, roq::RequestStatus const &value) {
   using result_type = RequestStatus;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::RequestType &value) {
+auto encode([[maybe_unused]] B &builder, roq::RequestType const &value) {
   using result_type = RequestType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::SecurityType &value) {
+auto encode([[maybe_unused]] B &builder, roq::SecurityType const &value) {
   using result_type = SecurityType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::Side &value) {
+auto encode([[maybe_unused]] B &builder, roq::Side const &value) {
   using result_type = Side;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::StatisticsType &value) {
+auto encode([[maybe_unused]] B &builder, roq::StatisticsType const &value) {
   using result_type = StatisticsType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
@@ -196,35 +196,35 @@ auto encode([[maybe_unused]] B &builder, const roq::StatisticsType &value) {
 
 // note! not used directly... redundant, really
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::SupportType &value) {
+auto encode([[maybe_unused]] B &builder, roq::SupportType const &value) {
   using result_type = SupportType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::TimeInForce &value) {
+auto encode([[maybe_unused]] B &builder, roq::TimeInForce const &value) {
   using result_type = TimeInForce;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::TradingStatus &value) {
+auto encode([[maybe_unused]] B &builder, roq::TradingStatus const &value) {
   using result_type = TradingStatus;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::Transport &value) {
+auto encode([[maybe_unused]] B &builder, roq::Transport const &value) {
   using result_type = Transport;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, const roq::UpdateType &value) {
+auto encode([[maybe_unused]] B &builder, roq::UpdateType const &value) {
   using result_type = UpdateType;
   using value_type = std::underlying_type_t<result_type>;
   return static_cast<result_type>(static_cast<value_type>(value));
@@ -233,18 +233,18 @@ auto encode([[maybe_unused]] B &builder, const roq::UpdateType &value) {
 // helper
 
 template <typename B>
-auto encode(B &builder, const roq::Layer &value) {
+auto encode(B &builder, roq::Layer const &value) {
   return CreateLayer(builder, value.bid_price, value.bid_quantity, value.ask_price, value.ask_quantity);
 }
 
 template <typename B>
-auto encode(B &builder, const roq::MBPUpdate &value) {
+auto encode(B &builder, roq::MBPUpdate const &value) {
   return CreateMBPUpdate(
       builder, value.price, value.quantity, value.implied_quantity, value.price_level, value.number_of_orders);
 }
 
 template <typename B>
-auto encode(B &builder, const roq::MBOUpdate &value) {
+auto encode(B &builder, roq::MBOUpdate const &value) {
   return CreateMBOUpdate(
       builder,
       value.price,
@@ -255,7 +255,7 @@ auto encode(B &builder, const roq::MBOUpdate &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Trade &value) {
+auto encode(B &builder, roq::Trade const &value) {
   return CreateTrade(
       builder,
       encode(builder, value.side),
@@ -265,7 +265,7 @@ auto encode(B &builder, const roq::Trade &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Fill &value) {
+auto encode(B &builder, roq::Fill const &value) {
   return CreateFill(
       builder,
       encode(builder, static_cast<std::string_view>(value.external_trade_id)),
@@ -275,7 +275,7 @@ auto encode(B &builder, const roq::Fill &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Statistics &value) {
+auto encode(B &builder, roq::Statistics const &value) {
   return CreateStatistics(
       builder,
       encode(builder, value.type),
@@ -285,19 +285,19 @@ auto encode(B &builder, const roq::Statistics &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Measurement &value) {
+auto encode(B &builder, roq::Measurement const &value) {
   return CreateMeasurement(builder, encode(builder, static_cast<std::string_view>(value.name)), value.value);
 }
 
 // std::span
 
 template <typename B>
-auto encode(B &builder, const std::span<roq::MBPUpdate> &value) {
+auto encode(B &builder, std::span<roq::MBPUpdate> const &value) {
   std::vector<flatbuffers::Offset<MBPUpdate>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, item));
     }
   }
@@ -305,12 +305,12 @@ auto encode(B &builder, const std::span<roq::MBPUpdate> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<roq::MBOUpdate> &value) {
+auto encode(B &builder, std::span<roq::MBOUpdate> const &value) {
   std::vector<flatbuffers::Offset<MBOUpdate>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, item));
     }
   }
@@ -318,12 +318,12 @@ auto encode(B &builder, const std::span<roq::MBOUpdate> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<roq::Trade> &value) {
+auto encode(B &builder, std::span<roq::Trade> const &value) {
   std::vector<flatbuffers::Offset<Trade>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, item));
     }
   }
@@ -331,12 +331,12 @@ auto encode(B &builder, const std::span<roq::Trade> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<roq::Fill> &value) {
+auto encode(B &builder, std::span<roq::Fill> const &value) {
   std::vector<flatbuffers::Offset<Fill>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, item));
     }
   }
@@ -344,12 +344,12 @@ auto encode(B &builder, const std::span<roq::Fill> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<roq::Statistics> &value) {
+auto encode(B &builder, std::span<roq::Statistics> const &value) {
   std::vector<flatbuffers::Offset<Statistics>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, item));
     }
   }
@@ -357,12 +357,12 @@ auto encode(B &builder, const std::span<roq::Statistics> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<roq::Measurement> &value) {
+auto encode(B &builder, std::span<roq::Measurement> const &value) {
   std::vector<flatbuffers::Offset<Measurement>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, item));
     }
   }
@@ -370,12 +370,12 @@ auto encode(B &builder, const std::span<roq::Measurement> &value) {
 }
 
 template <typename B, std::size_t N>
-auto encode(B &builder, const std::span<String<N> const> &value) {
+auto encode(B &builder, std::span<String<N> const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -385,12 +385,12 @@ auto encode(B &builder, const std::span<String<N> const> &value) {
 // XXX following is too much -- we need some templating here
 
 template <typename B>
-auto encode(B &builder, const std::span<Source const> &value) {
+auto encode(B &builder, std::span<Source const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -398,12 +398,12 @@ auto encode(B &builder, const std::span<Source const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<User const> &value) {
+auto encode(B &builder, std::span<User const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -411,12 +411,12 @@ auto encode(B &builder, const std::span<User const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<Account const> &value) {
+auto encode(B &builder, std::span<Account const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -424,12 +424,12 @@ auto encode(B &builder, const std::span<Account const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<Exchange const> &value) {
+auto encode(B &builder, std::span<Exchange const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -437,12 +437,12 @@ auto encode(B &builder, const std::span<Exchange const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<Symbol const> &value) {
+auto encode(B &builder, std::span<Symbol const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -450,12 +450,12 @@ auto encode(B &builder, const std::span<Symbol const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<Currency const> &value) {
+auto encode(B &builder, std::span<Currency const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -463,12 +463,12 @@ auto encode(B &builder, const std::span<Currency const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<OrderTemplate const> &value) {
+auto encode(B &builder, std::span<OrderTemplate const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -476,12 +476,12 @@ auto encode(B &builder, const std::span<OrderTemplate const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<ExternalAccount const> &value) {
+auto encode(B &builder, std::span<ExternalAccount const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -489,12 +489,12 @@ auto encode(B &builder, const std::span<ExternalAccount const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<ExternalOrderId const> &value) {
+auto encode(B &builder, std::span<ExternalOrderId const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -502,12 +502,12 @@ auto encode(B &builder, const std::span<ExternalOrderId const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<ExternalTradeId const> &value) {
+auto encode(B &builder, std::span<ExternalTradeId const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -515,12 +515,12 @@ auto encode(B &builder, const std::span<ExternalTradeId const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<RoutingId const> &value) {
+auto encode(B &builder, std::span<RoutingId const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -528,12 +528,12 @@ auto encode(B &builder, const std::span<RoutingId const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<ClOrdId const> &value) {
+auto encode(B &builder, std::span<ClOrdId const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -541,12 +541,12 @@ auto encode(B &builder, const std::span<ClOrdId const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<RequestId const> &value) {
+auto encode(B &builder, std::span<RequestId const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -554,12 +554,12 @@ auto encode(B &builder, const std::span<RequestId const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<Label const> &value) {
+auto encode(B &builder, std::span<Label const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -567,12 +567,12 @@ auto encode(B &builder, const std::span<Label const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<MeasurementKey const> &value) {
+auto encode(B &builder, std::span<MeasurementKey const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -580,12 +580,12 @@ auto encode(B &builder, const std::span<MeasurementKey const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<Description const> &value) {
+auto encode(B &builder, std::span<Description const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -593,12 +593,12 @@ auto encode(B &builder, const std::span<Description const> &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const std::span<TimeZone const> &value) {
+auto encode(B &builder, std::span<TimeZone const> const &value) {
   std::vector<flatbuffers::Offset<flatbuffers::String>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (const auto &item : value) {
+    for (auto const &item : value) {
       result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
     }
   }
@@ -608,7 +608,7 @@ auto encode(B &builder, const std::span<TimeZone const> &value) {
 // structs
 
 template <typename B>
-auto encode(B &builder, const roq::MessageInfo &value) {
+auto encode(B &builder, roq::MessageInfo const &value) {
   return CreateSourceInfo(
       builder,
       value.source_seqno,
@@ -619,17 +619,17 @@ auto encode(B &builder, const roq::MessageInfo &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::DownloadBegin &value) {
+auto encode(B &builder, roq::DownloadBegin const &value) {
   return CreateDownloadBegin(builder, encode(builder, value.account));
 }
 
 template <typename B>
-auto encode(B &builder, const roq::DownloadEnd &value) {
+auto encode(B &builder, roq::DownloadEnd const &value) {
   return CreateDownloadEnd(builder, encode(builder, value.account), value.max_order_id);
 }
 
 template <typename B>
-auto encode(B &builder, const roq::GatewaySettings &value) {
+auto encode(B &builder, roq::GatewaySettings const &value) {
   return CreateGatewaySettings(
       builder,
       value.supports.get(),
@@ -644,7 +644,7 @@ auto encode(B &builder, const roq::GatewaySettings &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::StreamStatus &value) {
+auto encode(B &builder, roq::StreamStatus const &value) {
   return CreateStreamStatus(
       builder,
       value.stream_id,
@@ -658,13 +658,13 @@ auto encode(B &builder, const roq::StreamStatus &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::ExternalLatency &value) {
+auto encode(B &builder, roq::ExternalLatency const &value) {
   return CreateExternalLatency(
       builder, value.stream_id, encode(builder, value.latency), encode(builder, value.account));
 }
 
 template <typename B>
-auto encode(B &builder, const roq::RateLimitTrigger &value) {
+auto encode(B &builder, roq::RateLimitTrigger const &value) {
   return CreateRateLimitTrigger(
       builder,
       encode(builder, value.name),
@@ -677,13 +677,13 @@ auto encode(B &builder, const roq::RateLimitTrigger &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::GatewayStatus &value) {
+auto encode(B &builder, roq::GatewayStatus const &value) {
   return CreateGatewayStatus(
       builder, encode(builder, value.account), value.supported.get(), value.available.get(), value.unavailable.get());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::ReferenceData &value) {
+auto encode(B &builder, roq::ReferenceData const &value) {
   return CreateReferenceData(
       builder,
       value.stream_id,
@@ -712,7 +712,7 @@ auto encode(B &builder, const roq::ReferenceData &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::MarketStatus &value) {
+auto encode(B &builder, roq::MarketStatus const &value) {
   return CreateMarketStatus(
       builder,
       value.stream_id,
@@ -722,7 +722,7 @@ auto encode(B &builder, const roq::MarketStatus &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::TopOfBook &value) {
+auto encode(B &builder, roq::TopOfBook const &value) {
   return CreateTopOfBook(
       builder,
       value.stream_id,
@@ -735,7 +735,7 @@ auto encode(B &builder, const roq::TopOfBook &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::MarketByPriceUpdate &value) {
+auto encode(B &builder, roq::MarketByPriceUpdate const &value) {
   return CreateMarketByPriceUpdate(
       builder,
       value.stream_id,
@@ -753,7 +753,7 @@ auto encode(B &builder, const roq::MarketByPriceUpdate &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::MarketByOrderUpdate &value) {
+auto encode(B &builder, roq::MarketByOrderUpdate const &value) {
   return CreateMarketByOrderUpdate(
       builder,
       value.stream_id,
@@ -770,7 +770,7 @@ auto encode(B &builder, const roq::MarketByOrderUpdate &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::TradeSummary &value) {
+auto encode(B &builder, roq::TradeSummary const &value) {
   return CreateTradeSummary(
       builder,
       value.stream_id,
@@ -781,7 +781,7 @@ auto encode(B &builder, const roq::TradeSummary &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::StatisticsUpdate &value) {
+auto encode(B &builder, roq::StatisticsUpdate const &value) {
   return CreateStatisticsUpdate(
       builder,
       value.stream_id,
@@ -793,7 +793,7 @@ auto encode(B &builder, const roq::StatisticsUpdate &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::CreateOrder &value) {
+auto encode(B &builder, roq::CreateOrder const &value) {
   return CreateCreateOrder(
       builder,
       encode(builder, value.account),
@@ -815,7 +815,7 @@ auto encode(B &builder, const roq::CreateOrder &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::ModifyOrder &value) {
+auto encode(B &builder, roq::ModifyOrder const &value) {
   return CreateModifyOrder(
       builder,
       encode(builder, value.account),
@@ -828,7 +828,7 @@ auto encode(B &builder, const roq::ModifyOrder &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::CancelOrder &value) {
+auto encode(B &builder, roq::CancelOrder const &value) {
   return CreateCancelOrder(
       builder,
       encode(builder, value.account),
@@ -839,12 +839,12 @@ auto encode(B &builder, const roq::CancelOrder &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::CancelAllOrders &value) {
+auto encode(B &builder, roq::CancelAllOrders const &value) {
   return CreateCancelAllOrders(builder, encode(builder, value.account));
 }
 
 template <typename B>
-auto encode(B &builder, const roq::OrderAck &value) {
+auto encode(B &builder, roq::OrderAck const &value) {
   return CreateOrderAck(
       builder,
       value.stream_id,
@@ -867,7 +867,7 @@ auto encode(B &builder, const roq::OrderAck &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::OrderUpdate &value) {
+auto encode(B &builder, roq::OrderUpdate const &value) {
   return CreateOrderUpdate(
       builder,
       value.stream_id,
@@ -905,7 +905,7 @@ auto encode(B &builder, const roq::OrderUpdate &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::TradeUpdate &value) {
+auto encode(B &builder, roq::TradeUpdate const &value) {
   return CreateTradeUpdate(
       builder,
       value.stream_id,
@@ -925,7 +925,7 @@ auto encode(B &builder, const roq::TradeUpdate &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::PositionUpdate &value) {
+auto encode(B &builder, roq::PositionUpdate const &value) {
   return CreatePositionUpdate(
       builder,
       value.stream_id,
@@ -940,7 +940,7 @@ auto encode(B &builder, const roq::PositionUpdate &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::FundsUpdate &value) {
+auto encode(B &builder, roq::FundsUpdate const &value) {
   return CreateFundsUpdate(
       builder,
       value.stream_id,
@@ -952,7 +952,7 @@ auto encode(B &builder, const roq::FundsUpdate &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::CustomMetrics &value) {
+auto encode(B &builder, roq::CustomMetrics const &value) {
   return CreateCustomMetrics(
       builder,
       encode(builder, value.label),
@@ -963,7 +963,7 @@ auto encode(B &builder, const roq::CustomMetrics &value) {
 }
 
 template <typename B>
-auto encode(B &builder, const roq::CustomMetricsUpdate &value) {
+auto encode(B &builder, roq::CustomMetricsUpdate const &value) {
   return CreateCustomMetricsUpdate(
       builder,
       encode(builder, value.user),
@@ -977,151 +977,151 @@ auto encode(B &builder, const roq::CustomMetricsUpdate &value) {
 // events
 
 template <typename B>
-flatbuffers::Offset<Event> encode(B &builder, const roq::Event<roq::DownloadBegin> &event) {
+flatbuffers::Offset<Event> encode(B &builder, roq::Event<roq::DownloadBegin> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_DownloadBegin, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::DownloadEnd> &event) {
+auto encode(B &builder, roq::Event<roq::DownloadEnd> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_DownloadEnd, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::GatewaySettings> &event) {
+auto encode(B &builder, roq::Event<roq::GatewaySettings> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_GatewaySettings, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::StreamStatus> &event) {
+auto encode(B &builder, roq::Event<roq::StreamStatus> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_StreamStatus, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::ExternalLatency> &event) {
+auto encode(B &builder, roq::Event<roq::ExternalLatency> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_ExternalLatency, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::RateLimitTrigger> &event) {
+auto encode(B &builder, roq::Event<roq::RateLimitTrigger> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_RateLimitTrigger, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::GatewayStatus> &event) {
+auto encode(B &builder, roq::Event<roq::GatewayStatus> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_GatewayStatus, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::ReferenceData> &event) {
+auto encode(B &builder, roq::Event<roq::ReferenceData> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_ReferenceData, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::MarketStatus> &event) {
+auto encode(B &builder, roq::Event<roq::MarketStatus> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_MarketStatus, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::TopOfBook> &event) {
+auto encode(B &builder, roq::Event<roq::TopOfBook> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_TopOfBook, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::MarketByPriceUpdate> &event) {
+auto encode(B &builder, roq::Event<roq::MarketByPriceUpdate> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_MarketByPriceUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::MarketByOrderUpdate> &event) {
+auto encode(B &builder, roq::Event<roq::MarketByOrderUpdate> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_MarketByOrderUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::TradeSummary> &event) {
+auto encode(B &builder, roq::Event<roq::TradeSummary> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_TradeSummary, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::StatisticsUpdate> &event) {
+auto encode(B &builder, roq::Event<roq::StatisticsUpdate> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_StatisticsUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::CreateOrder> &event) {
+auto encode(B &builder, roq::Event<roq::CreateOrder> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_CreateOrder, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::ModifyOrder> &event) {
+auto encode(B &builder, roq::Event<roq::ModifyOrder> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_ModifyOrder, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::CancelOrder> &event) {
+auto encode(B &builder, roq::Event<roq::CancelOrder> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_CancelOrder, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::CancelAllOrders> &event) {
+auto encode(B &builder, roq::Event<roq::CancelAllOrders> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_CancelAllOrders, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::OrderAck> &event) {
+auto encode(B &builder, roq::Event<roq::OrderAck> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_OrderAck, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::OrderUpdate> &event) {
+auto encode(B &builder, roq::Event<roq::OrderUpdate> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_OrderUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::TradeUpdate> &event) {
+auto encode(B &builder, roq::Event<roq::TradeUpdate> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_TradeUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::PositionUpdate> &event) {
+auto encode(B &builder, roq::Event<roq::PositionUpdate> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_PositionUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::FundsUpdate> &event) {
+auto encode(B &builder, roq::Event<roq::FundsUpdate> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_FundsUpdate, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::CustomMetrics> &event) {
+auto encode(B &builder, roq::Event<roq::CustomMetrics> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_CustomMetrics, encode(builder, event.value).Union());
 }
 
 template <typename B>
-auto encode(B &builder, const roq::Event<roq::CustomMetricsUpdate> &event) {
+auto encode(B &builder, roq::Event<roq::CustomMetricsUpdate> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message_CustomMetricsUpdate, encode(builder, event.value).Union());
 }

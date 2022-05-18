@@ -18,19 +18,19 @@ template <typename T>
 class alignas(ROQ_CACHELINE_SIZE) Gauge {
  public:
   Gauge() = default;
-  explicit Gauge(const std::string_view &labels) : labels_(labels) {}
+  explicit Gauge(std::string_view const &labels) : labels_(labels) {}
 
-  Gauge(const Gauge &) = delete;
+  Gauge(Gauge const &) = delete;
   Gauge(Gauge &&) = delete;
 
   //! Set gauge to specific value
   void set(T value) { data_.value.store(value, std::memory_order_release); }
 
   //! Write formatted output
-  void write(Writer &writer, const std::string_view &name) const { return write(writer, name, labels_); }
+  void write(Writer &writer, std::string_view const &name) const { return write(writer, name, labels_); }
 
   //! Write formatted output
-  void write(Writer &writer, const std::string_view &name, const std::string_view &labels) const {
+  void write(Writer &writer, std::string_view const &name, std::string_view const &labels) const {
     using namespace std::literals;
     auto value = data_.value.load(std::memory_order_acquire);
     writer  //

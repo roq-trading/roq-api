@@ -28,28 +28,28 @@ class ROQ_PUBLIC Dispatcher {
   virtual void stop() = 0;
 
   //! Send a request to create a new order
-  virtual void send(const CreateOrder &, uint8_t source) = 0;
+  virtual void send(CreateOrder const &, uint8_t source) = 0;
 
   //! Send a request to modify an existing order
-  virtual void send(const ModifyOrder &, uint8_t source) = 0;
+  virtual void send(ModifyOrder const &, uint8_t source) = 0;
 
   //! Send a request to cancel an existing order
-  virtual void send(const CancelOrder &, uint8_t source) = 0;
+  virtual void send(CancelOrder const &, uint8_t source) = 0;
 
   //! Send a request to cancel all orders
-  virtual void send(const CancelAllOrders &, uint8_t source) = 0;
+  virtual void send(CancelAllOrders const &, uint8_t source) = 0;
 
   //! Broadcast custom metrics
-  virtual void send(const CustomMetrics &, uint8_t source) = 0;
+  virtual void send(CustomMetrics const &, uint8_t source) = 0;
 
   //! Useful to communicate between threads
-  virtual void enqueue(const CustomMessage &) = 0;
+  virtual void enqueue(CustomMessage const &) = 0;
 
   //! Make it possible to populate origin_create_time and receive_time for external events
   template <typename Callback>
   void create_trace_info(Callback callback) {
     TimeSetter time_setter(*this);
-    callback(static_cast<const TraceInfo &>(time_setter));
+    callback(static_cast<TraceInfo const &>(time_setter));
   }
 
  protected:
@@ -67,7 +67,7 @@ class ROQ_PUBLIC Dispatcher {
       }
     }
 
-    operator const TraceInfo &() const { return trace_info_; }
+    operator TraceInfo const &() const { return trace_info_; }
 
    private:
     Dispatcher &dispatcher_;

@@ -149,13 +149,13 @@ inline const ConnectionStatus (&EnumValuesConnectionStatus())[7] {
   return values;
 }
 
-inline const char *const *EnumNamesConnectionStatus() {
-  static const char *const names[8] = {
+inline char const *const *EnumNamesConnectionStatus() {
+  static char const *const names[8] = {
       "Undefined", "Disconnected", "Connecting", "LoginSent", "Downloading", "Ready", "LoggedOut", nullptr};
   return names;
 }
 
-inline const char *EnumNameConnectionStatus(ConnectionStatus e) {
+inline char const *EnumNameConnectionStatus(ConnectionStatus e) {
   if (flatbuffers::IsOutRange(e, ConnectionStatus_Undefined, ConnectionStatus_LoggedOut))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -206,8 +206,8 @@ inline const Decimals (&EnumValuesDecimals())[17] {
   return values;
 }
 
-inline const char *const *EnumNamesDecimals() {
-  static const char *const names[18] = {
+inline char const *const *EnumNamesDecimals() {
+  static char const *const names[18] = {
       "Undefined",
       "_0",
       "_1",
@@ -229,7 +229,7 @@ inline const char *const *EnumNamesDecimals() {
   return names;
 }
 
-inline const char *EnumNameDecimals(Decimals e) {
+inline char const *EnumNameDecimals(Decimals e) {
   if (flatbuffers::IsOutRange(e, Decimals_Undefined, Decimals__15))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -250,12 +250,12 @@ inline const Encoding (&EnumValuesEncoding())[4] {
   return values;
 }
 
-inline const char *const *EnumNamesEncoding() {
-  static const char *const names[6] = {"Undefined", "FIX", "JSON", "", "SBE", nullptr};
+inline char const *const *EnumNamesEncoding() {
+  static char const *const names[6] = {"Undefined", "FIX", "JSON", "", "SBE", nullptr};
   return names;
 }
 
-inline const char *EnumNameEncoding(Encoding e) {
+inline char const *EnumNameEncoding(Encoding e) {
   if (flatbuffers::IsOutRange(e, Encoding_Undefined, Encoding_SBE))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -342,8 +342,8 @@ inline const Error (&EnumValuesError())[35] {
   return values;
 }
 
-inline const char *const *EnumNamesError() {
-  static const char *const names[36] = {
+inline char const *const *EnumNamesError() {
+  static char const *const names[36] = {
       "Undefined",
       "Unknown",
       "NotSupported",
@@ -383,7 +383,7 @@ inline const char *const *EnumNamesError() {
   return names;
 }
 
-inline const char *EnumNameError(Error e) {
+inline char const *EnumNameError(Error e) {
   if (flatbuffers::IsOutRange(e, Error_Undefined, Error_InsufficientFunds))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -410,8 +410,8 @@ inline const ExecutionInstruction (&EnumValuesExecutionInstruction())[5] {
   return values;
 }
 
-inline const char *const *EnumNamesExecutionInstruction() {
-  static const char *const names[10] = {
+inline char const *const *EnumNamesExecutionInstruction() {
+  static char const *const names[10] = {
       "Undefined",
       "ParticipateDoNotInitiate",
       "CancelIfNotBest",
@@ -425,7 +425,7 @@ inline const char *const *EnumNamesExecutionInstruction() {
   return names;
 }
 
-inline const char *EnumNameExecutionInstruction(ExecutionInstruction e) {
+inline char const *EnumNameExecutionInstruction(ExecutionInstruction e) {
   if (flatbuffers::IsOutRange(e, ExecutionInstruction_Undefined, ExecutionInstruction_DoNotReduce))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -445,12 +445,12 @@ inline const Liquidity (&EnumValuesLiquidity())[3] {
   return values;
 }
 
-inline const char *const *EnumNamesLiquidity() {
-  static const char *const names[4] = {"Undefined", "Maker", "Taker", nullptr};
+inline char const *const *EnumNamesLiquidity() {
+  static char const *const names[4] = {"Undefined", "Maker", "Taker", nullptr};
   return names;
 }
 
-inline const char *EnumNameLiquidity(Liquidity e) {
+inline char const *EnumNameLiquidity(Liquidity e) {
   if (flatbuffers::IsOutRange(e, Liquidity_Undefined, Liquidity_Taker))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -470,12 +470,12 @@ inline const OptionType (&EnumValuesOptionType())[3] {
   return values;
 }
 
-inline const char *const *EnumNamesOptionType() {
-  static const char *const names[4] = {"Undefined", "Call", "Put", nullptr};
+inline char const *const *EnumNamesOptionType() {
+  static char const *const names[4] = {"Undefined", "Call", "Put", nullptr};
   return names;
 }
 
-inline const char *EnumNameOptionType(OptionType e) {
+inline char const *EnumNameOptionType(OptionType e) {
   if (flatbuffers::IsOutRange(e, OptionType_Undefined, OptionType_Put))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -512,8 +512,8 @@ inline const OrderStatus (&EnumValuesOrderStatus())[10] {
   return values;
 }
 
-inline const char *const *EnumNamesOrderStatus() {
-  static const char *const names[11] = {
+inline char const *const *EnumNamesOrderStatus() {
+  static char const *const names[11] = {
       "Undefined",
       "Sent",
       "Accepted",
@@ -528,7 +528,7 @@ inline const char *const *EnumNamesOrderStatus() {
   return names;
 }
 
-inline const char *EnumNameOrderStatus(OrderStatus e) {
+inline char const *EnumNameOrderStatus(OrderStatus e) {
   if (flatbuffers::IsOutRange(e, OrderStatus_Undefined, OrderStatus_Rejected))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -548,12 +548,12 @@ inline const OrderType (&EnumValuesOrderType())[3] {
   return values;
 }
 
-inline const char *const *EnumNamesOrderType() {
-  static const char *const names[4] = {"Undefined", "Market", "Limit", nullptr};
+inline char const *const *EnumNamesOrderType() {
+  static char const *const names[4] = {"Undefined", "Market", "Limit", nullptr};
   return names;
 }
 
-inline const char *EnumNameOrderType(OrderType e) {
+inline char const *EnumNameOrderType(OrderType e) {
   if (flatbuffers::IsOutRange(e, OrderType_Undefined, OrderType_Limit))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -575,12 +575,12 @@ inline const OrderUpdateAction (&EnumValuesOrderUpdateAction())[4] {
   return values;
 }
 
-inline const char *const *EnumNamesOrderUpdateAction() {
-  static const char *const names[5] = {"Undefined", "New", "Modify", "Remove", nullptr};
+inline char const *const *EnumNamesOrderUpdateAction() {
+  static char const *const names[5] = {"Undefined", "New", "Modify", "Remove", nullptr};
   return names;
 }
 
-inline const char *EnumNameOrderUpdateAction(OrderUpdateAction e) {
+inline char const *EnumNameOrderUpdateAction(OrderUpdateAction e) {
   if (flatbuffers::IsOutRange(e, OrderUpdateAction_Undefined, OrderUpdateAction_Remove))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -602,12 +602,12 @@ inline const Origin (&EnumValuesOrigin())[5] {
   return values;
 }
 
-inline const char *const *EnumNamesOrigin() {
-  static const char *const names[6] = {"Undefined", "Client", "Gateway", "Broker", "Exchange", nullptr};
+inline char const *const *EnumNamesOrigin() {
+  static char const *const names[6] = {"Undefined", "Client", "Gateway", "Broker", "Exchange", nullptr};
   return names;
 }
 
-inline const char *EnumNameOrigin(Origin e) {
+inline char const *EnumNameOrigin(Origin e) {
   if (flatbuffers::IsOutRange(e, Origin_Undefined, Origin_Exchange))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -627,12 +627,12 @@ inline const PositionEffect (&EnumValuesPositionEffect())[3] {
   return values;
 }
 
-inline const char *const *EnumNamesPositionEffect() {
-  static const char *const names[4] = {"Undefined", "Open", "Close", nullptr};
+inline char const *const *EnumNamesPositionEffect() {
+  static char const *const names[4] = {"Undefined", "Open", "Close", nullptr};
   return names;
 }
 
-inline const char *EnumNamePositionEffect(PositionEffect e) {
+inline char const *EnumNamePositionEffect(PositionEffect e) {
   if (flatbuffers::IsOutRange(e, PositionEffect_Undefined, PositionEffect_Close))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -654,12 +654,12 @@ inline const Protocol (&EnumValuesProtocol())[5] {
   return values;
 }
 
-inline const char *const *EnumNamesProtocol() {
-  static const char *const names[6] = {"Undefined", "FIX", "WS", "HTTP", "SBE", nullptr};
+inline char const *const *EnumNamesProtocol() {
+  static char const *const names[6] = {"Undefined", "FIX", "WS", "HTTP", "SBE", nullptr};
   return names;
 }
 
-inline const char *EnumNameProtocol(Protocol e) {
+inline char const *EnumNameProtocol(Protocol e) {
   if (flatbuffers::IsOutRange(e, Protocol_Undefined, Protocol_SBE))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -682,12 +682,12 @@ inline const RequestIdType (&EnumValuesRequestIdType())[5] {
   return values;
 }
 
-inline const char *const *EnumNamesRequestIdType() {
-  static const char *const names[6] = {"Undefined", "Base64", "Base32", "Simple", "UUID", nullptr};
+inline char const *const *EnumNamesRequestIdType() {
+  static char const *const names[6] = {"Undefined", "Base64", "Base32", "Simple", "UUID", nullptr};
   return names;
 }
 
-inline const char *EnumNameRequestIdType(RequestIdType e) {
+inline char const *EnumNameRequestIdType(RequestIdType e) {
   if (flatbuffers::IsOutRange(e, RequestIdType_Undefined, RequestIdType_UUID))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -718,13 +718,13 @@ inline const RequestStatus (&EnumValuesRequestStatus())[7] {
   return values;
 }
 
-inline const char *const *EnumNamesRequestStatus() {
-  static const char *const names[8] = {
+inline char const *const *EnumNamesRequestStatus() {
+  static char const *const names[8] = {
       "Undefined", "Forwarded", "Accepted", "Rejected", "Disconnected", "Timeout", "Failed", nullptr};
   return names;
 }
 
-inline const char *EnumNameRequestStatus(RequestStatus e) {
+inline char const *EnumNameRequestStatus(RequestStatus e) {
   if (flatbuffers::IsOutRange(e, RequestStatus_Undefined, RequestStatus_Failed))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -746,12 +746,12 @@ inline const RequestType (&EnumValuesRequestType())[4] {
   return values;
 }
 
-inline const char *const *EnumNamesRequestType() {
-  static const char *const names[5] = {"Undefined", "CreateOrder", "ModifyOrder", "CancelOrder", nullptr};
+inline char const *const *EnumNamesRequestType() {
+  static char const *const names[5] = {"Undefined", "CreateOrder", "ModifyOrder", "CancelOrder", nullptr};
   return names;
 }
 
-inline const char *EnumNameRequestType(RequestType e) {
+inline char const *EnumNameRequestType(RequestType e) {
   if (flatbuffers::IsOutRange(e, RequestType_Undefined, RequestType_CancelOrder))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -774,12 +774,12 @@ inline const SecurityType (&EnumValuesSecurityType())[5] {
   return values;
 }
 
-inline const char *const *EnumNamesSecurityType() {
-  static const char *const names[6] = {"Undefined", "Spot", "Futures", "Option", "Swap", nullptr};
+inline char const *const *EnumNamesSecurityType() {
+  static char const *const names[6] = {"Undefined", "Spot", "Futures", "Option", "Swap", nullptr};
   return names;
 }
 
-inline const char *EnumNameSecurityType(SecurityType e) {
+inline char const *EnumNameSecurityType(SecurityType e) {
   if (flatbuffers::IsOutRange(e, SecurityType_Undefined, SecurityType_Swap))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -799,12 +799,12 @@ inline const Side (&EnumValuesSide())[3] {
   return values;
 }
 
-inline const char *const *EnumNamesSide() {
-  static const char *const names[4] = {"Undefined", "Buy", "Sell", nullptr};
+inline char const *const *EnumNamesSide() {
+  static char const *const names[4] = {"Undefined", "Buy", "Sell", nullptr};
   return names;
 }
 
-inline const char *EnumNameSide(Side e) {
+inline char const *EnumNameSide(Side e) {
   if (flatbuffers::IsOutRange(e, Side_Undefined, Side_Sell))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -855,8 +855,8 @@ inline const StatisticsType (&EnumValuesStatisticsType())[17] {
   return values;
 }
 
-inline const char *const *EnumNamesStatisticsType() {
-  static const char *const names[18] = {
+inline char const *const *EnumNamesStatisticsType() {
+  static char const *const names[18] = {
       "Undefined",
       "OpenPrice",
       "SettlementPrice",
@@ -878,7 +878,7 @@ inline const char *const *EnumNamesStatisticsType() {
   return names;
 }
 
-inline const char *EnumNameStatisticsType(StatisticsType e) {
+inline char const *EnumNameStatisticsType(StatisticsType e) {
   if (flatbuffers::IsOutRange(e, StatisticsType_Undefined, StatisticsType_TradeVolume))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -929,7 +929,7 @@ inline const SupportType (&EnumValuesSupportType())[17] {
   return values;
 }
 
-inline const char *EnumNameSupportType(SupportType e) {
+inline char const *EnumNameSupportType(SupportType e) {
   switch (e) {
     case SupportType_Undefined:
       return "Undefined";
@@ -1008,8 +1008,8 @@ inline const TimeInForce (&EnumValuesTimeInForce())[14] {
   return values;
 }
 
-inline const char *const *EnumNamesTimeInForce() {
-  static const char *const names[15] = {
+inline char const *const *EnumNamesTimeInForce() {
+  static char const *const names[15] = {
       "Undefined",
       "GFD",
       "GTC",
@@ -1028,7 +1028,7 @@ inline const char *const *EnumNamesTimeInForce() {
   return names;
 }
 
-inline const char *EnumNameTimeInForce(TimeInForce e) {
+inline char const *EnumNameTimeInForce(TimeInForce e) {
   if (flatbuffers::IsOutRange(e, TimeInForce_Undefined, TimeInForce_GFM))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -1075,8 +1075,8 @@ inline const TradingStatus (&EnumValuesTradingStatus())[15] {
   return values;
 }
 
-inline const char *const *EnumNamesTradingStatus() {
-  static const char *const names[16] = {
+inline char const *const *EnumNamesTradingStatus() {
+  static char const *const names[16] = {
       "Undefined",
       "StartOfDay",
       "PreOpen",
@@ -1096,7 +1096,7 @@ inline const char *const *EnumNamesTradingStatus() {
   return names;
 }
 
-inline const char *EnumNameTradingStatus(TradingStatus e) {
+inline char const *EnumNameTradingStatus(TradingStatus e) {
   if (flatbuffers::IsOutRange(e, TradingStatus_Undefined, TradingStatus_EndOfDay))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -1116,12 +1116,12 @@ inline const Transport (&EnumValuesTransport())[3] {
   return values;
 }
 
-inline const char *const *EnumNamesTransport() {
-  static const char *const names[4] = {"Undefined", "TCP", "UDP", nullptr};
+inline char const *const *EnumNamesTransport() {
+  static char const *const names[4] = {"Undefined", "TCP", "UDP", nullptr};
   return names;
 }
 
-inline const char *EnumNameTransport(Transport e) {
+inline char const *EnumNameTransport(Transport e) {
   if (flatbuffers::IsOutRange(e, Transport_Undefined, Transport_UDP))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -1143,12 +1143,12 @@ inline const UpdateType (&EnumValuesUpdateType())[4] {
   return values;
 }
 
-inline const char *const *EnumNamesUpdateType() {
-  static const char *const names[5] = {"Undefined", "Snapshot", "Incremental", "Stale", nullptr};
+inline char const *const *EnumNamesUpdateType() {
+  static char const *const names[5] = {"Undefined", "Snapshot", "Incremental", "Stale", nullptr};
   return names;
 }
 
-inline const char *EnumNameUpdateType(UpdateType e) {
+inline char const *EnumNameUpdateType(UpdateType e) {
   if (flatbuffers::IsOutRange(e, UpdateType_Undefined, UpdateType_Stale))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -1168,12 +1168,12 @@ inline const RateLimitType (&EnumValuesRateLimitType())[3] {
   return values;
 }
 
-inline const char *const *EnumNamesRateLimitType() {
-  static const char *const names[4] = {"Undefined", "OrderAction", "CreateOrder", nullptr};
+inline char const *const *EnumNamesRateLimitType() {
+  static char const *const names[4] = {"Undefined", "OrderAction", "CreateOrder", nullptr};
   return names;
 }
 
-inline const char *EnumNameRateLimitType(RateLimitType e) {
+inline char const *EnumNameRateLimitType(RateLimitType e) {
   if (flatbuffers::IsOutRange(e, RateLimitType_Undefined, RateLimitType_CreateOrder))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -1193,12 +1193,12 @@ inline const Priority (&EnumValuesPriority())[3] {
   return values;
 }
 
-inline const char *const *EnumNamesPriority() {
-  static const char *const names[4] = {"Undefined", "Primary", "Secondary", nullptr};
+inline char const *const *EnumNamesPriority() {
+  static char const *const names[4] = {"Undefined", "Primary", "Secondary", nullptr};
   return names;
 }
 
-inline const char *EnumNamePriority(Priority e) {
+inline char const *EnumNamePriority(Priority e) {
   if (flatbuffers::IsOutRange(e, Priority_Undefined, Priority_Secondary))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -1277,8 +1277,8 @@ inline const Message (&EnumValuesMessage())[31] {
   return values;
 }
 
-inline const char *const *EnumNamesMessage() {
-  static const char *const names[32] = {
+inline char const *const *EnumNamesMessage() {
+  static char const *const names[32] = {
       "NONE",
       "Handshake",
       "HandshakeAck",
@@ -1314,7 +1314,7 @@ inline const char *const *EnumNamesMessage() {
   return names;
 }
 
-inline const char *EnumNameMessage(Message e) {
+inline char const *EnumNameMessage(Message e) {
   if (flatbuffers::IsOutRange(e, Message_NONE, Message_CustomMetricsUpdate))
     return "";
   const size_t index = static_cast<size_t>(e);
@@ -1476,11 +1476,11 @@ struct MessageTraits<roq::fbs::CustomMetricsUpdate> {
   static const Message enum_value = Message_CustomMetricsUpdate;
 };
 
-bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Message type);
+bool VerifyMessage(flatbuffers::Verifier &verifier, void const *obj, Message type);
 bool VerifyMessageVector(
     flatbuffers::Verifier &verifier,
-    const flatbuffers::Vector<flatbuffers::Offset<void>> *values,
-    const flatbuffers::Vector<uint8_t> *types);
+    flatbuffers::Vector<flatbuffers::Offset<void>> const *values,
+    flatbuffers::Vector<uint8_t> const *types);
 
 struct Fill FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef FillBuilder Builder;
@@ -1490,8 +1490,8 @@ struct Fill FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_PRICE = 8,
     VT_LIQUIDITY = 10
   };
-  const flatbuffers::String *external_trade_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_TRADE_ID);
+  flatbuffers::String const *external_trade_id() const {
+    return GetPointer<flatbuffers::String const *>(VT_EXTERNAL_TRADE_ID);
   }
   double quantity() const { return GetField<double>(VT_QUANTITY, 0.0); }
   double price() const { return GetField<double>(VT_PRICE, 0.0); }
@@ -1518,7 +1518,7 @@ struct FillBuilder {
   }
   explicit FillBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Fill> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Fill>(end);
     return o;
   }
@@ -1540,7 +1540,7 @@ inline flatbuffers::Offset<Fill> CreateFill(
 
 inline flatbuffers::Offset<Fill> CreateFillDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *external_trade_id = nullptr,
+    char const *external_trade_id = nullptr,
     double quantity = 0.0,
     double price = 0.0,
     roq::fbs::Liquidity liquidity = roq::fbs::Liquidity_Undefined) {
@@ -1581,7 +1581,7 @@ struct LayerBuilder {
   void add_ask_quantity(double ask_quantity) { fbb_.AddElement<double>(Layer::VT_ASK_QUANTITY, ask_quantity, 0.0); }
   explicit LayerBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Layer> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Layer>(end);
     return o;
   }
@@ -1616,7 +1616,7 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<roq::fbs::OrderUpdateAction>(GetField<uint8_t>(VT_ACTION, 0));
   }
   uint32_t priority() const { return GetField<uint32_t>(VT_PRIORITY, 0); }
-  const flatbuffers::String *order_id() const { return GetPointer<const flatbuffers::String *>(VT_ORDER_ID); }
+  flatbuffers::String const *order_id() const { return GetPointer<flatbuffers::String const *>(VT_ORDER_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<double>(verifier, VT_PRICE, 8) &&
            VerifyField<double>(verifier, VT_REMAINING_QUANTITY, 8) && VerifyField<uint8_t>(verifier, VT_ACTION, 1) &&
@@ -1644,7 +1644,7 @@ struct MBOUpdateBuilder {
   }
   explicit MBOUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MBOUpdate> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MBOUpdate>(end);
     return o;
   }
@@ -1672,7 +1672,7 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdateDirect(
     double remaining_quantity = 0.0,
     roq::fbs::OrderUpdateAction action = roq::fbs::OrderUpdateAction_Undefined,
     uint32_t priority = 0,
-    const char *order_id = nullptr) {
+    char const *order_id = nullptr) {
   auto order_id__ = order_id ? _fbb.CreateString(order_id) : 0;
   return roq::fbs::CreateMBOUpdate(_fbb, price, remaining_quantity, action, priority, order_id__);
 }
@@ -1716,7 +1716,7 @@ struct MBPUpdateBuilder {
   }
   explicit MBPUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MBPUpdate> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MBPUpdate>(end);
     return o;
   }
@@ -1741,7 +1741,7 @@ inline flatbuffers::Offset<MBPUpdate> CreateMBPUpdate(
 struct Measurement FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef MeasurementBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_NAME = 4, VT_VALUE = 6 };
-  const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(VT_NAME); }
+  flatbuffers::String const *name() const { return GetPointer<flatbuffers::String const *>(VT_NAME); }
   double value() const { return GetField<double>(VT_VALUE, std::numeric_limits<double>::quiet_NaN()); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_NAME) && verifier.VerifyString(name()) &&
@@ -1759,7 +1759,7 @@ struct MeasurementBuilder {
   }
   explicit MeasurementBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Measurement> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Measurement>(end);
     return o;
   }
@@ -1777,7 +1777,7 @@ inline flatbuffers::Offset<Measurement> CreateMeasurement(
 
 inline flatbuffers::Offset<Measurement> CreateMeasurementDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *name = nullptr,
+    char const *name = nullptr,
     double value = std::numeric_limits<double>::quiet_NaN()) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
   return roq::fbs::CreateMeasurement(_fbb, name__, value);
@@ -1820,7 +1820,7 @@ struct StatisticsBuilder {
   }
   explicit StatisticsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Statistics> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Statistics>(end);
     return o;
   }
@@ -1851,7 +1851,7 @@ struct Trade FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
   double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double quantity() const { return GetField<double>(VT_QUANTITY, 0.0); }
-  const flatbuffers::String *trade_id() const { return GetPointer<const flatbuffers::String *>(VT_TRADE_ID); }
+  flatbuffers::String const *trade_id() const { return GetPointer<flatbuffers::String const *>(VT_TRADE_ID); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint8_t>(verifier, VT_SIDE, 1) &&
            VerifyField<double>(verifier, VT_PRICE, 8) && VerifyField<double>(verifier, VT_QUANTITY, 8) &&
@@ -1871,7 +1871,7 @@ struct TradeBuilder {
   void add_trade_id(flatbuffers::Offset<flatbuffers::String> trade_id) { fbb_.AddOffset(Trade::VT_TRADE_ID, trade_id); }
   explicit TradeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Trade> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Trade>(end);
     return o;
   }
@@ -1896,7 +1896,7 @@ inline flatbuffers::Offset<Trade> CreateTradeDirect(
     roq::fbs::Side side = roq::fbs::Side_Undefined,
     double price = std::numeric_limits<double>::quiet_NaN(),
     double quantity = 0.0,
-    const char *trade_id = nullptr) {
+    char const *trade_id = nullptr) {
   auto trade_id__ = trade_id ? _fbb.CreateString(trade_id) : 0;
   return roq::fbs::CreateTrade(_fbb, side, price, quantity, trade_id__);
 }
@@ -1904,7 +1904,7 @@ inline flatbuffers::Offset<Trade> CreateTradeDirect(
 struct CancelAllOrders FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef CancelAllOrdersBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_ACCOUNT = 4 };
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            verifier.EndTable();
@@ -1920,7 +1920,7 @@ struct CancelAllOrdersBuilder {
   }
   explicit CancelAllOrdersBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<CancelAllOrders> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CancelAllOrders>(end);
     return o;
   }
@@ -1934,7 +1934,7 @@ inline flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrders(
 }
 
 inline flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrdersDirect(
-    flatbuffers::FlatBufferBuilder &_fbb, const char *account = nullptr) {
+    flatbuffers::FlatBufferBuilder &_fbb, char const *account = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   return roq::fbs::CreateCancelAllOrders(_fbb, account__);
 }
@@ -1948,9 +1948,9 @@ struct CancelOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_VERSION = 10,
     VT_CONDITIONAL_ON_VERSION = 12
   };
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
+  flatbuffers::String const *routing_id() const { return GetPointer<flatbuffers::String const *>(VT_ROUTING_ID); }
   uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
   uint32_t conditional_on_version() const { return GetField<uint32_t>(VT_CONDITIONAL_ON_VERSION, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -1978,7 +1978,7 @@ struct CancelOrderBuilder {
   }
   explicit CancelOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<CancelOrder> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CancelOrder>(end);
     return o;
   }
@@ -2002,9 +2002,9 @@ inline flatbuffers::Offset<CancelOrder> CreateCancelOrder(
 
 inline flatbuffers::Offset<CancelOrder> CreateCancelOrderDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *account = nullptr,
+    char const *account = nullptr,
     uint32_t order_id = 0,
-    const char *routing_id = nullptr,
+    char const *routing_id = nullptr,
     uint32_t version = 0,
     uint32_t conditional_on_version = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
@@ -2032,10 +2032,10 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ROUTING_ID = 32,
     VT_EXECUTION_INSTRUCTIONS = 34
   };
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
   roq::fbs::PositionEffect position_effect() const {
     return static_cast<roq::fbs::PositionEffect>(GetField<uint8_t>(VT_POSITION_EFFECT, 0));
@@ -2050,13 +2050,13 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<roq::fbs::TimeInForce>(GetField<uint8_t>(VT_TIME_IN_FORCE, 0));
   }
   uint8_t zzz_execution_instructions() const { return GetField<uint8_t>(VT_ZZZ_EXECUTION_INSTRUCTIONS, 0); }
-  const flatbuffers::String *order_template() const {
-    return GetPointer<const flatbuffers::String *>(VT_ORDER_TEMPLATE);
+  flatbuffers::String const *order_template() const {
+    return GetPointer<flatbuffers::String const *>(VT_ORDER_TEMPLATE);
   }
   double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
   double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
   double stop_price() const { return GetField<double>(VT_STOP_PRICE, std::numeric_limits<double>::quiet_NaN()); }
-  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
+  flatbuffers::String const *routing_id() const { return GetPointer<flatbuffers::String const *>(VT_ROUTING_ID); }
   uint32_t execution_instructions() const { return GetField<uint32_t>(VT_EXECUTION_INSTRUCTIONS, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
@@ -2123,7 +2123,7 @@ struct CreateOrderBuilder {
   }
   explicit CreateOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<CreateOrder> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CreateOrder>(end);
     return o;
   }
@@ -2169,21 +2169,21 @@ inline flatbuffers::Offset<CreateOrder> CreateCreateOrder(
 
 inline flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *account = nullptr,
+    char const *account = nullptr,
     uint32_t order_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
     roq::fbs::Side side = roq::fbs::Side_Undefined,
     roq::fbs::PositionEffect position_effect = roq::fbs::PositionEffect_Undefined,
     double max_show_quantity = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::OrderType order_type = roq::fbs::OrderType_Undefined,
     roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce_Undefined,
     uint8_t zzz_execution_instructions = 0,
-    const char *order_template = nullptr,
+    char const *order_template = nullptr,
     double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
-    const char *routing_id = nullptr,
+    char const *routing_id = nullptr,
     uint32_t execution_instructions = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
@@ -2219,12 +2219,12 @@ struct CustomMetrics FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SYMBOL = 10,
     VT_MEASUREMENTS = 12
   };
-  const flatbuffers::String *label() const { return GetPointer<const flatbuffers::String *>(VT_LABEL); }
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *>(VT_MEASUREMENTS);
+  flatbuffers::String const *label() const { return GetPointer<flatbuffers::String const *>(VT_LABEL); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
+  flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> const *measurements() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> const *>(VT_MEASUREMENTS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_LABEL) && verifier.VerifyString(label()) &&
@@ -2254,7 +2254,7 @@ struct CustomMetricsBuilder {
   }
   explicit CustomMetricsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<CustomMetrics> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CustomMetrics>(end);
     return o;
   }
@@ -2278,11 +2278,11 @@ inline flatbuffers::Offset<CustomMetrics> CreateCustomMetrics(
 
 inline flatbuffers::Offset<CustomMetrics> CreateCustomMetricsDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *label = nullptr,
-    const char *account = nullptr,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements = nullptr) {
+    char const *label = nullptr,
+    char const *account = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
+    std::vector<flatbuffers::Offset<roq::fbs::Measurement>> const *measurements = nullptr) {
   auto label__ = label ? _fbb.CreateString(label) : 0;
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
@@ -2301,13 +2301,13 @@ struct CustomMetricsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_SYMBOL = 12,
     VT_MEASUREMENTS = 14
   };
-  const flatbuffers::String *user() const { return GetPointer<const flatbuffers::String *>(VT_USER); }
-  const flatbuffers::String *label() const { return GetPointer<const flatbuffers::String *>(VT_LABEL); }
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *>(VT_MEASUREMENTS);
+  flatbuffers::String const *user() const { return GetPointer<flatbuffers::String const *>(VT_USER); }
+  flatbuffers::String const *label() const { return GetPointer<flatbuffers::String const *>(VT_LABEL); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
+  flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> const *measurements() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> const *>(VT_MEASUREMENTS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_USER) && verifier.VerifyString(user()) &&
@@ -2342,7 +2342,7 @@ struct CustomMetricsUpdateBuilder {
   }
   explicit CustomMetricsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<CustomMetricsUpdate> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CustomMetricsUpdate>(end);
     return o;
   }
@@ -2368,12 +2368,12 @@ inline flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdate(
 
 inline flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *user = nullptr,
-    const char *label = nullptr,
-    const char *account = nullptr,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements = nullptr) {
+    char const *user = nullptr,
+    char const *label = nullptr,
+    char const *account = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
+    std::vector<flatbuffers::Offset<roq::fbs::Measurement>> const *measurements = nullptr) {
   auto user__ = user ? _fbb.CreateString(user) : 0;
   auto label__ = label ? _fbb.CreateString(label) : 0;
   auto account__ = account ? _fbb.CreateString(account) : 0;
@@ -2386,7 +2386,7 @@ inline flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdateDirect(
 struct DownloadBegin FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DownloadBeginBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_ACCOUNT = 4 };
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
            verifier.EndTable();
@@ -2402,7 +2402,7 @@ struct DownloadBeginBuilder {
   }
   explicit DownloadBeginBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<DownloadBegin> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<DownloadBegin>(end);
     return o;
   }
@@ -2416,7 +2416,7 @@ inline flatbuffers::Offset<DownloadBegin> CreateDownloadBegin(
 }
 
 inline flatbuffers::Offset<DownloadBegin> CreateDownloadBeginDirect(
-    flatbuffers::FlatBufferBuilder &_fbb, const char *account = nullptr) {
+    flatbuffers::FlatBufferBuilder &_fbb, char const *account = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   return roq::fbs::CreateDownloadBegin(_fbb, account__);
 }
@@ -2424,7 +2424,7 @@ inline flatbuffers::Offset<DownloadBegin> CreateDownloadBeginDirect(
 struct DownloadEnd FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DownloadEndBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_ACCOUNT = 4, VT_MAX_ORDER_ID = 6 };
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   uint32_t max_order_id() const { return GetField<uint32_t>(VT_MAX_ORDER_ID, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_ACCOUNT) && verifier.VerifyString(account()) &&
@@ -2444,7 +2444,7 @@ struct DownloadEndBuilder {
   }
   explicit DownloadEndBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<DownloadEnd> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<DownloadEnd>(end);
     return o;
   }
@@ -2461,7 +2461,7 @@ inline flatbuffers::Offset<DownloadEnd> CreateDownloadEnd(
 }
 
 inline flatbuffers::Offset<DownloadEnd> CreateDownloadEndDirect(
-    flatbuffers::FlatBufferBuilder &_fbb, const char *account = nullptr, uint32_t max_order_id = 0) {
+    flatbuffers::FlatBufferBuilder &_fbb, char const *account = nullptr, uint32_t max_order_id = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   return roq::fbs::CreateDownloadEnd(_fbb, account__, max_order_id);
 }
@@ -2471,7 +2471,7 @@ struct ExternalLatency FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_STREAM_ID = 4, VT_LATENCY = 6, VT_ACCOUNT = 8 };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
   int64_t latency() const { return GetField<int64_t>(VT_LATENCY, 0); }
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
            VerifyField<int64_t>(verifier, VT_LATENCY, 8) && VerifyOffset(verifier, VT_ACCOUNT) &&
@@ -2490,7 +2490,7 @@ struct ExternalLatencyBuilder {
   }
   explicit ExternalLatencyBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<ExternalLatency> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ExternalLatency>(end);
     return o;
   }
@@ -2509,7 +2509,7 @@ inline flatbuffers::Offset<ExternalLatency> CreateExternalLatency(
 }
 
 inline flatbuffers::Offset<ExternalLatency> CreateExternalLatencyDirect(
-    flatbuffers::FlatBufferBuilder &_fbb, uint16_t stream_id = 0, int64_t latency = 0, const char *account = nullptr) {
+    flatbuffers::FlatBufferBuilder &_fbb, uint16_t stream_id = 0, int64_t latency = 0, char const *account = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   return roq::fbs::CreateExternalLatency(_fbb, stream_id, latency, account__);
 }
@@ -2525,12 +2525,12 @@ struct FundsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXTERNAL_ACCOUNT = 14
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
-  const flatbuffers::String *currency() const { return GetPointer<const flatbuffers::String *>(VT_CURRENCY); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
+  flatbuffers::String const *currency() const { return GetPointer<flatbuffers::String const *>(VT_CURRENCY); }
   double balance() const { return GetField<double>(VT_BALANCE, std::numeric_limits<double>::quiet_NaN()); }
   double hold() const { return GetField<double>(VT_HOLD, std::numeric_limits<double>::quiet_NaN()); }
-  const flatbuffers::String *external_account() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
+  flatbuffers::String const *external_account() const {
+    return GetPointer<flatbuffers::String const *>(VT_EXTERNAL_ACCOUNT);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -2564,7 +2564,7 @@ struct FundsUpdateBuilder {
   }
   explicit FundsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<FundsUpdate> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<FundsUpdate>(end);
     return o;
   }
@@ -2591,11 +2591,11 @@ inline flatbuffers::Offset<FundsUpdate> CreateFundsUpdate(
 inline flatbuffers::Offset<FundsUpdate> CreateFundsUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *account = nullptr,
-    const char *currency = nullptr,
+    char const *account = nullptr,
+    char const *currency = nullptr,
     double balance = std::numeric_limits<double>::quiet_NaN(),
     double hold = std::numeric_limits<double>::quiet_NaN(),
-    const char *external_account = nullptr) {
+    char const *external_account = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto currency__ = currency ? _fbb.CreateString(currency) : 0;
   auto external_account__ = external_account ? _fbb.CreateString(external_account) : 0;
@@ -2684,7 +2684,7 @@ struct GatewaySettingsBuilder {
   }
   explicit GatewaySettingsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<GatewaySettings> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<GatewaySettings>(end);
     return o;
   }
@@ -2722,7 +2722,7 @@ struct GatewayStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_AVAILABLE = 8,
     VT_UNAVAILABLE = 10
   };
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   uint64_t supported() const { return GetField<uint64_t>(VT_SUPPORTED, 0); }
   uint64_t available() const { return GetField<uint64_t>(VT_AVAILABLE, 0); }
   uint64_t unavailable() const { return GetField<uint64_t>(VT_UNAVAILABLE, 0); }
@@ -2747,7 +2747,7 @@ struct GatewayStatusBuilder {
   }
   explicit GatewayStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<GatewayStatus> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<GatewayStatus>(end);
     return o;
   }
@@ -2769,7 +2769,7 @@ inline flatbuffers::Offset<GatewayStatus> CreateGatewayStatus(
 
 inline flatbuffers::Offset<GatewayStatus> CreateGatewayStatusDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *account = nullptr,
+    char const *account = nullptr,
     uint64_t supported = 0,
     uint64_t available = 0,
     uint64_t unavailable = 0) {
@@ -2793,13 +2793,13 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_CHECKSUM = 24
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *bids() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *>(VT_BIDS);
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
+  flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> const *bids() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> const *>(VT_BIDS);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *asks() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *>(VT_ASKS);
+  flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> const *asks() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> const *>(VT_ASKS);
   }
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
@@ -2863,7 +2863,7 @@ struct MarketByOrderUpdateBuilder {
   void add_checksum(uint32_t checksum) { fbb_.AddElement<uint32_t>(MarketByOrderUpdate::VT_CHECKSUM, checksum, 0); }
   explicit MarketByOrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MarketByOrderUpdate> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MarketByOrderUpdate>(end);
     return o;
   }
@@ -2900,10 +2900,10 @@ inline flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdate(
 inline flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *bids = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *asks = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
+    std::vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> const *bids = nullptr,
+    std::vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> const *asks = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined,
     int64_t exchange_time_utc = 0,
     int64_t exchange_sequence = 0,
@@ -2946,13 +2946,13 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_CHECKSUM = 26
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *bids() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *>(VT_BIDS);
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
+  flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> const *bids() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> const *>(VT_BIDS);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *asks() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *>(VT_ASKS);
+  flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> const *asks() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> const *>(VT_ASKS);
   }
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
@@ -3019,7 +3019,7 @@ struct MarketByPriceUpdateBuilder {
   void add_checksum(uint32_t checksum) { fbb_.AddElement<uint32_t>(MarketByPriceUpdate::VT_CHECKSUM, checksum, 0); }
   explicit MarketByPriceUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MarketByPriceUpdate> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MarketByPriceUpdate>(end);
     return o;
   }
@@ -3058,10 +3058,10 @@ inline flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdate(
 inline flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *bids = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> *asks = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
+    std::vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> const *bids = nullptr,
+    std::vector<flatbuffers::Offset<roq::fbs::MBPUpdate>> const *asks = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined,
     int64_t exchange_time_utc = 0,
     int64_t exchange_sequence = 0,
@@ -3098,8 +3098,8 @@ struct MarketStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TRADING_STATUS = 10
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
   roq::fbs::TradingStatus trading_status() const {
     return static_cast<roq::fbs::TradingStatus>(GetField<uint8_t>(VT_TRADING_STATUS, 0));
   }
@@ -3125,7 +3125,7 @@ struct MarketStatusBuilder {
   }
   explicit MarketStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<MarketStatus> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MarketStatus>(end);
     return o;
   }
@@ -3148,8 +3148,8 @@ inline flatbuffers::Offset<MarketStatus> CreateMarketStatus(
 inline flatbuffers::Offset<MarketStatus> CreateMarketStatusDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
     roq::fbs::TradingStatus trading_status = roq::fbs::TradingStatus_Undefined) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -3167,11 +3167,11 @@ struct ModifyOrder FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_VERSION = 14,
     VT_CONDITIONAL_ON_VERSION = 16
   };
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
   double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
   double price() const { return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN()); }
-  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
+  flatbuffers::String const *routing_id() const { return GetPointer<flatbuffers::String const *>(VT_ROUTING_ID); }
   uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
   uint32_t conditional_on_version() const { return GetField<uint32_t>(VT_CONDITIONAL_ON_VERSION, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -3206,7 +3206,7 @@ struct ModifyOrderBuilder {
   }
   explicit ModifyOrderBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<ModifyOrder> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ModifyOrder>(end);
     return o;
   }
@@ -3234,11 +3234,11 @@ inline flatbuffers::Offset<ModifyOrder> CreateModifyOrder(
 
 inline flatbuffers::Offset<ModifyOrder> CreateModifyOrderDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *account = nullptr,
+    char const *account = nullptr,
     uint32_t order_id = 0,
     double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
-    const char *routing_id = nullptr,
+    char const *routing_id = nullptr,
     uint32_t version = 0,
     uint32_t conditional_on_version = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
@@ -3269,25 +3269,25 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ROUND_TRIP_LATENCY = 36
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
   roq::fbs::RequestType type() const { return static_cast<roq::fbs::RequestType>(GetField<uint8_t>(VT_TYPE, 0)); }
   roq::fbs::Origin origin() const { return static_cast<roq::fbs::Origin>(GetField<uint8_t>(VT_ORIGIN, 0)); }
   roq::fbs::RequestStatus status() const {
     return static_cast<roq::fbs::RequestStatus>(GetField<uint8_t>(VT_STATUS, 0));
   }
   roq::fbs::Error error() const { return static_cast<roq::fbs::Error>(GetField<uint8_t>(VT_ERROR, 0)); }
-  const flatbuffers::String *text() const { return GetPointer<const flatbuffers::String *>(VT_TEXT); }
-  const flatbuffers::String *request_id() const { return GetPointer<const flatbuffers::String *>(VT_REQUEST_ID); }
-  const flatbuffers::String *external_account() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
+  flatbuffers::String const *text() const { return GetPointer<flatbuffers::String const *>(VT_TEXT); }
+  flatbuffers::String const *request_id() const { return GetPointer<flatbuffers::String const *>(VT_REQUEST_ID); }
+  flatbuffers::String const *external_account() const {
+    return GetPointer<flatbuffers::String const *>(VT_EXTERNAL_ACCOUNT);
   }
-  const flatbuffers::String *external_order_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ORDER_ID);
+  flatbuffers::String const *external_order_id() const {
+    return GetPointer<flatbuffers::String const *>(VT_EXTERNAL_ORDER_ID);
   }
-  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
+  flatbuffers::String const *routing_id() const { return GetPointer<flatbuffers::String const *>(VT_ROUTING_ID); }
   uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
   int64_t round_trip_latency() const { return GetField<int64_t>(VT_ROUND_TRIP_LATENCY, 0); }
@@ -3351,7 +3351,7 @@ struct OrderAckBuilder {
   }
   explicit OrderAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<OrderAck> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<OrderAck>(end);
     return o;
   }
@@ -3400,19 +3400,19 @@ inline flatbuffers::Offset<OrderAck> CreateOrderAck(
 inline flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *account = nullptr,
+    char const *account = nullptr,
     uint32_t order_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
     roq::fbs::RequestType type = roq::fbs::RequestType_Undefined,
     roq::fbs::Origin origin = roq::fbs::Origin_Undefined,
     roq::fbs::RequestStatus status = roq::fbs::RequestStatus_Undefined,
     roq::fbs::Error error = roq::fbs::Error_Undefined,
-    const char *text = nullptr,
-    const char *request_id = nullptr,
-    const char *external_account = nullptr,
-    const char *external_order_id = nullptr,
-    const char *routing_id = nullptr,
+    char const *text = nullptr,
+    char const *request_id = nullptr,
+    char const *external_account = nullptr,
+    char const *external_order_id = nullptr,
+    char const *routing_id = nullptr,
     uint32_t version = 0,
     roq::fbs::Side side = roq::fbs::Side_Undefined,
     int64_t round_trip_latency = 0) {
@@ -3482,10 +3482,10 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXECUTION_INSTRUCTIONS = 66
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
   roq::fbs::PositionEffect position_effect() const {
     return static_cast<roq::fbs::PositionEffect>(GetField<uint8_t>(VT_POSITION_EFFECT, 0));
@@ -3500,16 +3500,16 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return static_cast<roq::fbs::TimeInForce>(GetField<uint8_t>(VT_TIME_IN_FORCE, 0));
   }
   uint8_t zzz_execution_instructions() const { return GetField<uint8_t>(VT_ZZZ_EXECUTION_INSTRUCTIONS, 0); }
-  const flatbuffers::String *order_template() const {
-    return GetPointer<const flatbuffers::String *>(VT_ORDER_TEMPLATE);
+  flatbuffers::String const *order_template() const {
+    return GetPointer<flatbuffers::String const *>(VT_ORDER_TEMPLATE);
   }
   int64_t create_time_utc() const { return GetField<int64_t>(VT_CREATE_TIME_UTC, 0); }
   int64_t update_time_utc() const { return GetField<int64_t>(VT_UPDATE_TIME_UTC, 0); }
-  const flatbuffers::String *external_account() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
+  flatbuffers::String const *external_account() const {
+    return GetPointer<flatbuffers::String const *>(VT_EXTERNAL_ACCOUNT);
   }
-  const flatbuffers::String *external_order_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ORDER_ID);
+  flatbuffers::String const *external_order_id() const {
+    return GetPointer<flatbuffers::String const *>(VT_EXTERNAL_ORDER_ID);
   }
   roq::fbs::OrderStatus status() const { return static_cast<roq::fbs::OrderStatus>(GetField<uint8_t>(VT_STATUS, 0)); }
   double quantity() const { return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
@@ -3533,7 +3533,7 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::Liquidity last_liquidity() const {
     return static_cast<roq::fbs::Liquidity>(GetField<uint8_t>(VT_LAST_LIQUIDITY, 0));
   }
-  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
+  flatbuffers::String const *routing_id() const { return GetPointer<flatbuffers::String const *>(VT_ROUTING_ID); }
   uint32_t max_request_version() const { return GetField<uint32_t>(VT_MAX_REQUEST_VERSION, 0); }
   uint32_t max_response_version() const { return GetField<uint32_t>(VT_MAX_RESPONSE_VERSION, 0); }
   uint32_t max_accepted_version() const { return GetField<uint32_t>(VT_MAX_ACCEPTED_VERSION, 0); }
@@ -3669,7 +3669,7 @@ struct OrderUpdateBuilder {
   }
   explicit OrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<OrderUpdate> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<OrderUpdate>(end);
     return o;
   }
@@ -3748,21 +3748,21 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
 inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *account = nullptr,
+    char const *account = nullptr,
     uint32_t order_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
     roq::fbs::Side side = roq::fbs::Side_Undefined,
     roq::fbs::PositionEffect position_effect = roq::fbs::PositionEffect_Undefined,
     double max_show_quantity = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::OrderType order_type = roq::fbs::OrderType_Undefined,
     roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce_Undefined,
     uint8_t zzz_execution_instructions = 0,
-    const char *order_template = nullptr,
+    char const *order_template = nullptr,
     int64_t create_time_utc = 0,
     int64_t update_time_utc = 0,
-    const char *external_account = nullptr,
-    const char *external_order_id = nullptr,
+    char const *external_account = nullptr,
+    char const *external_order_id = nullptr,
     roq::fbs::OrderStatus status = roq::fbs::OrderStatus_Undefined,
     double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
@@ -3773,7 +3773,7 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     double last_traded_quantity = std::numeric_limits<double>::quiet_NaN(),
     double last_traded_price = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::Liquidity last_liquidity = roq::fbs::Liquidity_Undefined,
-    const char *routing_id = nullptr,
+    char const *routing_id = nullptr,
     uint32_t max_request_version = 0,
     uint32_t max_response_version = 0,
     uint32_t max_accepted_version = 0,
@@ -3836,11 +3836,11 @@ struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SHORT_QUANTITY_BEGIN = 32
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
-  const flatbuffers::String *external_account() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
+  flatbuffers::String const *external_account() const {
+    return GetPointer<flatbuffers::String const *>(VT_EXTERNAL_ACCOUNT);
   }
   double long_quantity() const { return GetField<double>(VT_LONG_QUANTITY, std::numeric_limits<double>::quiet_NaN()); }
   double short_quantity() const {
@@ -3898,7 +3898,7 @@ struct PositionUpdateBuilder {
   }
   explicit PositionUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<PositionUpdate> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<PositionUpdate>(end);
     return o;
   }
@@ -3931,10 +3931,10 @@ inline flatbuffers::Offset<PositionUpdate> CreatePositionUpdate(
 inline flatbuffers::Offset<PositionUpdate> CreatePositionUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *account = nullptr,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
-    const char *external_account = nullptr,
+    char const *account = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
+    char const *external_account = nullptr,
     double long_quantity = std::numeric_limits<double>::quiet_NaN(),
     double short_quantity = std::numeric_limits<double>::quiet_NaN(),
     double long_quantity_begin = std::numeric_limits<double>::quiet_NaN(),
@@ -3967,17 +3967,17 @@ struct RateLimitTrigger FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_BAN_EXPIRES = 14,
     VT_TRIGGERED_BY = 16
   };
-  const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(VT_NAME); }
+  flatbuffers::String const *name() const { return GetPointer<flatbuffers::String const *>(VT_NAME); }
   roq::fbs::Origin origin() const { return static_cast<roq::fbs::Origin>(GetField<uint8_t>(VT_ORIGIN, 0)); }
   roq::fbs::RateLimitType type() const { return static_cast<roq::fbs::RateLimitType>(GetField<uint8_t>(VT_TYPE, 0)); }
-  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *users() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_USERS);
+  flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> const *users() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> const *>(VT_USERS);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *accounts() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_ACCOUNTS);
+  flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> const *accounts() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> const *>(VT_ACCOUNTS);
   }
   int64_t ban_expires() const { return GetField<int64_t>(VT_BAN_EXPIRES, 0); }
-  const flatbuffers::String *triggered_by() const { return GetPointer<const flatbuffers::String *>(VT_TRIGGERED_BY); }
+  flatbuffers::String const *triggered_by() const { return GetPointer<flatbuffers::String const *>(VT_TRIGGERED_BY); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_NAME) && verifier.VerifyString(name()) &&
            VerifyField<uint8_t>(verifier, VT_ORIGIN, 1) && VerifyField<uint8_t>(verifier, VT_TYPE, 1) &&
@@ -4014,7 +4014,7 @@ struct RateLimitTriggerBuilder {
   }
   explicit RateLimitTriggerBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<RateLimitTrigger> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<RateLimitTrigger>(end);
     return o;
   }
@@ -4042,13 +4042,13 @@ inline flatbuffers::Offset<RateLimitTrigger> CreateRateLimitTrigger(
 
 inline flatbuffers::Offset<RateLimitTrigger> CreateRateLimitTriggerDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *name = nullptr,
+    char const *name = nullptr,
     roq::fbs::Origin origin = roq::fbs::Origin_Undefined,
     roq::fbs::RateLimitType type = roq::fbs::RateLimitType_Undefined,
-    const std::vector<flatbuffers::Offset<flatbuffers::String>> *users = nullptr,
-    const std::vector<flatbuffers::Offset<flatbuffers::String>> *accounts = nullptr,
+    std::vector<flatbuffers::Offset<flatbuffers::String>> const *users = nullptr,
+    std::vector<flatbuffers::Offset<flatbuffers::String>> const *accounts = nullptr,
     int64_t ban_expires = 0,
-    const char *triggered_by = nullptr) {
+    char const *triggered_by = nullptr) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
   auto users__ = users ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*users) : 0;
   auto accounts__ = accounts ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*accounts) : 0;
@@ -4084,18 +4084,18 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MARGIN_CURRENCY = 48
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
-  const flatbuffers::String *description() const { return GetPointer<const flatbuffers::String *>(VT_DESCRIPTION); }
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
+  flatbuffers::String const *description() const { return GetPointer<flatbuffers::String const *>(VT_DESCRIPTION); }
   roq::fbs::SecurityType security_type() const {
     return static_cast<roq::fbs::SecurityType>(GetField<uint8_t>(VT_SECURITY_TYPE, 0));
   }
-  const flatbuffers::String *quote_currency() const {
-    return GetPointer<const flatbuffers::String *>(VT_QUOTE_CURRENCY);
+  flatbuffers::String const *quote_currency() const {
+    return GetPointer<flatbuffers::String const *>(VT_QUOTE_CURRENCY);
   }
-  const flatbuffers::String *base_currency() const { return GetPointer<const flatbuffers::String *>(VT_BASE_CURRENCY); }
-  const flatbuffers::String *commission_currency() const {
-    return GetPointer<const flatbuffers::String *>(VT_COMMISSION_CURRENCY);
+  flatbuffers::String const *base_currency() const { return GetPointer<flatbuffers::String const *>(VT_BASE_CURRENCY); }
+  flatbuffers::String const *commission_currency() const {
+    return GetPointer<flatbuffers::String const *>(VT_COMMISSION_CURRENCY);
   }
   double tick_size() const { return GetField<double>(VT_TICK_SIZE, std::numeric_limits<double>::quiet_NaN()); }
   double multiplier() const { return GetField<double>(VT_MULTIPLIER, std::numeric_limits<double>::quiet_NaN()); }
@@ -4103,12 +4103,12 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::OptionType option_type() const {
     return static_cast<roq::fbs::OptionType>(GetField<uint8_t>(VT_OPTION_TYPE, 0));
   }
-  const flatbuffers::String *strike_currency() const {
-    return GetPointer<const flatbuffers::String *>(VT_STRIKE_CURRENCY);
+  flatbuffers::String const *strike_currency() const {
+    return GetPointer<flatbuffers::String const *>(VT_STRIKE_CURRENCY);
   }
   double strike_price() const { return GetField<double>(VT_STRIKE_PRICE, std::numeric_limits<double>::quiet_NaN()); }
-  const flatbuffers::String *underlying() const { return GetPointer<const flatbuffers::String *>(VT_UNDERLYING); }
-  const flatbuffers::String *time_zone() const { return GetPointer<const flatbuffers::String *>(VT_TIME_ZONE); }
+  flatbuffers::String const *underlying() const { return GetPointer<flatbuffers::String const *>(VT_UNDERLYING); }
+  flatbuffers::String const *time_zone() const { return GetPointer<flatbuffers::String const *>(VT_TIME_ZONE); }
   int32_t issue_date() const { return GetField<int32_t>(VT_ISSUE_DATE, 0); }
   int32_t settlement_date() const { return GetField<int32_t>(VT_SETTLEMENT_DATE, 0); }
   int64_t expiry_datetime() const { return GetField<int64_t>(VT_EXPIRY_DATETIME, 0); }
@@ -4117,8 +4117,8 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double trade_vol_step_size() const {
     return GetField<double>(VT_TRADE_VOL_STEP_SIZE, std::numeric_limits<double>::quiet_NaN());
   }
-  const flatbuffers::String *margin_currency() const {
-    return GetPointer<const flatbuffers::String *>(VT_MARGIN_CURRENCY);
+  flatbuffers::String const *margin_currency() const {
+    return GetPointer<flatbuffers::String const *>(VT_MARGIN_CURRENCY);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -4213,7 +4213,7 @@ struct ReferenceDataBuilder {
   }
   explicit ReferenceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<ReferenceData> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ReferenceData>(end);
     return o;
   }
@@ -4274,28 +4274,28 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceData(
 inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
-    const char *description = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
+    char const *description = nullptr,
     roq::fbs::SecurityType security_type = roq::fbs::SecurityType_Undefined,
-    const char *quote_currency = nullptr,
-    const char *base_currency = nullptr,
-    const char *commission_currency = nullptr,
+    char const *quote_currency = nullptr,
+    char const *base_currency = nullptr,
+    char const *commission_currency = nullptr,
     double tick_size = std::numeric_limits<double>::quiet_NaN(),
     double multiplier = std::numeric_limits<double>::quiet_NaN(),
     double min_trade_vol = std::numeric_limits<double>::quiet_NaN(),
     roq::fbs::OptionType option_type = roq::fbs::OptionType_Undefined,
-    const char *strike_currency = nullptr,
+    char const *strike_currency = nullptr,
     double strike_price = std::numeric_limits<double>::quiet_NaN(),
-    const char *underlying = nullptr,
-    const char *time_zone = nullptr,
+    char const *underlying = nullptr,
+    char const *time_zone = nullptr,
     int32_t issue_date = 0,
     int32_t settlement_date = 0,
     int64_t expiry_datetime = 0,
     int64_t expiry_datetime_utc = 0,
     double max_trade_vol = std::numeric_limits<double>::quiet_NaN(),
     double trade_vol_step_size = std::numeric_limits<double>::quiet_NaN(),
-    const char *margin_currency = nullptr) {
+    char const *margin_currency = nullptr) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto description__ = description ? _fbb.CreateString(description) : 0;
@@ -4344,10 +4344,10 @@ struct StatisticsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXCHANGE_TIME_UTC = 14
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>> *statistics() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>> *>(VT_STATISTICS);
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
+  flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>> const *statistics() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Statistics>> const *>(VT_STATISTICS);
   }
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
@@ -4385,7 +4385,7 @@ struct StatisticsUpdateBuilder {
   }
   explicit StatisticsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<StatisticsUpdate> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<StatisticsUpdate>(end);
     return o;
   }
@@ -4412,9 +4412,9 @@ inline flatbuffers::Offset<StatisticsUpdate> CreateStatisticsUpdate(
 inline flatbuffers::Offset<StatisticsUpdate> CreateStatisticsUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::Statistics>> *statistics = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
+    std::vector<flatbuffers::Offset<roq::fbs::Statistics>> const *statistics = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined,
     int64_t exchange_time_utc = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
@@ -4437,7 +4437,7 @@ struct StreamStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ENCODING = 18
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   uint64_t supports() const { return GetField<uint64_t>(VT_SUPPORTS, 0); }
   roq::fbs::ConnectionStatus connection_status() const {
     return static_cast<roq::fbs::ConnectionStatus>(GetField<uint8_t>(VT_CONNECTION_STATUS, 0));
@@ -4480,7 +4480,7 @@ struct StreamStatusBuilder {
   void add_encoding(uint32_t encoding) { fbb_.AddElement<uint32_t>(StreamStatus::VT_ENCODING, encoding, 0); }
   explicit StreamStatusBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<StreamStatus> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<StreamStatus>(end);
     return o;
   }
@@ -4511,7 +4511,7 @@ inline flatbuffers::Offset<StreamStatus> CreateStreamStatus(
 inline flatbuffers::Offset<StreamStatus> CreateStreamStatusDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *account = nullptr,
+    char const *account = nullptr,
     uint64_t supports = 0,
     roq::fbs::ConnectionStatus connection_status = roq::fbs::ConnectionStatus_Undefined,
     roq::fbs::Protocol protocol = roq::fbs::Protocol_Undefined,
@@ -4535,9 +4535,9 @@ struct TopOfBook FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXCHANGE_SEQUENCE = 16
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
-  const roq::fbs::Layer *layer() const { return GetPointer<const roq::fbs::Layer *>(VT_LAYER); }
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
+  roq::fbs::Layer const *layer() const { return GetPointer<roq::fbs::Layer const *>(VT_LAYER); }
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
@@ -4574,7 +4574,7 @@ struct TopOfBookBuilder {
   }
   explicit TopOfBookBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<TopOfBook> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TopOfBook>(end);
     return o;
   }
@@ -4603,8 +4603,8 @@ inline flatbuffers::Offset<TopOfBook> CreateTopOfBook(
 inline flatbuffers::Offset<TopOfBook> CreateTopOfBookDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
     flatbuffers::Offset<roq::fbs::Layer> layer = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined,
     int64_t exchange_time_utc = 0,
@@ -4625,10 +4625,10 @@ struct TradeSummary FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXCHANGE_TIME_UTC = 12
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Trade>> *trades() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Trade>> *>(VT_TRADES);
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
+  flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Trade>> const *trades() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Trade>> const *>(VT_TRADES);
   }
   int64_t exchange_time_utc() const { return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -4657,7 +4657,7 @@ struct TradeSummaryBuilder {
   }
   explicit TradeSummaryBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<TradeSummary> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TradeSummary>(end);
     return o;
   }
@@ -4682,9 +4682,9 @@ inline flatbuffers::Offset<TradeSummary> CreateTradeSummary(
 inline flatbuffers::Offset<TradeSummary> CreateTradeSummaryDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::Trade>> *trades = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
+    std::vector<flatbuffers::Offset<roq::fbs::Trade>> const *trades = nullptr,
     int64_t exchange_time_utc = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -4711,26 +4711,26 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_UPDATE_TYPE = 30
   };
   uint16_t stream_id() const { return GetField<uint16_t>(VT_STREAM_ID, 0); }
-  const flatbuffers::String *account() const { return GetPointer<const flatbuffers::String *>(VT_ACCOUNT); }
+  flatbuffers::String const *account() const { return GetPointer<flatbuffers::String const *>(VT_ACCOUNT); }
   uint32_t order_id() const { return GetField<uint32_t>(VT_ORDER_ID, 0); }
-  const flatbuffers::String *exchange() const { return GetPointer<const flatbuffers::String *>(VT_EXCHANGE); }
-  const flatbuffers::String *symbol() const { return GetPointer<const flatbuffers::String *>(VT_SYMBOL); }
+  flatbuffers::String const *exchange() const { return GetPointer<flatbuffers::String const *>(VT_EXCHANGE); }
+  flatbuffers::String const *symbol() const { return GetPointer<flatbuffers::String const *>(VT_SYMBOL); }
   roq::fbs::Side side() const { return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0)); }
   roq::fbs::PositionEffect position_effect() const {
     return static_cast<roq::fbs::PositionEffect>(GetField<uint8_t>(VT_POSITION_EFFECT, 0));
   }
   int64_t create_time_utc() const { return GetField<int64_t>(VT_CREATE_TIME_UTC, 0); }
   int64_t update_time_utc() const { return GetField<int64_t>(VT_UPDATE_TIME_UTC, 0); }
-  const flatbuffers::String *external_account() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
+  flatbuffers::String const *external_account() const {
+    return GetPointer<flatbuffers::String const *>(VT_EXTERNAL_ACCOUNT);
   }
-  const flatbuffers::String *external_order_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_EXTERNAL_ORDER_ID);
+  flatbuffers::String const *external_order_id() const {
+    return GetPointer<flatbuffers::String const *>(VT_EXTERNAL_ORDER_ID);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>> *fills() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>> *>(VT_FILLS);
+  flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>> const *fills() const {
+    return GetPointer<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>> const *>(VT_FILLS);
   }
-  const flatbuffers::String *routing_id() const { return GetPointer<const flatbuffers::String *>(VT_ROUTING_ID); }
+  flatbuffers::String const *routing_id() const { return GetPointer<flatbuffers::String const *>(VT_ROUTING_ID); }
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
@@ -4790,7 +4790,7 @@ struct TradeUpdateBuilder {
   }
   explicit TradeUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<TradeUpdate> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TradeUpdate>(end);
     return o;
   }
@@ -4833,18 +4833,18 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdate(
 inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t stream_id = 0,
-    const char *account = nullptr,
+    char const *account = nullptr,
     uint32_t order_id = 0,
-    const char *exchange = nullptr,
-    const char *symbol = nullptr,
+    char const *exchange = nullptr,
+    char const *symbol = nullptr,
     roq::fbs::Side side = roq::fbs::Side_Undefined,
     roq::fbs::PositionEffect position_effect = roq::fbs::PositionEffect_Undefined,
     int64_t create_time_utc = 0,
     int64_t update_time_utc = 0,
-    const char *external_account = nullptr,
-    const char *external_order_id = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::Fill>> *fills = nullptr,
-    const char *routing_id = nullptr,
+    char const *external_account = nullptr,
+    char const *external_order_id = nullptr,
+    std::vector<flatbuffers::Offset<roq::fbs::Fill>> const *fills = nullptr,
+    char const *routing_id = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType_Undefined) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
@@ -4883,12 +4883,12 @@ struct Handshake FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_PASSWORD = 16
   };
   uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
-  const flatbuffers::String *application() const { return GetPointer<const flatbuffers::String *>(VT_APPLICATION); }
-  const flatbuffers::String *hostname() const { return GetPointer<const flatbuffers::String *>(VT_HOSTNAME); }
+  flatbuffers::String const *application() const { return GetPointer<flatbuffers::String const *>(VT_APPLICATION); }
+  flatbuffers::String const *hostname() const { return GetPointer<flatbuffers::String const *>(VT_HOSTNAME); }
   uint32_t pid() const { return GetField<uint32_t>(VT_PID, 0); }
-  const flatbuffers::String *uuid() const { return GetPointer<const flatbuffers::String *>(VT_UUID); }
-  const flatbuffers::String *login() const { return GetPointer<const flatbuffers::String *>(VT_LOGIN); }
-  const flatbuffers::String *password() const { return GetPointer<const flatbuffers::String *>(VT_PASSWORD); }
+  flatbuffers::String const *uuid() const { return GetPointer<flatbuffers::String const *>(VT_UUID); }
+  flatbuffers::String const *login() const { return GetPointer<flatbuffers::String const *>(VT_LOGIN); }
+  flatbuffers::String const *password() const { return GetPointer<flatbuffers::String const *>(VT_PASSWORD); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
            VerifyOffset(verifier, VT_APPLICATION) && verifier.VerifyString(application()) &&
@@ -4918,7 +4918,7 @@ struct HandshakeBuilder {
   }
   explicit HandshakeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Handshake> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Handshake>(end);
     return o;
   }
@@ -4947,12 +4947,12 @@ inline flatbuffers::Offset<Handshake> CreateHandshake(
 inline flatbuffers::Offset<Handshake> CreateHandshakeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint32_t version = 0,
-    const char *application = nullptr,
-    const char *hostname = nullptr,
+    char const *application = nullptr,
+    char const *hostname = nullptr,
     uint32_t pid = 0,
-    const char *uuid = nullptr,
-    const char *login = nullptr,
-    const char *password = nullptr) {
+    char const *uuid = nullptr,
+    char const *login = nullptr,
+    char const *password = nullptr) {
   auto application__ = application ? _fbb.CreateString(application) : 0;
   auto hostname__ = hostname ? _fbb.CreateString(hostname) : 0;
   auto uuid__ = uuid ? _fbb.CreateString(uuid) : 0;
@@ -4975,15 +4975,15 @@ struct HandshakeAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_USER_ID = 20
   };
   uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
-  const flatbuffers::String *application() const { return GetPointer<const flatbuffers::String *>(VT_APPLICATION); }
-  const flatbuffers::String *hostname() const { return GetPointer<const flatbuffers::String *>(VT_HOSTNAME); }
+  flatbuffers::String const *application() const { return GetPointer<flatbuffers::String const *>(VT_APPLICATION); }
+  flatbuffers::String const *hostname() const { return GetPointer<flatbuffers::String const *>(VT_HOSTNAME); }
   uint32_t pid() const { return GetField<uint32_t>(VT_PID, 0); }
   bool failure() const { return GetField<uint8_t>(VT_FAILURE, 0) != 0; }
-  const flatbuffers::String *failure_reason() const {
-    return GetPointer<const flatbuffers::String *>(VT_FAILURE_REASON);
+  flatbuffers::String const *failure_reason() const {
+    return GetPointer<flatbuffers::String const *>(VT_FAILURE_REASON);
   }
-  const flatbuffers::String *uuid() const { return GetPointer<const flatbuffers::String *>(VT_UUID); }
-  const flatbuffers::String *name() const { return GetPointer<const flatbuffers::String *>(VT_NAME); }
+  flatbuffers::String const *uuid() const { return GetPointer<flatbuffers::String const *>(VT_UUID); }
+  flatbuffers::String const *name() const { return GetPointer<flatbuffers::String const *>(VT_NAME); }
   uint8_t user_id() const { return GetField<uint8_t>(VT_USER_ID, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
@@ -5019,7 +5019,7 @@ struct HandshakeAckBuilder {
   void add_user_id(uint8_t user_id) { fbb_.AddElement<uint8_t>(HandshakeAck::VT_USER_ID, user_id, 0); }
   explicit HandshakeAckBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<HandshakeAck> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<HandshakeAck>(end);
     return o;
   }
@@ -5052,13 +5052,13 @@ inline flatbuffers::Offset<HandshakeAck> CreateHandshakeAck(
 inline flatbuffers::Offset<HandshakeAck> CreateHandshakeAckDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint32_t version = 0,
-    const char *application = nullptr,
-    const char *hostname = nullptr,
+    char const *application = nullptr,
+    char const *hostname = nullptr,
     uint32_t pid = 0,
     bool failure = false,
-    const char *failure_reason = nullptr,
-    const char *uuid = nullptr,
-    const char *name = nullptr,
+    char const *failure_reason = nullptr,
+    char const *uuid = nullptr,
+    char const *name = nullptr,
     uint8_t user_id = 0) {
   auto application__ = application ? _fbb.CreateString(application) : 0;
   auto hostname__ = hostname ? _fbb.CreateString(hostname) : 0;
@@ -5080,7 +5080,7 @@ struct SubscribeBuilder {
   flatbuffers::uoffset_t start_;
   explicit SubscribeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Subscribe> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Subscribe>(end);
     return o;
   }
@@ -5102,7 +5102,7 @@ struct BatchBeginBuilder {
   flatbuffers::uoffset_t start_;
   explicit BatchBeginBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<BatchBegin> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<BatchBegin>(end);
     return o;
   }
@@ -5124,7 +5124,7 @@ struct BatchEndBuilder {
   flatbuffers::uoffset_t start_;
   explicit BatchEndBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<BatchEnd> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<BatchEnd>(end);
     return o;
   }
@@ -5172,7 +5172,7 @@ struct SourceInfoBuilder {
   void add_create_time(uint64_t create_time) { fbb_.AddElement<uint64_t>(SourceInfo::VT_CREATE_TIME, create_time, 0); }
   explicit SourceInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<SourceInfo> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<SourceInfo>(end);
     return o;
   }
@@ -5201,137 +5201,137 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MESSAGE_TYPE = 6,
     VT_MESSAGE = 8
   };
-  const roq::fbs::SourceInfo *source_info() const { return GetPointer<const roq::fbs::SourceInfo *>(VT_SOURCE_INFO); }
+  roq::fbs::SourceInfo const *source_info() const { return GetPointer<roq::fbs::SourceInfo const *>(VT_SOURCE_INFO); }
   roq::fbs::Message message_type() const {
     return static_cast<roq::fbs::Message>(GetField<uint8_t>(VT_MESSAGE_TYPE, 0));
   }
-  const void *message() const { return GetPointer<const void *>(VT_MESSAGE); }
+  void const *message() const { return GetPointer<void const *>(VT_MESSAGE); }
   template <typename T>
   const T *message_as() const;
-  const roq::fbs::Handshake *message_as_Handshake() const {
-    return message_type() == roq::fbs::Message_Handshake ? static_cast<const roq::fbs::Handshake *>(message())
+  roq::fbs::Handshake const *message_as_Handshake() const {
+    return message_type() == roq::fbs::Message_Handshake ? static_cast<roq::fbs::Handshake const *>(message())
                                                          : nullptr;
   }
-  const roq::fbs::HandshakeAck *message_as_HandshakeAck() const {
-    return message_type() == roq::fbs::Message_HandshakeAck ? static_cast<const roq::fbs::HandshakeAck *>(message())
+  roq::fbs::HandshakeAck const *message_as_HandshakeAck() const {
+    return message_type() == roq::fbs::Message_HandshakeAck ? static_cast<roq::fbs::HandshakeAck const *>(message())
                                                             : nullptr;
   }
-  const roq::fbs::Subscribe *message_as_Subscribe() const {
-    return message_type() == roq::fbs::Message_Subscribe ? static_cast<const roq::fbs::Subscribe *>(message())
+  roq::fbs::Subscribe const *message_as_Subscribe() const {
+    return message_type() == roq::fbs::Message_Subscribe ? static_cast<roq::fbs::Subscribe const *>(message())
                                                          : nullptr;
   }
-  const roq::fbs::BatchBegin *message_as_BatchBegin() const {
-    return message_type() == roq::fbs::Message_BatchBegin ? static_cast<const roq::fbs::BatchBegin *>(message())
+  roq::fbs::BatchBegin const *message_as_BatchBegin() const {
+    return message_type() == roq::fbs::Message_BatchBegin ? static_cast<roq::fbs::BatchBegin const *>(message())
                                                           : nullptr;
   }
-  const roq::fbs::BatchEnd *message_as_BatchEnd() const {
-    return message_type() == roq::fbs::Message_BatchEnd ? static_cast<const roq::fbs::BatchEnd *>(message()) : nullptr;
+  roq::fbs::BatchEnd const *message_as_BatchEnd() const {
+    return message_type() == roq::fbs::Message_BatchEnd ? static_cast<roq::fbs::BatchEnd const *>(message()) : nullptr;
   }
-  const roq::fbs::DownloadBegin *message_as_DownloadBegin() const {
-    return message_type() == roq::fbs::Message_DownloadBegin ? static_cast<const roq::fbs::DownloadBegin *>(message())
+  roq::fbs::DownloadBegin const *message_as_DownloadBegin() const {
+    return message_type() == roq::fbs::Message_DownloadBegin ? static_cast<roq::fbs::DownloadBegin const *>(message())
                                                              : nullptr;
   }
-  const roq::fbs::DownloadEnd *message_as_DownloadEnd() const {
-    return message_type() == roq::fbs::Message_DownloadEnd ? static_cast<const roq::fbs::DownloadEnd *>(message())
+  roq::fbs::DownloadEnd const *message_as_DownloadEnd() const {
+    return message_type() == roq::fbs::Message_DownloadEnd ? static_cast<roq::fbs::DownloadEnd const *>(message())
                                                            : nullptr;
   }
-  const roq::fbs::GatewaySettings *message_as_GatewaySettings() const {
+  roq::fbs::GatewaySettings const *message_as_GatewaySettings() const {
     return message_type() == roq::fbs::Message_GatewaySettings
-               ? static_cast<const roq::fbs::GatewaySettings *>(message())
+               ? static_cast<roq::fbs::GatewaySettings const *>(message())
                : nullptr;
   }
-  const roq::fbs::StreamStatus *message_as_StreamStatus() const {
-    return message_type() == roq::fbs::Message_StreamStatus ? static_cast<const roq::fbs::StreamStatus *>(message())
+  roq::fbs::StreamStatus const *message_as_StreamStatus() const {
+    return message_type() == roq::fbs::Message_StreamStatus ? static_cast<roq::fbs::StreamStatus const *>(message())
                                                             : nullptr;
   }
-  const roq::fbs::ExternalLatency *message_as_ExternalLatency() const {
+  roq::fbs::ExternalLatency const *message_as_ExternalLatency() const {
     return message_type() == roq::fbs::Message_ExternalLatency
-               ? static_cast<const roq::fbs::ExternalLatency *>(message())
+               ? static_cast<roq::fbs::ExternalLatency const *>(message())
                : nullptr;
   }
-  const roq::fbs::RateLimitTrigger *message_as_RateLimitTrigger() const {
+  roq::fbs::RateLimitTrigger const *message_as_RateLimitTrigger() const {
     return message_type() == roq::fbs::Message_RateLimitTrigger
-               ? static_cast<const roq::fbs::RateLimitTrigger *>(message())
+               ? static_cast<roq::fbs::RateLimitTrigger const *>(message())
                : nullptr;
   }
-  const roq::fbs::GatewayStatus *message_as_GatewayStatus() const {
-    return message_type() == roq::fbs::Message_GatewayStatus ? static_cast<const roq::fbs::GatewayStatus *>(message())
+  roq::fbs::GatewayStatus const *message_as_GatewayStatus() const {
+    return message_type() == roq::fbs::Message_GatewayStatus ? static_cast<roq::fbs::GatewayStatus const *>(message())
                                                              : nullptr;
   }
-  const roq::fbs::ReferenceData *message_as_ReferenceData() const {
-    return message_type() == roq::fbs::Message_ReferenceData ? static_cast<const roq::fbs::ReferenceData *>(message())
+  roq::fbs::ReferenceData const *message_as_ReferenceData() const {
+    return message_type() == roq::fbs::Message_ReferenceData ? static_cast<roq::fbs::ReferenceData const *>(message())
                                                              : nullptr;
   }
-  const roq::fbs::MarketStatus *message_as_MarketStatus() const {
-    return message_type() == roq::fbs::Message_MarketStatus ? static_cast<const roq::fbs::MarketStatus *>(message())
+  roq::fbs::MarketStatus const *message_as_MarketStatus() const {
+    return message_type() == roq::fbs::Message_MarketStatus ? static_cast<roq::fbs::MarketStatus const *>(message())
                                                             : nullptr;
   }
-  const roq::fbs::TopOfBook *message_as_TopOfBook() const {
-    return message_type() == roq::fbs::Message_TopOfBook ? static_cast<const roq::fbs::TopOfBook *>(message())
+  roq::fbs::TopOfBook const *message_as_TopOfBook() const {
+    return message_type() == roq::fbs::Message_TopOfBook ? static_cast<roq::fbs::TopOfBook const *>(message())
                                                          : nullptr;
   }
-  const roq::fbs::MarketByPriceUpdate *message_as_MarketByPriceUpdate() const {
+  roq::fbs::MarketByPriceUpdate const *message_as_MarketByPriceUpdate() const {
     return message_type() == roq::fbs::Message_MarketByPriceUpdate
-               ? static_cast<const roq::fbs::MarketByPriceUpdate *>(message())
+               ? static_cast<roq::fbs::MarketByPriceUpdate const *>(message())
                : nullptr;
   }
-  const roq::fbs::MarketByOrderUpdate *message_as_MarketByOrderUpdate() const {
+  roq::fbs::MarketByOrderUpdate const *message_as_MarketByOrderUpdate() const {
     return message_type() == roq::fbs::Message_MarketByOrderUpdate
-               ? static_cast<const roq::fbs::MarketByOrderUpdate *>(message())
+               ? static_cast<roq::fbs::MarketByOrderUpdate const *>(message())
                : nullptr;
   }
-  const roq::fbs::TradeSummary *message_as_TradeSummary() const {
-    return message_type() == roq::fbs::Message_TradeSummary ? static_cast<const roq::fbs::TradeSummary *>(message())
+  roq::fbs::TradeSummary const *message_as_TradeSummary() const {
+    return message_type() == roq::fbs::Message_TradeSummary ? static_cast<roq::fbs::TradeSummary const *>(message())
                                                             : nullptr;
   }
-  const roq::fbs::StatisticsUpdate *message_as_StatisticsUpdate() const {
+  roq::fbs::StatisticsUpdate const *message_as_StatisticsUpdate() const {
     return message_type() == roq::fbs::Message_StatisticsUpdate
-               ? static_cast<const roq::fbs::StatisticsUpdate *>(message())
+               ? static_cast<roq::fbs::StatisticsUpdate const *>(message())
                : nullptr;
   }
-  const roq::fbs::CreateOrder *message_as_CreateOrder() const {
-    return message_type() == roq::fbs::Message_CreateOrder ? static_cast<const roq::fbs::CreateOrder *>(message())
+  roq::fbs::CreateOrder const *message_as_CreateOrder() const {
+    return message_type() == roq::fbs::Message_CreateOrder ? static_cast<roq::fbs::CreateOrder const *>(message())
                                                            : nullptr;
   }
-  const roq::fbs::ModifyOrder *message_as_ModifyOrder() const {
-    return message_type() == roq::fbs::Message_ModifyOrder ? static_cast<const roq::fbs::ModifyOrder *>(message())
+  roq::fbs::ModifyOrder const *message_as_ModifyOrder() const {
+    return message_type() == roq::fbs::Message_ModifyOrder ? static_cast<roq::fbs::ModifyOrder const *>(message())
                                                            : nullptr;
   }
-  const roq::fbs::CancelOrder *message_as_CancelOrder() const {
-    return message_type() == roq::fbs::Message_CancelOrder ? static_cast<const roq::fbs::CancelOrder *>(message())
+  roq::fbs::CancelOrder const *message_as_CancelOrder() const {
+    return message_type() == roq::fbs::Message_CancelOrder ? static_cast<roq::fbs::CancelOrder const *>(message())
                                                            : nullptr;
   }
-  const roq::fbs::CancelAllOrders *message_as_CancelAllOrders() const {
+  roq::fbs::CancelAllOrders const *message_as_CancelAllOrders() const {
     return message_type() == roq::fbs::Message_CancelAllOrders
-               ? static_cast<const roq::fbs::CancelAllOrders *>(message())
+               ? static_cast<roq::fbs::CancelAllOrders const *>(message())
                : nullptr;
   }
-  const roq::fbs::OrderAck *message_as_OrderAck() const {
-    return message_type() == roq::fbs::Message_OrderAck ? static_cast<const roq::fbs::OrderAck *>(message()) : nullptr;
+  roq::fbs::OrderAck const *message_as_OrderAck() const {
+    return message_type() == roq::fbs::Message_OrderAck ? static_cast<roq::fbs::OrderAck const *>(message()) : nullptr;
   }
-  const roq::fbs::OrderUpdate *message_as_OrderUpdate() const {
-    return message_type() == roq::fbs::Message_OrderUpdate ? static_cast<const roq::fbs::OrderUpdate *>(message())
+  roq::fbs::OrderUpdate const *message_as_OrderUpdate() const {
+    return message_type() == roq::fbs::Message_OrderUpdate ? static_cast<roq::fbs::OrderUpdate const *>(message())
                                                            : nullptr;
   }
-  const roq::fbs::TradeUpdate *message_as_TradeUpdate() const {
-    return message_type() == roq::fbs::Message_TradeUpdate ? static_cast<const roq::fbs::TradeUpdate *>(message())
+  roq::fbs::TradeUpdate const *message_as_TradeUpdate() const {
+    return message_type() == roq::fbs::Message_TradeUpdate ? static_cast<roq::fbs::TradeUpdate const *>(message())
                                                            : nullptr;
   }
-  const roq::fbs::PositionUpdate *message_as_PositionUpdate() const {
-    return message_type() == roq::fbs::Message_PositionUpdate ? static_cast<const roq::fbs::PositionUpdate *>(message())
+  roq::fbs::PositionUpdate const *message_as_PositionUpdate() const {
+    return message_type() == roq::fbs::Message_PositionUpdate ? static_cast<roq::fbs::PositionUpdate const *>(message())
                                                               : nullptr;
   }
-  const roq::fbs::FundsUpdate *message_as_FundsUpdate() const {
-    return message_type() == roq::fbs::Message_FundsUpdate ? static_cast<const roq::fbs::FundsUpdate *>(message())
+  roq::fbs::FundsUpdate const *message_as_FundsUpdate() const {
+    return message_type() == roq::fbs::Message_FundsUpdate ? static_cast<roq::fbs::FundsUpdate const *>(message())
                                                            : nullptr;
   }
-  const roq::fbs::CustomMetrics *message_as_CustomMetrics() const {
-    return message_type() == roq::fbs::Message_CustomMetrics ? static_cast<const roq::fbs::CustomMetrics *>(message())
+  roq::fbs::CustomMetrics const *message_as_CustomMetrics() const {
+    return message_type() == roq::fbs::Message_CustomMetrics ? static_cast<roq::fbs::CustomMetrics const *>(message())
                                                              : nullptr;
   }
-  const roq::fbs::CustomMetricsUpdate *message_as_CustomMetricsUpdate() const {
+  roq::fbs::CustomMetricsUpdate const *message_as_CustomMetricsUpdate() const {
     return message_type() == roq::fbs::Message_CustomMetricsUpdate
-               ? static_cast<const roq::fbs::CustomMetricsUpdate *>(message())
+               ? static_cast<roq::fbs::CustomMetricsUpdate const *>(message())
                : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
@@ -5343,152 +5343,152 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 };
 
 template <>
-inline const roq::fbs::Handshake *Event::message_as<roq::fbs::Handshake>() const {
+inline roq::fbs::Handshake const *Event::message_as<roq::fbs::Handshake>() const {
   return message_as_Handshake();
 }
 
 template <>
-inline const roq::fbs::HandshakeAck *Event::message_as<roq::fbs::HandshakeAck>() const {
+inline roq::fbs::HandshakeAck const *Event::message_as<roq::fbs::HandshakeAck>() const {
   return message_as_HandshakeAck();
 }
 
 template <>
-inline const roq::fbs::Subscribe *Event::message_as<roq::fbs::Subscribe>() const {
+inline roq::fbs::Subscribe const *Event::message_as<roq::fbs::Subscribe>() const {
   return message_as_Subscribe();
 }
 
 template <>
-inline const roq::fbs::BatchBegin *Event::message_as<roq::fbs::BatchBegin>() const {
+inline roq::fbs::BatchBegin const *Event::message_as<roq::fbs::BatchBegin>() const {
   return message_as_BatchBegin();
 }
 
 template <>
-inline const roq::fbs::BatchEnd *Event::message_as<roq::fbs::BatchEnd>() const {
+inline roq::fbs::BatchEnd const *Event::message_as<roq::fbs::BatchEnd>() const {
   return message_as_BatchEnd();
 }
 
 template <>
-inline const roq::fbs::DownloadBegin *Event::message_as<roq::fbs::DownloadBegin>() const {
+inline roq::fbs::DownloadBegin const *Event::message_as<roq::fbs::DownloadBegin>() const {
   return message_as_DownloadBegin();
 }
 
 template <>
-inline const roq::fbs::DownloadEnd *Event::message_as<roq::fbs::DownloadEnd>() const {
+inline roq::fbs::DownloadEnd const *Event::message_as<roq::fbs::DownloadEnd>() const {
   return message_as_DownloadEnd();
 }
 
 template <>
-inline const roq::fbs::GatewaySettings *Event::message_as<roq::fbs::GatewaySettings>() const {
+inline roq::fbs::GatewaySettings const *Event::message_as<roq::fbs::GatewaySettings>() const {
   return message_as_GatewaySettings();
 }
 
 template <>
-inline const roq::fbs::StreamStatus *Event::message_as<roq::fbs::StreamStatus>() const {
+inline roq::fbs::StreamStatus const *Event::message_as<roq::fbs::StreamStatus>() const {
   return message_as_StreamStatus();
 }
 
 template <>
-inline const roq::fbs::ExternalLatency *Event::message_as<roq::fbs::ExternalLatency>() const {
+inline roq::fbs::ExternalLatency const *Event::message_as<roq::fbs::ExternalLatency>() const {
   return message_as_ExternalLatency();
 }
 
 template <>
-inline const roq::fbs::RateLimitTrigger *Event::message_as<roq::fbs::RateLimitTrigger>() const {
+inline roq::fbs::RateLimitTrigger const *Event::message_as<roq::fbs::RateLimitTrigger>() const {
   return message_as_RateLimitTrigger();
 }
 
 template <>
-inline const roq::fbs::GatewayStatus *Event::message_as<roq::fbs::GatewayStatus>() const {
+inline roq::fbs::GatewayStatus const *Event::message_as<roq::fbs::GatewayStatus>() const {
   return message_as_GatewayStatus();
 }
 
 template <>
-inline const roq::fbs::ReferenceData *Event::message_as<roq::fbs::ReferenceData>() const {
+inline roq::fbs::ReferenceData const *Event::message_as<roq::fbs::ReferenceData>() const {
   return message_as_ReferenceData();
 }
 
 template <>
-inline const roq::fbs::MarketStatus *Event::message_as<roq::fbs::MarketStatus>() const {
+inline roq::fbs::MarketStatus const *Event::message_as<roq::fbs::MarketStatus>() const {
   return message_as_MarketStatus();
 }
 
 template <>
-inline const roq::fbs::TopOfBook *Event::message_as<roq::fbs::TopOfBook>() const {
+inline roq::fbs::TopOfBook const *Event::message_as<roq::fbs::TopOfBook>() const {
   return message_as_TopOfBook();
 }
 
 template <>
-inline const roq::fbs::MarketByPriceUpdate *Event::message_as<roq::fbs::MarketByPriceUpdate>() const {
+inline roq::fbs::MarketByPriceUpdate const *Event::message_as<roq::fbs::MarketByPriceUpdate>() const {
   return message_as_MarketByPriceUpdate();
 }
 
 template <>
-inline const roq::fbs::MarketByOrderUpdate *Event::message_as<roq::fbs::MarketByOrderUpdate>() const {
+inline roq::fbs::MarketByOrderUpdate const *Event::message_as<roq::fbs::MarketByOrderUpdate>() const {
   return message_as_MarketByOrderUpdate();
 }
 
 template <>
-inline const roq::fbs::TradeSummary *Event::message_as<roq::fbs::TradeSummary>() const {
+inline roq::fbs::TradeSummary const *Event::message_as<roq::fbs::TradeSummary>() const {
   return message_as_TradeSummary();
 }
 
 template <>
-inline const roq::fbs::StatisticsUpdate *Event::message_as<roq::fbs::StatisticsUpdate>() const {
+inline roq::fbs::StatisticsUpdate const *Event::message_as<roq::fbs::StatisticsUpdate>() const {
   return message_as_StatisticsUpdate();
 }
 
 template <>
-inline const roq::fbs::CreateOrder *Event::message_as<roq::fbs::CreateOrder>() const {
+inline roq::fbs::CreateOrder const *Event::message_as<roq::fbs::CreateOrder>() const {
   return message_as_CreateOrder();
 }
 
 template <>
-inline const roq::fbs::ModifyOrder *Event::message_as<roq::fbs::ModifyOrder>() const {
+inline roq::fbs::ModifyOrder const *Event::message_as<roq::fbs::ModifyOrder>() const {
   return message_as_ModifyOrder();
 }
 
 template <>
-inline const roq::fbs::CancelOrder *Event::message_as<roq::fbs::CancelOrder>() const {
+inline roq::fbs::CancelOrder const *Event::message_as<roq::fbs::CancelOrder>() const {
   return message_as_CancelOrder();
 }
 
 template <>
-inline const roq::fbs::CancelAllOrders *Event::message_as<roq::fbs::CancelAllOrders>() const {
+inline roq::fbs::CancelAllOrders const *Event::message_as<roq::fbs::CancelAllOrders>() const {
   return message_as_CancelAllOrders();
 }
 
 template <>
-inline const roq::fbs::OrderAck *Event::message_as<roq::fbs::OrderAck>() const {
+inline roq::fbs::OrderAck const *Event::message_as<roq::fbs::OrderAck>() const {
   return message_as_OrderAck();
 }
 
 template <>
-inline const roq::fbs::OrderUpdate *Event::message_as<roq::fbs::OrderUpdate>() const {
+inline roq::fbs::OrderUpdate const *Event::message_as<roq::fbs::OrderUpdate>() const {
   return message_as_OrderUpdate();
 }
 
 template <>
-inline const roq::fbs::TradeUpdate *Event::message_as<roq::fbs::TradeUpdate>() const {
+inline roq::fbs::TradeUpdate const *Event::message_as<roq::fbs::TradeUpdate>() const {
   return message_as_TradeUpdate();
 }
 
 template <>
-inline const roq::fbs::PositionUpdate *Event::message_as<roq::fbs::PositionUpdate>() const {
+inline roq::fbs::PositionUpdate const *Event::message_as<roq::fbs::PositionUpdate>() const {
   return message_as_PositionUpdate();
 }
 
 template <>
-inline const roq::fbs::FundsUpdate *Event::message_as<roq::fbs::FundsUpdate>() const {
+inline roq::fbs::FundsUpdate const *Event::message_as<roq::fbs::FundsUpdate>() const {
   return message_as_FundsUpdate();
 }
 
 template <>
-inline const roq::fbs::CustomMetrics *Event::message_as<roq::fbs::CustomMetrics>() const {
+inline roq::fbs::CustomMetrics const *Event::message_as<roq::fbs::CustomMetrics>() const {
   return message_as_CustomMetrics();
 }
 
 template <>
-inline const roq::fbs::CustomMetricsUpdate *Event::message_as<roq::fbs::CustomMetricsUpdate>() const {
+inline roq::fbs::CustomMetricsUpdate const *Event::message_as<roq::fbs::CustomMetricsUpdate>() const {
   return message_as_CustomMetricsUpdate();
 }
 
@@ -5505,7 +5505,7 @@ struct EventBuilder {
   void add_message(flatbuffers::Offset<void> message) { fbb_.AddOffset(Event::VT_MESSAGE, message); }
   explicit EventBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
   flatbuffers::Offset<Event> Finish() {
-    const auto end = fbb_.EndTable(start_);
+    auto const end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Event>(end);
     return o;
   }
@@ -5523,129 +5523,129 @@ inline flatbuffers::Offset<Event> CreateEvent(
   return builder_.Finish();
 }
 
-inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Message type) {
+inline bool VerifyMessage(flatbuffers::Verifier &verifier, void const *obj, Message type) {
   switch (type) {
     case Message_NONE: {
       return true;
     }
     case Message_Handshake: {
-      auto ptr = reinterpret_cast<const roq::fbs::Handshake *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::Handshake const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_HandshakeAck: {
-      auto ptr = reinterpret_cast<const roq::fbs::HandshakeAck *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::HandshakeAck const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_Subscribe: {
-      auto ptr = reinterpret_cast<const roq::fbs::Subscribe *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::Subscribe const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_BatchBegin: {
-      auto ptr = reinterpret_cast<const roq::fbs::BatchBegin *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::BatchBegin const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_BatchEnd: {
-      auto ptr = reinterpret_cast<const roq::fbs::BatchEnd *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::BatchEnd const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_DownloadBegin: {
-      auto ptr = reinterpret_cast<const roq::fbs::DownloadBegin *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::DownloadBegin const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_DownloadEnd: {
-      auto ptr = reinterpret_cast<const roq::fbs::DownloadEnd *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::DownloadEnd const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_GatewaySettings: {
-      auto ptr = reinterpret_cast<const roq::fbs::GatewaySettings *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::GatewaySettings const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_StreamStatus: {
-      auto ptr = reinterpret_cast<const roq::fbs::StreamStatus *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::StreamStatus const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_ExternalLatency: {
-      auto ptr = reinterpret_cast<const roq::fbs::ExternalLatency *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::ExternalLatency const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_RateLimitTrigger: {
-      auto ptr = reinterpret_cast<const roq::fbs::RateLimitTrigger *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::RateLimitTrigger const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_GatewayStatus: {
-      auto ptr = reinterpret_cast<const roq::fbs::GatewayStatus *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::GatewayStatus const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_ReferenceData: {
-      auto ptr = reinterpret_cast<const roq::fbs::ReferenceData *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::ReferenceData const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_MarketStatus: {
-      auto ptr = reinterpret_cast<const roq::fbs::MarketStatus *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::MarketStatus const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_TopOfBook: {
-      auto ptr = reinterpret_cast<const roq::fbs::TopOfBook *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::TopOfBook const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_MarketByPriceUpdate: {
-      auto ptr = reinterpret_cast<const roq::fbs::MarketByPriceUpdate *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::MarketByPriceUpdate const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_MarketByOrderUpdate: {
-      auto ptr = reinterpret_cast<const roq::fbs::MarketByOrderUpdate *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::MarketByOrderUpdate const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_TradeSummary: {
-      auto ptr = reinterpret_cast<const roq::fbs::TradeSummary *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::TradeSummary const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_StatisticsUpdate: {
-      auto ptr = reinterpret_cast<const roq::fbs::StatisticsUpdate *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::StatisticsUpdate const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_CreateOrder: {
-      auto ptr = reinterpret_cast<const roq::fbs::CreateOrder *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::CreateOrder const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_ModifyOrder: {
-      auto ptr = reinterpret_cast<const roq::fbs::ModifyOrder *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::ModifyOrder const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_CancelOrder: {
-      auto ptr = reinterpret_cast<const roq::fbs::CancelOrder *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::CancelOrder const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_CancelAllOrders: {
-      auto ptr = reinterpret_cast<const roq::fbs::CancelAllOrders *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::CancelAllOrders const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_OrderAck: {
-      auto ptr = reinterpret_cast<const roq::fbs::OrderAck *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::OrderAck const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_OrderUpdate: {
-      auto ptr = reinterpret_cast<const roq::fbs::OrderUpdate *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::OrderUpdate const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_TradeUpdate: {
-      auto ptr = reinterpret_cast<const roq::fbs::TradeUpdate *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::TradeUpdate const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_PositionUpdate: {
-      auto ptr = reinterpret_cast<const roq::fbs::PositionUpdate *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::PositionUpdate const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_FundsUpdate: {
-      auto ptr = reinterpret_cast<const roq::fbs::FundsUpdate *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::FundsUpdate const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_CustomMetrics: {
-      auto ptr = reinterpret_cast<const roq::fbs::CustomMetrics *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::CustomMetrics const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Message_CustomMetricsUpdate: {
-      auto ptr = reinterpret_cast<const roq::fbs::CustomMetricsUpdate *>(obj);
+      auto ptr = reinterpret_cast<roq::fbs::CustomMetricsUpdate const *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default:
@@ -5655,8 +5655,8 @@ inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Mess
 
 inline bool VerifyMessageVector(
     flatbuffers::Verifier &verifier,
-    const flatbuffers::Vector<flatbuffers::Offset<void>> *values,
-    const flatbuffers::Vector<uint8_t> *types) {
+    flatbuffers::Vector<flatbuffers::Offset<void>> const *values,
+    flatbuffers::Vector<uint8_t> const *types) {
   if (!values || !types)
     return !values && !types;
   if (values->size() != types->size())
@@ -5669,11 +5669,11 @@ inline bool VerifyMessageVector(
   return true;
 }
 
-inline const roq::fbs::Event *GetEvent(const void *buf) {
+inline roq::fbs::Event const *GetEvent(void const *buf) {
   return flatbuffers::GetRoot<roq::fbs::Event>(buf);
 }
 
-inline const roq::fbs::Event *GetSizePrefixedEvent(const void *buf) {
+inline roq::fbs::Event const *GetSizePrefixedEvent(void const *buf) {
   return flatbuffers::GetSizePrefixedRoot<roq::fbs::Event>(buf);
 }
 

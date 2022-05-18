@@ -26,7 +26,7 @@ struct fmt::formatter<roq::Liquidity> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Liquidity &value, Context &context) {
+  auto format(roq::Liquidity const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }

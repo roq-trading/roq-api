@@ -18,16 +18,4 @@ ExperimentalAutoDetectBinPacking: false
 IncludeBlocks: Preserve
 IndentCaseLabels: true
 PointerAlignment: Right
-
-# undecided:
-
-# Cpp11BracedListStyle: true
-# SpaceBeforeCpp11BracedList: false
-
-# unavailable:
-
-# https://reviews.llvm.org/D31635
-# ReferenceAlignment: Left
-
-# https://reviews.llvm.org/D69764
-# ConstPlacement: West
+QualifierAlignment: Right

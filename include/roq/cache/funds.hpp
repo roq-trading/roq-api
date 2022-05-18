@@ -12,7 +12,7 @@ namespace cache {
 struct Funds final {
   Funds() = default;
 
-  Funds(const Funds &) = delete;
+  Funds(Funds const &) = delete;
   Funds(Funds &&) = default;
 
   void clear() {
@@ -22,7 +22,7 @@ struct Funds final {
     external_account.clear();
   }
 
-  [[nodiscard]] bool operator()(const FundsUpdate &funds_update) {
+  [[nodiscard]] bool operator()(FundsUpdate const &funds_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, funds_update.stream_id);
     dirty |= utils::update(balance, funds_update.balance);
@@ -32,7 +32,7 @@ struct Funds final {
   }
 
   template <typename Context>
-  [[nodiscard]] FundsUpdate convert(const Context &context) const {
+  [[nodiscard]] FundsUpdate convert(Context const &context) const {
     return {
         .stream_id = stream_id,
         .account = context.account,

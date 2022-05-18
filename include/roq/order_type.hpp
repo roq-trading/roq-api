@@ -26,7 +26,7 @@ struct fmt::formatter<roq::OrderType> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::OrderType &value, Context &context) {
+  auto format(roq::OrderType const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }

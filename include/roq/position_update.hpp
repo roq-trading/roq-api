@@ -50,7 +50,7 @@ struct fmt::formatter<roq::PositionUpdate> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::PositionUpdate &value, Context &context) {
+  auto format(roq::PositionUpdate const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -84,7 +84,7 @@ struct fmt::formatter<roq::Event<roq::PositionUpdate> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::PositionUpdate> &event, Context &context) {
+  auto format(roq::Event<roq::PositionUpdate> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -104,7 +104,7 @@ struct fmt::formatter<roq::Trace<roq::PositionUpdate const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Trace<roq::PositionUpdate const> &event, Context &context) {
+  auto format(roq::Trace<roq::PositionUpdate const> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

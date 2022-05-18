@@ -37,7 +37,7 @@ struct fmt::formatter<roq::MBOUpdate> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::MBOUpdate &value, Context &context) {
+  auto format(roq::MBOUpdate const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

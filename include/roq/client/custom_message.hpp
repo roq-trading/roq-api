@@ -25,7 +25,7 @@ struct fmt::formatter<roq::client::CustomMessage> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::client::CustomMessage &value, Context &context) {
+  auto format(roq::client::CustomMessage const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -43,7 +43,7 @@ struct fmt::formatter<roq::Event<roq::client::CustomMessage> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::client::CustomMessage> &event, Context &context) {
+  auto format(roq::Event<roq::client::CustomMessage> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

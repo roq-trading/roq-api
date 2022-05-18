@@ -14,7 +14,7 @@ namespace cache {
 struct GatewayStatus final {
   GatewayStatus() = default;
 
-  GatewayStatus(const GatewayStatus &) = delete;
+  GatewayStatus(GatewayStatus const &) = delete;
   GatewayStatus(GatewayStatus &&) = default;
 
   void clear() {
@@ -23,7 +23,7 @@ struct GatewayStatus final {
     unavailable.reset();
   }
 
-  [[nodiscard]] bool operator()(const roq::GatewayStatus &gateway_status) {
+  [[nodiscard]] bool operator()(roq::GatewayStatus const &gateway_status) {
     auto dirty = false;
     dirty |= utils::update(supported, gateway_status.supported);
     dirty |= utils::update(available, gateway_status.available);
@@ -31,10 +31,10 @@ struct GatewayStatus final {
     return dirty;
   }
 
-  [[nodiscard]] bool operator()(const Event<roq::GatewayStatus> &event) { return (*this)(event.value); }
+  [[nodiscard]] bool operator()(Event<roq::GatewayStatus> const &event) { return (*this)(event.value); }
 
   template <typename Context>
-  [[nodiscard]] roq::GatewayStatus convert(const Context &context) const {
+  [[nodiscard]] roq::GatewayStatus convert(Context const &context) const {
     return {
         .account = context.account,
         .supported = supported,

@@ -26,7 +26,7 @@ struct fmt::formatter<roq::PositionEffect> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::PositionEffect &value, Context &context) {
+  auto format(roq::PositionEffect const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }

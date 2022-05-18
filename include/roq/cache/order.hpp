@@ -13,7 +13,7 @@ namespace cache {
 struct ROQ_PUBLIC Order final {
   Order(uint32_t order_id) : order_id(order_id) {}
 
-  Order(const Order &) = delete;
+  Order(Order const &) = delete;
   Order(Order &&) = default;
 
   void clear() {
@@ -45,7 +45,7 @@ struct ROQ_PUBLIC Order final {
     max_accepted_version = {};
   }
 
-  [[nodiscard]] bool operator()(const OrderUpdate &order_update) {
+  [[nodiscard]] bool operator()(OrderUpdate const &order_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, order_update.stream_id);
     dirty |= utils::update(side, order_update.side);
@@ -91,7 +91,7 @@ struct ROQ_PUBLIC Order final {
   }
 
   template <typename Context>
-  [[nodiscard]] OrderUpdate convert(const Context &context) const {
+  [[nodiscard]] OrderUpdate convert(Context const &context) const {
     return {
         .stream_id = stream_id,
         .account = context.account,

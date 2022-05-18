@@ -21,16 +21,16 @@ template <std::size_t N>
 struct static_string final {
 #if __cplusplus >= 202002L
   // cppcheck-suppress noExplicitConstructor
-  consteval static_string(const std::string_view &sv)
+  consteval static_string(std::string_view const &sv)
       : length_(std::min(N, std::size(sv))), buffer_(create(sv, length_)) {
   }
 #else
   // cppcheck-suppress noExplicitConstructor
-  constexpr static_string(const std::string_view &sv) : length_(std::min(N, sv.size())), buffer_(create(sv, length_)) {
+  constexpr static_string(std::string_view const &sv) : length_(std::min(N, sv.size())), buffer_(create(sv, length_)) {
   }
 #endif
 
-  static_string(const static_string &) = default;
+  static_string(static_string const &) = default;
   static_string(static_string &&) = delete;
 
   constexpr operator std::string_view() const {
@@ -42,7 +42,7 @@ struct static_string final {
   }
 
  protected:
-  static constexpr auto create(const std::string_view &sv, std::size_t length) {
+  static constexpr auto create(std::string_view const &sv, std::size_t length) {
     std::array<char, N> buffer;
     for (std::size_t i = 0; i < length; ++i)
       buffer[i] = sv[i];
@@ -63,11 +63,11 @@ struct basic_format_str final {
   template <typename T>
 #if __cplusplus >= 202002L
   // cppcheck-suppress noExplicitConstructor
-  consteval basic_format_str(const T &str, const source_location &loc = source_location::current())  // NOLINT
+  consteval basic_format_str(const T &str, source_location const &loc = source_location::current())  // NOLINT
 #else
   // cppcheck-suppress noExplicitConstructor
   constexpr basic_format_str(
-      const std::string_view &str, const source_location &loc = source_location::current())  // NOLINT
+      std::string_view const &str, source_location const &loc = source_location::current())  // NOLINT
 #endif
 
       : str_(static_cast<std::string_view>(str)), file_name_(extract_basename(loc.file_name())), line_(loc.line()) {
@@ -84,9 +84,9 @@ struct basic_format_str final {
 
  private:
 #if __cplusplus >= 202002L
-  static consteval std::string_view extract_basename(const char *path){
+  static consteval std::string_view extract_basename(char const *path){
 #else
-  static constexpr std::string_view extract_basename(const char *path) {
+  static constexpr std::string_view extract_basename(char const *path) {
 #endif
       if (path == nullptr) return {};
   std::string_view tmp{path};
@@ -119,7 +119,7 @@ struct fmt::formatter<roq::detail::static_string<N> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::detail::static_string<N> &value, Context &context) {
+  auto format(roq::detail::static_string<N> const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }

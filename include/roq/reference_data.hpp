@@ -67,7 +67,7 @@ struct fmt::formatter<roq::ReferenceData> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::ReferenceData &value, Context &context) {
+  auto format(roq::ReferenceData const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -129,7 +129,7 @@ struct fmt::formatter<roq::Event<roq::ReferenceData> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::ReferenceData> &event, Context &context) {
+  auto format(roq::Event<roq::ReferenceData> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -149,7 +149,7 @@ struct fmt::formatter<roq::Trace<roq::ReferenceData const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Trace<roq::ReferenceData const> &event, Context &context) {
+  auto format(roq::Trace<roq::ReferenceData const> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

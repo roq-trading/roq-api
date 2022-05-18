@@ -11,7 +11,7 @@ namespace debug {
 namespace hex {
 
 struct Message final {
-  explicit Message(const std::span<const std::byte> &buffer) : buffer_(buffer) {}
+  explicit Message(std::span<const std::byte> const &buffer) : buffer_(buffer) {}
 
   Message(std::byte const *data, size_t length) : Message{{data, length}} {}
 
@@ -38,7 +38,7 @@ struct fmt::formatter<roq::debug::hex::Message> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::debug::hex::Message &value, Context &context) {
+  auto format(roq::debug::hex::Message const &value, Context &context) {
     return value.format_to(context);
   }
 };

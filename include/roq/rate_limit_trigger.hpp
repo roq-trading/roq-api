@@ -51,7 +51,7 @@ struct fmt::formatter<roq::RateLimitTrigger> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::RateLimitTrigger &value, Context &context) {
+  auto format(roq::RateLimitTrigger const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -81,7 +81,7 @@ struct fmt::formatter<roq::Event<roq::RateLimitTrigger> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::RateLimitTrigger> &event, Context &context) {
+  auto format(roq::Event<roq::RateLimitTrigger> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -101,7 +101,7 @@ struct fmt::formatter<roq::Trace<roq::RateLimitTrigger const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Trace<roq::RateLimitTrigger const> &event, Context &context) {
+  auto format(roq::Trace<roq::RateLimitTrigger const> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

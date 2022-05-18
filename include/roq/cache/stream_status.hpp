@@ -14,14 +14,14 @@ namespace cache {
 struct StreamStatus final {
   StreamStatus() {}
 
-  StreamStatus(uint16_t stream_id, const std::string_view &account) : stream_id(stream_id), account(account) {}
+  StreamStatus(uint16_t stream_id, std::string_view const &account) : stream_id(stream_id), account(account) {}
 
-  StreamStatus(const StreamStatus &) = delete;
+  StreamStatus(StreamStatus const &) = delete;
   StreamStatus(StreamStatus &&) = default;
 
   void clear() { connection_status = {}; }
 
-  [[nodiscard]] bool operator()(const roq::StreamStatus &stream_status) {
+  [[nodiscard]] bool operator()(roq::StreamStatus const &stream_status) {
     auto dirty = false;
     dirty |= utils::update(supports, stream_status.supports);
     dirty |= utils::update(transport, stream_status.transport);

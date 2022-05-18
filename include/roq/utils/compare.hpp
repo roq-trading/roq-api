@@ -94,7 +94,7 @@ constexpr std::strong_ordering compare(T lhs, T rhs) {
 //   https://stackoverflow.com/a/50465851
 constexpr char ascii_to_lower(char value) {
   static_assert('A' < 'a');
-  const auto offset = 'a' - 'A';
+  auto const offset = 'a' - 'A';
   if (value >= 'A' && value <= 'Z')
     return value + offset;
   return value;

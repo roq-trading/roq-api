@@ -15,7 +15,7 @@ class ReferenceData final {
  public:
   ReferenceData() = default;
 
-  ReferenceData(const ReferenceData &) = delete;
+  ReferenceData(ReferenceData const &) = delete;
   ReferenceData(ReferenceData &&) = default;
 
   void clear() {
@@ -42,7 +42,7 @@ class ReferenceData final {
     expiry_datetime_utc = {};
   }
 
-  [[nodiscard]] bool operator()(const roq::ReferenceData &reference_data) {
+  [[nodiscard]] bool operator()(roq::ReferenceData const &reference_data) {
     auto dirty = false;
     dirty |= utils::update(stream_id, reference_data.stream_id);
     dirty |= utils::update(description, reference_data.description);
@@ -68,10 +68,10 @@ class ReferenceData final {
     return dirty;
   }
 
-  [[nodiscard]] bool operator()(const Event<roq::ReferenceData> &event) { return (*this)(event.value); }
+  [[nodiscard]] bool operator()(Event<roq::ReferenceData> const &event) { return (*this)(event.value); }
 
   template <typename Context>
-  [[nodiscard]] roq::ReferenceData convert(const Context &context) const {
+  [[nodiscard]] roq::ReferenceData convert(Context const &context) const {
     return {
         .stream_id = stream_id,
         .exchange = context.exchange,

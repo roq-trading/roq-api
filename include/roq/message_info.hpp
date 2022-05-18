@@ -42,7 +42,7 @@ struct fmt::formatter<roq::MessageInfo> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::MessageInfo &value, Context &context) {
+  auto format(roq::MessageInfo const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

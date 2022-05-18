@@ -23,25 +23,25 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
   constexpr uint64_t threshold() const { return N5; }
 
   Histogram() = default;
-  explicit Histogram(const std::string_view &labels) : labels_(labels) {}
-  Histogram(const std::string_view &label_name_0, const std::string_view &label_value_0)
+  explicit Histogram(std::string_view const &labels) : labels_(labels) {}
+  Histogram(std::string_view const &label_name_0, std::string_view const &label_value_0)
       : labels_(create_labels(label_name_0, label_value_0)) {}
   Histogram(
-      const std::string_view &label_name_0,
-      const std::string_view &label_value_0,
-      const std::string_view &label_name_1,
-      const std::string_view &label_value_1)
+      std::string_view const &label_name_0,
+      std::string_view const &label_value_0,
+      std::string_view const &label_name_1,
+      std::string_view const &label_value_1)
       : labels_(create_labels(label_name_0, label_value_0, label_name_1, label_value_1)) {}
   Histogram(
-      const std::string_view &label_name_0,
-      const std::string_view &label_value_0,
-      const std::string_view &label_name_1,
-      const std::string_view &label_value_1,
-      const std::string_view &label_name_2,
-      const std::string_view &label_value_2)
+      std::string_view const &label_name_0,
+      std::string_view const &label_value_0,
+      std::string_view const &label_name_1,
+      std::string_view const &label_value_1,
+      std::string_view const &label_name_2,
+      std::string_view const &label_value_2)
       : labels_(create_labels(label_name_0, label_value_0, label_name_1, label_value_1, label_name_2, label_value_2)) {}
 
-  Histogram(const Histogram &) = delete;
+  Histogram(Histogram const &) = delete;
   Histogram(Histogram &&) = delete;
 
   //! Prefetch data into L1 cache
@@ -71,10 +71,10 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
   }
 
   //! Write formatted output
-  Writer &write(Writer &writer, const std::string_view &name) const { return write(writer, name, labels_); }
+  Writer &write(Writer &writer, std::string_view const &name) const { return write(writer, name, labels_); }
 
   //! Write formatted output
-  Writer &write(Writer &writer, const std::string_view &name, const std::string_view &labels) const {
+  Writer &write(Writer &writer, std::string_view const &name, std::string_view const &labels) const {
     using namespace std::literals;
     auto sum = data_.sum.load(std::memory_order_acquire);
     auto bucket_0 = data_.bucket_0;

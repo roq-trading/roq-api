@@ -18,41 +18,41 @@ namespace cache {
 struct Gateway final {
   Gateway() = default;
 
-  Gateway(const Gateway &) = delete;
+  Gateway(Gateway const &) = delete;
   Gateway(Gateway &&) = default;
 
-  [[nodiscard]] bool operator()(const Event<Connected> &) { return true; }
+  [[nodiscard]] bool operator()(Event<Connected> const &) { return true; }
 
-  [[nodiscard]] bool operator()(const Event<Disconnected> &) {
+  [[nodiscard]] bool operator()(Event<Disconnected> const &) {
     new (this) Gateway{};
     return true;
   }
 
-  [[nodiscard]] bool operator()(const Event<DownloadBegin> &event) {
+  [[nodiscard]] bool operator()(Event<DownloadBegin> const &event) {
     auto &[message_info, download_begin] = event;
     auto &state = get_state(download_begin.account);
     return utils::update(state.downloading, true);
   }
 
-  [[nodiscard]] bool operator()(const Event<DownloadEnd> &event) {
+  [[nodiscard]] bool operator()(Event<DownloadEnd> const &event) {
     auto &[message_info, download_begin] = event;
     auto &state = get_state(download_begin.account);
     return utils::update(state.downloading, false);
   }
 
-  [[nodiscard]] bool operator()(const Event<roq::GatewaySettings> &event) { return settings(event); }
+  [[nodiscard]] bool operator()(Event<roq::GatewaySettings> const &event) { return settings(event); }
 
-  [[nodiscard]] bool operator()(const Event<roq::GatewayStatus> &event) {
+  [[nodiscard]] bool operator()(Event<roq::GatewayStatus> const &event) {
     auto &[message_info, gateway_status] = event;
     auto &state = get_state(gateway_status.account);
     return state.status(event);
   }
 
   bool operator()(SupportType support) const { return settings.supports.has(support); }
-  bool operator()(const Mask<SupportType> &expected) const { return settings.supports.has_all(expected); }
+  bool operator()(Mask<SupportType> const &expected) const { return settings.supports.has_all(expected); }
 
-  bool ready(const Mask<SupportType> &expected) const { return ready(expected, state); }
-  bool ready(const Mask<SupportType> &expected, const std::string_view &account) const {
+  bool ready(Mask<SupportType> const &expected) const { return ready(expected, state); }
+  bool ready(Mask<SupportType> const &expected, std::string_view const &account) const {
     auto iter = state_by_account.find(account);
     if (iter == std::end(state_by_account))
       return false;
@@ -70,13 +70,13 @@ struct Gateway final {
   absl::flat_hash_map<Account, State> state_by_account;
 
  private:
-  State &get_state(const std::string_view &account) {
+  State &get_state(std::string_view const &account) {
     if (std::empty(account))
       return state;
     return state_by_account[account];
   }
 
-  bool ready(const Mask<SupportType> &expected, const State &state) const {
+  bool ready(Mask<SupportType> const &expected, State const &state) const {
     if (state.downloading)
       return false;
     return state.status.available.has_all(expected) && state.status.unavailable.has_none(expected);

@@ -30,7 +30,7 @@ struct fmt::formatter<roq::oms::Response> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::oms::Response &value, Context &context) {
+  auto format(roq::oms::Response const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

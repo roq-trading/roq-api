@@ -12,66 +12,66 @@ class ROQ_PUBLIC Matcher {
   //! Dispatch interface used to handle (possibly processed) events
   class ROQ_PUBLIC Dispatcher {
    public:
-    virtual void operator()(const Event<DownloadBegin> &) = 0;
-    virtual void operator()(const Event<DownloadEnd> &) = 0;
+    virtual void operator()(Event<DownloadBegin> const &) = 0;
+    virtual void operator()(Event<DownloadEnd> const &) = 0;
 
     // config
-    virtual void operator()(const Event<GatewaySettings> &) = 0;
+    virtual void operator()(Event<GatewaySettings> const &) = 0;
 
     // stream
-    virtual void operator()(const Event<StreamStatus> &) = 0;
+    virtual void operator()(Event<StreamStatus> const &) = 0;
 
     // service
-    virtual void operator()(const Event<GatewayStatus> &) = 0;
+    virtual void operator()(Event<GatewayStatus> const &) = 0;
 
     // market data
-    virtual void operator()(const Event<ReferenceData> &) = 0;
-    virtual void operator()(const Event<MarketStatus> &) = 0;
-    virtual void operator()(const Event<TopOfBook> &) = 0;
-    virtual void operator()(const Event<MarketByPriceUpdate> &) = 0;
-    virtual void operator()(const Event<MarketByOrderUpdate> &) = 0;
-    virtual void operator()(const Event<TradeSummary> &) = 0;
-    virtual void operator()(const Event<StatisticsUpdate> &) = 0;
+    virtual void operator()(Event<ReferenceData> const &) = 0;
+    virtual void operator()(Event<MarketStatus> const &) = 0;
+    virtual void operator()(Event<TopOfBook> const &) = 0;
+    virtual void operator()(Event<MarketByPriceUpdate> const &) = 0;
+    virtual void operator()(Event<MarketByOrderUpdate> const &) = 0;
+    virtual void operator()(Event<TradeSummary> const &) = 0;
+    virtual void operator()(Event<StatisticsUpdate> const &) = 0;
 
     // order management
-    virtual void operator()(const Event<OrderAck> &) = 0;
-    virtual void operator()(const Event<OrderUpdate> &) = 0;
-    virtual void operator()(const Event<TradeUpdate> &) = 0;
+    virtual void operator()(Event<OrderAck> const &) = 0;
+    virtual void operator()(Event<OrderUpdate> const &) = 0;
+    virtual void operator()(Event<TradeUpdate> const &) = 0;
 
     // account management
-    virtual void operator()(const Event<PositionUpdate> &) = 0;
-    virtual void operator()(const Event<FundsUpdate> &) = 0;
+    virtual void operator()(Event<PositionUpdate> const &) = 0;
+    virtual void operator()(Event<FundsUpdate> const &) = 0;
   };
 
   virtual ~Matcher() {}
 
   // config
-  virtual void operator()(const Event<GatewaySettings> &) = 0;
+  virtual void operator()(Event<GatewaySettings> const &) = 0;
 
   // stream
-  virtual void operator()(const Event<StreamStatus> &) = 0;
+  virtual void operator()(Event<StreamStatus> const &) = 0;
 
   // service
-  virtual void operator()(const Event<GatewayStatus> &) = 0;
+  virtual void operator()(Event<GatewayStatus> const &) = 0;
 
   // market data
-  virtual void operator()(const Event<ReferenceData> &) = 0;
-  virtual void operator()(const Event<MarketStatus> &) = 0;
-  virtual void operator()(const Event<TopOfBook> &) = 0;
-  virtual void operator()(const Event<MarketByPriceUpdate> &) = 0;
-  virtual void operator()(const Event<MarketByOrderUpdate> &) = 0;
-  virtual void operator()(const Event<TradeSummary> &) = 0;
-  virtual void operator()(const Event<StatisticsUpdate> &) = 0;
+  virtual void operator()(Event<ReferenceData> const &) = 0;
+  virtual void operator()(Event<MarketStatus> const &) = 0;
+  virtual void operator()(Event<TopOfBook> const &) = 0;
+  virtual void operator()(Event<MarketByPriceUpdate> const &) = 0;
+  virtual void operator()(Event<MarketByOrderUpdate> const &) = 0;
+  virtual void operator()(Event<TradeSummary> const &) = 0;
+  virtual void operator()(Event<StatisticsUpdate> const &) = 0;
 
   // account management
-  virtual void operator()(const Event<PositionUpdate> &) = 0;
-  virtual void operator()(const Event<FundsUpdate> &) = 0;
+  virtual void operator()(Event<PositionUpdate> const &) = 0;
+  virtual void operator()(Event<FundsUpdate> const &) = 0;
 
   // client request
-  virtual void operator()(const Event<CreateOrder> &) = 0;
-  virtual void operator()(const Event<ModifyOrder> &) = 0;
-  virtual void operator()(const Event<CancelOrder> &) = 0;
-  virtual void operator()(const Event<CancelAllOrders> &) = 0;
+  virtual void operator()(Event<CreateOrder> const &) = 0;
+  virtual void operator()(Event<ModifyOrder> const &) = 0;
+  virtual void operator()(Event<CancelOrder> const &) = 0;
+  virtual void operator()(Event<CancelAllOrders> const &) = 0;
 };
 
 }  // namespace roq

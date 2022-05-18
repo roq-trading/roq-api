@@ -13,9 +13,9 @@ template <typename T>
 struct Event final {
   using value_type = T const;
 
-  Event(const MessageInfo &message_info, const value_type &value) : message_info(message_info), value(value) {}
+  Event(MessageInfo const &message_info, value_type const &value) : message_info(message_info), value(value) {}
 
-  Event(const Event &) = delete;
+  Event(Event const &) = delete;
 
   //! Dispatch to handler
   template <typename Result, typename Handler, typename... Args>
@@ -24,22 +24,22 @@ struct Event final {
   }
 
   //! Access MessageInfo
-  operator const MessageInfo &() const { return message_info; }
+  operator MessageInfo const &() const { return message_info; }
 
   //! Access Message
-  operator const value_type &() const { return value; }
+  operator value_type const &() const { return value; }
 
   //! Structured binding
-  operator std::pair<const MessageInfo &, const value_type &>() const { return {message_info, value}; }
+  operator std::pair<MessageInfo const &, value_type const &>() const { return {message_info, value}; }
 
-  const MessageInfo &message_info;  //!< MessageInfo
-  const value_type &value;          //!< Message
+  MessageInfo const &message_info;  //!< MessageInfo
+  value_type const &value;          //!< Message
 };
 
 //! Create event and dispatch to handler
 template <typename Handler, typename T, typename... Args>
 inline void create_event_and_dispatch(
-    Handler &&handler, const MessageInfo &message_info, const T &value, Args &&...args) {
+    Handler &&handler, MessageInfo const &message_info, const T &value, Args &&...args) {
   const Event event{message_info, value};
   return event.template dispatch<void>(handler, std::forward<Args>(args)...);
 }

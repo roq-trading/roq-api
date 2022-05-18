@@ -12,7 +12,7 @@ namespace cache {
 struct Position final {
   Position() = default;
 
-  Position(const Position &) = delete;
+  Position(Position const &) = delete;
   Position(Position &&) = default;
 
   void clear() {
@@ -24,7 +24,7 @@ struct Position final {
     short_quantity_begin = NaN;
   }
 
-  [[nodiscard]] bool operator()(const PositionUpdate &position_update) {
+  [[nodiscard]] bool operator()(PositionUpdate const &position_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, position_update.stream_id);
     dirty |= utils::update(external_account, position_update.external_account);
@@ -36,7 +36,7 @@ struct Position final {
   }
 
   template <typename Context>
-  [[nodiscard]] PositionUpdate convert(const Context &context) const {
+  [[nodiscard]] PositionUpdate convert(Context const &context) const {
     return {
         .stream_id = stream_id,
         .account = context.account,

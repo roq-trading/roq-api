@@ -32,9 +32,9 @@ struct Market final {
   template <typename MarketByPriceFactory>
   Market(
       uint32_t market_id,
-      const std::string_view &exchange,
-      const std::string_view &symbol,
-      const MarketByPriceFactory &create_market_by_price)
+      std::string_view const &exchange,
+      std::string_view const &symbol,
+      MarketByPriceFactory const &create_market_by_price)
       : market_id(market_id),
         context{
             .exchange = exchange,
@@ -43,36 +43,36 @@ struct Market final {
         market_by_price(create_market_by_price(exchange, symbol)) {}
 
   Market() = delete;
-  Market(const Market &) = delete;
+  Market(Market const &) = delete;
 
   Market(Market &&) = default;
 
-  operator const Context &() const { return context; }
+  operator Context const &() const { return context; }
 
-  [[nodiscard]] bool operator()(const Event<roq::ReferenceData> &event) { return reference_data(event); }
-  [[nodiscard]] bool operator()(const Event<roq::MarketStatus> &event) { return market_status(event); }
-  [[nodiscard]] bool operator()(const Event<roq::TopOfBook> &event) { return top_of_book(event); }
-  [[nodiscard]] bool operator()(const Event<MarketByPriceUpdate> &event) {
+  [[nodiscard]] bool operator()(Event<roq::ReferenceData> const &event) { return reference_data(event); }
+  [[nodiscard]] bool operator()(Event<roq::MarketStatus> const &event) { return market_status(event); }
+  [[nodiscard]] bool operator()(Event<roq::TopOfBook> const &event) { return top_of_book(event); }
+  [[nodiscard]] bool operator()(Event<MarketByPriceUpdate> const &event) {
     (*market_by_price)(event);
     return true;  // note! always updated
   }
   // bool operator()(const Event<MarketByOrderUpdate> &event) { (*market_by_order)(event.value); return true; }
-  [[nodiscard]] bool operator()(const Event<TradeSummary> &) {
+  [[nodiscard]] bool operator()(Event<TradeSummary> const &) {
     return true;  // note! always signal update (never cached)
   }
-  [[nodiscard]] bool operator()(const Event<StatisticsUpdate> &event) { return statistics(event); }
+  [[nodiscard]] bool operator()(Event<StatisticsUpdate> const &event) { return statistics(event); }
   // XXX TODO CustomMetrics
 
-  [[nodiscard]] bool operator()(const Event<FundsUpdate> &event) {
+  [[nodiscard]] bool operator()(Event<FundsUpdate> const &event) {
     auto &account = get_account(event.value.account);
     return account.funds(event);
   }
-  [[nodiscard]] bool operator()(const Event<PositionUpdate> &event) {
+  [[nodiscard]] bool operator()(Event<PositionUpdate> const &event) {
     auto &account = get_account(event.value.account);
     return account.position(event);
   }
   // note! assumes a single user_id
-  [[nodiscard]] bool operator()(const Event<OrderUpdate> &event) {
+  [[nodiscard]] bool operator()(Event<OrderUpdate> const &event) {
     auto &[message_info, order_update] = event;
     auto &account = get_account(order_update.account);
     auto order_id = order_update.order_id;
@@ -80,12 +80,12 @@ struct Market final {
     return (*iter_2).second(event);
   }
   // note! assumes a single user_id
-  [[nodiscard]] bool operator()(const Event<TradeUpdate> &) {
+  [[nodiscard]] bool operator()(Event<TradeUpdate> const &) {
     return true;  // note! always signal update (not currently cached)
   }
 
   template <typename Callback>
-  bool get_funds(const std::string_view &account, Callback callback) {
+  bool get_funds(std::string_view const &account, Callback callback) {
     auto iter = accounts.find(account);
     if (iter == std::end(accounts))
       return false;
@@ -94,7 +94,7 @@ struct Market final {
   }
 
   template <typename Callback>
-  bool get_position(const std::string_view &account, Callback callback) {
+  bool get_position(std::string_view const &account, Callback callback) {
     auto iter = accounts.find(account);
     if (iter == std::end(accounts))
       return false;
@@ -104,7 +104,7 @@ struct Market final {
 
   // note! random ordering
   template <typename Callback>
-  bool get_orders(const std::string_view &account, Callback callback) {
+  bool get_orders(std::string_view const &account, Callback callback) {
     auto iter = accounts.find(account);
     if (iter == std::end(accounts))
       return false;
@@ -139,7 +139,7 @@ struct Market final {
   absl::flat_hash_map<roq::Account, Account> accounts;
 
  protected:
-  Account &get_account(const std::string_view &account) {
+  Account &get_account(std::string_view const &account) {
     auto iter = accounts.try_emplace(account).first;
     return (*iter).second;
   }

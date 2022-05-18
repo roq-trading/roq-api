@@ -16,13 +16,13 @@ namespace cache {
 
 template <typename MarketByPriceFactory>
 struct Manager final {
-  explicit Manager(const MarketByPriceFactory &market_by_price_factory)
+  explicit Manager(MarketByPriceFactory const &market_by_price_factory)
       : market_by_price_factory_(market_by_price_factory) {}
   explicit Manager(MarketByPriceFactory &&market_by_price_factory)
       : market_by_price_factory_(std::move(market_by_price_factory)) {}
 
   // always guaranteed to return (or throw)
-  std::pair<Market &, bool> get_market_or_create(const std::string_view &exchange, const std::string_view &symbol) {
+  std::pair<Market &, bool> get_market_or_create(std::string_view const &exchange, std::string_view const &symbol) {
     auto market_id = find_market_id(exchange, symbol);
     if (market_id) {
       auto iter = markets_.find(market_id);
@@ -50,7 +50,7 @@ struct Manager final {
 
   // returns false if non-existing, calls back with market if exists
   template <typename Callback>
-  bool get_market(const std::string_view &exchange, const std::string_view &symbol, Callback callback) {
+  bool get_market(std::string_view const &exchange, std::string_view const &symbol, Callback callback) {
     auto market_id = find_market_id(exchange, symbol);
     if (market_id) {
       auto iter = markets_.find(market_id);
@@ -83,7 +83,7 @@ struct Manager final {
 
   // calls back with all symbols
   template <typename Callback>
-  bool get_all_symbols(const std::string_view &exchange, Callback callback) const {
+  bool get_all_symbols(std::string_view const &exchange, Callback callback) const {
     auto iter = exchange_to_symbols_.find(exchange);
     if (iter == std::end(exchange_to_symbols_))
       return false;
@@ -94,7 +94,7 @@ struct Manager final {
   }
 
  protected:
-  uint32_t find_market_id(const std::string_view &exchange, const std::string_view &symbol) const {
+  uint32_t find_market_id(std::string_view const &exchange, std::string_view const &symbol) const {
     auto iter_1 = exchange_to_symbols_.find(exchange);
     if (iter_1 == std::end(exchange_to_symbols_))
       return 0;

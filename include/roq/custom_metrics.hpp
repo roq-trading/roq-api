@@ -48,7 +48,7 @@ struct fmt::formatter<roq::CustomMetrics> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::CustomMetrics &value, Context &context) {
+  auto format(roq::CustomMetrics const &value, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -74,7 +74,7 @@ struct fmt::formatter<roq::Event<roq::CustomMetrics> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Event<roq::CustomMetrics> &event, Context &context) {
+  auto format(roq::Event<roq::CustomMetrics> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -94,7 +94,7 @@ struct fmt::formatter<roq::Trace<roq::CustomMetrics const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const roq::Trace<roq::CustomMetrics const> &event, Context &context) {
+  auto format(roq::Trace<roq::CustomMetrics const> const &event, Context &context) {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

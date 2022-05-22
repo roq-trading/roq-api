@@ -46,6 +46,7 @@ class ROQ_PUBLIC MarketByPrice {
 
   virtual bool is_bad() const = 0;
 
+  virtual uint16_t stream_id() const = 0;
   virtual std::chrono::nanoseconds exchange_time_utc() const = 0;
   virtual int64_t exchange_sequence() const = 0;
 

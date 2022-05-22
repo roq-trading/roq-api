@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `cache::MarketByPrice::stream_id()`
+
 ## 0.8.4 &ndash; 2022-05-14
 
 ### Added

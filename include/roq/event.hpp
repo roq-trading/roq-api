@@ -13,7 +13,7 @@ template <typename T>
 struct Event final {
   using value_type = T const;
 
-  Event(MessageInfo const &message_info, value_type const &value) : message_info(message_info), value(value) {}
+  Event(MessageInfo const &message_info_, value_type const &value_) : message_info(message_info_), value(value_) {}
 
   Event(Event const &) = delete;
 

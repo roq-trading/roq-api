@@ -1,6 +1,6 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 
 #include <stdexcept>
 

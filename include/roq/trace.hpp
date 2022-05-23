@@ -12,7 +12,7 @@ template <typename T>
 struct Trace final {
   using value_type = T;
 
-  Trace(TraceInfo const &trace_info, value_type &value) : trace_info(trace_info), value(value) {}
+  Trace(TraceInfo const &trace_info_, value_type &value_) : trace_info(trace_info_), value(value_) {}
 
   Trace(Trace const &) = delete;
 

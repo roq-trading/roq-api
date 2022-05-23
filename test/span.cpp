@@ -1,6 +1,6 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 
 #include "roq/span.hpp"
 
@@ -14,7 +14,11 @@ TEST_CASE("span_simple", "[span]") {
   std::span empty_span(empty);
   CHECK(std::empty(empty_span) == true);
   // initialize non-empty
-  std::array<double, 3> raw{0.0, 2.0, 3.0};
+  std::array<double, 3> raw{{
+      0.0,
+      2.0,
+      3.0,
+  }};
   std::span span(raw);
   CHECK(std::empty(span) == false);
   span[0] = 1.0;

@@ -31,7 +31,7 @@ constexpr bool isnan(T x) {
 //   https://stackoverflow.com/a/29457433
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
 constexpr bool fabs(T x) {
-#if __APPLE__
+#ifdef __APPLE__
   return __builtin_fabs(x);
 #else
   return std::fabs(x);
@@ -53,11 +53,11 @@ constexpr int sign_helper(T value) {
 }
 
 constexpr std::strong_ordering to_strong_ordering(int sign) {
-  const std::array lookup{
+  const std::array<std::strong_ordering, 3> lookup{{
       std::strong_ordering::less,
       std::strong_ordering::equal,
       std::strong_ordering::greater,
-  };
+  }};
   return lookup[sign_helper(sign) + 1];
 }
 

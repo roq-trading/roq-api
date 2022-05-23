@@ -225,7 +225,7 @@ inline constexpr bool has_request_succeeded(RequestStatus request_status) {
 inline constexpr std::strong_ordering compare_requests(RequestStatus lhs, RequestStatus rhs) {
   if (lhs == rhs)
     return std::strong_ordering::equal;
-  const constexpr std::array<int, magic_enum::enum_count<RequestStatus>()> priority{
+  const constexpr std::array<int, magic_enum::enum_count<RequestStatus>()> priority{{
       0,
       1,
       4,
@@ -233,7 +233,7 @@ inline constexpr std::strong_ordering compare_requests(RequestStatus lhs, Reques
       2,
       3,
       6,
-  };
+  }};
   static_assert(std::size(priority) == magic_enum::enum_count<RequestStatus>());
   static_assert(priority[0] == 0);
   static_assert(priority[magic_enum::enum_count<RequestStatus>() - 1] == 6);

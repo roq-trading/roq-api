@@ -47,7 +47,7 @@ struct static_string final {
     for (std::size_t i = 0; i < length; ++i)
       buffer[i] = sv[i];
     for (std::size_t i = length; i < N; ++i)
-      buffer[i] = 0xEF;  // debug
+      buffer[i] = static_cast<char>(0xEF);  // debug
     return buffer;
   }
 

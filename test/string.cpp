@@ -1,6 +1,6 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 
 #include <string_view>
 
@@ -84,34 +84,34 @@ TEST_CASE("string_push_back", "[string]") {
 }
 
 TEST_CASE("absl_hash_simple_4", "[string]") {
-  std::array<String<4>, 5> raw{
+  std::array<String<4>, 5> raw{{
       String<4>(),
       String<4>("1"sv),
       String<4>("12"sv),
       String<4>("123"sv),
       String<4>("1234"sv),
-  };
-  std::array<size_t, 5> raw_hash{
+  }};
+  std::array<size_t, 5> raw_hash{{
       absl::HashOf(raw[0]),
       absl::HashOf(raw[1]),
       absl::HashOf(raw[2]),
       absl::HashOf(raw[3]),
       absl::HashOf(raw[4]),
-  };
-  std::array<std::string_view, 5> heterogeneous{
+  }};
+  std::array<std::string_view, 5> heterogeneous{{
       ""sv,
       "1"sv,
       "12"sv,
       "123"sv,
       "1234"sv,
-  };
-  std::array<size_t, 5> heterogeneous_hash{
+  }};
+  std::array<size_t, 5> heterogeneous_hash{{
       absl::HashOf(heterogeneous[0]),
       absl::HashOf(heterogeneous[1]),
       absl::HashOf(heterogeneous[2]),
       absl::HashOf(heterogeneous[3]),
       absl::HashOf(heterogeneous[4]),
-  };
+  }};
   // hash
   // ... same
   for (size_t i = 0; i < (std::size(raw_hash) - 1); ++i)

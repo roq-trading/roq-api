@@ -18,6 +18,4 @@ ExperimentalAutoDetectBinPacking: false
 IncludeBlocks: Preserve
 IndentCaseLabels: true
 PointerAlignment: Right
-
-# requires: clang 14
-# QualifierAlignment: Right
+QualifierAlignment: Right

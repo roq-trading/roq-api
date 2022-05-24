@@ -13,7 +13,7 @@ namespace {
 //   https://stackoverflow.com/a/45172360
 template <typename... Ts>
 std::array<std::byte, sizeof...(Ts)> make_bytes(Ts &&...args) noexcept {
-  return {std::byte(std::forward<Ts>(args))...};
+  return {{std::byte(std::forward<Ts>(args))...}};
 }
 }  // namespace
 

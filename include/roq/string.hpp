@@ -67,59 +67,31 @@ class ROQ_PACKED String {
     return H::combine(std::move(hash), static_cast<std::string_view>(rhs));
   }
 
-  // note! clang13 does not yet support spaceship operator for std::string_view
-  // https://libcxx.llvm.org/Status/Spaceship.html
-#if defined(__clang__)
- protected:
-  // references:
-  //   https://stackoverflow.com/a/4609795
-  template <typename T>
-  static constexpr int sign_helper(T value) {
-    return (T{} < value) - (value < T{});
+  /* note! replace with this when all compilers support string_view spaceship
+  template <std::size_t M>
+  constexpr auto operator<=>(roq::String<M> const &rhs) const {
+    return (*this) <=> static_cast<std::string_view>(rhs);
+  }
+  */
+  // note! not sure why this is necessary
+  template <std::size_t M>
+  constexpr auto operator==(String<M> const &rhs) const {
+    return (*this) == static_cast<std::string_view>(rhs);
+  }
+  template <std::size_t M>
+  constexpr auto operator<(String<M> const &rhs) const {
+    return (*this) < static_cast<std::string_view>(rhs);
+  }
+  template <std::size_t M>
+  constexpr auto operator>(String<M> const &rhs) const {
+    return (*this) > static_cast<std::string_view>(rhs);
   }
 
- public:
-  constexpr bool operator==(std::string_view const &rhs) const {
-    return static_cast<std::string_view>(*this).compare(rhs) == 0;
-  }
-  constexpr auto operator<=>(std::string_view const &rhs) const {
-    auto lhs = static_cast<std::string_view>(*this);
-    auto sign = lhs.compare(rhs);
-    const std::array lookup{
-        std::strong_ordering::less,
-        std::strong_ordering::equal,
-        std::strong_ordering::greater,
-    };
-    return lookup[sign_helper(sign) + 1];
-  }
-#else
-  constexpr bool operator==(std::string_view const &rhs) const {
-    return static_cast<std::string_view>(*this) == rhs;
-  }
-  constexpr auto operator<=>(std::string_view const &rhs) const {
-    return static_cast<std::string_view>(*this) <=> rhs;
-  }
-#endif
+  constexpr value_type &operator[](size_t index) { return buffer_[index]; }
 
-  constexpr auto operator<=>(String<N> const &rhs) const {
-    return operator<=>(static_cast<std::string_view>(rhs));
-  }
+  constexpr value_type operator[](size_t index) const { return buffer_[index]; }
 
-  constexpr auto operator<=>(std::string const &rhs) const {
-    return operator<=>(std::string_view{rhs});
-  }
-
-  constexpr value_type &operator[](size_t index) {
-    return buffer_[index];
-  }
-
-  constexpr value_type operator[](size_t index) const {
-    return buffer_[index];
-  }
-
-  constexpr std::size_t size() const {
-    return N;
-  }
+  constexpr std::size_t size() const { return N; }
 
   constexpr std::size_t length() const {
     auto tmp = buffer_[N - 1];
@@ -128,17 +100,11 @@ class ROQ_PACKED String {
     return tmp;
   }
 
-  constexpr bool empty() const {
-    return length() == 0;
-  }
+  constexpr bool empty() const { return length() == 0; }
 
-  constexpr value_type const *data() const {
-    return std::data(buffer_);
-  }
+  constexpr value_type const *data() const { return std::data(buffer_); }
 
-  constexpr operator std::string_view() const {
-    return {data(), length()};
-  }
+  constexpr operator std::string_view() const { return {data(), length()}; }
 
   constexpr void clear() {
     // note!
@@ -157,9 +123,7 @@ class ROQ_PACKED String {
   }
 
  protected:
-  constexpr value_type *data() {
-    return std::data(buffer_);
-  }
+  constexpr value_type *data() { return std::data(buffer_); }
 
   constexpr void copy(std::string_view const &text) {
     using namespace std::literals;
@@ -186,8 +150,45 @@ class ROQ_PACKED String {
  private:
   std::array<value_type, N> buffer_ = {};
 };
-
 }  // namespace roq
+
+template <std::size_t N>
+inline constexpr auto operator<=>(roq::String<N> const &lhs, std::string_view const &rhs) {
+#ifdef __clang__
+  // note! clang14 does not support spaceship operator for std::string_view
+  // https://libcxx.llvm.org/Status/Spaceship.html
+  auto sign = static_cast<std::string_view>(lhs).compare(rhs);
+  //   https://stackoverflow.com/a/4609795
+  auto sign_helper = [](auto value) {
+    using value_type = decltype(value);
+    return (value_type{} < value) - (value < value_type{});
+  };
+  const std::array lookup{
+      std::strong_ordering::less,
+      std::strong_ordering::equal,
+      std::strong_ordering::greater,
+  };
+  return lookup[sign_helper(sign) + 1];
+#else
+  return static_cast<std::string_view>(lhs) <=> rhs;
+#endif
+}
+
+template <std::size_t N>
+inline constexpr auto operator<=>(std::string_view const &lhs, roq::String<N> const &rhs) {
+  // https://stackoverflow.com/a/60087347
+  return 0 <=> (rhs <=> lhs);
+}
+
+template <std::size_t N>
+inline constexpr auto operator<=>(roq::String<N> const &lhs, std::string const &rhs) {
+  return lhs <=> std::string_view{rhs};
+}
+
+template <std::size_t N>
+inline constexpr auto operator<=>(std::string const &lhs, roq::String<N> const &rhs) {
+  return std::string_view{lhs} <=> rhs;
+}
 
 template <size_t N>
 struct fmt::formatter<roq::String<N> > {

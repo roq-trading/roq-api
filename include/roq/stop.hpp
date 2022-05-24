@@ -40,7 +40,7 @@ struct fmt::formatter<roq::Stop> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Stop const &value, Context &context) {
+  auto format(roq::Stop const &, Context &context) {
     using namespace std::literals;
     return fmt::format_to(context.out(), R"({{}})"sv);
   }

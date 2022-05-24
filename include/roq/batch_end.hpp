@@ -40,7 +40,7 @@ struct fmt::formatter<roq::BatchEnd> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::BatchEnd const &value, Context &context) {
+  auto format(roq::BatchEnd const &, Context &context) {
     using namespace std::literals;
     return fmt::format_to(context.out(), R"({{}})"sv);
   }

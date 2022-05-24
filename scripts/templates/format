@@ -6,7 +6,11 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
   }
   template <typename Context>
   auto format(
+{%- if variables | length == 0 %}
+      {{ namespaces | join('::') }}::{{ name }} const&,
+{%- else %}
       {{ namespaces | join('::') }}::{{ name }} const& value,
+{%- endif %}
       Context& context) {
     using namespace std::literals;
     return fmt::format_to(

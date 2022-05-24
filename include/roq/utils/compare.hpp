@@ -33,7 +33,7 @@ constexpr bool isnan(T x) {
 // references:
 //   https://stackoverflow.com/a/29457433
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
-constexpr bool fabs(T x) {
+constexpr T fabs(T x) {
 #ifdef __APPLE__
   return __builtin_fabs(x);
 #else

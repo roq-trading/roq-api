@@ -9,13 +9,19 @@ using namespace std::literals;
 namespace roq {
 namespace utils {
 
+namespace {
+constexpr bool safe_equal(double lhs, double rhs) {
+  return std::bit_cast<uint64_t>(lhs) == std::bit_cast<uint64_t>(rhs);
+}
+}  // namespace
+
 static_assert(!detail::isnan(0.0));
 static_assert(detail::isnan(std::numeric_limits<double>::quiet_NaN()));
 
-static_assert(detail::fabs(0.0) == 0.0);
-static_assert(detail::fabs(-0.0) == 0.0);
-static_assert(detail::fabs(1.0) == 1.0);
-static_assert(detail::fabs(-1.0) == 1.0);
+static_assert(safe_equal(detail::fabs(0.0), 0.0));
+static_assert(safe_equal(detail::fabs(-0.0), 0.0));
+static_assert(safe_equal(detail::fabs(1.0), 1.0));
+static_assert(safe_equal(detail::fabs(-1.0), 1.0));
 
 static_assert(compare(0.0, 0.0) == std::strong_ordering::equal);
 static_assert(compare(1.0, -1.0) == std::strong_ordering::greater);

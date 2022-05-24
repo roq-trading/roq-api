@@ -18,15 +18,18 @@ namespace roq {
 namespace utils {
 
 namespace detail {
-// std::isnan is *not* constexpr
+// std::isnan is *not* constexpr before c++23
 // references:
-//   https://en.cppreference.com/w/cpp/numeric/math/isnan
+//   https://codereview.stackexchange.com/a/272103
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
 constexpr bool isnan(T x) {
-  return x != x;
+  auto const i = std::bit_cast<uint64_t>(x);
+  auto constexpr ones_mask = 0x7ff0000000000000;
+  auto constexpr zero_mask = 0x000fffffffffffff;
+  return (i & ones_mask) == ones_mask && (i & zero_mask) != 0;
 }
 
-// std::fabs is *not* constexpr
+// std::fabs is *not* constexpr before c++23
 // references:
 //   https://stackoverflow.com/a/29457433
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>

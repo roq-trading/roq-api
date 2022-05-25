@@ -50,6 +50,7 @@ struct ROQ_PUBLIC ReferenceData final {
   std::chrono::days settlement_date = {};         //!< Settlement date
   std::chrono::seconds expiry_datetime = {};      //!< Expiry datetime
   std::chrono::seconds expiry_datetime_utc = {};  //!< Expiry datetime
+  bool discard = false;                           //!< Discard market data updates?
 };
 
 template <>
@@ -94,7 +95,8 @@ struct fmt::formatter<roq::ReferenceData> {
         R"(issue_date={}, )"
         R"(settlement_date={}, )"
         R"(expiry_datetime={}, )"
-        R"(expiry_datetime_utc={})"
+        R"(expiry_datetime_utc={}, )"
+        R"(discard={})"
         R"(}})"sv,
         value.stream_id,
         value.exchange,
@@ -118,7 +120,8 @@ struct fmt::formatter<roq::ReferenceData> {
         value.issue_date,
         value.settlement_date,
         value.expiry_datetime,
-        value.expiry_datetime_utc);
+        value.expiry_datetime_utc,
+        value.discard);
   }
 };
 

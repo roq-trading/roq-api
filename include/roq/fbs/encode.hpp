@@ -708,7 +708,8 @@ auto encode(B &builder, roq::ReferenceData const &value) {
       encode(builder, value.expiry_datetime_utc),
       value.max_trade_vol,
       value.trade_vol_step_size,
-      encode(builder, value.margin_currency));
+      encode(builder, value.margin_currency),
+      value.discard);
 }
 
 template <typename B>

@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `ReferenceData::discard` (#225)
+
 ### Changed
 
 * `cache::MarketByPrice::stream_id()`

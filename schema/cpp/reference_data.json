@@ -114,6 +114,11 @@
       "name": "expiry_datetime_utc",
       "type": "std::chrono::seconds",
       "comment": "Expiry datetime"
+    },
+    {
+      "name": "discard",
+      "type": "bool",
+      "comment": "Discard market data updates?"
     }
   ]
 }

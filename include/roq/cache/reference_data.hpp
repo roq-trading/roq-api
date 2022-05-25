@@ -40,6 +40,7 @@ class ReferenceData final {
     settlement_date = {};
     expiry_datetime = {};
     expiry_datetime_utc = {};
+    discard = {};
   }
 
   [[nodiscard]] bool operator()(roq::ReferenceData const &reference_data) {
@@ -65,6 +66,7 @@ class ReferenceData final {
     dirty |= utils::update(settlement_date, reference_data.settlement_date);
     dirty |= utils::update(expiry_datetime, reference_data.expiry_datetime);
     dirty |= utils::update(expiry_datetime_utc, reference_data.expiry_datetime_utc);
+    dirty |= utils::update(discard, reference_data.discard);
     return dirty;
   }
 
@@ -96,6 +98,7 @@ class ReferenceData final {
         .settlement_date = settlement_date,
         .expiry_datetime = expiry_datetime,
         .expiry_datetime_utc = expiry_datetime_utc,
+        .discard = discard,
     };
   }
 
@@ -121,6 +124,7 @@ class ReferenceData final {
   std::chrono::days settlement_date = {};
   std::chrono::seconds expiry_datetime = {};
   std::chrono::seconds expiry_datetime_utc = {};
+  bool discard = {};
 };
 
 }  // namespace cache

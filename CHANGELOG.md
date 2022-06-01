@@ -6,10 +6,12 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `cache::Manager::get_market_with_id` and `cache::Manager::get_market_id`
 * `ReferenceData::discard` (#225)
 
 ### Changed
 
+* Make `cache::Manager` a non-template (#230)
 * `cache::MarketByPrice::stream_id()`
 
 ## 0.8.4 &ndash; 2022-05-14

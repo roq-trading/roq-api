@@ -14,8 +14,11 @@
 namespace roq {
 namespace cache {
 
-template <typename MarketByPriceFactory>
 struct Manager final {
+  using MarketId = uint32_t;
+  using MarketByPriceFactory =
+      std::function<std::unique_ptr<MarketByPrice>(std::string_view const &exchange, std::string_view const &symbol)>;
+
   explicit Manager(MarketByPriceFactory const &market_by_price_factory)
       : market_by_price_factory_(market_by_price_factory) {}
   explicit Manager(MarketByPriceFactory &&market_by_price_factory)
@@ -62,6 +65,31 @@ struct Manager final {
     return false;
   }
 
+  // returns false if non-existing, calls back with market if exists
+  template <typename Callback>
+  bool get_market_with_id(std::string_view const &exchange, std::string_view const &symbol, Callback callback) {
+    auto market_id = find_market_id(exchange, symbol);
+    if (market_id) {
+      auto iter = markets_.find(market_id);
+      if (iter != std::end(markets_)) {
+        callback(market_id, (*iter).second);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // returns false if non-existing, calls back with market_id if exists
+  template <typename Callback>
+  bool get_market_id(std::string_view const &exchange, std::string_view const &symbol, Callback callback) {
+    auto market_id = find_market_id(exchange, symbol);
+    if (market_id) {
+      callback(market_id);
+      return true;
+    }
+    return false;
+  }
+
   // calls back with all markets
   template <typename Callback>
   void get_all_markets(Callback callback) {
@@ -104,10 +132,10 @@ struct Manager final {
   }
 
  private:
-  const std::function<MarketByPriceFactory> market_by_price_factory_;
-  uint32_t next_market_id_ = 0;
-  absl::flat_hash_map<Exchange, absl::flat_hash_map<Symbol, uint32_t>> exchange_to_symbols_;
-  absl::flat_hash_map<uint32_t, Market> markets_;
+  const MarketByPriceFactory market_by_price_factory_;
+  MarketId next_market_id_ = 0;
+  absl::flat_hash_map<Exchange, absl::flat_hash_map<Symbol, MarketId>> exchange_to_symbols_;
+  absl::flat_hash_map<MarketId, Market> markets_;
 };
 
 }  // namespace cache

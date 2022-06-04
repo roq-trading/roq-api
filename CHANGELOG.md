@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.8.5 &ndash; 2022-06-06
+
 ### Added
 
 * `cache::Manager::get_market_with_id` and `cache::Manager::get_market_id`

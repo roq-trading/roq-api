@@ -11,6 +11,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Promote `utils::DateTime_iso8601` formatter to API (from core)
 * Make `cache::Manager` a non-template (#230)
 * `cache::MarketByPrice::stream_id()`
 

@@ -224,6 +224,13 @@ auto encode([[maybe_unused]] B &builder, roq::Transport const &value) {
 }
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, roq::UpdateAction const &value) {
+  using result_type = UpdateAction;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, roq::UpdateType const &value) {
   using result_type = UpdateType;
   using value_type = std::underlying_type_t<result_type>;
@@ -240,7 +247,7 @@ auto encode(B &builder, roq::Layer const &value) {
 template <typename B>
 auto encode(B &builder, roq::MBPUpdate const &value) {
   return CreateMBPUpdate(
-      builder, value.price, value.quantity, value.implied_quantity, value.price_level, value.number_of_orders);
+      builder, value.price, value.quantity, value.implied_quantity, value.price_level, encode(builder, value.update_action), value.number_of_orders);
 }
 
 template <typename B>

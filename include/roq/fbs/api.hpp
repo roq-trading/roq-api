@@ -1258,6 +1258,42 @@ inline const char *EnumNameTransport(Transport e) {
   return EnumNamesTransport()[index];
 }
 
+enum UpdateAction : uint8_t {
+  UpdateAction_Undefined = 0,
+  UpdateAction_New = 1,
+  UpdateAction_Change = 2,
+  UpdateAction_Delete = 3,
+  UpdateAction_MIN = UpdateAction_Undefined,
+  UpdateAction_MAX = UpdateAction_Delete
+};
+
+inline const UpdateAction (&EnumValuesUpdateAction())[4] {
+  static const UpdateAction values[] = {
+    UpdateAction_Undefined,
+    UpdateAction_New,
+    UpdateAction_Change,
+    UpdateAction_Delete
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesUpdateAction() {
+  static const char * const names[5] = {
+    "Undefined",
+    "New",
+    "Change",
+    "Delete",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameUpdateAction(UpdateAction e) {
+  if (flatbuffers::IsOutRange(e, UpdateAction_Undefined, UpdateAction_Delete)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesUpdateAction()[index];
+}
+
 enum UpdateType : uint8_t {
   UpdateType_Undefined = 0,
   UpdateType_Snapshot = 1,
@@ -1868,7 +1904,8 @@ struct MBPUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_QUANTITY = 6,
     VT_IMPLIED_QUANTITY = 8,
     VT_PRICE_LEVEL = 10,
-    VT_NUMBER_OF_ORDERS = 12
+    VT_UPDATE_ACTION = 14,
+    VT_NUMBER_OF_ORDERS = 16
   };
   double price() const {
     return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
@@ -1882,8 +1919,11 @@ struct MBPUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t price_level() const {
     return GetField<uint32_t>(VT_PRICE_LEVEL, 0);
   }
-  uint32_t number_of_orders() const {
-    return GetField<uint32_t>(VT_NUMBER_OF_ORDERS, 0);
+  roq::fbs::UpdateAction update_action() const {
+    return static_cast<roq::fbs::UpdateAction>(GetField<uint8_t>(VT_UPDATE_ACTION, 0));
+  }
+  uint16_t number_of_orders() const {
+    return GetField<uint16_t>(VT_NUMBER_OF_ORDERS, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -1891,7 +1931,8 @@ struct MBPUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<double>(verifier, VT_QUANTITY, 8) &&
            VerifyField<double>(verifier, VT_IMPLIED_QUANTITY, 8) &&
            VerifyField<uint32_t>(verifier, VT_PRICE_LEVEL, 4) &&
-           VerifyField<uint32_t>(verifier, VT_NUMBER_OF_ORDERS, 4) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_ACTION, 1) &&
+           VerifyField<uint16_t>(verifier, VT_NUMBER_OF_ORDERS, 2) &&
            verifier.EndTable();
   }
 };
@@ -1912,8 +1953,11 @@ struct MBPUpdateBuilder {
   void add_price_level(uint32_t price_level) {
     fbb_.AddElement<uint32_t>(MBPUpdate::VT_PRICE_LEVEL, price_level, 0);
   }
-  void add_number_of_orders(uint32_t number_of_orders) {
-    fbb_.AddElement<uint32_t>(MBPUpdate::VT_NUMBER_OF_ORDERS, number_of_orders, 0);
+  void add_update_action(roq::fbs::UpdateAction update_action) {
+    fbb_.AddElement<uint8_t>(MBPUpdate::VT_UPDATE_ACTION, static_cast<uint8_t>(update_action), 0);
+  }
+  void add_number_of_orders(uint16_t number_of_orders) {
+    fbb_.AddElement<uint16_t>(MBPUpdate::VT_NUMBER_OF_ORDERS, number_of_orders, 0);
   }
   explicit MBPUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1932,13 +1976,15 @@ inline flatbuffers::Offset<MBPUpdate> CreateMBPUpdate(
     double quantity = 0.0,
     double implied_quantity = 0.0,
     uint32_t price_level = 0,
-    uint32_t number_of_orders = 0) {
+    roq::fbs::UpdateAction update_action = roq::fbs::UpdateAction_Undefined,
+    uint16_t number_of_orders = 0) {
   MBPUpdateBuilder builder_(_fbb);
   builder_.add_implied_quantity(implied_quantity);
   builder_.add_quantity(quantity);
   builder_.add_price(price);
-  builder_.add_number_of_orders(number_of_orders);
   builder_.add_price_level(price_level);
+  builder_.add_number_of_orders(number_of_orders);
+  builder_.add_update_action(update_action);
   return builder_.Finish();
 }
 

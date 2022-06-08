@@ -37,6 +37,7 @@
 #include "roq/time_in_force.hpp"
 #include "roq/trading_status.hpp"
 #include "roq/transport.hpp"
+#include "roq/update_action.hpp"
 #include "roq/update_type.hpp"
 
 // helpers

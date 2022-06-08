@@ -25,6 +25,7 @@ include "support_type.fbs";
 include "time_in_force.fbs";
 include "trading_status.fbs";
 include "transport.fbs";
+include "update_action.fbs";
 include "update_type.fbs";
 
 // - helpers

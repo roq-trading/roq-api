@@ -14,6 +14,8 @@ class ROQ_PUBLIC Generator {
   //! Dispatch interface used to handle update events
   class ROQ_PUBLIC Dispatcher {
    public:
+    virtual ~Dispatcher() {}
+
     // config
     virtual void operator()(Event<GatewaySettings> const &) = 0;
 

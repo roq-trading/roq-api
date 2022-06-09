@@ -24,9 +24,9 @@ struct ROQ_PUBLIC MBPUpdate final {
   double price = NaN;               //!< Price level
   double quantity = {};             //!< Total quantity available at price
   double implied_quantity = NaN;    //!< Total implied quantity at price (optional)
-  uint32_t price_level = {};        //!< Level of price (0-based indexing)
-  UpdateAction update_action = {};  //!< Type of update action
   uint16_t number_of_orders = {};   //!< Number of orders at price (optional)
+  UpdateAction update_action = {};  //!< Type of update action
+  uint32_t price_level = {};        //!< Level of price (0-based indexing)
 };
 
 }  // namespace roq
@@ -46,15 +46,15 @@ struct fmt::formatter<roq::MBPUpdate> {
         R"(price={}, )"
         R"(quantity={}, )"
         R"(implied_quantity={}, )"
-        R"(price_level={}, )"
+        R"(number_of_orders={}, )"
         R"(update_action={}, )"
-        R"(number_of_orders={})"
+        R"(price_level={})"
         R"(}})"sv,
         value.price,
         value.quantity,
         value.implied_quantity,
-        value.price_level,
+        value.number_of_orders,
         value.update_action,
-        value.number_of_orders);
+        value.price_level);
   }
 };

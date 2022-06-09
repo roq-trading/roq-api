@@ -6,6 +6,6 @@ table MBPUpdate {
   implied_quantity:double = 0.0;
   price_level:uint32 = 0;
   zzz_number_of_orders:uint32 = 0 (deprecated);
-  update_action:UpdateAction;
   number_of_orders:uint16 = 0;
+  update_action:UpdateAction;
 }

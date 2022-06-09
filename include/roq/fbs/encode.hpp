@@ -247,7 +247,7 @@ auto encode(B &builder, roq::Layer const &value) {
 template <typename B>
 auto encode(B &builder, roq::MBPUpdate const &value) {
   return CreateMBPUpdate(
-      builder, value.price, value.quantity, value.implied_quantity, value.price_level, encode(builder, value.update_action), value.number_of_orders);
+      builder, value.price, value.quantity, value.implied_quantity, value.price_level, value.number_of_orders, encode(builder, value.update_action));
 }
 
 template <typename B>

@@ -21,10 +21,10 @@
       "comment": "Total implied quantity at price (optional)"
     },
     {
-      "name": "price_level",
-      "type": "uint32_t",
+      "name": "number_of_orders",
+      "type": "uint16_t",
       "default": " = {}",
-      "comment": "Level of price (0-based indexing)"
+      "comment": "Number of orders at price (optional)"
     },
     {
       "name": "update_action",
@@ -32,10 +32,10 @@
       "comment": "Type of update action"
     },
     {
-      "name": "number_of_orders",
-      "type": "uint16_t",
+      "name": "price_level",
+      "type": "uint32_t",
       "default": " = {}",
-      "comment": "Number of orders at price (optional)"
+      "comment": "Level of price (0-based indexing)"
     }
   ]
 }

@@ -42,17 +42,17 @@
     {
       "name": "price_decimals",
       "type": "Decimals",
-      "comment": "Decimal digits required to represent prices"
+      "comment": "Decimal digits required to represent prices (internal, dynamic)"
     },
     {
       "name": "quantity_decimals",
       "type": "Decimals",
-      "comment": "Decimal digits required to represent quantities"
+      "comment": "Decimal digits required to represent quantities (internal, dynamic)"
     },
     {
       "name": "max_depth",
       "type": "uint16_t",
-      "comment": "Maximum depth (used to maintain a view of top N price levels)"
+      "comment": "Maximum depth (internal)"
     },
     {
       "name": "checksum",

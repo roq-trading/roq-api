@@ -6,7 +6,7 @@
     {
       "name": "price",
       "type": "double",
-      "comment": "Price level"
+      "comment": "Price"
     },
     {
       "name": "quantity",
@@ -35,7 +35,7 @@
       "name": "price_level",
       "type": "uint32_t",
       "default": " = {}",
-      "comment": "Level of price (0-based indexing)"
+      "comment": "Price level (0-based indexing)"
     }
   ]
 }

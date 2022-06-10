@@ -22,7 +22,7 @@ namespace roq {
 //! Represents the update status of a single aggregate price level in the order book
 struct ROQ_PUBLIC MBPUpdate final {
   double price = NaN;               //!< Price
-  double quantity = {};             //!< Total quantity available at price
+  double quantity = {};             //!< Total quantity available at price (zero means remove price level)
   double implied_quantity = NaN;    //!< Total implied quantity at price (optional)
   uint16_t number_of_orders = {};   //!< Number of orders at price (optional)
   UpdateAction update_action = {};  //!< Type of update action

@@ -12,7 +12,7 @@
       "name": "quantity",
       "type": "double",
       "default": " = {}",
-      "comment": "Total quantity available at price"
+      "comment": "Total quantity available at price (zero means remove price level)"
     },
     {
       "name": "implied_quantity",

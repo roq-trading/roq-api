@@ -30,7 +30,7 @@ struct ROQ_PUBLIC TradeSummary final {
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
   std::span<Trade> trades;                          //!< List of trades
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Timestamp (from exchange, UTC)
 };
 
 template <>

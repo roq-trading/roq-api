@@ -32,7 +32,7 @@ struct ROQ_PUBLIC TopOfBook final {
   std::string_view symbol;                          //!< Symbol
   Layer layer;                                      //!< Top of book
   UpdateType update_type = {};                      //!< Update type
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Timestamp (from exchange, UTC)
   int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
 };
 

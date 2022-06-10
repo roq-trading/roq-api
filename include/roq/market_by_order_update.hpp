@@ -34,7 +34,7 @@ struct ROQ_PUBLIC MarketByOrderUpdate final {
   std::span<MBOUpdate> bids;                        //!< List of bids
   std::span<MBOUpdate> asks;                        //!< List of asks
   UpdateType update_type = {};                      //!< Update type
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Timestamp (from exchange, UTC)
   int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
   Decimals price_decimals = {};                     //!< Decimal digits required to represent prices
   Decimals quantity_decimals = {};                  //!< Decimal digits required to represent quantities

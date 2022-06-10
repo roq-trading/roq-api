@@ -174,7 +174,7 @@ def _find_default_comment(name):
         create_time_utc="Created timestamp (UTC)",
         currency="Currency",
         exchange="Exchange",
-        exchange_time_utc="Exchange timestamp (UTC)",
+        exchange_time_utc="Timestamp (from exchange, UTC)",
         execution_instructions="Execution instructions",
         external_account="External account name",
         external_order_id="External order identifier",

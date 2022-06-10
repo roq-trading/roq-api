@@ -32,7 +32,7 @@ struct ROQ_PUBLIC StatisticsUpdate final {
   std::string_view symbol;                          //!< Symbol
   std::span<Statistics> statistics;                 //!< List of statistics
   UpdateType update_type = {};                      //!< Update type
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp (UTC)
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Timestamp (from exchange, UTC)
 };
 
 template <>

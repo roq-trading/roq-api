@@ -3,6 +3,7 @@
 #pragma once
 
 #include "roq/api.hpp"
+#include "roq/version.hpp"
 
 namespace roq {
 namespace client {
@@ -60,6 +61,18 @@ class ROQ_PUBLIC EventLogReader {
   // returns false when there are no more data available
   // note! false could mean either the producer is buffering or the file was indeed closed
   virtual bool dispatch(Handler &) = 0;
+
+  // version
+  virtual Version get_version() const = 0;
+
+  // session
+  virtual UUID get_gateway_session_id() const = 0;
+  virtual std::string_view get_gateway_name() const = 0;
+
+  // process
+  virtual std::string_view get_process_hostname() const = 0;
+  virtual std::string_view get_process_username() const = 0;
+  virtual std::string_view get_process_application() const = 0;
 };
 
 }  // namespace client

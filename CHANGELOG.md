@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `client::EventLogReader` now expose more metadata
 * `MBPUpdate` now supports `UpdateAction` (#236)
 
 ## 0.8.5 &ndash; 2022-06-06

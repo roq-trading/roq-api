@@ -9,6 +9,7 @@ set(SOURCES
     debug.cpp
     exceptions.cpp
     format.cpp
+    json.cpp
     mask.cpp
     metrics.cpp
     request_status.cpp

@@ -20,10 +20,10 @@ message("Using FLATC_VERSION=${FLATC_VERSION}")
 if(${FLATC_VERSION} VERSION_LESS "1.11.0")
   message(ERROR "flatc must be version 1.11.0 or newer")
 else()
-  # note! use --cpp-std=c++17 when we don't anymore have to support ubuntu 20.04 LTS
   add_custom_command(
     OUTPUT "${API_HPP}"
-    COMMAND "${FLATBUFFERS_COMPILER}" ARGS --binary ARGS --gen-all ARGS --cpp ARGS "${API_FBS}"
+    COMMAND "${FLATBUFFERS_COMPILER}" ARGS --binary ARGS --gen-all ARGS --cpp ARGS --cpp-std=c++17
+            ARGS "${API_FBS}"
     COMMAND ${CLANG_FORMAT} "${API_GENERATED_H}" > "${API_HPP}"
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/${TARGET_DIR}"
     VERBATIM

@@ -8,8 +8,10 @@
 
 #include "roq/market_by_price_update.hpp"
 
-#include "roq/json/datetime.hpp"
 #include "roq/json/mbp_update.hpp"
+
+#include "roq/json/datetime.hpp"
+#include "roq/json/string.hpp"
 
 namespace roq {
 namespace json {
@@ -24,20 +26,20 @@ struct MarketByPriceUpdate final {
         context.out(),
         R"({{)"
         R"("stream_id":{},)"
-        R"("exchange":"{}",)"
-        R"("symbol":"{}",)"
+        R"("exchange":{},)"
+        R"("symbol":{},)"
         R"("bids":[{}],)"
         R"("asks":[{}],)"
-        R"("update_type":"{}",)"
-        R"("exchange_time_utc":"{}",)"
+        R"("update_type":{},)"
+        R"("exchange_time_utc":{},)"
         R"("exchange_sequence":{})"
         R"(}})"sv,
         value_.stream_id,
-        value_.exchange,
-        value_.symbol,
+        String{value_.exchange},
+        String{value_.symbol},
         fmt::join(ranges::views::transform(value_.bids, [](auto const &v) { return MBPUpdate(v); }), ","),
         fmt::join(ranges::views::transform(value_.asks, [](auto const &v) { return MBPUpdate(v); }), ","),
-        value_.update_type,
+        String{value_.update_type},
         DateTime{value_.exchange_time_utc},
         value_.exchange_sequence);
     // note! remaining fields are internal

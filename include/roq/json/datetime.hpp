@@ -17,7 +17,7 @@ struct DateTime final {
   auto format_to(Context &context) const {
     using namespace std::literals;
     if (value_.count())
-      return fmt::format_to(context.out(), "{}"sv, utils::DateTime_iso8601{value_});
+      return fmt::format_to(context.out(), R"("{}")"sv, utils::DateTime_iso8601{value_});
     return fmt::format_to(context.out(), "null"sv);
   }
 

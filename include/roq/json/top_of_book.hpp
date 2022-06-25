@@ -6,8 +6,10 @@
 
 #include "roq/top_of_book.hpp"
 
-#include "roq/json/datetime.hpp"
 #include "roq/json/layer.hpp"
+
+#include "roq/json/datetime.hpp"
+#include "roq/json/string.hpp"
 
 namespace roq {
 namespace json {
@@ -22,18 +24,18 @@ struct TopOfBook final {
         context.out(),
         R"({{)"
         R"("stream_id":{},)"
-        R"("exchange":"{}",)"
-        R"("symbol":"{}",)"
+        R"("exchange":{},)"
+        R"("symbol":{},)"
         R"("layer":{},)"
-        R"("update_type":"{}",)"
-        R"("exchange_time_utc":"{}",)"
+        R"("update_type":{},)"
+        R"("exchange_time_utc":{},)"
         R"("exchange_sequence":{})"
         R"(}})"sv,
         value_.stream_id,
-        value_.exchange,
-        value_.symbol,
+        String{value_.exchange},
+        String{value_.symbol},
         Layer{value_.layer},
-        value_.update_type,
+        String{value_.update_type},
         DateTime{value_.exchange_time_utc},
         value_.exchange_sequence);
   }

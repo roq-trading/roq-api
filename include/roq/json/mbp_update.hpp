@@ -7,6 +7,7 @@
 #include "roq/mbp_update.hpp"
 
 #include "roq/json/number.hpp"
+#include "roq/json/string.hpp"
 
 namespace roq {
 namespace json {
@@ -24,14 +25,14 @@ struct MBPUpdate final {
         R"("quantity":{},)"
         R"("implied_quantity":{},)"
         R"("number_of_orders":{},)"
-        R"("update_action":"{}",)"
+        R"("update_action":{},)"
         R"("price_level":{})"
         R"(}})"sv,
         Number{value_.price},
         Number{value_.quantity},
         Number{value_.implied_quantity},
         value_.number_of_orders,
-        value_.update_action,
+        String{value_.update_action},
         value_.price_level);
   }
 

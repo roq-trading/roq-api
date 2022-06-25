@@ -3,11 +3,70 @@
 #include <catch2/catch_all.hpp>
 
 #include "roq/json/market_by_price_update.hpp"
+#include "roq/json/reference_data.hpp"
 #include "roq/json/top_of_book.hpp"
 
 using namespace roq;
 
 using namespace std::literals;
+using namespace std::chrono_literals;
+
+TEST_CASE("json_ReferenceData", "[json]") {
+  ReferenceData reference_data{
+      .stream_id = 1,
+      .exchange = "deribit"sv,
+      .symbol = "BTC-PERPETUAL"sv,
+      .description = "Perpetual"sv,
+      .security_type = SecurityType::FUTURES,
+      .base_currency = "BTC"sv,
+      .quote_currency = "BTC"sv,
+      .margin_currency = "BTC"sv,
+      .commission_currency = "BTC"sv,
+      .tick_size = 0.1,
+      .multiplier = 10.0,
+      .min_trade_vol = 1.0,
+      .max_trade_vol = 999.0,
+      .trade_vol_step_size = 1.0,
+      .option_type = {},
+      .strike_currency = {},
+      .strike_price = NaN,
+      .underlying = {},
+      .time_zone = {},
+      .issue_date = std::chrono::days{19168},
+      .settlement_date = std::chrono::days{19168},
+      .expiry_datetime = {},
+      .expiry_datetime_utc = {},
+      .discard = false,
+  };
+  auto value = fmt::format("{}", json::ReferenceData{reference_data});
+  auto expected = R"({)"
+                  R"("stream_id":1,)"
+                  R"("exchange":"deribit",)"
+                  R"("symbol":"BTC-PERPETUAL",)"
+                  R"("description":"Perpetual",)"
+                  R"("security_type":"FUTURES",)"
+                  R"("base_currency":"BTC",)"
+                  R"("quote_currency":"BTC",)"
+                  R"("margin_currency":"BTC",)"
+                  R"("commission_currency":"BTC",)"
+                  R"("tick_size":0.1,)"
+                  R"("multiplier":10,)"
+                  R"("min_trade_vol":1,)"
+                  R"("max_trade_vol":999,)"
+                  R"("trade_vol_step_size":1,)"
+                  R"("option_type":"UNDEFINED",)"
+                  R"("strike_currency":"",)"
+                  R"("strike_price":null,)"
+                  R"("underlying":"",)"
+                  R"("time_zone":"",)"
+                  R"("issue_date":"2022-06-25",)"
+                  R"("settlement_date":"2022-06-25",)"
+                  R"("expiry_datetime":"null",)"
+                  R"("expiry_datetime_utc":"null",)"
+                  R"("discard":false)"
+                  R"(})"sv;
+  CHECK(value == expected);
+}
 
 TEST_CASE("json_TopOfBook", "[json]") {
   TopOfBook top_of_book{
@@ -22,7 +81,7 @@ TEST_CASE("json_TopOfBook", "[json]") {
               .ask_quantity = 98,
           },
       .update_type = UpdateType::INCREMENTAL,
-      .exchange_time_utc = 1656150170ms,
+      .exchange_time_utc = 1656150170s,
       .exchange_sequence = 1234,
   };
   auto value = fmt::format("{}", json::TopOfBook{top_of_book});
@@ -37,7 +96,7 @@ TEST_CASE("json_TopOfBook", "[json]") {
                   R"("ask_quantity":98)"
                   R"(},)"
                   R"("update_type":"INCREMENTAL",)"
-                  R"("exchange_time_utc":"1970-01-20T04:02:30.170000000Z",)"
+                  R"("exchange_time_utc":"2022-06-25T09:42:50.000000000Z",)"
                   R"("exchange_sequence":1234)"
                   R"(})"sv;
   CHECK(value == expected);
@@ -135,7 +194,7 @@ TEST_CASE("json_MarketByPriceUpdate", "[json]") {
       .bids = bids,
       .asks = asks,
       .update_type = UpdateType::INCREMENTAL,
-      .exchange_time_utc = 1656150170ms,
+      .exchange_time_utc = 1656150170s,
       .exchange_sequence = 1234,
       .price_decimals = {},
       .quantity_decimals = {},
@@ -163,7 +222,7 @@ TEST_CASE("json_MarketByPriceUpdate", "[json]") {
       R"({"price":5,"quantity":12,"implied_quantity":3,"number_of_orders":2,"update_action":"UNDEFINED","price_level":1})"
       R"(],)"
       R"("update_type":"INCREMENTAL",)"
-      R"("exchange_time_utc":"1970-01-20T04:02:30.170000000Z",)"
+      R"("exchange_time_utc":"2022-06-25T09:42:50.000000000Z",)"
       R"("exchange_sequence":1234)"
       R"(})"sv;
   CHECK(value == expected);

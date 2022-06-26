@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <absl/container/flat_hash_map.h>
+#include <absl/container/node_hash_map.h>
 
 #include <cassert>
 #include <memory>
@@ -131,12 +131,12 @@ struct Market final {
   struct Account final {
     Funds funds;
     Position position;
-    // XXX TODO absl::flat_hash_map<uint32_t, Trade> trades;
-    absl::flat_hash_map<uint32_t, Order> orders;
+    // XXX TODO absl::node_hash_map<uint32_t, Trade> trades;
+    absl::node_hash_map<uint32_t, Order> orders;
     // XXX TODO CustomMetrics custom_metrics;
   };
 
-  absl::flat_hash_map<roq::Account, Account> accounts;
+  absl::node_hash_map<roq::Account, Account> accounts;
 
  protected:
   Account &get_account(std::string_view const &account) {

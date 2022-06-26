@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <absl/container/flat_hash_map.h>
+#include <absl/container/node_hash_map.h>
 
 #include <cassert>
 #include <string>
@@ -67,7 +67,7 @@ struct Gateway final {
 
   GatewaySettings settings = {};
   State state = {};
-  absl::flat_hash_map<Account, State> state_by_account;
+  absl::node_hash_map<Account, State> state_by_account;
 
  private:
   State &get_state(std::string_view const &account) {

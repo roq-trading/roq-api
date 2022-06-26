@@ -3,6 +3,7 @@
 #pragma once
 
 #include <absl/container/flat_hash_map.h>
+#include <absl/container/node_hash_map.h>
 
 #include <string>
 #include <utility>
@@ -135,7 +136,7 @@ struct Manager final {
   const MarketByPriceFactory market_by_price_factory_;
   MarketId next_market_id_ = 0;
   absl::flat_hash_map<Exchange, absl::flat_hash_map<Symbol, MarketId>> exchange_to_symbols_;
-  absl::flat_hash_map<MarketId, Market> markets_;
+  absl::node_hash_map<MarketId, Market> markets_;
 };
 
 }  // namespace cache

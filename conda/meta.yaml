@@ -27,6 +27,7 @@ requirements:
     - roq-oss-abseil-cpp
     - roq-oss-catch2
     - roq-oss-magic_enum
+    - roq-oss-range-v3
     - roq-oss-span-lite
 
 about:

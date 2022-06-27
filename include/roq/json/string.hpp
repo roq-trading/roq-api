@@ -14,8 +14,13 @@ struct String final {
   template <typename Context>
   auto format_to(Context &context) const {
     using namespace std::literals;
-    if (value_ != T{})
-      return fmt::format_to(context.out(), R"("{}")"sv, value_);
+    if constexpr (std::is_enum<T>::value) {
+      if (value_ != T{})
+        return fmt::format_to(context.out(), R"("{}")"sv, value_);
+    } else {
+      if (!std::empty(value_))
+        return fmt::format_to(context.out(), R"("{}")"sv, value_);
+    }
     return fmt::format_to(context.out(), "null"sv);
   }
 

@@ -8,6 +8,8 @@
 
 #include "roq/market_by_price_update.hpp"
 
+#include "roq/cache/market_by_price.hpp"
+
 #include "roq/json/mbp_update.hpp"
 
 #include "roq/json/datetime.hpp"
@@ -18,10 +20,18 @@ namespace json {
 
 struct MarketByPriceUpdate final {
   explicit MarketByPriceUpdate(roq::MarketByPriceUpdate const &value) : value_(value) {}
+  MarketByPriceUpdate(
+      roq::MarketByPriceUpdate const &value,
+      std::span<const roq::MBPUpdate> const &bids,
+      std::span<const roq::MBPUpdate> const &asks)
+      : value_(value), bids_(bids), asks_(asks), cache_(true) {}
 
   template <typename Context>
   auto format_to(Context &context) const {
     using namespace std::literals;
+    auto bids = cache_ ? bids_ : value_.bids;
+    auto asks = cache_ ? asks_ : value_.asks;
+    auto update_type = cache_ ? UpdateType::SNAPSHOT : value_.update_type;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -37,9 +47,9 @@ struct MarketByPriceUpdate final {
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
-        fmt::join(ranges::views::transform(value_.bids, [](auto const &v) { return MBPUpdate(v); }), ","),
-        fmt::join(ranges::views::transform(value_.asks, [](auto const &v) { return MBPUpdate(v); }), ","),
-        String{value_.update_type},
+        fmt::join(ranges::views::transform(bids, [](auto const &v) { return MBPUpdate(v); }), ","),
+        fmt::join(ranges::views::transform(asks, [](auto const &v) { return MBPUpdate(v); }), ","),
+        String{update_type},
         DateTime{value_.exchange_time_utc},
         value_.exchange_sequence);
     // note! remaining fields are internal
@@ -47,6 +57,8 @@ struct MarketByPriceUpdate final {
 
  private:
   roq::MarketByPriceUpdate const &value_;
+  std::span<const roq::MBPUpdate> bids_, asks_;
+  bool cache_ = {};
 };
 
 }  // namespace json

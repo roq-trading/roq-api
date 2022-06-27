@@ -85,7 +85,7 @@ class ROQ_PUBLIC MarketByPrice {
   // copy-out
   virtual size_t extract(std::span<Layer> const &, bool fill_zero = false) const = 0;
   virtual std::pair<size_t, size_t> extract(
-      std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) const = 0;
+      std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks, bool allow_truncate = false) const = 0;
 
   // atomic update to the order book (quantity == 0 means remove)
   void operator()(Side side, double price, double quantity) { update_helper(side, price, quantity); }

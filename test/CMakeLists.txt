@@ -19,6 +19,7 @@ set(SOURCES
     traits.cpp
     update.cpp
     utils.cpp
+    uuid.cpp
     main.cpp)
 
 add_executable("${TARGET_NAME}" ${SOURCES})

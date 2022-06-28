@@ -2,6 +2,10 @@
 
 #pragma once
 
+#include <absl/numeric/int128.h>
+
+#include <absl/base/internal/endian.h>
+
 #include <fmt/format.h>
 
 #include <algorithm>
@@ -26,6 +30,13 @@ class UUID final {
 
   explicit UUID(uuid_t &&value) : uuid_(std::move(value)) {}
   explicit UUID(uuid_t const &value) : uuid_(value) {}
+  explicit UUID(absl::uint128 const value) {
+    auto high = absl::big_endian::FromHost(absl::Uint128High64(value));
+    auto low = absl::big_endian::FromHost(absl::Uint128Low64(value));
+    static_assert(sizeof(uuid_t) == (sizeof(high) + sizeof(low)));
+    std::memcpy(&uuid_[0], &high, sizeof(high));
+    std::memcpy(&uuid_[sizeof(high)], &low, sizeof(low));
+  }
 
   UUID(const UUID &) = default;
   UUID(UUID &&) = default;
@@ -40,6 +51,14 @@ class UUID final {
   constexpr value_type const &operator[](std::size_t index) const { return uuid_[index]; }
 
   constexpr operator uuid_t const &() const { return uuid_; }
+
+  operator absl::uint128() const {
+    uint64_t high, low;
+    static_assert(sizeof(uuid_) == (sizeof(high) + sizeof(low)));
+    std::memcpy(&high, &uuid_[0], sizeof(high));
+    std::memcpy(&low, &uuid_[sizeof(high)], sizeof(low));
+    return absl::MakeUint128(absl::big_endian::ToHost(high), absl::big_endian::ToHost(low));
+  }
 
   constexpr bool empty() const {
     return std::all_of(std::begin(uuid_), std::end(uuid_), [](auto v) { return v == 0; });

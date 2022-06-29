@@ -62,9 +62,7 @@ class ROQ_PUBLIC MarketByPrice {
       std::span<MBPUpdate> const &final_bids,
       std::span<MBPUpdate> const &final_asks,
       F callback) {
-    auto [final_bids_size, final_asks_size] = update_helper(market_by_price_update, final_bids, final_asks);
-    auto bids = final_bids_size ? std::span{std::data(final_bids), final_bids_size} : market_by_price_update.bids;
-    auto asks = final_asks_size ? std::span{std::data(final_asks), final_asks_size} : market_by_price_update.asks;
+    auto [bids, asks] = update_helper(market_by_price_update, final_bids, final_asks);
     const MarketByPriceUpdate final_market_by_price_update{
         .stream_id = market_by_price_update.stream_id,
         .exchange = market_by_price_update.exchange,
@@ -83,8 +81,8 @@ class ROQ_PUBLIC MarketByPrice {
   }
 
   // copy-out
-  virtual size_t extract(std::span<Layer> const &, bool fill_zero = false) const = 0;
-  virtual std::pair<size_t, size_t> extract(
+  virtual std::span<Layer> extract(std::span<Layer> const &, bool fill_zero = false) const = 0;
+  virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> extract(
       std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks, bool allow_truncate = false) const = 0;
 
   // atomic update to the order book (quantity == 0 means remove)
@@ -111,7 +109,7 @@ class ROQ_PUBLIC MarketByPrice {
   virtual std::span<price_level_t const> asks() const = 0;
 
   // converts a full book update to a depth update
-  virtual std::pair<size_t, size_t> create_depth_update(
+  virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> create_depth_update(
       MarketByPriceUpdate const &,
       size_t depth,
       std::span<MBPUpdate> const &bids,
@@ -120,7 +118,7 @@ class ROQ_PUBLIC MarketByPrice {
  protected:
   virtual void update_helper(MarketByPriceUpdate const &) = 0;
 
-  virtual std::pair<size_t, size_t> update_helper(
+  virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> update_helper(
       MarketByPriceUpdate const &, std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
 
   virtual void update_helper(Side, double price, double quantity) = 0;

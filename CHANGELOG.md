@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* return `span<MBPUpdate>` from `cache::MarketByPrice` (#241)
 * Flatbuffers auto-generated code now using C++17
 * `client::EventLogReader` now expose more metadata
 * `MBPUpdate` now supports `UpdateAction` (#236)

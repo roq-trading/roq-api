@@ -89,6 +89,17 @@ class UUID final {
   constexpr auto operator<=>(const UUID &) const = default;
 #endif
 
+  template <typename H>
+  friend H AbslHashValue(H hash, UUID const &rhs) {
+    uint64_t high, low;
+    static_assert(sizeof(rhs.uuid_) == (sizeof(high) + sizeof(low)));
+    std::memcpy(&high, &rhs.uuid_[0], sizeof(high));
+    std::memcpy(&low, &rhs.uuid_[sizeof(high)], sizeof(low));
+    // note! endianness is not important here
+    auto value = absl::MakeUint128(high, low);
+    return H::combine(std::move(hash), value);
+  }
+
  private:
   uuid_t uuid_;
 };

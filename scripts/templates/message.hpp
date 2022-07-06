@@ -47,7 +47,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
   template <typename Context>
   auto format(
       {{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}> const& event,
-      Context& context) {
+      Context& context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -73,7 +73,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Trace<{{ namespaces | join(
   template <typename Context>
   auto format(
       {{ namespaces | join('::') }}::Trace<{{ namespaces | join('::') }}::{{ name }} const> const& event,
-      Context& context) {
+      Context& context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

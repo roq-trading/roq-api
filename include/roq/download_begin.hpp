@@ -42,7 +42,7 @@ struct fmt::formatter<roq::DownloadBegin> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::DownloadBegin const &value, Context &context) {
+  auto format(roq::DownloadBegin const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -60,7 +60,7 @@ struct fmt::formatter<roq::Event<roq::DownloadBegin> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Event<roq::DownloadBegin> const &event, Context &context) {
+  auto format(roq::Event<roq::DownloadBegin> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -80,7 +80,7 @@ struct fmt::formatter<roq::Trace<roq::DownloadBegin const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::DownloadBegin const> const &event, Context &context) {
+  auto format(roq::Trace<roq::DownloadBegin const> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

@@ -40,7 +40,7 @@ struct fmt::formatter<roq::SupportType> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::SupportType const &value, Context &context) {
+  auto format(roq::SupportType const &value, Context &context) const {
     using namespace std::literals;
 #if __cplusplus >= 202002L
     std::string_view name{[&]() {

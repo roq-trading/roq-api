@@ -54,7 +54,7 @@ struct fmt::formatter<roq::json::TopOfBook> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::json::TopOfBook const &value, Context &context) {
+  auto format(roq::json::TopOfBook const &value, Context &context) const {
     return value.format_to(context);
   }
 };

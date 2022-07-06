@@ -50,7 +50,7 @@ struct fmt::formatter<roq::json::MBPUpdate> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::json::MBPUpdate const &value, Context &context) {
+  auto format(roq::json::MBPUpdate const &value, Context &context) const {
     return value.format_to(context);
   }
 };

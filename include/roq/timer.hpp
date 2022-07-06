@@ -42,7 +42,7 @@ struct fmt::formatter<roq::Timer> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Timer const &value, Context &context) {
+  auto format(roq::Timer const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -60,7 +60,7 @@ struct fmt::formatter<roq::Event<roq::Timer> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Event<roq::Timer> const &event, Context &context) {
+  auto format(roq::Event<roq::Timer> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -80,7 +80,7 @@ struct fmt::formatter<roq::Trace<roq::Timer const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::Timer const> const &event, Context &context) {
+  auto format(roq::Trace<roq::Timer const> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

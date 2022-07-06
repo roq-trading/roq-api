@@ -34,7 +34,7 @@ struct fmt::formatter<roq::json::Number> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::json::Number const &value, Context &context) {
+  auto format(roq::json::Number const &value, Context &context) const {
     return value.format_to(context);
   }
 };

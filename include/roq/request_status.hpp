@@ -30,7 +30,7 @@ struct fmt::formatter<roq::RequestStatus> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::RequestStatus const &value, Context &context) {
+  auto format(roq::RequestStatus const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }

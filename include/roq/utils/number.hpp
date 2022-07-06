@@ -29,7 +29,7 @@ struct fmt::formatter<roq::utils::Number> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::utils::Number const &value, Context &context) {
+  auto format(roq::utils::Number const &value, Context &context) const {
     using namespace std::literals;
     auto decimal_digits = roq::utils::decimal_digits(value.decimals);
     if (decimal_digits < 0)

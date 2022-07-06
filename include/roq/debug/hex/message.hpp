@@ -38,7 +38,7 @@ struct fmt::formatter<roq::debug::hex::Message> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::debug::hex::Message const &value, Context &context) {
+  auto format(roq::debug::hex::Message const &value, Context &context) const {
     return value.format_to(context);
   }
 };

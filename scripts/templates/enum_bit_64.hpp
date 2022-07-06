@@ -27,7 +27,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
   template <typename Context>
   auto format(
       {{ namespaces | join('::') }}::{{ name }} const& value,
-      Context& context) {
+      Context& context) const {
     using namespace std::literals;
 #if __cplusplus >= 202002L
     std::string_view name{[&]() {

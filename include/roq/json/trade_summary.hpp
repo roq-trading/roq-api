@@ -52,7 +52,7 @@ struct fmt::formatter<roq::json::TradeSummary> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::json::TradeSummary const &value, Context &context) {
+  auto format(roq::json::TradeSummary const &value, Context &context) const {
     return value.format_to(context);
   }
 };

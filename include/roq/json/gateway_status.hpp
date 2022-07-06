@@ -48,7 +48,7 @@ struct fmt::formatter<roq::json::GatewayStatus> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::json::GatewayStatus const &value, Context &context) {
+  auto format(roq::json::GatewayStatus const &value, Context &context) const {
     return value.format_to(context);
   }
 };

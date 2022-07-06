@@ -64,7 +64,7 @@ struct fmt::formatter<roq::OrderAck> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::OrderAck const &value, Context &context) {
+  auto format(roq::OrderAck const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -114,7 +114,7 @@ struct fmt::formatter<roq::Event<roq::OrderAck> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Event<roq::OrderAck> const &event, Context &context) {
+  auto format(roq::Event<roq::OrderAck> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -134,7 +134,7 @@ struct fmt::formatter<roq::Trace<roq::OrderAck const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::OrderAck const> const &event, Context &context) {
+  auto format(roq::Trace<roq::OrderAck const> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

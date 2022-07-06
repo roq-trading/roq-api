@@ -11,7 +11,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
 {%- else %}
       {{ namespaces | join('::') }}::{{ name }} const& value,
 {%- endif %}
-      Context& context) {
+      Context& context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

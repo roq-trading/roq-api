@@ -38,7 +38,7 @@ struct fmt::formatter<roq::MBPUpdate> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::MBPUpdate const &value, Context &context) {
+  auto format(roq::MBPUpdate const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

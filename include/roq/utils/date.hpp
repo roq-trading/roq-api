@@ -43,7 +43,7 @@ struct fmt::formatter<roq::utils::Date_iso8601<T>> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::utils::Date_iso8601<T> const &value, Context &context) {
+  auto format(roq::utils::Date_iso8601<T> const &value, Context &context) const {
     return value.format_to(context);
   }
 };

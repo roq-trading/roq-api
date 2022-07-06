@@ -51,7 +51,7 @@ struct fmt::formatter<roq::TopOfBook> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::TopOfBook const &value, Context &context) {
+  auto format(roq::TopOfBook const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -81,7 +81,7 @@ struct fmt::formatter<roq::Event<roq::TopOfBook> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Event<roq::TopOfBook> const &event, Context &context) {
+  auto format(roq::Event<roq::TopOfBook> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -101,7 +101,7 @@ struct fmt::formatter<roq::Trace<roq::TopOfBook const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::TopOfBook const> const &event, Context &context) {
+  auto format(roq::Trace<roq::TopOfBook const> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

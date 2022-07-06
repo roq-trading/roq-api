@@ -47,7 +47,7 @@ struct fmt::formatter<roq::GatewayStatus> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::GatewayStatus const &value, Context &context) {
+  auto format(roq::GatewayStatus const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -71,7 +71,7 @@ struct fmt::formatter<roq::Event<roq::GatewayStatus> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Event<roq::GatewayStatus> const &event, Context &context) {
+  auto format(roq::Event<roq::GatewayStatus> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -91,7 +91,7 @@ struct fmt::formatter<roq::Trace<roq::GatewayStatus const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::GatewayStatus const> const &event, Context &context) {
+  auto format(roq::Trace<roq::GatewayStatus const> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

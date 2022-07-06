@@ -115,7 +115,7 @@ struct fmt::formatter<roq::UUID> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::UUID const &value, Context &context) {
+  auto format(roq::UUID const &value, Context &context) const {
     using namespace std::literals;
     auto data = std::data(value);
     return fmt::format_to(

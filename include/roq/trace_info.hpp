@@ -27,7 +27,7 @@ struct fmt::formatter<roq::TraceInfo> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::TraceInfo const &value, Context &context) {
+  auto format(roq::TraceInfo const &value, Context &context) const {
     using namespace std::literals::string_view_literals;
     return fmt::format_to(
         context.out(),

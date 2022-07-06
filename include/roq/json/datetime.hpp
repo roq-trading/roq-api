@@ -35,7 +35,7 @@ struct fmt::formatter<roq::json::DateTime<T>> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::json::DateTime<T> const &value, Context &context) {
+  auto format(roq::json::DateTime<T> const &value, Context &context) const {
     return value.format_to(context);
   }
 };

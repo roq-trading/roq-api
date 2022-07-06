@@ -40,7 +40,7 @@ struct fmt::formatter<roq::Connected> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Connected const &, Context &context) {
+  auto format(roq::Connected const &, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), R"({{}})"sv);
   }
@@ -53,7 +53,7 @@ struct fmt::formatter<roq::Event<roq::Connected> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Event<roq::Connected> const &event, Context &context) {
+  auto format(roq::Event<roq::Connected> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -73,7 +73,7 @@ struct fmt::formatter<roq::Trace<roq::Connected const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::Connected const> const &event, Context &context) {
+  auto format(roq::Trace<roq::Connected const> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

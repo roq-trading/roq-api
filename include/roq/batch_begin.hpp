@@ -40,7 +40,7 @@ struct fmt::formatter<roq::BatchBegin> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::BatchBegin const &, Context &context) {
+  auto format(roq::BatchBegin const &, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), R"({{}})"sv);
   }
@@ -53,7 +53,7 @@ struct fmt::formatter<roq::Event<roq::BatchBegin> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Event<roq::BatchBegin> const &event, Context &context) {
+  auto format(roq::Event<roq::BatchBegin> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -73,7 +73,7 @@ struct fmt::formatter<roq::Trace<roq::BatchBegin const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::BatchBegin const> const &event, Context &context) {
+  auto format(roq::Trace<roq::BatchBegin const> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

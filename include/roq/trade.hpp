@@ -36,7 +36,7 @@ struct fmt::formatter<roq::Trade> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trade const &value, Context &context) {
+  auto format(roq::Trade const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

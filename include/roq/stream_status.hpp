@@ -56,7 +56,7 @@ struct fmt::formatter<roq::StreamStatus> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::StreamStatus const &value, Context &context) {
+  auto format(roq::StreamStatus const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -88,7 +88,7 @@ struct fmt::formatter<roq::Event<roq::StreamStatus> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Event<roq::StreamStatus> const &event, Context &context) {
+  auto format(roq::Event<roq::StreamStatus> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -108,7 +108,7 @@ struct fmt::formatter<roq::Trace<roq::StreamStatus const> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::StreamStatus const> const &event, Context &context) {
+  auto format(roq::Trace<roq::StreamStatus const> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

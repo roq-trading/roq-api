@@ -27,9 +27,9 @@ class Mask final {
   struct iterator final {
     // std::iterator_traits
     using difference_type = std::ptrdiff_t;
-    using value_type = T;
-    using pointer = T *;
-    using reference = T;
+    using value_type = T const;
+    using pointer = T const *;
+    using reference = T const;
     using iterator_category = std::forward_iterator_tag;
 
     iterator(Mask<T> const &value) : value_(value) {}
@@ -45,7 +45,7 @@ class Mask final {
       }
       return true;
     }
-    reference operator*() { return magic_enum::enum_value<T>(index_++); }
+    reference operator*() const { return magic_enum::enum_value<T>(index_++); }
     iterator &operator++() { return *this; }
     void operator++(int) { ++(*this); }
 
@@ -180,7 +180,7 @@ struct fmt::formatter<roq::Mask<T>> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Mask<T> const &value, Context &context) {
+  auto format(roq::Mask<T> const &value, Context &context) const {
     using namespace std::literals;
     // special case for "undefined"
     using value_type = typename roq::Mask<T>::value_type;

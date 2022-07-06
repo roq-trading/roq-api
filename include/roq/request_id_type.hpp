@@ -28,7 +28,7 @@ struct fmt::formatter<roq::RequestIdType> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::RequestIdType const &value, Context &context) {
+  auto format(roq::RequestIdType const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }

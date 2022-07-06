@@ -54,7 +54,7 @@ struct fmt::formatter<roq::client::Settings> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::client::Settings const &value, Context &context) {
+  auto format(roq::client::Settings const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

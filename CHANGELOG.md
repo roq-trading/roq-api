@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Fixed
+
+* fmt v9 requires custom formatters to be const
+
 ### Changed
 
 * return `span<MBPUpdate>` from `cache::MarketByPrice` (#241)

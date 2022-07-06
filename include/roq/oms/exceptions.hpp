@@ -67,7 +67,7 @@ struct fmt::formatter<roq::oms::Exception> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::oms::Exception const &value, Context &context) {
+  auto format(roq::oms::Exception const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

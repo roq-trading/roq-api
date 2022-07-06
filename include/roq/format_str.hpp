@@ -119,7 +119,7 @@ struct fmt::formatter<roq::detail::static_string<N> > {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::detail::static_string<N> const &value, Context &context) {
+  auto format(roq::detail::static_string<N> const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }

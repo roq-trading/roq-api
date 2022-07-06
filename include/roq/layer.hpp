@@ -34,7 +34,7 @@ struct fmt::formatter<roq::Layer> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Layer const &value, Context &context) {
+  auto format(roq::Layer const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

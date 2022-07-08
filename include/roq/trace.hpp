@@ -15,6 +15,10 @@ struct Trace final {
   Trace(TraceInfo const &trace_info_, value_type &value_) : trace_info(trace_info_), value(value_) {}
 
   Trace(Trace const &) = delete;
+  Trace(Trace &&) = delete;
+
+  void operator=(Trace const &) = delete;
+  void operator=(Trace &&) = delete;
 
   operator TraceInfo const &() const { return trace_info; }
   operator value_type &() const { return value; }

@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Prevent copy/move of `Event<>` and `Trace<>` (#247)
 * return `span<MBPUpdate>` from `cache::MarketByPrice` (#241)
 * Flatbuffers auto-generated code now using C++17
 * `client::EventLogReader` now expose more metadata

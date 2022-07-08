@@ -16,6 +16,10 @@ struct Event final {
   Event(MessageInfo const &message_info_, value_type const &value_) : message_info(message_info_), value(value_) {}
 
   Event(Event const &) = delete;
+  Event(Event &&) = delete;
+
+  void operator=(Event const &) = delete;
+  void operator=(Event &&) = delete;
 
   //! Dispatch to handler
   template <typename Result, typename Handler, typename... Args>

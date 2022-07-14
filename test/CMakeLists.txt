@@ -31,7 +31,7 @@ add_dependencies(${TARGET_NAME} ${PROJECT_NAME}-include-fbs)
 
 # target
 
-target_link_libraries("${TARGET_NAME}" absl::hash Catch2::Catch2 fmt::fmt-header-only)
+target_link_libraries("${TARGET_NAME}" PRIVATE absl::hash Catch2::Catch2 fmt::fmt-header-only)
 
 target_compile_features("${TARGET_NAME}" PUBLIC cxx_std_20)
 

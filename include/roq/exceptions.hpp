@@ -11,7 +11,9 @@
 #include <utility>
 
 #include "roq/compat.hpp"
+#include "roq/error.hpp"
 #include "roq/format_str.hpp"
+#include "roq/request_status.hpp"
 #include "roq/source_location.hpp"
 
 namespace roq {
@@ -130,6 +132,70 @@ struct ROQ_PUBLIC BadState : public RuntimeError {
   using RuntimeError::RuntimeError;
 };
 
+// network errors
+
+//! Base class for network errors
+struct ROQ_PUBLIC NetworkError : public RuntimeError {
+  template <typename... Args>
+  NetworkError(RequestStatus request_status, Error error, format_str<Args...> const &fmt, Args &&...args)
+      : RuntimeError(fmt, std::forward<Args>(args)...), request_status_(request_status), error_(error) {}
+
+  RequestStatus request_status() const noexcept { return request_status_; }
+  Error error() const noexcept { return error_; }
+
+ private:
+  const RequestStatus request_status_;
+  const Error error_;
+};
+
+// transport errors
+
+//! Base class for transport errors
+struct ROQ_PUBLIC TransportError : public NetworkError {
+  using NetworkError::NetworkError;
+};
+
+//! Not connected
+struct ROQ_PUBLIC NotConnected : public TransportError {
+  template <typename... Args>
+  explicit NotConnected(format_str<Args...> const &fmt, Args &&...args)
+      : TransportError(RequestStatus::REJECTED, Error::GATEWAY_NOT_READY, fmt, std::forward<Args>(args)...) {}
+};
+
+//! Connection refused
+struct ROQ_PUBLIC ConnectionRefused : public TransportError {
+  template <typename... Args>
+  explicit ConnectionRefused(format_str<Args...> const &fmt, Args &&...args)
+      : TransportError(RequestStatus::REJECTED, Error::GATEWAY_NOT_READY, fmt, std::forward<Args>(args)...) {}
+};
+
+//! Timed out
+struct ROQ_PUBLIC TimedOut : public TransportError {
+  template <typename... Args>
+  explicit TimedOut(format_str<Args...> const &fmt, Args &&...args)
+      : TransportError(RequestStatus::TIMEOUT, Error::TIMEOUT, fmt, std::forward<Args>(args)...) {}
+};
+
+// session errors
+
+//! Base class for session errors
+struct ROQ_PUBLIC SessionError : public NetworkError {
+  using NetworkError::NetworkError;
+};
+
+//! Permissions denied (operating system)
+struct ROQ_PUBLIC PermissionDenied : public SessionError {
+  template <typename... Args>
+  explicit PermissionDenied(format_str<Args...> const &fmt, Args &&...args)
+      : SessionError(RequestStatus::UNDEFINED, Error::UNDEFINED, fmt, std::forward<Args>(args)...) {}
+};
+
+//! Order not live
+struct ROQ_PUBLIC OrderNotLive : public SessionError {
+  template <typename... Args>
+  explicit OrderNotLive(format_str<Args...> const &fmt, Args &&...args)
+      : SessionError(RequestStatus::REJECTED, Error::TOO_LATE_TO_MODIFY_OR_CANCEL, fmt, std::forward<Args>(args)...) {}
+};
 }  // namespace roq
 
 template <>
@@ -307,6 +373,110 @@ struct fmt::formatter<roq::BadState> {
   }
   template <typename Context>
   auto format(roq::BadState const &value, Context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::NetworkError> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(roq::NetworkError const &value, Context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::TransportError> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(roq::TransportError const &value, Context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::NotConnected> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(roq::NotConnected const &value, Context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::ConnectionRefused> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(roq::ConnectionRefused const &value, Context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::TimedOut> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(roq::TimedOut const &value, Context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::SessionError> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(roq::SessionError const &value, Context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::PermissionDenied> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(roq::PermissionDenied const &value, Context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::OrderNotLive> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(roq::OrderNotLive const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }

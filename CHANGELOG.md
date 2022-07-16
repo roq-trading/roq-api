@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.8.6 &ndash; 2022-07-18
+
 ### Fixed
 
 * fmt v9 requires custom formatters to be const

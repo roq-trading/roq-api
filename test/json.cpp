@@ -24,6 +24,7 @@ TEST_CASE("json_ReferenceData", "[json]") {
       .commission_currency = "BTC"sv,
       .tick_size = 0.1,
       .multiplier = 10.0,
+      .min_notional = NaN,
       .min_trade_vol = 1.0,
       .max_trade_vol = 999.0,
       .trade_vol_step_size = 1.0,
@@ -51,6 +52,7 @@ TEST_CASE("json_ReferenceData", "[json]") {
                   R"("commission_currency":"BTC",)"
                   R"("tick_size":0.1,)"
                   R"("multiplier":10,)"
+                  R"("min_notional":null,)"
                   R"("min_trade_vol":1,)"
                   R"("max_trade_vol":999,)"
                   R"("trade_vol_step_size":1,)"

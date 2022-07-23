@@ -1,0 +1,23 @@
+{
+  "name": "BufferCapacity",
+  "type": "enum",
+  "comment": "Buffer capacity",
+  "values": [
+    {
+      "name": "Empty",
+      "comment": "Buffer is empty"
+    },
+    {
+      "name": "LowWaterMark",
+      "comment": "Buffer has reached the low water mark (from above)"
+    },
+    {
+      "name": "HighWaterMark",
+      "comment": "Buffer has reached the high water mark (from below)"
+    },
+    {
+      "name": "Full",
+      "comment": "Buffer is full"
+    }
+  ]
+}

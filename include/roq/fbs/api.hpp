@@ -126,6 +126,45 @@ struct SourceInfoBuilder;
 struct Event;
 struct EventBuilder;
 
+enum class BufferCapacity : uint8_t {
+  Undefined = 0,
+  Empty = 1,
+  LowWaterMark = 2,
+  HighWaterMark = 3,
+  Full = 4,
+  MIN = Undefined,
+  MAX = Full
+};
+
+inline const BufferCapacity (&EnumValuesBufferCapacity())[5] {
+  static const BufferCapacity values[] = {
+    BufferCapacity::Undefined,
+    BufferCapacity::Empty,
+    BufferCapacity::LowWaterMark,
+    BufferCapacity::HighWaterMark,
+    BufferCapacity::Full
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesBufferCapacity() {
+  static const char * const names[6] = {
+    "Undefined",
+    "Empty",
+    "LowWaterMark",
+    "HighWaterMark",
+    "Full",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameBufferCapacity(BufferCapacity e) {
+  if (flatbuffers::IsOutRange(e, BufferCapacity::Undefined, BufferCapacity::Full)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesBufferCapacity()[index];
+}
+
 enum class ConnectionStatus : uint8_t {
   Undefined = 0,
   Disconnected = 1,
@@ -4931,7 +4970,9 @@ struct RateLimitTrigger FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_USERS = 10,
     VT_ACCOUNTS = 12,
     VT_BAN_EXPIRES = 14,
-    VT_TRIGGERED_BY = 16
+    VT_TRIGGERED_BY = 16,
+    VT_BUFFER_CAPACITY = 18,
+    VT_REMAINING_REQUESTS = 20
   };
   const flatbuffers::String *name() const {
     return GetPointer<const flatbuffers::String *>(VT_NAME);
@@ -4954,6 +4995,12 @@ struct RateLimitTrigger FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *triggered_by() const {
     return GetPointer<const flatbuffers::String *>(VT_TRIGGERED_BY);
   }
+  roq::fbs::BufferCapacity buffer_capacity() const {
+    return static_cast<roq::fbs::BufferCapacity>(GetField<uint8_t>(VT_BUFFER_CAPACITY, 0));
+  }
+  uint32_t remaining_requests() const {
+    return GetField<uint32_t>(VT_REMAINING_REQUESTS, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_NAME) &&
@@ -4969,6 +5016,8 @@ struct RateLimitTrigger FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<int64_t>(verifier, VT_BAN_EXPIRES, 8) &&
            VerifyOffset(verifier, VT_TRIGGERED_BY) &&
            verifier.VerifyString(triggered_by()) &&
+           VerifyField<uint8_t>(verifier, VT_BUFFER_CAPACITY, 1) &&
+           VerifyField<uint32_t>(verifier, VT_REMAINING_REQUESTS, 4) &&
            verifier.EndTable();
   }
 };
@@ -4998,6 +5047,12 @@ struct RateLimitTriggerBuilder {
   void add_triggered_by(flatbuffers::Offset<flatbuffers::String> triggered_by) {
     fbb_.AddOffset(RateLimitTrigger::VT_TRIGGERED_BY, triggered_by);
   }
+  void add_buffer_capacity(roq::fbs::BufferCapacity buffer_capacity) {
+    fbb_.AddElement<uint8_t>(RateLimitTrigger::VT_BUFFER_CAPACITY, static_cast<uint8_t>(buffer_capacity), 0);
+  }
+  void add_remaining_requests(uint32_t remaining_requests) {
+    fbb_.AddElement<uint32_t>(RateLimitTrigger::VT_REMAINING_REQUESTS, remaining_requests, 0);
+  }
   explicit RateLimitTriggerBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5017,13 +5072,17 @@ inline flatbuffers::Offset<RateLimitTrigger> CreateRateLimitTrigger(
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> users = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> accounts = 0,
     int64_t ban_expires = 0,
-    flatbuffers::Offset<flatbuffers::String> triggered_by = 0) {
+    flatbuffers::Offset<flatbuffers::String> triggered_by = 0,
+    roq::fbs::BufferCapacity buffer_capacity = roq::fbs::BufferCapacity::Undefined,
+    uint32_t remaining_requests = 0) {
   RateLimitTriggerBuilder builder_(_fbb);
   builder_.add_ban_expires(ban_expires);
+  builder_.add_remaining_requests(remaining_requests);
   builder_.add_triggered_by(triggered_by);
   builder_.add_accounts(accounts);
   builder_.add_users(users);
   builder_.add_name(name);
+  builder_.add_buffer_capacity(buffer_capacity);
   builder_.add_type(type);
   builder_.add_origin(origin);
   return builder_.Finish();
@@ -5042,7 +5101,9 @@ inline flatbuffers::Offset<RateLimitTrigger> CreateRateLimitTriggerDirect(
     const std::vector<flatbuffers::Offset<flatbuffers::String>> *users = nullptr,
     const std::vector<flatbuffers::Offset<flatbuffers::String>> *accounts = nullptr,
     int64_t ban_expires = 0,
-    const char *triggered_by = nullptr) {
+    const char *triggered_by = nullptr,
+    roq::fbs::BufferCapacity buffer_capacity = roq::fbs::BufferCapacity::Undefined,
+    uint32_t remaining_requests = 0) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
   auto users__ = users ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*users) : 0;
   auto accounts__ = accounts ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*accounts) : 0;
@@ -5055,7 +5116,9 @@ inline flatbuffers::Offset<RateLimitTrigger> CreateRateLimitTriggerDirect(
       users__,
       accounts__,
       ban_expires,
-      triggered_by__);
+      triggered_by__,
+      buffer_capacity,
+      remaining_requests);
 }
 
 struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -5085,7 +5148,8 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MAX_TRADE_VOL = 44,
     VT_TRADE_VOL_STEP_SIZE = 46,
     VT_MARGIN_CURRENCY = 48,
-    VT_DISCARD = 50
+    VT_DISCARD = 50,
+    VT_MIN_NOTIONAL = 52
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -5159,6 +5223,9 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool discard() const {
     return GetField<uint8_t>(VT_DISCARD, 0) != 0;
   }
+  double min_notional() const {
+    return GetField<double>(VT_MIN_NOTIONAL, std::numeric_limits<double>::quiet_NaN());
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -5195,6 +5262,7 @@ struct ReferenceData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_MARGIN_CURRENCY) &&
            verifier.VerifyString(margin_currency()) &&
            VerifyField<uint8_t>(verifier, VT_DISCARD, 1) &&
+           VerifyField<double>(verifier, VT_MIN_NOTIONAL, 8) &&
            verifier.EndTable();
   }
 };
@@ -5275,6 +5343,9 @@ struct ReferenceDataBuilder {
   void add_discard(bool discard) {
     fbb_.AddElement<uint8_t>(ReferenceData::VT_DISCARD, static_cast<uint8_t>(discard), 0);
   }
+  void add_min_notional(double min_notional) {
+    fbb_.AddElement<double>(ReferenceData::VT_MIN_NOTIONAL, min_notional, std::numeric_limits<double>::quiet_NaN());
+  }
   explicit ReferenceDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5311,8 +5382,10 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceData(
     double max_trade_vol = std::numeric_limits<double>::quiet_NaN(),
     double trade_vol_step_size = std::numeric_limits<double>::quiet_NaN(),
     flatbuffers::Offset<flatbuffers::String> margin_currency = 0,
-    bool discard = false) {
+    bool discard = false,
+    double min_notional = std::numeric_limits<double>::quiet_NaN()) {
   ReferenceDataBuilder builder_(_fbb);
+  builder_.add_min_notional(min_notional);
   builder_.add_trade_vol_step_size(trade_vol_step_size);
   builder_.add_max_trade_vol(max_trade_vol);
   builder_.add_expiry_datetime_utc(expiry_datetime_utc);
@@ -5370,7 +5443,8 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
     double max_trade_vol = std::numeric_limits<double>::quiet_NaN(),
     double trade_vol_step_size = std::numeric_limits<double>::quiet_NaN(),
     const char *margin_currency = nullptr,
-    bool discard = false) {
+    bool discard = false,
+    double min_notional = std::numeric_limits<double>::quiet_NaN()) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto description__ = description ? _fbb.CreateString(description) : 0;
@@ -5406,7 +5480,8 @@ inline flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
       max_trade_vol,
       trade_vol_step_size,
       margin_currency__,
-      discard);
+      discard,
+      min_notional);
 }
 
 struct StatisticsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

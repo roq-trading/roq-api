@@ -1,3 +1,4 @@
+include "buffer_capacity.fbs";
 include "origin.fbs";
 include "rate_limit_type.fbs";
 
@@ -11,4 +12,6 @@ table RateLimitTrigger {
   accounts:[string];
   ban_expires:int64;
   triggered_by:string;
+  buffer_capacity:BufferCapacity;
+  remaining_requests:uint32;
 }

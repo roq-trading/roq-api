@@ -38,6 +38,7 @@ struct ROQ_PUBLIC ReferenceData final {
   std::string_view commission_currency;           //!< Commission currency
   double tick_size = NaN;                         //!< Minimum price increment
   double multiplier = NaN;                        //!< Multiplier (notional)
+  double min_notional = NaN;                      //!< Minimum notional (price * quantity)
   double min_trade_vol = NaN;                     //!< Minimum trade volume
   double max_trade_vol = NaN;                     //!< Maximum trade volume
   double trade_vol_step_size = NaN;               //!< Trade volume step size
@@ -84,6 +85,7 @@ struct fmt::formatter<roq::ReferenceData> {
         R"(commission_currency="{}", )"
         R"(tick_size={}, )"
         R"(multiplier={}, )"
+        R"(min_notional={}, )"
         R"(min_trade_vol={}, )"
         R"(max_trade_vol={}, )"
         R"(trade_vol_step_size={}, )"
@@ -109,6 +111,7 @@ struct fmt::formatter<roq::ReferenceData> {
         value.commission_currency,
         value.tick_size,
         value.multiplier,
+        value.min_notional,
         value.min_trade_vol,
         value.max_trade_vol,
         value.trade_vol_step_size,

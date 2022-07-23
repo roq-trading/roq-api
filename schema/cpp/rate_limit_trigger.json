@@ -37,6 +37,16 @@
       "name": "triggered_by",
       "type": "std::string_view",
       "comment": "Trigger activated by this user"
+    },
+    {
+      "name": "buffer_capacity",
+      "type": "BufferCapacity",
+      "comment": "Buffer capacity (indicator for how full or empty the buffer is)"
+    },
+    {
+      "name": "remaining_requests",
+      "type": "uint32_t",
+      "comment": "The buffer becomes full if this many requests are sent instantly"
     }
   ]
 }

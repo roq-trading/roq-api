@@ -48,6 +48,13 @@ auto encode(B &, std::chrono::days const &value) {
 // enums
 
 template <typename B>
+auto encode([[maybe_unused]] B &builder, roq::BufferCapacity const &value) {
+  using result_type = BufferCapacity;
+  using value_type = std::underlying_type_t<result_type>;
+  return static_cast<result_type>(static_cast<value_type>(value));
+}
+
+template <typename B>
 auto encode([[maybe_unused]] B &builder, roq::ConnectionStatus const &value) {
   using result_type = ConnectionStatus;
   using value_type = std::underlying_type_t<result_type>;
@@ -680,7 +687,9 @@ auto encode(B &builder, roq::RateLimitTrigger const &value) {
       encode(builder, value.users),
       encode(builder, value.accounts),
       encode(builder, value.ban_expires),
-      encode(builder, value.triggered_by));
+      encode(builder, value.triggered_by),
+      encode(builder, value.buffer_capacity),
+      value.remaining_requests);
 }
 
 template <typename B>
@@ -716,7 +725,8 @@ auto encode(B &builder, roq::ReferenceData const &value) {
       value.max_trade_vol,
       value.trade_vol_step_size,
       encode(builder, value.margin_currency),
-      value.discard);
+      value.discard,
+      value.min_notional);
 }
 
 template <typename B>

@@ -5,6 +5,7 @@ set(TARGET_DIR "${CMAKE_INSTALL_DATADIR}/roq/schema/cpp")
 set(SOURCES
     batch_begin.json
     batch_end.json
+    buffer_capacity.json
     cancel_all_orders.json
     cancel_order.json
     connected.json

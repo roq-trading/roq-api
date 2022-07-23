@@ -20,6 +20,7 @@
 #include "roq/string_types.hpp"
 #include "roq/trace.hpp"
 
+#include "roq/buffer_capacity.hpp"
 #include "roq/origin.hpp"
 #include "roq/rate_limit_type.hpp"
 
@@ -34,6 +35,8 @@ struct ROQ_PUBLIC RateLimitTrigger final {
   std::span<Account const> accounts;          //!< Sorted list of accounts being affected (empty list means: all)
   std::chrono::nanoseconds ban_expires = {};  //!< System time when ban expires (zero means: ban is no longer effective)
   std::string_view triggered_by;              //!< Trigger activated by this user
+  BufferCapacity buffer_capacity = {};        //!< Buffer capacity (indicator for how full or empty the buffer is)
+  uint32_t remaining_requests = {};           //!< The buffer becomes full if this many requests are sent instantly
 };
 
 template <>
@@ -62,7 +65,9 @@ struct fmt::formatter<roq::RateLimitTrigger> {
         R"(users=[{}], )"
         R"(accounts=[{}], )"
         R"(ban_expires={}, )"
-        R"(triggered_by="{}")"
+        R"(triggered_by="{}", )"
+        R"(buffer_capacity={}, )"
+        R"(remaining_requests={})"
         R"(}})"sv,
         value.name,
         value.origin,
@@ -70,7 +75,9 @@ struct fmt::formatter<roq::RateLimitTrigger> {
         fmt::join(value.users, ", "sv),
         fmt::join(value.accounts, ", "sv),
         value.ban_expires,
-        value.triggered_by);
+        value.triggered_by,
+        value.buffer_capacity,
+        value.remaining_requests);
   }
 };
 

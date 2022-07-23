@@ -28,6 +28,7 @@ class ReferenceData final {
     commission_currency.clear();
     tick_size = NaN;
     multiplier = NaN;
+    min_notional = NaN;
     min_trade_vol = NaN;
     max_trade_vol = NaN;
     trade_vol_step_size = NaN;
@@ -54,6 +55,7 @@ class ReferenceData final {
     dirty |= utils::update(commission_currency, reference_data.commission_currency);
     dirty |= utils::update(tick_size, reference_data.tick_size);
     dirty |= utils::update(multiplier, reference_data.multiplier);
+    dirty |= utils::update(min_notional, reference_data.min_notional);
     dirty |= utils::update(min_trade_vol, reference_data.min_trade_vol);
     dirty |= utils::update(max_trade_vol, reference_data.max_trade_vol);
     dirty |= utils::update(trade_vol_step_size, reference_data.trade_vol_step_size);
@@ -86,6 +88,7 @@ class ReferenceData final {
         .commission_currency = commission_currency,
         .tick_size = tick_size,
         .multiplier = multiplier,
+        .min_notional = min_notional,
         .min_trade_vol = min_trade_vol,
         .max_trade_vol = max_trade_vol,
         .trade_vol_step_size = trade_vol_step_size,
@@ -112,6 +115,7 @@ class ReferenceData final {
   Currency commission_currency;
   double tick_size = NaN;
   double multiplier = NaN;
+  double min_notional = NaN;
   double min_trade_vol = NaN;
   double max_trade_vol = NaN;
   double trade_vol_step_size = NaN;

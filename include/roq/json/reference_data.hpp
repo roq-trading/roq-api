@@ -34,6 +34,7 @@ struct ReferenceData final {
         R"("commission_currency":{},)"
         R"("tick_size":{},)"
         R"("multiplier":{},)"
+        R"("min_notional":{},)"
         R"("min_trade_vol":{},)"
         R"("max_trade_vol":{},)"
         R"("trade_vol_step_size":{},)"
@@ -59,6 +60,7 @@ struct ReferenceData final {
         String{value_.commission_currency},
         Number{value_.tick_size},
         Number{value_.multiplier},
+        Number{value_.min_notional},
         Number{value_.min_trade_vol},
         Number{value_.max_trade_vol},
         Number{value_.trade_vol_step_size},

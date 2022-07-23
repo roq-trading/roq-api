@@ -5,6 +5,7 @@ set(TARGET_DIR "${CMAKE_INSTALL_INCLUDEDIR}/roq")
 set(SOURCES
     batch_begin.json
     batch_end.json
+    buffer_capacity.json
     cancel_all_orders.json
     cancel_order.json
     connected.json

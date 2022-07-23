@@ -56,6 +56,11 @@
       "comment": "Multiplier (notional)"
     },
     {
+      "name": "min_notional",
+      "type": "double",
+      "comment": "Minimum notional (price * quantity)"
+    },
+    {
       "name": "min_trade_vol",
       "type": "double",
       "comment": "Minimum trade volume"

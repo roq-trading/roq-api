@@ -2,6 +2,7 @@
 
 // - enums
 
+include "buffer_capacity.fbs";
 include "connection_status.fbs";
 include "decimals.fbs";
 include "encoding.fbs";

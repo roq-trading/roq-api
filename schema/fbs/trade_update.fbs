@@ -19,4 +19,5 @@ table TradeUpdate {
   fills:[Fill];
   routing_id:string;
   update_type:UpdateType;
+  user:string;
 }

@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* API changes needed to support drop-copy (#254)
 * Add notional fields to `ReferenceData` (#252)
 * Add new fields to `RateLimitTrigger` (#251)
 

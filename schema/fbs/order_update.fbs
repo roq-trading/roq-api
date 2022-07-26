@@ -38,4 +38,5 @@ table OrderUpdate {
   max_accepted_version:uint32;
   update_type:UpdateType;
   execution_instructions:uint32;
+  user:string;
 }

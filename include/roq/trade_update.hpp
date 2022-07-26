@@ -43,6 +43,7 @@ struct ROQ_PUBLIC TradeUpdate final {
   std::span<Fill> fills;                          //!< List of fills
   std::string_view routing_id;                    //!< Routing identifier
   UpdateType update_type = {};                    //!< Update type
+  std::string_view user;                          //!< User name (optional, only relevant for drop-copy)
 };
 
 template <>
@@ -78,7 +79,8 @@ struct fmt::formatter<roq::TradeUpdate> {
         R"(external_order_id="{}", )"
         R"(fills=[{}], )"
         R"(routing_id="{}", )"
-        R"(update_type={})"
+        R"(update_type={}, )"
+        R"(user="{}")"
         R"(}})"sv,
         value.stream_id,
         value.account,
@@ -93,7 +95,8 @@ struct fmt::formatter<roq::TradeUpdate> {
         value.external_order_id,
         fmt::join(value.fills, ", "sv),
         value.routing_id,
-        value.update_type);
+        value.update_type,
+        value.user);
   }
 };
 

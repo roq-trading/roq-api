@@ -43,6 +43,7 @@ struct ROQ_PUBLIC Order final {
     max_request_version = {};
     max_response_version = {};
     max_accepted_version = {};
+    user.clear();
   }
 
   [[nodiscard]] bool operator()(OrderUpdate const &order_update) {
@@ -73,6 +74,7 @@ struct ROQ_PUBLIC Order final {
     dirty |= utils::update(max_request_version, order_update.max_request_version);
     dirty |= utils::update(max_response_version, order_update.max_response_version);
     dirty |= utils::update(max_accepted_version, order_update.max_accepted_version);
+    dirty |= utils::update(user, order_update.user);
     // some update types will always be published
     switch (order_update.update_type) {
       using enum UpdateType;
@@ -124,6 +126,7 @@ struct ROQ_PUBLIC Order final {
         .max_response_version = max_response_version,
         .max_accepted_version = max_accepted_version,
         .update_type = UpdateType::SNAPSHOT,  // note!
+        .user = user,
     };
   }
 
@@ -155,6 +158,7 @@ struct ROQ_PUBLIC Order final {
   uint32_t max_request_version = {};
   uint32_t max_response_version = {};
   uint32_t max_accepted_version = {};
+  User user;
 };
 
 }  // namespace cache

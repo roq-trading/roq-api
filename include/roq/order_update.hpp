@@ -64,6 +64,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   uint32_t max_response_version = {};                 //!< Last response version
   uint32_t max_accepted_version = {};                 //!< Last accepted version
   UpdateType update_type = {};                        //!< Update type
+  std::string_view user;                              //!< User name (optional, only relevant for drop-copy)
 };
 
 template <>
@@ -116,7 +117,8 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(max_request_version={}, )"
         R"(max_response_version={}, )"
         R"(max_accepted_version={}, )"
-        R"(update_type={})"
+        R"(update_type={}, )"
+        R"(user="{}")"
         R"(}})"sv,
         value.stream_id,
         value.account,
@@ -148,7 +150,8 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.max_request_version,
         value.max_response_version,
         value.max_accepted_version,
-        value.update_type);
+        value.update_type,
+        value.user);
   }
 };
 

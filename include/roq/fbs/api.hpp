@@ -4395,7 +4395,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_MAX_RESPONSE_VERSION = 60,
     VT_MAX_ACCEPTED_VERSION = 62,
     VT_UPDATE_TYPE = 64,
-    VT_EXECUTION_INSTRUCTIONS = 66
+    VT_EXECUTION_INSTRUCTIONS = 66,
+    VT_USER = 68
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -4493,6 +4494,9 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t execution_instructions() const {
     return GetField<uint32_t>(VT_EXECUTION_INSTRUCTIONS, 0);
   }
+  const flatbuffers::String *user() const {
+    return GetPointer<const flatbuffers::String *>(VT_USER);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -4534,6 +4538,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint32_t>(verifier, VT_MAX_ACCEPTED_VERSION, 4) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
            VerifyField<uint32_t>(verifier, VT_EXECUTION_INSTRUCTIONS, 4) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyString(user()) &&
            verifier.EndTable();
   }
 };
@@ -4638,6 +4644,9 @@ struct OrderUpdateBuilder {
   void add_execution_instructions(uint32_t execution_instructions) {
     fbb_.AddElement<uint32_t>(OrderUpdate::VT_EXECUTION_INSTRUCTIONS, execution_instructions, 0);
   }
+  void add_user(flatbuffers::Offset<flatbuffers::String> user) {
+    fbb_.AddOffset(OrderUpdate::VT_USER, user);
+  }
   explicit OrderUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4682,7 +4691,8 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     uint32_t max_response_version = 0,
     uint32_t max_accepted_version = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
-    uint32_t execution_instructions = 0) {
+    uint32_t execution_instructions = 0,
+    flatbuffers::Offset<flatbuffers::String> user = 0) {
   OrderUpdateBuilder builder_(_fbb);
   builder_.add_last_traded_price(last_traded_price);
   builder_.add_last_traded_quantity(last_traded_quantity);
@@ -4695,6 +4705,7 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
   builder_.add_max_show_quantity(max_show_quantity);
+  builder_.add_user(user);
   builder_.add_execution_instructions(execution_instructions);
   builder_.add_max_accepted_version(max_accepted_version);
   builder_.add_max_response_version(max_response_version);
@@ -4757,7 +4768,8 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     uint32_t max_response_version = 0,
     uint32_t max_accepted_version = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
-    uint32_t execution_instructions = 0) {
+    uint32_t execution_instructions = 0,
+    const char *user = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -4765,6 +4777,7 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
   auto external_account__ = external_account ? _fbb.CreateString(external_account) : 0;
   auto external_order_id__ = external_order_id ? _fbb.CreateString(external_order_id) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
+  auto user__ = user ? _fbb.CreateString(user) : 0;
   return roq::fbs::CreateOrderUpdate(
       _fbb,
       stream_id,
@@ -4798,7 +4811,8 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       max_response_version,
       max_accepted_version,
       update_type,
-      execution_instructions);
+      execution_instructions,
+      user__);
 }
 
 struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -6006,7 +6020,8 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXTERNAL_ORDER_ID = 24,
     VT_FILLS = 26,
     VT_ROUTING_ID = 28,
-    VT_UPDATE_TYPE = 30
+    VT_UPDATE_TYPE = 30,
+    VT_USER = 32
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -6050,6 +6065,9 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
+  const flatbuffers::String *user() const {
+    return GetPointer<const flatbuffers::String *>(VT_USER);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -6074,6 +6092,8 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_ROUTING_ID) &&
            verifier.VerifyString(routing_id()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyString(user()) &&
            verifier.EndTable();
   }
 };
@@ -6124,6 +6144,9 @@ struct TradeUpdateBuilder {
   void add_update_type(roq::fbs::UpdateType update_type) {
     fbb_.AddElement<uint8_t>(TradeUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
   }
+  void add_user(flatbuffers::Offset<flatbuffers::String> user) {
+    fbb_.AddOffset(TradeUpdate::VT_USER, user);
+  }
   explicit TradeUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -6150,10 +6173,12 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdate(
     flatbuffers::Offset<flatbuffers::String> external_order_id = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Fill>>> fills = 0,
     flatbuffers::Offset<flatbuffers::String> routing_id = 0,
-    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    flatbuffers::Offset<flatbuffers::String> user = 0) {
   TradeUpdateBuilder builder_(_fbb);
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
+  builder_.add_user(user);
   builder_.add_routing_id(routing_id);
   builder_.add_fills(fills);
   builder_.add_external_order_id(external_order_id);
@@ -6189,7 +6214,8 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
     const char *external_order_id = nullptr,
     const std::vector<flatbuffers::Offset<roq::fbs::Fill>> *fills = nullptr,
     const char *routing_id = nullptr,
-    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    const char *user = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -6197,6 +6223,7 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
   auto external_order_id__ = external_order_id ? _fbb.CreateString(external_order_id) : 0;
   auto fills__ = fills ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Fill>>(*fills) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
+  auto user__ = user ? _fbb.CreateString(user) : 0;
   return roq::fbs::CreateTradeUpdate(
       _fbb,
       stream_id,
@@ -6212,7 +6239,8 @@ inline flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
       external_order_id__,
       fills__,
       routing_id__,
-      update_type);
+      update_type,
+      user__);
 }
 
 struct Handshake FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

@@ -142,6 +142,11 @@
       "name": "update_type",
       "type": "UpdateType",
       "comment": "Update type"
+    },
+    {
+      "name": "user",
+      "type": "std::string_view",
+      "comment": "User name (optional, only relevant for drop-copy)"
     }
   ]
 }

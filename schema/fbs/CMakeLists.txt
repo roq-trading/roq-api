@@ -32,7 +32,6 @@ set(SOURCES
     order_ack.fbs
     order_status.fbs
     order_type.fbs
-    order_update_action.fbs
     order_update.fbs
     origin.fbs
     position_effect.fbs

@@ -647,42 +647,6 @@ inline const char *EnumNameOrderType(OrderType e) {
   return EnumNamesOrderType()[index];
 }
 
-enum class OrderUpdateAction : uint8_t {
-  Undefined = 0,
-  New = 1,
-  Modify = 2,
-  Remove = 3,
-  MIN = Undefined,
-  MAX = Remove
-};
-
-inline const OrderUpdateAction (&EnumValuesOrderUpdateAction())[4] {
-  static const OrderUpdateAction values[] = {
-    OrderUpdateAction::Undefined,
-    OrderUpdateAction::New,
-    OrderUpdateAction::Modify,
-    OrderUpdateAction::Remove
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesOrderUpdateAction() {
-  static const char * const names[5] = {
-    "Undefined",
-    "New",
-    "Modify",
-    "Remove",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameOrderUpdateAction(OrderUpdateAction e) {
-  if (flatbuffers::IsOutRange(e, OrderUpdateAction::Undefined, OrderUpdateAction::Remove)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesOrderUpdateAction()[index];
-}
-
 enum class Origin : uint8_t {
   Undefined = 0,
   Client = 1,
@@ -1865,8 +1829,8 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double remaining_quantity() const {
     return GetField<double>(VT_REMAINING_QUANTITY, 0.0);
   }
-  roq::fbs::OrderUpdateAction action() const {
-    return static_cast<roq::fbs::OrderUpdateAction>(GetField<uint8_t>(VT_ACTION, 0));
+  roq::fbs::UpdateAction action() const {
+    return static_cast<roq::fbs::UpdateAction>(GetField<uint8_t>(VT_ACTION, 0));
   }
   uint32_t priority() const {
     return GetField<uint32_t>(VT_PRIORITY, 0);
@@ -1896,7 +1860,7 @@ struct MBOUpdateBuilder {
   void add_remaining_quantity(double remaining_quantity) {
     fbb_.AddElement<double>(MBOUpdate::VT_REMAINING_QUANTITY, remaining_quantity, 0.0);
   }
-  void add_action(roq::fbs::OrderUpdateAction action) {
+  void add_action(roq::fbs::UpdateAction action) {
     fbb_.AddElement<uint8_t>(MBOUpdate::VT_ACTION, static_cast<uint8_t>(action), 0);
   }
   void add_priority(uint32_t priority) {
@@ -1920,7 +1884,7 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
     double price = std::numeric_limits<double>::quiet_NaN(),
     double remaining_quantity = 0.0,
-    roq::fbs::OrderUpdateAction action = roq::fbs::OrderUpdateAction::Undefined,
+    roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined,
     uint32_t priority = 0,
     flatbuffers::Offset<flatbuffers::String> order_id = 0) {
   MBOUpdateBuilder builder_(_fbb);
@@ -1941,7 +1905,7 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     double price = std::numeric_limits<double>::quiet_NaN(),
     double remaining_quantity = 0.0,
-    roq::fbs::OrderUpdateAction action = roq::fbs::OrderUpdateAction::Undefined,
+    roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined,
     uint32_t priority = 0,
     const char *order_id = nullptr) {
   auto order_id__ = order_id ? _fbb.CreateString(order_id) : 0;

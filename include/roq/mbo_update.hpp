@@ -15,7 +15,7 @@
 #include "roq/string_types.hpp"
 #include "roq/uuid.hpp"
 
-#include "roq/order_update_action.hpp"
+#include "roq/update_action.hpp"
 
 namespace roq {
 
@@ -23,7 +23,7 @@ namespace roq {
 struct ROQ_PUBLIC MBOUpdate final {
   double price = NaN;              //!< Order price
   double remaining_quantity = {};  //!< Remaining order quantity
-  OrderUpdateAction action = {};   //!< Order update action
+  UpdateAction action = {};        //!< Order update action
   uint32_t priority = {};          //!< Queue priority
   ExternalTradeId order_id;        //!< Order identifier
 };

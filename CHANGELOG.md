@@ -10,6 +10,10 @@ All notable changes will be documented in this file.
 * Add notional fields to `ReferenceData` (#252)
 * Add new fields to `RateLimitTrigger` (#251)
 
+### Removed
+
+* `OrderUpdateAction` (replaced with `UpdateAction`)
+
 ## 0.8.6 &ndash; 2022-07-18
 
 ### Fixed

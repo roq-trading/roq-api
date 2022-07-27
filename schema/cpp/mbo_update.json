@@ -16,7 +16,7 @@
     },
     {
       "name": "action",
-      "type": "OrderUpdateAction",
+      "type": "UpdateAction",
       "comment": "Order update action"
     },
     {

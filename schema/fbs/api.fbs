@@ -12,7 +12,6 @@ include "liquidity.fbs";
 include "option_type.fbs";
 include "order_status.fbs";
 include "order_type.fbs";
-include "order_update_action.fbs";
 include "origin.fbs";
 include "position_effect.fbs";
 include "protocol.fbs";

@@ -39,7 +39,6 @@ set(SOURCES
     order_management.json
     order_status.json
     order_type.json
-    order_update_action.json
     order_update.json
     origin.json
     position_effect.json

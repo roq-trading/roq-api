@@ -118,13 +118,6 @@ auto encode([[maybe_unused]] B &builder, roq::OrderType const &value) {
 }
 
 template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::OrderUpdateAction const &value) {
-  using result_type = OrderUpdateAction;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
 auto encode([[maybe_unused]] B &builder, roq::Origin const &value) {
   using result_type = Origin;
   using value_type = std::underlying_type_t<result_type>;

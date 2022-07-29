@@ -1,0 +1,17 @@
+{
+  "name": "ParameterUpdate",
+  "type": "message",
+  "comment": "Update relating to parameters",
+  "values": [
+    {
+      "name": "parameters",
+      "type": "std::span<Parameter>",
+      "comment": "List of parameters"
+    },
+    {
+      "name": "update_type",
+      "type": "UpdateType",
+      "comment": "Update type"
+    }
+  ]
+}

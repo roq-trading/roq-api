@@ -47,6 +47,7 @@
 #include "roq/mbo_update.hpp"
 #include "roq/mbp_update.hpp"
 #include "roq/measurement.hpp"
+#include "roq/parameter.hpp"
 #include "roq/statistics.hpp"
 #include "roq/trade.hpp"
 
@@ -83,6 +84,7 @@
 #include "roq/modify_order.hpp"
 #include "roq/order_ack.hpp"
 #include "roq/order_update.hpp"
+#include "roq/parameter_update.hpp"
 #include "roq/position_update.hpp"
 #include "roq/rate_limit_trigger.hpp"
 #include "roq/reference_data.hpp"
@@ -128,5 +130,6 @@ static_assert(sizeof(Trade) == 64);
 static_assert(sizeof(Fill) == 64);
 static_assert(sizeof(Statistics) == 32);
 static_assert(sizeof(Measurement) == 16);
+static_assert(sizeof(Parameter) == 64);
 
 }  // namespace roq

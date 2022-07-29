@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `ParameterUpdate` (#258)
+
 ### Changed
 
 * API changes needed to support drop-copy (#254)

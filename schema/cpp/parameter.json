@@ -1,0 +1,17 @@
+{
+  "name": "Parameter",
+  "type": "struct",
+  "comment": "Represents a single parameter",
+  "values": [
+    {
+      "name": "key",
+      "type": "ParameterKey",
+      "comment": "Key"
+    },
+    {
+      "name": "value",
+      "type": "ParameterValue",
+      "comment": "Value"
+    }
+  ]
+}

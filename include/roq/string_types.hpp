@@ -29,6 +29,9 @@ static const constexpr size_t MAX_LENGTH_MEASUREMENT_KEY = 8;
 
 static const constexpr size_t MAX_LENGTH_DESCRIPTION = 128;
 static const constexpr size_t MAX_LENGTH_TIME_ZONE = 32;
+
+static const constexpr size_t MAX_LENGTH_PARAMETER_KEY = 32;
+static const constexpr size_t MAX_LENGTH_PARAMETER_VALUE = 32;
 }  // namespace detail
 
 struct Source final : public String<detail::MAX_LENGTH_USER> {
@@ -99,6 +102,14 @@ struct TimeZone final : public String<detail::MAX_LENGTH_TIME_ZONE> {
   using String<detail::MAX_LENGTH_TIME_ZONE>::String;
 };
 
+struct ParameterKey final : public String<detail::MAX_LENGTH_PARAMETER_KEY> {
+  using String<detail::MAX_LENGTH_PARAMETER_KEY>::String;
+};
+
+struct ParameterValue final : public String<detail::MAX_LENGTH_PARAMETER_VALUE> {
+  using String<detail::MAX_LENGTH_PARAMETER_VALUE>::String;
+};
+
 // validate
 
 static_assert(sizeof(Source) == detail::MAX_LENGTH_USER);
@@ -118,5 +129,7 @@ static_assert(sizeof(Label) == detail::MAX_LENGTH_LABEL);
 static_assert(sizeof(MeasurementKey) == detail::MAX_LENGTH_MEASUREMENT_KEY);
 static_assert(sizeof(Description) == detail::MAX_LENGTH_DESCRIPTION);
 static_assert(sizeof(TimeZone) == detail::MAX_LENGTH_TIME_ZONE);
+static_assert(sizeof(ParameterKey) == detail::MAX_LENGTH_PARAMETER_KEY);
+static_assert(sizeof(ParameterValue) == detail::MAX_LENGTH_PARAMETER_VALUE);
 
 }  // namespace roq

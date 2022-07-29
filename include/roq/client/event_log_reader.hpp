@@ -48,6 +48,9 @@ class ROQ_PUBLIC EventLogReader {
 
     // broadcast
     virtual void operator()(Event<CustomMetricsUpdate> const &) = 0;
+
+    // parameters
+    virtual void operator()(Event<ParameterUpdate> const &) = 0;
   };
 
   virtual ~EventLogReader() {}

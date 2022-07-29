@@ -106,6 +106,8 @@ _string_like_types = {
     "MeasurementKey",
     "Description",
     "TimeZone",
+    "ParameterKey",
+    "ParameterValue",
 }
 
 

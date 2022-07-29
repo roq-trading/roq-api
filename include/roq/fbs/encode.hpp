@@ -240,6 +240,16 @@ auto encode([[maybe_unused]] B &builder, roq::UpdateType const &value) {
 // helper
 
 template <typename B>
+auto encode(B &builder, roq::Fill const &value) {
+  return CreateFill(
+      builder,
+      encode(builder, static_cast<std::string_view>(value.external_trade_id)),
+      value.quantity,
+      value.price,
+      encode(builder, value.liquidity));
+}
+
+template <typename B>
 auto encode(B &builder, roq::Layer const &value) {
   return CreateLayer(builder, value.bid_price, value.bid_quantity, value.ask_price, value.ask_quantity);
 }
@@ -262,23 +272,11 @@ auto encode(B &builder, roq::MBOUpdate const &value) {
 }
 
 template <typename B>
-auto encode(B &builder, roq::Trade const &value) {
-  return CreateTrade(
+auto encode(B &builder, roq::Parameter const &value) {
+  return CreateParameter(
       builder,
-      encode(builder, value.side),
-      value.price,
-      value.quantity,
-      encode(builder, static_cast<std::string_view>(value.trade_id)));
-}
-
-template <typename B>
-auto encode(B &builder, roq::Fill const &value) {
-  return CreateFill(
-      builder,
-      encode(builder, static_cast<std::string_view>(value.external_trade_id)),
-      value.quantity,
-      value.price,
-      encode(builder, value.liquidity));
+      encode(builder, static_cast<std::string_view>(value.key)),
+      encode(builder, static_cast<std::string_view>(value.value)));
 }
 
 template <typename B>
@@ -294,6 +292,16 @@ auto encode(B &builder, roq::Statistics const &value) {
 template <typename B>
 auto encode(B &builder, roq::Measurement const &value) {
   return CreateMeasurement(builder, encode(builder, static_cast<std::string_view>(value.name)), value.value);
+}
+
+template <typename B>
+auto encode(B &builder, roq::Trade const &value) {
+  return CreateTrade(
+      builder,
+      encode(builder, value.side),
+      value.price,
+      value.quantity,
+      encode(builder, static_cast<std::string_view>(value.trade_id)));
 }
 
 // std::span
@@ -366,6 +374,19 @@ auto encode(B &builder, std::span<roq::Statistics> const &value) {
 template <typename B>
 auto encode(B &builder, std::span<roq::Measurement> const &value) {
   std::vector<flatbuffers::Offset<Measurement>> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (auto const &item : value) {
+      result.emplace_back(encode(builder, item));
+    }
+  }
+  return builder.CreateVector(result);
+}
+
+template <typename B>
+auto encode(B &builder, std::span<roq::Parameter> const &value) {
+  std::vector<flatbuffers::Offset<Parameter>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
@@ -987,6 +1008,14 @@ auto encode(B &builder, roq::CustomMetricsUpdate const &value) {
       encode(builder, value.measurements));
 }
 
+template <typename B>
+auto encode(B &builder, roq::ParameterUpdate const &value) {
+  return CreateParameterUpdate(
+      builder,
+      encode(builder, value.parameters),
+      encode(builder, value.update_type));
+}
+
 // events
 
 template <typename B>
@@ -1137,6 +1166,12 @@ template <typename B>
 auto encode(B &builder, roq::Event<roq::CustomMetricsUpdate> const &event) {
   return CreateEvent(
       builder, encode(builder, event.message_info), Message::CustomMetricsUpdate, encode(builder, event.value).Union());
+}
+
+template <typename B>
+auto encode(B &builder, roq::Event<roq::ParameterUpdate> const &event) {
+  return CreateEvent(
+      builder, encode(builder, event.message_info), Message::ParameterUpdate, encode(builder, event.value).Union());
 }
 
 }  // namespace fbs

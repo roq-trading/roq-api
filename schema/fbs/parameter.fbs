@@ -1,0 +1,6 @@
+namespace roq.fbs;
+
+table Parameter {
+  key:string;
+  value:string;
+}

@@ -24,6 +24,9 @@ struct MBPUpdateBuilder;
 struct Measurement;
 struct MeasurementBuilder;
 
+struct Parameter;
+struct ParameterBuilder;
+
 struct Statistics;
 struct StatisticsBuilder;
 
@@ -80,6 +83,9 @@ struct OrderAckBuilder;
 
 struct OrderUpdate;
 struct OrderUpdateBuilder;
+
+struct ParameterUpdate;
+struct ParameterUpdateBuilder;
 
 struct PositionUpdate;
 struct PositionUpdateBuilder;
@@ -1431,11 +1437,12 @@ enum class Message : uint8_t {
   FundsUpdate = 28,
   CustomMetrics = 29,
   CustomMetricsUpdate = 30,
+  ParameterUpdate = 31,
   MIN = NONE,
-  MAX = CustomMetricsUpdate
+  MAX = ParameterUpdate
 };
 
-inline const Message (&EnumValuesMessage())[31] {
+inline const Message (&EnumValuesMessage())[32] {
   static const Message values[] = {
     Message::NONE,
     Message::Handshake,
@@ -1467,13 +1474,14 @@ inline const Message (&EnumValuesMessage())[31] {
     Message::PositionUpdate,
     Message::FundsUpdate,
     Message::CustomMetrics,
-    Message::CustomMetricsUpdate
+    Message::CustomMetricsUpdate,
+    Message::ParameterUpdate
   };
   return values;
 }
 
 inline const char * const *EnumNamesMessage() {
-  static const char * const names[32] = {
+  static const char * const names[33] = {
     "NONE",
     "Handshake",
     "HandshakeAck",
@@ -1505,13 +1513,14 @@ inline const char * const *EnumNamesMessage() {
     "FundsUpdate",
     "CustomMetrics",
     "CustomMetricsUpdate",
+    "ParameterUpdate",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMessage(Message e) {
-  if (flatbuffers::IsOutRange(e, Message::NONE, Message::CustomMetricsUpdate)) return "";
+  if (flatbuffers::IsOutRange(e, Message::NONE, Message::ParameterUpdate)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMessage()[index];
 }
@@ -1638,6 +1647,10 @@ template<> struct MessageTraits<roq::fbs::CustomMetrics> {
 
 template<> struct MessageTraits<roq::fbs::CustomMetricsUpdate> {
   static const Message enum_value = Message::CustomMetricsUpdate;
+};
+
+template<> struct MessageTraits<roq::fbs::ParameterUpdate> {
+  static const Message enum_value = Message::ParameterUpdate;
 };
 
 bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Message type);
@@ -2082,6 +2095,77 @@ inline flatbuffers::Offset<Measurement> CreateMeasurementDirect(
       _fbb,
       name__,
       value);
+}
+
+struct Parameter FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ParameterBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KEY = 4,
+    VT_VALUE = 6
+  };
+  const flatbuffers::String *key() const {
+    return GetPointer<const flatbuffers::String *>(VT_KEY);
+  }
+  const flatbuffers::String *value() const {
+    return GetPointer<const flatbuffers::String *>(VT_VALUE);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_KEY) &&
+           verifier.VerifyString(key()) &&
+           VerifyOffset(verifier, VT_VALUE) &&
+           verifier.VerifyString(value()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ParameterBuilder {
+  typedef Parameter Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_key(flatbuffers::Offset<flatbuffers::String> key) {
+    fbb_.AddOffset(Parameter::VT_KEY, key);
+  }
+  void add_value(flatbuffers::Offset<flatbuffers::String> value) {
+    fbb_.AddOffset(Parameter::VT_VALUE, value);
+  }
+  explicit ParameterBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<Parameter> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<Parameter>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<Parameter> CreateParameter(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> key = 0,
+    flatbuffers::Offset<flatbuffers::String> value = 0) {
+  ParameterBuilder builder_(_fbb);
+  builder_.add_value(value);
+  builder_.add_key(key);
+  return builder_.Finish();
+}
+
+struct Parameter::Traits {
+  using type = Parameter;
+  static auto constexpr Create = CreateParameter;
+};
+
+inline flatbuffers::Offset<Parameter> CreateParameterDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *key = nullptr,
+    const char *value = nullptr) {
+  auto key__ = key ? _fbb.CreateString(key) : 0;
+  auto value__ = value ? _fbb.CreateString(value) : 0;
+  return roq::fbs::CreateParameter(
+      _fbb,
+      key__,
+      value__);
 }
 
 struct Statistics FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -4779,6 +4863,76 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       user__);
 }
 
+struct ParameterUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ParameterUpdateBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PARAMETERS = 4,
+    VT_UPDATE_TYPE = 6
+  };
+  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Parameter>> *parameters() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Parameter>> *>(VT_PARAMETERS);
+  }
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PARAMETERS) &&
+           verifier.VerifyVector(parameters()) &&
+           verifier.VerifyVectorOfTables(parameters()) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ParameterUpdateBuilder {
+  typedef ParameterUpdate Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_parameters(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Parameter>>> parameters) {
+    fbb_.AddOffset(ParameterUpdate::VT_PARAMETERS, parameters);
+  }
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(ParameterUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
+  explicit ParameterUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<ParameterUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<ParameterUpdate>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<ParameterUpdate> CreateParameterUpdate(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Parameter>>> parameters = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+  ParameterUpdateBuilder builder_(_fbb);
+  builder_.add_parameters(parameters);
+  builder_.add_update_type(update_type);
+  return builder_.Finish();
+}
+
+struct ParameterUpdate::Traits {
+  using type = ParameterUpdate;
+  static auto constexpr Create = CreateParameterUpdate;
+};
+
+inline flatbuffers::Offset<ParameterUpdate> CreateParameterUpdateDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<flatbuffers::Offset<roq::fbs::Parameter>> *parameters = nullptr,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+  auto parameters__ = parameters ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Parameter>>(*parameters) : 0;
+  return roq::fbs::CreateParameterUpdate(
+      _fbb,
+      parameters__,
+      update_type);
+}
+
 struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef PositionUpdateBuilder Builder;
   struct Traits;
@@ -6805,6 +6959,9 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const roq::fbs::CustomMetricsUpdate *message_as_CustomMetricsUpdate() const {
     return message_type() == roq::fbs::Message::CustomMetricsUpdate ? static_cast<const roq::fbs::CustomMetricsUpdate *>(message()) : nullptr;
   }
+  const roq::fbs::ParameterUpdate *message_as_ParameterUpdate() const {
+    return message_type() == roq::fbs::Message::ParameterUpdate ? static_cast<const roq::fbs::ParameterUpdate *>(message()) : nullptr;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_SOURCE_INFO) &&
@@ -6934,6 +7091,10 @@ template<> inline const roq::fbs::CustomMetrics *Event::message_as<roq::fbs::Cus
 
 template<> inline const roq::fbs::CustomMetricsUpdate *Event::message_as<roq::fbs::CustomMetricsUpdate>() const {
   return message_as_CustomMetricsUpdate();
+}
+
+template<> inline const roq::fbs::ParameterUpdate *Event::message_as<roq::fbs::ParameterUpdate>() const {
+  return message_as_ParameterUpdate();
 }
 
 struct EventBuilder {
@@ -7100,6 +7261,10 @@ inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Mess
     }
     case Message::CustomMetricsUpdate: {
       auto ptr = reinterpret_cast<const roq::fbs::CustomMetricsUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message::ParameterUpdate: {
+      auto ptr = reinterpret_cast<const roq::fbs::ParameterUpdate *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

@@ -110,7 +110,7 @@ auto encode(B &builder, T const &value) {
 
 template <typename B, typename T, typename std::enable_if<std::is_enum<T>::value>::type* = nullptr>
 auto encode([[maybe_unused]]B &, T value) {
-  using result_type = detail::maps_to<T>::type;
+  using result_type = typename detail::maps_to<T>::type;
   using value_type = std::underlying_type_t<T>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
@@ -208,7 +208,7 @@ auto encode(B &builder, std::span<T> const& value) {
     using result_type = flatbuffers::String;
     return detail::encode_string_vector<result_type>(builder, value);
   } else {
-    using result_type = detail::maps_to<typename std::decay<T>::type>::type;
+    using result_type = typename detail::maps_to<typename std::decay<T>::type>::type;
     return detail::encode_string_vector<result_type>(builder, value);
   }
 }

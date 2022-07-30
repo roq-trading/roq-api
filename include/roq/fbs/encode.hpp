@@ -8,13 +8,89 @@
 #include <vector>
 
 #include "roq/api.hpp"
+
 #include "roq/fbs/api.hpp"
+
+#include "roq/utils/traits.hpp"
 
 namespace roq {
 namespace fbs {
 
-template <typename B, typename T>
-auto encode(B &b, const T &);
+// mappings
+
+namespace detail {
+template <typename T> struct maps_to;
+// enums
+template<> struct maps_to<roq::BufferCapacity> final { using type = fbs::BufferCapacity; };
+template<> struct maps_to<roq::ConnectionStatus> final { using type = fbs::ConnectionStatus; };
+template<> struct maps_to<roq::Decimals> final { using type = fbs::Decimals; };
+template<> struct maps_to<roq::Encoding> final { using type = fbs::Encoding; };
+template<> struct maps_to<roq::Error> final { using type = fbs::Error; };
+template<> struct maps_to<roq::Liquidity> final { using type = fbs::Liquidity; };
+template<> struct maps_to<roq::ExecutionInstruction> final { using type = fbs::ExecutionInstruction; };
+template<> struct maps_to<roq::OptionType> final { using type = fbs::OptionType; };
+template<> struct maps_to<roq::OrderStatus> final { using type = fbs::OrderStatus; };
+template<> struct maps_to<roq::OrderType> final { using type = fbs::OrderType; };
+template<> struct maps_to<roq::Origin> final { using type = fbs::Origin; };
+template<> struct maps_to<roq::PositionEffect> final { using type = fbs::PositionEffect; };
+template<> struct maps_to<roq::Priority> final { using type = fbs::Priority; };
+template<> struct maps_to<roq::Protocol> final { using type = fbs::Protocol; };
+template<> struct maps_to<roq::RateLimitType> final { using type = fbs::RateLimitType; };
+template<> struct maps_to<roq::RequestIdType> final { using type = fbs::RequestIdType; };
+template<> struct maps_to<roq::RequestStatus> final { using type = fbs::RequestStatus; };
+template<> struct maps_to<roq::RequestType> final { using type = fbs::RequestType; };
+template<> struct maps_to<roq::SecurityType> final { using type = fbs::SecurityType; };
+template<> struct maps_to<roq::Side> final { using type = fbs::Side; };
+template<> struct maps_to<roq::StatisticsType> final { using type = fbs::StatisticsType; };
+template<> struct maps_to<roq::SupportType> final { using type = fbs::SupportType; };
+template<> struct maps_to<roq::TimeInForce> final { using type = fbs::TimeInForce; };
+template<> struct maps_to<roq::TradingStatus> final { using type = fbs::TradingStatus; };
+template<> struct maps_to<roq::Transport> final { using type = fbs::Transport; };
+template<> struct maps_to<roq::UpdateAction> final { using type = fbs::UpdateAction; };
+template<> struct maps_to<roq::UpdateType> final { using type = fbs::UpdateType; };
+// helper
+template<> struct maps_to<roq::MBPUpdate> final { using type = fbs::MBPUpdate; };
+template<> struct maps_to<roq::MBOUpdate> final { using type = fbs::MBOUpdate; };
+template<> struct maps_to<roq::Trade> final { using type = fbs::Trade; };
+template<> struct maps_to<roq::Fill> final { using type = fbs::Fill; };
+template<> struct maps_to<roq::Statistics> final { using type = fbs::Statistics; };
+template<> struct maps_to<roq::Measurement> final { using type = fbs::Measurement; };
+template<> struct maps_to<roq::Parameter> final { using type = fbs::Parameter; };
+// structs
+template <> struct maps_to<roq::DownloadBegin> { static constexpr auto value = Message::DownloadBegin; };
+template <> struct maps_to<roq::DownloadEnd> { static constexpr auto value = Message::DownloadEnd; };
+template <> struct maps_to<roq::GatewaySettings> { static constexpr auto value = Message::GatewaySettings; };
+template <> struct maps_to<roq::StreamStatus> { static constexpr auto value = Message::StreamStatus; };
+template <> struct maps_to<roq::ExternalLatency> { static constexpr auto value = Message::ExternalLatency; };
+template <> struct maps_to<roq::RateLimitTrigger> { static constexpr auto value = Message::RateLimitTrigger; };
+template <> struct maps_to<roq::GatewayStatus> { static constexpr auto value = Message::GatewayStatus; };
+template <> struct maps_to<roq::ReferenceData> { static constexpr auto value = Message::ReferenceData; };
+template <> struct maps_to<roq::MarketStatus> { static constexpr auto value = Message::MarketStatus; };
+template <> struct maps_to<roq::TopOfBook> { static constexpr auto value = Message::TopOfBook; };
+template <> struct maps_to<roq::MarketByPriceUpdate> { static constexpr auto value = Message::MarketByPriceUpdate; };
+template <> struct maps_to<roq::MarketByOrderUpdate> { static constexpr auto value = Message::MarketByOrderUpdate; };
+template <> struct maps_to<roq::TradeSummary> { static constexpr auto value = Message::TradeSummary; };
+template <> struct maps_to<roq::StatisticsUpdate> { static constexpr auto value = Message::StatisticsUpdate; };
+template <> struct maps_to<roq::CreateOrder> { static constexpr auto value = Message::CreateOrder; };
+template <> struct maps_to<roq::ModifyOrder> { static constexpr auto value = Message::ModifyOrder; };
+template <> struct maps_to<roq::CancelOrder> { static constexpr auto value = Message::CancelOrder; };
+template <> struct maps_to<roq::CancelAllOrders> { static constexpr auto value = Message::CancelAllOrders; };
+template <> struct maps_to<roq::OrderAck> { static constexpr auto value = Message::OrderAck; };
+template <> struct maps_to<roq::OrderUpdate> { static constexpr auto value = Message::OrderUpdate; };
+template <> struct maps_to<roq::TradeUpdate> { static constexpr auto value = Message::TradeUpdate; };
+template <> struct maps_to<roq::PositionUpdate> { static constexpr auto value = Message::PositionUpdate; };
+template <> struct maps_to<roq::FundsUpdate> { static constexpr auto value = Message::FundsUpdate; };
+template <> struct maps_to<roq::CustomMetrics> { static constexpr auto value = Message::CustomMetrics; };
+template <> struct maps_to<roq::CustomMetricsUpdate> { static constexpr auto value = Message::CustomMetricsUpdate; };
+template <> struct maps_to<roq::ParameterUpdate> { static constexpr auto value = Message::ParameterUpdate; };
+}
+
+// std::chrono::duration
+
+template <typename B, typename T, typename std::enable_if<utils::is_duration<T>::value>::type* = nullptr>
+auto encode([[maybe_unused]]B &, T value) {
+  return value.count();
+}
 
 // std::string_view
 
@@ -23,217 +99,19 @@ auto encode(B &builder, std::string_view const &value) {
   return builder.CreateString(value);
 }
 
-// std::chrono::duration
+// String<N>
 
-template <typename B>
-auto encode(B &, std::chrono::nanoseconds const &value) {
-  return value.count();
-}
-
-template <typename B>
-auto encode(B &, std::chrono::milliseconds const &value) {
-  return value.count();
-}
-
-template <typename B>
-auto encode(B &, std::chrono::seconds const &value) {
-  return value.count();
-}
-
-template <typename B>
-auto encode(B &, std::chrono::days const &value) {
-  return value.count();
+template <typename B, typename T, std::size_t N, typename std::enable_if<std::is_base_of<roq::String<N>, T>::value>::type* = nullptr>
+auto encode(B &builder, T const &value) {
+  return encode(builder, static_cast<std::string_view>(value));
 }
 
 // enums
 
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::BufferCapacity const &value) {
-  using result_type = BufferCapacity;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::ConnectionStatus const &value) {
-  using result_type = ConnectionStatus;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::Decimals const &value) {
-  using result_type = Decimals;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::Encoding const &value) {
-  using result_type = Encoding;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::Error const &value) {
-  using result_type = Error;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::Liquidity const &value) {
-  using result_type = Liquidity;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::ExecutionInstruction const &value) {
-  using result_type = ExecutionInstruction;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::OptionType const &value) {
-  using result_type = OptionType;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::OrderStatus const &value) {
-  using result_type = OrderStatus;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::OrderType const &value) {
-  using result_type = OrderType;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::Origin const &value) {
-  using result_type = Origin;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::PositionEffect const &value) {
-  using result_type = PositionEffect;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::Priority const &value) {
-  using result_type = Priority;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::Protocol const &value) {
-  using result_type = Protocol;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::RateLimitType const &value) {
-  using result_type = RateLimitType;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::RequestIdType const &value) {
-  using result_type = RequestIdType;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::RequestStatus const &value) {
-  using result_type = RequestStatus;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::RequestType const &value) {
-  using result_type = RequestType;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::SecurityType const &value) {
-  using result_type = SecurityType;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::Side const &value) {
-  using result_type = Side;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::StatisticsType const &value) {
-  using result_type = StatisticsType;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-// note! not used directly... redundant, really
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::SupportType const &value) {
-  using result_type = SupportType;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::TimeInForce const &value) {
-  using result_type = TimeInForce;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::TradingStatus const &value) {
-  using result_type = TradingStatus;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::Transport const &value) {
-  using result_type = Transport;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::UpdateAction const &value) {
-  using result_type = UpdateAction;
-  using value_type = std::underlying_type_t<result_type>;
-  return static_cast<result_type>(static_cast<value_type>(value));
-}
-
-template <typename B>
-auto encode([[maybe_unused]] B &builder, roq::UpdateType const &value) {
-  using result_type = UpdateType;
-  using value_type = std::underlying_type_t<result_type>;
+template <typename B, typename T, typename std::enable_if<std::is_enum<T>::value>::type* = nullptr>
+auto encode([[maybe_unused]]B &, T value) {
+  using result_type = detail::maps_to<T>::type;
+  using value_type = std::underlying_type_t<T>;
   return static_cast<result_type>(static_cast<value_type>(value));
 }
 
@@ -306,331 +184,33 @@ auto encode(B &builder, roq::Trade const &value) {
 
 // std::span
 
-template <typename B>
-auto encode(B &builder, std::span<roq::MBPUpdate> const &value) {
-  std::vector<flatbuffers::Offset<MBPUpdate>> result;
+namespace detail {
+template <typename U,  typename B, typename T>
+auto encode_string_vector(B &builder, std::span<T> const& value) {
+  using result_type = U;
+  std::vector<flatbuffers::Offset<result_type>> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
-    for (auto const &item : value) {
+    for (auto const &item : value)
       result.emplace_back(encode(builder, item));
-    }
   }
   return builder.CreateVector(result);
 }
-
-template <typename B>
-auto encode(B &builder, std::span<roq::MBOUpdate> const &value) {
-  std::vector<flatbuffers::Offset<MBOUpdate>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, item));
-    }
-  }
-  return builder.CreateVector(result);
 }
 
-template <typename B>
-auto encode(B &builder, std::span<roq::Trade> const &value) {
-  std::vector<flatbuffers::Offset<Trade>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, item));
-    }
+template <typename B, typename T>
+auto encode(B &builder, std::span<T> const& value) {
+  constexpr bool is_string_like = requires(T const& t) {
+    t.operator std::string_view();
+  };
+  if constexpr (is_string_like) {
+    using result_type = flatbuffers::String;
+    return detail::encode_string_vector<result_type>(builder, value);
+  } else {
+    using result_type = detail::maps_to<typename std::decay<T>::type>::type;
+    return detail::encode_string_vector<result_type>(builder, value);
   }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<roq::Fill> const &value) {
-  std::vector<flatbuffers::Offset<Fill>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, item));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<roq::Statistics> const &value) {
-  std::vector<flatbuffers::Offset<Statistics>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, item));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<roq::Measurement> const &value) {
-  std::vector<flatbuffers::Offset<Measurement>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, item));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<roq::Parameter> const &value) {
-  std::vector<flatbuffers::Offset<Parameter>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, item));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B, std::size_t N>
-auto encode(B &builder, std::span<String<N> const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-// XXX following is too much -- we need some templating here
-
-template <typename B>
-auto encode(B &builder, std::span<Source const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<User const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<Account const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<Exchange const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<Symbol const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<Currency const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<OrderTemplate const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<ExternalAccount const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<ExternalOrderId const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<ExternalTradeId const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<RoutingId const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<ClOrdId const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<RequestId const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<Label const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<MeasurementKey const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<Description const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
-}
-
-template <typename B>
-auto encode(B &builder, std::span<TimeZone const> const &value) {
-  std::vector<flatbuffers::Offset<flatbuffers::String>> result;
-  auto size = std::size(value);
-  if (size) {
-    result.reserve(size);
-    for (auto const &item : value) {
-      result.emplace_back(encode(builder, static_cast<std::string_view>(item)));
-    }
-  }
-  return builder.CreateVector(result);
 }
 
 // structs
@@ -1018,160 +598,10 @@ auto encode(B &builder, roq::ParameterUpdate const &value) {
 
 // events
 
-template <typename B>
-flatbuffers::Offset<Event> encode(B &builder, roq::Event<roq::DownloadBegin> const &event) {
+template <typename B, typename T>
+flatbuffers::Offset<Event> encode(B &builder, roq::Event<T> const &event) {
   return CreateEvent(
-      builder, encode(builder, event.message_info), Message::DownloadBegin, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::DownloadEnd> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::DownloadEnd, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::GatewaySettings> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::GatewaySettings, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::StreamStatus> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::StreamStatus, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::ExternalLatency> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::ExternalLatency, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::RateLimitTrigger> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::RateLimitTrigger, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::GatewayStatus> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::GatewayStatus, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::ReferenceData> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::ReferenceData, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::MarketStatus> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::MarketStatus, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::TopOfBook> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::TopOfBook, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::MarketByPriceUpdate> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::MarketByPriceUpdate, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::MarketByOrderUpdate> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::MarketByOrderUpdate, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::TradeSummary> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::TradeSummary, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::StatisticsUpdate> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::StatisticsUpdate, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::CreateOrder> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::CreateOrder, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::ModifyOrder> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::ModifyOrder, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::CancelOrder> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::CancelOrder, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::CancelAllOrders> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::CancelAllOrders, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::OrderAck> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::OrderAck, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::OrderUpdate> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::OrderUpdate, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::TradeUpdate> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::TradeUpdate, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::PositionUpdate> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::PositionUpdate, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::FundsUpdate> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::FundsUpdate, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::CustomMetrics> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::CustomMetrics, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::CustomMetricsUpdate> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::CustomMetricsUpdate, encode(builder, event.value).Union());
-}
-
-template <typename B>
-auto encode(B &builder, roq::Event<roq::ParameterUpdate> const &event) {
-  return CreateEvent(
-      builder, encode(builder, event.message_info), Message::ParameterUpdate, encode(builder, event.value).Union());
+      builder, encode(builder, event.message_info), detail::maps_to<T>::value, encode(builder, event.value).Union());
 }
 
 }  // namespace fbs

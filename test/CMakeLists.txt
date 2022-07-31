@@ -12,6 +12,7 @@ set(SOURCES
     json.cpp
     mask.cpp
     metrics.cpp
+    rate_limiter.cpp
     request_status.cpp
     safe_cast.cpp
     span.cpp

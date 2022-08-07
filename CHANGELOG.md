@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* An optional `is_last` field has been added to `client::Dispatcher::send` (#26)
 * Move `RateLimiter` (from roq-server) (#259)
 * API changes needed to support drop-copy (#254)
 * Add notional fields to `ReferenceData` (#252)

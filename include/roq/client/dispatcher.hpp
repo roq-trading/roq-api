@@ -28,13 +28,13 @@ class ROQ_PUBLIC Dispatcher {
   virtual void stop() = 0;
 
   //! Send a request to create a new order
-  virtual void send(CreateOrder const &, uint8_t source) = 0;
+  virtual void send(CreateOrder const &, uint8_t source, bool is_last = true) = 0;
 
   //! Send a request to modify an existing order
-  virtual void send(ModifyOrder const &, uint8_t source) = 0;
+  virtual void send(ModifyOrder const &, uint8_t source, bool is_last = true) = 0;
 
   //! Send a request to cancel an existing order
-  virtual void send(CancelOrder const &, uint8_t source) = 0;
+  virtual void send(CancelOrder const &, uint8_t source, bool is_last = true) = 0;
 
   //! Send a request to cancel all orders
   virtual void send(CancelAllOrders const &, uint8_t source) = 0;

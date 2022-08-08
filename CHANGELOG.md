@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* Cache objects for Create/Modify/CancelOrder (#26)
 * `ParameterUpdate` (#258)
 
 ### Changed

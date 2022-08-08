@@ -20,6 +20,10 @@ All notable changes will be documented in this file.
 
 * `OrderUpdateAction` (replaced with `UpdateAction`)
 
+### Fixed
+
+* `utils::safe_cast` now using `std::numeric_limist::lowest()` (instead of `min()`)
+
 ## 0.8.6 &ndash; 2022-07-18
 
 ### Fixed

@@ -39,7 +39,7 @@ struct safe_cast final {
       return value_;
     } else if constexpr (is_integer<value_type>::value) {
       // integer to ...
-      if (!(value_ >= std::numeric_limits<result_type>::min() && value_ <= std::numeric_limits<result_type>::max()))
+      if (!(value_ >= std::numeric_limits<result_type>::lowest() && value_ <= std::numeric_limits<result_type>::max()))
         throw OverflowError("overflow: value={}"sv, value_);
       return static_cast<result_type>(value_);
     } else if constexpr (std::is_floating_point<value_type>::value) {
@@ -48,7 +48,7 @@ struct safe_cast final {
         // ... signed integer
         // references:
         //   https://stackoverflow.com/a/30424410
-        if (!(value_ > static_cast<double>(std::numeric_limits<result_type>::min()) &&
+        if (!(value_ > static_cast<double>(std::numeric_limits<result_type>::lowest()) &&
               value_ < static_cast<double>(std::numeric_limits<result_type>::max())))
           throw OverflowError("overflow: value={}"sv, value_);
         return static_cast<result_type>(value_);

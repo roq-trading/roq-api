@@ -24,4 +24,5 @@
 
 // utilities
 
+#include "roq/client/event_log_multiplexer.hpp"
 #include "roq/client/event_log_reader.hpp"

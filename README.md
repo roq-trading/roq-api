@@ -68,6 +68,10 @@ you may have.
 
 ## Gateways
 
+Currently supported traditional exchanges include
+
+* CME
+
 Currently supported Cryptocurrency exchanges include
 
 * Binance

@@ -28,7 +28,7 @@ namespace roq {
 //! Gateway settings
 struct ROQ_PUBLIC GatewaySettings final {
   Mask<SupportType> supports;                  //!< Supported update types
-  uint32_t mbp_max_depth = {};                 //!< MBP max depth
+  uint16_t mbp_max_depth = {};                 //!< MBP max depth
   double mbp_tick_size_multiplier = NaN;       //!< MBP multiplier used to manage prices as integer
   double mbp_min_trade_vol_multiplier = NaN;   //!< MBP multiplier used to manage quantities as integer
   bool mbp_allow_remove_non_existing = false;  //!< MBP allow remove operation on non-existing level?

@@ -12,6 +12,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Optimize the `cache::MarketByPrice` interface (#267)
 * An optional `is_last` field has been added to `client::Dispatcher::send` (#26)
 * Move `RateLimiter` (from roq-server) (#259)
 * API changes needed to support drop-copy (#254)

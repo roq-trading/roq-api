@@ -2,7 +2,7 @@ namespace roq.fbs;
 
 table GatewaySettings {
   supports:uint64;
-  mbp_max_depth:uint32;
+  mbp_max_depth:uint32; // note! c++ changed to uint16 -- we don't need to track
   mbp_allow_price_inversion:bool;
   mbp_allow_fractional_tick_size:bool (deprecated);
   mbp_allow_remove_non_existing:bool;

@@ -48,7 +48,7 @@ struct GatewaySettings final {
   }
 
   Mask<SupportType> supports;
-  uint32_t mbp_max_depth = {};
+  uint16_t mbp_max_depth = {};
   double mbp_tick_size_multiplier = NaN;
   double mbp_min_trade_vol_multiplier = NaN;
   bool mbp_allow_remove_non_existing = false;

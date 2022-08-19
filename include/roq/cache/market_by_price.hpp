@@ -6,6 +6,8 @@
 
 #include "roq/api.hpp"
 
+#include "roq/utils/safe_cast.hpp"
+
 namespace roq {
 namespace cache {
 
@@ -114,7 +116,7 @@ class ROQ_PUBLIC MarketByPrice {
         .exchange_sequence = market_by_price_update.exchange_sequence,
         .price_decimals = price_decimals(),
         .quantity_decimals = quantity_decimals(),
-        .max_depth = max_depth(),
+        .max_depth = utils::safe_cast(max_depth()),
         .checksum = checksum(),
     };
     callback(final_market_by_price_update);

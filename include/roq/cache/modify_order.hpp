@@ -8,7 +8,7 @@ namespace roq {
 namespace cache {
 
 struct ROQ_PUBLIC ModifyOrder final {
-  explicit ModifyOrder(roq::ModifyOrder const &value)
+  ModifyOrder(roq::ModifyOrder const &value)  // NOLINT
       : account(value.account), order_id(value.order_id), quantity(value.quantity), price(value.price),
         routing_id(value.routing_id), version(value.version), conditional_on_version(value.conditional_on_version) {}
 
@@ -31,7 +31,7 @@ struct ROQ_PUBLIC ModifyOrder final {
   uint32_t order_id = {};
   double quantity = NaN;
   double price = NaN;
-  std::string routing_id;  // XXX
+  RoutingId routing_id;
   uint32_t version = {};
   uint32_t conditional_on_version = {};
 };

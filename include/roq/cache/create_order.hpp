@@ -8,7 +8,7 @@ namespace roq {
 namespace cache {
 
 struct ROQ_PUBLIC CreateOrder final {
-  explicit CreateOrder(roq::CreateOrder const &value)
+  CreateOrder(roq::CreateOrder const &value)  // NOLINT
       : account(value.account), order_id(value.order_id), exchange(value.exchange), symbol(value.symbol),
         side(value.side), position_effect(value.position_effect), time_in_force(value.time_in_force),
         execution_instructions(value.execution_instructions), order_template(value.order_template),

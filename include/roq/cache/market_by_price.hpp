@@ -135,33 +135,6 @@ class ROQ_PUBLIC MarketByPrice {
   virtual void update_helper(MarketByPriceUpdate const &) = 0;
   virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> update_helper(
       MarketByPriceUpdate const &, std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
-
- public:
-  // #######################################################################
-  // ### note! the following methods should **NOT** be considered stable ###
-  // ### note! the internal representation can change at any time        ###
-  // #######################################################################
-
-  using price_level_t = std::pair<int64_t, uint64_t>;
-
-  [[deprecated]] int64_t price_to_internal(double price) const { return LEGACY_price_to_internal(price); }
-  [[deprecated]] uint64_t quantity_to_internal(double quantity) const { return LEGACY_quantity_to_internal(quantity); }
-
-  [[deprecated]] double internal_to_price(int64_t price) const { return LEGACY_internal_to_price(price); }
-  [[deprecated]] double internal_to_quantity(uint64_t quantity) const { return LEGACY_internal_to_quantity(quantity); }
-
-  [[deprecated]] std::span<price_level_t const> bids() const { return LEGACY_bids(); }
-  [[deprecated]] std::span<price_level_t const> asks() const { return LEGACY_asks(); }
-
- protected:
-  virtual std::span<price_level_t const> LEGACY_bids() const = 0;
-  virtual std::span<price_level_t const> LEGACY_asks() const = 0;
-
-  virtual int64_t LEGACY_price_to_internal(double price) const = 0;
-  virtual uint64_t LEGACY_quantity_to_internal(double quantity) const = 0;
-
-  virtual double LEGACY_internal_to_price(int64_t price) const = 0;
-  virtual double LEGACY_internal_to_quantity(uint64_t quantity) const = 0;
 };
 
 }  // namespace cache

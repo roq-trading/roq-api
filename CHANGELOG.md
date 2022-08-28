@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Removed
+
+* Optimize the `cache::MarketByPrice` interface (#267)
+
 ## 0.8.7 &ndash; 2022-08-22
 
 ### Added

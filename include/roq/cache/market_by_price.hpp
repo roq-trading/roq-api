@@ -90,9 +90,10 @@ class ROQ_PUBLIC MarketByPrice {
   }
 
   // single update to the order book (quantity == 0 means remove)
-  void operator()(Side side, double price, double quantity) { update_helper(side, price, quantity); }
+  void operator()(Side side, MBPUpdate const &mbp_update) { update_helper(side, mbp_update); }
 
   // simple update
+  //   used when applying sequential updates, e.g. when caching
   void operator()(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) { update_helper(bids, asks); }
 
   // generate a normalized update (used when origin is an external "noisy" source)
@@ -130,7 +131,7 @@ class ROQ_PUBLIC MarketByPrice {
       std::span<MBPUpdate> const &asks) const = 0;
 
  protected:
-  virtual void update_helper(Side, double price, double quantity) = 0;
+  virtual void update_helper(Side, MBPUpdate const &) = 0;
   virtual void update_helper(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
   virtual void update_helper(MarketByPriceUpdate const &) = 0;
   virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> update_helper(

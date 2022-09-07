@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `cache::MarketByPrice::max_depth` now returns `uint16_t`
+
 ### Removed
 
 * Optimize the `cache::MarketByPrice` interface (#267)

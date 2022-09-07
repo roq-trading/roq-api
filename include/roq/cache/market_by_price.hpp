@@ -6,8 +6,6 @@
 
 #include "roq/api.hpp"
 
-#include "roq/utils/safe_cast.hpp"
-
 namespace roq {
 namespace cache {
 
@@ -20,7 +18,7 @@ class ROQ_PUBLIC MarketByPrice {
   virtual std::string_view symbol() const = 0;
 
   // maximum depth (used when maintaining a view of top N price levels, zero means unbounded)
-  virtual size_t max_depth() const = 0;
+  virtual uint16_t max_depth() const = 0;
 
   // increments (conversion between floating point and integer representation)
   virtual double price_increment() const = 0;
@@ -117,7 +115,7 @@ class ROQ_PUBLIC MarketByPrice {
         .exchange_sequence = market_by_price_update.exchange_sequence,
         .price_decimals = price_decimals(),
         .quantity_decimals = quantity_decimals(),
-        .max_depth = utils::safe_cast(max_depth()),
+        .max_depth = max_depth(),
         .checksum = checksum(),
     };
     callback(final_market_by_price_update);

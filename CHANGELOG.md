@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Removed
 
+* `MarketByPriceUpdate.checksum` from the FlatBuffers schema
 * Optimize the `cache::MarketByPrice` interface (#267)
 
 ## 0.8.7 &ndash; 2022-08-22

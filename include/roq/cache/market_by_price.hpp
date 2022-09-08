@@ -129,6 +129,7 @@ class ROQ_PUBLIC MarketByPrice {
       std::span<MBPUpdate> const &asks) const = 0;
 
  protected:
+  virtual void update_helper(roq::ReferenceData const &) = 0;
   virtual void update_helper(Side, MBPUpdate const &) = 0;
   virtual void update_helper(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
   virtual void update_helper(MarketByPriceUpdate const &) = 0;

@@ -11,4 +11,5 @@ table GatewaySettings {
   mbp_tick_size_multiplier:double = nan;
   mbp_min_trade_vol_multiplier:double = nan;
   oms_request_id_type:RequestIdType;
+  mbp_checksum:bool; // note! order not aligned with c++
 }

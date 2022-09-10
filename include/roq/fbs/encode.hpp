@@ -248,7 +248,8 @@ auto encode(B &builder, roq::GatewaySettings const &value) {
       value.oms_download_has_routing_id,
       value.mbp_tick_size_multiplier,
       value.mbp_min_trade_vol_multiplier,
-      encode(builder, value.oms_request_id_type));
+      encode(builder, value.oms_request_id_type),
+      value.mbp_checksum);
 }
 
 template <typename B>

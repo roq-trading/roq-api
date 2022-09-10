@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Added `GatewaySettings.mbp_checksum`
 * `cache::MarketByPrice::max_depth` now returns `uint16_t`
 
 ### Removed

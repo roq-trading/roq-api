@@ -33,6 +33,7 @@ struct ROQ_PUBLIC GatewaySettings final {
   double mbp_min_trade_vol_multiplier = NaN;   //!< MBP multiplier used to manage quantities as integer
   bool mbp_allow_remove_non_existing = false;  //!< MBP allow remove operation on non-existing level?
   bool mbp_allow_price_inversion = false;      //!< MBP allow price inversion?
+  bool mbp_checksum = false;                   //!< MBP compute checksum?
   bool oms_download_has_state = false;         //!< OMS download includes state information?
   bool oms_download_has_routing_id = false;    //!< OMS download includes routing_id?
   RequestIdType oms_request_id_type = {};      //!< OMS request identifier type
@@ -64,6 +65,7 @@ struct fmt::formatter<roq::GatewaySettings> {
         R"(mbp_min_trade_vol_multiplier={}, )"
         R"(mbp_allow_remove_non_existing={}, )"
         R"(mbp_allow_price_inversion={}, )"
+        R"(mbp_checksum={}, )"
         R"(oms_download_has_state={}, )"
         R"(oms_download_has_routing_id={}, )"
         R"(oms_request_id_type={})"
@@ -74,6 +76,7 @@ struct fmt::formatter<roq::GatewaySettings> {
         value.mbp_min_trade_vol_multiplier,
         value.mbp_allow_remove_non_existing,
         value.mbp_allow_price_inversion,
+        value.mbp_checksum,
         value.oms_download_has_state,
         value.oms_download_has_routing_id,
         value.oms_request_id_type);

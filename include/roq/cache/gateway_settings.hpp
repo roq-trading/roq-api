@@ -27,6 +27,7 @@ struct GatewaySettings final {
     dirty |= utils::update(mbp_min_trade_vol_multiplier, gateway_settings.mbp_min_trade_vol_multiplier);
     dirty |= utils::update(mbp_allow_remove_non_existing, gateway_settings.mbp_allow_remove_non_existing);
     dirty |= utils::update(mbp_allow_price_inversion, gateway_settings.mbp_allow_price_inversion);
+    dirty |= utils::update(mbp_checksum, gateway_settings.mbp_checksum);
     dirty |= utils::update(oms_download_has_state, gateway_settings.oms_download_has_state);
     dirty |= utils::update(oms_download_has_routing_id, gateway_settings.oms_download_has_routing_id);
     return dirty;
@@ -42,6 +43,7 @@ struct GatewaySettings final {
         .mbp_min_trade_vol_multiplier = mbp_min_trade_vol_multiplier,
         .mbp_allow_remove_non_existing = mbp_allow_remove_non_existing,
         .mbp_allow_price_inversion = mbp_allow_price_inversion,
+        .mbp_checksum = mbp_checksum,
         .oms_download_has_state = oms_download_has_state,
         .oms_download_has_routing_id = oms_download_has_routing_id,
     };
@@ -53,6 +55,7 @@ struct GatewaySettings final {
   double mbp_min_trade_vol_multiplier = NaN;
   bool mbp_allow_remove_non_existing = false;
   bool mbp_allow_price_inversion = false;
+  bool mbp_checksum = false;
   bool oms_download_has_state = false;
   bool oms_download_has_routing_id = false;
 };

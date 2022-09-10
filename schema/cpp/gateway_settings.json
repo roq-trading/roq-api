@@ -34,6 +34,11 @@
       "comment": "MBP allow price inversion?"
     },
     {
+      "name": "mbp_checksum",
+      "type": "bool",
+      "comment": "MBP compute checksum?"
+    },
+    {
       "name": "oms_download_has_state",
       "type": "bool",
       "comment": "OMS download includes state information?"

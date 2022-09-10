@@ -65,7 +65,7 @@ struct CustomMetrics final {
       auto iter = lookup_.find(key);
       if (iter == std::end(lookup_)) {
         auto iter = lookup_.emplace(key, std::size(measurements)).first;
-        measurements.emplace_back(key, value);
+        measurements.push_back({key, value});
         changed = true;
       } else {
         auto index = (*iter).second;
@@ -82,7 +82,7 @@ struct CustomMetrics final {
     lookup_.clear();
     for (auto &[key, value] : custom_metrics_update.measurements) {
       auto iter = lookup_.emplace(key, std::size(measurements)).first;
-      measurements.emplace_back(key, value);
+      measurements.push_back({key, value});
     }
   }
 

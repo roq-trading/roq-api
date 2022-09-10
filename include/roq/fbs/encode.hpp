@@ -573,7 +573,8 @@ auto encode(B &builder, roq::CustomMetrics const &value) {
       encode(builder, value.account),
       encode(builder, value.exchange),
       encode(builder, value.symbol),
-      encode(builder, value.measurements));
+      encode(builder, value.measurements),
+      encode(builder, value.update_type));
 }
 
 template <typename B>
@@ -585,7 +586,8 @@ auto encode(B &builder, roq::CustomMetricsUpdate const &value) {
       encode(builder, value.account),
       encode(builder, value.exchange),
       encode(builder, value.symbol),
-      encode(builder, value.measurements));
+      encode(builder, value.measurements),
+      encode(builder, value.update_type));
 }
 
 template <typename B>

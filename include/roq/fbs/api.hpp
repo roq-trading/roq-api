@@ -2762,7 +2762,8 @@ struct CustomMetrics FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ACCOUNT = 6,
     VT_EXCHANGE = 8,
     VT_SYMBOL = 10,
-    VT_MEASUREMENTS = 12
+    VT_MEASUREMENTS = 12,
+    VT_UPDATE_TYPE = 14
   };
   const flatbuffers::String *label() const {
     return GetPointer<const flatbuffers::String *>(VT_LABEL);
@@ -2779,6 +2780,9 @@ struct CustomMetrics FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *>(VT_MEASUREMENTS);
   }
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_LABEL) &&
@@ -2792,6 +2796,7 @@ struct CustomMetrics FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_MEASUREMENTS) &&
            verifier.VerifyVector(measurements()) &&
            verifier.VerifyVectorOfTables(measurements()) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
            verifier.EndTable();
   }
 };
@@ -2815,6 +2820,9 @@ struct CustomMetricsBuilder {
   void add_measurements(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>>> measurements) {
     fbb_.AddOffset(CustomMetrics::VT_MEASUREMENTS, measurements);
   }
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(CustomMetrics::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
   explicit CustomMetricsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2832,13 +2840,15 @@ inline flatbuffers::Offset<CustomMetrics> CreateCustomMetrics(
     flatbuffers::Offset<flatbuffers::String> account = 0,
     flatbuffers::Offset<flatbuffers::String> exchange = 0,
     flatbuffers::Offset<flatbuffers::String> symbol = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>>> measurements = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>>> measurements = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
   CustomMetricsBuilder builder_(_fbb);
   builder_.add_measurements(measurements);
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
   builder_.add_account(account);
   builder_.add_label(label);
+  builder_.add_update_type(update_type);
   return builder_.Finish();
 }
 
@@ -2853,7 +2863,8 @@ inline flatbuffers::Offset<CustomMetrics> CreateCustomMetricsDirect(
     const char *account = nullptr,
     const char *exchange = nullptr,
     const char *symbol = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements = nullptr) {
+    const std::vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements = nullptr,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
   auto label__ = label ? _fbb.CreateString(label) : 0;
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
@@ -2865,7 +2876,8 @@ inline flatbuffers::Offset<CustomMetrics> CreateCustomMetricsDirect(
       account__,
       exchange__,
       symbol__,
-      measurements__);
+      measurements__,
+      update_type);
 }
 
 struct CustomMetricsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -2877,7 +2889,8 @@ struct CustomMetricsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_ACCOUNT = 8,
     VT_EXCHANGE = 10,
     VT_SYMBOL = 12,
-    VT_MEASUREMENTS = 14
+    VT_MEASUREMENTS = 14,
+    VT_UPDATE_TYPE = 16
   };
   const flatbuffers::String *user() const {
     return GetPointer<const flatbuffers::String *>(VT_USER);
@@ -2897,6 +2910,9 @@ struct CustomMetricsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>> *>(VT_MEASUREMENTS);
   }
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_USER) &&
@@ -2912,6 +2928,7 @@ struct CustomMetricsUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
            VerifyOffset(verifier, VT_MEASUREMENTS) &&
            verifier.VerifyVector(measurements()) &&
            verifier.VerifyVectorOfTables(measurements()) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
            verifier.EndTable();
   }
 };
@@ -2938,6 +2955,9 @@ struct CustomMetricsUpdateBuilder {
   void add_measurements(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>>> measurements) {
     fbb_.AddOffset(CustomMetricsUpdate::VT_MEASUREMENTS, measurements);
   }
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(CustomMetricsUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
   explicit CustomMetricsUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2956,7 +2976,8 @@ inline flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdate(
     flatbuffers::Offset<flatbuffers::String> account = 0,
     flatbuffers::Offset<flatbuffers::String> exchange = 0,
     flatbuffers::Offset<flatbuffers::String> symbol = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>>> measurements = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Measurement>>> measurements = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
   CustomMetricsUpdateBuilder builder_(_fbb);
   builder_.add_measurements(measurements);
   builder_.add_symbol(symbol);
@@ -2964,6 +2985,7 @@ inline flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdate(
   builder_.add_account(account);
   builder_.add_label(label);
   builder_.add_user(user);
+  builder_.add_update_type(update_type);
   return builder_.Finish();
 }
 
@@ -2979,7 +3001,8 @@ inline flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdateDirect(
     const char *account = nullptr,
     const char *exchange = nullptr,
     const char *symbol = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements = nullptr) {
+    const std::vector<flatbuffers::Offset<roq::fbs::Measurement>> *measurements = nullptr,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
   auto user__ = user ? _fbb.CreateString(user) : 0;
   auto label__ = label ? _fbb.CreateString(label) : 0;
   auto account__ = account ? _fbb.CreateString(account) : 0;
@@ -2993,7 +3016,8 @@ inline flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdateDirect(
       account__,
       exchange__,
       symbol__,
-      measurements__);
+      measurements__,
+      update_type);
 }
 
 struct DownloadBegin FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

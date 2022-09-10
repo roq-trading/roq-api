@@ -4,9 +4,13 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `CustomMetrics.update_type` and `CustomMetricsUpdate.update_type`
+* `GatewaySettings.mbp_checksum`
+
 ### Changed
 
-* Added `GatewaySettings.mbp_checksum`
 * `cache::MarketByPrice::max_depth` now returns `uint16_t`
 
 ### Removed

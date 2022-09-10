@@ -8,4 +8,5 @@ table CustomMetrics {
   exchange:string;
   symbol:string;
   measurements:[Measurement];
+  update_type:UpdateType;
 }

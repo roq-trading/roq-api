@@ -24,6 +24,11 @@
       "name": "measurements",
       "type": "std::span<Measurement>",
       "comment": "List of measurements"
+    },
+    {
+      "name": "update_type",
+      "type": "UpdateType",
+      "comment": "Update type"
     }
   ]
 }

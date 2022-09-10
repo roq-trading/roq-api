@@ -21,6 +21,7 @@
 #include "roq/trace.hpp"
 
 #include "roq/measurement.hpp"
+#include "roq/update_type.hpp"
 
 namespace roq {
 
@@ -31,6 +32,7 @@ struct ROQ_PUBLIC CustomMetrics final {
   std::string_view exchange;            //!< Exchange
   std::string_view symbol;              //!< Symbol
   std::span<Measurement> measurements;  //!< List of measurements
+  UpdateType update_type = {};          //!< Update type
 };
 
 template <>
@@ -57,13 +59,15 @@ struct fmt::formatter<roq::CustomMetrics> {
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(measurements=[{}])"
+        R"(measurements=[{}], )"
+        R"(update_type={})"
         R"(}})"sv,
         value.label,
         value.account,
         value.exchange,
         value.symbol,
-        fmt::join(value.measurements, ", "sv));
+        fmt::join(value.measurements, ", "sv),
+        value.update_type);
   }
 };
 

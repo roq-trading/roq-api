@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <absl/container/flat_hash_map.h>
+#include <absl/container/node_hash_map.h>
 
 #include <array>
 #include <limits>
@@ -25,22 +25,18 @@ struct CustomMetrics final {
   CustomMetrics(CustomMetrics &&) = default;
 
   [[nodiscard]] bool operator()(CustomMetricsUpdate const &custom_metrics_update) {
-    for (auto &measurement : custom_metrics_update.measurements) {
-      auto &[key, value] = measurement;
-      auto iter = lookup_.find(key);
-      if (iter == std::end(lookup_)) {
-        auto res = lookup_.emplace(key, std::size(measurements));
-        iter = res.first;
-        measurements.push_back(measurement);
-        return true;
-      } else {
-        auto index = (*iter).second;
-        auto &tmp = measurements[index];
-        auto changed = false;
-        changed |= utils::update(tmp.value, measurement.value);
-        return changed;
-      }
+    switch (custom_metrics_update.update_type) {
+      using enum UpdateType;
+      case UNDEFINED:
+      case INCREMENTAL:
+        return update_incremental(custom_metrics_update);
+      case SNAPSHOT:
+        update_snapshot(custom_metrics_update);
+      case STALE:
+        assert(false);  // note supported
+        break;
     }
+    return false;
   }
 
   template <typename Context>
@@ -52,6 +48,7 @@ struct CustomMetrics final {
         .exchange = context.exchange,
         .symbol = context.symbol,
         .measurements = measurements,  // XXX reason for non-const method
+        .update_type = UpdateType::SNAPSHOT,
     };
   }
 
@@ -61,8 +58,36 @@ struct CustomMetrics final {
   const Label label;
   std::vector<Measurement> measurements;
 
+ protected:
+  bool update_incremental(CustomMetricsUpdate const &custom_metrics_update) {
+    auto changed = false;
+    for (auto &[key, value] : custom_metrics_update.measurements) {
+      auto iter = lookup_.find(key);
+      if (iter == std::end(lookup_)) {
+        auto iter = lookup_.emplace(key, std::size(measurements)).first;
+        measurements.emplace_back(key, value);
+        changed = true;
+      } else {
+        auto index = (*iter).second;
+        auto &tmp = measurements[index];
+        auto changed = false;
+        changed |= utils::update(tmp.value, value);
+      }
+    }
+    return changed;
+  }
+
+  void update_snapshot(CustomMetricsUpdate const &custom_metrics_update) {
+    measurements.clear();
+    lookup_.clear();
+    for (auto &[key, value] : custom_metrics_update.measurements) {
+      auto iter = lookup_.emplace(key, std::size(measurements)).first;
+      measurements.emplace_back(key, value);
+    }
+  }
+
  private:
-  absl::flat_hash_map<MeasurementKey, size_t> lookup_;
+  absl::node_hash_map<MeasurementKey, size_t> lookup_;
 };
 
 }  // namespace cache

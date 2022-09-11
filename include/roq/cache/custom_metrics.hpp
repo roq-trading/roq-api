@@ -32,6 +32,7 @@ struct CustomMetrics final {
         return update_incremental(custom_metrics_update);
       case SNAPSHOT:
         update_snapshot(custom_metrics_update);
+        return true;
       case STALE:
         assert(false);  // note supported
         break;
@@ -70,7 +71,6 @@ struct CustomMetrics final {
       } else {
         auto index = (*iter).second;
         auto &tmp = measurements[index];
-        auto changed = false;
         changed |= utils::update(tmp.value, value);
       }
     }

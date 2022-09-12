@@ -21,7 +21,7 @@ struct Measurement final {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"("name":"{}",)"
+        R"("name":{},)"
         R"("value":{})"
         R"(}})"sv,
         String{value_.name},

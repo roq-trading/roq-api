@@ -8,6 +8,7 @@
 
 #include "roq/custom_metrics_update.hpp"
 
+#include "roq/json/measurement.hpp"
 #include "roq/json/string.hpp"
 
 namespace roq {

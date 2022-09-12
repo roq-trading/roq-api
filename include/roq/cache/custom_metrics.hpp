@@ -20,6 +20,7 @@ namespace cache {
 struct CustomMetrics final {
   explicit CustomMetrics(CustomMetricsUpdate const &custom_metrics_update)
       : user(custom_metrics_update.user), label(custom_metrics_update.label) {}
+  explicit CustomMetrics(roq::CustomMetrics const &custom_metrics) : label(custom_metrics.label) {}
 
   CustomMetrics(CustomMetrics const &) = delete;
   CustomMetrics(CustomMetrics &&) = default;
@@ -32,6 +33,22 @@ struct CustomMetrics final {
         return update_incremental(custom_metrics_update);
       case SNAPSHOT:
         update_snapshot(custom_metrics_update);
+        return true;
+      case STALE:
+        assert(false);  // note supported
+        break;
+    }
+    return false;
+  }
+
+  [[nodiscard]] bool operator()(roq::CustomMetrics const &custom_metrics) {
+    switch (custom_metrics.update_type) {
+      using enum UpdateType;
+      case UNDEFINED:
+      case INCREMENTAL:
+        return update_incremental(custom_metrics);
+      case SNAPSHOT:
+        update_snapshot(custom_metrics);
         return true;
       case STALE:
         assert(false);  // note supported
@@ -60,7 +77,7 @@ struct CustomMetrics final {
   std::vector<Measurement> measurements;
 
  protected:
-  bool update_incremental(CustomMetricsUpdate const &custom_metrics_update) {
+  bool update_incremental(auto const &custom_metrics_update) {
     auto changed = false;
     for (auto &[key, value] : custom_metrics_update.measurements) {
       auto iter = lookup_.find(key);
@@ -77,7 +94,7 @@ struct CustomMetrics final {
     return changed;
   }
 
-  void update_snapshot(CustomMetricsUpdate const &custom_metrics_update) {
+  void update_snapshot(auto const &custom_metrics_update) {
     measurements.clear();
     lookup_.clear();
     for (auto &[key, value] : custom_metrics_update.measurements) {

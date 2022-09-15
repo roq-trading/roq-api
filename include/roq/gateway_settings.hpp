@@ -104,13 +104,13 @@ struct fmt::formatter<roq::Event<roq::GatewaySettings> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::GatewaySettings const> > {
+struct fmt::formatter<roq::Trace<roq::GatewaySettings> > {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::GatewaySettings const> const &event, Context &context) const {
+  auto format(roq::Trace<roq::GatewaySettings> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

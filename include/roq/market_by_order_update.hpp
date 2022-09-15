@@ -108,13 +108,13 @@ struct fmt::formatter<roq::Event<roq::MarketByOrderUpdate> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::MarketByOrderUpdate const> > {
+struct fmt::formatter<roq::Trace<roq::MarketByOrderUpdate> > {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::MarketByOrderUpdate const> const &event, Context &context) const {
+  auto format(roq::Trace<roq::MarketByOrderUpdate> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

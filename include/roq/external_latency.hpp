@@ -80,13 +80,13 @@ struct fmt::formatter<roq::Event<roq::ExternalLatency> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::ExternalLatency const> > {
+struct fmt::formatter<roq::Trace<roq::ExternalLatency> > {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::ExternalLatency const> const &event, Context &context) const {
+  auto format(roq::Trace<roq::ExternalLatency> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

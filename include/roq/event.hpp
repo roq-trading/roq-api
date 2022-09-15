@@ -9,11 +9,11 @@
 namespace roq {
 
 //! Event
-template <typename T>
+template <typename T, typename = typename std::enable_if<!std::is_const<T>::value>::type>
 struct Event final {
-  using value_type = T const;
+  using value_type = T;
 
-  Event(MessageInfo const &message_info_, value_type const &value_) : message_info(message_info_), value(value_) {}
+  Event(MessageInfo const &message_info_, T const &value_) : message_info(message_info_), value(value_) {}
 
   Event(Event const &) = delete;
   Event(Event &&) = delete;
@@ -43,8 +43,8 @@ struct Event final {
 //! Create event and dispatch to handler
 template <typename Handler, typename T, typename... Args>
 inline void create_event_and_dispatch(
-    Handler &&handler, MessageInfo const &message_info, const T &value, Args &&...args) {
-  const Event event{message_info, value};
+    Handler &&handler, MessageInfo const &message_info, T const &value, Args &&...args) {
+  Event const event{message_info, value};
   return event.template dispatch<void>(handler, std::forward<Args>(args)...);
 }
 

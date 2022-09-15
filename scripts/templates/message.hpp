@@ -65,14 +65,14 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
 };
 
 template <>
-struct fmt::formatter<{{ namespaces | join('::') }}::Trace<{{ namespaces | join('::') }}::{{ name }} const> > {
+struct fmt::formatter<{{ namespaces | join('::') }}::Trace<{{ namespaces | join('::') }}::{{ name }}> > {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
   }
   template <typename Context>
   auto format(
-      {{ namespaces | join('::') }}::Trace<{{ namespaces | join('::') }}::{{ name }} const> const& event,
+      {{ namespaces | join('::') }}::Trace<{{ namespaces | join('::') }}::{{ name }}> const& event,
       Context& context) const {
     using namespace std::literals;
     return fmt::format_to(

@@ -67,13 +67,13 @@ struct fmt::formatter<roq::Event<roq::Stop> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::Stop const> > {
+struct fmt::formatter<roq::Trace<roq::Stop> > {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::Trace<roq::Stop const> const &event, Context &context) const {
+  auto format(roq::Trace<roq::Stop> const &event, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

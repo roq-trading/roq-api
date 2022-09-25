@@ -19,14 +19,14 @@
 
 namespace roq {
 
-//! Represents a single trade (match) as part of trade reporting by the exchange
+//! Represents a single trade (a match) as part of trade reporting by the exchange
 struct ROQ_PUBLIC Trade final {
   Side side = {};                  //!< Side (by convention: side of the taker)
   double price = NaN;              //!< Price
   double quantity = NaN;           //!< Quantity
   ExternalTradeId trade_id;        //!< Trade identifier
-  ExternalOrderId taker_order_id;  //!< External order identifier for taker
-  ExternalOrderId maker_order_id;  //!< External order identifier for maker
+  ExternalOrderId taker_order_id;  //!< External order identifier (taker)
+  ExternalOrderId maker_order_id;  //!< External order identifier (maker)
 };
 
 }  // namespace roq

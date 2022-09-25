@@ -21,10 +21,12 @@ namespace roq {
 
 //! Represents a single trade (match) as part of trade reporting by the exchange
 struct ROQ_PUBLIC Trade final {
-  Side side = {};            //!< Side (by convention: side of the taker)
-  double price = NaN;        //!< Price
-  double quantity = NaN;     //!< Quantity
-  ExternalTradeId trade_id;  //!< Trade identifier
+  Side side = {};                  //!< Side (by convention: side of the taker)
+  double price = NaN;              //!< Price
+  double quantity = NaN;           //!< Quantity
+  ExternalTradeId trade_id;        //!< Trade identifier
+  ExternalOrderId taker_order_id;  //!< External order identifier for taker
+  ExternalOrderId maker_order_id;  //!< External order identifier for maker
 };
 
 }  // namespace roq
@@ -44,11 +46,15 @@ struct fmt::formatter<roq::Trade> {
         R"(side={}, )"
         R"(price={}, )"
         R"(quantity={}, )"
-        R"(trade_id="{}")"
+        R"(trade_id="{}", )"
+        R"(taker_order_id="{}", )"
+        R"(maker_order_id="{}")"
         R"(}})"sv,
         value.side,
         value.price,
         value.quantity,
-        value.trade_id);
+        value.trade_id,
+        value.taker_order_id,
+        value.maker_order_id);
   }
 };

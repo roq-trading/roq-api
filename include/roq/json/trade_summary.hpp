@@ -29,13 +29,15 @@ struct TradeSummary final {
         R"("exchange":{},)"
         R"("symbol":{},)"
         R"("trades":[{}],)"
+        R"("exchange_sequence":{},)"
         R"("exchange_sequence":{})"
         R"(}})"sv,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
         fmt::join(ranges::views::transform(value_.trades, [](auto const &v) { return Trade(v); }), ","),
-        DateTime{value_.exchange_time_utc});
+        DateTime{value_.exchange_time_utc},
+        value_.exchange_sequence);
   }
 
  private:

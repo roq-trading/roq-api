@@ -126,7 +126,7 @@ static_assert(sizeof(decltype(Measurement::name)) == sizeof(MeasurementKey));
 static_assert(sizeof(Layer) == 32);
 static_assert(sizeof(MBPUpdate) == 32);
 static_assert(sizeof(MBOUpdate) == 64);
-static_assert(sizeof(Trade) == 64);
+static_assert(sizeof(Trade) == 192);
 static_assert(sizeof(Fill) == 64);
 static_assert(sizeof(Statistics) == 32);
 static_assert(sizeof(Measurement) == 16);

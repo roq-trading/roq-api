@@ -2259,7 +2259,9 @@ struct Trade FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_SIDE = 4,
     VT_PRICE = 6,
     VT_QUANTITY = 8,
-    VT_TRADE_ID = 10
+    VT_TRADE_ID = 10,
+    VT_TAKER_ORDER_ID = 12,
+    VT_MAKER_ORDER_ID = 14
   };
   roq::fbs::Side side() const {
     return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0));
@@ -2273,6 +2275,12 @@ struct Trade FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *trade_id() const {
     return GetPointer<const flatbuffers::String *>(VT_TRADE_ID);
   }
+  const flatbuffers::String *taker_order_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_TAKER_ORDER_ID);
+  }
+  const flatbuffers::String *maker_order_id() const {
+    return GetPointer<const flatbuffers::String *>(VT_MAKER_ORDER_ID);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_SIDE, 1) &&
@@ -2280,6 +2288,10 @@ struct Trade FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<double>(verifier, VT_QUANTITY, 8) &&
            VerifyOffset(verifier, VT_TRADE_ID) &&
            verifier.VerifyString(trade_id()) &&
+           VerifyOffset(verifier, VT_TAKER_ORDER_ID) &&
+           verifier.VerifyString(taker_order_id()) &&
+           VerifyOffset(verifier, VT_MAKER_ORDER_ID) &&
+           verifier.VerifyString(maker_order_id()) &&
            verifier.EndTable();
   }
 };
@@ -2300,6 +2312,12 @@ struct TradeBuilder {
   void add_trade_id(flatbuffers::Offset<flatbuffers::String> trade_id) {
     fbb_.AddOffset(Trade::VT_TRADE_ID, trade_id);
   }
+  void add_taker_order_id(flatbuffers::Offset<flatbuffers::String> taker_order_id) {
+    fbb_.AddOffset(Trade::VT_TAKER_ORDER_ID, taker_order_id);
+  }
+  void add_maker_order_id(flatbuffers::Offset<flatbuffers::String> maker_order_id) {
+    fbb_.AddOffset(Trade::VT_MAKER_ORDER_ID, maker_order_id);
+  }
   explicit TradeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2316,10 +2334,14 @@ inline flatbuffers::Offset<Trade> CreateTrade(
     roq::fbs::Side side = roq::fbs::Side::Undefined,
     double price = std::numeric_limits<double>::quiet_NaN(),
     double quantity = 0.0,
-    flatbuffers::Offset<flatbuffers::String> trade_id = 0) {
+    flatbuffers::Offset<flatbuffers::String> trade_id = 0,
+    flatbuffers::Offset<flatbuffers::String> taker_order_id = 0,
+    flatbuffers::Offset<flatbuffers::String> maker_order_id = 0) {
   TradeBuilder builder_(_fbb);
   builder_.add_quantity(quantity);
   builder_.add_price(price);
+  builder_.add_maker_order_id(maker_order_id);
+  builder_.add_taker_order_id(taker_order_id);
   builder_.add_trade_id(trade_id);
   builder_.add_side(side);
   return builder_.Finish();
@@ -2335,14 +2357,20 @@ inline flatbuffers::Offset<Trade> CreateTradeDirect(
     roq::fbs::Side side = roq::fbs::Side::Undefined,
     double price = std::numeric_limits<double>::quiet_NaN(),
     double quantity = 0.0,
-    const char *trade_id = nullptr) {
+    const char *trade_id = nullptr,
+    const char *taker_order_id = nullptr,
+    const char *maker_order_id = nullptr) {
   auto trade_id__ = trade_id ? _fbb.CreateString(trade_id) : 0;
+  auto taker_order_id__ = taker_order_id ? _fbb.CreateString(taker_order_id) : 0;
+  auto maker_order_id__ = maker_order_id ? _fbb.CreateString(maker_order_id) : 0;
   return roq::fbs::CreateTrade(
       _fbb,
       side,
       price,
       quantity,
-      trade_id__);
+      trade_id__,
+      taker_order_id__,
+      maker_order_id__);
 }
 
 struct CancelAllOrders FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -6048,7 +6076,8 @@ struct TradeSummary FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_EXCHANGE = 6,
     VT_SYMBOL = 8,
     VT_TRADES = 10,
-    VT_EXCHANGE_TIME_UTC = 12
+    VT_EXCHANGE_TIME_UTC = 12,
+    VT_EXCHANGE_SEQUENCE = 14
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -6065,6 +6094,9 @@ struct TradeSummary FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int64_t exchange_time_utc() const {
     return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0);
   }
+  int64_t exchange_sequence() const {
+    return GetField<int64_t>(VT_EXCHANGE_SEQUENCE, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -6076,6 +6108,7 @@ struct TradeSummary FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVector(trades()) &&
            verifier.VerifyVectorOfTables(trades()) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
            verifier.EndTable();
   }
 };
@@ -6099,6 +6132,9 @@ struct TradeSummaryBuilder {
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(TradeSummary::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
+  void add_exchange_sequence(int64_t exchange_sequence) {
+    fbb_.AddElement<int64_t>(TradeSummary::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
+  }
   explicit TradeSummaryBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -6116,8 +6152,10 @@ inline flatbuffers::Offset<TradeSummary> CreateTradeSummary(
     flatbuffers::Offset<flatbuffers::String> exchange = 0,
     flatbuffers::Offset<flatbuffers::String> symbol = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Trade>>> trades = 0,
-    int64_t exchange_time_utc = 0) {
+    int64_t exchange_time_utc = 0,
+    int64_t exchange_sequence = 0) {
   TradeSummaryBuilder builder_(_fbb);
+  builder_.add_exchange_sequence(exchange_sequence);
   builder_.add_exchange_time_utc(exchange_time_utc);
   builder_.add_trades(trades);
   builder_.add_symbol(symbol);
@@ -6137,7 +6175,8 @@ inline flatbuffers::Offset<TradeSummary> CreateTradeSummaryDirect(
     const char *exchange = nullptr,
     const char *symbol = nullptr,
     const std::vector<flatbuffers::Offset<roq::fbs::Trade>> *trades = nullptr,
-    int64_t exchange_time_utc = 0) {
+    int64_t exchange_time_utc = 0,
+    int64_t exchange_sequence = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto trades__ = trades ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Trade>>(*trades) : 0;
@@ -6147,7 +6186,8 @@ inline flatbuffers::Offset<TradeSummary> CreateTradeSummaryDirect(
       exchange__,
       symbol__,
       trades__,
-      exchange_time_utc);
+      exchange_time_utc,
+      exchange_sequence);
 }
 
 struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

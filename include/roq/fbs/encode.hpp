@@ -179,7 +179,9 @@ auto encode(B &builder, roq::Trade const &value) {
       encode(builder, value.side),
       value.price,
       value.quantity,
-      encode(builder, static_cast<std::string_view>(value.trade_id)));
+      encode(builder, static_cast<std::string_view>(value.trade_id)),
+      encode(builder, static_cast<std::string_view>(value.taker_order_id)),
+      encode(builder, static_cast<std::string_view>(value.maker_order_id)));
 }
 
 // std::span
@@ -389,7 +391,8 @@ auto encode(B &builder, roq::TradeSummary const &value) {
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.trades),
-      encode(builder, value.exchange_time_utc));
+      encode(builder, value.exchange_time_utc),
+      value.exchange_sequence);
 }
 
 template <typename B>

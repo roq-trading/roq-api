@@ -27,7 +27,7 @@ TEST_CASE("alignment_mbo_update", "[alignment]") {
 TEST_CASE("alignment_trade", "[alignment]") {
   std::array<Trade, 2> value;
   auto offset = reinterpret_cast<uint8_t *>(&value[1]) - reinterpret_cast<uint8_t *>(&value[0]);
-  CHECK(offset == std::ptrdiff_t{64});
+  CHECK(offset == std::ptrdiff_t{192});
 }
 
 TEST_CASE("alignment_fill", "[alignment]") {

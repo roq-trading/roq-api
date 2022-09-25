@@ -7,4 +7,6 @@ table Trade {
   price:double = nan;
   quantity:double = 0.0;
   trade_id:string;
+  taker_order_id:string;
+  maker_order_id:string;
 }

@@ -121,6 +121,31 @@ class ROQ_PUBLIC MarketByPrice {
     callback(final_market_by_price_update);
   }
 
+  // extract snapshot
+  // note!
+  //   storage containers must be provided for storing bids and asks
+  template <typename Storage>
+  MarketByPriceUpdate extract_snapshot(Storage &bids, Storage &asks) const {
+    auto [bids_size, asks_size] = size();
+    bids.resize(bids_size);
+    asks.resize(asks_size);
+    auto [final_bids, final_asks] = extract(bids, asks, false);
+    return MarketByPriceUpdate{
+        .stream_id = {},
+        .exchange = exchange(),
+        .symbol = symbol(),
+        .bids = final_bids,
+        .asks = final_asks,
+        .update_type = UpdateType::SNAPSHOT,
+        .exchange_time_utc = exchange_time_utc(),
+        .exchange_sequence = exchange_sequence(),
+        .price_decimals = price_decimals(),
+        .quantity_decimals = quantity_decimals(),
+        .max_depth = max_depth(),
+        .checksum = checksum(),
+    };
+  }
+
   // generate depth update from full update
   virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> create_depth_update(
       MarketByPriceUpdate const &,

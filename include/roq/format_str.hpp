@@ -97,18 +97,10 @@ struct basic_format_str final {
 #endif
       if (path == nullptr) return {};
   std::string_view tmp{path};
-#if __cplusplus >= 201703L
   if (std::empty(tmp))
-#else
-    if (tmp.empty())
-#endif
     return {};
   auto pos = tmp.find_last_of('/');
-#if __cplusplus >= 201703L
   if (pos == tmp.npos || pos == (std::size(tmp) - 1))
-#else
-    if (pos == tmp.npos || pos == (tmp.size() - 1))
-#endif
     return tmp;
   return tmp.substr(++pos);
 }

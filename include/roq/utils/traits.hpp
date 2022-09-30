@@ -44,7 +44,6 @@ inline constexpr bool is_integer_v = is_integer<T>::value;
 // references:
 //   https://stackoverflow.com/a/57812868
 
-#if __cplusplus >= 201703L
 template <typename T>
 struct is_string : public std::disjunction<
                        std::is_same<char *, typename std::decay<T>::type>,
@@ -54,20 +53,6 @@ struct is_string : public std::disjunction<
 
 template <class T>
 inline constexpr bool is_string_v = is_string<T>::value;
-
-#else
-template <typename T, typename = void>
-struct is_string : std::false_type {};
-
-template <typename T>
-struct is_string<
-    T,
-    typename std::enable_if<
-        std::is_same<char *, typename std::decay<T>::type>::value ||
-        std::is_same<char const *, typename std::decay<T>::type>::value ||
-        std::is_same<std::string, typename std::decay<T>::type>::value ||
-        std::is_same<std::string_view, typename std::decay<T>::type>::value>::type> : public std::true_type {};
-#endif
 
 // is_pair + is_pair_v
 

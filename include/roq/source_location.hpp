@@ -2,6 +2,14 @@
 
 #pragma once
 
+// note!
+// clang14 doesn't support std::source_location
+// partial support may potentially arrive with clang15
+// we will fail this #include for all other compilers
+#ifndef __clang__
+#error "should not be included"
+#endif
+
 #include <cstdint>
 
 namespace roq {

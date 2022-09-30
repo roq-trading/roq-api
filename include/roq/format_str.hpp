@@ -7,7 +7,14 @@
 #include <array>
 #include <string_view>
 
+#if defined(__APPLE__)
 #include "roq/source_location.hpp"
+#else
+#include <source_location>
+namespace roq {
+using source_location = std::source_location;
+}
+#endif
 
 // note!
 // this class captures the source location + does compile-time format string checking (c++20, only)

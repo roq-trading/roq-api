@@ -2,13 +2,13 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <fmt/format.h>
 
 #include <cstdint>
 #include <string>
 #include <string_view>
-
-#include "roq/compat.hpp"
 
 namespace roq {
 namespace metrics {

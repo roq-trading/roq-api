@@ -2,10 +2,10 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <cstdint>
 #include <string_view>
-
-#include "roq/compat.hpp"
 
 namespace roq {
 namespace metrics {

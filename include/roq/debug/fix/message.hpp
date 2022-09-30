@@ -5,8 +5,7 @@
 #include <fmt/format.h>
 
 #include <cctype>
-
-#include "roq/span.hpp"
+#include <span>
 
 namespace roq {
 namespace debug {

@@ -4,7 +4,7 @@
 
 #include <fmt/format.h>
 
-#include "roq/span.hpp"
+#include <span>
 
 namespace roq {
 namespace debug {

@@ -29,7 +29,6 @@ requirements:
     - roq-oss-catch2
     - roq-oss-magic_enum
     - roq-oss-range-v3
-    - roq-oss-span-lite
 
 about:
   home: https://roq-trading.com

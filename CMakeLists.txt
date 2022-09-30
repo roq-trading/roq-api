@@ -44,7 +44,6 @@ find_package(PythonInterp REQUIRED)
 find_package(absl REQUIRED)
 find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
-find_package(span-lite REQUIRED)
 
 find_program(CLANG_FORMAT clang-format REQUIRED)
 find_program(FLATBUFFERS_COMPILER flatc REQUIRED)

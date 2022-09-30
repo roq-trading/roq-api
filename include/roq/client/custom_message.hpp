@@ -1,11 +1,13 @@
 /* Copyright (c) 2017-2022, Hans Erik Thrane */
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <fmt/format.h>
 
-#include "roq/compat.hpp"
+#include <span>
+
 #include "roq/event.hpp"
-#include "roq/span.hpp"
 
 namespace roq {
 namespace client {

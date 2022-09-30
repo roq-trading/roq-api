@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <absl/hash/hash.h>
 
 #include <fmt/format.h>
@@ -13,7 +15,6 @@
 #include <string_view>
 #include <utility>
 
-#include "roq/compat.hpp"
 #include "roq/exceptions.hpp"
 
 namespace roq {

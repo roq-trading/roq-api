@@ -2,9 +2,10 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <string_view>
 
-#include "roq/compat.hpp"
 #include "roq/order_cancel_policy.hpp"
 #include "roq/order_management.hpp"
 

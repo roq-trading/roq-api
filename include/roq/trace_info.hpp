@@ -2,13 +2,13 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <fmt/chrono.h>
 #include <fmt/format.h>
 
 #include <chrono>
 #include <string_view>
-
-#include "roq/compat.hpp"
 
 namespace roq {
 

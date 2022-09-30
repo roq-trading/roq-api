@@ -2,11 +2,11 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <atomic>
 #include <string>
 #include <string_view>
-
-#include "roq/compat.hpp"
 
 #include "roq/metrics/writer.hpp"
 

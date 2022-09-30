@@ -12,6 +12,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Preparing to drop C++17 compatibility
 * `cache::MarketByPrice::max_depth` now returns `uint16_t`
 
 ### Removed

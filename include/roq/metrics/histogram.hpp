@@ -2,13 +2,13 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <atomic>
 #include <cstdint>
 #include <limits>
 #include <string>
 #include <string_view>
-
-#include "roq/compat.hpp"
 
 #include "roq/metrics/base.hpp"
 #include "roq/metrics/writer.hpp"

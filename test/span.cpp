@@ -2,7 +2,7 @@
 
 #include <catch2/catch_all.hpp>
 
-#include "roq/span.hpp"
+#include <span>
 
 using namespace std::literals;
 

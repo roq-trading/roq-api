@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <fmt/format.h>
 
 #include <stdexcept>
@@ -10,11 +12,9 @@
 #include <system_error>
 #include <utility>
 
-#include "roq/compat.hpp"
 #include "roq/error.hpp"
 #include "roq/format_str.hpp"
 #include "roq/request_status.hpp"
-#include "roq/source_location.hpp"
 
 namespace roq {
 

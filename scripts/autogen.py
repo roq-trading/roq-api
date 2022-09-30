@@ -50,6 +50,17 @@ defaults = {
     "double": " = NaN",
 }
 
+default_includes = {
+    "std::chrono::microseconds": "chrono",
+    "std::chrono::milliseconds": "chrono",
+    "std::chrono::nanoseconds": "chrono",
+    "std::chrono::seconds": "chrono",
+    "std::span": "span",
+    "std::string": "string",
+    "std::string_view": "string_view",
+    "std::vector": "vector",
+}
+
 
 def is_variable(type_):
     """test if is a variable"""
@@ -78,6 +89,11 @@ def sub_type(type_):
         if "std::span<" in type_:
             return type_[10:-1]
     return type_
+
+
+def is_std(type_):
+    """test if is std type"""
+    return "std::" in type_
 
 
 def is_pod_or_std(type_):
@@ -245,7 +261,16 @@ def _new_spec_helper(item):
     )
 
 
-def _include_helper(namespaces, variable):
+def _std_include_helper(variable):
+    """includes from std library"""
+    if is_std(variable):
+        sep = variable.find("<")
+        std_type = variable if sep < 0 else variable[:sep]
+        return default_includes.get(std_type)
+    return None
+
+
+def _roq_include_helper(namespaces, variable):
     """sometimes we need a custom include"""
     if variable["is_mask"] or variable["is_array"]:
         return namespaces + (snake_case(sub_type(variable["type"])),)
@@ -268,17 +293,35 @@ def new_spec(path, namespaces, name, comment, spec, type_):
             fields = [value["name"] for value in values if len(value["comment"]) == 0]
             raise RuntimeError(f"{name} requires comments for following fields {fields}")
 
-    includes = sorted(
+    tmp = {_std_include_helper(variable["type"]) for variable in variables}
+    std_includes = sorted({x for x in tmp if x is not None})
+
+    tmp = {
+        _roq_include_helper(namespaces, variable)
+        for variable in variables
+        if (
+            (variable["is_array"] or variable["is_mask"])
+            and not is_string_like(sub_type(variable["type"]))
+        )
+        or variable["is_enum"]
+    }
+    tmp.update({(namespaces + ("uuid",)) for variable in variables if variable["type"] == "UUID"})
+    tmp.update({(namespaces + ("mask",)) for variable in variables if variable["is_mask"]})
+    tmp.update(
+        {(namespaces + ("numbers",)) for variable in variables if "NaN" in variable["default"]}
+    )
+    tmp.update(
         {
-            _include_helper(namespaces, variable)
+            (namespaces + ("string_types",))
             for variable in variables
-            if (
-                (variable["is_array"] or variable["is_mask"])
-                and not is_string_like(sub_type(variable["type"]))
-            )
-            or variable["is_enum"]
+            if variable["is_string"]
+            and not is_std(variable["type"])
+            and variable["type"] != "UUID"
         }
     )
+    # print("// " + str(tmp))
+    # print("// " + str(variables))
+    roq_includes = sorted(tmp)
 
     return dict(
         namespaces=namespaces,
@@ -288,7 +331,8 @@ def new_spec(path, namespaces, name, comment, spec, type_):
         filename=filename,
         variables=variables,
         values=values,
-        includes=includes,
+        std_includes=std_includes,
+        roq_includes=roq_includes,
     )
 
 

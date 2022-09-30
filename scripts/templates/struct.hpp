@@ -2,18 +2,16 @@
 
 #pragma once
 
-#include <fmt/chrono.h>
-#include <fmt/format.h>
+#include "roq/compat.hpp"
 
-#include <chrono>
-#include <string_view>
 
-#include "roq/numbers.hpp"
-#include "roq/span.hpp"
-#include "roq/string_types.hpp"
-#include "roq/uuid.hpp"
+{% include 'fmt_includes' %}
 
-{% include 'includes' %}
+
+{% include 'std_includes' %}
+
+
+{% include 'roq_includes' %}
 
 {% include 'namespace_begin' %}
 

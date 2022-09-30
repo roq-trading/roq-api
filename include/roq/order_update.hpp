@@ -4,29 +4,26 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <fmt/chrono.h>
 #include <fmt/format.h>
 
 #include <chrono>
 #include <string_view>
 
-#include "roq/compat.hpp"
 #include "roq/event.hpp"
-#include "roq/mask.hpp"
-#include "roq/message_info.hpp"
-#include "roq/name.hpp"
-#include "roq/numbers.hpp"
-#include "roq/span.hpp"
-#include "roq/string_types.hpp"
-#include "roq/trace.hpp"
-
 #include "roq/execution_instruction.hpp"
 #include "roq/liquidity.hpp"
+#include "roq/mask.hpp"
+#include "roq/name.hpp"
+#include "roq/numbers.hpp"
 #include "roq/order_status.hpp"
 #include "roq/order_type.hpp"
 #include "roq/position_effect.hpp"
 #include "roq/side.hpp"
 #include "roq/time_in_force.hpp"
+#include "roq/trace.hpp"
 #include "roq/update_type.hpp"
 
 namespace roq {

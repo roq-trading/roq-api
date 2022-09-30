@@ -2,9 +2,15 @@
 
 #pragma once
 
-#include <fmt/format.h>
+#include "roq/compat.hpp"
 
 #include <magic_enum.hpp>
+
+
+{% include 'fmt_includes' %}
+
+
+{% include 'std_includes' %}
 
 {% include 'namespace_begin' %}
 

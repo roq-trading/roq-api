@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.8.8 &ndash; 2022-10-04
+
 ### Added
 
 * `TradeSummary` to include exchange sequence and taker/maker order id's (#279)

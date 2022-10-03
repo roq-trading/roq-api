@@ -44,7 +44,6 @@ struct fmt::formatter<roq::SupportType> {
   template <typename Context>
   auto format(roq::SupportType const &value, Context &context) const {
     using namespace std::literals;
-#if __cplusplus >= 202002L
     std::string_view name{[&]() {
       switch (value) {
         using enum roq::SupportType;
@@ -87,49 +86,6 @@ struct fmt::formatter<roq::SupportType> {
       }
       return "<UNKNOWN>"sv;
     }()};
-#else
-    std::string_view name{[&]() {
-      switch (value) {
-        case roq::SupportType::UNDEFINED:
-          return "UNDEFINED"sv;
-        case roq::SupportType::REFERENCE_DATA:
-          return "REFERENCE_DATA"sv;
-        case roq::SupportType::MARKET_STATUS:
-          return "MARKET_STATUS"sv;
-        case roq::SupportType::TOP_OF_BOOK:
-          return "TOP_OF_BOOK"sv;
-        case roq::SupportType::MARKET_BY_PRICE:
-          return "MARKET_BY_PRICE"sv;
-        case roq::SupportType::MARKET_BY_ORDER:
-          return "MARKET_BY_ORDER"sv;
-        case roq::SupportType::TRADE_SUMMARY:
-          return "TRADE_SUMMARY"sv;
-        case roq::SupportType::STATISTICS:
-          return "STATISTICS"sv;
-        case roq::SupportType::CREATE_ORDER:
-          return "CREATE_ORDER"sv;
-        case roq::SupportType::MODIFY_ORDER:
-          return "MODIFY_ORDER"sv;
-        case roq::SupportType::CANCEL_ORDER:
-          return "CANCEL_ORDER"sv;
-        case roq::SupportType::ORDER_ACK:
-          return "ORDER_ACK"sv;
-        case roq::SupportType::ORDER:
-          return "ORDER"sv;
-        case roq::SupportType::ORDER_STATE:
-          return "ORDER_STATE"sv;
-        case roq::SupportType::TRADE:
-          return "TRADE"sv;
-        case roq::SupportType::POSITION:
-          return "POSITION"sv;
-        case roq::SupportType::FUNDS:
-          return "FUNDS"sv;
-        default:
-          assert(false);
-      }
-      return "<UNKNOWN>"sv;
-    }()};
-#endif
     return fmt::format_to(context.out(), "{}"sv, name);
   }
 };

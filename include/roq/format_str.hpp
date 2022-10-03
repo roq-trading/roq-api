@@ -26,27 +26,14 @@ namespace detail {
 // may truncate to N
 template <std::size_t N>
 struct static_string final {
-#if __cplusplus >= 202002L
   // cppcheck-suppress noExplicitConstructor
   consteval static_string(std::string_view const &sv)
-      : length_(std::min(N, std::size(sv))), buffer_(create(sv, length_)) {
-  }
-#else
-  // cppcheck-suppress noExplicitConstructor
-  constexpr static_string(std::string_view const &sv) : length_(std::min(N, sv.size())), buffer_(create(sv, length_)) {
-  }
-#endif
+      : length_(std::min(N, std::size(sv))), buffer_(create(sv, length_)) {}
 
   static_string(static_string const &) = default;
   static_string(static_string &&) = delete;
 
-  constexpr operator std::string_view() const {
-#if __cplusplus >= 202002L
-    return {std::data(buffer_), length_};
-#else
-    return {buffer_.data(), length_};
-#endif
-  }
+  constexpr operator std::string_view() const { return {std::data(buffer_), length_}; }
 
  protected:
   static constexpr auto create(std::string_view const &sv, std::size_t length) {
@@ -68,15 +55,8 @@ template <typename... Args>
 struct basic_format_str final {
   using file_name_type = detail::static_string<32>;
   template <typename T>
-#if __cplusplus >= 202002L
   // cppcheck-suppress noExplicitConstructor
   consteval basic_format_str(const T &str, source_location const &loc = source_location::current())  // NOLINT
-#else
-  // cppcheck-suppress noExplicitConstructor
-  constexpr basic_format_str(
-      std::string_view const &str, source_location const &loc = source_location::current())  // NOLINT
-#endif
-
       : str_(static_cast<std::string_view>(str)), file_name_(extract_basename(loc.file_name())), line_(loc.line()) {
     if constexpr (sizeof...(Args) > 0) {
       using checker =
@@ -90,20 +70,17 @@ struct basic_format_str final {
   const std::uint32_t line_;
 
  private:
-#if __cplusplus >= 202002L
-  static consteval std::string_view extract_basename(char const *path){
-#else
-  static constexpr std::string_view extract_basename(char const *path) {
-#endif
-      if (path == nullptr) return {};
-  std::string_view tmp{path};
-  if (std::empty(tmp))
-    return {};
-  auto pos = tmp.find_last_of('/');
-  if (pos == tmp.npos || pos == (std::size(tmp) - 1))
-    return tmp;
-  return tmp.substr(++pos);
-}
+  static consteval std::string_view extract_basename(char const *path) {
+    if (path == nullptr)
+      return {};
+    std::string_view tmp{path};
+    if (std::empty(tmp))
+      return {};
+    auto pos = tmp.find_last_of('/');
+    if (pos == tmp.npos || pos == (std::size(tmp) - 1))
+      return tmp;
+    return tmp.substr(++pos);
+  }
 };  // namespace roq
 
 template <typename... Args>

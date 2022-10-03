@@ -31,7 +31,6 @@ struct fmt::formatter<roq::Encoding> {
   template <typename Context>
   auto format(roq::Encoding const &value, Context &context) const {
     using namespace std::literals;
-#if __cplusplus >= 202002L
     std::string_view name{[&]() {
       switch (value) {
         using enum roq::Encoding;
@@ -48,23 +47,6 @@ struct fmt::formatter<roq::Encoding> {
       }
       return "<UNKNOWN>"sv;
     }()};
-#else
-    std::string_view name{[&]() {
-      switch (value) {
-        case roq::Encoding::UNDEFINED:
-          return "UNDEFINED"sv;
-        case roq::Encoding::FIX:
-          return "FIX"sv;
-        case roq::Encoding::JSON:
-          return "JSON"sv;
-        case roq::Encoding::SBE:
-          return "SBE"sv;
-        default:
-          assert(false);
-      }
-      return "<UNKNOWN>"sv;
-    }()};
-#endif
     return fmt::format_to(context.out(), "{}"sv, name);
   }
 };

@@ -19,11 +19,11 @@ namespace roq {
 //   https://stackoverflow.com/a/34406054
 
 struct source_location final {
-  // note! clang12 has bug (https://stackoverflow.com/a/68790298)
-#if __cplusplus >= 202002L && !defined(__clang__)
+#ifndef __clang__
   static consteval source_location current(
 #else
-  // note! can't do consteval until c++20
+  // note! clang12 has bug (https://stackoverflow.com/a/68790298)
+  // note! can't do consteval until clang has full support
   static constexpr source_location current(
 #endif
       char const *file = __builtin_FILE(),

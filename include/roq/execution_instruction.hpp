@@ -33,7 +33,6 @@ struct fmt::formatter<roq::ExecutionInstruction> {
   template <typename Context>
   auto format(roq::ExecutionInstruction const &value, Context &context) const {
     using namespace std::literals;
-#if __cplusplus >= 202002L
     std::string_view name{[&]() {
       switch (value) {
         using enum roq::ExecutionInstruction;
@@ -52,25 +51,6 @@ struct fmt::formatter<roq::ExecutionInstruction> {
       }
       return "<UNKNOWN>"sv;
     }()};
-#else
-    std::string_view name{[&]() {
-      switch (value) {
-        case roq::ExecutionInstruction::UNDEFINED:
-          return "UNDEFINED"sv;
-        case roq::ExecutionInstruction::PARTICIPATE_DO_NOT_INITIATE:
-          return "PARTICIPATE_DO_NOT_INITIATE"sv;
-        case roq::ExecutionInstruction::CANCEL_IF_NOT_BEST:
-          return "CANCEL_IF_NOT_BEST"sv;
-        case roq::ExecutionInstruction::DO_NOT_INCREASE:
-          return "DO_NOT_INCREASE"sv;
-        case roq::ExecutionInstruction::DO_NOT_REDUCE:
-          return "DO_NOT_REDUCE"sv;
-        default:
-          assert(false);
-      }
-      return "<UNKNOWN>"sv;
-    }()};
-#endif
     return fmt::format_to(context.out(), "{}"sv, name);
   }
 };

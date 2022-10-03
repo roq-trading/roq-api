@@ -121,7 +121,7 @@ static_assert(sizeof(decltype(RateLimitTrigger::accounts)::value_type) == sizeof
 
 static_assert(sizeof(decltype(Measurement::name)) == sizeof(MeasurementKey));
 
-// check that multiples can be cache aligned
+// check that array items can be cache aligned
 
 static_assert(sizeof(Layer) == 32);
 static_assert(sizeof(MBPUpdate) == 32);

@@ -190,7 +190,8 @@ conda install -y \
     catch2
 
 conda install -y --channel https://roq-trading.com/conda/stable \
-    roq-oss-magic_enum
+    roq-oss-magic_enum \
+    roq-oss-range-v3
 ```
 
 

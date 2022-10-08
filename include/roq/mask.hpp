@@ -32,7 +32,7 @@ class Mask final {
     using reference = T const;
     using iterator_category = std::forward_iterator_tag;
 
-    iterator(Mask<T> const &value) : value_(value) {}
+    iterator(Mask<T> value) : value_(value) {}
     bool operator==(sentinel const &) const {
       for (; index_ < magic_enum::enum_count<T>(); ++index_) {
         // special case for "undefined"

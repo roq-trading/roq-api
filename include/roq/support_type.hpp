@@ -44,7 +44,7 @@ struct fmt::formatter<roq::SupportType> {
   template <typename Context>
   auto format(roq::SupportType const &value, Context &context) const {
     using namespace std::literals;
-    std::string_view name{[&]() {
+    auto name{[&]() {
       switch (value) {
         using enum roq::SupportType;
         case UNDEFINED:

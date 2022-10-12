@@ -31,7 +31,7 @@ struct fmt::formatter<roq::Encoding> {
   template <typename Context>
   auto format(roq::Encoding const &value, Context &context) const {
     using namespace std::literals;
-    std::string_view name{[&]() {
+    auto name{[&]() {
       switch (value) {
         using enum roq::Encoding;
         case UNDEFINED:

@@ -34,7 +34,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
       {{ namespaces | join('::') }}::{{ name }} const& value,
       Context& context) const {
     using namespace std::literals;
-    std::string_view name{[&]() {
+    auto name{[&]() {
       switch (value) {
         using enum {{ namespaces | join('::') }}::{{ name }};
         case UNDEFINED:

@@ -33,7 +33,7 @@ struct fmt::formatter<roq::ExecutionInstruction> {
   template <typename Context>
   auto format(roq::ExecutionInstruction const &value, Context &context) const {
     using namespace std::literals;
-    std::string_view name{[&]() {
+    auto name{[&]() {
       switch (value) {
         using enum roq::ExecutionInstruction;
         case UNDEFINED:

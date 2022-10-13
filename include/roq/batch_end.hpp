@@ -39,7 +39,7 @@ struct fmt::formatter<roq::BatchEnd> {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::BatchEnd> > {
+struct fmt::formatter<roq::Event<roq::BatchEnd>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
@@ -59,7 +59,7 @@ struct fmt::formatter<roq::Event<roq::BatchEnd> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::BatchEnd> > {
+struct fmt::formatter<roq::Trace<roq::BatchEnd>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);

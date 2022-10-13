@@ -192,7 +192,7 @@ inline constexpr auto operator<=>(std::string const &lhs, roq::String<N> const &
 }
 
 template <size_t N>
-struct fmt::formatter<roq::String<N> > {
+struct fmt::formatter<roq::String<N>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);

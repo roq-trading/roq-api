@@ -60,7 +60,7 @@ struct fmt::formatter<roq::CancelOrder> {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::CancelOrder> > {
+struct fmt::formatter<roq::Event<roq::CancelOrder>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
@@ -80,7 +80,7 @@ struct fmt::formatter<roq::Event<roq::CancelOrder> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::CancelOrder> > {
+struct fmt::formatter<roq::Trace<roq::CancelOrder>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);

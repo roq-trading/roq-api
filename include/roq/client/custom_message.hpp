@@ -39,7 +39,7 @@ struct fmt::formatter<roq::client::CustomMessage> {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::client::CustomMessage> > {
+struct fmt::formatter<roq::Event<roq::client::CustomMessage>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);

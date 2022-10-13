@@ -59,7 +59,7 @@ struct fmt::formatter<roq::GatewayStatus> {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::GatewayStatus> > {
+struct fmt::formatter<roq::Event<roq::GatewayStatus>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
@@ -79,7 +79,7 @@ struct fmt::formatter<roq::Event<roq::GatewayStatus> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::GatewayStatus> > {
+struct fmt::formatter<roq::Trace<roq::GatewayStatus>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);

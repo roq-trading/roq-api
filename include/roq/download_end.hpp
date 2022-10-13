@@ -51,7 +51,7 @@ struct fmt::formatter<roq::DownloadEnd> {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::DownloadEnd> > {
+struct fmt::formatter<roq::Event<roq::DownloadEnd>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
@@ -71,7 +71,7 @@ struct fmt::formatter<roq::Event<roq::DownloadEnd> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::DownloadEnd> > {
+struct fmt::formatter<roq::Trace<roq::DownloadEnd>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);

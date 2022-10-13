@@ -59,7 +59,7 @@ class alignas(ROQ_CACHELINE_SIZE) Counter {
   // assumptions
   static_assert(sizeof(Data) == ROQ_CACHELINE_SIZE);
   static_assert(sizeof(std::atomic<T>) == sizeof(T));
-  static_assert(std::alignment_of_v<std::atomic<T> > == std::alignment_of_v<T>);
+  static_assert(std::alignment_of_v<std::atomic<T>> == std::alignment_of_v<T>);
 };
 
 }  // namespace metrics

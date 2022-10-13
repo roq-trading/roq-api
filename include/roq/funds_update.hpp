@@ -64,7 +64,7 @@ struct fmt::formatter<roq::FundsUpdate> {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::FundsUpdate> > {
+struct fmt::formatter<roq::Event<roq::FundsUpdate>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
@@ -84,7 +84,7 @@ struct fmt::formatter<roq::Event<roq::FundsUpdate> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::FundsUpdate> > {
+struct fmt::formatter<roq::Trace<roq::FundsUpdate>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);

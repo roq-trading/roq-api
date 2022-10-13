@@ -114,7 +114,7 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
   // assumptions
   static_assert(sizeof(Data) == ROQ_CACHELINE_SIZE);
   static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t));
-  static_assert(std::alignment_of_v<std::atomic<uint64_t> > == std::alignment_of_v<uint64_t>);
+  static_assert(std::alignment_of_v<std::atomic<uint64_t>> == std::alignment_of_v<uint64_t>);
 };
 
 // convenience

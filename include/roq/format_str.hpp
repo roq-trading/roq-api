@@ -89,7 +89,7 @@ using format_str = basic_format_str<fmt::type_identity_t<Args>...>;
 }  // namespace roq
 
 template <size_t N>
-struct fmt::formatter<roq::detail::static_string<N> > {
+struct fmt::formatter<roq::detail::static_string<N>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);

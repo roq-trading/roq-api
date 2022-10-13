@@ -70,7 +70,7 @@ struct fmt::formatter<roq::TopOfBook> {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::TopOfBook> > {
+struct fmt::formatter<roq::Event<roq::TopOfBook>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
@@ -90,7 +90,7 @@ struct fmt::formatter<roq::Event<roq::TopOfBook> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::TopOfBook> > {
+struct fmt::formatter<roq::Trace<roq::TopOfBook>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);

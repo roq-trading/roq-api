@@ -125,7 +125,7 @@ struct fmt::formatter<roq::ReferenceData> {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::ReferenceData> > {
+struct fmt::formatter<roq::Event<roq::ReferenceData>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
@@ -145,7 +145,7 @@ struct fmt::formatter<roq::Event<roq::ReferenceData> > {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::ReferenceData> > {
+struct fmt::formatter<roq::Trace<roq::ReferenceData>> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);

@@ -21,6 +21,7 @@ enum class RequestStatus : uint8_t {
   DISCONNECTED,
   TIMEOUT,
   FAILED,  //!< Generic failure
+  ERROR,   //!< Generic error, possibly parse error
 };
 
 }  // namespace roq

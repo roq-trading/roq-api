@@ -21,6 +21,10 @@
     {
       "name": "Failed",
       "comment": "Generic failure"
+    },
+    {
+      "name": "Error",
+      "comment": "Generic error, possibly parse error"
     }
   ]
 }

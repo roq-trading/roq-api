@@ -111,8 +111,8 @@ inline constexpr RequestStatus to_request_status(OrderStatus order_status) {
 
 //! Check if request has positively reached a final (completed) state
 inline constexpr bool has_request_completed(RequestStatus request_status) {
-  using enum RequestStatus;
   switch (request_status) {
+    using enum RequestStatus;
     case UNDEFINED:
     case FORWARDED:
       break;
@@ -123,9 +123,8 @@ inline constexpr bool has_request_completed(RequestStatus request_status) {
       return true;
       // note! we don't know the real status for these
     case DISCONNECTED:
+    case ERROR:
     case TIMEOUT:
-      break;
-    default:
       break;
   }
   return false;
@@ -133,8 +132,8 @@ inline constexpr bool has_request_completed(RequestStatus request_status) {
 
 //! Check if request has maybe reached a final state (including "unknown" states)
 inline constexpr bool has_request_maybe_completed(RequestStatus request_status) {
-  using enum RequestStatus;
   switch (request_status) {
+    using enum RequestStatus;
     case UNDEFINED:
     case FORWARDED:
       break;
@@ -145,10 +144,9 @@ inline constexpr bool has_request_maybe_completed(RequestStatus request_status) 
       return true;
       // note! we don't know the real status for these
     case DISCONNECTED:
+    case ERROR:
     case TIMEOUT:
       return true;
-    default:
-      break;
   }
   return false;
 }
@@ -167,9 +165,8 @@ inline constexpr bool has_request_failed(RequestStatus request_status) {
       return true;
       // note! we don't know the real status for these
     case DISCONNECTED:
+    case ERROR:
     case TIMEOUT:
-      break;
-    default:
       break;
   }
   return false;
@@ -189,10 +186,9 @@ inline constexpr bool has_request_maybe_failed(RequestStatus request_status) {
       return true;
       // note! we don't know the real status for these
     case DISCONNECTED:
+    case ERROR:
     case TIMEOUT:
       return true;
-    default:
-      break;
   }
   return false;
 }
@@ -213,9 +209,8 @@ inline constexpr bool has_request_succeeded(RequestStatus request_status) {
       break;
       // note! we don't know the real status for these
     case DISCONNECTED:
+    case ERROR:
     case TIMEOUT:
-      break;
-    default:
       break;
   }
   return false;
@@ -225,18 +220,20 @@ inline constexpr bool has_request_succeeded(RequestStatus request_status) {
 inline constexpr std::strong_ordering compare_requests(RequestStatus lhs, RequestStatus rhs) {
   if (lhs == rhs)
     return std::strong_ordering::equal;
+  // UNDEFINED < FORWARDED < DISCONNECTED < ERROR < TIMEOUT < ACCEPTED < REJECTED < FAILED
   const constexpr std::array<int, magic_enum::enum_count<RequestStatus>()> priority{{
-      0,
-      1,
-      4,
-      5,
-      2,
-      3,
-      6,
+      0,  // UNDEFINED
+      1,  // FORWARDED
+      5,  // ACCEPTED
+      6,  // REJECTED
+      2,  // DISCONNECTED
+      4,  // TIMEOUT
+      7,  // FAILED
+      3,  // ERROR
   }};
   static_assert(std::size(priority) == magic_enum::enum_count<RequestStatus>());
   static_assert(priority[0] == 0);
-  static_assert(priority[magic_enum::enum_count<RequestStatus>() - 1] == 6);
+  static_assert(priority[magic_enum::enum_count<RequestStatus>() - 1] == 3);
   auto lhs_priority = priority[static_cast<std::underlying_type<decltype(lhs)>::type>(lhs)];
   auto rhs_priority = priority[static_cast<std::underlying_type<decltype(rhs)>::type>(rhs)];
   if (lhs_priority < rhs_priority)

@@ -818,11 +818,12 @@ enum class RequestStatus : uint8_t {
   Disconnected = 4,
   Timeout = 5,
   Failed = 6,
+  Error = 7,
   MIN = Undefined,
-  MAX = Failed
+  MAX = Error
 };
 
-inline const RequestStatus (&EnumValuesRequestStatus())[7] {
+inline const RequestStatus (&EnumValuesRequestStatus())[8] {
   static const RequestStatus values[] = {
     RequestStatus::Undefined,
     RequestStatus::Forwarded,
@@ -830,13 +831,14 @@ inline const RequestStatus (&EnumValuesRequestStatus())[7] {
     RequestStatus::Rejected,
     RequestStatus::Disconnected,
     RequestStatus::Timeout,
-    RequestStatus::Failed
+    RequestStatus::Failed,
+    RequestStatus::Error
   };
   return values;
 }
 
 inline const char * const *EnumNamesRequestStatus() {
-  static const char * const names[8] = {
+  static const char * const names[9] = {
     "Undefined",
     "Forwarded",
     "Accepted",
@@ -844,13 +846,14 @@ inline const char * const *EnumNamesRequestStatus() {
     "Disconnected",
     "Timeout",
     "Failed",
+    "Error",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameRequestStatus(RequestStatus e) {
-  if (flatbuffers::IsOutRange(e, RequestStatus::Undefined, RequestStatus::Failed)) return "";
+  if (flatbuffers::IsOutRange(e, RequestStatus::Undefined, RequestStatus::Error)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesRequestStatus()[index];
 }

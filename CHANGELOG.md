@@ -8,6 +8,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `RequestStatus.ERROR` (#292)
 * `TradeSummary` to include exchange sequence and taker/maker order id's (#279)
 * `CustomMetrics.update_type` and `CustomMetricsUpdate.update_type`
 * `GatewaySettings.mbp_checksum`

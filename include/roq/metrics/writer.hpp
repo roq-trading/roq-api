@@ -34,7 +34,7 @@ class ROQ_PUBLIC Writer {
 
   //! Dispatch helper
   template <typename T>
-  Writer &write(const T &collector, std::string_view const &name) {
+  Writer &write(T const &collector, std::string_view const &name) {
     collector.write(*this, name);
     return *this;
   }

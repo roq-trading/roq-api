@@ -83,7 +83,7 @@ class ROQ_PUBLIC MarketByPrice {
 
   // generic update interface using operator()
   template <typename T>
-  void operator()(const T &value) {
+  void operator()(T const &value) {
     update_helper(value);
   }
 

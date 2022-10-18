@@ -13,7 +13,7 @@ namespace roq {
 namespace utils {
 
 template <typename T, typename U>
-constexpr bool update(T &result, const U &value) {
+constexpr bool update(T &result, U const &value) {
   using lhs_type = typename std::decay<T>::type;
   using rhs_type = typename std::decay<U>::type;
   if constexpr (std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
@@ -29,7 +29,7 @@ constexpr bool update(T &result, const U &value) {
 }
 
 template <typename T, typename U>
-constexpr bool update_max(T &result, const U &value) {
+constexpr bool update_max(T &result, U const &value) {
   if (!(compare(value, result) == std::strong_ordering::greater))
     return false;
   result = value;
@@ -37,7 +37,7 @@ constexpr bool update_max(T &result, const U &value) {
 }
 
 template <typename T, typename U>
-constexpr bool update_first(T &result, const U &value) {
+constexpr bool update_first(T &result, U const &value) {
   if (compare(result, T{}) != std::strong_ordering::equal)
     return false;
   if (compare(value, U{}) != std::strong_ordering::equal)
@@ -46,7 +46,7 @@ constexpr bool update_first(T &result, const U &value) {
 }
 
 template <typename T, typename U>
-constexpr bool update_if_not_empty(T &result, const U &value) {
+constexpr bool update_if_not_empty(T &result, U const &value) {
   using lhs_type = typename std::decay<T>::type;
   using rhs_type = typename std::decay<U>::type;
   if constexpr (is_string<rhs_type>::value) {

@@ -32,7 +32,7 @@ struct StatisticsUpdate final {
 
  protected:
   template <typename Context, typename T>
-  auto helper(Context &context, const T &statistics, auto update_type) const {
+  auto helper(Context &context, T const &statistics, auto update_type) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),

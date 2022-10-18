@@ -28,11 +28,11 @@ using namespace roq::utils;
 
 namespace {
 template <typename T>
-void test_is_pair(const T &) {
+void test_is_pair(T const &) {
   static_assert(is_pair<T>::value);
 }
 template <typename T>
-void test_is_not_pair(const T &) {
+void test_is_not_pair(T const &) {
   static_assert(!is_pair<T>::value);
 }
 }  // namespace
@@ -44,11 +44,11 @@ TEST_CASE("traits_is_pair", "[traits]") {
 
 namespace {
 template <typename T>
-void test_is_iterable(const T &) {
+void test_is_iterable(T const &) {
   static_assert(is_iterable<T>::value);
 }
 template <typename T>
-void test_is_not_iterable(const T &) {
+void test_is_not_iterable(T const &) {
   static_assert(!is_iterable<T>::value);
 }
 }  // namespace
@@ -60,11 +60,11 @@ TEST_CASE("traits_is_iterable", "[traits]") {
 
 namespace {
 template <typename T>
-void test_has_random_access_iterator(const T &) {
+void test_has_random_access_iterator(T const &) {
   static_assert(has_random_access_iterator<T>::value);
 }
 template <typename T>
-void test_has_no_random_access_iterator(const T &) {
+void test_has_no_random_access_iterator(T const &) {
   static_assert(!has_random_access_iterator<T>::value);
 }
 }  // namespace

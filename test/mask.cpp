@@ -31,7 +31,7 @@ struct fmt::formatter<E> {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(const E &value, Context &context) const {
+  auto format(E const &value, Context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }

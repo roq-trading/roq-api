@@ -106,7 +106,7 @@ constexpr char ascii_to_lower(char value) {
 }  // namespace detail
 
 template <typename T, typename U>
-constexpr std::strong_ordering compare(const T &lhs, const U &rhs) {
+constexpr std::strong_ordering compare(T const &lhs, U const &rhs) {
   using lhs_type = typename std::decay<T>::type;
   using rhs_type = typename std::decay<U>::type;
   if constexpr (std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
@@ -138,7 +138,7 @@ constexpr std::strong_ordering compare(const T &lhs, const U &rhs) {
 
 template <typename T, typename U>
 typename std::enable_if<is_string<T>::value && is_string<U>::value, std::strong_ordering>::
-    type constexpr case_insensitive_compare(const T &lhs, const U &rhs) {
+    type constexpr case_insensitive_compare(T const &lhs, U const &rhs) {
   // cast both to std::string_view to avoid accidential allocation of std::string
   std::string_view lhs_tmp{lhs}, rhs_tmp{rhs};
   auto size1 = std::size(lhs_tmp);
@@ -161,7 +161,7 @@ typename std::enable_if<is_string<T>::value && is_string<U>::value, std::strong_
 }
 
 template <typename T>
-constexpr bool is_equal(const T &lhs, const T &rhs) {
+constexpr bool is_equal(T const &lhs, T const &rhs) {
   using value_type = typename std::decay<T>::type;
   if constexpr (std::is_floating_point<value_type>::value) {
     return detail::compare(lhs, rhs) == std::strong_ordering::equal;
@@ -173,7 +173,7 @@ constexpr bool is_equal(const T &lhs, const T &rhs) {
 }
 
 template <typename T>
-constexpr bool is_less(const T &lhs, const T &rhs) {
+constexpr bool is_less(T const &lhs, T const &rhs) {
   using value_type = typename std::decay<T>::type;
   if constexpr (std::is_floating_point<value_type>::value) {
     return detail::compare(lhs, rhs) == std::strong_ordering::less;
@@ -183,7 +183,7 @@ constexpr bool is_less(const T &lhs, const T &rhs) {
 }
 
 template <typename T>
-constexpr bool is_greater(const T &lhs, const T &rhs) {
+constexpr bool is_greater(T const &lhs, T const &rhs) {
   using value_type = typename std::decay<T>::type;
   if constexpr (std::is_floating_point<value_type>::value) {
     return detail::compare(lhs, rhs) == std::strong_ordering::greater;
@@ -193,7 +193,7 @@ constexpr bool is_greater(const T &lhs, const T &rhs) {
 }
 
 template <typename T>
-constexpr bool is_less_or_equal(const T &lhs, const T &rhs) {
+constexpr bool is_less_or_equal(T const &lhs, T const &rhs) {
   using value_type = typename std::decay<T>::type;
   if constexpr (std::is_floating_point<value_type>::value) {
     return !(detail::compare(lhs, rhs) == std::strong_ordering::greater);
@@ -203,7 +203,7 @@ constexpr bool is_less_or_equal(const T &lhs, const T &rhs) {
 }
 
 template <typename T>
-constexpr bool is_greater_or_equal(const T &lhs, const T &rhs) {
+constexpr bool is_greater_or_equal(T const &lhs, T const &rhs) {
   using value_type = typename std::decay<T>::type;
   if constexpr (std::is_floating_point<value_type>::value) {
     return !(detail::compare(lhs, rhs) == std::strong_ordering::less);
@@ -213,7 +213,7 @@ constexpr bool is_greater_or_equal(const T &lhs, const T &rhs) {
 }
 
 template <typename T>
-constexpr bool is_zero(const T &value) {
+constexpr bool is_zero(T const &value) {
   using value_type = typename std::decay<T>::type;
   if constexpr (std::is_floating_point<value_type>::value) {
     return detail::compare(value, 0.0) == std::strong_ordering::equal;
@@ -223,7 +223,7 @@ constexpr bool is_zero(const T &value) {
 }
 
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, bool> = 0>
-constexpr bool is_negative(const T &value) {
+constexpr bool is_negative(T const &value) {
   return detail::signbit(value);
 }
 

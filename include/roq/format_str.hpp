@@ -56,7 +56,7 @@ struct basic_format_str final {
   using file_name_type = detail::static_string<32>;
   template <typename T>
   // cppcheck-suppress noExplicitConstructor
-  consteval basic_format_str(const T &str, source_location const &loc = source_location::current())  // NOLINT
+  consteval basic_format_str(T const &str, source_location const &loc = source_location::current())  // NOLINT
       : str_(static_cast<std::string_view>(str)), file_name_(extract_basename(loc.file_name())), line_(loc.line()) {
     if constexpr (sizeof...(Args) > 0) {
       using checker =

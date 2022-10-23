@@ -34,13 +34,20 @@ struct source_location final {
     return source_location{file, line, function};
   }
 
-  constexpr char const *file_name() const noexcept { return file_; }
-  constexpr std::uint_least32_t line() const noexcept { return line_; }
-  constexpr char const *function_name() const noexcept { return function_; }
+  constexpr char const *file_name() const noexcept {
+    return file_;
+  }
+  constexpr std::uint_least32_t line() const noexcept {
+    return line_;
+  }
+  constexpr char const *function_name() const noexcept {
+    return function_;
+  }
 
  protected:
   constexpr source_location(char const *file, std::int_least32_t line, char const *function)
-      : file_{file}, line_{line}, function_{function} {}
+      : file_{file}, line_{static_cast<decltype(line_)>(line)}, function_{function} {
+  }
 
  private:
   char const *const file_;

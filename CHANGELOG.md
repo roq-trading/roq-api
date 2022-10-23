@@ -4,6 +4,11 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `TraceInfo` now default initializing to current time
+* `clock` promoted (from core library)
+
 ## 0.8.8 &ndash; 2022-10-04
 
 ### Added

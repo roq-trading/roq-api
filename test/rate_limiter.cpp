@@ -16,13 +16,16 @@ auto dispatch_timer(auto &rate_limiter, auto now) {
   Timer timer{
       .now = now,
   };
-  return rate_limiter(Event{message_info, timer});
+  Event event{message_info, timer};
+  return rate_limiter(event);
 }
+
 auto dispatch_message_info(auto &rate_limiter, auto receive_time) {
   MessageInfo message_info;
   message_info.receive_time = receive_time;
   CreateOrder create_order;
-  return rate_limiter(Event{message_info, create_order});
+  Event event{message_info, create_order};
+  return rate_limiter(event);
 }
 }  // namespace
 
@@ -42,9 +45,8 @@ TEST_CASE("rate_limiter_simple", "[rate_limiter]") {
       .high_water_mark = {},
   };
   oms::RateLimiter rate_limiter{handler, config};
-  for (size_t i = 0; i < 20; ++i) {
+  for (size_t i = 0; i < 20; ++i)
     CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == false);
-  }
   CHECK(handler.counter == 0);
 }
 
@@ -64,14 +66,13 @@ TEST_CASE("rate_limiter_repeat_offender", "[rate_limiter]") {
       .high_water_mark = {},
   };
   oms::RateLimiter rate_limiter{handler, config};
-  for (size_t i = 0; i < 20; ++i) {
+  for (size_t i = 0; i < 20; ++i)
     if (i < 10) {
       CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == false);
     } else {
       CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == true);
       CHECK(handler.counter == (i - 9));
     }
-  }
 }
 
 TEST_CASE("rate_limiter_good_citizen", "[rate_limiter]") {
@@ -90,7 +91,7 @@ TEST_CASE("rate_limiter_good_citizen", "[rate_limiter]") {
       .high_water_mark = {},
   };
   oms::RateLimiter rate_limiter{handler, config};
-  for (size_t i = 0; i < 20; ++i) {
+  for (size_t i = 0; i < 20; ++i)
     if (i < 10) {
       CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == false);
     } else if (i == 11) {
@@ -98,7 +99,6 @@ TEST_CASE("rate_limiter_good_citizen", "[rate_limiter]") {
     } else {
       CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i + 20}) == false);
     }
-  }
 }
 
 TEST_CASE("rate_limiter_watermark_requests", "[rate_limiter]") {
@@ -143,7 +143,7 @@ TEST_CASE("rate_limiter_watermark_requests", "[rate_limiter]") {
       .high_water_mark = 8,
   };
   oms::RateLimiter rate_limiter{handler, config};
-  for (size_t i = 0; i < 20; ++i) {
+  for (size_t i = 0; i < 20; ++i)
     if (i < 7) {
       CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == false);
       CHECK(handler.empty == 0);
@@ -188,7 +188,6 @@ TEST_CASE("rate_limiter_watermark_requests", "[rate_limiter]") {
       CHECK(handler.high == 2);
       CHECK(handler.full == 1);
     }
-  }
 }
 
 TEST_CASE("rate_limiter_watermark_timer", "[rate_limiter]") {
@@ -233,7 +232,7 @@ TEST_CASE("rate_limiter_watermark_timer", "[rate_limiter]") {
       .high_water_mark = 8,
   };
   oms::RateLimiter rate_limiter{handler, config};
-  for (size_t i = 0; i < 13; ++i) {
+  for (size_t i = 0; i < 13; ++i)
     if (i < 7) {
       CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == false);
       CHECK(handler.empty == 0);
@@ -266,5 +265,4 @@ TEST_CASE("rate_limiter_watermark_timer", "[rate_limiter]") {
       CHECK(handler.high == 1);
       CHECK(handler.full == 1);
     }
-  }
 }

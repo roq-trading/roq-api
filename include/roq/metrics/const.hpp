@@ -7,10 +7,25 @@
 namespace roq {
 namespace metrics {
 
-constexpr std::string_view COUNTER("roq_counter");
-constexpr std::string_view INTER_PROCESS_LATENCY("roq_inter_process_latency");
-constexpr std::string_view LATENCY("roq_latency");
-constexpr std::string_view PROFILE("roq_profile");
+constexpr auto const COUNTER = []() {
+  using namespace std::literals;
+  return "roq_counter"sv;
+}();
+
+constexpr auto const INTER_PROCESS_LATENCY = []() {
+  using namespace std::literals;
+  return "roq_inter_process_latency"sv;
+}();
+
+constexpr auto const LATENCY = []() {
+  using namespace std::literals;
+  return "roq_latency"sv;
+}();
+
+constexpr auto const PROFILE = []() {
+  using namespace std::literals;
+  return "roq_profile"sv;
+}();
 
 }  // namespace metrics
 }  // namespace roq

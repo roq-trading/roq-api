@@ -12,7 +12,7 @@ template <typename T, typename = typename std::enable_if<!std::is_const<T>::valu
 struct Trace final {
   using value_type = T;
 
-  Trace(TraceInfo const &trace_info_, T const &value_) : trace_info(trace_info_), value(value_) {}
+  Trace(TraceInfo const &trace_info_, T const &value_) : trace_info{trace_info_}, value{value_} {}
 
   Trace(Trace const &) = delete;
   Trace(Trace &&) = delete;

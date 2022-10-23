@@ -21,9 +21,9 @@ struct Manager final {
       std::function<std::unique_ptr<MarketByPrice>(std::string_view const &exchange, std::string_view const &symbol)>;
 
   explicit Manager(MarketByPriceFactory const &market_by_price_factory)
-      : market_by_price_factory_(market_by_price_factory) {}
+      : market_by_price_factory_{market_by_price_factory} {}
   explicit Manager(MarketByPriceFactory &&market_by_price_factory)
-      : market_by_price_factory_(std::move(market_by_price_factory)) {}
+      : market_by_price_factory_{std::move(market_by_price_factory)} {}
 
   // always guaranteed to return (or throw)
   std::pair<Market &, bool> get_market_or_create(std::string_view const &exchange, std::string_view const &symbol) {
@@ -133,7 +133,7 @@ struct Manager final {
   }
 
  private:
-  const MarketByPriceFactory market_by_price_factory_;
+  MarketByPriceFactory const market_by_price_factory_;
   MarketId next_market_id_ = 0;
   absl::flat_hash_map<Exchange, absl::flat_hash_map<Symbol, MarketId>> exchange_to_symbols_;
   absl::node_hash_map<MarketId, Market> markets_;

@@ -9,7 +9,7 @@ namespace json {
 
 template <typename T>
 struct String final {
-  explicit String(T const &value) : value_(value) {}
+  explicit String(T const &value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

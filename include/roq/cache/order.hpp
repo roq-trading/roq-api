@@ -11,7 +11,7 @@ namespace cache {
 
 //! Order (state)
 struct ROQ_PUBLIC Order final {
-  Order(uint32_t order_id) : order_id(order_id) {}
+  Order(uint32_t order_id) : order_id{order_id} {}
 
   Order(Order const &) = delete;
   Order(Order &&) = default;
@@ -132,7 +132,7 @@ struct ROQ_PUBLIC Order final {
 
   uint16_t stream_id = {};
 
-  const uint32_t order_id = {};
+  uint32_t const order_id = {};
   Side side = {};
   PositionEffect position_effect = {};
   double max_show_quantity = NaN;

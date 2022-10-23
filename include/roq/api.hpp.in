@@ -106,13 +106,13 @@ namespace roq {
 
 // user id's (restricted values)
 
-static const constexpr uint8_t SOURCE_NONE = 0;
-static const constexpr uint8_t SOURCE_SELF = 255;
+static constexpr auto const SOURCE_NONE = uint8_t{0};
+static constexpr auto const SOURCE_SELF = uint8_t{255};
 
 // order id's (upper limit)
 
-static const constexpr uint32_t MAX_ORDER_ID = (1 << 24) - 1;
-static const constexpr uint32_t MAX_REQUEST_VERSION = (1 << 24) - 1;
+static constexpr auto const MAX_ORDER_ID = uint32_t{(1 << 24) - 1};
+static constexpr auto const MAX_REQUEST_VERSION = uint32_t{(1 << 24) - 1};
 
 // validate auto-generated code
 

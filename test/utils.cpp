@@ -15,17 +15,17 @@ TEST_CASE("utils_trade_id", "[utils]") {
   CHECK(trade_id.length() == 0);
   CHECK(static_cast<std::string_view>(trade_id) == text_1);
   // small
-  std::string_view text_2("123"sv);
+  std::string_view text_2{"123"sv};
   trade_id = text_2;
   CHECK(trade_id.empty() == false);
   CHECK(trade_id.length() == text_2.length());
   CHECK(static_cast<std::string_view>(trade_id) == text_2);
   // full
-  std::string_view text_3(
+  std::string_view text_3{
       "1234567890"
       "1234567890"
       "1234567890"
-      "123456789"sv);
+      "123456789"sv};
   trade_id = text_3;
   CHECK(trade_id.empty() == false);
   CHECK(trade_id.length() == text_3.length());

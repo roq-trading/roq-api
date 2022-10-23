@@ -13,7 +13,7 @@ namespace fix {
 
 struct Message final {
  public:
-  explicit Message(std::span<const std::byte> const &buffer) : buffer_(buffer) {}
+  explicit Message(std::span<const std::byte> const &buffer) : buffer_{buffer} {}
 
   Message(std::byte const *data, size_t length) : Message{{data, length}} {}
 
@@ -35,7 +35,7 @@ struct Message final {
   }
 
  private:
-  const std::span<const std::byte> buffer_;
+  std::span<const std::byte> const buffer_;
 };
 
 }  // namespace fix

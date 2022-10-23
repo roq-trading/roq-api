@@ -11,7 +11,7 @@ namespace debug {
 namespace hex {
 
 struct Message final {
-  explicit Message(std::span<const std::byte> const &buffer) : buffer_(buffer) {}
+  explicit Message(std::span<const std::byte> const &buffer) : buffer_{buffer} {}
 
   Message(std::byte const *data, size_t length) : Message{{data, length}} {}
 
@@ -24,7 +24,7 @@ struct Message final {
   }
 
  private:
-  const std::span<const std::byte> buffer_;
+  std::span<const std::byte> const buffer_;
 };
 
 }  // namespace hex

@@ -14,7 +14,7 @@ namespace roq {
 namespace json {
 
 struct Statistics final {
-  explicit Statistics(roq::Statistics const &value) : value_(value) {}
+  explicit Statistics(roq::Statistics const &value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

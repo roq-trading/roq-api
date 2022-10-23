@@ -12,7 +12,7 @@ namespace roq {
 namespace json {
 
 struct Layer final {
-  explicit Layer(roq::Layer const &value) : value_(value) {}
+  explicit Layer(roq::Layer const &value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

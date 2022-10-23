@@ -31,7 +31,7 @@ struct source_location final {
       char const *file = __builtin_FILE(),
       std::int_least32_t line = __builtin_LINE(),
       char const *function = __builtin_FUNCTION()) noexcept {
-    return source_location(file, line, function);
+    return source_location{file, line, function};
   }
 
   constexpr char const *file_name() const noexcept { return file_; }
@@ -40,7 +40,7 @@ struct source_location final {
 
  protected:
   constexpr source_location(char const *file, std::int_least32_t line, char const *function)
-      : file_(file), line_(line), function_(function) {}
+      : file_{file}, line_{line}, function_{function} {}
 
  private:
   char const *const file_;

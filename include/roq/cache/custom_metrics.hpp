@@ -19,8 +19,8 @@ namespace cache {
 
 struct CustomMetrics final {
   explicit CustomMetrics(CustomMetricsUpdate const &custom_metrics_update)
-      : user(custom_metrics_update.user), label(custom_metrics_update.label) {}
-  explicit CustomMetrics(roq::CustomMetrics const &custom_metrics) : label(custom_metrics.label) {}
+      : user{custom_metrics_update.user}, label{custom_metrics_update.label} {}
+  explicit CustomMetrics(roq::CustomMetrics const &custom_metrics) : label{custom_metrics.label} {}
 
   CustomMetrics(CustomMetrics const &) = delete;
   CustomMetrics(CustomMetrics &&) = default;
@@ -72,8 +72,8 @@ struct CustomMetrics final {
 
   uint16_t stream_id = {};
 
-  const User user;
-  const Label label;
+  User const user;
+  Label const label;
   std::vector<Measurement> measurements;
 
  protected:

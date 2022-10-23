@@ -13,7 +13,7 @@ namespace roq {
 namespace json {
 
 struct MBPUpdate final {
-  explicit MBPUpdate(roq::MBPUpdate const &value) : value_(value) {}
+  explicit MBPUpdate(roq::MBPUpdate const &value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

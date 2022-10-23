@@ -15,7 +15,7 @@ namespace roq {
 namespace json {
 
 struct GatewayStatus final {
-  explicit GatewayStatus(roq::GatewayStatus const &value) : value_(value) {}
+  explicit GatewayStatus(roq::GatewayStatus const &value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

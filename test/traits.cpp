@@ -38,8 +38,8 @@ void test_is_not_pair(T const &) {
 }  // namespace
 
 TEST_CASE("traits_is_pair", "[traits]") {
-  test_is_pair(std::pair("abc", 123));
-  test_is_not_pair(std::string("abc"));
+  test_is_pair(std::pair{"abc", 123});
+  test_is_not_pair(std::string{"abc"});
 }
 
 namespace {

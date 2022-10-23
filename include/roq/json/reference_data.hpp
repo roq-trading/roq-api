@@ -15,7 +15,7 @@ namespace roq {
 namespace json {
 
 struct ReferenceData final {
-  explicit ReferenceData(roq::ReferenceData const &value) : value_(value) {}
+  explicit ReferenceData(roq::ReferenceData const &value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

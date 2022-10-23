@@ -18,7 +18,7 @@ template <typename T>
 class alignas(ROQ_CACHELINE_SIZE) Counter {
  public:
   Counter() = default;
-  explicit Counter(std::string_view const &labels) : labels_(labels) {}
+  explicit Counter(std::string_view const &labels) : labels_{labels} {}
 
   Counter(Counter const &) = delete;
   Counter(Counter &&) = delete;
@@ -55,7 +55,8 @@ class alignas(ROQ_CACHELINE_SIZE) Counter {
   struct alignas(ROQ_CACHELINE_SIZE) Data final {
     std::atomic<T> value = {0};
   } data_;
-  const std::string labels_;
+  std::string const labels_;
+
   // assumptions
   static_assert(sizeof(Data) == ROQ_CACHELINE_SIZE);
   static_assert(sizeof(std::atomic<T>) == sizeof(T));

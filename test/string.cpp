@@ -56,12 +56,12 @@ TEST_CASE("string_full", "[string]") {
 }
 
 TEST_CASE("string_construct", "[string]") {
-  String<4>();
-  String<4>("1"sv);
-  String<4>("12"sv);
-  String<4>("123"sv);
-  String<4>("1234"sv);
-  CHECK_THROWS_AS(String<4>("12345"sv), LengthError);
+  String<4>{};
+  String<4>{"1"sv};
+  String<4>{"12"sv};
+  String<4>{"123"sv};
+  String<4>{"1234"sv};
+  CHECK_THROWS_AS(String<4>{"12345"sv}, LengthError);
 }
 
 TEST_CASE("string_push_back", "[string]") {

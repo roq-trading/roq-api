@@ -11,7 +11,7 @@ namespace cache {
 
 //! Trade (state)
 struct ROQ_PUBLIC Trade final {
-  Trade(uint32_t order_id) : order_id(order_id) {}
+  Trade(uint32_t order_id) : order_id{order_id} {}
 
   Trade(Trade const &) = delete;
   Trade(Trade &&) = default;
@@ -81,7 +81,7 @@ struct ROQ_PUBLIC Trade final {
 
   uint16_t stream_id = {};
 
-  const uint32_t order_id = {};
+  uint32_t const order_id = {};
   Side side = {};
   PositionEffect position_effect = {};
   std::chrono::nanoseconds create_time_utc = {};

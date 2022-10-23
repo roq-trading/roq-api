@@ -11,7 +11,7 @@ namespace json {
 
 template <typename T>
 struct DateTime final {
-  explicit DateTime(T value) : value_(value) {}
+  explicit DateTime(T value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -22,7 +22,7 @@ struct DateTime final {
   }
 
  private:
-  const T value_;
+  T const value_;
 };
 
 }  // namespace json

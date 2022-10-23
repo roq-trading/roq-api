@@ -13,7 +13,7 @@ namespace oms {
 struct ROQ_PUBLIC Exception : public roq::Exception {
   template <typename... Args>
   Exception(Origin origin, RequestStatus status, Error error, format_str<Args...> const &fmt, Args &&...args)
-      : roq::Exception(fmt, std::forward<Args>(args)...), origin(origin), status(status), error(error) {}
+      : roq::Exception{fmt, std::forward<Args>(args)...}, origin{origin}, status{status}, error{error} {}
 
   char const *what() const noexcept override {
     using namespace std::literals;
@@ -40,21 +40,21 @@ struct ROQ_PUBLIC Exception : public roq::Exception {
 struct ROQ_PUBLIC Rejected : public Exception {
   template <typename... Args>
   Rejected(Origin origin, Error error, format_str<Args...> const &fmt, Args &&...args)
-      : Exception(origin, RequestStatus::REJECTED, error, fmt, std::forward<Args>(args)...) {}
+      : Exception{origin, RequestStatus::REJECTED, error, fmt, std::forward<Args>(args)...} {}
 };
 
 //! NotSupported
 struct ROQ_PUBLIC NotSupported : public Rejected {
   template <typename... Args>
   explicit NotSupported(format_str<Args...> const &fmt, Args &&...args)
-      : Rejected(Origin::GATEWAY, Error::NOT_SUPPORTED, fmt, std::forward<Args>(args)...) {}
+      : Rejected{Origin::GATEWAY, Error::NOT_SUPPORTED, fmt, std::forward<Args>(args)...} {}
 };
 
 //! NotReady
 struct ROQ_PUBLIC NotReady : public Rejected {
   template <typename... Args>
   explicit NotReady(format_str<Args...> const &fmt, Args &&...args)
-      : Rejected(Origin::GATEWAY, Error::GATEWAY_NOT_READY, fmt, std::forward<Args>(args)...) {}
+      : Rejected{Origin::GATEWAY, Error::GATEWAY_NOT_READY, fmt, std::forward<Args>(args)...} {}
 };
 
 }  // namespace oms

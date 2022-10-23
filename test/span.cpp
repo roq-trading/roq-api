@@ -11,7 +11,7 @@ using namespace Catch::literals;
 TEST_CASE("span_simple", "[span]") {
   // initialize empty
   std::vector<double> empty;
-  std::span empty_span(empty);
+  std::span empty_span{empty};
   CHECK(std::empty(empty_span) == true);
   // initialize non-empty
   std::array<double, 3> raw{{
@@ -19,7 +19,7 @@ TEST_CASE("span_simple", "[span]") {
       2.0,
       3.0,
   }};
-  std::span span(raw);
+  std::span span{raw};
   CHECK(std::empty(span) == false);
   span[0] = 1.0;
   CHECK(span[0] == 1.0_a);
@@ -40,7 +40,7 @@ TEST_CASE("span_string_view", "[span]") {
       "abc"sv,
       "def"sv,
   };
-  std::span span(raw);
+  std::span span{raw};
   CHECK(span[0] == "abc"sv);
   CHECK(span[1] == "def"sv);
 }

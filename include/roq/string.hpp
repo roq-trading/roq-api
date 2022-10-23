@@ -50,7 +50,7 @@ class ROQ_PACKED String {
 
   // cppcheck-suppress noExplicitConstructor
   constexpr String(value_type const *text)  // NOLINT (allow implicit)
-      : String(std::string_view{text}) {}
+      : String{std::string_view{text}} {}
 
   constexpr String &operator=(std::string_view const &text) {
     copy(text);
@@ -118,7 +118,7 @@ class ROQ_PACKED String {
     using namespace std::literals;
     auto len = length();
     if (N <= len) [[unlikely]]
-      throw LengthError("String buffer is full"sv);
+      throw LengthError{"String buffer is full"sv};
     buffer_[len] = value;
     set_length(++len);
   }
@@ -130,7 +130,7 @@ class ROQ_PACKED String {
     using namespace std::literals;
     auto len = std::size(text);
     if (N < len) [[unlikely]]
-      throw LengthError(R"(can't copy: len(text="{}")={} exceeds size={})"sv, text, len, N);
+      throw LengthError{R"(can't copy: len(text="{}")={} exceeds size={})"sv, text, len, N};
     std::copy(std::begin(text), std::end(text), std::begin(buffer_));
     set_length(len);
   }
@@ -164,7 +164,7 @@ inline constexpr auto operator<=>(roq::String<N> const &lhs, std::string_view co
     using value_type = decltype(value);
     return (value_type{} < value) - (value < value_type{});
   };
-  const std::array lookup{
+  std::array const lookup{
       std::strong_ordering::less,
       std::strong_ordering::equal,
       std::strong_ordering::greater,

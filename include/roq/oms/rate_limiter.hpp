@@ -27,12 +27,12 @@ struct RateLimiter final {
     uint32_t high_water_mark = {};
   };
 
-  RateLimiter(Handler &handler, Config &config) : handler_(handler), config_(config) {}
+  RateLimiter(Handler &handler, Config &config) : handler_{handler}, config_{config} {}
   RateLimiter(Handler &handler, Config &config, std::vector<roq::Account> &&accounts, std::vector<roq::User> &&users)
-      : handler_(handler), config_(config), accounts_(std::move(accounts)), users_(std::move(users)) {}
+      : handler_{handler}, config_{config}, accounts_{std::move(accounts)}, users_{std::move(users)} {}
   RateLimiter(
       Handler &handler, Config &config, std::vector<roq::Account> const &accounts, std::vector<roq::User> const &users)
-      : handler_(handler), config_(config), accounts_(accounts), users_(users) {}
+      : handler_{handler}, config_{config}, accounts_{accounts}, users_{users} {}
 
   RateLimiter(RateLimiter &&) = default;
   RateLimiter(RateLimiter const &) = delete;
@@ -155,9 +155,9 @@ struct RateLimiter final {
 
  public:
   Handler &handler_;
-  const Config config_;
-  const std::vector<roq::Account> accounts_;
-  const std::vector<roq::User> users_;
+  Config const config_;
+  std::vector<roq::Account> const accounts_;
+  std::vector<roq::User> const users_;
   std::deque<std::chrono::nanoseconds> history_;
   std::chrono::nanoseconds ban_expires_ = {};
   BufferCapacity capacity_ = {};

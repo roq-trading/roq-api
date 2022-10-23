@@ -13,7 +13,7 @@ template <typename T, typename = typename std::enable_if<!std::is_const<T>::valu
 struct Event final {
   using value_type = T;
 
-  Event(MessageInfo const &message_info_, T const &value_) : message_info(message_info_), value(value_) {}
+  Event(MessageInfo const &message_info_, T const &value_) : message_info{message_info_}, value{value_} {}
 
   Event(Event const &) = delete;
   Event(Event &&) = delete;

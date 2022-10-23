@@ -48,7 +48,7 @@ class ROQ_PUBLIC Dispatcher {
   //! Make it possible to populate origin_create_time and receive_time for external events
   template <typename Callback>
   void create_trace_info(Callback callback) {
-    TimeSetter time_setter(*this);
+    TimeSetter time_setter{*this};
     callback(static_cast<TraceInfo const &>(time_setter));
   }
 
@@ -58,7 +58,7 @@ class ROQ_PUBLIC Dispatcher {
 
   struct TimeSetter final {
     explicit TimeSetter(Dispatcher &dispatcher)
-        : dispatcher_(dispatcher), trace_info_(dispatcher_.create_trace_info()) {}
+        : dispatcher_{dispatcher}, trace_info_{dispatcher_.create_trace_info()} {}
 
     ~TimeSetter() {
       try {

@@ -10,7 +10,7 @@ namespace roq {
 namespace json {
 
 struct Number final {
-  explicit Number(double value) : value_(value) {}
+  explicit Number(double value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

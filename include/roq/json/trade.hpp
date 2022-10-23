@@ -13,7 +13,7 @@ namespace roq {
 namespace json {
 
 struct Trade final {
-  explicit Trade(roq::Trade const &value) : value_(value) {}
+  explicit Trade(roq::Trade const &value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

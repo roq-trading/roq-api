@@ -28,7 +28,7 @@ template <std::size_t N>
 struct static_string final {
   // cppcheck-suppress noExplicitConstructor
   consteval static_string(std::string_view const &sv)
-      : length_(std::min(N, std::size(sv))), buffer_(create(sv, length_)) {}
+      : length_{std::min(N, std::size(sv))}, buffer_{create(sv, length_)} {}
 
   static_string(static_string const &) = default;
   static_string(static_string &&) = delete;
@@ -46,8 +46,8 @@ struct static_string final {
   }
 
  private:
-  const std::size_t length_;
-  const std::array<char, N> buffer_;
+  std::size_t const length_;
+  std::array<char, N> const buffer_;
 };
 }  // namespace detail
 
@@ -57,17 +57,17 @@ struct basic_format_str final {
   template <typename T>
   // cppcheck-suppress noExplicitConstructor
   consteval basic_format_str(T const &str, source_location const &loc = source_location::current())  // NOLINT
-      : str_(static_cast<std::string_view>(str)), file_name_(extract_basename(loc.file_name())), line_(loc.line()) {
+      : str_{static_cast<std::string_view>(str)}, file_name_{extract_basename(loc.file_name())}, line_{loc.line()} {
     if constexpr (sizeof...(Args) > 0) {
       using checker =
           fmt::detail::format_string_checker<char, fmt::detail::error_handler, fmt::remove_cvref_t<Args>...>;
-      fmt::detail::parse_format_string<true>(str_, checker(str_, {}));
+      fmt::detail::parse_format_string<true>(str_, checker{str_, {}});
     }
   }
 
-  const fmt::string_view str_;
-  const file_name_type file_name_;
-  const std::uint32_t line_;
+  fmt::string_view const str_;
+  file_name_type const file_name_;
+  std::uint32_t const line_;
 
  private:
   static consteval std::string_view extract_basename(char const *path) {
@@ -75,7 +75,7 @@ struct basic_format_str final {
       return {};
     std::string_view tmp{path};
     if (std::empty(tmp))
-      return {};
+      return tmp;
     auto pos = tmp.find_last_of('/');
     if (pos == tmp.npos || pos == (std::size(tmp) - 1))
       return tmp;

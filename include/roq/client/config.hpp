@@ -25,8 +25,8 @@ struct ROQ_PUBLIC Account {
 
 //! Symbol regex
 struct ROQ_PUBLIC Symbol {
-  std::string_view regex;          //!< Regular expression
-  std::string_view exchange = {};  //!< Exchange name (optional)
+  std::string_view regex;     //!< Regular expression
+  std::string_view exchange;  //!< Exchange name (optional)
 };
 
 //! Dispatch interface used to manage subscriptions.

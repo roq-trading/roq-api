@@ -35,12 +35,12 @@ struct Market final {
       std::string_view const &exchange,
       std::string_view const &symbol,
       MarketByPriceFactory const &create_market_by_price)
-      : market_id(market_id),
+      : market_id{market_id},
         context{
             .exchange = exchange,
             .symbol = symbol,
         },
-        market_by_price(create_market_by_price(exchange, symbol)) {}
+        market_by_price{create_market_by_price(exchange, symbol)} {}
 
   Market() = delete;
   Market(Market const &) = delete;

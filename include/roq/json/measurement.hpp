@@ -13,7 +13,7 @@ namespace roq {
 namespace json {
 
 struct Measurement final {
-  explicit Measurement(roq::Measurement const &value) : value_(value) {}
+  explicit Measurement(roq::Measurement const &value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

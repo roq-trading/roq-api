@@ -25,7 +25,7 @@ template <typename T>
 struct safe_cast final {
   using value_type = typename std::remove_reference<T>::type;
 
-  explicit safe_cast(T value) : value_(value) {}
+  explicit safe_cast(T value) : value_{value} {}
 
   safe_cast(safe_cast &&) = default;
   safe_cast(safe_cast const &) = delete;
@@ -40,7 +40,7 @@ struct safe_cast final {
     } else if constexpr (is_integer<value_type>::value) {
       // integer to ...
       if (!(value_ >= std::numeric_limits<result_type>::lowest() && value_ <= std::numeric_limits<result_type>::max()))
-        throw OverflowError("overflow: value={}"sv, value_);
+        throw OverflowError{"overflow: value={}"sv, value_};
       return static_cast<result_type>(value_);
     } else if constexpr (std::is_floating_point<value_type>::value) {
       // floating point to ...
@@ -50,7 +50,7 @@ struct safe_cast final {
         //   https://stackoverflow.com/a/30424410
         if (!(value_ > static_cast<double>(std::numeric_limits<result_type>::lowest()) &&
               value_ < static_cast<double>(std::numeric_limits<result_type>::max())))
-          throw OverflowError("overflow: value={}"sv, value_);
+          throw OverflowError{"overflow: value={}"sv, value_};
         return static_cast<result_type>(value_);
       } else {
         static_assert(detail::always_false<result_type>, "not implemented for unsigned");

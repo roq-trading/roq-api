@@ -15,7 +15,7 @@ namespace roq {
 namespace json {
 
 struct TopOfBook final {
-  explicit TopOfBook(roq::TopOfBook const &value) : value_(value) {}
+  explicit TopOfBook(roq::TopOfBook const &value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

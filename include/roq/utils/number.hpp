@@ -13,10 +13,10 @@ namespace utils {
 
 struct Number final {
   Number() = default;
-  Number(double value, Decimals decimals) : value(value), decimals(decimals) {}
+  Number(double value, Decimals decimals) : value{value}, decimals{decimals} {}
 
   double const value = NaN;
-  const Decimals decimals = {};
+  Decimals const decimals = {};
 };
 
 }  // namespace utils

@@ -14,7 +14,7 @@ namespace utils {
 
 template <typename T>
 struct DateTime_iso8601 final {
-  explicit DateTime_iso8601(T const &value) : value_(value) {}
+  explicit DateTime_iso8601(T const &value) : value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

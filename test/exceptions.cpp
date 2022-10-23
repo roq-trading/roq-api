@@ -10,7 +10,7 @@ using namespace std::literals;
 TEST_CASE("exceptions_simple_1", "[exceptions]") {
   auto ok = false;
   try {
-    throw NotReady("something's not right"sv);
+    throw NotReady{"something's not right"sv};
   } catch (std::exception &) {
     ok = true;
   }
@@ -20,7 +20,7 @@ TEST_CASE("exceptions_simple_1", "[exceptions]") {
 TEST_CASE("exceptions_simple_2", "[exceptions]") {
   auto ok = false;
   try {
-    throw NotReady("something's not right"sv);
+    throw NotReady{"something's not right"sv};
   } catch (Exception &) {
     ok = true;
   }
@@ -30,7 +30,7 @@ TEST_CASE("exceptions_simple_2", "[exceptions]") {
 TEST_CASE("exceptions_simple_3", "[exceptions]") {
   auto ok = false;
   try {
-    throw NotReady("something's not right"sv);
+    throw NotReady{"something's not right"sv};
   } catch (RuntimeError &) {
     ok = true;
   }
@@ -40,7 +40,7 @@ TEST_CASE("exceptions_simple_3", "[exceptions]") {
 TEST_CASE("exceptions_simple_4", "[exceptions]") {
   auto ok = false;
   try {
-    throw NotReady("something's not right"sv);
+    throw NotReady{"something's not right"sv};
   } catch (NotReady &) {
     ok = true;
   }
@@ -50,7 +50,7 @@ TEST_CASE("exceptions_simple_4", "[exceptions]") {
 TEST_CASE("exceptions_simple_5", "[exceptions]") {
   auto ok = false;
   try {
-    throw RuntimeError("something's not right"sv);
+    throw RuntimeError{"something's not right"sv};
   } catch (RuntimeError &) {
     ok = true;
   }
@@ -60,7 +60,7 @@ TEST_CASE("exceptions_simple_5", "[exceptions]") {
 TEST_CASE("exceptions_what", "[exceptions]") {
   auto ok = false;
   try {
-    throw NotReady("{}"sv, 123);
+    throw NotReady{"{}"sv, 123};
   } catch (NotReady &e) {
     ok = true;
     CHECK(e.what() == "123"sv);
@@ -68,7 +68,7 @@ TEST_CASE("exceptions_what", "[exceptions]") {
   CHECK(ok == true);
   ok = false;
   try {
-    throw NotReady("123"sv);
+    throw NotReady{"123"sv};
   } catch (NotReady &e) {
     ok = true;
     CHECK(e.what() == "123"sv);

@@ -69,7 +69,7 @@ class Mask final {
   }
 
   template <typename... Args>
-  constexpr Mask(Mask const &other, Args &&...args) : value_(other.value_ | Mask{std::forward<Args>(args)...}.get()) {}
+  constexpr Mask(Mask const &other, Args &&...args) : value_{other.value_ | Mask{std::forward<Args>(args)...}.get()} {}
 
   constexpr auto operator==(Mask const &rhs) const { return value_ == rhs.value_; }
 
@@ -137,15 +137,16 @@ class Mask final {
 
   constexpr bool has_none(Mask rhs) const { return !has_any(rhs); }
 
-  constexpr Mask negate() const { return Mask(~value_); }
+  constexpr Mask negate() const { return Mask{~value_}; }
 
-  constexpr Mask logical_and(Mask rhs) const { return Mask(value_ & rhs.value_); }
+  constexpr Mask logical_and(Mask rhs) const { return Mask{value_ & rhs.value_}; }
 
   constexpr Mask &set(std::initializer_list<T> flags) {
     for (auto &flag : flags) {
       // cppcheck-suppress useStlAlgorithm
       value_ |= static_cast<value_type>(flag);
     }
+    return *this;
   }
 
   constexpr Mask operator~() const { return negate(); }

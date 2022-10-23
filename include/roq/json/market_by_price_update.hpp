@@ -19,12 +19,12 @@ namespace roq {
 namespace json {
 
 struct MarketByPriceUpdate final {
-  explicit MarketByPriceUpdate(roq::MarketByPriceUpdate const &value) : value_(value) {}
+  explicit MarketByPriceUpdate(roq::MarketByPriceUpdate const &value) : value_{value} {}
   MarketByPriceUpdate(
       roq::MarketByPriceUpdate const &value,
       std::span<const roq::MBPUpdate> const &bids,
       std::span<const roq::MBPUpdate> const &asks)
-      : value_(value), bids_(bids), asks_(asks), cache_(true) {}
+      : value_{value}, bids_{bids}, asks_{asks}, cache_{true} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -47,8 +47,8 @@ struct MarketByPriceUpdate final {
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
-        fmt::join(ranges::views::transform(bids, [](auto const &v) { return MBPUpdate(v); }), ","),
-        fmt::join(ranges::views::transform(asks, [](auto const &v) { return MBPUpdate(v); }), ","),
+        fmt::join(ranges::views::transform(bids, [](auto const &v) { return MBPUpdate{v}; }), ","),
+        fmt::join(ranges::views::transform(asks, [](auto const &v) { return MBPUpdate{v}; }), ","),
         String{update_type},
         DateTime{value_.exchange_time_utc},
         value_.exchange_sequence);
@@ -57,8 +57,8 @@ struct MarketByPriceUpdate final {
 
  private:
   roq::MarketByPriceUpdate const &value_;
-  std::span<const roq::MBPUpdate> bids_, asks_;
-  bool cache_ = {};
+  std::span<const roq::MBPUpdate> const bids_, asks_;
+  bool const cache_ = {};
 };
 
 }  // namespace json

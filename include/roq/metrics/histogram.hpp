@@ -23,15 +23,15 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
   constexpr uint64_t threshold() const { return N5; }
 
   Histogram() = default;
-  explicit Histogram(std::string_view const &labels) : labels_(labels) {}
+  explicit Histogram(std::string_view const &labels) : labels_{labels} {}
   Histogram(std::string_view const &label_name_0, std::string_view const &label_value_0)
-      : labels_(create_labels(label_name_0, label_value_0)) {}
+      : labels_{create_labels(label_name_0, label_value_0)} {}
   Histogram(
       std::string_view const &label_name_0,
       std::string_view const &label_value_0,
       std::string_view const &label_name_1,
       std::string_view const &label_value_1)
-      : labels_(create_labels(label_name_0, label_value_0, label_name_1, label_value_1)) {}
+      : labels_{create_labels(label_name_0, label_value_0, label_name_1, label_value_1)} {}
   Histogram(
       std::string_view const &label_name_0,
       std::string_view const &label_value_0,
@@ -39,7 +39,7 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
       std::string_view const &label_value_1,
       std::string_view const &label_name_2,
       std::string_view const &label_value_2)
-      : labels_(create_labels(label_name_0, label_value_0, label_name_1, label_value_1, label_name_2, label_value_2)) {}
+      : labels_{create_labels(label_name_0, label_value_0, label_name_1, label_value_1, label_name_2, label_value_2)} {}
 
   Histogram(Histogram const &) = delete;
   Histogram(Histogram &&) = delete;
@@ -110,7 +110,8 @@ struct alignas(ROQ_CACHELINE_SIZE) Histogram : public Base {
     uint64_t bucket_5;
     uint64_t bucket_6;
   } data_ = {};
-  const std::string labels_;
+  std::string const labels_;
+
   // assumptions
   static_assert(sizeof(Data) == ROQ_CACHELINE_SIZE);
   static_assert(sizeof(std::atomic<uint64_t>) == sizeof(uint64_t));

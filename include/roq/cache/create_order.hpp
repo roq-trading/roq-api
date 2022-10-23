@@ -9,16 +9,16 @@ namespace cache {
 
 struct ROQ_PUBLIC CreateOrder final {
   CreateOrder(roq::CreateOrder const &value)  // NOLINT
-      : account(value.account), order_id(value.order_id), exchange(value.exchange), symbol(value.symbol),
-        side(value.side), position_effect(value.position_effect), time_in_force(value.time_in_force),
-        execution_instructions(value.execution_instructions), order_template(value.order_template),
-        quantity(value.quantity), price(value.price), stop_price(value.stop_price), routing_id(value.routing_id) {}
+      : account{value.account}, order_id{value.order_id}, exchange{value.exchange}, symbol{value.symbol},
+        side{value.side}, position_effect{value.position_effect}, time_in_force{value.time_in_force},
+        execution_instructions{value.execution_instructions}, order_template{value.order_template},
+        quantity{value.quantity}, price{value.price}, stop_price{value.stop_price}, routing_id{value.routing_id} {}
 
   CreateOrder(CreateOrder const &) = delete;
   CreateOrder(CreateOrder &&) = default;
 
   operator roq::CreateOrder() const {
-    return roq::CreateOrder{
+    return {
         .account = account,
         .order_id = order_id,
         .exchange = exchange,

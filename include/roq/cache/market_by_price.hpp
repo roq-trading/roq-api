@@ -130,7 +130,7 @@ class ROQ_PUBLIC MarketByPrice {
     bids.resize(bids_size);
     asks.resize(asks_size);
     auto [final_bids, final_asks] = extract(bids, asks, false);
-    return MarketByPriceUpdate{
+    return {
         .stream_id = {},
         .exchange = exchange(),
         .symbol = symbol(),

@@ -58,7 +58,7 @@ include "market_status.fbs";
 include "modify_order.fbs";
 include "order_ack.fbs";
 include "order_update.fbs";
-include "parameter_update.fbs";
+include "parameters_update.fbs";
 include "position_update.fbs";
 include "rate_limit_trigger.fbs";
 include "reference_data.fbs";
@@ -140,7 +140,7 @@ union Message {
   FundsUpdate,
   CustomMetrics,
   CustomMetricsUpdate,
-  ParameterUpdate,
+  ParametersUpdate,
 }
 
 table SourceInfo {

@@ -35,7 +35,7 @@ set(SOURCES
     order_update.fbs
     origin.fbs
     parameter.fbs
-    parameter_update.fbs
+    parameters_update.fbs
     position_effect.fbs
     position_update.fbs
     priority.fbs

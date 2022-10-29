@@ -49,7 +49,7 @@ class ROQ_PUBLIC EventLogMultiplexer {
     virtual void operator()(Event<CustomMetricsUpdate> const &) = 0;
 
     // parameters
-    virtual void operator()(Event<ParameterUpdate> const &) = 0;
+    virtual void operator()(Event<ParametersUpdate> const &) = 0;
   };
 
   virtual ~EventLogMultiplexer() {}

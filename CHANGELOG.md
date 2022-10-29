@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `ParametersUpdate` was renamed (from `ParameterUpdate`)
 * `TraceInfo` now default initializing to current time
 * `clock` promoted (from core library)
 

@@ -91,8 +91,8 @@ struct OrderAckBuilder;
 struct OrderUpdate;
 struct OrderUpdateBuilder;
 
-struct ParameterUpdate;
-struct ParameterUpdateBuilder;
+struct ParametersUpdate;
+struct ParametersUpdateBuilder;
 
 struct PositionUpdate;
 struct PositionUpdateBuilder;
@@ -1447,9 +1447,9 @@ enum class Message : uint8_t {
   FundsUpdate = 28,
   CustomMetrics = 29,
   CustomMetricsUpdate = 30,
-  ParameterUpdate = 31,
+  ParametersUpdate = 31,
   MIN = NONE,
-  MAX = ParameterUpdate
+  MAX = ParametersUpdate
 };
 
 inline const Message (&EnumValuesMessage())[32] {
@@ -1485,7 +1485,7 @@ inline const Message (&EnumValuesMessage())[32] {
     Message::FundsUpdate,
     Message::CustomMetrics,
     Message::CustomMetricsUpdate,
-    Message::ParameterUpdate
+    Message::ParametersUpdate
   };
   return values;
 }
@@ -1523,14 +1523,14 @@ inline const char * const *EnumNamesMessage() {
     "FundsUpdate",
     "CustomMetrics",
     "CustomMetricsUpdate",
-    "ParameterUpdate",
+    "ParametersUpdate",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMessage(Message e) {
-  if (flatbuffers::IsOutRange(e, Message::NONE, Message::ParameterUpdate)) return "";
+  if (flatbuffers::IsOutRange(e, Message::NONE, Message::ParametersUpdate)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMessage()[index];
 }
@@ -1659,8 +1659,8 @@ template<> struct MessageTraits<roq::fbs::CustomMetricsUpdate> {
   static const Message enum_value = Message::CustomMetricsUpdate;
 };
 
-template<> struct MessageTraits<roq::fbs::ParameterUpdate> {
-  static const Message enum_value = Message::ParameterUpdate;
+template<> struct MessageTraits<roq::fbs::ParametersUpdate> {
+  static const Message enum_value = Message::ParametersUpdate;
 };
 
 bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Message type);
@@ -4923,12 +4923,13 @@ inline flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       user__);
 }
 
-struct ParameterUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ParameterUpdateBuilder Builder;
+struct ParametersUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ParametersUpdateBuilder Builder;
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PARAMETERS = 4,
-    VT_UPDATE_TYPE = 6
+    VT_UPDATE_TYPE = 6,
+    VT_USER = 8
   };
   const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Parameter>> *parameters() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Parameter>> *>(VT_PARAMETERS);
@@ -4936,61 +4937,74 @@ struct ParameterUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
+  const flatbuffers::String *user() const {
+    return GetPointer<const flatbuffers::String *>(VT_USER);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PARAMETERS) &&
            verifier.VerifyVector(parameters()) &&
            verifier.VerifyVectorOfTables(parameters()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyString(user()) &&
            verifier.EndTable();
   }
 };
 
-struct ParameterUpdateBuilder {
-  typedef ParameterUpdate Table;
+struct ParametersUpdateBuilder {
+  typedef ParametersUpdate Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_parameters(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Parameter>>> parameters) {
-    fbb_.AddOffset(ParameterUpdate::VT_PARAMETERS, parameters);
+    fbb_.AddOffset(ParametersUpdate::VT_PARAMETERS, parameters);
   }
   void add_update_type(roq::fbs::UpdateType update_type) {
-    fbb_.AddElement<uint8_t>(ParameterUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+    fbb_.AddElement<uint8_t>(ParametersUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
   }
-  explicit ParameterUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  void add_user(flatbuffers::Offset<flatbuffers::String> user) {
+    fbb_.AddOffset(ParametersUpdate::VT_USER, user);
+  }
+  explicit ParametersUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ParameterUpdate> Finish() {
+  flatbuffers::Offset<ParametersUpdate> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ParameterUpdate>(end);
+    auto o = flatbuffers::Offset<ParametersUpdate>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ParameterUpdate> CreateParameterUpdate(
+inline flatbuffers::Offset<ParametersUpdate> CreateParametersUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::Parameter>>> parameters = 0,
-    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
-  ParameterUpdateBuilder builder_(_fbb);
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    flatbuffers::Offset<flatbuffers::String> user = 0) {
+  ParametersUpdateBuilder builder_(_fbb);
+  builder_.add_user(user);
   builder_.add_parameters(parameters);
   builder_.add_update_type(update_type);
   return builder_.Finish();
 }
 
-struct ParameterUpdate::Traits {
-  using type = ParameterUpdate;
-  static auto constexpr Create = CreateParameterUpdate;
+struct ParametersUpdate::Traits {
+  using type = ParametersUpdate;
+  static auto constexpr Create = CreateParametersUpdate;
 };
 
-inline flatbuffers::Offset<ParameterUpdate> CreateParameterUpdateDirect(
+inline flatbuffers::Offset<ParametersUpdate> CreateParametersUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<flatbuffers::Offset<roq::fbs::Parameter>> *parameters = nullptr,
-    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    const char *user = nullptr) {
   auto parameters__ = parameters ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::Parameter>>(*parameters) : 0;
-  return roq::fbs::CreateParameterUpdate(
+  auto user__ = user ? _fbb.CreateString(user) : 0;
+  return roq::fbs::CreateParametersUpdate(
       _fbb,
       parameters__,
-      update_type);
+      update_type,
+      user__);
 }
 
 struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -7031,8 +7045,8 @@ struct Event FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const roq::fbs::CustomMetricsUpdate *message_as_CustomMetricsUpdate() const {
     return message_type() == roq::fbs::Message::CustomMetricsUpdate ? static_cast<const roq::fbs::CustomMetricsUpdate *>(message()) : nullptr;
   }
-  const roq::fbs::ParameterUpdate *message_as_ParameterUpdate() const {
-    return message_type() == roq::fbs::Message::ParameterUpdate ? static_cast<const roq::fbs::ParameterUpdate *>(message()) : nullptr;
+  const roq::fbs::ParametersUpdate *message_as_ParametersUpdate() const {
+    return message_type() == roq::fbs::Message::ParametersUpdate ? static_cast<const roq::fbs::ParametersUpdate *>(message()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -7165,8 +7179,8 @@ template<> inline const roq::fbs::CustomMetricsUpdate *Event::message_as<roq::fb
   return message_as_CustomMetricsUpdate();
 }
 
-template<> inline const roq::fbs::ParameterUpdate *Event::message_as<roq::fbs::ParameterUpdate>() const {
-  return message_as_ParameterUpdate();
+template<> inline const roq::fbs::ParametersUpdate *Event::message_as<roq::fbs::ParametersUpdate>() const {
+  return message_as_ParametersUpdate();
 }
 
 struct EventBuilder {
@@ -7335,8 +7349,8 @@ inline bool VerifyMessage(flatbuffers::Verifier &verifier, const void *obj, Mess
       auto ptr = reinterpret_cast<const roq::fbs::CustomMetricsUpdate *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Message::ParameterUpdate: {
-      auto ptr = reinterpret_cast<const roq::fbs::ParameterUpdate *>(obj);
+    case Message::ParametersUpdate: {
+      auto ptr = reinterpret_cast<const roq::fbs::ParametersUpdate *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

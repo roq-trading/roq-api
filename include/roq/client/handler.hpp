@@ -70,7 +70,7 @@ class ROQ_PUBLIC Handler {
   virtual void operator()(Event<CustomMessage> const &) {}
 
   // parameters
-  virtual void operator()(Event<ParameterUpdate> const &) {}
+  virtual void operator()(Event<ParametersUpdate> const &) {}
 
   // metrics
   virtual void operator()(metrics::Writer &) const {}

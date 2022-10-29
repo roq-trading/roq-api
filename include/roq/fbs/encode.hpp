@@ -82,7 +82,7 @@ template <> struct maps_to<roq::PositionUpdate> { static constexpr auto value = 
 template <> struct maps_to<roq::FundsUpdate> { static constexpr auto value = Message::FundsUpdate; };
 template <> struct maps_to<roq::CustomMetrics> { static constexpr auto value = Message::CustomMetrics; };
 template <> struct maps_to<roq::CustomMetricsUpdate> { static constexpr auto value = Message::CustomMetricsUpdate; };
-template <> struct maps_to<roq::ParameterUpdate> { static constexpr auto value = Message::ParameterUpdate; };
+template <> struct maps_to<roq::ParametersUpdate> { static constexpr auto value = Message::ParametersUpdate; };
 }
 
 // std::chrono::duration
@@ -594,11 +594,12 @@ auto encode(B &builder, roq::CustomMetricsUpdate const &value) {
 }
 
 template <typename B>
-auto encode(B &builder, roq::ParameterUpdate const &value) {
-  return CreateParameterUpdate(
+auto encode(B &builder, roq::ParametersUpdate const &value) {
+  return CreateParametersUpdate(
       builder,
       encode(builder, value.parameters),
-      encode(builder, value.update_type));
+      encode(builder, value.update_type),
+      encode(builder, value.user));
 }
 
 // events

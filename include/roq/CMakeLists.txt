@@ -44,7 +44,7 @@ set(SOURCES
     order_update.json
     origin.json
     parameter.json
-    parameter_update.json
+    parameters_update.json
     position_effect.json
     position_update.json
     priority.json

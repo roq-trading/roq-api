@@ -7,6 +7,7 @@ set(SOURCES
     buffer_capacity.fbs
     cancel_all_orders.fbs
     cancel_order.fbs
+    category.fbs
     connection_status.fbs
     create_order.fbs
     custom_metrics.fbs

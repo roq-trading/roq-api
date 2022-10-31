@@ -1,0 +1,13 @@
+{
+  "name": "Category",
+  "type": "enum",
+  "comment": "Category (of data)",
+  "values": [
+    {
+      "name": "Public"
+    },
+    {
+      "name": "Private"
+    }
+  ]
+}

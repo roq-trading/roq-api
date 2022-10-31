@@ -8,6 +8,7 @@ set(SOURCES
     buffer_capacity.json
     cancel_all_orders.json
     cancel_order.json
+    category.json
     connected.json
     connection_status.json
     create_order.json

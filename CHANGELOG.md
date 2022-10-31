@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* Move `Category` (from the core and adapter libraries) (#297)
+
 ### Changed
 
 * `ParametersUpdate` was renamed (from `ParameterUpdate`)

@@ -178,6 +178,39 @@ inline const char *EnumNameBufferCapacity(BufferCapacity e) {
   return EnumNamesBufferCapacity()[index];
 }
 
+enum class Category : uint8_t {
+  Undefined = 0,
+  Public = 1,
+  Private = 2,
+  MIN = Undefined,
+  MAX = Private
+};
+
+inline const Category (&EnumValuesCategory())[3] {
+  static const Category values[] = {
+    Category::Undefined,
+    Category::Public,
+    Category::Private
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesCategory() {
+  static const char * const names[4] = {
+    "Undefined",
+    "Public",
+    "Private",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameCategory(Category e) {
+  if (flatbuffers::IsOutRange(e, Category::Undefined, Category::Private)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesCategory()[index];
+}
+
 enum class ConnectionStatus : uint8_t {
   Undefined = 0,
   Disconnected = 1,

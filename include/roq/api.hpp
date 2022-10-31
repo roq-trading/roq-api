@@ -11,6 +11,7 @@
 // enums
 
 #include "roq/buffer_capacity.hpp"
+#include "roq/category.hpp"
 #include "roq/connection_status.hpp"
 #include "roq/decimals.hpp"
 #include "roq/encoding.hpp"

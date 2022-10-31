@@ -1,0 +1,7 @@
+namespace roq.fbs;
+
+enum Category:uint8 {
+  Undefined,
+  Public,
+  Private
+}

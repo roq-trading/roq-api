@@ -11,6 +11,7 @@
 #include "roq/api.hpp"
 
 #include "roq/cache/market.hpp"
+#include "roq/cache/stream_status.hpp"
 
 namespace roq {
 namespace cache {
@@ -25,7 +26,7 @@ struct Manager final {
   explicit Manager(MarketByPriceFactory &&market_by_price_factory)
       : market_by_price_factory_{std::move(market_by_price_factory)} {}
 
-  // always guaranteed to return (or throw)
+  // always guaranteed to return
   std::pair<Market &, bool> get_market_or_create(std::string_view const &exchange, std::string_view const &symbol) {
     auto market_id = find_market_id(exchange, symbol);
     if (market_id) {
@@ -122,6 +123,32 @@ struct Manager final {
     return true;
   }
 
+  [[nodiscard]] bool operator()(Event<roq::StreamStatus> const &event) {
+    auto &stream_status = event.value;
+    return get_stream_status(stream_status.stream_id, stream_status.account)(event);
+  }
+
+  // calls back with all stream_status
+  template <typename Callback>
+  bool get_all_stream_status(Callback callback) const {
+    auto result = false;
+    for (auto &[_, stream_status] : stream_status_) {
+      result = true;
+      callback(stream_status);
+    }
+    return result;
+  }
+
+  // calls back with all stream_status
+  template <typename Callback>
+  bool get_stream_status(uint16_t stream_id, Callback callback) const {
+    auto iter = stream_status_.find(stream_id);
+    if (iter == std::end(stream_status_))
+      return false;
+    callback((*iter).second);
+    return true;
+  }
+
  protected:
   uint32_t find_market_id(std::string_view const &exchange, std::string_view const &symbol) const {
     auto iter_1 = exchange_to_symbols_.find(exchange);
@@ -132,11 +159,22 @@ struct Manager final {
     return iter_2 == std::end(symbols) ? 0 : (*iter_2).second;
   }
 
+  // always guaranteed to return
+  StreamStatus &get_stream_status(uint16_t stream_id, std::string_view const &account) {
+    auto iter = stream_status_.find(stream_id);
+    if (iter == std::end(stream_status_)) {
+      StreamStatus stream_status{stream_id, account};
+      iter = stream_status_.emplace(stream_id, std::move(stream_status)).first;
+    }
+    return (*iter).second;
+  }
+
  private:
   MarketByPriceFactory const market_by_price_factory_;
   MarketId next_market_id_ = 0;
   absl::flat_hash_map<Exchange, absl::flat_hash_map<Symbol, MarketId>> exchange_to_symbols_;
   absl::node_hash_map<MarketId, Market> markets_;
+  absl::node_hash_map<uint16_t, StreamStatus> stream_status_;
 };
 
 }  // namespace cache

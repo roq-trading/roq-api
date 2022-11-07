@@ -41,8 +41,14 @@ struct Parameters final {
 
   [[nodiscard]] ParametersUpdate convert(auto &context, std::vector<Parameter> &buffer) const {
     buffer.clear();
-    for (auto &[key, value] : parameters_)
-      buffer.emplace_back(key, value);  // note! copy
+    for (auto &[key, value] : parameters_) {
+      // note! copy
+      Parameter parameter{
+          .key = key,
+          .value = value,
+      };
+      buffer.emplace_back(std::move(parameter));
+    }
     return {
         .parameters = buffer,
         .update_type = UpdateType::SNAPSHOT,

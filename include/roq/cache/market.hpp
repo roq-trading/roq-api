@@ -94,7 +94,25 @@ struct Market final {
   }
 
   template <typename Callback>
+  bool get_funds(std::string_view const &account, Callback callback) const {
+    auto iter = accounts.find(account);
+    if (iter == std::end(accounts))
+      return false;
+    callback((*iter).second.funds);
+    return true;
+  }
+
+  template <typename Callback>
   bool get_position(std::string_view const &account, Callback callback) {
+    auto iter = accounts.find(account);
+    if (iter == std::end(accounts))
+      return false;
+    callback((*iter).second.position);
+    return true;
+  }
+
+  template <typename Callback>
+  bool get_position(std::string_view const &account, Callback callback) const {
     auto iter = accounts.find(account);
     if (iter == std::end(accounts))
       return false;
@@ -116,9 +134,23 @@ struct Market final {
     return true;
   }
 
-  const uint32_t market_id;
+  // note! random ordering
+  template <typename Callback>
+  bool get_orders(std::string_view const &account, Callback callback) const {
+    auto iter = accounts.find(account);
+    if (iter == std::end(accounts))
+      return false;
+    auto &tmp = (*iter).second.orders;
+    if (std::empty(tmp))
+      return false;
+    for (auto &[order_id, order] : tmp)
+      callback(order);
+    return true;
+  }
 
-  const Context context;
+  uint32_t const market_id;
+
+  Context const context;
 
   ReferenceData reference_data;
   MarketStatus market_status;

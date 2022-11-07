@@ -35,7 +35,7 @@ struct CustomMetrics final {
         update_snapshot(custom_metrics_update);
         return true;
       case STALE:
-        assert(false);  // note supported
+        assert(false);  // not supported
         break;
     }
     return false;
@@ -51,21 +51,23 @@ struct CustomMetrics final {
         update_snapshot(custom_metrics);
         return true;
       case STALE:
-        assert(false);  // note supported
+        assert(false);  // not supported
         break;
     }
     return false;
   }
 
+  [[nodiscard]] bool operator()(Event<CustomMetricsUpdate> const &event) { return (*this)(event.value); }
+
   template <typename Context>
-  [[nodiscard]] CustomMetricsUpdate convert(Context const &context) {
+  [[nodiscard]] CustomMetricsUpdate convert(Context const &context) const {
     return {
         .user = user,
         .label = label,
         .account = context.account,
         .exchange = context.exchange,
         .symbol = context.symbol,
-        .measurements = measurements,  // XXX reason for non-const method
+        .measurements = {const_cast<Measurement *>(std::data(measurements)), std::size(measurements)},  // XXX const
         .update_type = UpdateType::SNAPSHOT,
     };
   }

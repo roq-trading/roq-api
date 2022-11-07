@@ -11,6 +11,8 @@
 #include "roq/api.hpp"
 
 #include "roq/cache/market.hpp"
+
+#include "roq/cache/gateway_status.hpp"
 #include "roq/cache/stream_status.hpp"
 
 namespace roq {
@@ -55,7 +57,7 @@ struct Manager final {
 
   // returns false if non-existing, calls back with market if exists
   template <typename Callback>
-  bool get_market(std::string_view const &exchange, std::string_view const &symbol, Callback callback) {
+  bool get_market(std::string_view const &exchange, std::string_view const &symbol, Callback callback) const {
     auto market_id = find_market_id(exchange, symbol);
     if (market_id) {
       auto iter = markets_.find(market_id);
@@ -149,6 +151,29 @@ struct Manager final {
     return true;
   }
 
+  [[nodiscard]] bool operator()(Event<roq::GatewayStatus> const &event) {
+    return get_gateway_status_or_create(event.value.account)(event);
+  }
+
+  template <typename Callback>
+  bool get_gateway_status(std::string_view const &account, Callback callback) const {
+    auto iter = gateway_status_.find(account);
+    if (iter == std::end(gateway_status_))
+      return false;
+    callback((*iter).second);
+    return true;
+  }
+
+  template <typename Callback>
+  bool get_all_gateway_status(Callback callback) const {
+    auto result = false;
+    for (auto &[account, gateway_status] : gateway_status_) {
+      result = true;
+      callback(account, gateway_status);
+    }
+    return result;
+  }
+
  protected:
   uint32_t find_market_id(std::string_view const &exchange, std::string_view const &symbol) const {
     auto iter_1 = exchange_to_symbols_.find(exchange);
@@ -169,12 +194,22 @@ struct Manager final {
     return (*iter).second;
   }
 
+  GatewayStatus &get_gateway_status_or_create(std::string_view const &account) {
+    auto iter = gateway_status_.find(account);
+    if (iter == std::end(gateway_status_)) {
+      GatewayStatus gateway_status;
+      iter = gateway_status_.emplace(account, std::move(gateway_status)).first;
+    }
+    return (*iter).second;
+  }
+
  private:
   MarketByPriceFactory const market_by_price_factory_;
   MarketId next_market_id_ = 0;
   absl::flat_hash_map<Exchange, absl::flat_hash_map<Symbol, MarketId>> exchange_to_symbols_;
   absl::node_hash_map<MarketId, Market> markets_;
   absl::node_hash_map<uint16_t, StreamStatus> stream_status_;
+  absl::node_hash_map<Account, GatewayStatus> gateway_status_;
 };
 
 }  // namespace cache

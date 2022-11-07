@@ -20,12 +20,14 @@ struct TopOfBook final {
   void clear() {
     layer = {};
     exchange_time_utc = {};
+    exchange_sequence = {};
   }
 
   [[nodiscard]] bool operator()(roq::TopOfBook const &top_of_book) {
     auto dirty = false;
     dirty |= utils::update(layer, top_of_book.layer);
     dirty |= utils::update(exchange_time_utc, top_of_book.exchange_time_utc);
+    dirty |= utils::update(exchange_sequence, top_of_book.exchange_sequence);
     return dirty;
   }
 
@@ -37,12 +39,15 @@ struct TopOfBook final {
         .exchange = context.exchange,
         .symbol = context.symbol,
         .layer = layer,
+        .update_type = UpdateType::SNAPSHOT,
         .exchange_time_utc = exchange_time_utc,
+        .exchange_sequence = exchange_sequence,
     };
   }
 
   Layer layer = {};
   std::chrono::nanoseconds exchange_time_utc = {};
+  int64_t exchange_sequence = {};
 };
 
 }  // namespace cache

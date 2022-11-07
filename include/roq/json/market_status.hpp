@@ -28,7 +28,7 @@ struct MarketStatus final {
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
-        value_.trading_status);
+        String{value_.trading_status});
   }
 
  private:

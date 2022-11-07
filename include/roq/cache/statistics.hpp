@@ -90,13 +90,13 @@ class Statistics final {
   // note! this will include *all* statistics (whether empty or not)
   // use the extract method if you only care about non-empty statistics
   template <typename Context>
-  [[nodiscard]] StatisticsUpdate convert(Context const &context) {
+  [[nodiscard]] StatisticsUpdate convert(Context const &context) const {
     return {
         .stream_id = stream_id,
         .exchange = context.exchange,
         .symbol = context.symbol,
-        .statistics = statistics,             // XXX reason for non-const method
-        .update_type = UpdateType::SNAPSHOT,  // note!
+        .statistics = {const_cast<roq::Statistics *>(std::data(statistics)), std::size(statistics)},  // XXX
+        .update_type = UpdateType::SNAPSHOT,                                                          // note!
         .exchange_time_utc = exchange_time_utc,
     };
   }

@@ -4,9 +4,21 @@
   "comment": "Represents a single parameter",
   "values": [
     {
-      "name": "key",
+      "name": "label",
       "type": "ParameterKey",
-      "comment": "Key"
+      "comment": "Label"
+    },
+    {
+      "name": "account",
+      "type": "Account"
+    },
+    {
+      "name": "exchange",
+      "type": "Exchange"
+    },
+    {
+      "name": "symbol",
+      "type": "Symbol"
     },
     {
       "name": "value",

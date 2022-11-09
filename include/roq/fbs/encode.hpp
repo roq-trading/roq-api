@@ -153,7 +153,10 @@ template <typename B>
 auto encode(B &builder, roq::Parameter const &value) {
   return CreateParameter(
       builder,
-      encode(builder, static_cast<std::string_view>(value.key)),
+      encode(builder, static_cast<std::string_view>(value.label)),
+      encode(builder, static_cast<std::string_view>(value.account)),
+      encode(builder, static_cast<std::string_view>(value.exchange)),
+      encode(builder, static_cast<std::string_view>(value.symbol)),
       encode(builder, static_cast<std::string_view>(value.value)));
 }
 

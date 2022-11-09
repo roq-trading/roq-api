@@ -17,7 +17,20 @@ struct Parameter final {
   template <typename Context>
   auto format_to(Context &context) const {
     using namespace std::literals;
-    return fmt::format_to(context.out(), "{}:{}"sv, String{value_.key}, String{value_.value});
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"("label":{},)"
+        R"("account":{},)"
+        R"("exchange":{},)"
+        R"("symbol":{},)"
+        R"("value":{})"
+        R"(}})"sv,
+        String{value_.label},
+        String{value_.account},
+        String{value_.exchange},
+        String{value_.symbol},
+        String{value_.value});
   }
 
  private:

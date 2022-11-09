@@ -131,6 +131,9 @@ static_assert(sizeof(Trade) == 192);
 static_assert(sizeof(Fill) == 64);
 static_assert(sizeof(Statistics) == 32);
 static_assert(sizeof(Measurement) == 16);
-static_assert(sizeof(Parameter) == 64);
+
+// we don't care so much (low frequency) -- just keep a handle on the size
+
+static_assert(sizeof(Parameter) == 176);
 
 }  // namespace roq

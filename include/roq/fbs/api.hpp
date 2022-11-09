@@ -2144,19 +2144,37 @@ struct Parameter FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ParameterBuilder Builder;
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_KEY = 4,
-    VT_VALUE = 6
+    VT_LABEL = 4,
+    VT_ACCOUNT = 6,
+    VT_EXCHANGE = 8,
+    VT_SYMBOL = 10,
+    VT_VALUE = 12
   };
-  const flatbuffers::String *key() const {
-    return GetPointer<const flatbuffers::String *>(VT_KEY);
+  const flatbuffers::String *label() const {
+    return GetPointer<const flatbuffers::String *>(VT_LABEL);
+  }
+  const flatbuffers::String *account() const {
+    return GetPointer<const flatbuffers::String *>(VT_ACCOUNT);
+  }
+  const flatbuffers::String *exchange() const {
+    return GetPointer<const flatbuffers::String *>(VT_EXCHANGE);
+  }
+  const flatbuffers::String *symbol() const {
+    return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
   }
   const flatbuffers::String *value() const {
     return GetPointer<const flatbuffers::String *>(VT_VALUE);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_KEY) &&
-           verifier.VerifyString(key()) &&
+           VerifyOffset(verifier, VT_LABEL) &&
+           verifier.VerifyString(label()) &&
+           VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) &&
+           VerifyOffset(verifier, VT_EXCHANGE) &&
+           verifier.VerifyString(exchange()) &&
+           VerifyOffset(verifier, VT_SYMBOL) &&
+           verifier.VerifyString(symbol()) &&
            VerifyOffset(verifier, VT_VALUE) &&
            verifier.VerifyString(value()) &&
            verifier.EndTable();
@@ -2167,8 +2185,17 @@ struct ParameterBuilder {
   typedef Parameter Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_key(flatbuffers::Offset<flatbuffers::String> key) {
-    fbb_.AddOffset(Parameter::VT_KEY, key);
+  void add_label(flatbuffers::Offset<flatbuffers::String> label) {
+    fbb_.AddOffset(Parameter::VT_LABEL, label);
+  }
+  void add_account(flatbuffers::Offset<flatbuffers::String> account) {
+    fbb_.AddOffset(Parameter::VT_ACCOUNT, account);
+  }
+  void add_exchange(flatbuffers::Offset<flatbuffers::String> exchange) {
+    fbb_.AddOffset(Parameter::VT_EXCHANGE, exchange);
+  }
+  void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
+    fbb_.AddOffset(Parameter::VT_SYMBOL, symbol);
   }
   void add_value(flatbuffers::Offset<flatbuffers::String> value) {
     fbb_.AddOffset(Parameter::VT_VALUE, value);
@@ -2186,11 +2213,17 @@ struct ParameterBuilder {
 
 inline flatbuffers::Offset<Parameter> CreateParameter(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> key = 0,
+    flatbuffers::Offset<flatbuffers::String> label = 0,
+    flatbuffers::Offset<flatbuffers::String> account = 0,
+    flatbuffers::Offset<flatbuffers::String> exchange = 0,
+    flatbuffers::Offset<flatbuffers::String> symbol = 0,
     flatbuffers::Offset<flatbuffers::String> value = 0) {
   ParameterBuilder builder_(_fbb);
   builder_.add_value(value);
-  builder_.add_key(key);
+  builder_.add_symbol(symbol);
+  builder_.add_exchange(exchange);
+  builder_.add_account(account);
+  builder_.add_label(label);
   return builder_.Finish();
 }
 
@@ -2201,13 +2234,22 @@ struct Parameter::Traits {
 
 inline flatbuffers::Offset<Parameter> CreateParameterDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const char *key = nullptr,
+    const char *label = nullptr,
+    const char *account = nullptr,
+    const char *exchange = nullptr,
+    const char *symbol = nullptr,
     const char *value = nullptr) {
-  auto key__ = key ? _fbb.CreateString(key) : 0;
+  auto label__ = label ? _fbb.CreateString(label) : 0;
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
+  auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   auto value__ = value ? _fbb.CreateString(value) : 0;
   return roq::fbs::CreateParameter(
       _fbb,
-      key__,
+      label__,
+      account__,
+      exchange__,
+      symbol__,
       value__);
 }
 

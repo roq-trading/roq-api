@@ -49,17 +49,17 @@ struct ROQ_PUBLIC Order final {
   [[nodiscard]] bool operator()(OrderUpdate const &order_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, order_update.stream_id);
-    dirty |= utils::update(side, order_update.side);
-    dirty |= utils::update(position_effect, order_update.position_effect);
-    dirty |= utils::update(max_show_quantity, order_update.max_show_quantity);
-    dirty |= utils::update(order_type, order_update.order_type);
-    dirty |= utils::update(time_in_force, order_update.time_in_force);
-    dirty |= utils::update(execution_instructions, order_update.execution_instructions);
-    dirty |= utils::update(order_template, order_update.order_template);
-    dirty |= utils::update(create_time_utc, order_update.create_time_utc);
-    dirty |= utils::update(update_time_utc, order_update.update_time_utc);
-    dirty |= utils::update(external_account, order_update.external_account);
-    dirty |= utils::update(external_order_id, order_update.external_order_id);
+    dirty |= utils::update_if_not_empty(side, order_update.side);
+    dirty |= utils::update_if_not_empty(position_effect, order_update.position_effect);
+    dirty |= utils::update_if_not_empty(max_show_quantity, order_update.max_show_quantity);
+    dirty |= utils::update_if_not_empty(order_type, order_update.order_type);
+    dirty |= utils::update_if_not_empty(time_in_force, order_update.time_in_force);
+    dirty |= utils::update_if_not_empty(execution_instructions, order_update.execution_instructions);
+    dirty |= utils::update_if_not_empty(order_template, order_update.order_template);
+    dirty |= utils::update_if_not_empty(create_time_utc, order_update.create_time_utc);
+    dirty |= utils::update_if_not_empty(update_time_utc, order_update.update_time_utc);
+    dirty |= utils::update_if_not_empty(external_account, order_update.external_account);
+    dirty |= utils::update_if_not_empty(external_order_id, order_update.external_order_id);
     dirty |= utils::update(status, order_update.status);
     dirty |= utils::update(quantity, order_update.quantity);
     dirty |= utils::update(price, order_update.price);
@@ -74,7 +74,7 @@ struct ROQ_PUBLIC Order final {
     dirty |= utils::update(max_request_version, order_update.max_request_version);
     dirty |= utils::update(max_response_version, order_update.max_response_version);
     dirty |= utils::update(max_accepted_version, order_update.max_accepted_version);
-    dirty |= utils::update(user, order_update.user);
+    dirty |= utils::update_if_not_empty(user, order_update.user);
     // some update types will always be published
     switch (order_update.update_type) {
       using enum UpdateType;

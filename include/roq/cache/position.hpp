@@ -27,11 +27,11 @@ struct Position final {
   [[nodiscard]] bool operator()(PositionUpdate const &position_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, position_update.stream_id);
-    dirty |= utils::update(external_account, position_update.external_account);
-    dirty |= utils::update(long_quantity, position_update.long_quantity);
-    dirty |= utils::update(short_quantity, position_update.short_quantity);
-    dirty |= utils::update(long_quantity_begin, position_update.long_quantity_begin);
-    dirty |= utils::update(short_quantity_begin, position_update.short_quantity_begin);
+    dirty |= utils::update_if_not_empty(external_account, position_update.external_account);
+    dirty |= utils::update_if_not_empty(long_quantity, position_update.long_quantity);
+    dirty |= utils::update_if_not_empty(short_quantity, position_update.short_quantity);
+    dirty |= utils::update_if_not_empty(long_quantity_begin, position_update.long_quantity_begin);
+    dirty |= utils::update_if_not_empty(short_quantity_begin, position_update.short_quantity_begin);
     return dirty;
   }
 

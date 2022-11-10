@@ -25,9 +25,9 @@ struct Funds final {
   [[nodiscard]] bool operator()(FundsUpdate const &funds_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, funds_update.stream_id);
-    dirty |= utils::update(balance, funds_update.balance);
-    dirty |= utils::update(hold, funds_update.hold);
-    dirty |= utils::update(external_account, funds_update.external_account);
+    dirty |= utils::update_if_not_empty(balance, funds_update.balance);
+    dirty |= utils::update_if_not_empty(hold, funds_update.hold);
+    dirty |= utils::update_if_not_empty(external_account, funds_update.external_account);
     return dirty;
   }
 

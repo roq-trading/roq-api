@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.8.9 &ndash; 2022-11-14
+
 ### Added
 
 * Move `Category` (from the core and adapter libraries) (#297)

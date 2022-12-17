@@ -336,34 +336,40 @@ enum class Encoding : uint32_t {
   FIX = 1,
   JSON = 2,
   SBE = 4,
+  FBS = 8,
   MIN = Undefined,
-  MAX = SBE
+  MAX = FBS
 };
 
-inline const Encoding (&EnumValuesEncoding())[4] {
+inline const Encoding (&EnumValuesEncoding())[5] {
   static const Encoding values[] = {
     Encoding::Undefined,
     Encoding::FIX,
     Encoding::JSON,
-    Encoding::SBE
+    Encoding::SBE,
+    Encoding::FBS
   };
   return values;
 }
 
 inline const char * const *EnumNamesEncoding() {
-  static const char * const names[6] = {
+  static const char * const names[10] = {
     "Undefined",
     "FIX",
     "JSON",
     "",
     "SBE",
+    "",
+    "",
+    "",
+    "FBS",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameEncoding(Encoding e) {
-  if (flatbuffers::IsOutRange(e, Encoding::Undefined, Encoding::SBE)) return "";
+  if (flatbuffers::IsOutRange(e, Encoding::Undefined, Encoding::FBS)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesEncoding()[index];
 }
@@ -771,35 +777,38 @@ enum class Protocol : uint8_t {
   WS = 2,
   HTTP = 3,
   SBE = 4,
+  ROQ = 5,
   MIN = Undefined,
-  MAX = SBE
+  MAX = ROQ
 };
 
-inline const Protocol (&EnumValuesProtocol())[5] {
+inline const Protocol (&EnumValuesProtocol())[6] {
   static const Protocol values[] = {
     Protocol::Undefined,
     Protocol::FIX,
     Protocol::WS,
     Protocol::HTTP,
-    Protocol::SBE
+    Protocol::SBE,
+    Protocol::ROQ
   };
   return values;
 }
 
 inline const char * const *EnumNamesProtocol() {
-  static const char * const names[6] = {
+  static const char * const names[7] = {
     "Undefined",
     "FIX",
     "WS",
     "HTTP",
     "SBE",
+    "ROQ",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameProtocol(Protocol e) {
-  if (flatbuffers::IsOutRange(e, Protocol::Undefined, Protocol::SBE)) return "";
+  if (flatbuffers::IsOutRange(e, Protocol::Undefined, Protocol::ROQ)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesProtocol()[index];
 }

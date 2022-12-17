@@ -18,6 +18,7 @@ enum class Encoding : uint32_t {
   FIX = 0x1,   //!< FIX
   JSON = 0x2,  //!< JSON
   SBE = 0x4,   //!< SBE
+  FBS = 0x8,   //!< FlatBuffers
 };
 
 }  // namespace roq
@@ -42,6 +43,8 @@ struct fmt::formatter<roq::Encoding> {
           return "JSON"sv;
         case SBE:
           return "SBE"sv;
+        case FBS:
+          return "FBS"sv;
         default:
           assert(false);
       }

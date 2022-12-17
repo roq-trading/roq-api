@@ -17,6 +17,11 @@
       "name": "SBE",
       "position": 2,
       "comment": "SBE"
+    },
+    {
+      "name": "FBS",
+      "position": 3,
+      "comment": "FlatBuffers"
     }
   ]
 }

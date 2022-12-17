@@ -19,6 +19,7 @@ enum class Protocol : uint8_t {
   WS,    //!< Web-Socket
   HTTP,  //!< HTTP (REST)
   SBE,   //!< Simple Binary Encoding
+  ROQ,   //!< UDP messaging
 };
 
 }  // namespace roq

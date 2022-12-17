@@ -18,6 +18,10 @@
     {
       "name": "SBE",
       "comment": "Simple Binary Encoding"
+    },
+    {
+      "name": "ROQ",
+      "comment": "UDP messaging"
     }
   ]
 }

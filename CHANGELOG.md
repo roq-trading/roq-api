@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* New `Protocol` and `Encoding` to support Roq's UDP transport (#307)
+
 ## 0.8.9 &ndash; 2022-11-14
 
 ### Added

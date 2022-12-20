@@ -6,22 +6,26 @@
 
 #include "roq/numbers.hpp"
 
+#include "roq/utils/number.hpp"
+
 namespace roq {
 namespace json {
 
 struct Number final {
-  explicit Number(double value) : value_{value} {}
+  explicit Number(double value) : number_{value, {}} {}
+  Number(double value, Decimals decimals) : number_{value, decimals} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
     using namespace std::literals;
-    if (!std::isnan(value_))
-      return fmt::format_to(context.out(), "{}"sv, value_);
-    return fmt::format_to(context.out(), "null"sv);
+    if (std::isnan(number_.value))
+      return fmt::format_to(context.out(), "null"sv);
+    // note! we quote numbers to preserve all decimals
+    return fmt::format_to(context.out(), R"("{}")"sv, number_);
   }
 
  private:
-  double const value_;
+  utils::Number const number_;
 };
 
 }  // namespace json

@@ -10,6 +10,7 @@
 
 #include "roq/json/trade.hpp"
 
+#include "roq/json/context.hpp"
 #include "roq/json/datetime.hpp"
 #include "roq/json/string.hpp"
 
@@ -17,7 +18,7 @@ namespace roq {
 namespace json {
 
 struct TradeSummary final {
-  explicit TradeSummary(roq::TradeSummary const &value) : value_{value} {}
+  TradeSummary(Context const &context, roq::TradeSummary const &value) : context_{context}, value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -35,12 +36,19 @@ struct TradeSummary final {
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
-        fmt::join(ranges::views::transform(value_.trades, [](auto const &v) { return Trade{v}; }), ","),
+        fmt::join(
+            ranges::views::transform(
+                value_.trades,
+                [this](auto const &v) {
+                  return Trade{context_, v};
+                }),
+            ","),
         DateTime{value_.exchange_time_utc},
         value_.exchange_sequence);
   }
 
  private:
+  Context const &context_;
   roq::TradeSummary const &value_;
 };
 

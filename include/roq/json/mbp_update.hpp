@@ -6,6 +6,7 @@
 
 #include "roq/mbp_update.hpp"
 
+#include "roq/json/context.hpp"
 #include "roq/json/number.hpp"
 #include "roq/json/string.hpp"
 
@@ -13,7 +14,7 @@ namespace roq {
 namespace json {
 
 struct MBPUpdate final {
-  explicit MBPUpdate(roq::MBPUpdate const &value) : value_{value} {}
+  MBPUpdate(Context const &context, roq::MBPUpdate const &value) : context_{context}, value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -28,8 +29,8 @@ struct MBPUpdate final {
         R"("update_action":{},)"
         R"("price_level":{})"
         R"(}})"sv,
-        Number{value_.price},
-        Number{value_.quantity},
+        Number{value_.price, context_.price_decimals},
+        Number{value_.quantity, context_.quantity_decimals},
         Number{value_.implied_quantity},
         value_.number_of_orders,
         String{value_.update_action},
@@ -37,6 +38,7 @@ struct MBPUpdate final {
   }
 
  private:
+  Context const &context_;
   roq::MBPUpdate const &value_;
 };
 

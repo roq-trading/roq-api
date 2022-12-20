@@ -19,9 +19,9 @@ namespace roq {
 namespace json {
 
 struct StatisticsUpdate final {
-  explicit StatisticsUpdate(roq::StatisticsUpdate const &value) : value_{value} {}
-  StatisticsUpdate(roq::StatisticsUpdate const &value, cache::Statistics const &cache)
-      : value_{value}, cache_{&cache} {}
+  StatisticsUpdate(Context const &context, roq::StatisticsUpdate const &value) : context_{context}, value_{value} {}
+  StatisticsUpdate(Context const &context, roq::StatisticsUpdate const &value, cache::Statistics const &cache)
+      : context_{context}, value_{value}, cache_{&cache} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -50,13 +50,16 @@ struct StatisticsUpdate final {
         fmt::join(
             ranges::views::transform(
                 ranges::views::remove_if(statistics, [](auto const &v) { return !std::isfinite(v.value); }),
-                [](auto const &v) { return Statistics{v}; }),
+                [this](auto const &v) {
+                  return Statistics{context_, v};
+                }),
             ","sv),
         String{update_type},
         DateTime{value_.exchange_time_utc});
   }
 
  private:
+  Context const &context_;
   roq::StatisticsUpdate const &value_;
   cache::Statistics const *const cache_ = nullptr;
 };

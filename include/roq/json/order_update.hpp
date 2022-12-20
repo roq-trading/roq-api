@@ -6,6 +6,7 @@
 
 #include "roq/order_update.hpp"
 
+#include "roq/json/context.hpp"
 #include "roq/json/date.hpp"
 #include "roq/json/datetime.hpp"
 #include "roq/json/number.hpp"
@@ -15,7 +16,7 @@ namespace roq {
 namespace json {
 
 struct OrderUpdate final {
-  explicit OrderUpdate(roq::OrderUpdate const &value) : value_{value} {}
+  OrderUpdate(Context const &context, roq::OrderUpdate const &value) : context_{context}, value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -62,7 +63,7 @@ struct OrderUpdate final {
         String{value_.symbol},
         String{value_.side},
         String{value_.position_effect},
-        Number{value_.max_show_quantity},
+        Number{value_.max_show_quantity, context_.quantity_decimals},
         String{value_.order_type},
         String{value_.time_in_force},
         String{value_.execution_instructions},
@@ -72,14 +73,14 @@ struct OrderUpdate final {
         String{value_.external_account},
         String{value_.external_order_id},
         String{value_.status},
-        Number{value_.quantity},
-        Number{value_.price},
-        Number{value_.stop_price},
-        Number{value_.remaining_quantity},
-        Number{value_.traded_quantity},
-        Number{value_.average_traded_price},
-        Number{value_.last_traded_quantity},
-        Number{value_.last_traded_price},
+        Number{value_.quantity, context_.quantity_decimals},
+        Number{value_.price, context_.price_decimals},
+        Number{value_.stop_price, context_.price_decimals},
+        Number{value_.remaining_quantity, context_.quantity_decimals},
+        Number{value_.traded_quantity, context_.quantity_decimals},
+        Number{value_.average_traded_price, context_.price_decimals},  // XXX rounded ???
+        Number{value_.last_traded_quantity, context_.quantity_decimals},
+        Number{value_.last_traded_price, context_.price_decimals},
         String{value_.last_liquidity},
         String{value_.routing_id},
         value_.max_request_version,
@@ -90,6 +91,7 @@ struct OrderUpdate final {
   }
 
  private:
+  Context const &context_;
   roq::OrderUpdate const &value_;
 };
 

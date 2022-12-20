@@ -6,6 +6,7 @@
 
 #include "roq/trade.hpp"
 
+#include "roq/json/context.hpp"
 #include "roq/json/number.hpp"
 #include "roq/json/string.hpp"
 
@@ -13,7 +14,7 @@ namespace roq {
 namespace json {
 
 struct Trade final {
-  explicit Trade(roq::Trade const &value) : value_{value} {}
+  Trade(Context const &context, roq::Trade const &value) : context_{context}, value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -27,12 +28,13 @@ struct Trade final {
         R"("trade_id":{})"
         R"(}})"sv,
         String{value_.side},
-        Number{value_.price},
-        Number{value_.quantity},
+        Number{value_.price, context_.price_decimals},
+        Number{value_.quantity, context_.quantity_decimals},
         String{value_.trade_id});
   }
 
  private:
+  Context const &context_;
   roq::Trade const &value_;
 };
 

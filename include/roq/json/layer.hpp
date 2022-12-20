@@ -6,13 +6,14 @@
 
 #include "roq/layer.hpp"
 
+#include "roq/json/context.hpp"
 #include "roq/json/number.hpp"
 
 namespace roq {
 namespace json {
 
 struct Layer final {
-  explicit Layer(roq::Layer const &value) : value_{value} {}
+  explicit Layer(Context const &context, roq::Layer const &value) : context_{context}, value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -25,13 +26,14 @@ struct Layer final {
         R"("ask_price":{},)"
         R"("ask_quantity":{})"
         R"(}})"sv,
-        Number{value_.bid_price},
-        Number{value_.bid_quantity},
-        Number{value_.ask_price},
-        Number{value_.ask_quantity});
+        Number{value_.bid_price, context_.price_decimals},
+        Number{value_.bid_quantity, context_.quantity_decimals},
+        Number{value_.ask_price, context_.price_decimals},
+        Number{value_.ask_quantity, context_.quantity_decimals});
   }
 
  private:
+  Context const &context_;
   roq::Layer const &value_;
 };
 

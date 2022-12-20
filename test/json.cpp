@@ -12,6 +12,10 @@ using namespace std::literals;
 using namespace std::chrono_literals;
 
 TEST_CASE("json_ReferenceData", "[json]") {
+  json::Context context{
+      .price_decimals = Decimals::_1,
+      .quantity_decimals = Decimals::_0,
+  };
   ReferenceData reference_data{
       .stream_id = 1,
       .exchange = "deribit"sv,
@@ -39,7 +43,7 @@ TEST_CASE("json_ReferenceData", "[json]") {
       .expiry_datetime_utc = {},
       .discard = false,
   };
-  auto value = fmt::format("{}", json::ReferenceData{reference_data});
+  auto value = fmt::format("{}"sv, json::ReferenceData{context, reference_data});
   auto expected = R"({)"
                   R"("stream_id":1,)"
                   R"("exchange":"deribit",)"
@@ -50,12 +54,12 @@ TEST_CASE("json_ReferenceData", "[json]") {
                   R"("quote_currency":"BTC",)"
                   R"("margin_currency":"BTC",)"
                   R"("commission_currency":"BTC",)"
-                  R"("tick_size":0.1,)"
-                  R"("multiplier":10,)"
+                  R"("tick_size":"0.1",)"
+                  R"("multiplier":"10",)"
                   R"("min_notional":null,)"
-                  R"("min_trade_vol":1,)"
-                  R"("max_trade_vol":999,)"
-                  R"("trade_vol_step_size":1,)"
+                  R"("min_trade_vol":"1",)"
+                  R"("max_trade_vol":"999",)"
+                  R"("trade_vol_step_size":"1",)"
                   R"("option_type":null,)"
                   R"("strike_currency":null,)"
                   R"("strike_price":null,)"
@@ -71,6 +75,10 @@ TEST_CASE("json_ReferenceData", "[json]") {
 }
 
 TEST_CASE("json_TopOfBook", "[json]") {
+  json::Context context{
+      .price_decimals = Decimals::_2,
+      .quantity_decimals = Decimals::_0,
+  };
   TopOfBook top_of_book{
       .stream_id = 1,
       .exchange = "deribit"sv,
@@ -86,16 +94,16 @@ TEST_CASE("json_TopOfBook", "[json]") {
       .exchange_time_utc = 1656150170s,
       .exchange_sequence = 1234,
   };
-  auto value = fmt::format("{}", json::TopOfBook{top_of_book});
+  auto value = fmt::format("{}"sv, json::TopOfBook{context, top_of_book});
   auto expected = R"({)"
                   R"("stream_id":1,)"
                   R"("exchange":"deribit",)"
                   R"("symbol":"BTC-PERPETUAL",)"
                   R"("layer":{)"
-                  R"("bid_price":123.45,)"
-                  R"("bid_quantity":9,)"
-                  R"("ask_price":234.56,)"
-                  R"("ask_quantity":98)"
+                  R"("bid_price":"123.45",)"
+                  R"("bid_quantity":"9",)"
+                  R"("ask_price":"234.56",)"
+                  R"("ask_quantity":"98")"
                   R"(},)"
                   R"("update_type":"INCREMENTAL",)"
                   R"("exchange_time_utc":"2022-06-25T09:42:50.000000000Z",)"
@@ -105,6 +113,10 @@ TEST_CASE("json_TopOfBook", "[json]") {
 }
 
 TEST_CASE("json_MarketByPriceUpdate", "[json]") {
+  json::Context context{
+      .price_decimals = Decimals::_0,
+      .quantity_decimals = Decimals::_0,
+  };
   roq::MBPUpdate bids[] = {
       {
           .price = 1.0,
@@ -203,25 +215,25 @@ TEST_CASE("json_MarketByPriceUpdate", "[json]") {
       .max_depth = {},
       .checksum = {},
   };
-  auto value = fmt::format("{}", json::MarketByPriceUpdate{market_by_price_update});
+  auto value = fmt::format("{}"sv, json::MarketByPriceUpdate{context, market_by_price_update});
   auto expected =
       R"({)"
       R"("stream_id":1,)"
       R"("exchange":"deribit",)"
       R"("symbol":"BTC-PERPETUAL",)"
       R"("bids":[)"
-      R"({"price":1,"quantity":2,"implied_quantity":3,"number_of_orders":2,"update_action":null,"price_level":1},)"
-      R"({"price":2,"quantity":4,"implied_quantity":3,"number_of_orders":2,"update_action":null,"price_level":1},)"
-      R"({"price":3,"quantity":8,"implied_quantity":3,"number_of_orders":2,"update_action":null,"price_level":1},)"
-      R"({"price":4,"quantity":10,"implied_quantity":3,"number_of_orders":2,"update_action":null,"price_level":1},)"
-      R"({"price":5,"quantity":12,"implied_quantity":3,"number_of_orders":2,"update_action":null,"price_level":1})"
+      R"({"price":"1","quantity":"2","implied_quantity":"3","number_of_orders":2,"update_action":null,"price_level":1},)"
+      R"({"price":"2","quantity":"4","implied_quantity":"3","number_of_orders":2,"update_action":null,"price_level":1},)"
+      R"({"price":"3","quantity":"8","implied_quantity":"3","number_of_orders":2,"update_action":null,"price_level":1},)"
+      R"({"price":"4","quantity":"10","implied_quantity":"3","number_of_orders":2,"update_action":null,"price_level":1},)"
+      R"({"price":"5","quantity":"12","implied_quantity":"3","number_of_orders":2,"update_action":null,"price_level":1})"
       R"(],)"
       R"("asks":[)"
-      R"({"price":1,"quantity":2,"implied_quantity":3,"number_of_orders":2,"update_action":null,"price_level":1},)"
-      R"({"price":2,"quantity":4,"implied_quantity":3,"number_of_orders":2,"update_action":null,"price_level":1},)"
-      R"({"price":3,"quantity":8,"implied_quantity":3,"number_of_orders":2,"update_action":null,"price_level":1},)"
-      R"({"price":4,"quantity":10,"implied_quantity":3,"number_of_orders":2,"update_action":null,"price_level":1},)"
-      R"({"price":5,"quantity":12,"implied_quantity":3,"number_of_orders":2,"update_action":null,"price_level":1})"
+      R"({"price":"1","quantity":"2","implied_quantity":"3","number_of_orders":2,"update_action":null,"price_level":1},)"
+      R"({"price":"2","quantity":"4","implied_quantity":"3","number_of_orders":2,"update_action":null,"price_level":1},)"
+      R"({"price":"3","quantity":"8","implied_quantity":"3","number_of_orders":2,"update_action":null,"price_level":1},)"
+      R"({"price":"4","quantity":"10","implied_quantity":"3","number_of_orders":2,"update_action":null,"price_level":1},)"
+      R"({"price":"5","quantity":"12","implied_quantity":"3","number_of_orders":2,"update_action":null,"price_level":1})"
       R"(],)"
       R"("update_type":"INCREMENTAL",)"
       R"("exchange_time_utc":"2022-06-25T09:42:50.000000000Z",)"

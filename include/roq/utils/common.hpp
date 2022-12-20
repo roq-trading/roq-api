@@ -10,6 +10,7 @@
 #include "roq/order_status.hpp"
 #include "roq/request_status.hpp"
 #include "roq/side.hpp"
+#include "roq/statistics_type.hpp"
 #include "roq/update_type.hpp"
 
 namespace roq {
@@ -318,6 +319,88 @@ inline constexpr Decimals to_decimals(int8_t decimal_digits) {
 
 inline constexpr bool has_more_precision(Decimals lhs, Decimals rhs) {
   return lhs != Decimals::UNDEFINED ? lhs > rhs : false;
+}
+
+inline constexpr bool is_price(StatisticsType type) {
+  switch (type) {
+    using enum StatisticsType;
+    case UNDEFINED:
+      break;
+    case OPEN_PRICE:
+      return true;
+    case SETTLEMENT_PRICE:
+      return true;
+    case CLOSE_PRICE:
+      return true;
+    case OPEN_INTEREST:
+      break;
+    case PRE_OPEN_INTEREST:
+      break;
+    case PRE_SETTLEMENT_PRICE:
+      return true;
+    case PRE_CLOSE_PRICE:
+      return true;
+    case HIGHEST_TRADED_PRICE:
+      return true;
+    case LOWEST_TRADED_PRICE:
+      return true;
+    case UPPER_LIMIT_PRICE:
+      return true;
+    case LOWER_LIMIT_PRICE:
+      return true;
+    case INDEX_VALUE:
+      break;  // ???
+    case MARGIN_RATE:
+      break;
+    case FUNDING_RATE:
+      break;
+    case FUNDING_RATE_PREDICTION:
+      break;
+    case TRADE_VOLUME:
+      break;
+  }
+  return false;
+}
+
+inline constexpr bool is_quantity(StatisticsType type) {
+  switch (type) {
+    using enum StatisticsType;
+    case UNDEFINED:
+      break;
+    case OPEN_PRICE:
+      break;
+    case SETTLEMENT_PRICE:
+      break;
+    case CLOSE_PRICE:
+      break;
+    case OPEN_INTEREST:
+      return true;
+    case PRE_OPEN_INTEREST:
+      break;
+    case PRE_SETTLEMENT_PRICE:
+      break;
+    case PRE_CLOSE_PRICE:
+      break;
+    case HIGHEST_TRADED_PRICE:
+      break;
+    case LOWEST_TRADED_PRICE:
+      break;
+    case UPPER_LIMIT_PRICE:
+      break;
+    case LOWER_LIMIT_PRICE:
+      break;
+    case INDEX_VALUE:
+      break;
+    case MARGIN_RATE:
+      break;
+    case FUNDING_RATE:
+      break;
+    case FUNDING_RATE_PREDICTION:
+      break;
+    case TRADE_VOLUME:
+      return true;
+  }
+  return false;
 }
 
 }  // namespace utils

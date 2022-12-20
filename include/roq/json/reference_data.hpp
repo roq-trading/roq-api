@@ -6,6 +6,7 @@
 
 #include "roq/reference_data.hpp"
 
+#include "roq/json/context.hpp"
 #include "roq/json/date.hpp"
 #include "roq/json/datetime.hpp"
 #include "roq/json/number.hpp"
@@ -15,7 +16,7 @@ namespace roq {
 namespace json {
 
 struct ReferenceData final {
-  explicit ReferenceData(roq::ReferenceData const &value) : value_{value} {}
+  ReferenceData(Context const &context, roq::ReferenceData const &value) : context_{context}, value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -58,12 +59,12 @@ struct ReferenceData final {
         String{value_.quote_currency},
         String{value_.margin_currency},
         String{value_.commission_currency},
-        Number{value_.tick_size},
+        Number{value_.tick_size, context_.price_decimals},
         Number{value_.multiplier},
-        Number{value_.min_notional},
-        Number{value_.min_trade_vol},
-        Number{value_.max_trade_vol},
-        Number{value_.trade_vol_step_size},
+        Number{value_.min_notional, context_.quantity_decimals},
+        Number{value_.min_trade_vol, context_.quantity_decimals},
+        Number{value_.max_trade_vol, context_.quantity_decimals},
+        Number{value_.trade_vol_step_size, context_.quantity_decimals},
         String{value_.option_type},
         String{value_.strike_currency},
         Number{value_.strike_price},
@@ -77,6 +78,7 @@ struct ReferenceData final {
   }
 
  private:
+  Context const &context_;
   roq::ReferenceData const &value_;
 };
 

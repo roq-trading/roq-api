@@ -6,6 +6,9 @@
 
 #include "roq/statistics.hpp"
 
+#include "roq/utils/common.hpp"
+
+#include "roq/json/context.hpp"
 #include "roq/json/datetime.hpp"
 #include "roq/json/number.hpp"
 #include "roq/json/string.hpp"
@@ -14,11 +17,18 @@ namespace roq {
 namespace json {
 
 struct Statistics final {
-  explicit Statistics(roq::Statistics const &value) : value_{value} {}
+  Statistics(Context const &context, roq::Statistics const &value) : context_{context}, value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
     using namespace std::literals;
+    auto decimals = [&]() -> Decimals {
+      if (utils::is_price(value_.type))
+        return context_.price_decimals;
+      if (utils::is_quantity(value_.type))
+        return context_.quantity_decimals;
+      return {};
+    }();
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -28,12 +38,13 @@ struct Statistics final {
         R"("end_time_utc":{})"
         R"(}})"sv,
         String{value_.type},
-        Number{value_.value},
+        Number{value_.value, decimals},
         DateTime{value_.begin_time_utc},
         DateTime{value_.end_time_utc});
   }
 
  private:
+  Context const &context_;
   roq::Statistics const &value_;
 };
 

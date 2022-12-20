@@ -8,6 +8,7 @@
 
 #include "roq/json/layer.hpp"
 
+#include "roq/json/context.hpp"
 #include "roq/json/datetime.hpp"
 #include "roq/json/string.hpp"
 
@@ -15,7 +16,7 @@ namespace roq {
 namespace json {
 
 struct TopOfBook final {
-  explicit TopOfBook(roq::TopOfBook const &value) : value_{value} {}
+  TopOfBook(Context const &context, roq::TopOfBook const &value) : context_{context}, value_{value} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -34,13 +35,14 @@ struct TopOfBook final {
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
-        Layer{value_.layer},
+        Layer{context_, value_.layer},
         String{value_.update_type},
         DateTime{value_.exchange_time_utc},
         value_.exchange_sequence);
   }
 
  private:
+  Context const &context_;
   roq::TopOfBook const &value_;
 };
 

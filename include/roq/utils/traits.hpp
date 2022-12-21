@@ -72,8 +72,12 @@ namespace detail {
 using std::begin;
 using std::end;
 template <typename T>
-auto is_iterable_impl(int)
-    -> decltype(begin(std::declval<T &>()) != end(std::declval<T &>()), void(), ++std::declval<decltype(begin(std::declval<T &>())) &>(), void(*begin(std::declval<T &>())), std::true_type{});
+auto is_iterable_impl(int) -> decltype(
+    begin(std::declval<T &>()) != end(std::declval<T &>()),
+    void(),
+    ++std::declval<decltype(begin(std::declval<T &>())) &>(),
+    void(*begin(std::declval<T &>())),
+    std::true_type{});
 template <typename T>
 std::false_type is_iterable_impl(...);
 }  // namespace detail

@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <span>
@@ -43,13 +44,14 @@ struct fmt::formatter<roq::ParametersUpdate> {
   template <typename Context>
   auto format(roq::ParametersUpdate const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(parameters=[{}], )"
         R"(update_type={}, )"
         R"(user="{}")"
-        R"(}})"sv,
+        R"(}})"_cf,
         fmt::join(value.parameters, ", "sv),
         value.update_type,
         value.user);
@@ -64,13 +66,13 @@ struct fmt::formatter<roq::Event<roq::ParametersUpdate>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::ParametersUpdate> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(parameters_update={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -85,12 +87,13 @@ struct fmt::formatter<roq::Trace<roq::ParametersUpdate>> {
   template <typename Context>
   auto format(roq::Trace<roq::ParametersUpdate> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(parameters_update={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

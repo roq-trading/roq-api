@@ -7,6 +7,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <chrono>
@@ -55,6 +56,7 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
   template <typename Context>
   auto format(roq::MarketByPriceUpdate const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -70,7 +72,7 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
         R"(quantity_decimals={}, )"
         R"(max_depth={}, )"
         R"(checksum={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -94,13 +96,13 @@ struct fmt::formatter<roq::Event<roq::MarketByPriceUpdate>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::MarketByPriceUpdate> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(market_by_price_update={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -115,12 +117,13 @@ struct fmt::formatter<roq::Trace<roq::MarketByPriceUpdate>> {
   template <typename Context>
   auto format(roq::Trace<roq::MarketByPriceUpdate> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(market_by_price_update={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

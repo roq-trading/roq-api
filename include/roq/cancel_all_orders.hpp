@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <string_view>
@@ -38,11 +39,12 @@ struct fmt::formatter<roq::CancelAllOrders> {
   template <typename Context>
   auto format(roq::CancelAllOrders const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(account="{}")"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.account);
   }
 };
@@ -55,13 +57,13 @@ struct fmt::formatter<roq::Event<roq::CancelAllOrders>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::CancelAllOrders> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(cancel_all_orders={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -76,12 +78,13 @@ struct fmt::formatter<roq::Trace<roq::CancelAllOrders>> {
   template <typename Context>
   auto format(roq::Trace<roq::CancelAllOrders> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(cancel_all_orders={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

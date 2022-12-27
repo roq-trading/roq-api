@@ -5,6 +5,7 @@
 #include "roq/debug/hex/message.hpp"
 
 using namespace std::literals;
+using namespace fmt::literals;
 
 using namespace roq;
 
@@ -20,12 +21,12 @@ std::array<std::byte, sizeof...(Ts)> make_bytes(Ts &&...args) noexcept {
 TEST_CASE("hex_escaped", "[debug]") {
   {
     std::array<std::byte, 0> buffer;
-    auto s = fmt::format("{}"sv, debug::hex::Message{buffer});
+    auto s = fmt::format("{}"_cf, debug::hex::Message{buffer});
     CHECK(s == ""sv);
   }
   {
     auto buffer = make_bytes(0x0, 0x1, 0xfe, 0xff);
-    auto s = fmt::format("{}"sv, debug::hex::Message{buffer});
+    auto s = fmt::format("{}"_cf, debug::hex::Message{buffer});
     CHECK(s == R"(\x00\x01\xfe\xff)"sv);
   }
 }

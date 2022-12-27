@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/numbers.hpp"
@@ -34,6 +35,7 @@ struct fmt::formatter<roq::MBPUpdate> {
   template <typename Context>
   auto format(roq::MBPUpdate const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -43,7 +45,7 @@ struct fmt::formatter<roq::MBPUpdate> {
         R"(number_of_orders={}, )"
         R"(update_action={}, )"
         R"(price_level={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.price,
         value.quantity,
         value.implied_quantity,

@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/event.hpp"
@@ -34,7 +35,8 @@ struct fmt::formatter<roq::BatchEnd> {
   template <typename Context>
   auto format(roq::BatchEnd const &, Context &context) const {
     using namespace std::literals;
-    return fmt::format_to(context.out(), R"({{}})"sv);
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), R"({{}})"_cf);
   }
 };
 
@@ -46,13 +48,13 @@ struct fmt::formatter<roq::Event<roq::BatchEnd>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::BatchEnd> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(batch_end={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -67,12 +69,13 @@ struct fmt::formatter<roq::Trace<roq::BatchEnd>> {
   template <typename Context>
   auto format(roq::Trace<roq::BatchEnd> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(batch_end={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/numbers.hpp"
@@ -35,6 +36,7 @@ struct fmt::formatter<roq::Trade> {
   template <typename Context>
   auto format(roq::Trade const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -44,7 +46,7 @@ struct fmt::formatter<roq::Trade> {
         R"(trade_id="{}", )"
         R"(taker_order_id="{}", )"
         R"(maker_order_id="{}")"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.side,
         value.price,
         value.quantity,

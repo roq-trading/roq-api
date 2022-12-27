@@ -7,6 +7,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <chrono>
@@ -52,6 +53,7 @@ struct fmt::formatter<roq::RateLimitTrigger> {
   template <typename Context>
   auto format(roq::RateLimitTrigger const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -64,7 +66,7 @@ struct fmt::formatter<roq::RateLimitTrigger> {
         R"(triggered_by="{}", )"
         R"(buffer_capacity={}, )"
         R"(remaining_requests={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.name,
         value.origin,
         value.type,
@@ -85,13 +87,13 @@ struct fmt::formatter<roq::Event<roq::RateLimitTrigger>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::RateLimitTrigger> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(rate_limit_trigger={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -106,12 +108,13 @@ struct fmt::formatter<roq::Trace<roq::RateLimitTrigger>> {
   template <typename Context>
   auto format(roq::Trace<roq::RateLimitTrigger> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(rate_limit_trigger={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

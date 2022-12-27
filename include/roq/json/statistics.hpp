@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/statistics.hpp"
@@ -21,7 +22,7 @@ struct Statistics final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     auto decimals = [&]() -> Decimals {
       if (utils::is_price(value_.type))
         return context_.price_decimals;
@@ -36,7 +37,7 @@ struct Statistics final {
         R"("value":{},)"
         R"("begin_time_utc":{},)"
         R"("end_time_utc":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         String{value_.type},
         Number{value_.value, decimals},
         DateTime{value_.begin_time_utc},

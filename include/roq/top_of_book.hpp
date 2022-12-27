@@ -7,6 +7,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <chrono>
@@ -48,6 +49,7 @@ struct fmt::formatter<roq::TopOfBook> {
   template <typename Context>
   auto format(roq::TopOfBook const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -58,7 +60,7 @@ struct fmt::formatter<roq::TopOfBook> {
         R"(update_type={}, )"
         R"(exchange_time_utc={}, )"
         R"(exchange_sequence={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -77,13 +79,13 @@ struct fmt::formatter<roq::Event<roq::TopOfBook>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::TopOfBook> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(top_of_book={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -98,12 +100,13 @@ struct fmt::formatter<roq::Trace<roq::TopOfBook>> {
   template <typename Context>
   auto format(roq::Trace<roq::TopOfBook> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(top_of_book={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

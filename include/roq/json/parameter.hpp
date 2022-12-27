@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/parameter.hpp"
@@ -16,7 +17,7 @@ struct Parameter final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -25,7 +26,7 @@ struct Parameter final {
         R"("exchange":{},)"
         R"("symbol":{},)"
         R"("value":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         String{value_.label},
         String{value_.account},
         String{value_.exchange},

@@ -7,6 +7,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <chrono>
@@ -47,6 +48,7 @@ struct fmt::formatter<roq::TradeSummary> {
   template <typename Context>
   auto format(roq::TradeSummary const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -56,7 +58,7 @@ struct fmt::formatter<roq::TradeSummary> {
         R"(trades=[{}], )"
         R"(exchange_time_utc={}, )"
         R"(exchange_sequence={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -74,13 +76,13 @@ struct fmt::formatter<roq::Event<roq::TradeSummary>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::TradeSummary> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(trade_summary={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -95,12 +97,13 @@ struct fmt::formatter<roq::Trace<roq::TradeSummary>> {
   template <typename Context>
   auto format(roq::Trace<roq::TradeSummary> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(trade_summary={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

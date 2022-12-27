@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/event.hpp"
@@ -49,6 +50,7 @@ struct fmt::formatter<roq::GatewaySettings> {
   template <typename Context>
   auto format(roq::GatewaySettings const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -62,7 +64,7 @@ struct fmt::formatter<roq::GatewaySettings> {
         R"(oms_download_has_state={}, )"
         R"(oms_download_has_routing_id={}, )"
         R"(oms_request_id_type={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.supports,
         value.mbp_max_depth,
         value.mbp_tick_size_multiplier,
@@ -84,13 +86,13 @@ struct fmt::formatter<roq::Event<roq::GatewaySettings>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::GatewaySettings> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(gateway_settings={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -105,12 +107,13 @@ struct fmt::formatter<roq::Trace<roq::GatewaySettings>> {
   template <typename Context>
   auto format(roq::Trace<roq::GatewaySettings> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(gateway_settings={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

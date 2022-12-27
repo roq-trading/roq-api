@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/layer.hpp"
@@ -17,7 +18,7 @@ struct Layer final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -25,7 +26,7 @@ struct Layer final {
         R"("bid_quantity":{},)"
         R"("ask_price":{},)"
         R"("ask_quantity":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         Number{value_.bid_price, context_.price_decimals},
         Number{value_.bid_quantity, context_.quantity_decimals},
         Number{value_.ask_price, context_.price_decimals},

@@ -56,10 +56,10 @@ struct fmt::formatter<roq::client::Settings> {
   }
   template <typename Context>
   auto format(roq::client::Settings const &value, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
-        "{{order_cancel_policy={}, order_management={}}}"sv,
+        "{{order_cancel_policy={}, order_management={}}}"_cf,
         value.order_cancel_policy,
         value.order_management);
   }

@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <span>
@@ -17,9 +18,9 @@ struct Message final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     for (auto b : buffer_)
-      fmt::format_to(context.out(), R"(\x{:02x})"sv, b);
+      fmt::format_to(context.out(), R"(\x{:02x})"_cf, static_cast<uint8_t>(b));
     return context.out();
   }
 

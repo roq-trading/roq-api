@@ -6,6 +6,7 @@
 
 #include <absl/hash/hash.h>
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <algorithm>
@@ -199,7 +200,7 @@ struct fmt::formatter<roq::String<N>> {
   }
   template <typename Context>
   auto format(roq::String<N> const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
   }
 };

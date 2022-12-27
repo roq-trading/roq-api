@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include <fmt/compile.h>
+#include <fmt/format.h>
+
 #include <string>
 #include <utility>
 
@@ -16,13 +19,13 @@ struct ROQ_PUBLIC Exception : public roq::Exception {
       : roq::Exception{fmt, std::forward<Args>(args)...}, origin{origin}, status{status}, error{error} {}
 
   char const *what() const noexcept override {
-    using namespace std::literals;
+    using namespace fmt::literals;
     if (std::empty(what_))  // lazy
       what_ = fmt::format(
           R"(OMS: )"
           R"({{)"
           R"(error={})"
-          R"(}})"sv,
+          R"(}})"_cf,
           error);
     return what_.c_str();
   }
@@ -68,12 +71,12 @@ struct fmt::formatter<roq::oms::Exception> {
   }
   template <typename Context>
   auto format(roq::oms::Exception const &value, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(error={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.error);
   }
 };

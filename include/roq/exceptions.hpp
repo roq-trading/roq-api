@@ -4,6 +4,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <stdexcept>
@@ -206,7 +207,7 @@ struct fmt::formatter<roq::Exception> {
   }
   template <typename Context>
   auto format(roq::Exception const &value, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -214,7 +215,7 @@ struct fmt::formatter<roq::Exception> {
         R"(what="{}", )"
         R"(file="{}", )"
         R"(line={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         typeid(value).name(),
         value.what(),
         value.file(),
@@ -230,8 +231,8 @@ struct fmt::formatter<roq::RuntimeError> {
   }
   template <typename Context>
   auto format(roq::RuntimeError const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -243,8 +244,8 @@ struct fmt::formatter<roq::SystemError> {
   }
   template <typename Context>
   auto format(roq::SystemError const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -256,8 +257,8 @@ struct fmt::formatter<roq::RangeError> {
   }
   template <typename Context>
   auto format(roq::RangeError const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -269,8 +270,8 @@ struct fmt::formatter<roq::OverflowError> {
   }
   template <typename Context>
   auto format(roq::OverflowError const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -282,8 +283,8 @@ struct fmt::formatter<roq::LogicError> {
   }
   template <typename Context>
   auto format(roq::LogicError const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -295,8 +296,8 @@ struct fmt::formatter<roq::InvalidArgument> {
   }
   template <typename Context>
   auto format(roq::InvalidArgument const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -308,8 +309,8 @@ struct fmt::formatter<roq::OutOfRange> {
   }
   template <typename Context>
   auto format(roq::OutOfRange const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -321,8 +322,8 @@ struct fmt::formatter<roq::LengthError> {
   }
   template <typename Context>
   auto format(roq::LengthError const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -334,8 +335,8 @@ struct fmt::formatter<roq::Fatal> {
   }
   template <typename Context>
   auto format(roq::Fatal const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -347,8 +348,8 @@ struct fmt::formatter<roq::FileDoesNotExist> {
   }
   template <typename Context>
   auto format(roq::FileDoesNotExist const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -360,8 +361,8 @@ struct fmt::formatter<roq::NotReady> {
   }
   template <typename Context>
   auto format(roq::NotReady const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -373,8 +374,8 @@ struct fmt::formatter<roq::BadState> {
   }
   template <typename Context>
   auto format(roq::BadState const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -386,8 +387,8 @@ struct fmt::formatter<roq::NetworkError> {
   }
   template <typename Context>
   auto format(roq::NetworkError const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -399,8 +400,8 @@ struct fmt::formatter<roq::TransportError> {
   }
   template <typename Context>
   auto format(roq::TransportError const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -412,8 +413,8 @@ struct fmt::formatter<roq::NotConnected> {
   }
   template <typename Context>
   auto format(roq::NotConnected const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -425,8 +426,8 @@ struct fmt::formatter<roq::ConnectionRefused> {
   }
   template <typename Context>
   auto format(roq::ConnectionRefused const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -438,8 +439,8 @@ struct fmt::formatter<roq::TimedOut> {
   }
   template <typename Context>
   auto format(roq::TimedOut const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -451,8 +452,8 @@ struct fmt::formatter<roq::SessionError> {
   }
   template <typename Context>
   auto format(roq::SessionError const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -464,8 +465,8 @@ struct fmt::formatter<roq::PermissionDenied> {
   }
   template <typename Context>
   auto format(roq::PermissionDenied const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };
 
@@ -477,7 +478,7 @@ struct fmt::formatter<roq::OrderNotLive> {
   }
   template <typename Context>
   auto format(roq::OrderNotLive const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
   }
 };

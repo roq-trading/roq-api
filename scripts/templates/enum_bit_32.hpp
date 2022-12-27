@@ -34,6 +34,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
       {{ namespaces | join('::') }}::{{ name }} const& value,
       Context& context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     auto name{[&]() {
       switch (value) {
         using enum {{ namespaces | join('::') }}::{{ name }};
@@ -50,7 +51,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
     }()};
     return fmt::format_to(
         context.out(),
-        "{}"sv,
+        "{}"_cf,
         name);
   }
 };

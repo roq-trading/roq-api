@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <cassert>
@@ -33,6 +34,7 @@ struct fmt::formatter<roq::ExecutionInstruction> {
   template <typename Context>
   auto format(roq::ExecutionInstruction const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     auto name{[&]() {
       switch (value) {
         using enum roq::ExecutionInstruction;
@@ -51,6 +53,6 @@ struct fmt::formatter<roq::ExecutionInstruction> {
       }
       return "<UNKNOWN>"sv;
     }()};
-    return fmt::format_to(context.out(), "{}"sv, name);
+    return fmt::format_to(context.out(), "{}"_cf, name);
   }
 };

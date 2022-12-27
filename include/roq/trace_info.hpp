@@ -5,6 +5,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <chrono>
@@ -56,14 +57,14 @@ struct fmt::formatter<roq::TraceInfo> {
   }
   template <typename Context>
   auto format(roq::TraceInfo const &value, Context &context) const {
-    using namespace std::literals::string_view_literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         "{{"
         "source_receive_time={}, "
         "origin_create_time={}, "
         "origin_create_time_utc={}"
-        "}}"sv,
+        "}}"_cf,
         value.source_receive_time,
         value.origin_create_time,
         value.origin_create_time_utc);

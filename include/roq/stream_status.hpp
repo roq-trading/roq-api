@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <string_view>
@@ -52,6 +53,7 @@ struct fmt::formatter<roq::StreamStatus> {
   template <typename Context>
   auto format(roq::StreamStatus const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -63,7 +65,7 @@ struct fmt::formatter<roq::StreamStatus> {
         R"(encoding={}, )"
         R"(priority={}, )"
         R"(connection_status={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.stream_id,
         value.account,
         value.supports,
@@ -83,13 +85,13 @@ struct fmt::formatter<roq::Event<roq::StreamStatus>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::StreamStatus> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(stream_status={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -104,12 +106,13 @@ struct fmt::formatter<roq::Trace<roq::StreamStatus>> {
   template <typename Context>
   auto format(roq::Trace<roq::StreamStatus> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(stream_status={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

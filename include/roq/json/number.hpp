@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/numbers.hpp"
@@ -17,11 +18,12 @@ struct Number final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
-    if (std::isnan(number_.value))
-      return fmt::format_to(context.out(), "null"sv);
-    // note! we quote numbers to preserve all decimals
-    return fmt::format_to(context.out(), R"("{}")"sv, number_);
+    using namespace fmt::literals;
+    if (!std::isnan(number_.value)) {
+      // note! we quote numbers to preserve all decimals
+      return fmt::format_to(context.out(), R"("{}")"_cf, number_);
+    }
+    return fmt::format_to(context.out(), "null"_cf);
   }
 
  private:

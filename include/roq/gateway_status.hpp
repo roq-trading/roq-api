@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <string_view>
@@ -43,6 +44,7 @@ struct fmt::formatter<roq::GatewayStatus> {
   template <typename Context>
   auto format(roq::GatewayStatus const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -50,7 +52,7 @@ struct fmt::formatter<roq::GatewayStatus> {
         R"(supported={}, )"
         R"(available={}, )"
         R"(unavailable={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.account,
         value.supported,
         value.available,
@@ -66,13 +68,13 @@ struct fmt::formatter<roq::Event<roq::GatewayStatus>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::GatewayStatus> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(gateway_status={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -87,12 +89,13 @@ struct fmt::formatter<roq::Trace<roq::GatewayStatus>> {
   template <typename Context>
   auto format(roq::Trace<roq::GatewayStatus> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(gateway_status={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

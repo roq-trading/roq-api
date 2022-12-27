@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 namespace roq {
@@ -13,15 +14,15 @@ struct String final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     if constexpr (std::is_enum<T>::value) {
       if (value_ != T{})
-        return fmt::format_to(context.out(), R"("{}")"sv, value_);
+        return fmt::format_to(context.out(), R"("{}")"_cf, value_);
     } else {
       if (!std::empty(value_))
-        return fmt::format_to(context.out(), R"("{}")"sv, value_);
+        return fmt::format_to(context.out(), R"("{}")"_cf, value_);
     }
-    return fmt::format_to(context.out(), "null"sv);
+    return fmt::format_to(context.out(), "null"_cf);
   }
 
  private:

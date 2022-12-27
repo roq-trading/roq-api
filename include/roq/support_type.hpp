@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <cassert>
@@ -44,6 +45,7 @@ struct fmt::formatter<roq::SupportType> {
   template <typename Context>
   auto format(roq::SupportType const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     auto name{[&]() {
       switch (value) {
         using enum roq::SupportType;
@@ -86,6 +88,6 @@ struct fmt::formatter<roq::SupportType> {
       }
       return "<UNKNOWN>"sv;
     }()};
-    return fmt::format_to(context.out(), "{}"sv, name);
+    return fmt::format_to(context.out(), "{}"_cf, name);
   }
 };

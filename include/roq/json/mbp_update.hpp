@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/mbp_update.hpp"
@@ -18,7 +19,7 @@ struct MBPUpdate final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -28,7 +29,7 @@ struct MBPUpdate final {
         R"("number_of_orders":{},)"
         R"("update_action":{},)"
         R"("price_level":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         Number{value_.price, context_.price_decimals},
         Number{value_.quantity, context_.quantity_decimals},
         Number{value_.implied_quantity},

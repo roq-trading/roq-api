@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/order_update.hpp"
@@ -20,7 +21,7 @@ struct OrderUpdate final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -55,7 +56,7 @@ struct OrderUpdate final {
         R"("max_response_version":{},)"
         R"("max_accepted_version":{},)"
         R"("update_type":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value_.stream_id,
         String{value_.account},
         value_.order_id,

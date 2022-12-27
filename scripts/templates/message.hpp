@@ -44,7 +44,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
   auto format(
       {{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}> const& event,
       Context& context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
 {%- raw %}
@@ -53,7 +53,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
         R"({{ filename }}={}, )"
         R"(message_info={})"
 {%- raw %}
-        R"(}})"sv,
+        R"(}})"_cf,
 {%- endraw %}
         event.value,
         event.message_info);
@@ -71,6 +71,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Trace<{{ namespaces | join(
       {{ namespaces | join('::') }}::Trace<{{ namespaces | join('::') }}::{{ name }}> const& event,
       Context& context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
 {%- raw %}
@@ -79,7 +80,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Trace<{{ namespaces | join(
         R"({{ filename }}={}, )"
         R"(trace_info={})"
 {%- raw %}
-        R"(}})"sv,
+        R"(}})"_cf,
 {%- endraw %}
         event.value,
         event.trace_info);

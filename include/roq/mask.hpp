@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <magic_enum.hpp>
@@ -183,15 +184,16 @@ struct fmt::formatter<roq::Mask<T>> {
   template <typename Context>
   auto format(roq::Mask<T> const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     // special case for "undefined"
     using value_type = typename roq::Mask<T>::value_type;
     if constexpr (static_cast<value_type>(magic_enum::enum_value<T>(0)) == value_type{}) {
       if (value.get() == value_type{})
-        return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(magic_enum::enum_value<T>(0)));
+        return fmt::format_to(context.out(), "{}"_cf, magic_enum::enum_name(magic_enum::enum_value<T>(0)));
     }
     // normal case
     using iterator = typename roq::Mask<T>::iterator;
     using sentinel = typename roq::Mask<T>::sentinel;
-    return fmt::format_to(context.out(), "{}"sv, fmt::join(iterator{value}, sentinel{}, "|"sv));
+    return fmt::format_to(context.out(), "{}"_cf, fmt::join(iterator{value}, sentinel{}, "|"sv));
   }
 };

@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/gateway_status.hpp"
@@ -19,7 +20,7 @@ struct GatewayStatus final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -27,7 +28,7 @@ struct GatewayStatus final {
         R"("supported":{},)"
         R"("available":{},)"
         R"("unavailable":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         String{value_.account},
         String{value_.supported},
         String{value_.available},

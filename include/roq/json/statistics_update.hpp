@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <range/v3/view.hpp>
@@ -34,6 +35,7 @@ struct StatisticsUpdate final {
   template <typename Context, typename T>
   auto helper(Context &context, T const &statistics, auto update_type) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -43,7 +45,7 @@ struct StatisticsUpdate final {
         R"("statistics":[{}],)"
         R"("update_type":{},)"
         R"("exchange_time_utc":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},

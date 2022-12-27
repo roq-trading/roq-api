@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/reference_data.hpp"
@@ -20,7 +21,7 @@ struct ReferenceData final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -49,7 +50,7 @@ struct ReferenceData final {
         R"("expiry_datetime":{},)"
         R"("expiry_datetime_utc":{},)"
         R"("discard":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},

@@ -34,10 +34,10 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
   auto format(
       {{ namespaces | join('::') }}::{{ name }} const& value,
       Context& context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
-        "{}"sv,
+        "{}"_cf,
         magic_enum::enum_name(value));
   }
 };

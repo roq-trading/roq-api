@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <string_view>
@@ -47,6 +48,7 @@ struct fmt::formatter<roq::PositionUpdate> {
   template <typename Context>
   auto format(roq::PositionUpdate const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -59,7 +61,7 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"(short_quantity={}, )"
         R"(long_quantity_begin={}, )"
         R"(short_quantity_begin={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.stream_id,
         value.account,
         value.exchange,
@@ -80,13 +82,13 @@ struct fmt::formatter<roq::Event<roq::PositionUpdate>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::PositionUpdate> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(position_update={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -101,12 +103,13 @@ struct fmt::formatter<roq::Trace<roq::PositionUpdate>> {
   template <typename Context>
   auto format(roq::Trace<roq::PositionUpdate> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(position_update={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <cctype>
@@ -19,16 +20,16 @@ struct Message final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     for (auto b : buffer_) {
       if (b == std::byte{0x1}) {
-        fmt::format_to(context.out(), "|"sv);
+        fmt::format_to(context.out(), "|"_cf);
       } else {
         char c = static_cast<char>(b);
         if (::isprint(c))
-          fmt::format_to(context.out(), "{}"sv, c);
+          fmt::format_to(context.out(), "{}"_cf, c);
         else
-          fmt::format_to(context.out(), "."sv);
+          fmt::format_to(context.out(), "."_cf);
       }
     }
     return context.out();

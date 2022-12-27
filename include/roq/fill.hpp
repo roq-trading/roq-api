@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/liquidity.hpp"
@@ -33,6 +34,7 @@ struct fmt::formatter<roq::Fill> {
   template <typename Context>
   auto format(roq::Fill const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -40,7 +42,7 @@ struct fmt::formatter<roq::Fill> {
         R"(quantity={}, )"
         R"(price={}, )"
         R"(liquidity={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.external_trade_id,
         value.quantity,
         value.price,

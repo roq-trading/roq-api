@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/measurement.hpp"
@@ -17,13 +18,13 @@ struct Measurement final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"("name":{},)"
         R"("value":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         String{value_.name},
         Number{value_.value});
   }

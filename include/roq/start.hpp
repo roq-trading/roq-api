@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/event.hpp"
@@ -34,7 +35,8 @@ struct fmt::formatter<roq::Start> {
   template <typename Context>
   auto format(roq::Start const &, Context &context) const {
     using namespace std::literals;
-    return fmt::format_to(context.out(), R"({{}})"sv);
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), R"({{}})"_cf);
   }
 };
 
@@ -46,13 +48,13 @@ struct fmt::formatter<roq::Event<roq::Start>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::Start> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(start={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -67,12 +69,13 @@ struct fmt::formatter<roq::Trace<roq::Start>> {
   template <typename Context>
   auto format(roq::Trace<roq::Start> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(start={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

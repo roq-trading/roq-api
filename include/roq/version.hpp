@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 namespace roq {
@@ -22,7 +23,7 @@ struct fmt::formatter<roq::Version> {
   }
   template <typename Context>
   auto format(roq::Version const &value, Context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}.{}.{}"sv, value.major, value.minor, value.revision);
+    using namespace fmt::literals;
+    return fmt::format_to(context.out(), "{}.{}.{}"_cf, value.major, value.minor, value.revision);
   }
 };

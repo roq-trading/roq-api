@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/market_status.hpp"
@@ -16,7 +17,7 @@ struct MarketStatus final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -24,7 +25,7 @@ struct MarketStatus final {
         R"("exchange":{},)"
         R"("symbol":{},)"
         R"("trading_status":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},

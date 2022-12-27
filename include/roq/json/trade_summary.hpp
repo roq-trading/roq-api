@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <range/v3/view.hpp>
@@ -22,7 +23,7 @@ struct TradeSummary final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -32,7 +33,7 @@ struct TradeSummary final {
         R"("trades":[{}],)"
         R"("exchange_sequence":{},)"
         R"("exchange_sequence":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},

@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/top_of_book.hpp"
@@ -20,7 +21,7 @@ struct TopOfBook final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -31,7 +32,7 @@ struct TopOfBook final {
         R"("update_type":{},)"
         R"("exchange_time_utc":{},)"
         R"("exchange_sequence":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},

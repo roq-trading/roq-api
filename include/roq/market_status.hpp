@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <string_view>
@@ -42,6 +43,7 @@ struct fmt::formatter<roq::MarketStatus> {
   template <typename Context>
   auto format(roq::MarketStatus const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -49,7 +51,7 @@ struct fmt::formatter<roq::MarketStatus> {
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(trading_status={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -65,13 +67,13 @@ struct fmt::formatter<roq::Event<roq::MarketStatus>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::MarketStatus> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(market_status={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -86,12 +88,13 @@ struct fmt::formatter<roq::Trace<roq::MarketStatus>> {
   template <typename Context>
   auto format(roq::Trace<roq::MarketStatus> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(market_status={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

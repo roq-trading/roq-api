@@ -6,6 +6,7 @@
 
 #include <absl/base/internal/endian.h>
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <algorithm>
@@ -116,7 +117,7 @@ struct fmt::formatter<roq::UUID> {
   }
   template <typename Context>
   auto format(roq::UUID const &value, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     auto data = std::data(value);
     return fmt::format_to(
         context.out(),
@@ -124,7 +125,7 @@ struct fmt::formatter<roq::UUID> {
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
-        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"sv,
+        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"_cf,
         data[0],
         data[1],
         data[2],

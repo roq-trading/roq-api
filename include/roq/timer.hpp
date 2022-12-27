@@ -7,6 +7,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <chrono>
@@ -39,11 +40,12 @@ struct fmt::formatter<roq::Timer> {
   template <typename Context>
   auto format(roq::Timer const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(now={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.now);
   }
 };
@@ -56,13 +58,13 @@ struct fmt::formatter<roq::Event<roq::Timer>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::Timer> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(timer={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -77,12 +79,13 @@ struct fmt::formatter<roq::Trace<roq::Timer>> {
   template <typename Context>
   auto format(roq::Trace<roq::Timer> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(timer={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

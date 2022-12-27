@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/numbers.hpp"
@@ -30,12 +31,13 @@ struct fmt::formatter<roq::Measurement> {
   template <typename Context>
   auto format(roq::Measurement const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(name="{}", )"
         R"(value={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.name,
         value.value);
   }

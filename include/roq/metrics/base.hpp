@@ -4,6 +4,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <cstdint>
@@ -16,16 +17,16 @@ namespace metrics {
 //! Helper for all metrics collectors
 struct ROQ_PUBLIC Base {
   inline std::string create_labels(std::string_view const &label_name_0, std::string_view const &label_value_0) {
-    using namespace std::literals;
-    return fmt::format(R"({}="{}")"sv, label_name_0, label_value_0);
+    using namespace fmt::literals;
+    return fmt::format(R"({}="{}")"_cf, label_name_0, label_value_0);
   }
   inline std::string create_labels(
       std::string_view const &label_name_0,
       std::string_view const &label_value_0,
       std::string_view const &label_name_1,
       std::string_view const &label_value_1) {
-    using namespace std::literals;
-    return fmt::format(R"({}="{}", {}="{}")"sv, label_name_0, label_value_0, label_name_1, label_value_1);
+    using namespace fmt::literals;
+    return fmt::format(R"({}="{}", {}="{}")"_cf, label_name_0, label_value_0, label_name_1, label_value_1);
   }
   inline std::string create_labels(
       std::string_view const &label_name_0,
@@ -34,9 +35,9 @@ struct ROQ_PUBLIC Base {
       std::string_view const &label_value_1,
       std::string_view const &label_name_2,
       std::string_view const &label_value_2) {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format(
-        R"({}="{}", {}="{}", {}="{}")"sv,
+        R"({}="{}", {}="{}", {}="{}")"_cf,
         label_name_0,
         label_value_0,
         label_name_1,

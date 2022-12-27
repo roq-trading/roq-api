@@ -7,6 +7,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <chrono>
@@ -61,6 +62,7 @@ struct fmt::formatter<roq::OrderAck> {
   template <typename Context>
   auto format(roq::OrderAck const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -81,7 +83,7 @@ struct fmt::formatter<roq::OrderAck> {
         R"(routing_id="{}", )"
         R"(version={}, )"
         R"(round_trip_latency={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.stream_id,
         value.account,
         value.order_id,
@@ -110,13 +112,13 @@ struct fmt::formatter<roq::Event<roq::OrderAck>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::OrderAck> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(order_ack={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -131,12 +133,13 @@ struct fmt::formatter<roq::Trace<roq::OrderAck>> {
   template <typename Context>
   auto format(roq::Trace<roq::OrderAck> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(order_ack={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

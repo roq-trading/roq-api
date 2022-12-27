@@ -7,6 +7,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <chrono>
@@ -35,6 +36,7 @@ struct fmt::formatter<roq::Statistics> {
   template <typename Context>
   auto format(roq::Statistics const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -42,7 +44,7 @@ struct fmt::formatter<roq::Statistics> {
         R"(value={}, )"
         R"(begin_time_utc={}, )"
         R"(end_time_utc={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.type,
         value.value,
         value.begin_time_utc,

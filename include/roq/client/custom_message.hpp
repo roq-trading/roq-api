@@ -3,6 +3,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <span>
@@ -28,12 +29,12 @@ struct fmt::formatter<roq::client::CustomMessage> {
   }
   template <typename Context>
   auto format(roq::client::CustomMessage const &value, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(length={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         std::size(value.message));
   }
 };
@@ -46,13 +47,13 @@ struct fmt::formatter<roq::Event<roq::client::CustomMessage>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::client::CustomMessage> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(custom_message={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.message_info,
         event.value);
   }

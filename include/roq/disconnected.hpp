@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/event.hpp"
@@ -37,11 +38,12 @@ struct fmt::formatter<roq::Disconnected> {
   template <typename Context>
   auto format(roq::Disconnected const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(order_cancel_policy={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.order_cancel_policy);
   }
 };
@@ -54,13 +56,13 @@ struct fmt::formatter<roq::Event<roq::Disconnected>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::Disconnected> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(disconnected={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -75,12 +77,13 @@ struct fmt::formatter<roq::Trace<roq::Disconnected>> {
   template <typename Context>
   auto format(roq::Trace<roq::Disconnected> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(disconnected={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

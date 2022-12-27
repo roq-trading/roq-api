@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <string_view>
@@ -42,6 +43,7 @@ struct fmt::formatter<roq::CancelOrder> {
   template <typename Context>
   auto format(roq::CancelOrder const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -50,7 +52,7 @@ struct fmt::formatter<roq::CancelOrder> {
         R"(routing_id="{}", )"
         R"(version={}, )"
         R"(conditional_on_version={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.account,
         value.order_id,
         value.routing_id,
@@ -67,13 +69,13 @@ struct fmt::formatter<roq::Event<roq::CancelOrder>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::CancelOrder> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(cancel_order={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -88,12 +90,13 @@ struct fmt::formatter<roq::Trace<roq::CancelOrder>> {
   template <typename Context>
   auto format(roq::Trace<roq::CancelOrder> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(cancel_order={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

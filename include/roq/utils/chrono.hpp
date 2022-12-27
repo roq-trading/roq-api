@@ -3,6 +3,7 @@
 #pragma once
 
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <utility>
@@ -29,14 +30,14 @@ struct fmt::formatter<std::chrono::year_month_day> {
   }
   template <typename Context>
   auto format(std::chrono::year_month_day const &value, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(year="{}", )"
         R"(month={}, )"
         R"(day={} )"
-        R"(}})"sv,
+        R"(}})"_cf,
         static_cast<int>(value.year()),
         static_cast<unsigned>(value.month()),
         static_cast<unsigned>(value.day()));
@@ -51,7 +52,7 @@ struct fmt::formatter<std::chrono::hh_mm_ss<std::chrono::milliseconds>> {
   }
   template <typename Context>
   auto format(std::chrono::hh_mm_ss<std::chrono::milliseconds> const &value, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -59,7 +60,7 @@ struct fmt::formatter<std::chrono::hh_mm_ss<std::chrono::milliseconds>> {
         R"(minutes={}, )"
         R"(seconds={} )"
         R"(milliseconds={} )"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.hours().count(),
         value.minutes().count(),
         value.seconds().count(),

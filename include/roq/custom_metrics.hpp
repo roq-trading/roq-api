@@ -6,6 +6,7 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <span>
@@ -46,6 +47,7 @@ struct fmt::formatter<roq::CustomMetrics> {
   template <typename Context>
   auto format(roq::CustomMetrics const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -55,7 +57,7 @@ struct fmt::formatter<roq::CustomMetrics> {
         R"(symbol="{}", )"
         R"(measurements=[{}], )"
         R"(update_type={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.label,
         value.account,
         value.exchange,
@@ -73,13 +75,13 @@ struct fmt::formatter<roq::Event<roq::CustomMetrics>> {
   }
   template <typename Context>
   auto format(roq::Event<roq::CustomMetrics> const &event, Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(custom_metrics={}, )"
         R"(message_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.message_info);
   }
@@ -94,12 +96,13 @@ struct fmt::formatter<roq::Trace<roq::CustomMetrics>> {
   template <typename Context>
   auto format(roq::Trace<roq::CustomMetrics> const &event, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(custom_metrics={}, )"
         R"(trace_info={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         event.value,
         event.trace_info);
   }

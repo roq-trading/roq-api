@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/utils/datetime.hpp"
@@ -15,10 +16,10 @@ struct DateTime final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     if (value_.count())
-      return fmt::format_to(context.out(), R"("{}")"sv, utils::DateTime_iso8601{value_});
-    return fmt::format_to(context.out(), "null"sv);
+      return fmt::format_to(context.out(), R"("{}")"_cf, utils::DateTime_iso8601{value_});
+    return fmt::format_to(context.out(), "null"_cf);
   }
 
  private:

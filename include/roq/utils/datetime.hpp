@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <cassert>
@@ -18,7 +19,7 @@ struct DateTime_iso8601 final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     std::chrono::sys_days days{std::chrono::duration_cast<std::chrono::days>(value_)};
     std::chrono::year_month_day ymd{days};
     auto tmp = std::chrono::time_point_cast<T>(days);
@@ -29,7 +30,7 @@ struct DateTime_iso8601 final {
         std::is_same_v<std::decay_t<T>, std::chrono::days> || std::is_same_v<std::decay_t<T>, std::chrono::seconds>) {
       return fmt::format_to(
           context.out(),
-          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"sv,
+          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"_cf,
           static_cast<int>(ymd.year()),
           static_cast<unsigned>(ymd.month()),
           static_cast<unsigned>(ymd.day()),
@@ -40,7 +41,7 @@ struct DateTime_iso8601 final {
       auto remain = value_.count() % 1000u;
       return fmt::format_to(
           context.out(),
-          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:03}Z"sv,
+          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:03}Z"_cf,
           static_cast<int>(ymd.year()),
           static_cast<unsigned>(ymd.month()),
           static_cast<unsigned>(ymd.day()),
@@ -52,7 +53,7 @@ struct DateTime_iso8601 final {
       auto remain = value_.count() % 1000000u;
       return fmt::format_to(
           context.out(),
-          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:06}Z"sv,
+          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:06}Z"_cf,
           static_cast<int>(ymd.year()),
           static_cast<unsigned>(ymd.month()),
           static_cast<unsigned>(ymd.day()),
@@ -64,7 +65,7 @@ struct DateTime_iso8601 final {
       auto remain = value_.count() % 1000000000u;
       return fmt::format_to(
           context.out(),
-          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:09}Z"sv,
+          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:09}Z"_cf,
           static_cast<int>(ymd.year()),
           static_cast<unsigned>(ymd.month()),
           static_cast<unsigned>(ymd.day()),
@@ -89,6 +90,7 @@ struct DateTime_rfc2616 final {
   template <typename Context>
   auto format_to(Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     std::chrono::sys_days days{std::chrono::duration_cast<std::chrono::days>(value_)};
     std::chrono::year_month_day ymd{days};
     auto weekday = [&]() -> std::string_view {
@@ -152,7 +154,7 @@ struct DateTime_rfc2616 final {
     static_cast<unsigned>(ymd.month());
     return fmt::format_to(
         context.out(),
-        "{}, {:02} {} {:04} {:02}:{:02}:{:02} GMT"sv,
+        "{}, {:02} {} {:04} {:02}:{:02}:{:02} GMT"_cf,
         weekday,
         static_cast<unsigned>(ymd.day()),
         month,

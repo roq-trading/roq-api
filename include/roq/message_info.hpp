@@ -7,6 +7,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <chrono>
@@ -43,6 +44,7 @@ struct fmt::formatter<roq::MessageInfo> {
   template <typename Context>
   auto format(roq::MessageInfo const &value, Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -58,7 +60,7 @@ struct fmt::formatter<roq::MessageInfo> {
         R"(origin_create_time_utc={}, )"
         R"(is_last={}, )"
         R"(opaque={})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value.source,
         value.source_name,
         value.source_session_id,

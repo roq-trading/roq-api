@@ -13,11 +13,12 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
 {%- endif %}
       Context& context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
 {%- if variables | length == 0 %}
 {%- raw %}
-        R"({{}})"sv);
+        R"({{}})"_cf);
 {%- endraw %}
 {%- else %}
 {%- raw %}
@@ -27,7 +28,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
         R"({{ variable.name }}={{ variable.format_string }}{{ ', ' if not loop.last }})"
 {%- endfor %}
 {%- raw %}
-        R"(}})"sv,
+        R"(}})"_cf,
 {%- endraw %}
 {%- for variable in variables %}
         {{ variable.format_value }}{{ ',' if not loop.last else ');' }}

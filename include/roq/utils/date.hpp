@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <cassert>
@@ -18,12 +19,12 @@ struct Date_iso8601 final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace std::literals;
+    using namespace fmt::literals;
     std::chrono::sys_days days{std::chrono::duration_cast<std::chrono::days>(value_)};
     std::chrono::year_month_day ymd{days};
     return fmt::format_to(
         context.out(),
-        "{:04}-{:02}-{:02}"sv,
+        "{:04}-{:02}-{:02}"_cf,
         static_cast<int>(ymd.year()),
         static_cast<unsigned>(ymd.month()),
         static_cast<unsigned>(ymd.day()));

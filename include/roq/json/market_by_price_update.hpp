@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <range/v3/view.hpp>
@@ -32,6 +33,7 @@ struct MarketByPriceUpdate final {
   template <typename Context>
   auto format_to(Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     auto bids = cache_ ? bids_ : value_.bids;
     auto asks = cache_ ? asks_ : value_.asks;
     auto update_type = cache_ ? UpdateType::SNAPSHOT : value_.update_type;
@@ -46,7 +48,7 @@ struct MarketByPriceUpdate final {
         R"("update_type":{},)"
         R"("exchange_time_utc":{},)"
         R"("exchange_sequence":{})"
-        R"(}})"sv,
+        R"(}})"_cf,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
@@ -56,14 +58,14 @@ struct MarketByPriceUpdate final {
                 [this](auto const &v) {
                   return MBPUpdate{context_, v};
                 }),
-            ","),
+            ","sv),
         fmt::join(
             ranges::views::transform(
                 asks,
                 [this](auto const &v) {
                   return MBPUpdate{context_, v};
                 }),
-            ","),
+            ","sv),
         String{update_type},
         DateTime{value_.exchange_time_utc},
         value_.exchange_sequence);

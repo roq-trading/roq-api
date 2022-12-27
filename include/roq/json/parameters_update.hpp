@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <range/v3/view.hpp>
@@ -20,14 +21,15 @@ struct ParametersUpdate final {
   template <typename Context>
   auto format_to(Context &context) const {
     using namespace std::literals;
+    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"("parameters":{{{}}},)"
         R"("update_type":{},)"
         R"("user":{})"
-        R"(}})"sv,
-        fmt::join(ranges::views::transform(value_.parameters, [](auto const &v) { return Parameter{v}; }), ","),
+        R"(}})"_cf,
+        fmt::join(ranges::views::transform(value_.parameters, [](auto const &v) { return Parameter{v}; }), ","sv),
         String{value_.update_type},
         String{value_.user});
   }

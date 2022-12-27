@@ -77,6 +77,12 @@ add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-fbs)
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-cpp)
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-fbs)
 
+# https://stackoverflow.com/a/73090806
+
+if(APPLE)
+  target_compile_definitions(${PROJECT_NAME} INTERFACE FMT_USE_NONTYPE_TEMPLATE_ARGS=1)
+endif()
+
 # install (public headers)
 
 install(

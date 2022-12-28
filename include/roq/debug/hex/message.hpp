@@ -13,6 +13,8 @@ namespace hex {
 
 struct Message final {
   explicit Message(std::span<const std::byte> const &buffer) : buffer_{buffer} {}
+  explicit Message(std::string_view const &buffer)
+      : buffer_{reinterpret_cast<std::byte const *>(std::data(buffer)), std::size(buffer)} {}
 
   Message(std::byte const *data, size_t length) : Message{{data, length}} {}
 
@@ -25,7 +27,7 @@ struct Message final {
   }
 
  private:
-  std::span<const std::byte> const buffer_;
+  std::span<std::byte const> const buffer_;
 };
 
 }  // namespace hex

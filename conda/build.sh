@@ -2,8 +2,28 @@
 
 set -e
 
+case "$KERNEL" in
+  64)
+    CFLAGS="${CFLAGS/-march=nocona/-march=broadwell}"
+    CFLAGS="${CFLAGS/-march=core2/-march=broadwell}"
+    CFLAGS="${CFLAGS/-mtune=haswell/-mtune=broadwell}"
+    CXXFLAGS="${CXXFLAGS/-march=nocona/-march=broadwell}"
+    CXXFLAGS="${CXXFLAGS/-march=core2/-march=broadwell}"
+    CXXFLAGS="${CXXFLAGS/-mtune=haswell/-mtune=broadwell}"
+    ;;
+
+  arm64,aarch64)
+    ;;
+
+  *)
+    (>&2 echo -e "\033[1;31mERROR: Unknown ARCH=$ARCH.\033[0m") && exit 1
+    ;;
+esac
+
+CFLAGS="$CFLAGS -O3"
+CPPFLAGS="$CPPFLAGS -O3"
+
 CXXFLAGS+=" $CPPFLAGS"  # CMake doesn't used CPPFLAGS
-CXXFLAGS+=" -Wno-error=unused-result"  # gtest doesn't check fwrite return value
 
 echo -e "\033[1;34m--- ENV ---\033[0m"
 

@@ -2,7 +2,7 @@
 
 set -e
 
-case "$KERNEL" in
+case "$ARCH" in
   64)
     CFLAGS="${CFLAGS/-march=nocona/-march=broadwell}"
     CFLAGS="${CFLAGS/-march=core2/-march=broadwell}"
@@ -12,11 +12,14 @@ case "$KERNEL" in
     CXXFLAGS="${CXXFLAGS/-mtune=haswell/-mtune=broadwell}"
     ;;
 
-  arm64,aarch64)
+  arm64)
+    ;;
+
+  aarch64)
     ;;
 
   *)
-    (>&2 echo -e "\033[1;31mERROR: Unknown ARCH=$ARCH.\033[0m") && exit 1
+    (>&2 echo -e "\033[1;31mERROR: Unsupported ARCH=$ARCH.\033[0m") && exit 1
     ;;
 esac
 

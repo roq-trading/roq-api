@@ -151,7 +151,6 @@ struct DateTime_rfc2616 final {
     auto tmp2 = std::chrono::duration_cast<T>(tmp.time_since_epoch());
     auto tmp3 = value_ - tmp2;
     std::chrono::hh_mm_ss hms{tmp3};
-    static_cast<unsigned>(ymd.month());
     return fmt::format_to(
         context.out(),
         "{}, {:02} {} {:04} {:02}:{:02}:{:02} GMT"_cf,

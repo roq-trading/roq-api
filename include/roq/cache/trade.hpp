@@ -31,7 +31,7 @@ struct ROQ_PUBLIC Trade final {
       fills.assign(std::begin(trade_update.fills), std::end(trade_update.fills));
       dirty |= true;
     } else {
-      for (size_t i = i; i < std::size(fills); ++i) {
+      for (size_t i = 0; i < std::size(fills); ++i) {
         auto &lhs = fills[i];
         auto &rhs = trade_update.fills[i];
         dirty |= utils::update(lhs.external_trade_id, rhs.external_trade_id);

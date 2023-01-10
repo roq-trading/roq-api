@@ -10,7 +10,7 @@ to creating binary language bindings.
 Market gateways will eventually support a low latency
 Flatbuffers interface.
 
-Note! The C++ API remains the choice for ultra low latency.
+Note! The C++ API remains the choice for low latency.
 
 ## Implementation
 

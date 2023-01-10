@@ -52,7 +52,7 @@ API for algorithmic and high-frequency trading (HFT).
 * Extensive use of auto-generated code based on schemas.
 * Strongly typed messages (events).
 * Asynchronous interfaces and implementations.
-* C++ and shared memory for ultra low latency.
+* C++ and shared memory for low latency.
 * Automatic capture of all events.
 * Free to download tools and database adapters.
 

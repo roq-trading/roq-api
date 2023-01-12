@@ -110,10 +110,22 @@ namespace roq {
 static constexpr auto const SOURCE_NONE = uint8_t{0};
 static constexpr auto const SOURCE_SELF = uint8_t{255};
 
-// order id's (upper limit)
+// order id's (restricted values and upper limit)
 
+static constexpr auto const ORDER_ID_NONE = uint32_t{0};
 static constexpr auto const MAX_ORDER_ID = uint32_t{(1 << 24) - 1};
+
+// request versions (upper limit)
+
 static constexpr auto const MAX_REQUEST_VERSION = uint32_t{(1 << 24) - 1};
+
+// account id's (restricted values)
+
+static constexpr auto const ACCOUNT_NONE = uint8_t{0};
+
+// symbol id's (restricted values)
+
+static constexpr auto const SYMBOL_ID_NONE = uint32_t{0};
 
 // validate auto-generated code
 

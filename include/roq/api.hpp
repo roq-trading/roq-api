@@ -110,6 +110,10 @@ namespace roq {
 static constexpr auto const SOURCE_NONE = uint8_t{0};
 static constexpr auto const SOURCE_SELF = uint8_t{255};
 
+// stream id's
+
+static constexpr auto const STREAM_ID_NONE = uint16_t{0};
+
 // order id's (restricted values and upper limit)
 
 static constexpr auto const ORDER_ID_NONE = uint32_t{0};

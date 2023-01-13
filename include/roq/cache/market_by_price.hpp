@@ -83,68 +83,41 @@ class ROQ_PUBLIC MarketByPrice {
 
   // generic update interface using operator()
   template <typename T>
-  void operator()(T const &value) {
+  inline void operator()(T const &value) {
     update_helper(value);
   }
 
   // single update to the order book (quantity == 0 means remove)
-  void operator()(Side side, MBPUpdate const &mbp_update) { update_helper(side, mbp_update); }
+  inline void operator()(Side side, MBPUpdate const &mbp_update) { update_helper(side, mbp_update); }
 
   // simple update
   //   used when applying sequential updates, e.g. when caching
-  void operator()(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) { update_helper(bids, asks); }
+  inline void operator()(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) {
+    update_helper(bids, asks);
+  }
 
-  // generate a normalized update (used when origin is an external "noisy" source)
+  // generate normalized update (used when origin is an external "noisy" source)
   //   deals with sorting, de-duplication, etc.
   //   calls back with the final update
-  template <typename F>
-  void operator()(
+  template <typename Callback>
+  inline void operator()(
       MarketByPriceUpdate const &market_by_price_update,
       std::span<MBPUpdate> const &final_bids,
       std::span<MBPUpdate> const &final_asks,
-      F callback) {
-    auto [bids, asks] = update_helper(market_by_price_update, final_bids, final_asks);
-    MarketByPriceUpdate const final_market_by_price_update{
-        .stream_id = market_by_price_update.stream_id,
-        .exchange = market_by_price_update.exchange,
-        .symbol = market_by_price_update.symbol,
-        .bids = bids,
-        .asks = asks,
-        .update_type = market_by_price_update.update_type,
-        .exchange_time_utc = market_by_price_update.exchange_time_utc,
-        .exchange_sequence = market_by_price_update.exchange_sequence,
-        .price_decimals = price_decimals(),
-        .quantity_decimals = quantity_decimals(),
-        .max_depth = max_depth(),
-        .checksum = checksum(),
-    };
-    callback(final_market_by_price_update);
+      Callback callback) {
+    auto market_by_price_update_2 = create_update(market_by_price_update, final_bids, final_asks);
+    callback(std::as_const(market_by_price_update_2));
   }
 
-  // extract snapshot
-  // note!
-  //   storage containers must be provided for storing bids and asks
-  template <typename Storage>
-  MarketByPriceUpdate extract_snapshot(Storage &bids, Storage &asks) const {
-    auto [bids_size, asks_size] = size();
-    bids.resize(bids_size);
-    asks.resize(asks_size);
-    auto [final_bids, final_asks] = extract(bids, asks, false);
-    return {
-        .stream_id = {},
-        .exchange = exchange(),
-        .symbol = symbol(),
-        .bids = final_bids,
-        .asks = final_asks,
-        .update_type = UpdateType::SNAPSHOT,
-        .exchange_time_utc = exchange_time_utc(),
-        .exchange_sequence = exchange_sequence(),
-        .price_decimals = price_decimals(),
-        .quantity_decimals = quantity_decimals(),
-        .max_depth = max_depth(),
-        .checksum = checksum(),
-    };
-  }
+  // create snapshot update
+  //   helper to reduce number of virtual function calls
+  virtual MarketByPriceUpdate create_snapshot(
+      std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) const = 0;
+
+  // create update
+  //   helper to reduce number of virtual function calls
+  virtual MarketByPriceUpdate create_update(
+      MarketByPriceUpdate const &, std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
 
   // generate depth update from full update
   virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> create_depth_update(

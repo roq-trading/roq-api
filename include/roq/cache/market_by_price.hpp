@@ -14,6 +14,8 @@ class ROQ_PUBLIC MarketByPrice {
  public:
   virtual ~MarketByPrice() {}
 
+  // meta data:
+
   virtual std::string_view exchange() const = 0;
   virtual std::string_view symbol() const = 0;
 
@@ -50,18 +52,26 @@ class ROQ_PUBLIC MarketByPrice {
 
   // extract methods:
 
+  // extract arrays of MBPUpdate's, one for each of bids and asks
+  //   storage is managed externally and must be passed as arguments
+  //   default is to throw an exception if internal storage exceeds provided storage
+  //   setting allow_truncate to true will not throw and return arrays may then be truncated
+  virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> extract(
+      std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks, bool allow_truncate = false) const = 0;
+
+  // extract vectors of MBPUpdate's
+  //   note! max_depth == 0 means full snapshot
+  virtual void extract_2(std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks, size_t max_depth = 0) const = 0;
+
   // extract an array of Layer's
   //   storage is managed externally and must be passed as argument
   //   the entire array will be returned if fill_zero is true
   //   otherwise the array will be the maximum of size(bids) and size(asks)
   virtual std::span<Layer> extract(std::span<Layer> const &, bool fill_zero = false) const = 0;
 
-  // extract an arrays of MBPUpdate's, one for each of bids and asks
-  //   storage is managed externally and must be passed as arguments
-  //   default is to throw an exception if internal storage exceeds provided storage
-  //   setting allow_truncate to true will not throw and return arrays may then be truncated
-  virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> extract(
-      std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks, bool allow_truncate = false) const = 0;
+  // extract a vector of Layer's
+  //   note! max_depth == 0 means full snapshot
+  virtual void extract_2(std::vector<Layer> &, size_t max_depth = 0) const = 0;
 
   // computation methods:
 
@@ -77,18 +87,12 @@ class ROQ_PUBLIC MarketByPrice {
 
   // volume weighted average price (complexity depends on the number of required levels)
   //   returns Layer with bid_quantity/ask_quantity <= quantity depending on available liquidity
-  virtual Layer compute_vwap(double quantity) const = 0;
+  virtual Layer compute_vwap(double total_quantity) const = 0;
 
   // update methods:
 
   // generic update interface using operator()
-  template <typename T>
-  inline void operator()(T const &value) {
-    update_helper(value);
-  }
-
-  // single update to the order book (quantity == 0 means remove)
-  inline void operator()(Side side, MBPUpdate const &mbp_update) { update_helper(side, mbp_update); }
+  inline void operator()(auto const &value) { update_helper(value); }
 
   // simple update
   //   used when applying sequential updates, e.g. when caching
@@ -105,19 +109,21 @@ class ROQ_PUBLIC MarketByPrice {
       std::span<MBPUpdate> const &final_bids,
       std::span<MBPUpdate> const &final_asks,
       Callback callback) {
-    auto market_by_price_update_2 = create_update(market_by_price_update, final_bids, final_asks);
+    auto market_by_price_update_2 = create_update_helper(market_by_price_update, final_bids, final_asks);
     callback(std::as_const(market_by_price_update_2));
   }
 
-  // create snapshot update
-  //   helper to reduce number of virtual function calls
-  virtual MarketByPriceUpdate create_snapshot(
-      std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) const = 0;
+  // apply a simple update
+  //   note! quantity == 0 means remove
+  //   note! should only be used for testing
+  inline void operator()(Side side, MBPUpdate const &mbp_update) { update_helper(side, mbp_update); }
 
-  // create update
-  //   helper to reduce number of virtual function calls
-  virtual MarketByPriceUpdate create_update(
-      MarketByPriceUpdate const &, std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
+  // create snapshot
+  template <typename Callback>
+  inline void create_snapshot(std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks, Callback callback) const {
+    auto market_by_price_update = create_snapshot_helper(bids, asks);
+    callback(std::as_const(market_by_price_update));
+  }
 
   // generate depth update from full update
   virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> create_depth_update(
@@ -128,11 +134,18 @@ class ROQ_PUBLIC MarketByPrice {
 
  protected:
   virtual void update_helper(roq::ReferenceData const &) = 0;
-  virtual void update_helper(Side, MBPUpdate const &) = 0;
-  virtual void update_helper(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
   virtual void update_helper(MarketByPriceUpdate const &) = 0;
-  virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> update_helper(
+
+  virtual void update_helper(Side, MBPUpdate const &) = 0;
+
+  virtual MarketByPriceUpdate create_update_helper(
       MarketByPriceUpdate const &, std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
+
+  virtual MarketByPriceUpdate create_snapshot_helper(
+      std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) const = 0;
+
+  // note! used when applying sequential updates
+  virtual void update_helper(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
 };
 
 }  // namespace cache

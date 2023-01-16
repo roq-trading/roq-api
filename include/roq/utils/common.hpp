@@ -46,6 +46,21 @@ inline constexpr bool is_snapshot(UpdateType update_type) {
   return false;
 }
 
+inline constexpr bool is_update(UpdateType update_type) {
+  switch (update_type) {
+    using enum UpdateType;
+    case UNDEFINED:
+      break;  // note! false (== 0) was previously interpreted as incremental
+    case SNAPSHOT:
+      break;
+    case INCREMENTAL:
+      return true;
+    case STALE:
+      break;
+  }
+  return false;
+}
+
 //! Check if order was received
 inline constexpr bool was_order_received(OrderStatus order_status) {
   switch (order_status) {

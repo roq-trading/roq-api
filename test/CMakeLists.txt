@@ -11,6 +11,7 @@ set(SOURCES
     format.cpp
     json.cpp
     mask.cpp
+    math.cpp
     metrics.cpp
     rate_limiter.cpp
     request_status.cpp

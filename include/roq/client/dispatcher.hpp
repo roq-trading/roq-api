@@ -21,8 +21,7 @@ namespace client {
  * It is implementation specific if the request
  * is handled synchronously or asynchronously.
  */
-class ROQ_PUBLIC Dispatcher {
- public:
+struct ROQ_PUBLIC Dispatcher {
   virtual ~Dispatcher() {}
 
   virtual void stop() = 0;

@@ -12,8 +12,7 @@
 namespace roq {
 namespace cache {
 
-class Statistics final {
- public:
+struct Statistics final {
   Statistics() {
     clear();  // note! initialize array
   }

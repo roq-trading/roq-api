@@ -15,7 +15,7 @@ namespace utils {
 template <typename T>
 using is_char = std::is_same<T, char>;
 
-template <class T>
+template <typename T>
 inline constexpr bool is_char_v = is_char<T>::value;
 
 // is_bool + is_bool_v
@@ -23,7 +23,7 @@ inline constexpr bool is_char_v = is_char<T>::value;
 template <typename T>
 using is_bool = std::is_same<T, bool>;
 
-template <class T>
+template <typename T>
 inline constexpr bool is_bool_v = is_bool<T>::value;
 
 // is_integer + is_integer_v
@@ -37,7 +37,7 @@ struct is_integer<
     typename std::enable_if<std::is_integral<T>::value && !(is_bool<T>::value | is_char<T>::value)>::type>
     : std::true_type {};
 
-template <class T>
+template <typename T>
 inline constexpr bool is_integer_v = is_integer<T>::value;
 
 // is_string + is_string_v
@@ -51,7 +51,7 @@ struct is_string : public std::disjunction<
                        std::is_same<std::string, typename std::decay<T>::type>,
                        std::is_same<std::string_view, typename std::decay<T>::type>> {};
 
-template <class T>
+template <typename T>
 inline constexpr bool is_string_v = is_string<T>::value;
 
 // is_pair + is_pair_v
@@ -61,7 +61,7 @@ struct is_pair : std::false_type {};
 template <typename T, typename U>
 struct is_pair<std::pair<T, U>> : std::true_type {};
 
-template <class T>
+template <typename T>
 inline constexpr bool is_pair_v = is_pair<T>::value;
 
 // is_iterable
@@ -99,7 +99,7 @@ struct is_duration : std::false_type {};
 template <typename Rep, typename Period>
 struct is_duration<std::chrono::duration<Rep, Period>> : std::true_type {};
 
-template <class T>
+template <typename T>
 inline constexpr bool is_duration_v = is_duration<T>::value;
 
 }  // namespace utils

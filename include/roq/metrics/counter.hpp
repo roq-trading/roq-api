@@ -15,8 +15,7 @@ namespace metrics {
 
 //! Counter
 template <typename T>
-class alignas(ROQ_CACHELINE_SIZE) Counter {
- public:
+struct alignas(ROQ_CACHELINE_SIZE) Counter {
   Counter() = default;
   explicit Counter(std::string_view const &labels) : labels_{labels} {}
 

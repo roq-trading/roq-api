@@ -10,8 +10,7 @@ namespace roq {
 namespace cache {
 
 //! Interface
-class ROQ_PUBLIC MarketByPrice {
- public:
+struct ROQ_PUBLIC MarketByPrice {
   virtual ~MarketByPrice() {}
 
   // meta data:

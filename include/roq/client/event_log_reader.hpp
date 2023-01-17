@@ -8,8 +8,7 @@
 namespace roq {
 namespace client {
 
-class ROQ_PUBLIC EventLogReader {
- public:
+struct ROQ_PUBLIC EventLogReader {
   struct Handler {
     // config
     virtual void operator()(Event<GatewaySettings> const &) = 0;

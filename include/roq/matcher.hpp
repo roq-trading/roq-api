@@ -7,11 +7,9 @@
 namespace roq {
 
 //! Order matching interface used to manage a simulated order book
-class ROQ_PUBLIC Matcher {
- public:
+struct ROQ_PUBLIC Matcher {
   //! Dispatch interface used to handle (possibly processed) events
-  class ROQ_PUBLIC Dispatcher {
-   public:
+  struct ROQ_PUBLIC Dispatcher {
     virtual void operator()(Event<DownloadBegin> const &) = 0;
     virtual void operator()(Event<DownloadEnd> const &) = 0;
 

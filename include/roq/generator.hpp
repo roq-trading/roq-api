@@ -9,11 +9,9 @@
 namespace roq {
 
 //! Generator interface used to manage a sequence of messages
-class ROQ_PUBLIC Generator {
- public:
+struct ROQ_PUBLIC Generator {
   //! Dispatch interface used to handle update events
-  class ROQ_PUBLIC Dispatcher {
-   public:
+  struct ROQ_PUBLIC Dispatcher {
     virtual ~Dispatcher() {}
 
     // config

@@ -30,10 +30,8 @@ struct ROQ_PUBLIC Symbol {
 };
 
 //! Dispatch interface used to manage subscriptions.
-class ROQ_PUBLIC Config {
- public:
-  class ROQ_PUBLIC Handler {
-   public:
+struct ROQ_PUBLIC Config {
+  struct ROQ_PUBLIC Handler {
     virtual void operator()(Settings const &) {}
     virtual void operator()(Account const &) = 0;
     virtual void operator()(Symbol const &) = 0;

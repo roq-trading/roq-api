@@ -19,8 +19,7 @@ namespace roq {
 // - flag (enum value) should be powers of two, or combinations -- we don't currently check
 
 template <typename T, typename = typename std::enable_if<std::is_enum<T>::value>::type>
-class Mask final {
- public:
+struct Mask final {
   using value_type = typename std::underlying_type<T>::type;
 
   struct sentinel final {};

@@ -19,8 +19,7 @@ namespace client {
  * thrown by the event handler may result in termination
  * of the process or, at least, undefined behaviour.
  */
-class ROQ_PUBLIC Handler {
- public:
+struct ROQ_PUBLIC Handler {
   // host
   virtual void operator()(Event<Start> const &) {}
   virtual void operator()(Event<Stop> const &) {}

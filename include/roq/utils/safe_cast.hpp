@@ -17,7 +17,7 @@ namespace utils {
 namespace detail {
 // references:
 //   https://stackoverflow.com/a/53945549
-template <class...>
+template <typename...>
 constexpr std::false_type always_false{};
 }  // namespace detail
 

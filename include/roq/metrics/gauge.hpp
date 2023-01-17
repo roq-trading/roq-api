@@ -15,8 +15,7 @@ namespace metrics {
 
 //! Gauge
 template <typename T>
-class alignas(ROQ_CACHELINE_SIZE) Gauge {
- public:
+struct alignas(ROQ_CACHELINE_SIZE) Gauge {
   Gauge() = default;
   explicit Gauge(std::string_view const &labels) : labels_{labels} {}
 

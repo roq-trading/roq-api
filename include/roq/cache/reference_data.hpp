@@ -11,8 +11,7 @@
 namespace roq {
 namespace cache {
 
-class ReferenceData final {
- public:
+struct ReferenceData final {
   ReferenceData() = default;
 
   ReferenceData(ReferenceData const &) = delete;

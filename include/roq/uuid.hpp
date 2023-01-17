@@ -16,8 +16,7 @@
 
 namespace roq {
 
-class UUID final {
- public:
+struct UUID final {
   using value_type = unsigned char;
   using uuid_t = std::array<value_type, 16>;
 

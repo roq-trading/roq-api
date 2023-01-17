@@ -11,8 +11,7 @@ namespace roq {
 namespace metrics {
 
 //! Writer (Prometheus' exposition format)
-class ROQ_PUBLIC Writer {
- public:
+struct ROQ_PUBLIC Writer {
   //! Write the TYPE header
   virtual Writer &write_type(std::string_view const &name, std::string_view const &type) = 0;
 

@@ -8,8 +8,7 @@ using namespace roq;
 using namespace std::literals;
 
 namespace {
-class Writer : public metrics::Writer {
- protected:
+struct Writer : public metrics::Writer {
   metrics::Writer &write_type(std::string_view const &, std::string_view const &) override { return *this; }
   metrics::Writer &write_simple(std::string_view const &, std::string_view const &, uint64_t) override { return *this; }
   metrics::Writer &write_bucket(std::string_view const &, std::string_view const &, double, uint64_t) override {

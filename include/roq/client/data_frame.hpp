@@ -9,10 +9,8 @@
 namespace roq {
 namespace client {
 
-class DataFrame {
- public:
-  class Handler {
-   public:
+struct DataFrame {
+  struct Handler {
     virtual void add_series(
         std::span<std::string_view> const &values, std::string_view const &name, bool index, bool category) = 0;
     virtual void add_series(

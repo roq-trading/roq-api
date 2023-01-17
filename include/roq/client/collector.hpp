@@ -8,8 +8,7 @@ namespace roq {
 namespace client {
 
 //! Collector interface
-class Collector {
- public:
+struct Collector {
   virtual ~Collector() {}
 
   // control

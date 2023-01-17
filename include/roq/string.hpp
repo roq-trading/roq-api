@@ -33,8 +33,7 @@ namespace roq {
  * The interface is a subset of \ref std::string and \ref std::string_view.
  */
 template <std::size_t N>
-class ROQ_PACKED String {
- public:
+struct ROQ_PACKED String {
   using value_type = char;
 
   constexpr String() = default;

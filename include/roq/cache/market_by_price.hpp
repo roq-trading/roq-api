@@ -105,10 +105,10 @@ struct ROQ_PUBLIC MarketByPrice {
   template <typename Callback>
   inline void operator()(
       MarketByPriceUpdate const &market_by_price_update,
-      std::span<MBPUpdate> const &final_bids,
-      std::span<MBPUpdate> const &final_asks,
+      std::vector<MBPUpdate> &bids,
+      std::vector<MBPUpdate> &asks,
       Callback callback) {
-    auto market_by_price_update_2 = create_update_helper(market_by_price_update, final_bids, final_asks);
+    auto market_by_price_update_2 = create_update_helper(market_by_price_update, bids, asks);
     callback(std::as_const(market_by_price_update_2));
   }
 
@@ -138,7 +138,7 @@ struct ROQ_PUBLIC MarketByPrice {
   virtual void update_helper(Side, MBPUpdate const &) = 0;
 
   virtual MarketByPriceUpdate create_update_helper(
-      MarketByPriceUpdate const &, std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
+      MarketByPriceUpdate const &, std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) = 0;
 
   virtual MarketByPriceUpdate create_snapshot_helper(
       std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) const = 0;

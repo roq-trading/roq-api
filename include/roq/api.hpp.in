@@ -117,11 +117,11 @@ static constexpr auto const STREAM_ID_NONE = uint16_t{0};
 // order id's (restricted values and upper limit)
 
 static constexpr auto const ORDER_ID_NONE = uint32_t{0};
-static constexpr auto const MAX_ORDER_ID = uint32_t{(1 << 24) - 1};
+static constexpr auto const MAX_ORDER_ID = (uint32_t{1} << 24) - 1;
 
 // request versions (upper limit)
 
-static constexpr auto const MAX_REQUEST_VERSION = uint32_t{(1 << 24) - 1};
+static constexpr auto const MAX_REQUEST_VERSION = (uint32_t{1} << 24) - 1;
 
 // account id's (restricted values)
 

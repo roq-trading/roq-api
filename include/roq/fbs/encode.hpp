@@ -144,9 +144,9 @@ auto encode(B &builder, roq::MBOUpdate const &value) {
       builder,
       value.price,
       value.remaining_quantity,
-      encode(builder, value.action),
       value.priority,
-      encode(builder, static_cast<std::string_view>(value.order_id)));
+      encode(builder, static_cast<std::string_view>(value.order_id)),
+      encode(builder, value.action));
 }
 
 template <typename B>

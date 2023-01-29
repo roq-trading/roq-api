@@ -53,6 +53,29 @@ struct ROQ_PUBLIC MarketByOrder {
   // generic update interface using operator()
   inline void operator()(auto const &value) { update_helper(value); }
 
+  // extract methods:
+
+  // extract vectors of MBOUpdate's
+  //   note! max_depth == 0 means full snapshot
+  virtual void extract(std::vector<MBOUpdate> &bids, std::vector<MBOUpdate> &asks, size_t max_depth = 0) const = 0;
+
+  // extract a vector of Layer's
+  //   note! max_depth == 0 means full snapshot
+  virtual void extract(std::vector<Layer> &, size_t max_depth = 0) const = 0;
+
+  // computation methods:
+
+  // check if price level exists
+  virtual bool exists(Side, double price) const = 0;
+
+  // find price-level index (if exists)
+  //   returns {index, exists?}
+  virtual std::pair<size_t, bool> find_index(Side, double price) const = 0;
+
+  // find order (if exists)
+  //   returns {order, exists?}
+  virtual std::pair<MBOUpdate, bool> find_order(Side, std::string_view const &order_id) const = 0;
+
  protected:
   virtual void update_helper(roq::ReferenceData const &) = 0;
   virtual void update_helper(MarketByOrderUpdate const &) = 0;

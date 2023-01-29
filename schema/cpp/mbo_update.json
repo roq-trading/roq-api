@@ -15,18 +15,18 @@
       "comment": "Remaining order quantity"
     },
     {
-      "name": "action",
-      "type": "UpdateAction",
-      "comment": "Order update action"
-    },
-    {
       "name": "priority",
-      "type": "uint32_t",
+      "type": "uint64_t",
       "comment": "Queue priority"
     },
     {
       "name": "order_id",
-      "type": "ExternalTradeId"
+      "type": "MBOOrderId"
+    },
+    {
+      "name": "action",
+      "type": "UpdateAction",
+      "comment": "Order update action"
     }
   ]
 }

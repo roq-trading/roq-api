@@ -5,7 +5,7 @@ namespace roq.fbs;
 table MBOUpdate {
   price:double = nan;
   remaining_quantity:double = 0.0;
-  action:UpdateAction;
-  priority:uint32 = 0;
+  priority:uint64 = 0;
   order_id:string;
+  action:UpdateAction;
 }

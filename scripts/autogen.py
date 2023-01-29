@@ -115,6 +115,7 @@ _string_like_types = {
     "ExternalAccount",
     "ExternalOrderId",
     "ExternalTradeId",
+    "MBOOrderId",
     "RoutingId",
     "ClOrdId",
     "RequestId",

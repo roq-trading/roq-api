@@ -1884,9 +1884,9 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PRICE = 4,
     VT_REMAINING_QUANTITY = 6,
-    VT_ACTION = 8,
-    VT_PRIORITY = 10,
-    VT_ORDER_ID = 12
+    VT_PRIORITY = 8,
+    VT_ORDER_ID = 10,
+    VT_ACTION = 12
   };
   double price() const {
     return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
@@ -1894,23 +1894,23 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double remaining_quantity() const {
     return GetField<double>(VT_REMAINING_QUANTITY, 0.0);
   }
-  roq::fbs::UpdateAction action() const {
-    return static_cast<roq::fbs::UpdateAction>(GetField<uint8_t>(VT_ACTION, 0));
-  }
-  uint32_t priority() const {
-    return GetField<uint32_t>(VT_PRIORITY, 0);
+  uint64_t priority() const {
+    return GetField<uint64_t>(VT_PRIORITY, 0);
   }
   const flatbuffers::String *order_id() const {
     return GetPointer<const flatbuffers::String *>(VT_ORDER_ID);
+  }
+  roq::fbs::UpdateAction action() const {
+    return static_cast<roq::fbs::UpdateAction>(GetField<uint8_t>(VT_ACTION, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<double>(verifier, VT_PRICE, 8) &&
            VerifyField<double>(verifier, VT_REMAINING_QUANTITY, 8) &&
-           VerifyField<uint8_t>(verifier, VT_ACTION, 1) &&
-           VerifyField<uint32_t>(verifier, VT_PRIORITY, 4) &&
+           VerifyField<uint64_t>(verifier, VT_PRIORITY, 8) &&
            VerifyOffset(verifier, VT_ORDER_ID) &&
            verifier.VerifyString(order_id()) &&
+           VerifyField<uint8_t>(verifier, VT_ACTION, 1) &&
            verifier.EndTable();
   }
 };
@@ -1925,14 +1925,14 @@ struct MBOUpdateBuilder {
   void add_remaining_quantity(double remaining_quantity) {
     fbb_.AddElement<double>(MBOUpdate::VT_REMAINING_QUANTITY, remaining_quantity, 0.0);
   }
-  void add_action(roq::fbs::UpdateAction action) {
-    fbb_.AddElement<uint8_t>(MBOUpdate::VT_ACTION, static_cast<uint8_t>(action), 0);
-  }
-  void add_priority(uint32_t priority) {
-    fbb_.AddElement<uint32_t>(MBOUpdate::VT_PRIORITY, priority, 0);
+  void add_priority(uint64_t priority) {
+    fbb_.AddElement<uint64_t>(MBOUpdate::VT_PRIORITY, priority, 0);
   }
   void add_order_id(flatbuffers::Offset<flatbuffers::String> order_id) {
     fbb_.AddOffset(MBOUpdate::VT_ORDER_ID, order_id);
+  }
+  void add_action(roq::fbs::UpdateAction action) {
+    fbb_.AddElement<uint8_t>(MBOUpdate::VT_ACTION, static_cast<uint8_t>(action), 0);
   }
   explicit MBOUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1949,14 +1949,14 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
     double price = std::numeric_limits<double>::quiet_NaN(),
     double remaining_quantity = 0.0,
-    roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined,
-    uint32_t priority = 0,
-    flatbuffers::Offset<flatbuffers::String> order_id = 0) {
+    uint64_t priority = 0,
+    flatbuffers::Offset<flatbuffers::String> order_id = 0,
+    roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined) {
   MBOUpdateBuilder builder_(_fbb);
+  builder_.add_priority(priority);
   builder_.add_remaining_quantity(remaining_quantity);
   builder_.add_price(price);
   builder_.add_order_id(order_id);
-  builder_.add_priority(priority);
   builder_.add_action(action);
   return builder_.Finish();
 }
@@ -1970,17 +1970,17 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     double price = std::numeric_limits<double>::quiet_NaN(),
     double remaining_quantity = 0.0,
-    roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined,
-    uint32_t priority = 0,
-    const char *order_id = nullptr) {
+    uint64_t priority = 0,
+    const char *order_id = nullptr,
+    roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined) {
   auto order_id__ = order_id ? _fbb.CreateString(order_id) : 0;
   return roq::fbs::CreateMBOUpdate(
       _fbb,
       price,
       remaining_quantity,
-      action,
       priority,
-      order_id__);
+      order_id__,
+      action);
 }
 
 struct MBPUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `cache::MarketByOrder`
+
 ### Changed
 
 * `MBOUpdate`: `priority` now `uint64_t`, `order_id` length 36 (UUID), re-ordering

@@ -9,8 +9,6 @@
 namespace roq {
 namespace cache {
 
-// !!! WORK IN PROGRESS !!!
-
 struct ROQ_PUBLIC MarketByOrder {
   virtual ~MarketByOrder() {}
 
@@ -75,6 +73,14 @@ struct ROQ_PUBLIC MarketByOrder {
   // find order (if exists)
   //   returns {order, exists?}
   virtual std::pair<MBOUpdate, bool> find_order(Side, std::string_view const &order_id) const = 0;
+
+  // order's queue position
+  struct Position final {
+    double quantity = NaN;  // quantity for order
+    double before = NaN;    // total quantity ahead in queue priority
+    double total = NaN;     // total quantity
+  };
+  virtual Position get_queue_position(Side, std::string_view const &order_id) const = 0;
 
  protected:
   virtual void update_helper(roq::ReferenceData const &) = 0;

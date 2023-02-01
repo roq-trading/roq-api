@@ -27,6 +27,11 @@
       "name": "action",
       "type": "UpdateAction",
       "comment": "Order update action"
+    },
+    {
+      "name": "reason",
+      "type": "UpdateReason",
+      "comment": "Order update reason"
     }
   ]
 }

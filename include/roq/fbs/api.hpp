@@ -1355,6 +1355,39 @@ inline const char *EnumNameUpdateAction(UpdateAction e) {
   return EnumNamesUpdateAction()[index];
 }
 
+enum class UpdateReason : uint8_t {
+  Undefined = 0,
+  Initiator = 1,
+  Aggressor = 2,
+  MIN = Undefined,
+  MAX = Aggressor
+};
+
+inline const UpdateReason (&EnumValuesUpdateReason())[3] {
+  static const UpdateReason values[] = {
+    UpdateReason::Undefined,
+    UpdateReason::Initiator,
+    UpdateReason::Aggressor
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesUpdateReason() {
+  static const char * const names[4] = {
+    "Undefined",
+    "Initiator",
+    "Aggressor",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameUpdateReason(UpdateReason e) {
+  if (flatbuffers::IsOutRange(e, UpdateReason::Undefined, UpdateReason::Aggressor)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesUpdateReason()[index];
+}
+
 enum class UpdateType : uint8_t {
   Undefined = 0,
   Snapshot = 1,
@@ -1886,7 +1919,8 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_REMAINING_QUANTITY = 6,
     VT_PRIORITY = 8,
     VT_ORDER_ID = 10,
-    VT_ACTION = 12
+    VT_ACTION = 12,
+    VT_REASON = 14
   };
   double price() const {
     return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
@@ -1903,6 +1937,9 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   roq::fbs::UpdateAction action() const {
     return static_cast<roq::fbs::UpdateAction>(GetField<uint8_t>(VT_ACTION, 0));
   }
+  roq::fbs::UpdateReason reason() const {
+    return static_cast<roq::fbs::UpdateReason>(GetField<uint8_t>(VT_REASON, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<double>(verifier, VT_PRICE, 8) &&
@@ -1911,6 +1948,7 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_ORDER_ID) &&
            verifier.VerifyString(order_id()) &&
            VerifyField<uint8_t>(verifier, VT_ACTION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_REASON, 1) &&
            verifier.EndTable();
   }
 };
@@ -1934,6 +1972,9 @@ struct MBOUpdateBuilder {
   void add_action(roq::fbs::UpdateAction action) {
     fbb_.AddElement<uint8_t>(MBOUpdate::VT_ACTION, static_cast<uint8_t>(action), 0);
   }
+  void add_reason(roq::fbs::UpdateReason reason) {
+    fbb_.AddElement<uint8_t>(MBOUpdate::VT_REASON, static_cast<uint8_t>(reason), 0);
+  }
   explicit MBOUpdateBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -1951,12 +1992,14 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdate(
     double remaining_quantity = 0.0,
     uint64_t priority = 0,
     flatbuffers::Offset<flatbuffers::String> order_id = 0,
-    roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined) {
+    roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined,
+    roq::fbs::UpdateReason reason = roq::fbs::UpdateReason::Undefined) {
   MBOUpdateBuilder builder_(_fbb);
   builder_.add_priority(priority);
   builder_.add_remaining_quantity(remaining_quantity);
   builder_.add_price(price);
   builder_.add_order_id(order_id);
+  builder_.add_reason(reason);
   builder_.add_action(action);
   return builder_.Finish();
 }
@@ -1972,7 +2015,8 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdateDirect(
     double remaining_quantity = 0.0,
     uint64_t priority = 0,
     const char *order_id = nullptr,
-    roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined) {
+    roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined,
+    roq::fbs::UpdateReason reason = roq::fbs::UpdateReason::Undefined) {
   auto order_id__ = order_id ? _fbb.CreateString(order_id) : 0;
   return roq::fbs::CreateMBOUpdate(
       _fbb,
@@ -1980,7 +2024,8 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdateDirect(
       remaining_quantity,
       priority,
       order_id__,
-      action);
+      action,
+      reason);
 }
 
 struct MBPUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

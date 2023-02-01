@@ -47,6 +47,7 @@ template<> struct maps_to<roq::TimeInForce> final { using type = fbs::TimeInForc
 template<> struct maps_to<roq::TradingStatus> final { using type = fbs::TradingStatus; };
 template<> struct maps_to<roq::Transport> final { using type = fbs::Transport; };
 template<> struct maps_to<roq::UpdateAction> final { using type = fbs::UpdateAction; };
+template<> struct maps_to<roq::UpdateReason> final { using type = fbs::UpdateReason; };
 template<> struct maps_to<roq::UpdateType> final { using type = fbs::UpdateType; };
 // helper
 template<> struct maps_to<roq::MBPUpdate> final { using type = fbs::MBPUpdate; };
@@ -146,7 +147,8 @@ auto encode(B &builder, roq::MBOUpdate const &value) {
       value.remaining_quantity,
       value.priority,
       encode(builder, static_cast<std::string_view>(value.order_id)),
-      encode(builder, value.action));
+      encode(builder, value.action),
+      encode(builder, value.reason));
 }
 
 template <typename B>

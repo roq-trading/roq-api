@@ -61,6 +61,7 @@ set(SOURCES
     trading_status.fbs
     transport.fbs
     update_action.fbs
+    update_reason.fbs
     update_type.fbs)
 
 # install

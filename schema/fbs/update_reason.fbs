@@ -1,0 +1,7 @@
+namespace roq.fbs;
+
+enum UpdateReason:uint8 {
+  Undefined,
+  Initiator,
+  Aggressor
+}

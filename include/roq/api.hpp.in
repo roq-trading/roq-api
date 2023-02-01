@@ -39,6 +39,7 @@
 #include "roq/trading_status.hpp"
 #include "roq/transport.hpp"
 #include "roq/update_action.hpp"
+#include "roq/update_reason.hpp"
 #include "roq/update_type.hpp"
 
 // helpers

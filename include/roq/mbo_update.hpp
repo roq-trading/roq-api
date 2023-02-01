@@ -12,6 +12,7 @@
 #include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
 #include "roq/update_action.hpp"
+#include "roq/update_reason.hpp"
 
 namespace roq {
 
@@ -22,6 +23,7 @@ struct ROQ_PUBLIC MBOUpdate final {
   uint64_t priority = {};          //!< Queue priority
   MBOOrderId order_id;             //!< Order identifier
   UpdateAction action = {};        //!< Order update action
+  UpdateReason reason = {};        //!< Order update reason
 };
 
 }  // namespace roq
@@ -43,12 +45,14 @@ struct fmt::formatter<roq::MBOUpdate> {
         R"(remaining_quantity={}, )"
         R"(priority={}, )"
         R"(order_id="{}", )"
-        R"(action={})"
+        R"(action={}, )"
+        R"(reason={})"
         R"(}})"_cf,
         value.price,
         value.remaining_quantity,
         value.priority,
         value.order_id,
-        value.action);
+        value.action,
+        value.reason);
   }
 };

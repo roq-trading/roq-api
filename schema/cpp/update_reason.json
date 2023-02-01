@@ -1,0 +1,15 @@
+{
+  "name": "UpdateReason",
+  "type": "enum",
+  "comment": "Enumeration of update reasons",
+  "values": [
+    {
+      "name": "Initiator",
+      "comment": "Initiator"
+    },
+    {
+      "name": "Aggressor",
+      "comment": "Aggressor"
+    }
+  ]
+}

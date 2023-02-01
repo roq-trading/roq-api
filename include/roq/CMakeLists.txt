@@ -74,6 +74,7 @@ set(SOURCES
     trading_status.json
     transport.json
     update_action.json
+    update_reason.json
     update_type.json)
 
 # configure

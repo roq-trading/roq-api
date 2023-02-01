@@ -8,4 +8,5 @@ table MBOUpdate {
   priority:uint64 = 0;
   order_id:string;
   action:UpdateAction;
+  reason:UpdateReason;
 }

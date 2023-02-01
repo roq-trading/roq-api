@@ -42,12 +42,17 @@
     {
       "name": "price_decimals",
       "type": "Decimals",
-      "comment": "Decimal digits required to represent prices"
+      "comment": "Decimal digits required to represent prices (dynamic)"
     },
     {
       "name": "quantity_decimals",
       "type": "Decimals",
-      "comment": "Decimal digits required to represent quantities"
+      "comment": "Decimal digits required to represent quantities (dynamic)"
+    },
+    {
+      "name": "max_depth",
+      "type": "uint16_t",
+      "comment": "Maximum depth (zero means unlimited)"
     },
     {
       "name": "checksum",

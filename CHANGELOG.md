@@ -11,6 +11,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `fbs::MarketByOrderUpdate.max_depth` was inserted (should not be an issue since it was never used before)
 * `MBOUpdate`: `priority` now `uint64_t`, `order_id` length 36 (UUID), re-ordering
 
 ## 0.9.1 &ndash; 2023-01-12

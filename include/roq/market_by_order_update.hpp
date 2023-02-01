@@ -33,8 +33,9 @@ struct ROQ_PUBLIC MarketByOrderUpdate final {
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Timestamp (from exchange, UTC)
   int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
-  Decimals price_decimals = {};                     //!< Decimal digits required to represent prices
-  Decimals quantity_decimals = {};                  //!< Decimal digits required to represent quantities
+  Decimals price_decimals = {};                     //!< Decimal digits required to represent prices (dynamic)
+  Decimals quantity_decimals = {};                  //!< Decimal digits required to represent quantities (dynamic)
+  uint16_t max_depth = {};                          //!< Maximum depth (zero means unlimited)
   uint32_t checksum = {};                           //!< Checksum (internal)
 };
 
@@ -69,6 +70,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         R"(exchange_sequence={}, )"
         R"(price_decimals={}, )"
         R"(quantity_decimals={}, )"
+        R"(max_depth={}, )"
         R"(checksum={})"
         R"(}})"_cf,
         value.stream_id,
@@ -81,6 +83,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         value.exchange_sequence,
         value.price_decimals,
         value.quantity_decimals,
+        value.max_depth,
         value.checksum);
   }
 };

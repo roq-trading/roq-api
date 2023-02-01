@@ -82,9 +82,33 @@ struct ROQ_PUBLIC MarketByOrder {
   };
   virtual Position get_queue_position(Side, std::string_view const &order_id) const = 0;
 
+  // generate normalized update (used when origin is an external "noisy" source)
+  template <typename Callback>
+  inline void operator()(
+      MarketByOrderUpdate const &market_by_order_update,
+      std::vector<MBOUpdate> &bids,
+      std::vector<MBOUpdate> &asks,
+      Callback callback) {
+    auto market_by_order_update_2 = create_update_helper(market_by_order_update, bids, asks);
+    callback(std::as_const(market_by_order_update_2));
+  }
+
+  // create snapshot
+  template <typename Callback>
+  inline void create_snapshot(std::vector<MBOUpdate> &bids, std::vector<MBOUpdate> &asks, Callback callback) const {
+    auto market_by_order_update = create_snapshot_helper(bids, asks);
+    callback(std::as_const(market_by_order_update));
+  }
+
  protected:
   virtual void update_helper(roq::ReferenceData const &) = 0;
   virtual void update_helper(MarketByOrderUpdate const &) = 0;
+
+  virtual MarketByOrderUpdate create_update_helper(
+      MarketByOrderUpdate const &, std::vector<MBOUpdate> &bids, std::vector<MBOUpdate> &asks) = 0;
+
+  virtual MarketByOrderUpdate create_snapshot_helper(
+      std::vector<MBOUpdate> &bids, std::vector<MBOUpdate> &asks) const = 0;
 };
 
 }  // namespace cache

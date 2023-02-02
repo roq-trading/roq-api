@@ -17,7 +17,7 @@
     {
       "name": "priority",
       "type": "uint64_t",
-      "comment": "Queue priority"
+      "comment": "Queue priority (optional)"
     },
     {
       "name": "order_id",
@@ -26,12 +26,12 @@
     {
       "name": "action",
       "type": "UpdateAction",
-      "comment": "Order update action"
+      "comment": "Update action"
     },
     {
       "name": "reason",
       "type": "UpdateReason",
-      "comment": "Order update reason"
+      "comment": "Update reason (optional)"
     }
   ]
 }

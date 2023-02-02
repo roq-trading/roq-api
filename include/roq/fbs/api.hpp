@@ -1357,15 +1357,19 @@ inline const char *EnumNameUpdateAction(UpdateAction e) {
 
 enum class UpdateReason : uint8_t {
   Undefined = 0,
-  Canceled = 1,
-  Filled = 2,
+  Created = 1,
+  Modified = 2,
+  Canceled = 3,
+  Filled = 4,
   MIN = Undefined,
   MAX = Filled
 };
 
-inline const UpdateReason (&EnumValuesUpdateReason())[3] {
+inline const UpdateReason (&EnumValuesUpdateReason())[5] {
   static const UpdateReason values[] = {
     UpdateReason::Undefined,
+    UpdateReason::Created,
+    UpdateReason::Modified,
     UpdateReason::Canceled,
     UpdateReason::Filled
   };
@@ -1373,8 +1377,10 @@ inline const UpdateReason (&EnumValuesUpdateReason())[3] {
 }
 
 inline const char * const *EnumNamesUpdateReason() {
-  static const char * const names[4] = {
+  static const char * const names[6] = {
     "Undefined",
+    "Created",
+    "Modified",
     "Canceled",
     "Filled",
     nullptr

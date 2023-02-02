@@ -20,10 +20,10 @@ namespace roq {
 struct ROQ_PUBLIC MBOUpdate final {
   double price = NaN;              //!< Order price
   double remaining_quantity = {};  //!< Remaining order quantity
-  uint64_t priority = {};          //!< Queue priority
+  uint64_t priority = {};          //!< Queue priority (optional)
   MBOOrderId order_id;             //!< Order identifier
-  UpdateAction action = {};        //!< Order update action
-  UpdateReason reason = {};        //!< Order update reason
+  UpdateAction action = {};        //!< Update action
+  UpdateReason reason = {};        //!< Update reason (optional)
 };
 
 }  // namespace roq

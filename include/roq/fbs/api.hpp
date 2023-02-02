@@ -1357,17 +1357,17 @@ inline const char *EnumNameUpdateAction(UpdateAction e) {
 
 enum class UpdateReason : uint8_t {
   Undefined = 0,
-  Initiator = 1,
-  Aggressor = 2,
+  Canceled = 1,
+  Filled = 2,
   MIN = Undefined,
-  MAX = Aggressor
+  MAX = Filled
 };
 
 inline const UpdateReason (&EnumValuesUpdateReason())[3] {
   static const UpdateReason values[] = {
     UpdateReason::Undefined,
-    UpdateReason::Initiator,
-    UpdateReason::Aggressor
+    UpdateReason::Canceled,
+    UpdateReason::Filled
   };
   return values;
 }
@@ -1375,15 +1375,15 @@ inline const UpdateReason (&EnumValuesUpdateReason())[3] {
 inline const char * const *EnumNamesUpdateReason() {
   static const char * const names[4] = {
     "Undefined",
-    "Initiator",
-    "Aggressor",
+    "Canceled",
+    "Filled",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameUpdateReason(UpdateReason e) {
-  if (flatbuffers::IsOutRange(e, UpdateReason::Undefined, UpdateReason::Aggressor)) return "";
+  if (flatbuffers::IsOutRange(e, UpdateReason::Undefined, UpdateReason::Filled)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesUpdateReason()[index];
 }

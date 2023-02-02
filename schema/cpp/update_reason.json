@@ -4,12 +4,12 @@
   "comment": "Enumeration of update reasons",
   "values": [
     {
-      "name": "Initiator",
-      "comment": "Initiator"
+      "name": "Canceled",
+      "comment": "Canceled"
     },
     {
-      "name": "Aggressor",
-      "comment": "Aggressor"
+      "name": "Filled",
+      "comment": "Filled"
     }
   ]
 }

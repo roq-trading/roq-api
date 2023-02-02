@@ -59,6 +59,7 @@ struct ROQ_PUBLIC MarketByOrder {
 
   // extract a vector of Layer's
   //   note! max_depth == 0 means full snapshot
+  //   note! bid/ask quantities may return +infinity when internal accounting overflows
   virtual void extract(std::vector<Layer> &, size_t max_depth = 0) const = 0;
 
   // computation methods:

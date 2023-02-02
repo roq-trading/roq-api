@@ -16,6 +16,7 @@ namespace roq {
 //! Enumeration of update reasons
 enum class UpdateReason : uint8_t {
   UNDEFINED = 0,
+  MODIFIED,  //!< Modified
   CANCELED,  //!< Canceled
   FILLED,    //!< Filled
 };

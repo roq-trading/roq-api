@@ -4,6 +4,10 @@
   "comment": "Enumeration of update reasons",
   "values": [
     {
+      "name": "Modified",
+      "comment": "Modified"
+    },
+    {
       "name": "Canceled",
       "comment": "Canceled"
     },

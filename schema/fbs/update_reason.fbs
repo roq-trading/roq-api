@@ -2,6 +2,7 @@ namespace roq.fbs;
 
 enum UpdateReason:uint8 {
   Undefined,
+  Modified,
   Canceled,
   Filled
 }

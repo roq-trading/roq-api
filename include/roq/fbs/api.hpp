@@ -1922,7 +1922,7 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PRICE = 4,
-    VT_REMAINING_QUANTITY = 6,
+    VT_QUANTITY = 6,
     VT_PRIORITY = 8,
     VT_ORDER_ID = 10,
     VT_ACTION = 12,
@@ -1931,8 +1931,8 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   double price() const {
     return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
   }
-  double remaining_quantity() const {
-    return GetField<double>(VT_REMAINING_QUANTITY, 0.0);
+  double quantity() const {
+    return GetField<double>(VT_QUANTITY, 0.0);
   }
   uint64_t priority() const {
     return GetField<uint64_t>(VT_PRIORITY, 0);
@@ -1949,7 +1949,7 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<double>(verifier, VT_PRICE, 8) &&
-           VerifyField<double>(verifier, VT_REMAINING_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_QUANTITY, 8) &&
            VerifyField<uint64_t>(verifier, VT_PRIORITY, 8) &&
            VerifyOffset(verifier, VT_ORDER_ID) &&
            verifier.VerifyString(order_id()) &&
@@ -1966,8 +1966,8 @@ struct MBOUpdateBuilder {
   void add_price(double price) {
     fbb_.AddElement<double>(MBOUpdate::VT_PRICE, price, std::numeric_limits<double>::quiet_NaN());
   }
-  void add_remaining_quantity(double remaining_quantity) {
-    fbb_.AddElement<double>(MBOUpdate::VT_REMAINING_QUANTITY, remaining_quantity, 0.0);
+  void add_quantity(double quantity) {
+    fbb_.AddElement<double>(MBOUpdate::VT_QUANTITY, quantity, 0.0);
   }
   void add_priority(uint64_t priority) {
     fbb_.AddElement<uint64_t>(MBOUpdate::VT_PRIORITY, priority, 0);
@@ -1995,14 +1995,14 @@ struct MBOUpdateBuilder {
 inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdate(
     flatbuffers::FlatBufferBuilder &_fbb,
     double price = std::numeric_limits<double>::quiet_NaN(),
-    double remaining_quantity = 0.0,
+    double quantity = 0.0,
     uint64_t priority = 0,
     flatbuffers::Offset<flatbuffers::String> order_id = 0,
     roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined,
     roq::fbs::UpdateReason reason = roq::fbs::UpdateReason::Undefined) {
   MBOUpdateBuilder builder_(_fbb);
   builder_.add_priority(priority);
-  builder_.add_remaining_quantity(remaining_quantity);
+  builder_.add_quantity(quantity);
   builder_.add_price(price);
   builder_.add_order_id(order_id);
   builder_.add_reason(reason);
@@ -2018,7 +2018,7 @@ struct MBOUpdate::Traits {
 inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdateDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     double price = std::numeric_limits<double>::quiet_NaN(),
-    double remaining_quantity = 0.0,
+    double quantity = 0.0,
     uint64_t priority = 0,
     const char *order_id = nullptr,
     roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined,
@@ -2027,7 +2027,7 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdateDirect(
   return roq::fbs::CreateMBOUpdate(
       _fbb,
       price,
-      remaining_quantity,
+      quantity,
       priority,
       order_id__,
       action,

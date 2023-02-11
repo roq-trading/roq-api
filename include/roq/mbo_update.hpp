@@ -16,14 +16,14 @@
 
 namespace roq {
 
-//! Represents the update status of a single order in the order book
+//! Represents an update to be applied to an order book
 struct ROQ_PUBLIC MBOUpdate final {
-  double price = NaN;              //!< Order price
-  double remaining_quantity = {};  //!< Remaining order quantity
-  uint64_t priority = {};          //!< Queue priority (optional)
-  MBOOrderId order_id;             //!< Order identifier
-  UpdateAction action = {};        //!< Update action
-  UpdateReason reason = {};        //!< Update reason (optional)
+  double price = NaN;        //!< Price level
+  double quantity = {};      //!< Order quantity (remaining after applying the update)
+  uint64_t priority = {};    //!< Queue priority (optional)
+  MBOOrderId order_id;       //!< Order identifier (optional when deleting)
+  UpdateAction action = {};  //!< Update action
+  UpdateReason reason = {};  //!< Update reason (optional)
 };
 
 }  // namespace roq
@@ -42,14 +42,14 @@ struct fmt::formatter<roq::MBOUpdate> {
         context.out(),
         R"({{)"
         R"(price={}, )"
-        R"(remaining_quantity={}, )"
+        R"(quantity={}, )"
         R"(priority={}, )"
         R"(order_id="{}", )"
         R"(action={}, )"
         R"(reason={})"
         R"(}})"_cf,
         value.price,
-        value.remaining_quantity,
+        value.quantity,
         value.priority,
         value.order_id,
         value.action,

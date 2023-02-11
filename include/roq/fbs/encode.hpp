@@ -144,7 +144,7 @@ auto encode(B &builder, roq::MBOUpdate const &value) {
   return CreateMBOUpdate(
       builder,
       value.price,
-      value.remaining_quantity,
+      value.quantity,
       value.priority,
       encode(builder, static_cast<std::string_view>(value.order_id)),
       encode(builder, value.action),

@@ -1,18 +1,18 @@
 {
   "name": "MBOUpdate",
   "type": "struct",
-  "comment": "Represents the update status of a single order in the order book",
+  "comment": "Represents an update to be applied to an order book",
   "values": [
     {
       "name": "price",
       "type": "double",
-      "comment": "Order price"
+      "comment": "Price level"
     },
     {
-      "name": "remaining_quantity",
+      "name": "quantity",
       "type": "double",
       "default": " = {}",
-      "comment": "Remaining order quantity"
+      "comment": "Order quantity (remaining after applying the update)"
     },
     {
       "name": "priority",
@@ -21,7 +21,8 @@
     },
     {
       "name": "order_id",
-      "type": "MBOOrderId"
+      "type": "MBOOrderId",
+      "comment": "Order identifier (optional when deleting)"
     },
     {
       "name": "action",

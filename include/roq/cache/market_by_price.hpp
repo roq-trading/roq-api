@@ -99,7 +99,7 @@ struct ROQ_PUBLIC MarketByPrice {
     update_helper(bids, asks);
   }
 
-  // generate normalized update (used when origin is an external "noisy" source)
+  // create normalized update (used when origin is an external "noisy" source)
   //   deals with sorting, de-duplication, etc.
   //   calls back with the final update
   template <typename Callback>

@@ -53,11 +53,14 @@ struct ROQ_PUBLIC MarketByOrder {
 
   // extract methods:
 
-  // extract vectors of MBOUpdate's
+  // extract full snapshot of orders
   //   note! max_depth == 0 means full snapshot
   virtual void extract(std::vector<MBOUpdate> &bids, std::vector<MBOUpdate> &asks, size_t max_depth = 0) const = 0;
 
-  // extract a vector of Layer's
+  // extract all orders for price level
+  virtual void extract(std::vector<MBOUpdate> &, Side, double price) const = 0;
+
+  // extract depth
   //   note! max_depth == 0 means full snapshot
   //   note! bid/ask quantities may return +infinity when internal accounting overflows
   virtual void extract(std::vector<Layer> &, size_t max_depth = 0) const = 0;
@@ -70,6 +73,10 @@ struct ROQ_PUBLIC MarketByOrder {
   // find price-level index (if exists)
   //   returns {index, exists?}
   virtual std::pair<size_t, bool> find_index(Side, double price) const = 0;
+
+  // total quantity at price level
+  //   returns NaN when price level does not exist
+  virtual double total_quantity(Side, double price, bool accumulated_from_best = false) const = 0;
 
   // find order (if exists)
   //   returns {order, exists?}

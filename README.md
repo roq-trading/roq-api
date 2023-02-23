@@ -85,7 +85,7 @@ Currently supported Cryptocurrency exchanges include
 * Huobi
 * Kraken
 * KuCoin
-* OKEx
+* OKX
 
 The full list can be found [here](https://roq-trading.com/docs/introduction/gateways/).
 

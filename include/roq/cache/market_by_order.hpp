@@ -76,7 +76,11 @@ struct ROQ_PUBLIC MarketByOrder {
 
   // total quantity at price level
   //   returns NaN when price level does not exist
-  virtual double total_quantity(Side, double price, bool accumulated_from_best = false) const = 0;
+  virtual double total_quantity(Side, double price) const = 0;
+
+  // accumulated quantity between best and price
+  //   returns NaN when price level does not exist
+  virtual double accumulated_quantity(Side, double price, bool excluding_price = false) const = 0;
 
   // find order (if exists)
   //   returns {order, exists?}

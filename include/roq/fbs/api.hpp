@@ -1324,33 +1324,36 @@ enum class UpdateAction : uint8_t {
   New = 1,
   Change = 2,
   Delete = 3,
+  Fill = 4,
   MIN = Undefined,
-  MAX = Delete
+  MAX = Fill
 };
 
-inline const UpdateAction (&EnumValuesUpdateAction())[4] {
+inline const UpdateAction (&EnumValuesUpdateAction())[5] {
   static const UpdateAction values[] = {
     UpdateAction::Undefined,
     UpdateAction::New,
     UpdateAction::Change,
-    UpdateAction::Delete
+    UpdateAction::Delete,
+    UpdateAction::Fill
   };
   return values;
 }
 
 inline const char * const *EnumNamesUpdateAction() {
-  static const char * const names[5] = {
+  static const char * const names[6] = {
     "Undefined",
     "New",
     "Change",
     "Delete",
+    "Fill",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameUpdateAction(UpdateAction e) {
-  if (flatbuffers::IsOutRange(e, UpdateAction::Undefined, UpdateAction::Delete)) return "";
+  if (flatbuffers::IsOutRange(e, UpdateAction::Undefined, UpdateAction::Fill)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesUpdateAction()[index];
 }

@@ -19,7 +19,7 @@ namespace roq {
 //! Represents an update to be applied to an order book
 struct ROQ_PUBLIC MBOUpdate final {
   double price = NaN;        //!< Price level
-  double quantity = {};      //!< Order quantity (remaining after applying the update)
+  double quantity = {};      //!< Order quantity (remaining unless update action is fill)
   uint64_t priority = {};    //!< Queue priority (optional)
   MBOOrderId order_id;       //!< Order identifier (optional when deleting)
   UpdateAction action = {};  //!< Update action

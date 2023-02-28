@@ -12,7 +12,7 @@
       "name": "quantity",
       "type": "double",
       "default": " = {}",
-      "comment": "Order quantity (remaining after applying the update)"
+      "comment": "Order quantity (remaining unless update action is fill)"
     },
     {
       "name": "priority",

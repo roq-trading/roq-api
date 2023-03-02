@@ -8,6 +8,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `client::Settings.drop_copy` (#254)
 * `MBOUpdate.reason` + `UpdateReason`
 * `cache::MarketByOrder`
 

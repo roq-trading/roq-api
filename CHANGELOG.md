@@ -14,6 +14,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* [BREAKING CHANGE] `MarketByOrderUpdate` and `MBOUpdate` has been changed to support CME's TradeSummary (#322)
 * `fbs::MarketByOrderUpdate.max_depth` was inserted (should not be an issue since it was never used before)
 * `MBOUpdate`: `priority` now `uint64_t`, `order_id` length 36 (UUID), re-ordering
 

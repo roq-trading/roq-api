@@ -25,6 +25,11 @@
       "comment": "Order identifier (optional when deleting)"
     },
     {
+      "name": "side",
+      "type": "Side",
+      "comment": "Order side (optional when updating an existing order)"
+    },
+    {
       "name": "action",
       "type": "UpdateAction",
       "comment": "Update action"

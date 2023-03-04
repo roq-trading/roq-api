@@ -55,7 +55,7 @@ struct ROQ_PUBLIC MarketByOrder {
 
   // extract full snapshot of orders
   //   note! max_depth == 0 means full snapshot
-  virtual void extract(std::vector<MBOUpdate> &bids, std::vector<MBOUpdate> &asks, size_t max_depth = 0) const = 0;
+  virtual void extract(std::vector<MBOUpdate> &, size_t max_depth = 0) const = 0;
 
   // extract all orders for price level
   virtual void extract(std::vector<MBOUpdate> &, Side, double price) const = 0;
@@ -87,34 +87,30 @@ struct ROQ_PUBLIC MarketByOrder {
   virtual std::pair<MBOUpdate, bool> find_order(Side, std::string_view const &order_id) const = 0;
 
   // order's queue position
+  //   returns {position, exists?}
   struct Position final {
     double quantity = NaN;  // quantity for order
     double before = NaN;    // total quantity ahead in queue priority
     double total = NaN;     // total quantity
   };
-  virtual Position get_queue_position(Side, std::string_view const &order_id) const = 0;
+  virtual std::pair<Position, bool> get_queue_position(Side, std::string_view const &order_id) const = 0;
 
   // simple update
   //   used when applying sequential updates, e.g. when caching
-  inline void operator()(std::span<MBOUpdate> const &bids, std::span<MBOUpdate> const &asks) {
-    update_helper(bids, asks);
-  }
+  inline void operator()(std::span<MBOUpdate> const &orders) { update_helper(orders); }
 
   // create normalized update (used when origin is an external "noisy" source)
   template <typename Callback>
   inline void operator()(
-      MarketByOrderUpdate const &market_by_order_update,
-      std::vector<MBOUpdate> &bids,
-      std::vector<MBOUpdate> &asks,
-      Callback callback) {
-    auto market_by_order_update_2 = create_update_helper(market_by_order_update, bids, asks);
+      MarketByOrderUpdate const &market_by_order_update, std::vector<MBOUpdate> &orders, Callback callback) {
+    auto market_by_order_update_2 = create_update_helper(market_by_order_update, orders);
     callback(std::as_const(market_by_order_update_2));
   }
 
   // create snapshot
   template <typename Callback>
-  inline void create_snapshot(std::vector<MBOUpdate> &bids, std::vector<MBOUpdate> &asks, Callback callback) const {
-    auto market_by_order_update = create_snapshot_helper(bids, asks);
+  inline void create_snapshot(std::vector<MBOUpdate> &orders, Callback callback) const {
+    auto market_by_order_update = create_snapshot_helper(orders);
     callback(std::as_const(market_by_order_update));
   }
 
@@ -122,14 +118,12 @@ struct ROQ_PUBLIC MarketByOrder {
   virtual void update_helper(roq::ReferenceData const &) = 0;
   virtual void update_helper(MarketByOrderUpdate const &) = 0;
 
-  virtual MarketByOrderUpdate create_update_helper(
-      MarketByOrderUpdate const &, std::vector<MBOUpdate> &bids, std::vector<MBOUpdate> &asks) = 0;
+  virtual MarketByOrderUpdate create_update_helper(MarketByOrderUpdate const &, std::vector<MBOUpdate> &) = 0;
 
-  virtual MarketByOrderUpdate create_snapshot_helper(
-      std::vector<MBOUpdate> &bids, std::vector<MBOUpdate> &asks) const = 0;
+  virtual MarketByOrderUpdate create_snapshot_helper(std::vector<MBOUpdate> &) const = 0;
 
   // note! used when applying sequential updates
-  virtual void update_helper(std::span<MBOUpdate> const &bids, std::span<MBOUpdate> const &asks) = 0;
+  virtual void update_helper(std::span<MBOUpdate> const &) = 0;
 };
 
 }  // namespace cache

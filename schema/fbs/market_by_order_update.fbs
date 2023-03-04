@@ -6,8 +6,7 @@ table MarketByOrderUpdate {
   stream_id:uint16;
   exchange:string;
   symbol:string;
-  bids:[MBOUpdate];
-  asks:[MBOUpdate];
+  orders:[MBOUpdate];
   update_type:UpdateType;
   exchange_time_utc:int64;
   exchange_sequence:int64;

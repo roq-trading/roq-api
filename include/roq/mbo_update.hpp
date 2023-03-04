@@ -10,6 +10,7 @@
 #include <fmt/format.h>
 
 #include "roq/numbers.hpp"
+#include "roq/side.hpp"
 #include "roq/string_types.hpp"
 #include "roq/update_action.hpp"
 #include "roq/update_reason.hpp"
@@ -22,6 +23,7 @@ struct ROQ_PUBLIC MBOUpdate final {
   double quantity = {};      //!< Order quantity (remaining unless update action is fill)
   uint64_t priority = {};    //!< Queue priority (optional)
   MBOOrderId order_id;       //!< Order identifier (optional when deleting)
+  Side side = {};            //!< Order side (optional when updating an existing order)
   UpdateAction action = {};  //!< Update action
   UpdateReason reason = {};  //!< Update reason (optional)
 };
@@ -45,6 +47,7 @@ struct fmt::formatter<roq::MBOUpdate> {
         R"(quantity={}, )"
         R"(priority={}, )"
         R"(order_id="{}", )"
+        R"(side={}, )"
         R"(action={}, )"
         R"(reason={})"
         R"(}})"_cf,
@@ -52,6 +55,7 @@ struct fmt::formatter<roq::MBOUpdate> {
         value.quantity,
         value.priority,
         value.order_id,
+        value.side,
         value.action,
         value.reason);
   }

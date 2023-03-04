@@ -147,6 +147,7 @@ auto encode(B &builder, roq::MBOUpdate const &value) {
       value.quantity,
       value.priority,
       encode(builder, static_cast<std::string_view>(value.order_id)),
+      encode(builder,value.side),
       encode(builder, value.action),
       encode(builder, value.reason));
 }
@@ -378,8 +379,7 @@ auto encode(B &builder, roq::MarketByOrderUpdate const &value) {
       value.stream_id,
       encode(builder, value.exchange),
       encode(builder, value.symbol),
-      encode(builder, value.bids),
-      encode(builder, value.asks),
+      encode(builder, value.orders),
       encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc),
       value.exchange_sequence,

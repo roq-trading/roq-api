@@ -16,14 +16,9 @@
       "type": "std::string_view"
     },
     {
-      "name": "bids",
+      "name": "orders",
       "type": "std::span<MBOUpdate>",
-      "comment": "List of bids"
-    },
-    {
-      "name": "asks",
-      "type": "std::span<MBOUpdate>",
-      "comment": "List of asks"
+      "comment": "List of order updates"
     },
     {
       "name": "update_type",

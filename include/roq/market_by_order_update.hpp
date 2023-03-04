@@ -28,8 +28,7 @@ struct ROQ_PUBLIC MarketByOrderUpdate final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
-  std::span<MBOUpdate> bids;                        //!< List of bids
-  std::span<MBOUpdate> asks;                        //!< List of asks
+  std::span<MBOUpdate> orders;                      //!< List of order updates
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Timestamp (from exchange, UTC)
   int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
@@ -63,8 +62,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         R"(stream_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(bids=[{}], )"
-        R"(asks=[{}], )"
+        R"(orders=[{}], )"
         R"(update_type={}, )"
         R"(exchange_time_utc={}, )"
         R"(exchange_sequence={}, )"
@@ -76,8 +74,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         value.stream_id,
         value.exchange,
         value.symbol,
-        fmt::join(value.bids, ", "sv),
-        fmt::join(value.asks, ", "sv),
+        fmt::join(value.orders, ", "sv),
         value.update_type,
         value.exchange_time_utc,
         value.exchange_sequence,

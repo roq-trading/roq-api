@@ -1928,8 +1928,9 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_QUANTITY = 6,
     VT_PRIORITY = 8,
     VT_ORDER_ID = 10,
-    VT_ACTION = 12,
-    VT_REASON = 14
+    VT_SIDE = 12,
+    VT_ACTION = 14,
+    VT_REASON = 16
   };
   double price() const {
     return GetField<double>(VT_PRICE, std::numeric_limits<double>::quiet_NaN());
@@ -1942,6 +1943,9 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   const flatbuffers::String *order_id() const {
     return GetPointer<const flatbuffers::String *>(VT_ORDER_ID);
+  }
+  roq::fbs::Side side() const {
+    return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0));
   }
   roq::fbs::UpdateAction action() const {
     return static_cast<roq::fbs::UpdateAction>(GetField<uint8_t>(VT_ACTION, 0));
@@ -1956,6 +1960,7 @@ struct MBOUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<uint64_t>(verifier, VT_PRIORITY, 8) &&
            VerifyOffset(verifier, VT_ORDER_ID) &&
            verifier.VerifyString(order_id()) &&
+           VerifyField<uint8_t>(verifier, VT_SIDE, 1) &&
            VerifyField<uint8_t>(verifier, VT_ACTION, 1) &&
            VerifyField<uint8_t>(verifier, VT_REASON, 1) &&
            verifier.EndTable();
@@ -1977,6 +1982,9 @@ struct MBOUpdateBuilder {
   }
   void add_order_id(flatbuffers::Offset<flatbuffers::String> order_id) {
     fbb_.AddOffset(MBOUpdate::VT_ORDER_ID, order_id);
+  }
+  void add_side(roq::fbs::Side side) {
+    fbb_.AddElement<uint8_t>(MBOUpdate::VT_SIDE, static_cast<uint8_t>(side), 0);
   }
   void add_action(roq::fbs::UpdateAction action) {
     fbb_.AddElement<uint8_t>(MBOUpdate::VT_ACTION, static_cast<uint8_t>(action), 0);
@@ -2001,6 +2009,7 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdate(
     double quantity = 0.0,
     uint64_t priority = 0,
     flatbuffers::Offset<flatbuffers::String> order_id = 0,
+    roq::fbs::Side side = roq::fbs::Side::Undefined,
     roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined,
     roq::fbs::UpdateReason reason = roq::fbs::UpdateReason::Undefined) {
   MBOUpdateBuilder builder_(_fbb);
@@ -2010,6 +2019,7 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdate(
   builder_.add_order_id(order_id);
   builder_.add_reason(reason);
   builder_.add_action(action);
+  builder_.add_side(side);
   return builder_.Finish();
 }
 
@@ -2024,6 +2034,7 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdateDirect(
     double quantity = 0.0,
     uint64_t priority = 0,
     const char *order_id = nullptr,
+    roq::fbs::Side side = roq::fbs::Side::Undefined,
     roq::fbs::UpdateAction action = roq::fbs::UpdateAction::Undefined,
     roq::fbs::UpdateReason reason = roq::fbs::UpdateReason::Undefined) {
   auto order_id__ = order_id ? _fbb.CreateString(order_id) : 0;
@@ -2033,6 +2044,7 @@ inline flatbuffers::Offset<MBOUpdate> CreateMBOUpdateDirect(
       quantity,
       priority,
       order_id__,
+      side,
       action,
       reason);
 }
@@ -3754,15 +3766,14 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_STREAM_ID = 4,
     VT_EXCHANGE = 6,
     VT_SYMBOL = 8,
-    VT_BIDS = 10,
-    VT_ASKS = 12,
-    VT_UPDATE_TYPE = 14,
-    VT_EXCHANGE_TIME_UTC = 16,
-    VT_EXCHANGE_SEQUENCE = 18,
-    VT_PRICE_DECIMALS = 20,
-    VT_QUANTITY_DECIMALS = 22,
-    VT_MAX_DEPTH = 24,
-    VT_CHECKSUM = 26
+    VT_ORDERS = 10,
+    VT_UPDATE_TYPE = 12,
+    VT_EXCHANGE_TIME_UTC = 14,
+    VT_EXCHANGE_SEQUENCE = 16,
+    VT_PRICE_DECIMALS = 18,
+    VT_QUANTITY_DECIMALS = 20,
+    VT_MAX_DEPTH = 22,
+    VT_CHECKSUM = 24
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -3773,11 +3784,8 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   const flatbuffers::String *symbol() const {
     return GetPointer<const flatbuffers::String *>(VT_SYMBOL);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *bids() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *>(VT_BIDS);
-  }
-  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *asks() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *>(VT_ASKS);
+  const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *orders() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *>(VT_ORDERS);
   }
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
@@ -3807,12 +3815,9 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
            verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) &&
            verifier.VerifyString(symbol()) &&
-           VerifyOffset(verifier, VT_BIDS) &&
-           verifier.VerifyVector(bids()) &&
-           verifier.VerifyVectorOfTables(bids()) &&
-           VerifyOffset(verifier, VT_ASKS) &&
-           verifier.VerifyVector(asks()) &&
-           verifier.VerifyVectorOfTables(asks()) &&
+           VerifyOffset(verifier, VT_ORDERS) &&
+           verifier.VerifyVector(orders()) &&
+           verifier.VerifyVectorOfTables(orders()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
@@ -3837,11 +3842,8 @@ struct MarketByOrderUpdateBuilder {
   void add_symbol(flatbuffers::Offset<flatbuffers::String> symbol) {
     fbb_.AddOffset(MarketByOrderUpdate::VT_SYMBOL, symbol);
   }
-  void add_bids(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> bids) {
-    fbb_.AddOffset(MarketByOrderUpdate::VT_BIDS, bids);
-  }
-  void add_asks(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> asks) {
-    fbb_.AddOffset(MarketByOrderUpdate::VT_ASKS, asks);
+  void add_orders(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> orders) {
+    fbb_.AddOffset(MarketByOrderUpdate::VT_ORDERS, orders);
   }
   void add_update_type(roq::fbs::UpdateType update_type) {
     fbb_.AddElement<uint8_t>(MarketByOrderUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
@@ -3880,8 +3882,7 @@ inline flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdate(
     uint16_t stream_id = 0,
     flatbuffers::Offset<flatbuffers::String> exchange = 0,
     flatbuffers::Offset<flatbuffers::String> symbol = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> bids = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> asks = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<roq::fbs::MBOUpdate>>> orders = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0,
     int64_t exchange_sequence = 0,
@@ -3893,8 +3894,7 @@ inline flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdate(
   builder_.add_exchange_sequence(exchange_sequence);
   builder_.add_exchange_time_utc(exchange_time_utc);
   builder_.add_checksum(checksum);
-  builder_.add_asks(asks);
-  builder_.add_bids(bids);
+  builder_.add_orders(orders);
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
   builder_.add_max_depth(max_depth);
@@ -3915,8 +3915,7 @@ inline flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdateDirect(
     uint16_t stream_id = 0,
     const char *exchange = nullptr,
     const char *symbol = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *bids = nullptr,
-    const std::vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *asks = nullptr,
+    const std::vector<flatbuffers::Offset<roq::fbs::MBOUpdate>> *orders = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0,
     int64_t exchange_sequence = 0,
@@ -3926,15 +3925,13 @@ inline flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdateDirect(
     uint32_t checksum = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
-  auto bids__ = bids ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::MBOUpdate>>(*bids) : 0;
-  auto asks__ = asks ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::MBOUpdate>>(*asks) : 0;
+  auto orders__ = orders ? _fbb.CreateVector<flatbuffers::Offset<roq::fbs::MBOUpdate>>(*orders) : 0;
   return roq::fbs::CreateMarketByOrderUpdate(
       _fbb,
       stream_id,
       exchange__,
       symbol__,
-      bids__,
-      asks__,
+      orders__,
       update_type,
       exchange_time_utc,
       exchange_sequence,

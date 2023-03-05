@@ -6,3 +6,4 @@
 #include "roq/oms/order.hpp"
 #include "roq/oms/order_update.hpp"
 #include "roq/oms/response.hpp"
+#include "roq/oms/trade_update.hpp"

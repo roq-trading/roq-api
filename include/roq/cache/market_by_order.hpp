@@ -72,6 +72,7 @@ struct ROQ_PUBLIC MarketByOrder {
 
   // find price-level index (if exists)
   //   returns {index, exists?}
+  // note! index is computed in a similar way to using std::lower_bound
   virtual std::pair<size_t, bool> find_index(Side, double price) const = 0;
 
   // total quantity at price level
@@ -81,6 +82,7 @@ struct ROQ_PUBLIC MarketByOrder {
   // accumulated quantity between best and price
   //   returns NaN when price level does not exist
   virtual double accumulated_quantity(Side, double price, bool excluding_price = false) const = 0;
+  virtual double accumulated_quantity_price_index(Side, size_t index, bool excluding_price = false) const = 0;
 
   // find order (if exists)
   //   returns {order, exists?}

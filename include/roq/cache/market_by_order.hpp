@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include <fmt/compile.h>
+#include <fmt/format.h>
+
 #include <utility>
 
 #include "roq/api.hpp"
@@ -49,7 +52,10 @@ struct ROQ_PUBLIC MarketByOrder {
   virtual void clear() = 0;
 
   // generic update interface using operator()
-  inline void operator()(auto const &value) { update_helper(value); }
+  template <typename... Args>
+  inline void operator()(Args &&...args) {
+    update_helper(std::forward<Args>(args)...);
+  }
 
   // extract methods:
 
@@ -88,6 +94,18 @@ struct ROQ_PUBLIC MarketByOrder {
   //   returns {order, exists?}
   virtual std::pair<MBOUpdate, bool> find_order(Side, std::string_view const &order_id) const = 0;
 
+  // NEW
+  struct OrderUpdate final {
+    Side side = {};
+    double remaining_quantity = NaN;
+    double last_modified_quantity = NaN;
+    double total_traded_quantity = NaN;
+    double last_traded_quantity = NaN;
+    double queue_quantity_before = NaN;
+    double total_queue_quantity = NaN;
+    bool iceberg = false;
+  };
+
   // order's queue position
   //   returns {position, exists?}
   struct Position final {
@@ -118,7 +136,12 @@ struct ROQ_PUBLIC MarketByOrder {
 
  protected:
   virtual void update_helper(roq::ReferenceData const &) = 0;
-  virtual void update_helper(MarketByOrderUpdate const &) = 0;
+
+  virtual void update_helper(MarketByOrderUpdate const &, std::span<OrderUpdate> const &) = 0;
+
+  inline void update_helper(MarketByOrderUpdate const &market_by_order_update) {
+    update_helper(market_by_order_update, {});
+  }
 
   virtual MarketByOrderUpdate create_update_helper(MarketByOrderUpdate const &, std::vector<MBOUpdate> &) = 0;
 
@@ -130,3 +153,36 @@ struct ROQ_PUBLIC MarketByOrder {
 
 }  // namespace cache
 }  // namespace roq
+
+template <>
+struct fmt::formatter<roq::cache::MarketByOrder::OrderUpdate> {
+  template <typename Context>
+  constexpr auto parse(Context &context) {
+    return std::begin(context);
+  }
+  template <typename Context>
+  auto format(roq::cache::MarketByOrder::OrderUpdate const &value, Context &context) const {
+    using namespace std::literals;
+    using namespace fmt::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(side={}, )"
+        R"(remaining_quantity={}, )"
+        R"(last_modified_quantity={}, )"
+        R"(total_traded_quantity={}, )"
+        R"(last_traded_quantity={}, )"
+        R"(queue_quantity_before={},)"
+        R"(total_queue_quantity={},)"
+        R"(iceberg={})"
+        R"(}})"_cf,
+        value.side,
+        value.remaining_quantity,
+        value.last_modified_quantity,
+        value.total_traded_quantity,
+        value.last_traded_quantity,
+        value.queue_quantity_before,
+        value.total_queue_quantity,
+        value.iceberg);
+  }
+};

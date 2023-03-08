@@ -101,8 +101,9 @@ struct ROQ_PUBLIC MarketByOrder {
     double last_modified_quantity = NaN;
     double total_traded_quantity = NaN;
     double last_traded_quantity = NaN;
-    double queue_quantity_before = NaN;
     double total_queue_quantity = NaN;
+    double queue_position_quantity = NaN;  // queue quantity before (not including this)
+    size_t queue_position = {};
     bool iceberg = false;
   };
 
@@ -172,8 +173,9 @@ struct fmt::formatter<roq::cache::MarketByOrder::OrderUpdate> {
         R"(last_modified_quantity={}, )"
         R"(total_traded_quantity={}, )"
         R"(last_traded_quantity={}, )"
-        R"(queue_quantity_before={},)"
         R"(total_queue_quantity={},)"
+        R"(queue_position_quantity={},)"
+        R"(queue_position={},)"
         R"(iceberg={})"
         R"(}})"_cf,
         value.side,
@@ -181,8 +183,9 @@ struct fmt::formatter<roq::cache::MarketByOrder::OrderUpdate> {
         value.last_modified_quantity,
         value.total_traded_quantity,
         value.last_traded_quantity,
-        value.queue_quantity_before,
         value.total_queue_quantity,
+        value.queue_position_quantity,
+        value.queue_position,
         value.iceberg);
   }
 };

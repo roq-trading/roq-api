@@ -16,7 +16,6 @@ namespace client {
 struct ROQ_PUBLIC Settings {
   OrderCancelPolicy order_cancel_policy = {};  //!< Cancel orders on disconnect?
   OrderManagement order_management = {};       //!< Order management style
-  bool drop_copy = false;                      //!< Drop-copy support?
 };
 
 //! Account regex

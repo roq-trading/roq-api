@@ -28,6 +28,14 @@
     {
       "name": "exchange_time_utc",
       "type": "std::chrono::nanoseconds"
+    },
+    {
+      "name": "exchange_sequence",
+      "type": "int64_t"
+    },
+    {
+      "name": "sending_time_utc",
+      "type": "std::chrono::nanoseconds"
     }
   ]
 }

@@ -352,7 +352,8 @@ auto encode(B &builder, roq::TopOfBook const &value) {
       encode(builder, value.layer),
       encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc),
-      value.exchange_sequence);
+      value.exchange_sequence,
+      encode(builder, value.sending_time_utc));
 }
 
 template <typename B>
@@ -369,7 +370,8 @@ auto encode(B &builder, roq::MarketByPriceUpdate const &value) {
       value.exchange_sequence,
       encode(builder, value.price_decimals),
       encode(builder, value.quantity_decimals),
-      value.max_depth);
+      value.max_depth,
+      encode(builder, value.sending_time_utc));
 }
 
 template <typename B>
@@ -386,7 +388,8 @@ auto encode(B &builder, roq::MarketByOrderUpdate const &value) {
       encode(builder, value.price_decimals),
       encode(builder, value.quantity_decimals),
       value.max_depth,
-      value.checksum);
+      value.checksum,
+      encode(builder, value.sending_time_utc));
 }
 
 template <typename B>
@@ -398,7 +401,8 @@ auto encode(B &builder, roq::TradeSummary const &value) {
       encode(builder, value.symbol),
       encode(builder, value.trades),
       encode(builder, value.exchange_time_utc),
-      value.exchange_sequence);
+      value.exchange_sequence,
+      encode(builder, value.sending_time_utc));
 }
 
 template <typename B>
@@ -410,7 +414,9 @@ auto encode(B &builder, roq::StatisticsUpdate const &value) {
       encode(builder, value.symbol),
       encode(builder, value.statistics),
       encode(builder, value.update_type),
-      encode(builder, value.exchange_time_utc));
+      encode(builder, value.exchange_time_utc),
+      value.exchange_sequence,
+      encode(builder, value.sending_time_utc));
 }
 
 template <typename B>

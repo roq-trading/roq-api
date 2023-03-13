@@ -55,13 +55,15 @@ struct Statistics final {
     if (dirty) {
       stream_id = statistics_update.stream_id;
       exchange_time_utc = statistics_update.exchange_time_utc;
-      StatisticsUpdate const result{
+      auto result = StatisticsUpdate{
           .stream_id = stream_id,
           .exchange = statistics_update.exchange,
           .symbol = statistics_update.symbol,
           .statistics = storage,
           .update_type = UpdateType::INCREMENTAL,  // note!
-          .exchange_time_utc = {},
+          .exchange_time_utc = statistics_update.exchange_time_utc,
+          .exchange_sequence = statistics_update.exchange_sequence,
+          .sending_time_utc = statistics_update.sending_time_utc,
       };
       callback(result);
     }
@@ -97,6 +99,8 @@ struct Statistics final {
         .statistics = {const_cast<roq::Statistics *>(std::data(statistics)), std::size(statistics)},  // XXX
         .update_type = UpdateType::SNAPSHOT,                                                          // note!
         .exchange_time_utc = exchange_time_utc,
+        .exchange_sequence = {},
+        .sending_time_utc = {},
     };
   }
 
@@ -120,6 +124,8 @@ struct Statistics final {
         .statistics = storage,
         .update_type = UpdateType::SNAPSHOT,  // note!
         .exchange_time_utc = exchange_time_utc,
+        .exchange_sequence = {},
+        .sending_time_utc = {},
     };
   }
 

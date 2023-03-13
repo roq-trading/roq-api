@@ -14,4 +14,5 @@ table MarketByOrderUpdate {
   quantity_decimals:Decimals;
   max_depth:uint16;
   checksum:uint32;
+  sending_time_utc:int64;
 }

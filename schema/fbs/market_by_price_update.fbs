@@ -15,4 +15,5 @@ table MarketByPriceUpdate {
   quantity_decimals:Decimals;
   max_depth:uint16;
   checksum:uint32 (deprecated);
+  sending_time_utc:int64;
 }

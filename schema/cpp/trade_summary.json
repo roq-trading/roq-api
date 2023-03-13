@@ -26,8 +26,11 @@
     },
     {
       "name": "exchange_sequence",
-      "type": "int64_t",
-      "comment": "Latest sequence number (from exchange)"
+      "type": "int64_t"
+    },
+    {
+      "name": "sending_time_utc",
+      "type": "std::chrono::nanoseconds"
     }
   ]
 }

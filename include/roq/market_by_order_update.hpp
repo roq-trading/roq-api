@@ -30,8 +30,9 @@ struct ROQ_PUBLIC MarketByOrderUpdate final {
   std::string_view symbol;                          //!< Symbol
   std::span<MBOUpdate> orders;                      //!< List of order updates
   UpdateType update_type = {};                      //!< Update type
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Timestamp (from exchange, UTC)
-  int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  int64_t exchange_sequence = {};                   //!< Exchange message sequence number
+  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
   Decimals price_decimals = {};                     //!< Decimal digits required to represent prices (dynamic)
   Decimals quantity_decimals = {};                  //!< Decimal digits required to represent quantities (dynamic)
   uint16_t max_depth = {};                          //!< Maximum depth (zero means unlimited)
@@ -66,6 +67,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         R"(update_type={}, )"
         R"(exchange_time_utc={}, )"
         R"(exchange_sequence={}, )"
+        R"(sending_time_utc={}, )"
         R"(price_decimals={}, )"
         R"(quantity_decimals={}, )"
         R"(max_depth={}, )"
@@ -78,6 +80,7 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         value.update_type,
         value.exchange_time_utc,
         value.exchange_sequence,
+        value.sending_time_utc,
         value.price_decimals,
         value.quantity_decimals,
         value.max_depth,

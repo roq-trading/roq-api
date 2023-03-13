@@ -27,8 +27,9 @@ struct ROQ_PUBLIC TradeSummary final {
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
   std::span<Trade> trades;                          //!< List of trades
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Timestamp (from exchange, UTC)
-  int64_t exchange_sequence = {};                   //!< Latest sequence number (from exchange)
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  int64_t exchange_sequence = {};                   //!< Exchange message sequence number
+  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
 };
 
 template <>
@@ -57,14 +58,16 @@ struct fmt::formatter<roq::TradeSummary> {
         R"(symbol="{}", )"
         R"(trades=[{}], )"
         R"(exchange_time_utc={}, )"
-        R"(exchange_sequence={})"
+        R"(exchange_sequence={}, )"
+        R"(sending_time_utc={})"
         R"(}})"_cf,
         value.stream_id,
         value.exchange,
         value.symbol,
         fmt::join(value.trades, ", "sv),
         value.exchange_time_utc,
-        value.exchange_sequence);
+        value.exchange_sequence,
+        value.sending_time_utc);
   }
 };
 

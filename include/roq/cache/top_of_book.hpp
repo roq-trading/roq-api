@@ -42,6 +42,7 @@ struct TopOfBook final {
         .update_type = UpdateType::SNAPSHOT,
         .exchange_time_utc = exchange_time_utc,
         .exchange_sequence = exchange_sequence,
+        .sending_time_utc = {},
     };
   }
 

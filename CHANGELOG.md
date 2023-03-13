@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `sending_time_utc` to market data messages (#326)
 * `oms::TradeUpdate` (#254)
 * `client::Settings.drop_copy` (#254)
 

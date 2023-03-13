@@ -139,6 +139,7 @@ TEST_CASE("format_market_by_price", "[format]") {
       R"(update_type=SNAPSHOT, )"
       R"(exchange_time_utc=0ns, )"
       R"(exchange_sequence=123, )"
+      R"(sending_time_utc=0ns, )"
       R"(price_decimals=_0, )"
       R"(quantity_decimals=_1, )"
       R"(max_depth=10, )"

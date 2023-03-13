@@ -262,6 +262,7 @@ inline constexpr Side invert(Side side) {
   switch (side) {
     using enum Side;
     case UNDEFINED:
+      break;
     case BUY:
       return SELL;
     case SELL:

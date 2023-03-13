@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Fixed
+
+* utils::invert(side)` didn't work for `side == UNDEFINED` (#325)
+
 ## 0.9.2 &ndash; 2023-02-22
 
 ### Added

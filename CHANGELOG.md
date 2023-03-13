@@ -4,6 +4,15 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `oms::TradeUpdate` (#254)
+* `client::Settings.drop_copy` (#254)
+
+### Changed
+
+* [BREAKING CHANGE] `MarketByOrderUpdate` and `MBOUpdate` has been changed to support CME's TradeSummary (#322)
+
 ### Fixed
 
 * utils::invert(side)` didn't work for `side == UNDEFINED` (#325)
@@ -12,14 +21,11 @@ All notable changes will be documented in this file.
 
 ### Added
 
-* `oms::TradeUpdate` (#254)
-* `client::Settings.drop_copy` (#254)
 * `MBOUpdate.reason` + `UpdateReason`
 * `cache::MarketByOrder`
 
 ### Changed
 
-* [BREAKING CHANGE] `MarketByOrderUpdate` and `MBOUpdate` has been changed to support CME's TradeSummary (#322)
 * `fbs::MarketByOrderUpdate.max_depth` was inserted (should not be an issue since it was never used before)
 * `MBOUpdate`: `priority` now `uint64_t`, `order_id` length 36 (UUID), re-ordering
 

@@ -16,8 +16,8 @@
       "comment": "Delete"
     },
     {
-      "name": "Fill",
-      "comment": "Fill (for internal use)"
+      "name": "Trade",
+      "comment": "Trade  !!! FOR INTERNAL USE !!!"
     }
   ]
 }

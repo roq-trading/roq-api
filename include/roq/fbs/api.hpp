@@ -1324,9 +1324,9 @@ enum class UpdateAction : uint8_t {
   New = 1,
   Change = 2,
   Delete = 3,
-  Fill = 4,
+  Trade = 4,
   MIN = Undefined,
-  MAX = Fill
+  MAX = Trade
 };
 
 inline const UpdateAction (&EnumValuesUpdateAction())[5] {
@@ -1335,7 +1335,7 @@ inline const UpdateAction (&EnumValuesUpdateAction())[5] {
     UpdateAction::New,
     UpdateAction::Change,
     UpdateAction::Delete,
-    UpdateAction::Fill
+    UpdateAction::Trade
   };
   return values;
 }
@@ -1346,14 +1346,14 @@ inline const char * const *EnumNamesUpdateAction() {
     "New",
     "Change",
     "Delete",
-    "Fill",
+    "Trade",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameUpdateAction(UpdateAction e) {
-  if (flatbuffers::IsOutRange(e, UpdateAction::Undefined, UpdateAction::Fill)) return "";
+  if (flatbuffers::IsOutRange(e, UpdateAction::Undefined, UpdateAction::Trade)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesUpdateAction()[index];
 }

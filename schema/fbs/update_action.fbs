@@ -5,5 +5,5 @@ enum UpdateAction:uint8 {
   New,
   Change,
   Delete,
-  Fill
+  Trade
 }

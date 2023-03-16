@@ -19,7 +19,7 @@ enum class UpdateAction : uint8_t {
   NEW,     //!< New
   CHANGE,  //!< Change
   DELETE,  //!< Delete
-  FILL,    //!< Fill (for internal use)
+  TRADE,   //!< Trade  !!! FOR INTERNAL USE !!!
 };
 
 }  // namespace roq

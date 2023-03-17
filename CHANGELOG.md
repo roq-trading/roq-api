@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.9.3 &ndash; 2023-03-20
+
 ### Added
 
 * `sending_time_utc` to market data messages (#326)

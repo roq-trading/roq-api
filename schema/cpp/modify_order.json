@@ -12,6 +12,10 @@
       "type": "uint32_t"
     },
     {
+      "name": "request_template",
+      "type": "std::string_view"
+    },
+    {
       "name": "quantity",
       "type": "double",
       "comment": "New (total) quantity"

@@ -9,8 +9,8 @@ namespace cache {
 
 struct ROQ_PUBLIC CancelOrder final {
   CancelOrder(roq::CancelOrder const &value)  // NOLINT
-      : account{value.account}, order_id{value.order_id}, routing_id{value.routing_id}, version{value.version},
-        conditional_on_version{value.conditional_on_version} {}
+      : account{value.account}, order_id{value.order_id}, request_template{value.request_template},
+        routing_id{value.routing_id}, version{value.version}, conditional_on_version{value.conditional_on_version} {}
 
   CancelOrder(CancelOrder const &) = delete;
   CancelOrder(CancelOrder &&) = default;
@@ -19,6 +19,7 @@ struct ROQ_PUBLIC CancelOrder final {
     return {
         .account = account,
         .order_id = order_id,
+        .request_template = request_template,
         .routing_id = routing_id,
         .version = version,
         .conditional_on_version = conditional_on_version,
@@ -27,6 +28,7 @@ struct ROQ_PUBLIC CancelOrder final {
 
   Account account;
   uint32_t order_id = {};
+  RequestTemplate request_template;
   RoutingId routing_id;
   uint32_t version = {};
   uint32_t conditional_on_version = {};

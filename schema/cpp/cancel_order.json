@@ -12,6 +12,10 @@
       "type": "uint32_t"
     },
     {
+      "name": "request_template",
+      "type": "std::string_view"
+    },
+    {
       "name": "routing_id",
       "type": "std::string_view"
     },

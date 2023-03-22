@@ -21,6 +21,7 @@ namespace roq {
 struct ROQ_PUBLIC CancelOrder final {
   std::string_view account;              //!< Account name
   uint32_t order_id = {};                //!< Order identifier
+  std::string_view request_template;     //!< Request template (gateway configured)
   std::string_view routing_id;           //!< Routing identifier
   uint32_t version = {};                 //!< Version number (strictly increasing, optional)
   uint32_t conditional_on_version = {};  //!< Auto-reject if this version has positively failed (optional)
@@ -49,12 +50,14 @@ struct fmt::formatter<roq::CancelOrder> {
         R"({{)"
         R"(account="{}", )"
         R"(order_id={}, )"
+        R"(request_template="{}", )"
         R"(routing_id="{}", )"
         R"(version={}, )"
         R"(conditional_on_version={})"
         R"(}})"_cf,
         value.account,
         value.order_id,
+        value.request_template,
         value.routing_id,
         value.version,
         value.conditional_on_version);

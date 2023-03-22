@@ -16,8 +16,8 @@ table CreateOrder {
   max_show_quantity:double = nan;
   order_type:OrderType;
   time_in_force:TimeInForce;
-  zzz_execution_instructions:uint8;  // depreated
-  order_template:string;
+  zzz_execution_instructions:uint8;  // deprecated
+  request_template:string;
   quantity:double = nan;
   price:double = nan;
   stop_price:double = nan;

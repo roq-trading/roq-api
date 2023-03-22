@@ -6,4 +6,5 @@ table CancelOrder {
   routing_id:string;
   version:uint32;
   conditional_on_version:uint32;
+  request_template:string;
 }

@@ -22,6 +22,7 @@ namespace roq {
 struct ROQ_PUBLIC ModifyOrder final {
   std::string_view account;              //!< Account name
   uint32_t order_id = {};                //!< Order identifier
+  std::string_view request_template;     //!< Request template (gateway configured)
   double quantity = NaN;                 //!< New (total) quantity
   double price = NaN;                    //!< New limit price
   std::string_view routing_id;           //!< Routing identifier
@@ -52,6 +53,7 @@ struct fmt::formatter<roq::ModifyOrder> {
         R"({{)"
         R"(account="{}", )"
         R"(order_id={}, )"
+        R"(request_template="{}", )"
         R"(quantity={}, )"
         R"(price={}, )"
         R"(routing_id="{}", )"
@@ -60,6 +62,7 @@ struct fmt::formatter<roq::ModifyOrder> {
         R"(}})"_cf,
         value.account,
         value.order_id,
+        value.request_template,
         value.quantity,
         value.price,
         value.routing_id,

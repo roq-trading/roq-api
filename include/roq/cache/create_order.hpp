@@ -11,7 +11,7 @@ struct ROQ_PUBLIC CreateOrder final {
   CreateOrder(roq::CreateOrder const &value)  // NOLINT
       : account{value.account}, order_id{value.order_id}, exchange{value.exchange}, symbol{value.symbol},
         side{value.side}, position_effect{value.position_effect}, time_in_force{value.time_in_force},
-        execution_instructions{value.execution_instructions}, order_template{value.order_template},
+        execution_instructions{value.execution_instructions}, request_template{value.request_template},
         quantity{value.quantity}, price{value.price}, stop_price{value.stop_price}, routing_id{value.routing_id} {}
 
   CreateOrder(CreateOrder const &) = delete;
@@ -27,7 +27,7 @@ struct ROQ_PUBLIC CreateOrder final {
         .position_effect = position_effect,
         .time_in_force = time_in_force,
         .execution_instructions = execution_instructions,
-        .order_template = order_template,
+        .request_template = request_template,
         .quantity = quantity,
         .price = price,
         .stop_price = stop_price,
@@ -43,7 +43,7 @@ struct ROQ_PUBLIC CreateOrder final {
   PositionEffect position_effect = {};
   TimeInForce time_in_force = {};
   Mask<ExecutionInstruction> execution_instructions;
-  OrderTemplate order_template;
+  RequestTemplate request_template;
   double quantity = NaN;
   double price = NaN;
   double stop_price = NaN;

@@ -205,6 +205,7 @@ def _find_default_comment(name):
         order_template="Order template",
         order_type="Order type",
         position_effect="Position effect",
+        request_template="Request template (gateway configured)",
         request_id="Request identifier",
         routing_id="Routing identifier",
         sending_time_utc="Exchange sending timestamp (UTC)",
@@ -317,9 +318,7 @@ def new_spec(path, namespaces, name, comment, spec, type_):
         {
             (namespaces + ("string_types",))
             for variable in variables
-            if variable["is_string"]
-            and not is_std(variable["type"])
-            and variable["type"] != "UUID"
+            if variable["is_string"] and not is_std(variable["type"]) and variable["type"] != "UUID"
         }
     )
     # print("// " + str(tmp))

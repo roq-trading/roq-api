@@ -2591,7 +2591,8 @@ struct CancelOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ORDER_ID = 6,
     VT_ROUTING_ID = 8,
     VT_VERSION = 10,
-    VT_CONDITIONAL_ON_VERSION = 12
+    VT_CONDITIONAL_ON_VERSION = 12,
+    VT_REQUEST_TEMPLATE = 14
   };
   const ::flatbuffers::String *account() const {
     return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
@@ -2608,6 +2609,9 @@ struct CancelOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   uint32_t conditional_on_version() const {
     return GetField<uint32_t>(VT_CONDITIONAL_ON_VERSION, 0);
   }
+  const ::flatbuffers::String *request_template() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_REQUEST_TEMPLATE);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_ACCOUNT) &&
@@ -2617,6 +2621,8 @@ struct CancelOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyString(routing_id()) &&
            VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
            VerifyField<uint32_t>(verifier, VT_CONDITIONAL_ON_VERSION, 4) &&
+           VerifyOffset(verifier, VT_REQUEST_TEMPLATE) &&
+           verifier.VerifyString(request_template()) &&
            verifier.EndTable();
   }
 };
@@ -2640,6 +2646,9 @@ struct CancelOrderBuilder {
   void add_conditional_on_version(uint32_t conditional_on_version) {
     fbb_.AddElement<uint32_t>(CancelOrder::VT_CONDITIONAL_ON_VERSION, conditional_on_version, 0);
   }
+  void add_request_template(::flatbuffers::Offset<::flatbuffers::String> request_template) {
+    fbb_.AddOffset(CancelOrder::VT_REQUEST_TEMPLATE, request_template);
+  }
   explicit CancelOrderBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2657,8 +2666,10 @@ inline ::flatbuffers::Offset<CancelOrder> CreateCancelOrder(
     uint32_t order_id = 0,
     ::flatbuffers::Offset<::flatbuffers::String> routing_id = 0,
     uint32_t version = 0,
-    uint32_t conditional_on_version = 0) {
+    uint32_t conditional_on_version = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> request_template = 0) {
   CancelOrderBuilder builder_(_fbb);
+  builder_.add_request_template(request_template);
   builder_.add_conditional_on_version(conditional_on_version);
   builder_.add_version(version);
   builder_.add_routing_id(routing_id);
@@ -2678,16 +2689,19 @@ inline ::flatbuffers::Offset<CancelOrder> CreateCancelOrderDirect(
     uint32_t order_id = 0,
     const char *routing_id = nullptr,
     uint32_t version = 0,
-    uint32_t conditional_on_version = 0) {
+    uint32_t conditional_on_version = 0,
+    const char *request_template = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
+  auto request_template__ = request_template ? _fbb.CreateString(request_template) : 0;
   return roq::fbs::CreateCancelOrder(
       _fbb,
       account__,
       order_id,
       routing_id__,
       version,
-      conditional_on_version);
+      conditional_on_version,
+      request_template__);
 }
 
 struct CreateOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -2704,7 +2718,7 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ORDER_TYPE = 18,
     VT_TIME_IN_FORCE = 20,
     VT_ZZZ_EXECUTION_INSTRUCTIONS = 22,
-    VT_ORDER_TEMPLATE = 24,
+    VT_REQUEST_TEMPLATE = 24,
     VT_QUANTITY = 26,
     VT_PRICE = 28,
     VT_STOP_PRICE = 30,
@@ -2741,8 +2755,8 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   uint8_t zzz_execution_instructions() const {
     return GetField<uint8_t>(VT_ZZZ_EXECUTION_INSTRUCTIONS, 0);
   }
-  const ::flatbuffers::String *order_template() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_ORDER_TEMPLATE);
+  const ::flatbuffers::String *request_template() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_REQUEST_TEMPLATE);
   }
   double quantity() const {
     return GetField<double>(VT_QUANTITY, std::numeric_limits<double>::quiet_NaN());
@@ -2774,8 +2788,8 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_ORDER_TYPE, 1) &&
            VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE, 1) &&
            VerifyField<uint8_t>(verifier, VT_ZZZ_EXECUTION_INSTRUCTIONS, 1) &&
-           VerifyOffset(verifier, VT_ORDER_TEMPLATE) &&
-           verifier.VerifyString(order_template()) &&
+           VerifyOffset(verifier, VT_REQUEST_TEMPLATE) &&
+           verifier.VerifyString(request_template()) &&
            VerifyField<double>(verifier, VT_QUANTITY, 8) &&
            VerifyField<double>(verifier, VT_PRICE, 8) &&
            VerifyField<double>(verifier, VT_STOP_PRICE, 8) &&
@@ -2820,8 +2834,8 @@ struct CreateOrderBuilder {
   void add_zzz_execution_instructions(uint8_t zzz_execution_instructions) {
     fbb_.AddElement<uint8_t>(CreateOrder::VT_ZZZ_EXECUTION_INSTRUCTIONS, zzz_execution_instructions, 0);
   }
-  void add_order_template(::flatbuffers::Offset<::flatbuffers::String> order_template) {
-    fbb_.AddOffset(CreateOrder::VT_ORDER_TEMPLATE, order_template);
+  void add_request_template(::flatbuffers::Offset<::flatbuffers::String> request_template) {
+    fbb_.AddOffset(CreateOrder::VT_REQUEST_TEMPLATE, request_template);
   }
   void add_quantity(double quantity) {
     fbb_.AddElement<double>(CreateOrder::VT_QUANTITY, quantity, std::numeric_limits<double>::quiet_NaN());
@@ -2861,7 +2875,7 @@ inline ::flatbuffers::Offset<CreateOrder> CreateCreateOrder(
     roq::fbs::OrderType order_type = roq::fbs::OrderType::Undefined,
     roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce::Undefined,
     uint8_t zzz_execution_instructions = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> order_template = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> request_template = 0,
     double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
@@ -2874,7 +2888,7 @@ inline ::flatbuffers::Offset<CreateOrder> CreateCreateOrder(
   builder_.add_max_show_quantity(max_show_quantity);
   builder_.add_execution_instructions(execution_instructions);
   builder_.add_routing_id(routing_id);
-  builder_.add_order_template(order_template);
+  builder_.add_request_template(request_template);
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
   builder_.add_order_id(order_id);
@@ -2904,7 +2918,7 @@ inline ::flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
     roq::fbs::OrderType order_type = roq::fbs::OrderType::Undefined,
     roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce::Undefined,
     uint8_t zzz_execution_instructions = 0,
-    const char *order_template = nullptr,
+    const char *request_template = nullptr,
     double quantity = std::numeric_limits<double>::quiet_NaN(),
     double price = std::numeric_limits<double>::quiet_NaN(),
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
@@ -2913,7 +2927,7 @@ inline ::flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
-  auto order_template__ = order_template ? _fbb.CreateString(order_template) : 0;
+  auto request_template__ = request_template ? _fbb.CreateString(request_template) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
   return roq::fbs::CreateCreateOrder(
       _fbb,
@@ -2927,7 +2941,7 @@ inline ::flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
       order_type,
       time_in_force,
       zzz_execution_instructions,
-      order_template__,
+      request_template__,
       quantity,
       price,
       stop_price,
@@ -4255,7 +4269,8 @@ struct ModifyOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_PRICE = 10,
     VT_ROUTING_ID = 12,
     VT_VERSION = 14,
-    VT_CONDITIONAL_ON_VERSION = 16
+    VT_CONDITIONAL_ON_VERSION = 16,
+    VT_REQUEST_TEMPLATE = 18
   };
   const ::flatbuffers::String *account() const {
     return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
@@ -4278,6 +4293,9 @@ struct ModifyOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   uint32_t conditional_on_version() const {
     return GetField<uint32_t>(VT_CONDITIONAL_ON_VERSION, 0);
   }
+  const ::flatbuffers::String *request_template() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_REQUEST_TEMPLATE);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_ACCOUNT) &&
@@ -4289,6 +4307,8 @@ struct ModifyOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyString(routing_id()) &&
            VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
            VerifyField<uint32_t>(verifier, VT_CONDITIONAL_ON_VERSION, 4) &&
+           VerifyOffset(verifier, VT_REQUEST_TEMPLATE) &&
+           verifier.VerifyString(request_template()) &&
            verifier.EndTable();
   }
 };
@@ -4318,6 +4338,9 @@ struct ModifyOrderBuilder {
   void add_conditional_on_version(uint32_t conditional_on_version) {
     fbb_.AddElement<uint32_t>(ModifyOrder::VT_CONDITIONAL_ON_VERSION, conditional_on_version, 0);
   }
+  void add_request_template(::flatbuffers::Offset<::flatbuffers::String> request_template) {
+    fbb_.AddOffset(ModifyOrder::VT_REQUEST_TEMPLATE, request_template);
+  }
   explicit ModifyOrderBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4337,10 +4360,12 @@ inline ::flatbuffers::Offset<ModifyOrder> CreateModifyOrder(
     double price = std::numeric_limits<double>::quiet_NaN(),
     ::flatbuffers::Offset<::flatbuffers::String> routing_id = 0,
     uint32_t version = 0,
-    uint32_t conditional_on_version = 0) {
+    uint32_t conditional_on_version = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> request_template = 0) {
   ModifyOrderBuilder builder_(_fbb);
   builder_.add_price(price);
   builder_.add_quantity(quantity);
+  builder_.add_request_template(request_template);
   builder_.add_conditional_on_version(conditional_on_version);
   builder_.add_version(version);
   builder_.add_routing_id(routing_id);
@@ -4362,9 +4387,11 @@ inline ::flatbuffers::Offset<ModifyOrder> CreateModifyOrderDirect(
     double price = std::numeric_limits<double>::quiet_NaN(),
     const char *routing_id = nullptr,
     uint32_t version = 0,
-    uint32_t conditional_on_version = 0) {
+    uint32_t conditional_on_version = 0,
+    const char *request_template = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
+  auto request_template__ = request_template ? _fbb.CreateString(request_template) : 0;
   return roq::fbs::CreateModifyOrder(
       _fbb,
       account__,
@@ -4373,7 +4400,8 @@ inline ::flatbuffers::Offset<ModifyOrder> CreateModifyOrderDirect(
       price,
       routing_id__,
       version,
-      conditional_on_version);
+      conditional_on_version,
+      request_template__);
 }
 
 struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

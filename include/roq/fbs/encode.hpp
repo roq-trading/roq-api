@@ -433,7 +433,7 @@ auto encode(B &builder, roq::CreateOrder const &value) {
       encode(builder, value.order_type),
       encode(builder, value.time_in_force),
       {},  // deprecated
-      encode(builder, value.order_template),
+      encode(builder, value.request_template),
       value.quantity,
       value.price,
       value.stop_price,
@@ -451,7 +451,8 @@ auto encode(B &builder, roq::ModifyOrder const &value) {
       value.price,
       encode(builder, value.routing_id),
       value.version,
-      value.conditional_on_version);
+      value.conditional_on_version,
+      encode(builder, value.request_template));
 }
 
 template <typename B>
@@ -462,7 +463,8 @@ auto encode(B &builder, roq::CancelOrder const &value) {
       value.order_id,
       encode(builder, value.routing_id),
       value.version,
-      value.conditional_on_version);
+      value.conditional_on_version,
+      encode(builder, value.request_template));
 }
 
 template <typename B>

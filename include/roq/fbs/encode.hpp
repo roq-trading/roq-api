@@ -510,7 +510,7 @@ auto encode(B &builder, roq::OrderUpdate const &value) {
       encode(builder, value.order_type),
       encode(builder, value.time_in_force),
       {},  // deprecated
-      encode(builder, value.order_template),
+      {},  // deprecated
       encode(builder, value.create_time_utc),
       encode(builder, value.update_time_utc),
       encode(builder, value.external_account),

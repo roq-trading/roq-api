@@ -21,7 +21,6 @@ struct ROQ_PUBLIC Order final {
   OrderType order_type = {};
   TimeInForce time_in_force = {};
   Mask<ExecutionInstruction> execution_instructions;
-  OrderTemplate order_template;
   std::chrono::nanoseconds create_time_utc = {};
   std::chrono::nanoseconds update_time_utc = {};
   Account external_account;
@@ -71,7 +70,6 @@ struct fmt::formatter<roq::oms::Order> {
         R"(order_type={}, )"
         R"(time_in_force={}, )"
         R"(execution_instructions={}, )"
-        R"(order_template="{}", )"
         R"(create_time_utc={}, )"
         R"(update_time_utc={}, )"
         R"(external_account="{}", )"
@@ -105,7 +103,6 @@ struct fmt::formatter<roq::oms::Order> {
         value.order_type,
         value.time_in_force,
         value.execution_instructions,
-        value.order_template,
         value.create_time_utc,
         value.update_time_utc,
         value.external_account,

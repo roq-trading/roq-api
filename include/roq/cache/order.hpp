@@ -24,7 +24,6 @@ struct ROQ_PUBLIC Order final {
     order_type = {};
     time_in_force = {};
     execution_instructions = {};
-    order_template.clear();
     create_time_utc = {};
     update_time_utc = {};
     external_account.clear();
@@ -55,7 +54,6 @@ struct ROQ_PUBLIC Order final {
     dirty |= utils::update_if_not_empty(order_type, order_update.order_type);
     dirty |= utils::update_if_not_empty(time_in_force, order_update.time_in_force);
     dirty |= utils::update_if_not_empty(execution_instructions, order_update.execution_instructions);
-    dirty |= utils::update_if_not_empty(order_template, order_update.order_template);
     dirty |= utils::update_if_not_empty(create_time_utc, order_update.create_time_utc);
     dirty |= utils::update_if_not_empty(update_time_utc, order_update.update_time_utc);
     dirty |= utils::update_if_not_empty(external_account, order_update.external_account);
@@ -106,7 +104,6 @@ struct ROQ_PUBLIC Order final {
         .order_type = order_type,
         .time_in_force = time_in_force,
         .execution_instructions = execution_instructions,
-        .order_template = order_template,
         .create_time_utc = create_time_utc,
         .update_time_utc = update_time_utc,
         .external_account = external_account,
@@ -139,7 +136,6 @@ struct ROQ_PUBLIC Order final {
   OrderType order_type = {};
   TimeInForce time_in_force = {};
   Mask<ExecutionInstruction> execution_instructions;
-  OrderTemplate order_template;
   std::chrono::nanoseconds create_time_utc = {};
   std::chrono::nanoseconds update_time_utc = {};
   ExternalAccount external_account;

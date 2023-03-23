@@ -36,7 +36,6 @@ struct OrderUpdate final {
         R"("order_type":{},)"
         R"("time_in_force":{},)"
         R"("execution_instructions":{},)"
-        R"("order_template":{},)"
         R"("create_time_utc":{},)"
         R"("update_time_utc":{},)"
         R"("external_account":{},)"
@@ -68,7 +67,6 @@ struct OrderUpdate final {
         String{value_.order_type},
         String{value_.time_in_force},
         String{value_.execution_instructions},
-        String{value_.order_template},
         DateTime{value_.create_time_utc},
         DateTime{value_.update_time_utc},
         String{value_.external_account},

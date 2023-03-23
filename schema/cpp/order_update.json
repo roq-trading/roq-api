@@ -50,10 +50,6 @@
       "type": "Mask<ExecutionInstruction>"
     },
     {
-      "name": "order_template",
-      "type": "std::string_view"
-    },
-    {
       "name": "create_time_utc",
       "type": "std::chrono::nanoseconds"
     },

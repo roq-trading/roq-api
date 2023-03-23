@@ -18,12 +18,12 @@ struct ROQ_PUBLIC Order2 final {
         exchange{order_update.exchange}, symbol{order_update.symbol}, side{order_update.side},
         position_effect{order_update.position_effect}, max_show_quantity{order_update.max_show_quantity},
         order_type{order_update.order_type}, time_in_force{order_update.time_in_force},
-        execution_instructions{order_update.execution_instructions}, order_template{order_update.order_template},
-        create_time_utc{order_update.create_time_utc}, update_time_utc{order_update.update_time_utc},
-        external_account{order_update.external_account}, external_order_id{order_update.external_order_id},
-        status{order_update.status}, quantity{order_update.quantity}, price{order_update.price},
-        stop_price{order_update.stop_price}, remaining_quantity{order_update.remaining_quantity},
-        traded_quantity{order_update.traded_quantity}, average_traded_price{order_update.average_traded_price},
+        execution_instructions{order_update.execution_instructions}, create_time_utc{order_update.create_time_utc},
+        update_time_utc{order_update.update_time_utc}, external_account{order_update.external_account},
+        external_order_id{order_update.external_order_id}, status{order_update.status}, quantity{order_update.quantity},
+        price{order_update.price}, stop_price{order_update.stop_price},
+        remaining_quantity{order_update.remaining_quantity}, traded_quantity{order_update.traded_quantity},
+        average_traded_price{order_update.average_traded_price},
         last_traded_quantity{order_update.last_traded_quantity}, last_traded_price{order_update.last_traded_price},
         last_liquidity{order_update.last_liquidity}, routing_id{order_update.routing_id},
         max_request_version{order_update.max_request_version}, max_response_version{order_update.max_response_version},
@@ -41,7 +41,6 @@ struct ROQ_PUBLIC Order2 final {
     dirty |= utils::update_if_not_empty(order_type, order_update.order_type);
     dirty |= utils::update_if_not_empty(time_in_force, order_update.time_in_force);
     dirty |= utils::update_if_not_empty(execution_instructions, order_update.execution_instructions);
-    dirty |= utils::update_if_not_empty(order_template, order_update.order_template);
     dirty |= utils::update_if_not_empty(create_time_utc, order_update.create_time_utc);
     dirty |= utils::update_if_not_empty(update_time_utc, order_update.update_time_utc);
     dirty |= utils::update_if_not_empty(external_account, order_update.external_account);
@@ -91,7 +90,6 @@ struct ROQ_PUBLIC Order2 final {
         .order_type = order_type,
         .time_in_force = time_in_force,
         .execution_instructions = execution_instructions,
-        .order_template = order_template,
         .create_time_utc = create_time_utc,
         .update_time_utc = update_time_utc,
         .external_account = external_account,
@@ -126,7 +124,6 @@ struct ROQ_PUBLIC Order2 final {
   OrderType order_type = {};
   TimeInForce time_in_force = {};
   Mask<ExecutionInstruction> execution_instructions;
-  OrderTemplate order_template;
   std::chrono::nanoseconds create_time_utc = {};
   std::chrono::nanoseconds update_time_utc = {};
   ExternalAccount external_account;

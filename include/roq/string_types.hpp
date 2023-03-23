@@ -18,7 +18,6 @@ static constexpr auto const MAX_LENGTH_CURRENCY = size_t{32};
 static constexpr auto const MAX_LENGTH_MBO_ORDER_ID = size_t{36};  // note! UUID
 
 static constexpr auto const MAX_LENGTH_REQUEST_TEMPLATE = size_t{16};
-static constexpr auto const MAX_LENGTH_ORDER_TEMPLATE = size_t{16};
 static constexpr auto const MAX_LENGTH_EXTERNAL_ACCOUNT = size_t{64};
 static constexpr auto const MAX_LENGTH_EXTERNAL_ORDER_ID = size_t{64};
 static constexpr auto const MAX_LENGTH_EXTERNAL_TRADE_ID = size_t{40};
@@ -67,10 +66,6 @@ struct MBOOrderId final : public String<detail::MAX_LENGTH_MBO_ORDER_ID> {
 
 struct RequestTemplate final : public String<detail::MAX_LENGTH_REQUEST_TEMPLATE> {
   using String<detail::MAX_LENGTH_REQUEST_TEMPLATE>::String;
-};
-
-struct OrderTemplate final : public String<detail::MAX_LENGTH_ORDER_TEMPLATE> {
-  using String<detail::MAX_LENGTH_ORDER_TEMPLATE>::String;
 };
 
 struct ExternalAccount final : public String<detail::MAX_LENGTH_EXTERNAL_ACCOUNT> {
@@ -131,7 +126,6 @@ static_assert(sizeof(Symbol) == detail::MAX_LENGTH_SYMBOL);
 static_assert(sizeof(Currency) == detail::MAX_LENGTH_CURRENCY);
 static_assert(sizeof(MBOOrderId) == detail::MAX_LENGTH_MBO_ORDER_ID);
 static_assert(sizeof(RequestTemplate) == detail::MAX_LENGTH_REQUEST_TEMPLATE);
-static_assert(sizeof(OrderTemplate) == detail::MAX_LENGTH_ORDER_TEMPLATE);
 static_assert(sizeof(ExternalAccount) == detail::MAX_LENGTH_EXTERNAL_ACCOUNT);
 static_assert(sizeof(ExternalOrderId) == detail::MAX_LENGTH_EXTERNAL_ORDER_ID);
 static_assert(sizeof(ExternalTradeId) == detail::MAX_LENGTH_EXTERNAL_TRADE_ID);

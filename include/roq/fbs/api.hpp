@@ -4682,7 +4682,7 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ORDER_TYPE = 20,
     VT_TIME_IN_FORCE = 22,
     VT_ZZZ_EXECUTION_INSTRUCTIONS = 24,
-    VT_ORDER_TEMPLATE = 26,
+    VT_ZZZ_ORDER_TEMPLATE = 26,
     VT_CREATE_TIME_UTC = 28,
     VT_UPDATE_TIME_UTC = 30,
     VT_EXTERNAL_ACCOUNT = 32,
@@ -4738,8 +4738,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   uint8_t zzz_execution_instructions() const {
     return GetField<uint8_t>(VT_ZZZ_EXECUTION_INSTRUCTIONS, 0);
   }
-  const ::flatbuffers::String *order_template() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_ORDER_TEMPLATE);
+  const ::flatbuffers::String *zzz_order_template() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ZZZ_ORDER_TEMPLATE);
   }
   int64_t create_time_utc() const {
     return GetField<int64_t>(VT_CREATE_TIME_UTC, 0);
@@ -4820,8 +4820,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_ORDER_TYPE, 1) &&
            VerifyField<uint8_t>(verifier, VT_TIME_IN_FORCE, 1) &&
            VerifyField<uint8_t>(verifier, VT_ZZZ_EXECUTION_INSTRUCTIONS, 1) &&
-           VerifyOffset(verifier, VT_ORDER_TEMPLATE) &&
-           verifier.VerifyString(order_template()) &&
+           VerifyOffset(verifier, VT_ZZZ_ORDER_TEMPLATE) &&
+           verifier.VerifyString(zzz_order_template()) &&
            VerifyField<int64_t>(verifier, VT_CREATE_TIME_UTC, 8) &&
            VerifyField<int64_t>(verifier, VT_UPDATE_TIME_UTC, 8) &&
            VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
@@ -4888,8 +4888,8 @@ struct OrderUpdateBuilder {
   void add_zzz_execution_instructions(uint8_t zzz_execution_instructions) {
     fbb_.AddElement<uint8_t>(OrderUpdate::VT_ZZZ_EXECUTION_INSTRUCTIONS, zzz_execution_instructions, 0);
   }
-  void add_order_template(::flatbuffers::Offset<::flatbuffers::String> order_template) {
-    fbb_.AddOffset(OrderUpdate::VT_ORDER_TEMPLATE, order_template);
+  void add_zzz_order_template(::flatbuffers::Offset<::flatbuffers::String> zzz_order_template) {
+    fbb_.AddOffset(OrderUpdate::VT_ZZZ_ORDER_TEMPLATE, zzz_order_template);
   }
   void add_create_time_utc(int64_t create_time_utc) {
     fbb_.AddElement<int64_t>(OrderUpdate::VT_CREATE_TIME_UTC, create_time_utc, 0);
@@ -4978,7 +4978,7 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     roq::fbs::OrderType order_type = roq::fbs::OrderType::Undefined,
     roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce::Undefined,
     uint8_t zzz_execution_instructions = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> order_template = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> zzz_order_template = 0,
     int64_t create_time_utc = 0,
     int64_t update_time_utc = 0,
     ::flatbuffers::Offset<::flatbuffers::String> external_account = 0,
@@ -5020,7 +5020,7 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
   builder_.add_routing_id(routing_id);
   builder_.add_external_order_id(external_order_id);
   builder_.add_external_account(external_account);
-  builder_.add_order_template(order_template);
+  builder_.add_zzz_order_template(zzz_order_template);
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
   builder_.add_order_id(order_id);
@@ -5055,7 +5055,7 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     roq::fbs::OrderType order_type = roq::fbs::OrderType::Undefined,
     roq::fbs::TimeInForce time_in_force = roq::fbs::TimeInForce::Undefined,
     uint8_t zzz_execution_instructions = 0,
-    const char *order_template = nullptr,
+    const char *zzz_order_template = nullptr,
     int64_t create_time_utc = 0,
     int64_t update_time_utc = 0,
     const char *external_account = nullptr,
@@ -5080,7 +5080,7 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
-  auto order_template__ = order_template ? _fbb.CreateString(order_template) : 0;
+  auto zzz_order_template__ = zzz_order_template ? _fbb.CreateString(zzz_order_template) : 0;
   auto external_account__ = external_account ? _fbb.CreateString(external_account) : 0;
   auto external_order_id__ = external_order_id ? _fbb.CreateString(external_order_id) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
@@ -5098,7 +5098,7 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       order_type,
       time_in_force,
       zzz_execution_instructions,
-      order_template__,
+      zzz_order_template__,
       create_time_utc,
       update_time_utc,
       external_account__,

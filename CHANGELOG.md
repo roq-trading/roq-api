@@ -9,6 +9,10 @@ All notable changes will be documented in this file.
 * [BREAKING CHANGE] `CreateOrder::request_template` (renamed from `order_template`)
 * All order requests must support `request_template` (#329)
 
+### Removed
+
+* Drop `OrderUpdate.order_template` (#330)
+
 ## 0.9.3 &ndash; 2023-03-20
 
 ### Added

@@ -17,7 +17,7 @@ table OrderUpdate {
   order_type:OrderType;
   time_in_force:TimeInForce;
   zzz_execution_instructions:uint8;  // deprecated
-  order_template:string;
+  zzz_order_template:string;  // deprecated
   create_time_utc:int64;
   update_time_utc:int64;
   external_account:string;

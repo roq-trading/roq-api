@@ -15,7 +15,7 @@ enum Error:uint8 {
   InvalidOrderType,
   InvalidTimeInForce,
   InvalidExecutionInstruction,
-  InvalidOrderTemplate,
+  InvalidRequestTemplate,
   InvalidPrice,
   InvalidStopPrice,
   InvalidRoutingId,

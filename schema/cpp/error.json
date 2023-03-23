@@ -44,7 +44,7 @@
       "name": "InvalidExecutionInstruction"
     },
     {
-      "name": "InvalidOrderTemplate"
+      "name": "InvalidRequestTemplate"
     },
     {
       "name": "InvalidPrice"

@@ -80,6 +80,7 @@ Currently supported Cryptocurrency exchanges include
 * Bybit
 * Coinbase PRO
 * Deribit
+* Gate
 * Gemini
 * HitBTC
 * Huobi

@@ -96,14 +96,17 @@ struct ROQ_PUBLIC MarketByOrder {
 
   // NEW
   struct OrderUpdate final {
+    // order
     Side side = {};
     double remaining_quantity = NaN;
-    double last_modified_quantity = NaN;
-    double total_traded_quantity = NaN;
-    double last_traded_quantity = NaN;
-    double total_queue_quantity = NaN;
-    double queue_position_quantity = NaN;  // queue quantity before (not including this)
-    size_t queue_position = {};
+    double last_modified_quantity = NaN;  // last change to remaining_quantity, could be less than last_traded_quantity
+    double total_traded_quantity = NaN;   // life-time traded quantity, potentially tracking iceberg orders
+    double last_traded_quantity = NaN;    // last traded quantity, could be more than previous remaining_quantity
+    // price-level (queue)
+    double total_queue_quantity = NaN;     // sum of remaining_quantity for all orders in queue
+    double queue_position_quantity = NaN;  // sum of remaining_quantity for orders with better priority than this order
+    size_t queue_position = {};            // relative position (index) of this order
+    // order
     bool iceberg = false;
   };
 

@@ -6046,7 +6046,11 @@ struct StreamStatus FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_PROTOCOL = 12,
     VT_PRIORITY = 14,
     VT_TRANSPORT = 16,
-    VT_ENCODING = 18
+    VT_ENCODING = 18,
+    VT_INTERFACE = 20,
+    VT_AUTHORITY = 22,
+    VT_PATH = 24,
+    VT_PROXY = 26
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -6072,6 +6076,18 @@ struct StreamStatus FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   uint32_t encoding() const {
     return GetField<uint32_t>(VT_ENCODING, 0);
   }
+  const ::flatbuffers::String *interface() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_INTERFACE);
+  }
+  const ::flatbuffers::String *authority() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_AUTHORITY);
+  }
+  const ::flatbuffers::String *path() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_PATH);
+  }
+  const ::flatbuffers::String *proxy() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_PROXY);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -6083,6 +6099,14 @@ struct StreamStatus FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<uint32_t>(verifier, VT_PRIORITY, 4) &&
            VerifyField<uint8_t>(verifier, VT_TRANSPORT, 1) &&
            VerifyField<uint32_t>(verifier, VT_ENCODING, 4) &&
+           VerifyOffset(verifier, VT_INTERFACE) &&
+           verifier.VerifyString(interface()) &&
+           VerifyOffset(verifier, VT_AUTHORITY) &&
+           verifier.VerifyString(authority()) &&
+           VerifyOffset(verifier, VT_PATH) &&
+           verifier.VerifyString(path()) &&
+           VerifyOffset(verifier, VT_PROXY) &&
+           verifier.VerifyString(proxy()) &&
            verifier.EndTable();
   }
 };
@@ -6115,6 +6139,18 @@ struct StreamStatusBuilder {
   void add_encoding(uint32_t encoding) {
     fbb_.AddElement<uint32_t>(StreamStatus::VT_ENCODING, encoding, 0);
   }
+  void add_interface(::flatbuffers::Offset<::flatbuffers::String> interface) {
+    fbb_.AddOffset(StreamStatus::VT_INTERFACE, interface);
+  }
+  void add_authority(::flatbuffers::Offset<::flatbuffers::String> authority) {
+    fbb_.AddOffset(StreamStatus::VT_AUTHORITY, authority);
+  }
+  void add_path(::flatbuffers::Offset<::flatbuffers::String> path) {
+    fbb_.AddOffset(StreamStatus::VT_PATH, path);
+  }
+  void add_proxy(::flatbuffers::Offset<::flatbuffers::String> proxy) {
+    fbb_.AddOffset(StreamStatus::VT_PROXY, proxy);
+  }
   explicit StreamStatusBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -6135,9 +6171,17 @@ inline ::flatbuffers::Offset<StreamStatus> CreateStreamStatus(
     roq::fbs::Protocol protocol = roq::fbs::Protocol::Undefined,
     roq::fbs::Priority priority = roq::fbs::Priority::Undefined,
     roq::fbs::Transport transport = roq::fbs::Transport::Undefined,
-    uint32_t encoding = 0) {
+    uint32_t encoding = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> interface = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> authority = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> path = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> proxy = 0) {
   StreamStatusBuilder builder_(_fbb);
   builder_.add_supports(supports);
+  builder_.add_proxy(proxy);
+  builder_.add_path(path);
+  builder_.add_authority(authority);
+  builder_.add_interface(interface);
   builder_.add_encoding(encoding);
   builder_.add_priority(priority);
   builder_.add_account(account);
@@ -6162,8 +6206,16 @@ inline ::flatbuffers::Offset<StreamStatus> CreateStreamStatusDirect(
     roq::fbs::Protocol protocol = roq::fbs::Protocol::Undefined,
     roq::fbs::Priority priority = roq::fbs::Priority::Undefined,
     roq::fbs::Transport transport = roq::fbs::Transport::Undefined,
-    uint32_t encoding = 0) {
+    uint32_t encoding = 0,
+    const char *interface = nullptr,
+    const char *authority = nullptr,
+    const char *path = nullptr,
+    const char *proxy = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto interface__ = interface ? _fbb.CreateString(interface) : 0;
+  auto authority__ = authority ? _fbb.CreateString(authority) : 0;
+  auto path__ = path ? _fbb.CreateString(path) : 0;
+  auto proxy__ = proxy ? _fbb.CreateString(proxy) : 0;
   return roq::fbs::CreateStreamStatus(
       _fbb,
       stream_id,
@@ -6173,7 +6225,11 @@ inline ::flatbuffers::Offset<StreamStatus> CreateStreamStatusDirect(
       protocol,
       priority,
       transport,
-      encoding);
+      encoding,
+      interface__,
+      authority__,
+      path__,
+      proxy__);
 }
 
 struct TopOfBook FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

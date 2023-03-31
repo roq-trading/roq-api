@@ -29,6 +29,10 @@ struct StreamStatus final {
     dirty |= utils::update(encoding, stream_status.encoding);
     dirty |= utils::update(priority, stream_status.priority);
     dirty |= utils::update(connection_status, stream_status.connection_status);
+    dirty |= utils::update(interface, stream_status.interface);
+    dirty |= utils::update(authority, stream_status.authority);
+    dirty |= utils::update(path, stream_status.path);
+    dirty |= utils::update(proxy, stream_status.proxy);
     return dirty;
   }
 
@@ -42,6 +46,10 @@ struct StreamStatus final {
         .encoding = encoding,
         .priority = priority,
         .connection_status = connection_status,
+        .interface = interface,
+        .authority = authority,
+        .path = path,
+        .proxy = proxy,
     };
   }
 
@@ -54,6 +62,10 @@ struct StreamStatus final {
   Mask<Encoding> encoding = {};
   Priority priority = {};
   ConnectionStatus connection_status = {};
+  std::string interface;
+  std::string authority;
+  std::string path;
+  std::string proxy;
 };
 
 }  // namespace cache

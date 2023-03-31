@@ -28,7 +28,11 @@ struct StreamStatus final {
         R"("protocol":{},)"
         R"("encoding":{},)"
         R"("priority":{},)"
-        R"("connection_status":{})"
+        R"("connection_status":{},)"
+        R"("interface":{},)"
+        R"("authority":{},)"
+        R"("path":{},)"
+        R"("proxy":{})"
         R"(}})"_cf,
         value_.stream_id,
         String{value_.account},
@@ -37,7 +41,11 @@ struct StreamStatus final {
         String{value_.protocol},
         String{value_.encoding},
         String{value_.priority},
-        String{value_.connection_status});
+        String{value_.connection_status},
+        String{value_.interface},
+        String{value_.authority},
+        String{value_.path},
+        String{value_.proxy});
   }
 
  private:

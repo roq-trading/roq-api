@@ -34,6 +34,10 @@ struct ROQ_PUBLIC StreamStatus final {
   Mask<Encoding> encoding;                  //!< Message encoding
   Priority priority = {};                   //!< Priority
   ConnectionStatus connection_status = {};  //!< Connection status (when applicable)
+  std::string_view interface;               //!< Local network interface
+  std::string_view authority;               //!< URL authority (network end-point)
+  std::string_view path;                    //!< URL path
+  std::string_view proxy;                   //!< Network proxy
 };
 
 template <>
@@ -64,7 +68,11 @@ struct fmt::formatter<roq::StreamStatus> {
         R"(protocol={}, )"
         R"(encoding={}, )"
         R"(priority={}, )"
-        R"(connection_status={})"
+        R"(connection_status={}, )"
+        R"(interface="{}", )"
+        R"(authority="{}", )"
+        R"(path="{}", )"
+        R"(proxy="{}")"
         R"(}})"_cf,
         value.stream_id,
         value.account,
@@ -73,7 +81,11 @@ struct fmt::formatter<roq::StreamStatus> {
         value.protocol,
         value.encoding,
         value.priority,
-        value.connection_status);
+        value.connection_status,
+        value.interface,
+        value.authority,
+        value.path,
+        value.proxy);
   }
 };
 

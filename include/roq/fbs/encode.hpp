@@ -271,7 +271,11 @@ auto encode(B &builder, roq::StreamStatus const &value) {
       encode(builder, value.protocol),
       encode(builder, value.priority),
       encode(builder, value.transport),
-      value.encoding.get());
+      value.encoding.get(),
+      encode(builder, value.interface),
+      encode(builder, value.authority),
+      encode(builder, value.path),
+      encode(builder, value.proxy));
 }
 
 template <typename B>

@@ -15,4 +15,8 @@ table StreamStatus {
   priority:Priority;
   transport:Transport;
   encoding:uint32;
+  interface:string;
+  authority:string;
+  path:string;
+  proxy:string;
 }

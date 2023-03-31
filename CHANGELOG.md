@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `StreamStatus` should include connection details (#337)
 * [BREAKING CHANGE] `CreateOrder::request_template` (renamed from `order_template`)
 * All order requests must support `request_template` (#329)
 

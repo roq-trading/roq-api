@@ -98,7 +98,7 @@ struct ROQ_PUBLIC MarketByOrder {
   struct OrderUpdate final {
     // order
     Side side = {};
-    double remaining_quantity = NaN;
+    double remaining_quantity = NaN;      // remaining quantity after update was applied
     double last_modified_quantity = NaN;  // last change to remaining_quantity, could be less than last_traded_quantity
     double total_traded_quantity = NaN;   // life-time traded quantity, potentially tracking iceberg orders
     double last_traded_quantity = NaN;    // last traded quantity, could be more than previous remaining_quantity

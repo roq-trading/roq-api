@@ -9,9 +9,9 @@ namespace cache {
 
 struct ROQ_PUBLIC ModifyOrder final {
   ModifyOrder(roq::ModifyOrder const &value)  // NOLINT
-      : account{value.account}, order_id{value.order_id},
-        request_template{value.request_template}, quantity{value.quantity}, price{value.price},
-        routing_id{value.routing_id}, version{value.version}, conditional_on_version{value.conditional_on_version} {}
+      : account{value.account}, order_id{value.order_id}, request_template{value.request_template},
+        quantity{value.quantity}, price{value.price}, routing_id{value.routing_id}, version{value.version},
+        conditional_on_version{value.conditional_on_version} {}
 
   ModifyOrder(ModifyOrder const &) = delete;
   ModifyOrder(ModifyOrder &&) = default;

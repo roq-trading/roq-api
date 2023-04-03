@@ -1,6 +1,8 @@
 /* Copyright (c) 2017-2023, Hans Erik Thrane */
 
-#include <catch2/catch_all.hpp>
+#include <catch2/catch_test_macros.hpp>
+
+#include <cstdint>
 
 #include "roq/utils/math.hpp"
 

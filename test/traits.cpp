@@ -1,9 +1,11 @@
 /* Copyright (c) 2017-2023, Hans Erik Thrane */
 
-#include <catch2/catch_all.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include <string>
+#include <string_view>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 #include "roq/utils/traits.hpp"

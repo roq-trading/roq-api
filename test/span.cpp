@@ -1,8 +1,14 @@
 /* Copyright (c) 2017-2023, Hans Erik Thrane */
 
-#include <catch2/catch_all.hpp>
+#include <catch2/catch_approx.hpp>
+#include <catch2/catch_test_macros.hpp>
 
+#include <array>
+#include <iterator>
 #include <span>
+#include <string>
+#include <string_view>
+#include <vector>
 
 using namespace std::literals;
 

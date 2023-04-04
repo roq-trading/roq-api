@@ -94,10 +94,11 @@ struct ROQ_PUBLIC MarketByOrder {
   //   returns {order, exists?}
   virtual std::pair<MBOUpdate, bool> find_order(Side, std::string_view const &order_id) const = 0;
 
-  // NEW
+  // order update details computed from applying MarketByOrderUpdate to existing state
   struct OrderUpdate final {
     // order
     Side side = {};
+    UpdateAction action = {};             // update action (undefined when unknown order requested to be deleted)
     double remaining_quantity = NaN;      // remaining quantity after update was applied
     double last_modified_quantity = NaN;  // last change to remaining_quantity, could be less than last_traded_quantity
     double total_traded_quantity = NaN;   // life-time traded quantity, potentially tracking iceberg orders

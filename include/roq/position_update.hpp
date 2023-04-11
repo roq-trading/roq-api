@@ -6,29 +6,33 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/chrono.h>
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
+#include <chrono>
 #include <string_view>
 
 #include "roq/event.hpp"
 #include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/trace.hpp"
+#include "roq/update_type.hpp"
 
 namespace roq {
 
 //! Update relating to current position for a symbol/side/account
 struct ROQ_PUBLIC PositionUpdate final {
-  uint16_t stream_id = {};            //!< Stream identifier
-  std::string_view account;           //!< Account name
-  std::string_view exchange;          //!< Exchange
-  std::string_view symbol;            //!< Symbol
-  std::string_view external_account;  //!< External account name
-  double long_quantity = NaN;         //!< Current long position
-  double short_quantity = NaN;        //!< Current short position
-  double long_quantity_begin = NaN;   //!< Long position at period begin
-  double short_quantity_begin = NaN;  //!< Short position at period begin
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view account;                         //!< Account name
+  std::string_view exchange;                        //!< Exchange
+  std::string_view symbol;                          //!< Symbol
+  std::string_view external_account;                //!< External account name
+  double long_quantity = NaN;                       //!< Current long position
+  double short_quantity = NaN;                      //!< Current short position
+  UpdateType update_type = {};                      //!< Update type
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
 };
 
 template <>
@@ -59,8 +63,9 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"(external_account="{}", )"
         R"(long_quantity={}, )"
         R"(short_quantity={}, )"
-        R"(long_quantity_begin={}, )"
-        R"(short_quantity_begin={})"
+        R"(update_type={}, )"
+        R"(exchange_time_utc={}, )"
+        R"(sending_time_utc={})"
         R"(}})"_cf,
         value.stream_id,
         value.account,
@@ -69,8 +74,9 @@ struct fmt::formatter<roq::PositionUpdate> {
         value.external_account,
         value.long_quantity,
         value.short_quantity,
-        value.long_quantity_begin,
-        value.short_quantity_begin);
+        value.update_type,
+        value.exchange_time_utc,
+        value.sending_time_utc);
   }
 };
 

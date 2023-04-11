@@ -26,21 +26,22 @@ namespace roq {
 
 //! Update relating to order being partially or fully filled
 struct ROQ_PUBLIC TradeUpdate final {
-  uint16_t stream_id = {};                        //!< Stream identifier
-  std::string_view account;                       //!< Account name
-  uint32_t order_id = {};                         //!< Order identifier
-  std::string_view exchange;                      //!< Exchange
-  std::string_view symbol;                        //!< Symbol
-  Side side = {};                                 //!< Side
-  PositionEffect position_effect = {};            //!< Position effect
-  std::chrono::nanoseconds create_time_utc = {};  //!< Created timestamp (UTC)
-  std::chrono::nanoseconds update_time_utc = {};  //!< Updated timestamp (UTC)
-  std::string_view external_account;              //!< External account name
-  std::string_view external_order_id;             //!< External order identifier
-  std::span<Fill> fills;                          //!< List of fills
-  std::string_view routing_id;                    //!< Routing identifier
-  UpdateType update_type = {};                    //!< Update type
-  std::string_view user;                          //!< User name (optional, only relevant for drop-copy)
+  uint16_t stream_id = {};                         //!< Stream identifier
+  std::string_view account;                        //!< Account name
+  uint32_t order_id = {};                          //!< Order identifier
+  std::string_view exchange;                       //!< Exchange
+  std::string_view symbol;                         //!< Symbol
+  Side side = {};                                  //!< Side
+  PositionEffect position_effect = {};             //!< Position effect
+  std::chrono::nanoseconds create_time_utc = {};   //!< Created timestamp (UTC)
+  std::chrono::nanoseconds update_time_utc = {};   //!< Updated timestamp (UTC)
+  std::string_view external_account;               //!< External account name
+  std::string_view external_order_id;              //!< External order identifier
+  std::span<Fill> fills;                           //!< List of fills
+  std::string_view routing_id;                     //!< Routing identifier
+  UpdateType update_type = {};                     //!< Update type
+  std::chrono::nanoseconds sending_time_utc = {};  //!< Exchange sending timestamp (UTC)
+  std::string_view user;                           //!< User name (optional, only relevant for drop-copy)
 };
 
 template <>
@@ -78,6 +79,7 @@ struct fmt::formatter<roq::TradeUpdate> {
         R"(fills=[{}], )"
         R"(routing_id="{}", )"
         R"(update_type={}, )"
+        R"(sending_time_utc={}, )"
         R"(user="{}")"
         R"(}})"_cf,
         value.stream_id,
@@ -94,6 +96,7 @@ struct fmt::formatter<roq::TradeUpdate> {
         fmt::join(value.fills, ", "sv),
         value.routing_id,
         value.update_type,
+        value.sending_time_utc,
         value.user);
   }
 };

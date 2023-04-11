@@ -3431,7 +3431,10 @@ struct FundsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_CURRENCY = 8,
     VT_BALANCE = 10,
     VT_HOLD = 12,
-    VT_EXTERNAL_ACCOUNT = 14
+    VT_EXTERNAL_ACCOUNT = 14,
+    VT_UPDATE_TYPE = 16,
+    VT_EXCHANGE_TIME_UTC = 18,
+    VT_SENDING_TIME_UTC = 20
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -3451,6 +3454,15 @@ struct FundsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const ::flatbuffers::String *external_account() const {
     return GetPointer<const ::flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
   }
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
+  }
+  int64_t exchange_time_utc() const {
+    return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0);
+  }
+  int64_t sending_time_utc() const {
+    return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -3462,6 +3474,9 @@ struct FundsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<double>(verifier, VT_HOLD, 8) &&
            VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
            verifier.VerifyString(external_account()) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
+           VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            verifier.EndTable();
   }
 };
@@ -3488,6 +3503,15 @@ struct FundsUpdateBuilder {
   void add_external_account(::flatbuffers::Offset<::flatbuffers::String> external_account) {
     fbb_.AddOffset(FundsUpdate::VT_EXTERNAL_ACCOUNT, external_account);
   }
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(FundsUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
+  void add_exchange_time_utc(int64_t exchange_time_utc) {
+    fbb_.AddElement<int64_t>(FundsUpdate::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
+  }
+  void add_sending_time_utc(int64_t sending_time_utc) {
+    fbb_.AddElement<int64_t>(FundsUpdate::VT_SENDING_TIME_UTC, sending_time_utc, 0);
+  }
   explicit FundsUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3506,14 +3530,20 @@ inline ::flatbuffers::Offset<FundsUpdate> CreateFundsUpdate(
     ::flatbuffers::Offset<::flatbuffers::String> currency = 0,
     double balance = std::numeric_limits<double>::quiet_NaN(),
     double hold = std::numeric_limits<double>::quiet_NaN(),
-    ::flatbuffers::Offset<::flatbuffers::String> external_account = 0) {
+    ::flatbuffers::Offset<::flatbuffers::String> external_account = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    int64_t exchange_time_utc = 0,
+    int64_t sending_time_utc = 0) {
   FundsUpdateBuilder builder_(_fbb);
+  builder_.add_sending_time_utc(sending_time_utc);
+  builder_.add_exchange_time_utc(exchange_time_utc);
   builder_.add_hold(hold);
   builder_.add_balance(balance);
   builder_.add_external_account(external_account);
   builder_.add_currency(currency);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
+  builder_.add_update_type(update_type);
   return builder_.Finish();
 }
 
@@ -3529,7 +3559,10 @@ inline ::flatbuffers::Offset<FundsUpdate> CreateFundsUpdateDirect(
     const char *currency = nullptr,
     double balance = std::numeric_limits<double>::quiet_NaN(),
     double hold = std::numeric_limits<double>::quiet_NaN(),
-    const char *external_account = nullptr) {
+    const char *external_account = nullptr,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    int64_t exchange_time_utc = 0,
+    int64_t sending_time_utc = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto currency__ = currency ? _fbb.CreateString(currency) : 0;
   auto external_account__ = external_account ? _fbb.CreateString(external_account) : 0;
@@ -3540,7 +3573,10 @@ inline ::flatbuffers::Offset<FundsUpdate> CreateFundsUpdateDirect(
       currency__,
       balance,
       hold,
-      external_account__);
+      external_account__,
+      update_type,
+      exchange_time_utc,
+      sending_time_utc);
 }
 
 struct GatewaySettings FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -4703,7 +4739,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_MAX_ACCEPTED_VERSION = 62,
     VT_UPDATE_TYPE = 64,
     VT_EXECUTION_INSTRUCTIONS = 66,
-    VT_USER = 68
+    VT_USER = 68,
+    VT_SENDING_TIME_UTC = 70
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -4804,6 +4841,9 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const ::flatbuffers::String *user() const {
     return GetPointer<const ::flatbuffers::String *>(VT_USER);
   }
+  int64_t sending_time_utc() const {
+    return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -4847,6 +4887,7 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<uint32_t>(verifier, VT_EXECUTION_INSTRUCTIONS, 4) &&
            VerifyOffset(verifier, VT_USER) &&
            verifier.VerifyString(user()) &&
+           VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            verifier.EndTable();
   }
 };
@@ -4954,6 +4995,9 @@ struct OrderUpdateBuilder {
   void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
     fbb_.AddOffset(OrderUpdate::VT_USER, user);
   }
+  void add_sending_time_utc(int64_t sending_time_utc) {
+    fbb_.AddElement<int64_t>(OrderUpdate::VT_SENDING_TIME_UTC, sending_time_utc, 0);
+  }
   explicit OrderUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4999,8 +5043,10 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     uint32_t max_accepted_version = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     uint32_t execution_instructions = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> user = 0) {
+    ::flatbuffers::Offset<::flatbuffers::String> user = 0,
+    int64_t sending_time_utc = 0) {
   OrderUpdateBuilder builder_(_fbb);
+  builder_.add_sending_time_utc(sending_time_utc);
   builder_.add_last_traded_price(last_traded_price);
   builder_.add_last_traded_quantity(last_traded_quantity);
   builder_.add_average_traded_price(average_traded_price);
@@ -5076,7 +5122,8 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     uint32_t max_accepted_version = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     uint32_t execution_instructions = 0,
-    const char *user = nullptr) {
+    const char *user = nullptr,
+    int64_t sending_time_utc = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -5119,7 +5166,8 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       max_accepted_version,
       update_type,
       execution_instructions,
-      user__);
+      user__,
+      sending_time_utc);
 }
 
 struct ParametersUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -5217,8 +5265,9 @@ struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_EXTERNAL_ACCOUNT = 24,
     VT_LONG_QUANTITY = 26,
     VT_SHORT_QUANTITY = 28,
-    VT_LONG_QUANTITY_BEGIN = 30,
-    VT_SHORT_QUANTITY_BEGIN = 32
+    VT_UPDATE_TYPE = 34,
+    VT_EXCHANGE_TIME_UTC = 36,
+    VT_SENDING_TIME_UTC = 38
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -5241,11 +5290,14 @@ struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   double short_quantity() const {
     return GetField<double>(VT_SHORT_QUANTITY, std::numeric_limits<double>::quiet_NaN());
   }
-  double long_quantity_begin() const {
-    return GetField<double>(VT_LONG_QUANTITY_BEGIN, std::numeric_limits<double>::quiet_NaN());
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
-  double short_quantity_begin() const {
-    return GetField<double>(VT_SHORT_QUANTITY_BEGIN, std::numeric_limits<double>::quiet_NaN());
+  int64_t exchange_time_utc() const {
+    return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0);
+  }
+  int64_t sending_time_utc() const {
+    return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -5260,8 +5312,9 @@ struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyString(external_account()) &&
            VerifyField<double>(verifier, VT_LONG_QUANTITY, 8) &&
            VerifyField<double>(verifier, VT_SHORT_QUANTITY, 8) &&
-           VerifyField<double>(verifier, VT_LONG_QUANTITY_BEGIN, 8) &&
-           VerifyField<double>(verifier, VT_SHORT_QUANTITY_BEGIN, 8) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
+           VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            verifier.EndTable();
   }
 };
@@ -5291,11 +5344,14 @@ struct PositionUpdateBuilder {
   void add_short_quantity(double short_quantity) {
     fbb_.AddElement<double>(PositionUpdate::VT_SHORT_QUANTITY, short_quantity, std::numeric_limits<double>::quiet_NaN());
   }
-  void add_long_quantity_begin(double long_quantity_begin) {
-    fbb_.AddElement<double>(PositionUpdate::VT_LONG_QUANTITY_BEGIN, long_quantity_begin, std::numeric_limits<double>::quiet_NaN());
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(PositionUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
   }
-  void add_short_quantity_begin(double short_quantity_begin) {
-    fbb_.AddElement<double>(PositionUpdate::VT_SHORT_QUANTITY_BEGIN, short_quantity_begin, std::numeric_limits<double>::quiet_NaN());
+  void add_exchange_time_utc(int64_t exchange_time_utc) {
+    fbb_.AddElement<int64_t>(PositionUpdate::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
+  }
+  void add_sending_time_utc(int64_t sending_time_utc) {
+    fbb_.AddElement<int64_t>(PositionUpdate::VT_SENDING_TIME_UTC, sending_time_utc, 0);
   }
   explicit PositionUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5317,11 +5373,12 @@ inline ::flatbuffers::Offset<PositionUpdate> CreatePositionUpdate(
     ::flatbuffers::Offset<::flatbuffers::String> external_account = 0,
     double long_quantity = std::numeric_limits<double>::quiet_NaN(),
     double short_quantity = std::numeric_limits<double>::quiet_NaN(),
-    double long_quantity_begin = std::numeric_limits<double>::quiet_NaN(),
-    double short_quantity_begin = std::numeric_limits<double>::quiet_NaN()) {
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    int64_t exchange_time_utc = 0,
+    int64_t sending_time_utc = 0) {
   PositionUpdateBuilder builder_(_fbb);
-  builder_.add_short_quantity_begin(short_quantity_begin);
-  builder_.add_long_quantity_begin(long_quantity_begin);
+  builder_.add_sending_time_utc(sending_time_utc);
+  builder_.add_exchange_time_utc(exchange_time_utc);
   builder_.add_short_quantity(short_quantity);
   builder_.add_long_quantity(long_quantity);
   builder_.add_external_account(external_account);
@@ -5329,6 +5386,7 @@ inline ::flatbuffers::Offset<PositionUpdate> CreatePositionUpdate(
   builder_.add_exchange(exchange);
   builder_.add_account(account);
   builder_.add_stream_id(stream_id);
+  builder_.add_update_type(update_type);
   return builder_.Finish();
 }
 
@@ -5346,8 +5404,9 @@ inline ::flatbuffers::Offset<PositionUpdate> CreatePositionUpdateDirect(
     const char *external_account = nullptr,
     double long_quantity = std::numeric_limits<double>::quiet_NaN(),
     double short_quantity = std::numeric_limits<double>::quiet_NaN(),
-    double long_quantity_begin = std::numeric_limits<double>::quiet_NaN(),
-    double short_quantity_begin = std::numeric_limits<double>::quiet_NaN()) {
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    int64_t exchange_time_utc = 0,
+    int64_t sending_time_utc = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -5361,8 +5420,9 @@ inline ::flatbuffers::Offset<PositionUpdate> CreatePositionUpdateDirect(
       external_account__,
       long_quantity,
       short_quantity,
-      long_quantity_begin,
-      short_quantity_begin);
+      update_type,
+      exchange_time_utc,
+      sending_time_utc);
 }
 
 struct RateLimitTrigger FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -6528,7 +6588,8 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_FILLS = 26,
     VT_ROUTING_ID = 28,
     VT_UPDATE_TYPE = 30,
-    VT_USER = 32
+    VT_USER = 32,
+    VT_SENDING_TIME_UTC = 34
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -6575,6 +6636,9 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const ::flatbuffers::String *user() const {
     return GetPointer<const ::flatbuffers::String *>(VT_USER);
   }
+  int64_t sending_time_utc() const {
+    return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -6601,6 +6665,7 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
            VerifyOffset(verifier, VT_USER) &&
            verifier.VerifyString(user()) &&
+           VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            verifier.EndTable();
   }
 };
@@ -6654,6 +6719,9 @@ struct TradeUpdateBuilder {
   void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
     fbb_.AddOffset(TradeUpdate::VT_USER, user);
   }
+  void add_sending_time_utc(int64_t sending_time_utc) {
+    fbb_.AddElement<int64_t>(TradeUpdate::VT_SENDING_TIME_UTC, sending_time_utc, 0);
+  }
   explicit TradeUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -6681,8 +6749,10 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdate(
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Fill>>> fills = 0,
     ::flatbuffers::Offset<::flatbuffers::String> routing_id = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
-    ::flatbuffers::Offset<::flatbuffers::String> user = 0) {
+    ::flatbuffers::Offset<::flatbuffers::String> user = 0,
+    int64_t sending_time_utc = 0) {
   TradeUpdateBuilder builder_(_fbb);
+  builder_.add_sending_time_utc(sending_time_utc);
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
   builder_.add_user(user);
@@ -6722,7 +6792,8 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
     const std::vector<::flatbuffers::Offset<roq::fbs::Fill>> *fills = nullptr,
     const char *routing_id = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
-    const char *user = nullptr) {
+    const char *user = nullptr,
+    int64_t sending_time_utc = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -6747,7 +6818,8 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
       fills__,
       routing_id__,
       update_type,
-      user__);
+      user__,
+      sending_time_utc);
 }
 
 struct Handshake FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

@@ -20,6 +20,7 @@ struct ROQ_PUBLIC TradeUpdate final {
   std::string_view external_order_id;
   std::span<Fill> fills;
   UpdateType update_type = {};
+  std::chrono::nanoseconds sending_time_utc = {};
 };
 
 }  // namespace oms
@@ -49,7 +50,8 @@ struct fmt::formatter<roq::oms::TradeUpdate> {
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(fills=[{}], )"
-        R"(update_type={})"
+        R"(update_type={}, )"
+        R"(sending_time_utc={})"
         R"(}})"_cf,
         value.account,
         value.order_id,
@@ -62,6 +64,7 @@ struct fmt::formatter<roq::oms::TradeUpdate> {
         value.external_account,
         value.external_order_id,
         fmt::join(value.fills, ", "sv),
-        value.update_type);
+        value.update_type,
+        value.sending_time_utc);
   }
 };

@@ -6,26 +6,32 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/chrono.h>
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
+#include <chrono>
 #include <string_view>
 
 #include "roq/event.hpp"
 #include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/trace.hpp"
+#include "roq/update_type.hpp"
 
 namespace roq {
 
 //! Update relating to available funds
 struct ROQ_PUBLIC FundsUpdate final {
-  uint16_t stream_id = {};            //!< Stream identifier
-  std::string_view account;           //!< Account name
-  std::string_view currency;          //!< Currency
-  double balance = NaN;               //!< Current funds
-  double hold = NaN;                  //!< Funds on hold
-  std::string_view external_account;  //!< External account name
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view account;                         //!< Account name
+  std::string_view currency;                        //!< Currency
+  double balance = NaN;                             //!< Current funds
+  double hold = NaN;                                //!< Funds on hold
+  std::string_view external_account;                //!< External account name
+  UpdateType update_type = {};                      //!< Update type
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
 };
 
 template <>
@@ -54,14 +60,20 @@ struct fmt::formatter<roq::FundsUpdate> {
         R"(currency="{}", )"
         R"(balance={}, )"
         R"(hold={}, )"
-        R"(external_account="{}")"
+        R"(external_account="{}", )"
+        R"(update_type={}, )"
+        R"(exchange_time_utc={}, )"
+        R"(sending_time_utc={})"
         R"(}})"_cf,
         value.stream_id,
         value.account,
         value.currency,
         value.balance,
         value.hold,
-        value.external_account);
+        value.external_account,
+        value.update_type,
+        value.exchange_time_utc,
+        value.sending_time_utc);
   }
 };
 

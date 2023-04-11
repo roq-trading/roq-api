@@ -39,4 +39,5 @@ table OrderUpdate {
   update_type:UpdateType;
   execution_instructions:uint32;
   user:string;
+  sending_time_utc:int64;
 }

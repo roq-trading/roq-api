@@ -20,4 +20,5 @@ table TradeUpdate {
   routing_id:string;
   update_type:UpdateType;
   user:string;
+  sending_time_utc:int64;
 }

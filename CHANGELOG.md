@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Review `PositionUpdate` and `FundsUpdate` to better correlate with `OrderUpdate` and `TradeUpdate` (#340)
 * `cache::MarketByOrder::OrderUpdate` now includes the final update action
 * `StreamStatus` should include connection details (#337)
 * [BREAKING CHANGE] `CreateOrder::request_template` (renamed from `order_template`)

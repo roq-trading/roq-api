@@ -20,8 +20,7 @@ struct Position final {
     external_account.clear();
     long_quantity = NaN;
     short_quantity = NaN;
-    long_quantity_begin = NaN;
-    short_quantity_begin = NaN;
+    exchange_time_utc = {};
   }
 
   [[nodiscard]] bool operator()(PositionUpdate const &position_update) {
@@ -30,8 +29,7 @@ struct Position final {
     dirty |= utils::update_if_not_empty(external_account, position_update.external_account);
     dirty |= utils::update_if_not_empty(long_quantity, position_update.long_quantity);
     dirty |= utils::update_if_not_empty(short_quantity, position_update.short_quantity);
-    dirty |= utils::update_if_not_empty(long_quantity_begin, position_update.long_quantity_begin);
-    dirty |= utils::update_if_not_empty(short_quantity_begin, position_update.short_quantity_begin);
+    dirty |= utils::update_if_not_empty(exchange_time_utc, position_update.exchange_time_utc);
     return dirty;
   }
 
@@ -45,8 +43,9 @@ struct Position final {
         .external_account = external_account,
         .long_quantity = long_quantity,
         .short_quantity = short_quantity,
-        .long_quantity_begin = long_quantity_begin,
-        .short_quantity_begin = short_quantity_begin,
+        .update_type = UpdateType::SNAPSHOT,
+        .exchange_time_utc = exchange_time_utc,
+        .sending_time_utc = {},
     };
   }
 
@@ -55,8 +54,7 @@ struct Position final {
   ExternalAccount external_account;
   double long_quantity = NaN;
   double short_quantity = NaN;
-  double long_quantity_begin = NaN;
-  double short_quantity_begin = NaN;
+  std::chrono::nanoseconds exchange_time_utc = {};
 };
 
 }  // namespace cache

@@ -34,14 +34,17 @@
       "comment": "Current short position"
     },
     {
-      "name": "long_quantity_begin",
-      "type": "double",
-      "comment": "Long position at period begin"
+      "name": "update_type",
+      "type": "UpdateType",
+      "comment": "Update type"
     },
     {
-      "name": "short_quantity_begin",
-      "type": "double",
-      "comment": "Short position at period begin"
+      "name": "exchange_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
+      "name": "sending_time_utc",
+      "type": "std::chrono::nanoseconds"
     }
   ]
 }

@@ -7,4 +7,7 @@ table FundsUpdate {
   balance:double = nan;
   hold:double = nan;
   external_account:string;
+  update_type:UpdateType;
+  exchange_time_utc:int64;
+  sending_time_utc:int64;
 }

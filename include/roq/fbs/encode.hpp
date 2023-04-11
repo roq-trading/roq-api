@@ -535,7 +535,8 @@ auto encode(B &builder, roq::OrderUpdate const &value) {
       value.max_accepted_version,
       encode(builder, value.update_type),
       value.execution_instructions.get(),
-      encode(builder, value.user));
+      encode(builder, value.user),
+      encode(builder, value.sending_time_utc));
 }
 
 template <typename B>
@@ -556,7 +557,8 @@ auto encode(B &builder, roq::TradeUpdate const &value) {
       encode(builder, value.fills),
       encode(builder, value.routing_id),
       encode(builder, value.update_type),
-      encode(builder, value.user));
+      encode(builder, value.user),
+      encode(builder, value.sending_time_utc));
 }
 
 template <typename B>
@@ -570,8 +572,9 @@ auto encode(B &builder, roq::PositionUpdate const &value) {
       encode(builder, value.external_account),
       value.long_quantity,
       value.short_quantity,
-      value.long_quantity_begin,
-      value.short_quantity_begin);
+      encode(builder, value.update_type),
+      encode(builder, value.exchange_time_utc),
+      encode(builder, value.sending_time_utc));
 }
 
 template <typename B>
@@ -583,7 +586,10 @@ auto encode(B &builder, roq::FundsUpdate const &value) {
       encode(builder, value.currency),
       value.balance,
       value.hold,
-      encode(builder, value.external_account));
+      encode(builder, value.external_account),
+      encode(builder, value.update_type),
+      encode(builder, value.exchange_time_utc),
+      encode(builder, value.sending_time_utc));
 }
 
 template <typename B>

@@ -61,6 +61,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   uint32_t max_response_version = {};                 //!< Last response version
   uint32_t max_accepted_version = {};                 //!< Last accepted version
   UpdateType update_type = {};                        //!< Update type
+  std::chrono::nanoseconds sending_time_utc = {};     //!< Exchange sending timestamp (UTC)
   std::string_view user;                              //!< User name (optional, only relevant for drop-copy)
 };
 
@@ -115,6 +116,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(max_response_version={}, )"
         R"(max_accepted_version={}, )"
         R"(update_type={}, )"
+        R"(sending_time_utc={}, )"
         R"(user="{}")"
         R"(}})"_cf,
         value.stream_id,
@@ -147,6 +149,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.max_response_version,
         value.max_accepted_version,
         value.update_type,
+        value.sending_time_utc,
         value.user);
   }
 };

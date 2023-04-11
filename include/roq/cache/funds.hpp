@@ -20,6 +20,7 @@ struct Funds final {
     balance = NaN;
     hold = NaN;
     external_account.clear();
+    exchange_time_utc = {};
   }
 
   [[nodiscard]] bool operator()(FundsUpdate const &funds_update) {
@@ -28,6 +29,7 @@ struct Funds final {
     dirty |= utils::update_if_not_empty(balance, funds_update.balance);
     dirty |= utils::update_if_not_empty(hold, funds_update.hold);
     dirty |= utils::update_if_not_empty(external_account, funds_update.external_account);
+    dirty |= utils::update_if_not_empty(exchange_time_utc, funds_update.exchange_time_utc);
     return dirty;
   }
 
@@ -40,6 +42,9 @@ struct Funds final {
         .balance = balance,
         .hold = hold,
         .external_account = external_account,
+        .update_type = UpdateType::SNAPSHOT,
+        .exchange_time_utc = exchange_time_utc,
+        .sending_time_utc = {},
     };
   }
 
@@ -48,6 +53,7 @@ struct Funds final {
   double balance = NaN;
   double hold = NaN;
   ExternalAccount external_account;
+  std::chrono::nanoseconds exchange_time_utc = {};
 };
 
 }  // namespace cache

@@ -63,6 +63,10 @@
       "comment": "Update type"
     },
     {
+      "name": "sending_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
       "name": "user",
       "type": "std::string_view",
       "comment": "User name (optional, only relevant for drop-copy)"

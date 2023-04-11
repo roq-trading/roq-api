@@ -7,15 +7,18 @@ table PositionUpdate {
   account:string;
   exchange:string;
   symbol:string;
-  side:Side (deprecated);
-  position:double = nan (deprecated);
-  last_trade_id:uint32 (deprecated);
-  position_cost:double = nan (deprecated);
-  position_yesterday:double = nan (deprecated);
-  position_cost_yesterday:double = nan (deprecated);
+  zzz_side:Side (deprecated);
+  zzz_position:double = nan (deprecated);
+  zzz_last_trade_id:uint32 (deprecated);
+  zzz_position_cost:double = nan (deprecated);
+  zzz_position_yesterday:double = nan (deprecated);
+  zzz_position_cost_yesterday:double = nan (deprecated);
   external_account:string;
   long_quantity:double = nan;
   short_quantity:double = nan;
-  long_quantity_begin:double = nan;
-  short_quantity_begin:double = nan;
+  zzz_long_quantity_begin:double = nan (deprecated);
+  zzz_short_quantity_begin:double = nan (deprecated);
+  update_type:UpdateType;
+  exchange_time_utc:int64;
+  sending_time_utc:int64;
 }

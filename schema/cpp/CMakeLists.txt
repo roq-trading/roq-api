@@ -44,6 +44,8 @@ set(SOURCES
     origin.json
     parameter.json
     parameters_update.json
+    portfolio_update.json
+    position.json
     position_effect.json
     position_update.json
     priority.json

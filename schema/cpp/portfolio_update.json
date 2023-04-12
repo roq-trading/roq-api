@@ -1,0 +1,22 @@
+{
+  "name": "PortfolioUpdate",
+  "type": "message",
+  "comment": "Portfolio update  !!! EXPERIMENTAL !!!",
+  "values": [
+    {
+      "name": "user",
+      "type": "std::string_view",
+      "comment": "User"
+    },
+    {
+      "name": "positions",
+      "type": "std::span<Position>",
+      "comment": "Position updates"
+    },
+    {
+      "name": "update_type",
+      "type": "UpdateType",
+      "comment": "Update type"
+    }
+  ]
+}

@@ -58,7 +58,7 @@ struct ROQ_PUBLIC Handler {
   virtual void operator()(Event<OrderUpdate> const &) {}
   virtual void operator()(Event<TradeUpdate> const &) {}
 
-  // account management
+  // account management (exchange)
   virtual void operator()(Event<PositionUpdate> const &) {}
   virtual void operator()(Event<FundsUpdate> const &) {}
 
@@ -70,6 +70,9 @@ struct ROQ_PUBLIC Handler {
 
   // parameters
   virtual void operator()(Event<ParametersUpdate> const &) {}
+
+  // position manager (service)
+  virtual void operator()(Event<PortfolioUpdate> const &) {}
 
   // metrics
   virtual void operator()(metrics::Writer &) const {}

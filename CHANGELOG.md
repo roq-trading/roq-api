@@ -16,6 +16,10 @@ All notable changes will be documented in this file.
 
 * Drop `OrderUpdate.order_template` (#330)
 
+### Added
+
+* `PortfolioUpdate` and `Position` to support a position manager (#343)
+
 ## 0.9.3 &ndash; 2023-03-20
 
 ### Added

@@ -41,6 +41,9 @@ struct ROQ_PUBLIC Dispatcher {
   //! Broadcast custom metrics
   virtual void send(CustomMetrics const &, uint8_t source) = 0;
 
+  //! Send portfolio update (position manager, only)
+  virtual void send(PortfolioUpdate const &, uint8_t source) = 0;
+
   //! Useful to communicate between threads
   virtual void enqueue(CustomMessage const &) = 0;
 

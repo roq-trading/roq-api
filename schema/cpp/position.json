@@ -1,0 +1,29 @@
+{
+  "name": "Position",
+  "type": "message",
+  "comment": "Position  !!! EXPERIMENTAL !!!",
+  "values": [
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "exchange",
+      "type": "std::string_view"
+    },
+    {
+      "name": "symbol",
+      "type": "std::string_view"
+    },
+    {
+      "name": "long_quantity",
+      "type": "double",
+      "comment": "Quantity (long)"
+    },
+    {
+      "name": "short_quantity",
+      "type": "double",
+      "comment": "Quantity (short)"
+    }
+  ]
+}

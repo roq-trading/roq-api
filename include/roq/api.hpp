@@ -50,6 +50,7 @@
 #include "roq/mbp_update.hpp"
 #include "roq/measurement.hpp"
 #include "roq/parameter.hpp"
+#include "roq/position.hpp"
 #include "roq/statistics.hpp"
 #include "roq/trade.hpp"
 
@@ -87,6 +88,7 @@
 #include "roq/order_ack.hpp"
 #include "roq/order_update.hpp"
 #include "roq/parameters_update.hpp"
+#include "roq/portfolio_update.hpp"
 #include "roq/position_update.hpp"
 #include "roq/rate_limit_trigger.hpp"
 #include "roq/reference_data.hpp"

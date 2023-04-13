@@ -643,9 +643,10 @@ template <typename B>
 auto encode(B &builder, roq::PortfolioUpdate const &value) {
   return CreatePortfolioUpdate(
       builder,
-      encode(builder, value.user),
       encode(builder, value.positions),
-      encode(builder, value.update_type));
+      encode(builder, value.update_type),
+      encode(builder, value.exchange_time_utc),
+      encode(builder, value.user));
 }
 
 // events

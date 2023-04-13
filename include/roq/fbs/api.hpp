@@ -5380,27 +5380,32 @@ struct PortfolioUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PortfolioUpdateBuilder Builder;
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_USER = 4,
-    VT_POSITIONS = 6,
-    VT_UPDATE_TYPE = 8
+    VT_POSITIONS = 4,
+    VT_UPDATE_TYPE = 6,
+    VT_EXCHANGE_TIME_UTC = 8,
+    VT_USER = 10
   };
-  const ::flatbuffers::String *user() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_USER);
-  }
   const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>> *positions() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>> *>(VT_POSITIONS);
   }
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
+  int64_t exchange_time_utc() const {
+    return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0);
+  }
+  const ::flatbuffers::String *user() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_USER);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_USER) &&
-           verifier.VerifyString(user()) &&
            VerifyOffset(verifier, VT_POSITIONS) &&
            verifier.VerifyVector(positions()) &&
            verifier.VerifyVectorOfTables(positions()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyString(user()) &&
            verifier.EndTable();
   }
 };
@@ -5409,14 +5414,17 @@ struct PortfolioUpdateBuilder {
   typedef PortfolioUpdate Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
-    fbb_.AddOffset(PortfolioUpdate::VT_USER, user);
-  }
   void add_positions(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>>> positions) {
     fbb_.AddOffset(PortfolioUpdate::VT_POSITIONS, positions);
   }
   void add_update_type(roq::fbs::UpdateType update_type) {
     fbb_.AddElement<uint8_t>(PortfolioUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
+  void add_exchange_time_utc(int64_t exchange_time_utc) {
+    fbb_.AddElement<int64_t>(PortfolioUpdate::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
+  }
+  void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
+    fbb_.AddOffset(PortfolioUpdate::VT_USER, user);
   }
   explicit PortfolioUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -5431,12 +5439,14 @@ struct PortfolioUpdateBuilder {
 
 inline ::flatbuffers::Offset<PortfolioUpdate> CreatePortfolioUpdate(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::String> user = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>>> positions = 0,
-    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    int64_t exchange_time_utc = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> user = 0) {
   PortfolioUpdateBuilder builder_(_fbb);
-  builder_.add_positions(positions);
+  builder_.add_exchange_time_utc(exchange_time_utc);
   builder_.add_user(user);
+  builder_.add_positions(positions);
   builder_.add_update_type(update_type);
   return builder_.Finish();
 }
@@ -5448,16 +5458,18 @@ struct PortfolioUpdate::Traits {
 
 inline ::flatbuffers::Offset<PortfolioUpdate> CreatePortfolioUpdateDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    const char *user = nullptr,
     const std::vector<::flatbuffers::Offset<roq::fbs::Position>> *positions = nullptr,
-    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
-  auto user__ = user ? _fbb.CreateString(user) : 0;
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    int64_t exchange_time_utc = 0,
+    const char *user = nullptr) {
   auto positions__ = positions ? _fbb.CreateVector<::flatbuffers::Offset<roq::fbs::Position>>(*positions) : 0;
+  auto user__ = user ? _fbb.CreateString(user) : 0;
   return roq::fbs::CreatePortfolioUpdate(
       _fbb,
-      user__,
       positions__,
-      update_type);
+      update_type,
+      exchange_time_utc,
+      user__);
 }
 
 struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

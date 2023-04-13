@@ -4,11 +4,6 @@
   "comment": "Portfolio update  !!! EXPERIMENTAL !!!",
   "values": [
     {
-      "name": "user",
-      "type": "std::string_view",
-      "comment": "User"
-    },
-    {
       "name": "positions",
       "type": "std::span<Position>",
       "comment": "Position updates"
@@ -17,6 +12,15 @@
       "name": "update_type",
       "type": "UpdateType",
       "comment": "Update type"
+    },
+    {
+      "name": "exchange_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
+      "name": "user",
+      "type": "std::string_view",
+      "comment": "User"
     }
   ]
 }

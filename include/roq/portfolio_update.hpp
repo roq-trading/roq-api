@@ -6,9 +6,11 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/chrono.h>
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
+#include <chrono>
 #include <span>
 #include <string_view>
 
@@ -22,9 +24,10 @@ namespace roq {
 
 //! Portfolio update  !!! EXPERIMENTAL !!!
 struct ROQ_PUBLIC PortfolioUpdate final {
-  std::string_view user;          //!< User
-  std::span<Position> positions;  //!< Position updates
-  UpdateType update_type = {};    //!< Update type
+  std::span<Position> positions;                    //!< Position updates
+  UpdateType update_type = {};                      //!< Update type
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  std::string_view user;                            //!< User
 };
 
 template <>
@@ -48,13 +51,15 @@ struct fmt::formatter<roq::PortfolioUpdate> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(user="{}", )"
         R"(positions=[{}], )"
-        R"(update_type={})"
+        R"(update_type={}, )"
+        R"(exchange_time_utc={}, )"
+        R"(user="{}")"
         R"(}})"_cf,
-        value.user,
         fmt::join(value.positions, ", "sv),
-        value.update_type);
+        value.update_type,
+        value.exchange_time_utc,
+        value.user);
   }
 };
 

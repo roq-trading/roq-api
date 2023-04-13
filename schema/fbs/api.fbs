@@ -38,6 +38,7 @@ include "mbo_update.fbs";
 include "mbp_update.fbs";
 include "measurement.fbs";
 include "parameter.fbs";
+include "position.fbs";
 include "statistics.fbs";
 include "trade.fbs";
 
@@ -61,6 +62,7 @@ include "modify_order.fbs";
 include "order_ack.fbs";
 include "order_update.fbs";
 include "parameters_update.fbs";
+include "portfolio_update.fbs";
 include "position_update.fbs";
 include "rate_limit_trigger.fbs";
 include "reference_data.fbs";
@@ -143,6 +145,7 @@ union Message {
   CustomMetrics,
   CustomMetricsUpdate,
   ParametersUpdate,
+  PortfolioUpdate,
 }
 
 table SourceInfo {

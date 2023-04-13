@@ -57,6 +57,7 @@ template<> struct maps_to<roq::Fill> final { using type = fbs::Fill; };
 template<> struct maps_to<roq::Statistics> final { using type = fbs::Statistics; };
 template<> struct maps_to<roq::Measurement> final { using type = fbs::Measurement; };
 template<> struct maps_to<roq::Parameter> final { using type = fbs::Parameter; };
+template<> struct maps_to<roq::Position> final { using type = fbs::Position; };
 // structs
 template <> struct maps_to<roq::DownloadBegin> { static constexpr auto value = Message::DownloadBegin; };
 template <> struct maps_to<roq::DownloadEnd> { static constexpr auto value = Message::DownloadEnd; };
@@ -84,6 +85,7 @@ template <> struct maps_to<roq::FundsUpdate> { static constexpr auto value = Mes
 template <> struct maps_to<roq::CustomMetrics> { static constexpr auto value = Message::CustomMetrics; };
 template <> struct maps_to<roq::CustomMetricsUpdate> { static constexpr auto value = Message::CustomMetricsUpdate; };
 template <> struct maps_to<roq::ParametersUpdate> { static constexpr auto value = Message::ParametersUpdate; };
+template <> struct maps_to<roq::PortfolioUpdate> { static constexpr auto value = Message::PortfolioUpdate; };
 }
 
 // std::chrono::duration
@@ -161,6 +163,17 @@ auto encode(B &builder, roq::Parameter const &value) {
       encode(builder, static_cast<std::string_view>(value.exchange)),
       encode(builder, static_cast<std::string_view>(value.symbol)),
       encode(builder, static_cast<std::string_view>(value.value)));
+}
+
+template <typename B>
+auto encode(B &builder, roq::Position const &value) {
+  return CreatePosition(
+      builder,
+      encode(builder, static_cast<std::string_view>(value.account)),
+      encode(builder, static_cast<std::string_view>(value.exchange)),
+      encode(builder, static_cast<std::string_view>(value.symbol)),
+      value.long_quantity,
+      value.short_quantity);
 }
 
 template <typename B>
@@ -624,6 +637,15 @@ auto encode(B &builder, roq::ParametersUpdate const &value) {
       encode(builder, value.parameters),
       encode(builder, value.update_type),
       encode(builder, value.user));
+}
+
+template <typename B>
+auto encode(B &builder, roq::PortfolioUpdate const &value) {
+  return CreatePortfolioUpdate(
+      builder,
+      encode(builder, value.user),
+      encode(builder, value.positions),
+      encode(builder, value.update_type));
 }
 
 // events

@@ -37,7 +37,9 @@ set(SOURCES
     origin.fbs
     parameter.fbs
     parameters_update.fbs
+    portfolio_update.fbs
     position_effect.fbs
+    position.fbs
     position_update.fbs
     priority.fbs
     protocol.fbs

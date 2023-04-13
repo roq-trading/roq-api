@@ -49,6 +49,9 @@ struct ROQ_PUBLIC EventLogMultiplexer {
 
     // parameters
     virtual void operator()(Event<ParametersUpdate> const &) = 0;
+
+    // position manager
+    virtual void operator()(Event<PortfolioUpdate> const &) = 0;
   };
 
   virtual ~EventLogMultiplexer() {}

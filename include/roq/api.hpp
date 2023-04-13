@@ -154,5 +154,6 @@ static_assert(sizeof(Measurement) == 16);
 // we don't care so much (low frequency) -- just keep a handle on the size
 
 static_assert(sizeof(Parameter) == 176);
+static_assert(sizeof(Position) == 128);
 
 }  // namespace roq

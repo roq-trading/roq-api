@@ -1,0 +1,9 @@
+include "position.fbs";
+
+namespace roq.fbs;
+
+table PortfolioUpdate {
+  user:string;
+  positions:[Position];
+  update_type:UpdateType;
+}

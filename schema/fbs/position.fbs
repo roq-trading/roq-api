@@ -1,0 +1,9 @@
+namespace roq.fbs;
+
+table Position {
+  account:string;
+  exchange:string;
+  symbol:string;
+  long_quantity:double;
+  short_quantity:double;
+}

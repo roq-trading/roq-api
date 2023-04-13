@@ -5,15 +5,15 @@
   "values": [
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "Account"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "Exchange"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "Symbol"
     },
     {
       "name": "long_quantity",

@@ -9,20 +9,19 @@
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
-#include <string_view>
-
 #include "roq/event.hpp"
 #include "roq/name.hpp"
 #include "roq/numbers.hpp"
+#include "roq/string_types.hpp"
 #include "roq/trace.hpp"
 
 namespace roq {
 
 //! Position  !!! EXPERIMENTAL !!!
 struct ROQ_PUBLIC Position final {
-  std::string_view account;     //!< Account name
-  std::string_view exchange;    //!< Exchange
-  std::string_view symbol;      //!< Symbol
+  Account account;              //!< Account name
+  Exchange exchange;            //!< Exchange
+  Symbol symbol;                //!< Symbol
   double long_quantity = NaN;   //!< Quantity (long)
   double short_quantity = NaN;  //!< Quantity (short)
 };

@@ -34,6 +34,9 @@ struct MeasurementBuilder;
 struct Parameter;
 struct ParameterBuilder;
 
+struct Position;
+struct PositionBuilder;
+
 struct Statistics;
 struct StatisticsBuilder;
 
@@ -93,6 +96,9 @@ struct OrderUpdateBuilder;
 
 struct ParametersUpdate;
 struct ParametersUpdateBuilder;
+
+struct PortfolioUpdate;
+struct PortfolioUpdateBuilder;
 
 struct PositionUpdate;
 struct PositionUpdateBuilder;
@@ -1532,11 +1538,12 @@ enum class Message : uint8_t {
   CustomMetrics = 29,
   CustomMetricsUpdate = 30,
   ParametersUpdate = 31,
+  PortfolioUpdate = 32,
   MIN = NONE,
-  MAX = ParametersUpdate
+  MAX = PortfolioUpdate
 };
 
-inline const Message (&EnumValuesMessage())[32] {
+inline const Message (&EnumValuesMessage())[33] {
   static const Message values[] = {
     Message::NONE,
     Message::Handshake,
@@ -1569,13 +1576,14 @@ inline const Message (&EnumValuesMessage())[32] {
     Message::FundsUpdate,
     Message::CustomMetrics,
     Message::CustomMetricsUpdate,
-    Message::ParametersUpdate
+    Message::ParametersUpdate,
+    Message::PortfolioUpdate
   };
   return values;
 }
 
 inline const char * const *EnumNamesMessage() {
-  static const char * const names[33] = {
+  static const char * const names[34] = {
     "NONE",
     "Handshake",
     "HandshakeAck",
@@ -1608,13 +1616,14 @@ inline const char * const *EnumNamesMessage() {
     "CustomMetrics",
     "CustomMetricsUpdate",
     "ParametersUpdate",
+    "PortfolioUpdate",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMessage(Message e) {
-  if (::flatbuffers::IsOutRange(e, Message::NONE, Message::ParametersUpdate)) return "";
+  if (::flatbuffers::IsOutRange(e, Message::NONE, Message::PortfolioUpdate)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMessage()[index];
 }
@@ -1745,6 +1754,10 @@ template<> struct MessageTraits<roq::fbs::CustomMetricsUpdate> {
 
 template<> struct MessageTraits<roq::fbs::ParametersUpdate> {
   static const Message enum_value = Message::ParametersUpdate;
+};
+
+template<> struct MessageTraits<roq::fbs::PortfolioUpdate> {
+  static const Message enum_value = Message::PortfolioUpdate;
 };
 
 bool VerifyMessage(::flatbuffers::Verifier &verifier, const void *obj, Message type);
@@ -2326,6 +2339,115 @@ inline ::flatbuffers::Offset<Parameter> CreateParameterDirect(
       exchange__,
       symbol__,
       value__);
+}
+
+struct Position FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PositionBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ACCOUNT = 4,
+    VT_EXCHANGE = 6,
+    VT_SYMBOL = 8,
+    VT_LONG_QUANTITY = 10,
+    VT_SHORT_QUANTITY = 12
+  };
+  const ::flatbuffers::String *account() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
+  }
+  const ::flatbuffers::String *exchange() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_EXCHANGE);
+  }
+  const ::flatbuffers::String *symbol() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_SYMBOL);
+  }
+  double long_quantity() const {
+    return GetField<double>(VT_LONG_QUANTITY, 0.0);
+  }
+  double short_quantity() const {
+    return GetField<double>(VT_SHORT_QUANTITY, 0.0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) &&
+           VerifyOffset(verifier, VT_EXCHANGE) &&
+           verifier.VerifyString(exchange()) &&
+           VerifyOffset(verifier, VT_SYMBOL) &&
+           verifier.VerifyString(symbol()) &&
+           VerifyField<double>(verifier, VT_LONG_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_SHORT_QUANTITY, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct PositionBuilder {
+  typedef Position Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
+    fbb_.AddOffset(Position::VT_ACCOUNT, account);
+  }
+  void add_exchange(::flatbuffers::Offset<::flatbuffers::String> exchange) {
+    fbb_.AddOffset(Position::VT_EXCHANGE, exchange);
+  }
+  void add_symbol(::flatbuffers::Offset<::flatbuffers::String> symbol) {
+    fbb_.AddOffset(Position::VT_SYMBOL, symbol);
+  }
+  void add_long_quantity(double long_quantity) {
+    fbb_.AddElement<double>(Position::VT_LONG_QUANTITY, long_quantity, 0.0);
+  }
+  void add_short_quantity(double short_quantity) {
+    fbb_.AddElement<double>(Position::VT_SHORT_QUANTITY, short_quantity, 0.0);
+  }
+  explicit PositionBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<Position> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<Position>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<Position> CreatePosition(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> exchange = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> symbol = 0,
+    double long_quantity = 0.0,
+    double short_quantity = 0.0) {
+  PositionBuilder builder_(_fbb);
+  builder_.add_short_quantity(short_quantity);
+  builder_.add_long_quantity(long_quantity);
+  builder_.add_symbol(symbol);
+  builder_.add_exchange(exchange);
+  builder_.add_account(account);
+  return builder_.Finish();
+}
+
+struct Position::Traits {
+  using type = Position;
+  static auto constexpr Create = CreatePosition;
+};
+
+inline ::flatbuffers::Offset<Position> CreatePositionDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *account = nullptr,
+    const char *exchange = nullptr,
+    const char *symbol = nullptr,
+    double long_quantity = 0.0,
+    double short_quantity = 0.0) {
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
+  auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
+  return roq::fbs::CreatePosition(
+      _fbb,
+      account__,
+      exchange__,
+      symbol__,
+      long_quantity,
+      short_quantity);
 }
 
 struct Statistics FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -5254,6 +5376,90 @@ inline ::flatbuffers::Offset<ParametersUpdate> CreateParametersUpdateDirect(
       user__);
 }
 
+struct PortfolioUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PortfolioUpdateBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_USER = 4,
+    VT_POSITIONS = 6,
+    VT_UPDATE_TYPE = 8
+  };
+  const ::flatbuffers::String *user() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_USER);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>> *positions() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>> *>(VT_POSITIONS);
+  }
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyString(user()) &&
+           VerifyOffset(verifier, VT_POSITIONS) &&
+           verifier.VerifyVector(positions()) &&
+           verifier.VerifyVectorOfTables(positions()) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct PortfolioUpdateBuilder {
+  typedef PortfolioUpdate Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
+    fbb_.AddOffset(PortfolioUpdate::VT_USER, user);
+  }
+  void add_positions(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>>> positions) {
+    fbb_.AddOffset(PortfolioUpdate::VT_POSITIONS, positions);
+  }
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(PortfolioUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
+  explicit PortfolioUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PortfolioUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PortfolioUpdate>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PortfolioUpdate> CreatePortfolioUpdate(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> user = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>>> positions = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+  PortfolioUpdateBuilder builder_(_fbb);
+  builder_.add_positions(positions);
+  builder_.add_user(user);
+  builder_.add_update_type(update_type);
+  return builder_.Finish();
+}
+
+struct PortfolioUpdate::Traits {
+  using type = PortfolioUpdate;
+  static auto constexpr Create = CreatePortfolioUpdate;
+};
+
+inline ::flatbuffers::Offset<PortfolioUpdate> CreatePortfolioUpdateDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *user = nullptr,
+    const std::vector<::flatbuffers::Offset<roq::fbs::Position>> *positions = nullptr,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+  auto user__ = user ? _fbb.CreateString(user) : 0;
+  auto positions__ = positions ? _fbb.CreateVector<::flatbuffers::Offset<roq::fbs::Position>>(*positions) : 0;
+  return roq::fbs::CreatePortfolioUpdate(
+      _fbb,
+      user__,
+      positions__,
+      update_type);
+}
+
 struct PositionUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PositionUpdateBuilder Builder;
   struct Traits;
@@ -7423,6 +7629,9 @@ struct Event FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const roq::fbs::ParametersUpdate *message_as_ParametersUpdate() const {
     return message_type() == roq::fbs::Message::ParametersUpdate ? static_cast<const roq::fbs::ParametersUpdate *>(message()) : nullptr;
   }
+  const roq::fbs::PortfolioUpdate *message_as_PortfolioUpdate() const {
+    return message_type() == roq::fbs::Message::PortfolioUpdate ? static_cast<const roq::fbs::PortfolioUpdate *>(message()) : nullptr;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_SOURCE_INFO) &&
@@ -7556,6 +7765,10 @@ template<> inline const roq::fbs::CustomMetricsUpdate *Event::message_as<roq::fb
 
 template<> inline const roq::fbs::ParametersUpdate *Event::message_as<roq::fbs::ParametersUpdate>() const {
   return message_as_ParametersUpdate();
+}
+
+template<> inline const roq::fbs::PortfolioUpdate *Event::message_as<roq::fbs::PortfolioUpdate>() const {
+  return message_as_PortfolioUpdate();
 }
 
 struct EventBuilder {
@@ -7726,6 +7939,10 @@ inline bool VerifyMessage(::flatbuffers::Verifier &verifier, const void *obj, Me
     }
     case Message::ParametersUpdate: {
       auto ptr = reinterpret_cast<const roq::fbs::ParametersUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message::PortfolioUpdate: {
+      auto ptr = reinterpret_cast<const roq::fbs::PortfolioUpdate *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

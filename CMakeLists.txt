@@ -26,6 +26,8 @@ set(CMAKE_FIND_LIBRARY_SUFFIXES .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
 
 # c++
 
+set(CMAKE_CXX_STANDARD 20)
+
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   message("Setting default visibility to hidden")
   set(CMAKE_CXX_VISIBILITY_PRESET hidden)

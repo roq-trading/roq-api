@@ -26,17 +26,9 @@ set(SOURCES
 
 add_executable("${TARGET_NAME}" ${SOURCES})
 
-# dependencies
-
 add_dependencies(${TARGET_NAME} ${PROJECT_NAME}-include-cpp)
 add_dependencies(${TARGET_NAME} ${PROJECT_NAME}-include-fbs)
 
-# target
-
 target_link_libraries("${TARGET_NAME}" PRIVATE absl::hash Catch2::Catch2 fmt::fmt-header-only)
-
-target_compile_features("${TARGET_NAME}" PUBLIC cxx_std_20)
-
-# run
 
 add_test(NAME "${TARGET_NAME}" COMMAND "${TARGET_NAME}")

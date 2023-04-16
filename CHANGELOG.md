@@ -18,6 +18,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `CustomMatrix` (#344)
 * `PortfolioUpdate` and `Position` to support a position manager (#343)
 
 ## 0.9.3 &ndash; 2023-03-20

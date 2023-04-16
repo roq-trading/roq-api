@@ -121,6 +121,7 @@ _string_like_types = {
     "RequestId",
     "Label",
     "MeasurementKey",
+    "MatrixKey",
     "Description",
     "TimeZone",
     "ParameterKey",
@@ -138,6 +139,18 @@ def is_string_like(type_):
             if name == tmp:
                 return True
     return False
+
+
+_scalar_types = {
+    "double",
+}
+
+
+def is_scalar(type_):
+    """test if is scalar"""
+    if type_ is None:
+        return False
+    return type_ in _scalar_types
 
 
 replace = {"private": "private_"}
@@ -306,6 +319,7 @@ def new_spec(path, namespaces, name, comment, spec, type_):
         if (
             (variable["is_array"] or variable["is_mask"])
             and not is_string_like(sub_type(variable["type"]))
+            and not is_scalar(sub_type(variable["type"]))
         )
         or variable["is_enum"]
     }

@@ -84,6 +84,8 @@ template <> struct maps_to<roq::PositionUpdate> { static constexpr auto value = 
 template <> struct maps_to<roq::FundsUpdate> { static constexpr auto value = Message::FundsUpdate; };
 template <> struct maps_to<roq::CustomMetrics> { static constexpr auto value = Message::CustomMetrics; };
 template <> struct maps_to<roq::CustomMetricsUpdate> { static constexpr auto value = Message::CustomMetricsUpdate; };
+template <> struct maps_to<roq::CustomMatrix> { static constexpr auto value = Message::CustomMatrix; };
+template <> struct maps_to<roq::CustomMatrixUpdate> { static constexpr auto value = Message::CustomMatrixUpdate; };
 template <> struct maps_to<roq::ParametersUpdate> { static constexpr auto value = Message::ParametersUpdate; };
 template <> struct maps_to<roq::PortfolioUpdate> { static constexpr auto value = Message::PortfolioUpdate; };
 }
@@ -207,6 +209,21 @@ auto encode(B &builder, roq::Trade const &value) {
 
 namespace detail {
 template <typename U,  typename B, typename T>
+auto encode_double_vector(B &builder, std::span<T> const& value) {
+  using result_type = U;
+  std::vector<result_type> result;
+  auto size = std::size(value);
+  if (size) {
+    result.reserve(size);
+    for (auto const &item : value)
+      result.emplace_back( item);
+  }
+  return builder.CreateVector(result);
+}
+}
+
+namespace detail {
+template <typename U,  typename B, typename T>
 auto encode_string_vector(B &builder, std::span<T> const& value) {
   using result_type = U;
   std::vector<flatbuffers::Offset<result_type>> result;
@@ -225,7 +242,10 @@ auto encode(B &builder, std::span<T> const& value) {
   constexpr bool is_string_like = requires(T const& t) {
     t.operator std::string_view();
   };
-  if constexpr (is_string_like) {
+  if constexpr (std::is_floating_point<T>::value) {
+    using result_type = double;
+    return detail::encode_double_vector<result_type>(builder, value);
+  } else if constexpr (is_string_like) {
     using result_type = flatbuffers::String;
     return detail::encode_string_vector<result_type>(builder, value);
   } else {
@@ -628,6 +648,35 @@ auto encode(B &builder, roq::CustomMetricsUpdate const &value) {
       encode(builder, value.symbol),
       encode(builder, value.measurements),
       encode(builder, value.update_type));
+}
+
+template <typename B>
+auto encode(B &builder, roq::CustomMatrix const &value) {
+  return CreateCustomMatrix(
+      builder,
+      encode(builder, value.label),
+      encode(builder, value.account),
+      encode(builder, value.exchange),
+      encode(builder, value.symbol),
+      encode(builder, value.rows),
+      encode(builder, value.columns),
+      encode(builder, value.data),
+      encode(builder, value.update_type));
+}
+
+template <typename B>
+auto encode(B &builder, roq::CustomMatrixUpdate const &value) {
+  return CreateCustomMatrixUpdate(
+      builder,
+      encode(builder, value.label),
+      encode(builder, value.account),
+      encode(builder, value.exchange),
+      encode(builder, value.symbol),
+      encode(builder, value.rows),
+      encode(builder, value.columns),
+      encode(builder, value.data),
+      encode(builder, value.update_type),
+      encode(builder, value.user));
 }
 
 template <typename B>

@@ -10,6 +10,8 @@ set(SOURCES
     category.fbs
     connection_status.fbs
     create_order.fbs
+    custom_matrix.fbs
+    custom_matrix_update.fbs
     custom_metrics.fbs
     custom_metrics_update.fbs
     download_begin.fbs

@@ -12,6 +12,8 @@ set(SOURCES
     connected.json
     connection_status.json
     create_order.json
+    custom_matrix.json
+    custom_matrix_update.json
     custom_metrics.json
     custom_metrics_update.json
     decimals.json

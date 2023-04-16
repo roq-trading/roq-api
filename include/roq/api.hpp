@@ -73,6 +73,8 @@
 #include "roq/cancel_all_orders.hpp"
 #include "roq/cancel_order.hpp"
 #include "roq/create_order.hpp"
+#include "roq/custom_matrix.hpp"
+#include "roq/custom_matrix_update.hpp"
 #include "roq/custom_metrics.hpp"
 #include "roq/custom_metrics_update.hpp"
 #include "roq/download_begin.hpp"

@@ -47,6 +47,8 @@ include "trade.fbs";
 include "cancel_all_orders.fbs";
 include "cancel_order.fbs";
 include "create_order.fbs";
+include "custom_matrix.fbs";
+include "custom_matrix_update.fbs";
 include "custom_metrics.fbs";
 include "custom_metrics_update.fbs";
 include "download_begin.fbs";
@@ -146,6 +148,8 @@ union Message {
   CustomMetricsUpdate,
   ParametersUpdate,
   PortfolioUpdate,
+  CustomMatrix,
+  CustomMatrixUpdate,
 }
 
 table SourceInfo {

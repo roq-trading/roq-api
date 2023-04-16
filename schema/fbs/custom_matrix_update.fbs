@@ -1,0 +1,15 @@
+include "measurement.fbs";
+
+namespace roq.fbs;
+
+table CustomMatrixUpdate {
+  label:string;
+  account:string;
+  exchange:string;
+  symbol:string;
+  rows:[string];
+  columns:[string];
+  data:[double];
+  update_type:UpdateType;
+  user:string;
+}

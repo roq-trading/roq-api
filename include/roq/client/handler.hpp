@@ -64,6 +64,7 @@ struct ROQ_PUBLIC Handler {
 
   // broadcast
   virtual void operator()(Event<CustomMetricsUpdate> const &) {}
+  virtual void operator()(Event<CustomMatrixUpdate> const &) {}
 
   // ancillary
   virtual void operator()(Event<CustomMessage> const &) {}

@@ -52,6 +52,12 @@ struct CancelOrderBuilder;
 struct CreateOrder;
 struct CreateOrderBuilder;
 
+struct CustomMatrix;
+struct CustomMatrixBuilder;
+
+struct CustomMatrixUpdate;
+struct CustomMatrixUpdateBuilder;
+
 struct CustomMetrics;
 struct CustomMetricsBuilder;
 
@@ -1539,11 +1545,13 @@ enum class Message : uint8_t {
   CustomMetricsUpdate = 30,
   ParametersUpdate = 31,
   PortfolioUpdate = 32,
+  CustomMatrix = 33,
+  CustomMatrixUpdate = 34,
   MIN = NONE,
-  MAX = PortfolioUpdate
+  MAX = CustomMatrixUpdate
 };
 
-inline const Message (&EnumValuesMessage())[33] {
+inline const Message (&EnumValuesMessage())[35] {
   static const Message values[] = {
     Message::NONE,
     Message::Handshake,
@@ -1577,13 +1585,15 @@ inline const Message (&EnumValuesMessage())[33] {
     Message::CustomMetrics,
     Message::CustomMetricsUpdate,
     Message::ParametersUpdate,
-    Message::PortfolioUpdate
+    Message::PortfolioUpdate,
+    Message::CustomMatrix,
+    Message::CustomMatrixUpdate
   };
   return values;
 }
 
 inline const char * const *EnumNamesMessage() {
-  static const char * const names[34] = {
+  static const char * const names[36] = {
     "NONE",
     "Handshake",
     "HandshakeAck",
@@ -1617,13 +1627,15 @@ inline const char * const *EnumNamesMessage() {
     "CustomMetricsUpdate",
     "ParametersUpdate",
     "PortfolioUpdate",
+    "CustomMatrix",
+    "CustomMatrixUpdate",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMessage(Message e) {
-  if (::flatbuffers::IsOutRange(e, Message::NONE, Message::PortfolioUpdate)) return "";
+  if (::flatbuffers::IsOutRange(e, Message::NONE, Message::CustomMatrixUpdate)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMessage()[index];
 }
@@ -1758,6 +1770,14 @@ template<> struct MessageTraits<roq::fbs::ParametersUpdate> {
 
 template<> struct MessageTraits<roq::fbs::PortfolioUpdate> {
   static const Message enum_value = Message::PortfolioUpdate;
+};
+
+template<> struct MessageTraits<roq::fbs::CustomMatrix> {
+  static const Message enum_value = Message::CustomMatrix;
+};
+
+template<> struct MessageTraits<roq::fbs::CustomMatrixUpdate> {
+  static const Message enum_value = Message::CustomMatrixUpdate;
 };
 
 bool VerifyMessage(::flatbuffers::Verifier &verifier, const void *obj, Message type);
@@ -3069,6 +3089,330 @@ inline ::flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
       stop_price,
       routing_id__,
       execution_instructions);
+}
+
+struct CustomMatrix FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CustomMatrixBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LABEL = 4,
+    VT_ACCOUNT = 6,
+    VT_EXCHANGE = 8,
+    VT_SYMBOL = 10,
+    VT_ROWS = 12,
+    VT_COLUMNS = 14,
+    VT_DATA = 16,
+    VT_UPDATE_TYPE = 18
+  };
+  const ::flatbuffers::String *label() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_LABEL);
+  }
+  const ::flatbuffers::String *account() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
+  }
+  const ::flatbuffers::String *exchange() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_EXCHANGE);
+  }
+  const ::flatbuffers::String *symbol() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_SYMBOL);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *rows() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_ROWS);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *columns() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_COLUMNS);
+  }
+  const ::flatbuffers::Vector<double> *data() const {
+    return GetPointer<const ::flatbuffers::Vector<double> *>(VT_DATA);
+  }
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_LABEL) &&
+           verifier.VerifyString(label()) &&
+           VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) &&
+           VerifyOffset(verifier, VT_EXCHANGE) &&
+           verifier.VerifyString(exchange()) &&
+           VerifyOffset(verifier, VT_SYMBOL) &&
+           verifier.VerifyString(symbol()) &&
+           VerifyOffset(verifier, VT_ROWS) &&
+           verifier.VerifyVector(rows()) &&
+           verifier.VerifyVectorOfStrings(rows()) &&
+           VerifyOffset(verifier, VT_COLUMNS) &&
+           verifier.VerifyVector(columns()) &&
+           verifier.VerifyVectorOfStrings(columns()) &&
+           VerifyOffset(verifier, VT_DATA) &&
+           verifier.VerifyVector(data()) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct CustomMatrixBuilder {
+  typedef CustomMatrix Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_label(::flatbuffers::Offset<::flatbuffers::String> label) {
+    fbb_.AddOffset(CustomMatrix::VT_LABEL, label);
+  }
+  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
+    fbb_.AddOffset(CustomMatrix::VT_ACCOUNT, account);
+  }
+  void add_exchange(::flatbuffers::Offset<::flatbuffers::String> exchange) {
+    fbb_.AddOffset(CustomMatrix::VT_EXCHANGE, exchange);
+  }
+  void add_symbol(::flatbuffers::Offset<::flatbuffers::String> symbol) {
+    fbb_.AddOffset(CustomMatrix::VT_SYMBOL, symbol);
+  }
+  void add_rows(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> rows) {
+    fbb_.AddOffset(CustomMatrix::VT_ROWS, rows);
+  }
+  void add_columns(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> columns) {
+    fbb_.AddOffset(CustomMatrix::VT_COLUMNS, columns);
+  }
+  void add_data(::flatbuffers::Offset<::flatbuffers::Vector<double>> data) {
+    fbb_.AddOffset(CustomMatrix::VT_DATA, data);
+  }
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(CustomMatrix::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
+  explicit CustomMatrixBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CustomMatrix> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CustomMatrix>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CustomMatrix> CreateCustomMatrix(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> label = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> exchange = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> symbol = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> rows = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> columns = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<double>> data = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+  CustomMatrixBuilder builder_(_fbb);
+  builder_.add_data(data);
+  builder_.add_columns(columns);
+  builder_.add_rows(rows);
+  builder_.add_symbol(symbol);
+  builder_.add_exchange(exchange);
+  builder_.add_account(account);
+  builder_.add_label(label);
+  builder_.add_update_type(update_type);
+  return builder_.Finish();
+}
+
+struct CustomMatrix::Traits {
+  using type = CustomMatrix;
+  static auto constexpr Create = CreateCustomMatrix;
+};
+
+inline ::flatbuffers::Offset<CustomMatrix> CreateCustomMatrixDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *label = nullptr,
+    const char *account = nullptr,
+    const char *exchange = nullptr,
+    const char *symbol = nullptr,
+    const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *rows = nullptr,
+    const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *columns = nullptr,
+    const std::vector<double> *data = nullptr,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+  auto label__ = label ? _fbb.CreateString(label) : 0;
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
+  auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
+  auto rows__ = rows ? _fbb.CreateVector<::flatbuffers::Offset<::flatbuffers::String>>(*rows) : 0;
+  auto columns__ = columns ? _fbb.CreateVector<::flatbuffers::Offset<::flatbuffers::String>>(*columns) : 0;
+  auto data__ = data ? _fbb.CreateVector<double>(*data) : 0;
+  return roq::fbs::CreateCustomMatrix(
+      _fbb,
+      label__,
+      account__,
+      exchange__,
+      symbol__,
+      rows__,
+      columns__,
+      data__,
+      update_type);
+}
+
+struct CustomMatrixUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CustomMatrixUpdateBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LABEL = 4,
+    VT_ACCOUNT = 6,
+    VT_EXCHANGE = 8,
+    VT_SYMBOL = 10,
+    VT_ROWS = 12,
+    VT_COLUMNS = 14,
+    VT_DATA = 16,
+    VT_UPDATE_TYPE = 18,
+    VT_USER = 20
+  };
+  const ::flatbuffers::String *label() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_LABEL);
+  }
+  const ::flatbuffers::String *account() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
+  }
+  const ::flatbuffers::String *exchange() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_EXCHANGE);
+  }
+  const ::flatbuffers::String *symbol() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_SYMBOL);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *rows() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_ROWS);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *columns() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_COLUMNS);
+  }
+  const ::flatbuffers::Vector<double> *data() const {
+    return GetPointer<const ::flatbuffers::Vector<double> *>(VT_DATA);
+  }
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
+  }
+  const ::flatbuffers::String *user() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_USER);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_LABEL) &&
+           verifier.VerifyString(label()) &&
+           VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) &&
+           VerifyOffset(verifier, VT_EXCHANGE) &&
+           verifier.VerifyString(exchange()) &&
+           VerifyOffset(verifier, VT_SYMBOL) &&
+           verifier.VerifyString(symbol()) &&
+           VerifyOffset(verifier, VT_ROWS) &&
+           verifier.VerifyVector(rows()) &&
+           verifier.VerifyVectorOfStrings(rows()) &&
+           VerifyOffset(verifier, VT_COLUMNS) &&
+           verifier.VerifyVector(columns()) &&
+           verifier.VerifyVectorOfStrings(columns()) &&
+           VerifyOffset(verifier, VT_DATA) &&
+           verifier.VerifyVector(data()) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyString(user()) &&
+           verifier.EndTable();
+  }
+};
+
+struct CustomMatrixUpdateBuilder {
+  typedef CustomMatrixUpdate Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_label(::flatbuffers::Offset<::flatbuffers::String> label) {
+    fbb_.AddOffset(CustomMatrixUpdate::VT_LABEL, label);
+  }
+  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
+    fbb_.AddOffset(CustomMatrixUpdate::VT_ACCOUNT, account);
+  }
+  void add_exchange(::flatbuffers::Offset<::flatbuffers::String> exchange) {
+    fbb_.AddOffset(CustomMatrixUpdate::VT_EXCHANGE, exchange);
+  }
+  void add_symbol(::flatbuffers::Offset<::flatbuffers::String> symbol) {
+    fbb_.AddOffset(CustomMatrixUpdate::VT_SYMBOL, symbol);
+  }
+  void add_rows(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> rows) {
+    fbb_.AddOffset(CustomMatrixUpdate::VT_ROWS, rows);
+  }
+  void add_columns(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> columns) {
+    fbb_.AddOffset(CustomMatrixUpdate::VT_COLUMNS, columns);
+  }
+  void add_data(::flatbuffers::Offset<::flatbuffers::Vector<double>> data) {
+    fbb_.AddOffset(CustomMatrixUpdate::VT_DATA, data);
+  }
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(CustomMatrixUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
+  void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
+    fbb_.AddOffset(CustomMatrixUpdate::VT_USER, user);
+  }
+  explicit CustomMatrixUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CustomMatrixUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CustomMatrixUpdate>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CustomMatrixUpdate> CreateCustomMatrixUpdate(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> label = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> exchange = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> symbol = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> rows = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> columns = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<double>> data = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    ::flatbuffers::Offset<::flatbuffers::String> user = 0) {
+  CustomMatrixUpdateBuilder builder_(_fbb);
+  builder_.add_user(user);
+  builder_.add_data(data);
+  builder_.add_columns(columns);
+  builder_.add_rows(rows);
+  builder_.add_symbol(symbol);
+  builder_.add_exchange(exchange);
+  builder_.add_account(account);
+  builder_.add_label(label);
+  builder_.add_update_type(update_type);
+  return builder_.Finish();
+}
+
+struct CustomMatrixUpdate::Traits {
+  using type = CustomMatrixUpdate;
+  static auto constexpr Create = CreateCustomMatrixUpdate;
+};
+
+inline ::flatbuffers::Offset<CustomMatrixUpdate> CreateCustomMatrixUpdateDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *label = nullptr,
+    const char *account = nullptr,
+    const char *exchange = nullptr,
+    const char *symbol = nullptr,
+    const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *rows = nullptr,
+    const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *columns = nullptr,
+    const std::vector<double> *data = nullptr,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    const char *user = nullptr) {
+  auto label__ = label ? _fbb.CreateString(label) : 0;
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
+  auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
+  auto rows__ = rows ? _fbb.CreateVector<::flatbuffers::Offset<::flatbuffers::String>>(*rows) : 0;
+  auto columns__ = columns ? _fbb.CreateVector<::flatbuffers::Offset<::flatbuffers::String>>(*columns) : 0;
+  auto data__ = data ? _fbb.CreateVector<double>(*data) : 0;
+  auto user__ = user ? _fbb.CreateString(user) : 0;
+  return roq::fbs::CreateCustomMatrixUpdate(
+      _fbb,
+      label__,
+      account__,
+      exchange__,
+      symbol__,
+      rows__,
+      columns__,
+      data__,
+      update_type,
+      user__);
 }
 
 struct CustomMetrics FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -7644,6 +7988,12 @@ struct Event FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const roq::fbs::PortfolioUpdate *message_as_PortfolioUpdate() const {
     return message_type() == roq::fbs::Message::PortfolioUpdate ? static_cast<const roq::fbs::PortfolioUpdate *>(message()) : nullptr;
   }
+  const roq::fbs::CustomMatrix *message_as_CustomMatrix() const {
+    return message_type() == roq::fbs::Message::CustomMatrix ? static_cast<const roq::fbs::CustomMatrix *>(message()) : nullptr;
+  }
+  const roq::fbs::CustomMatrixUpdate *message_as_CustomMatrixUpdate() const {
+    return message_type() == roq::fbs::Message::CustomMatrixUpdate ? static_cast<const roq::fbs::CustomMatrixUpdate *>(message()) : nullptr;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_SOURCE_INFO) &&
@@ -7781,6 +8131,14 @@ template<> inline const roq::fbs::ParametersUpdate *Event::message_as<roq::fbs::
 
 template<> inline const roq::fbs::PortfolioUpdate *Event::message_as<roq::fbs::PortfolioUpdate>() const {
   return message_as_PortfolioUpdate();
+}
+
+template<> inline const roq::fbs::CustomMatrix *Event::message_as<roq::fbs::CustomMatrix>() const {
+  return message_as_CustomMatrix();
+}
+
+template<> inline const roq::fbs::CustomMatrixUpdate *Event::message_as<roq::fbs::CustomMatrixUpdate>() const {
+  return message_as_CustomMatrixUpdate();
 }
 
 struct EventBuilder {
@@ -7955,6 +8313,14 @@ inline bool VerifyMessage(::flatbuffers::Verifier &verifier, const void *obj, Me
     }
     case Message::PortfolioUpdate: {
       auto ptr = reinterpret_cast<const roq::fbs::PortfolioUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message::CustomMatrix: {
+      auto ptr = reinterpret_cast<const roq::fbs::CustomMatrix *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message::CustomMatrixUpdate: {
+      auto ptr = reinterpret_cast<const roq::fbs::CustomMatrixUpdate *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

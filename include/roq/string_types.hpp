@@ -29,6 +29,8 @@ static constexpr auto const MAX_LENGTH_REQUEST_ID = size_t{36};
 static constexpr auto const MAX_LENGTH_LABEL = size_t{32};
 static constexpr auto const MAX_LENGTH_MEASUREMENT_KEY = size_t{8};
 
+static constexpr auto const MAX_LENGTH_MATRIX_KEY = size_t{8};
+
 static constexpr auto const MAX_LENGTH_DESCRIPTION = size_t{128};
 static constexpr auto const MAX_LENGTH_TIME_ZONE = size_t{32};
 
@@ -100,6 +102,10 @@ struct MeasurementKey final : public String<detail::MAX_LENGTH_MEASUREMENT_KEY> 
   using String<detail::MAX_LENGTH_MEASUREMENT_KEY>::String;
 };
 
+struct MatrixKey final : public String<detail::MAX_LENGTH_MATRIX_KEY> {
+  using String<detail::MAX_LENGTH_MATRIX_KEY>::String;
+};
+
 struct Description final : public String<detail::MAX_LENGTH_DESCRIPTION> {
   using String<detail::MAX_LENGTH_DESCRIPTION>::String;
 };
@@ -134,6 +140,7 @@ static_assert(sizeof(ClOrdId) == detail::MAX_LENGTH_CL_ORD_ID);
 static_assert(sizeof(RequestId) == detail::MAX_LENGTH_REQUEST_ID);
 static_assert(sizeof(Label) == detail::MAX_LENGTH_LABEL);
 static_assert(sizeof(MeasurementKey) == detail::MAX_LENGTH_MEASUREMENT_KEY);
+static_assert(sizeof(MatrixKey) == detail::MAX_LENGTH_MATRIX_KEY);
 static_assert(sizeof(Description) == detail::MAX_LENGTH_DESCRIPTION);
 static_assert(sizeof(TimeZone) == detail::MAX_LENGTH_TIME_ZONE);
 static_assert(sizeof(ParameterKey) == detail::MAX_LENGTH_PARAMETER_KEY);

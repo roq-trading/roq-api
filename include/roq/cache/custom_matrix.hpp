@@ -66,9 +66,9 @@ struct CustomMatrix final {
         .account = context.account,
         .exchange = context.exchange,
         .symbol = context.symbol,
-        .rows = rows,
-        .columns = columns,
-        .data = data,
+        .rows = {const_cast<MatrixKey *>(std::data(rows)), std::size(rows)},           // XXX const
+        .columns = {const_cast<MatrixKey *>(std::data(columns)), std::size(columns)},  // XXX const
+        .data = {const_cast<double *>(std::data(data)), std::size(data)},              // XXX const
         .update_type = UpdateType::SNAPSHOT,
         .version = version,
         .sending_time_utc = sending_time_utc,

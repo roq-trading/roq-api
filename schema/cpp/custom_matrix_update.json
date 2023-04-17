@@ -41,6 +41,15 @@
       "comment": "Update type"
     },
     {
+      "name": "version",
+      "type": "uint32_t",
+      "comment": "Version number (does not have to be sequential)"
+    },
+    {
+      "name": "sending_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
       "name": "user",
       "type": "std::string_view",
       "comment": "User name (origin)"

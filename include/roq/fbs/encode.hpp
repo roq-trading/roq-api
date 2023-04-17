@@ -647,7 +647,8 @@ auto encode(B &builder, roq::CustomMetricsUpdate const &value) {
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.measurements),
-      encode(builder, value.update_type));
+      encode(builder, value.update_type),
+      encode(builder, value.sending_time_utc));
 }
 
 template <typename B>
@@ -661,7 +662,8 @@ auto encode(B &builder, roq::CustomMatrix const &value) {
       encode(builder, value.rows),
       encode(builder, value.columns),
       encode(builder, value.data),
-      encode(builder, value.update_type));
+      encode(builder, value.update_type),
+      value.version);
 }
 
 template <typename B>
@@ -676,6 +678,8 @@ auto encode(B &builder, roq::CustomMatrixUpdate const &value) {
       encode(builder, value.columns),
       encode(builder, value.data),
       encode(builder, value.update_type),
+      value.version,
+      encode(builder, value.sending_time_utc),
       encode(builder, value.user));
 }
 

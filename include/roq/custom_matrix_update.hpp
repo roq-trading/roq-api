@@ -6,9 +6,11 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/chrono.h>
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
+#include <chrono>
 #include <span>
 #include <string_view>
 
@@ -21,15 +23,17 @@ namespace roq {
 
 //! Custom matrix (receive)
 struct ROQ_PUBLIC CustomMatrixUpdate final {
-  std::string_view label;        //!< Label
-  std::string_view account;      //!< Account name
-  std::string_view exchange;     //!< Exchange
-  std::string_view symbol;       //!< Symbol
-  std::span<MatrixKey> rows;     //!< row labels
-  std::span<MatrixKey> columns;  //!< column labels
-  std::span<double> data;        //!< matrix
-  UpdateType update_type = {};   //!< Update type
-  std::string_view user;         //!< User name (origin)
+  std::string_view label;                          //!< Label
+  std::string_view account;                        //!< Account name
+  std::string_view exchange;                       //!< Exchange
+  std::string_view symbol;                         //!< Symbol
+  std::span<MatrixKey> rows;                       //!< row labels
+  std::span<MatrixKey> columns;                    //!< column labels
+  std::span<double> data;                          //!< matrix
+  UpdateType update_type = {};                     //!< Update type
+  uint32_t version = {};                           //!< Version number (does not have to be sequential)
+  std::chrono::nanoseconds sending_time_utc = {};  //!< Exchange sending timestamp (UTC)
+  std::string_view user;                           //!< User name (origin)
 };
 
 template <>
@@ -61,6 +65,8 @@ struct fmt::formatter<roq::CustomMatrixUpdate> {
         R"(columns=[{}], )"
         R"(data=[{}], )"
         R"(update_type={}, )"
+        R"(version={}, )"
+        R"(sending_time_utc={}, )"
         R"(user="{}")"
         R"(}})"_cf,
         value.label,
@@ -71,6 +77,8 @@ struct fmt::formatter<roq::CustomMatrixUpdate> {
         fmt::join(value.columns, ", "sv),
         fmt::join(value.data, ", "sv),
         value.update_type,
+        value.version,
+        value.sending_time_utc,
         value.user);
   }
 };

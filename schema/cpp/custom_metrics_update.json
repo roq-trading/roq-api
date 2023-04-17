@@ -4,11 +4,6 @@
   "comment": "Custom metrics (receive)",
   "values": [
     {
-      "name": "user",
-      "type": "std::string_view",
-      "comment": "User name (origin)"
-    },
-    {
       "name": "label",
       "type": "std::string_view",
       "comment": "Label"
@@ -34,6 +29,15 @@
       "name": "update_type",
       "type": "UpdateType",
       "comment": "Update type"
+    },
+    {
+      "name": "sending_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
+      "name": "user",
+      "type": "std::string_view",
+      "comment": "User name (origin)"
     }
   ]
 }

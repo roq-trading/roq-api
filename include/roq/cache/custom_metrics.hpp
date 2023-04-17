@@ -19,7 +19,8 @@ namespace cache {
 
 struct CustomMetrics final {
   explicit CustomMetrics(CustomMetricsUpdate const &custom_metrics_update)
-      : user{custom_metrics_update.user}, label{custom_metrics_update.label} {}
+      : label{custom_metrics_update.label}, sending_time_utc{custom_metrics_update.sending_time_utc},
+        user{custom_metrics_update.user} {}
   explicit CustomMetrics(roq::CustomMetrics const &custom_metrics) : label{custom_metrics.label} {}
 
   CustomMetrics(CustomMetrics const &) = delete;
@@ -62,21 +63,23 @@ struct CustomMetrics final {
   template <typename Context>
   [[nodiscard]] CustomMetricsUpdate convert(Context const &context) const {
     return {
-        .user = user,
         .label = label,
         .account = context.account,
         .exchange = context.exchange,
         .symbol = context.symbol,
         .measurements = {const_cast<Measurement *>(std::data(measurements)), std::size(measurements)},  // XXX const
         .update_type = UpdateType::SNAPSHOT,
+        .sending_time_utc = sending_time_utc,
+        .user = user,
     };
   }
 
   uint16_t stream_id = {};
 
-  User const user;
   Label const label;
   std::vector<Measurement> measurements;
+  std::chrono::nanoseconds sending_time_utc = {};
+  User const user;
 
  protected:
   bool update_incremental(auto const &custom_metrics_update) {

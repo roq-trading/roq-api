@@ -11,5 +11,7 @@ table CustomMatrixUpdate {
   columns:[string];
   data:[double];
   update_type:UpdateType;
+  version:uint32;
+  sending_time_utc:int64;
   user:string;
 }

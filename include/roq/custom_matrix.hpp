@@ -29,6 +29,7 @@ struct ROQ_PUBLIC CustomMatrix final {
   std::span<MatrixKey> columns;  //!< column labels
   std::span<double> data;        //!< matrix
   UpdateType update_type = {};   //!< Update type
+  uint32_t version = {};         //!< Version number (does not have to be sequential)
 };
 
 template <>
@@ -59,7 +60,8 @@ struct fmt::formatter<roq::CustomMatrix> {
         R"(rows=[{}], )"
         R"(columns=[{}], )"
         R"(data=[{}], )"
-        R"(update_type={})"
+        R"(update_type={}, )"
+        R"(version={})"
         R"(}})"_cf,
         value.label,
         value.account,
@@ -68,7 +70,8 @@ struct fmt::formatter<roq::CustomMatrix> {
         fmt::join(value.rows, ", "sv),
         fmt::join(value.columns, ", "sv),
         fmt::join(value.data, ", "sv),
-        value.update_type);
+        value.update_type,
+        value.version);
   }
 };
 

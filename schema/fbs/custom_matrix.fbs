@@ -11,4 +11,5 @@ table CustomMatrix {
   columns:[string];
   data:[double];
   update_type:UpdateType;
+  version:uint32;
 }

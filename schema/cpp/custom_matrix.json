@@ -39,6 +39,11 @@
       "name": "update_type",
       "type": "UpdateType",
       "comment": "Update type"
+    },
+    {
+      "name": "version",
+      "type": "uint32_t",
+      "comment": "Version number (does not have to be sequential)"
     }
   ]
 }

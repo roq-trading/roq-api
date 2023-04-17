@@ -3102,7 +3102,8 @@ struct CustomMatrix FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ROWS = 12,
     VT_COLUMNS = 14,
     VT_DATA = 16,
-    VT_UPDATE_TYPE = 18
+    VT_UPDATE_TYPE = 18,
+    VT_VERSION = 20
   };
   const ::flatbuffers::String *label() const {
     return GetPointer<const ::flatbuffers::String *>(VT_LABEL);
@@ -3128,6 +3129,9 @@ struct CustomMatrix FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
+  uint32_t version() const {
+    return GetField<uint32_t>(VT_VERSION, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_LABEL) &&
@@ -3147,6 +3151,7 @@ struct CustomMatrix FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyOffset(verifier, VT_DATA) &&
            verifier.VerifyVector(data()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
            verifier.EndTable();
   }
 };
@@ -3179,6 +3184,9 @@ struct CustomMatrixBuilder {
   void add_update_type(roq::fbs::UpdateType update_type) {
     fbb_.AddElement<uint8_t>(CustomMatrix::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
   }
+  void add_version(uint32_t version) {
+    fbb_.AddElement<uint32_t>(CustomMatrix::VT_VERSION, version, 0);
+  }
   explicit CustomMatrixBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3199,8 +3207,10 @@ inline ::flatbuffers::Offset<CustomMatrix> CreateCustomMatrix(
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> rows = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> columns = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<double>> data = 0,
-    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    uint32_t version = 0) {
   CustomMatrixBuilder builder_(_fbb);
+  builder_.add_version(version);
   builder_.add_data(data);
   builder_.add_columns(columns);
   builder_.add_rows(rows);
@@ -3226,7 +3236,8 @@ inline ::flatbuffers::Offset<CustomMatrix> CreateCustomMatrixDirect(
     const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *rows = nullptr,
     const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *columns = nullptr,
     const std::vector<double> *data = nullptr,
-    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    uint32_t version = 0) {
   auto label__ = label ? _fbb.CreateString(label) : 0;
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
@@ -3243,7 +3254,8 @@ inline ::flatbuffers::Offset<CustomMatrix> CreateCustomMatrixDirect(
       rows__,
       columns__,
       data__,
-      update_type);
+      update_type,
+      version);
 }
 
 struct CustomMatrixUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -3258,7 +3270,9 @@ struct CustomMatrixUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
     VT_COLUMNS = 14,
     VT_DATA = 16,
     VT_UPDATE_TYPE = 18,
-    VT_USER = 20
+    VT_VERSION = 20,
+    VT_SENDING_TIME_UTC = 22,
+    VT_USER = 24
   };
   const ::flatbuffers::String *label() const {
     return GetPointer<const ::flatbuffers::String *>(VT_LABEL);
@@ -3284,6 +3298,12 @@ struct CustomMatrixUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
+  uint32_t version() const {
+    return GetField<uint32_t>(VT_VERSION, 0);
+  }
+  int64_t sending_time_utc() const {
+    return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
+  }
   const ::flatbuffers::String *user() const {
     return GetPointer<const ::flatbuffers::String *>(VT_USER);
   }
@@ -3306,6 +3326,8 @@ struct CustomMatrixUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
            VerifyOffset(verifier, VT_DATA) &&
            verifier.VerifyVector(data()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
+           VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            VerifyOffset(verifier, VT_USER) &&
            verifier.VerifyString(user()) &&
            verifier.EndTable();
@@ -3340,6 +3362,12 @@ struct CustomMatrixUpdateBuilder {
   void add_update_type(roq::fbs::UpdateType update_type) {
     fbb_.AddElement<uint8_t>(CustomMatrixUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
   }
+  void add_version(uint32_t version) {
+    fbb_.AddElement<uint32_t>(CustomMatrixUpdate::VT_VERSION, version, 0);
+  }
+  void add_sending_time_utc(int64_t sending_time_utc) {
+    fbb_.AddElement<int64_t>(CustomMatrixUpdate::VT_SENDING_TIME_UTC, sending_time_utc, 0);
+  }
   void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
     fbb_.AddOffset(CustomMatrixUpdate::VT_USER, user);
   }
@@ -3364,9 +3392,13 @@ inline ::flatbuffers::Offset<CustomMatrixUpdate> CreateCustomMatrixUpdate(
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> columns = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<double>> data = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    uint32_t version = 0,
+    int64_t sending_time_utc = 0,
     ::flatbuffers::Offset<::flatbuffers::String> user = 0) {
   CustomMatrixUpdateBuilder builder_(_fbb);
+  builder_.add_sending_time_utc(sending_time_utc);
   builder_.add_user(user);
+  builder_.add_version(version);
   builder_.add_data(data);
   builder_.add_columns(columns);
   builder_.add_rows(rows);
@@ -3393,6 +3425,8 @@ inline ::flatbuffers::Offset<CustomMatrixUpdate> CreateCustomMatrixUpdateDirect(
     const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *columns = nullptr,
     const std::vector<double> *data = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    uint32_t version = 0,
+    int64_t sending_time_utc = 0,
     const char *user = nullptr) {
   auto label__ = label ? _fbb.CreateString(label) : 0;
   auto account__ = account ? _fbb.CreateString(account) : 0;
@@ -3412,6 +3446,8 @@ inline ::flatbuffers::Offset<CustomMatrixUpdate> CreateCustomMatrixUpdateDirect(
       columns__,
       data__,
       update_type,
+      version,
+      sending_time_utc,
       user__);
 }
 
@@ -3551,7 +3587,8 @@ struct CustomMetricsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
     VT_EXCHANGE = 10,
     VT_SYMBOL = 12,
     VT_MEASUREMENTS = 14,
-    VT_UPDATE_TYPE = 16
+    VT_UPDATE_TYPE = 16,
+    VT_SENDING_TIME_UTC = 18
   };
   const ::flatbuffers::String *user() const {
     return GetPointer<const ::flatbuffers::String *>(VT_USER);
@@ -3574,6 +3611,9 @@ struct CustomMetricsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
   roq::fbs::UpdateType update_type() const {
     return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
   }
+  int64_t sending_time_utc() const {
+    return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_USER) &&
@@ -3590,6 +3630,7 @@ struct CustomMetricsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
            verifier.VerifyVector(measurements()) &&
            verifier.VerifyVectorOfTables(measurements()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            verifier.EndTable();
   }
 };
@@ -3619,6 +3660,9 @@ struct CustomMetricsUpdateBuilder {
   void add_update_type(roq::fbs::UpdateType update_type) {
     fbb_.AddElement<uint8_t>(CustomMetricsUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
   }
+  void add_sending_time_utc(int64_t sending_time_utc) {
+    fbb_.AddElement<int64_t>(CustomMetricsUpdate::VT_SENDING_TIME_UTC, sending_time_utc, 0);
+  }
   explicit CustomMetricsUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3638,8 +3682,10 @@ inline ::flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdate(
     ::flatbuffers::Offset<::flatbuffers::String> exchange = 0,
     ::flatbuffers::Offset<::flatbuffers::String> symbol = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Measurement>>> measurements = 0,
-    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    int64_t sending_time_utc = 0) {
   CustomMetricsUpdateBuilder builder_(_fbb);
+  builder_.add_sending_time_utc(sending_time_utc);
   builder_.add_measurements(measurements);
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
@@ -3663,7 +3709,8 @@ inline ::flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdateDirec
     const char *exchange = nullptr,
     const char *symbol = nullptr,
     const std::vector<::flatbuffers::Offset<roq::fbs::Measurement>> *measurements = nullptr,
-    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
+    int64_t sending_time_utc = 0) {
   auto user__ = user ? _fbb.CreateString(user) : 0;
   auto label__ = label ? _fbb.CreateString(label) : 0;
   auto account__ = account ? _fbb.CreateString(account) : 0;
@@ -3678,7 +3725,8 @@ inline ::flatbuffers::Offset<CustomMetricsUpdate> CreateCustomMetricsUpdateDirec
       exchange__,
       symbol__,
       measurements__,
-      update_type);
+      update_type,
+      sending_time_utc);
 }
 
 struct DownloadBegin FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

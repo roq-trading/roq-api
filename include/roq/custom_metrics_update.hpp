@@ -6,9 +6,11 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/chrono.h>
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
+#include <chrono>
 #include <span>
 #include <string_view>
 
@@ -22,13 +24,14 @@ namespace roq {
 
 //! Custom metrics (receive)
 struct ROQ_PUBLIC CustomMetricsUpdate final {
-  std::string_view user;                //!< User name (origin)
-  std::string_view label;               //!< Label
-  std::string_view account;             //!< Account name
-  std::string_view exchange;            //!< Exchange
-  std::string_view symbol;              //!< Symbol
-  std::span<Measurement> measurements;  //!< List of measurements
-  UpdateType update_type = {};          //!< Update type
+  std::string_view label;                          //!< Label
+  std::string_view account;                        //!< Account name
+  std::string_view exchange;                       //!< Exchange
+  std::string_view symbol;                         //!< Symbol
+  std::span<Measurement> measurements;             //!< List of measurements
+  UpdateType update_type = {};                     //!< Update type
+  std::chrono::nanoseconds sending_time_utc = {};  //!< Exchange sending timestamp (UTC)
+  std::string_view user;                           //!< User name (origin)
 };
 
 template <>
@@ -52,21 +55,23 @@ struct fmt::formatter<roq::CustomMetricsUpdate> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(user="{}", )"
         R"(label="{}", )"
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(measurements=[{}], )"
-        R"(update_type={})"
+        R"(update_type={}, )"
+        R"(sending_time_utc={}, )"
+        R"(user="{}")"
         R"(}})"_cf,
-        value.user,
         value.label,
         value.account,
         value.exchange,
         value.symbol,
         fmt::join(value.measurements, ", "sv),
-        value.update_type);
+        value.update_type,
+        value.sending_time_utc,
+        value.user);
   }
 };
 

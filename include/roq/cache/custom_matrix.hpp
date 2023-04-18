@@ -87,14 +87,19 @@ struct CustomMatrix final {
   User const user;
 
  protected:
-  void update(auto const &custom_matrix_update) {
+  template <typename T>
+  void update(T const &custom_matrix) {
     auto make_copy = [&](auto &target, auto const &source) {
       target.resize(std::size(source));
       std::copy(std::begin(source), std::end(source), std::begin(target));
     };
-    make_copy(rows, custom_matrix_update.rows);
-    make_copy(columns, custom_matrix_update.columns);
-    make_copy(data, custom_matrix_update.data);
+    make_copy(rows, custom_matrix.rows);
+    make_copy(columns, custom_matrix.columns);
+    make_copy(data, custom_matrix.data);
+    utils::update(version, custom_matrix.version);
+    if constexpr (std::is_same<T, CustomMatrixUpdate>::value) {
+      utils::update(sending_time_utc, custom_matrix.sending_time_utc);
+    }
   }
 };
 

@@ -82,9 +82,10 @@ struct CustomMetrics final {
   User const user;
 
  protected:
-  bool update_incremental(auto const &custom_metrics_update) {
+  template <typename T>
+  bool update_incremental(T const &custom_metrics) {
     auto changed = false;
-    for (auto &[key, value] : custom_metrics_update.measurements) {
+    for (auto &[key, value] : custom_metrics.measurements) {
       auto iter = lookup_.find(key);
       if (iter == std::end(lookup_)) {
         lookup_.emplace(key, std::size(measurements));
@@ -95,6 +96,9 @@ struct CustomMetrics final {
         auto &tmp = measurements[index];
         changed |= utils::update(tmp.value, value);
       }
+    }
+    if constexpr (std::is_same<T, CustomMetricsUpdate>::value) {
+      changed |= utils::update(sending_time_utc, custom_metrics.sending_time_utc);
     }
     return changed;
   }

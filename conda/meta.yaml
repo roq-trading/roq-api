@@ -29,7 +29,6 @@ requirements:
     - catch2  # [linux]
     - roq-oss-catch2  # [osx]
     - roq-oss-magic_enum
-    - roq-oss-range-v3
 
 about:
   home: https://roq-trading.com

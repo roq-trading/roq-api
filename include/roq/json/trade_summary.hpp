@@ -5,7 +5,7 @@
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
-#include <range/v3/view.hpp>
+#include <ranges>
 
 #include "roq/trade_summary.hpp"
 
@@ -38,7 +38,7 @@ struct TradeSummary final {
         String{value_.exchange},
         String{value_.symbol},
         fmt::join(
-            ranges::views::transform(
+            std::ranges::views::transform(
                 value_.trades,
                 [this](auto const &v) {
                   return Trade{context_, v};

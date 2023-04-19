@@ -5,7 +5,7 @@
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
-#include <range/v3/view.hpp>
+#include <ranges>
 
 #include "roq/custom_metrics_update.hpp"
 
@@ -38,7 +38,8 @@ struct CustomMetricsUpdate final {
         String{value_.account},
         String{value_.exchange},
         String{value_.symbol},
-        fmt::join(ranges::views::transform(value_.measurements, [](auto const &v) { return Measurement{v}; }), ","sv),
+        fmt::join(
+            std::ranges::views::transform(value_.measurements, [](auto const &v) { return Measurement{v}; }), ","sv),
         String{value_.update_type});
   }
 

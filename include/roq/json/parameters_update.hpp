@@ -5,7 +5,7 @@
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
-#include <range/v3/view.hpp>
+#include <ranges>
 
 #include "roq/parameters_update.hpp"
 
@@ -29,7 +29,7 @@ struct ParametersUpdate final {
         R"("update_type":{},)"
         R"("user":{})"
         R"(}})"_cf,
-        fmt::join(ranges::views::transform(value_.parameters, [](auto const &v) { return Parameter{v}; }), ","sv),
+        fmt::join(std::ranges::views::transform(value_.parameters, [](auto const &v) { return Parameter{v}; }), ","sv),
         String{value_.update_type},
         String{value_.user});
   }

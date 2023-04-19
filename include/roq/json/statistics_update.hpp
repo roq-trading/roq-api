@@ -5,7 +5,8 @@
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
-#include <range/v3/view.hpp>
+#include <algorithm>
+#include <ranges>
 
 #include "roq/statistics_update.hpp"
 
@@ -26,14 +27,18 @@ struct StatisticsUpdate final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    if (cache_)
-      return helper(context, (*cache_).statistics, UpdateType::SNAPSHOT);
-    return helper(context, value_.statistics, value_.update_type);
+    if (cache_) {
+      std::span<roq::Statistics> statistics{
+          const_cast<roq::Statistics *>(std::data((*cache_).statistics)), std::size((*cache_).statistics)};
+      return helper(context, statistics, UpdateType::SNAPSHOT);
+    } else {
+      return helper(context, value_.statistics, value_.update_type);
+    }
   }
 
  protected:
-  template <typename Context, typename T>
-  auto helper(Context &context, T const &statistics, auto update_type) const {
+  template <typename Context>
+  auto helper(Context &context, std::span<roq::Statistics> const &statistics, auto update_type) const {
     using namespace std::literals;
     using namespace fmt::literals;
     return fmt::format_to(
@@ -50,8 +55,8 @@ struct StatisticsUpdate final {
         String{value_.exchange},
         String{value_.symbol},
         fmt::join(
-            ranges::views::transform(
-                ranges::views::remove_if(statistics, [](auto const &v) { return !std::isfinite(v.value); }),
+            std::ranges::views::transform(
+                std::ranges::remove_if(statistics, [](auto const &v) { return !std::isfinite(v.value); }),
                 [this](auto const &v) {
                   return Statistics{context_, v};
                 }),

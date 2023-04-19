@@ -5,7 +5,7 @@
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
-#include <range/v3/view.hpp>
+#include <ranges>
 
 #include "roq/market_by_price_update.hpp"
 
@@ -53,14 +53,14 @@ struct MarketByPriceUpdate final {
         String{value_.exchange},
         String{value_.symbol},
         fmt::join(
-            ranges::views::transform(
+            std::ranges::views::transform(
                 bids,
                 [this](auto const &v) {
                   return MBPUpdate{context_, v};
                 }),
             ","sv),
         fmt::join(
-            ranges::views::transform(
+            std::ranges::views::transform(
                 asks,
                 [this](auto const &v) {
                   return MBPUpdate{context_, v};

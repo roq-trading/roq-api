@@ -6,6 +6,7 @@
 
 #include "roq/api.hpp"
 
+#include "roq/utils/common.hpp"
 #include "roq/utils/update.hpp"
 
 namespace roq {
@@ -25,7 +26,14 @@ struct TopOfBook final {
 
   [[nodiscard]] bool operator()(roq::TopOfBook const &top_of_book) {
     auto dirty = false;
-    dirty |= utils::update(layer, top_of_book.layer);
+    if (utils::is_snapshot(top_of_book.update_type)) {
+      dirty |= utils::update(layer, top_of_book.layer);
+    } else {
+      dirty |= utils::update_if_not_empty(layer.bid_price, top_of_book.layer.bid_price);
+      dirty |= utils::update_if_not_empty(layer.bid_quantity, top_of_book.layer.bid_quantity);
+      dirty |= utils::update_if_not_empty(layer.ask_price, top_of_book.layer.ask_price);
+      dirty |= utils::update_if_not_empty(layer.ask_quantity, top_of_book.layer.ask_quantity);
+    }
     dirty |= utils::update(exchange_time_utc, top_of_book.exchange_time_utc);
     dirty |= utils::update(exchange_sequence, top_of_book.exchange_sequence);
     return dirty;

@@ -6,7 +6,6 @@ All notable changes will be documented in this file.
 
 ### Changed
 
-* `TopOfBook` should always be `SNAPSHOT` (#348)
 * Review `PositionUpdate` and `FundsUpdate` to better correlate with `OrderUpdate` and `TradeUpdate` (#340)
 * `cache::MarketByOrder::OrderUpdate` now includes the final update action
 * `StreamStatus` should include connection details (#337)

@@ -42,16 +42,20 @@ struct TopOfBook final {
   [[nodiscard]] bool operator()(Event<roq::TopOfBook> const &event) { return (*this)(event.value); }
 
   template <typename Context>
-  [[nodiscard]] roq::TopOfBook convert(Context const &context) const {
+  [[nodiscard]] roq::TopOfBook convert(Context const &context, UpdateType update_type) const {
     return {
         .exchange = context.exchange,
         .symbol = context.symbol,
         .layer = layer,
-        .update_type = UpdateType::SNAPSHOT,
+        .update_type = update_type,
         .exchange_time_utc = exchange_time_utc,
         .exchange_sequence = exchange_sequence,
         .sending_time_utc = {},
     };
+  }
+  template <typename Context>
+  [[nodiscard]] roq::TopOfBook convert(Context const &context) const {
+    return convert(context, UpdateType::SNAPSHOT);
   }
 
   Layer layer = {};

@@ -22,6 +22,7 @@ struct TopOfBook final {
     layer = {};
     exchange_time_utc = {};
     exchange_sequence = {};
+    sending_time_utc = {};
   }
 
   [[nodiscard]] bool operator()(roq::TopOfBook const &top_of_book) {
@@ -36,6 +37,8 @@ struct TopOfBook final {
     }
     dirty |= utils::update(exchange_time_utc, top_of_book.exchange_time_utc);
     dirty |= utils::update(exchange_sequence, top_of_book.exchange_sequence);
+    // note! sending time not used to check if updated
+    utils::update(sending_time_utc, top_of_book.sending_time_utc);
     return dirty;
   }
 
@@ -50,7 +53,7 @@ struct TopOfBook final {
         .update_type = update_type,
         .exchange_time_utc = exchange_time_utc,
         .exchange_sequence = exchange_sequence,
-        .sending_time_utc = {},
+        .sending_time_utc = sending_time_utc,
     };
   }
   template <typename Context>
@@ -61,6 +64,7 @@ struct TopOfBook final {
   Layer layer = {};
   std::chrono::nanoseconds exchange_time_utc = {};
   int64_t exchange_sequence = {};
+  std::chrono::nanoseconds sending_time_utc = {};
 };
 
 }  // namespace cache

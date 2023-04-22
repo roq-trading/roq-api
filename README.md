@@ -160,7 +160,7 @@ wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Minifo
 bash Miniforge3-MacOSX-x86_64.sh -b -u -p ~/conda
 
 ~/conda/bin/conda install -y \
-   'clang_osx-64>=15'
+   'clang_osx-64>=16'
 ```
 
 #### macOS / Arm64
@@ -171,7 +171,7 @@ wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Minifo
 bash Miniforge3-MacOSX-arm64.sh -b -u -p ~/conda
 
 ~/conda/bin/conda install -y \
-   'clang_osx-arm64>=15'
+   'clang_osx-arm64>=16'
 ```
 
 ### Install Dependencies

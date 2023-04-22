@@ -155,24 +155,7 @@ struct ROQ_PACKED String {
 
 template <std::size_t N>
 inline constexpr auto operator<=>(roq::String<N> const &lhs, std::string_view const &rhs) {
-#ifdef __clang__
-  // note! clang14 does not support spaceship operator for std::string_view
-  // https://libcxx.llvm.org/Status/Spaceship.html
-  auto sign = static_cast<std::string_view>(lhs).compare(rhs);
-  //   https://stackoverflow.com/a/4609795
-  auto sign_helper = [](auto value) {
-    using value_type = decltype(value);
-    return (value_type{} < value) - (value < value_type{});
-  };
-  std::array const lookup{
-      std::strong_ordering::less,
-      std::strong_ordering::equal,
-      std::strong_ordering::greater,
-  };
-  return lookup[sign_helper(sign) + 1];
-#else
   return static_cast<std::string_view>(lhs) <=> rhs;
-#endif
 }
 
 template <std::size_t N>

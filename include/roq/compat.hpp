@@ -35,14 +35,3 @@
 // not supported by gcc:
 //   http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0154r1.html
 //   https://gcc.gnu.org/onlinedocs/libstdc++/manual/status.html#status.iso.2017
-
-// note! remove some of the noise
-
-#if __cplusplus >= 202002L
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wweak-vtables"
-#pragma clang diagnostic ignored "-Wc++20-compat"
-#pragma clang diagnostic ignored "-Wglobal-constructors"
-#pragma clang diagnostic ignored "-Wexit-time-destructors"
-#endif
-#endif

@@ -128,49 +128,49 @@ Optional
 
 The project is primarily designed to be compatible with the conda package manager.
 
-### Download and Install Miniforge
+### Download and Install Mambaforge
 
 #### Linux / x86\_64
 
 ```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
 
-bash Miniforge3-Linux-x86_64.sh -b -u -p ~/conda
+bash Mambaforge-Linux-x86_64.sh -b -u -p ~/conda
 
-~/conda/bin/conda install -y \
+~/conda/bin/mamba install -y \
     'gxx_linux-64>=12'
 ```
 
 #### Linux / AArch64
 
 ```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
+wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-aarch64.sh
 
-bash Miniforge3-Linux-aarch64.sh -b -u -p ~/conda
+bash Mambaforge-Linux-aarch64.sh -b -u -p ~/conda
 
-~/conda/bin/conda install -y \
+~/conda/bin/mamba install -y \
     'gxx_linux-aarch64>=12'
 ```
 
 #### macOS / x86\_64
 
 ```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
+wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-MacOSX-x86_64.sh
 
-bash Miniforge3-MacOSX-x86_64.sh -b -u -p ~/conda
+bash Mambaforge-MacOSX-x86_64.sh -b -u -p ~/conda
 
-~/conda/bin/conda install -y \
+~/conda/bin/mamba install -y \
    'clang_osx-64>=16'
 ```
 
 #### macOS / Arm64
 
 ```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh
+wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-MacOSX-arm64.sh
 
-bash Miniforge3-MacOSX-arm64.sh -b -u -p ~/conda
+bash Mambaforge-MacOSX-arm64.sh -b -u -p ~/conda
 
-~/conda/bin/conda install -y \
+~/conda/bin/mamba install -y \
    'clang_osx-arm64>=16'
 ```
 
@@ -179,7 +179,7 @@ bash Miniforge3-MacOSX-arm64.sh -b -u -p ~/conda
 ```bash
 source ~/conda/bin/activate
 
-conda install -y \
+mamba install -y \
     git \
     cmake \
     abseil-cpp \
@@ -189,7 +189,7 @@ conda install -y \
     clang-format \
     catch2
 
-conda install -y --channel https://roq-trading.com/conda/stable \
+mamba install -y --channel https://roq-trading.com/conda/stable \
     roq-oss-magic_enum
 ```
 
@@ -214,7 +214,7 @@ make test
 You can download the closed source client implementation like this
 
 ```bash
-conda install -y --channel https://roq-trading.com/conda/stable \
+mamba install -y --channel https://roq-trading.com/conda/stable \
     roq-client
 ```
 

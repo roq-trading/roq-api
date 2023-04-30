@@ -29,8 +29,8 @@ struct Trace final {
   value_type const &value;
 };
 
-template <typename Handler, typename T, typename... Args>
-inline void create_trace_and_dispatch(Handler &&handler, TraceInfo const &trace_info, T const &value, Args &&...args) {
+template <typename... Args>
+inline void create_trace_and_dispatch(auto &handler, TraceInfo const &trace_info, auto const &value, Args &&...args) {
   Trace const event{trace_info, value};
   handler(event, std::forward<Args>(args)...);
 }

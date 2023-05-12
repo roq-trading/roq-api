@@ -14,6 +14,7 @@ build:
   run_exports:
     strong:
       - {{ pin_subpackage('roq-api', max_pin='x.x.x') }}
+      - {{ pin_subpackage('fmt', max_pin='x.x') }}
 
 requirements:
   build:
@@ -25,7 +26,7 @@ requirements:
     - make
   host:
     - abseil-cpp
-    - fmt
+    - fmt==9.1
     - catch2  # [linux]
     - roq-oss-catch2  # [osx]
     - roq-oss-magic_enum

@@ -25,7 +25,7 @@ requirements:
     - make
   host:
     - abseil-cpp
-    - fmt
+    - fmt==9.1
     - catch2  # [linux]
     - roq-oss-catch2  # [osx]
     - roq-oss-magic_enum

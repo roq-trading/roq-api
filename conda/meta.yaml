@@ -26,12 +26,12 @@ requirements:
     - make
   host:
     - abseil-cpp
-    - fmt==9.1
+    - fmt
     - catch2  # [linux]
     - roq-oss-catch2  # [osx]
     - roq-oss-magic_enum
   run:
-    - fmt==9.1
+    - fmt
 
 about:
   home: https://roq-trading.com

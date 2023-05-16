@@ -22,7 +22,7 @@
     },
     {
       "name": "measurements",
-      "type": "std::span<Measurement>",
+      "type": "std::span<Measurement const>",
       "comment": "List of measurements"
     },
     {

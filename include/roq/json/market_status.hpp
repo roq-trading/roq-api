@@ -15,8 +15,7 @@ namespace json {
 struct MarketStatus final {
   explicit MarketStatus(roq::MarketStatus const &value) : value_{value} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace fmt::literals;
     return fmt::format_to(
         context.out(),

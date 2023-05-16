@@ -17,7 +17,7 @@
     },
     {
       "name": "statistics",
-      "type": "std::span<Statistics>",
+      "type": "std::span<Statistics const>",
       "comment": "List of statistics"
     },
     {

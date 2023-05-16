@@ -5,7 +5,7 @@
   "values": [
     {
       "name": "positions",
-      "type": "std::span<Position>",
+      "type": "std::span<Position const>",
       "comment": "Position updates"
     },
     {

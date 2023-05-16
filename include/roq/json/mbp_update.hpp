@@ -17,8 +17,7 @@ namespace json {
 struct MBPUpdate final {
   MBPUpdate(Context const &context, roq::MBPUpdate const &value) : context_{context}, value_{value} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace fmt::literals;
     return fmt::format_to(
         context.out(),

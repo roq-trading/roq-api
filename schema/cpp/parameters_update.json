@@ -5,7 +5,7 @@
   "values": [
     {
       "name": "parameters",
-      "type": "std::span<Parameter>",
+      "type": "std::span<Parameter const>",
       "comment": "List of parameters"
     },
     {

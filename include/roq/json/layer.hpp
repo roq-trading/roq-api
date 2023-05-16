@@ -16,8 +16,7 @@ namespace json {
 struct Layer final {
   explicit Layer(Context const &context, roq::Layer const &value) : context_{context}, value_{value} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace fmt::literals;
     return fmt::format_to(
         context.out(),

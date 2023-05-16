@@ -18,8 +18,7 @@ namespace json {
 struct ParametersUpdate final {
   explicit ParametersUpdate(roq::ParametersUpdate const &value) : value_{value} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace std::literals;
     using namespace fmt::literals;
     return fmt::format_to(
@@ -29,7 +28,7 @@ struct ParametersUpdate final {
         R"("update_type":{},)"
         R"("user":{})"
         R"(}})"_cf,
-        fmt::join(std::ranges::views::transform(value_.parameters, [](auto const &v) { return Parameter{v}; }), ","sv),
+        fmt::join(std::ranges::views::transform(value_.parameters, [](auto &v) { return Parameter{v}; }), ","sv),
         String{value_.update_type},
         String{value_.user});
   }

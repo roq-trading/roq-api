@@ -17,7 +17,7 @@
     },
     {
       "name": "orders",
-      "type": "std::span<MBOUpdate>",
+      "type": "std::span<MBOUpdate const>",
       "comment": "List of order updates"
     },
     {

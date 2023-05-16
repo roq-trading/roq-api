@@ -26,12 +26,11 @@ struct MarketByPriceUpdate final {
   MarketByPriceUpdate(
       Context const &context,
       roq::MarketByPriceUpdate const &value,
-      std::span<const roq::MBPUpdate> const &bids,
-      std::span<const roq::MBPUpdate> const &asks)
+      std::span<roq::MBPUpdate const> const &bids,
+      std::span<roq::MBPUpdate const> const &asks)
       : context_{context}, value_{value}, bids_{bids}, asks_{asks}, cache_{true} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace std::literals;
     using namespace fmt::literals;
     auto bids = cache_ ? bids_ : value_.bids;
@@ -55,14 +54,14 @@ struct MarketByPriceUpdate final {
         fmt::join(
             std::ranges::views::transform(
                 bids,
-                [this](auto const &v) {
+                [this](auto &v) {
                   return MBPUpdate{context_, v};
                 }),
             ","sv),
         fmt::join(
             std::ranges::views::transform(
                 asks,
-                [this](auto const &v) {
+                [this](auto &v) {
                   return MBPUpdate{context_, v};
                 }),
             ","sv),
@@ -75,7 +74,7 @@ struct MarketByPriceUpdate final {
  private:
   Context const &context_;
   roq::MarketByPriceUpdate const &value_;
-  std::span<const roq::MBPUpdate> const bids_, asks_;
+  std::span<roq::MBPUpdate const> const bids_, asks_;
   bool const cache_ = {};
 };
 

@@ -12,8 +12,7 @@ template <typename T>
 struct String final {
   explicit String(T const &value) : value_{value} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace fmt::literals;
     if constexpr (std::is_enum<T>::value) {
       if (value_ != T{})

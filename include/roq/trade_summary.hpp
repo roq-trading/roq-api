@@ -26,7 +26,7 @@ struct ROQ_PUBLIC TradeSummary final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
-  std::span<Trade> trades;                          //!< List of trades
+  std::span<Trade const> trades;                    //!< List of trades
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   int64_t exchange_sequence = {};                   //!< Exchange message sequence number
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)

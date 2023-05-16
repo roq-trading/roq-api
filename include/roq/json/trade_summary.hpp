@@ -21,8 +21,7 @@ namespace json {
 struct TradeSummary final {
   TradeSummary(Context const &context, roq::TradeSummary const &value) : context_{context}, value_{value} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
@@ -40,7 +39,7 @@ struct TradeSummary final {
         fmt::join(
             std::ranges::views::transform(
                 value_.trades,
-                [this](auto const &v) {
+                [this](auto &v) {
                   return Trade{context_, v};
                 }),
             ","),

@@ -18,8 +18,7 @@ namespace json {
 struct CustomMetricsUpdate final {
   explicit CustomMetricsUpdate(roq::CustomMetricsUpdate const &value) : value_{value} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace std::literals;
     using namespace fmt::literals;
     return fmt::format_to(
@@ -38,8 +37,7 @@ struct CustomMetricsUpdate final {
         String{value_.account},
         String{value_.exchange},
         String{value_.symbol},
-        fmt::join(
-            std::ranges::views::transform(value_.measurements, [](auto const &v) { return Measurement{v}; }), ","sv),
+        fmt::join(std::ranges::views::transform(value_.measurements, [](auto &v) { return Measurement{v}; }), ","sv),
         String{value_.update_type});
   }
 

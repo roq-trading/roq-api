@@ -24,7 +24,7 @@ namespace roq {
 
 //! Portfolio update  !!! EXPERIMENTAL !!!
 struct ROQ_PUBLIC PortfolioUpdate final {
-  std::span<Position> positions;                    //!< Position updates
+  std::span<Position const> positions;              //!< Position updates
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   std::string_view user;                            //!< User

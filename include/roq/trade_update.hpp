@@ -37,7 +37,7 @@ struct ROQ_PUBLIC TradeUpdate final {
   std::chrono::nanoseconds update_time_utc = {};   //!< Updated timestamp (UTC)
   std::string_view external_account;               //!< External account name
   std::string_view external_order_id;              //!< External order identifier
-  std::span<Fill> fills;                           //!< List of fills
+  std::span<Fill const> fills;                     //!< List of fills
   std::string_view routing_id;                     //!< Routing identifier
   UpdateType update_type = {};                     //!< Update type
   std::chrono::nanoseconds sending_time_utc = {};  //!< Exchange sending timestamp (UTC)

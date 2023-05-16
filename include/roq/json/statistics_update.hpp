@@ -25,11 +25,9 @@ struct StatisticsUpdate final {
   StatisticsUpdate(Context const &context, roq::StatisticsUpdate const &value, cache::Statistics const &cache)
       : context_{context}, value_{value}, cache_{&cache} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     if (cache_) {
-      std::span<roq::Statistics> statistics{
-          const_cast<roq::Statistics *>(std::data((*cache_).statistics)), std::size((*cache_).statistics)};
+      std::span statistics{std::data((*cache_).statistics), std::size((*cache_).statistics)};
       return helper(context, statistics, UpdateType::SNAPSHOT);
     } else {
       return helper(context, value_.statistics, value_.update_type);
@@ -37,10 +35,11 @@ struct StatisticsUpdate final {
   }
 
  protected:
-  template <typename Context>
-  auto helper(Context &context, std::span<roq::Statistics> const &statistics, auto update_type) const {
+  auto helper(auto &context, std::span<roq::Statistics const> const &statistics, auto update_type) const {
     using namespace std::literals;
     using namespace fmt::literals;
+    // FIXME this workaround shouldn't be necessary...
+    std::span tmp{const_cast<roq::Statistics *>(std::data(statistics)), std::size(statistics)};
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -56,7 +55,7 @@ struct StatisticsUpdate final {
         String{value_.symbol},
         fmt::join(
             std::ranges::views::transform(
-                std::ranges::remove_if(statistics, [](auto const &v) { return !std::isfinite(v.value); }),
+                std::ranges::remove_if(tmp, [](auto const &v) { return !std::isfinite(v.value); }),
                 [this](auto const &v) {
                   return Statistics{context_, v};
                 }),

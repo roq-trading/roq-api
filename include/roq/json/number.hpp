@@ -16,8 +16,7 @@ struct Number final {
   explicit Number(double value) : number_{value, {}} {}
   Number(double value, Decimals decimals) : number_{value, decimals} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace fmt::literals;
     if (!std::isnan(number_.value)) {
       // note! we quote numbers to preserve all decimals

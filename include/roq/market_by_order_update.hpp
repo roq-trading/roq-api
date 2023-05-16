@@ -28,7 +28,7 @@ struct ROQ_PUBLIC MarketByOrderUpdate final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
-  std::span<MBOUpdate> orders;                      //!< List of order updates
+  std::span<MBOUpdate const> orders;                //!< List of order updates
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   int64_t exchange_sequence = {};                   //!< Exchange message sequence number

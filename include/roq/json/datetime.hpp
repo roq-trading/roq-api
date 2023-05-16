@@ -14,8 +14,7 @@ template <typename T>
 struct DateTime final {
   explicit DateTime(T value) : value_{value} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace fmt::literals;
     if (value_.count())
       return fmt::format_to(context.out(), R"("{}")"_cf, utils::DateTime_iso8601{value_});

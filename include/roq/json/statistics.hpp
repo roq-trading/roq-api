@@ -20,8 +20,7 @@ namespace json {
 struct Statistics final {
   Statistics(Context const &context, roq::Statistics const &value) : context_{context}, value_{value} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace fmt::literals;
     auto decimals = [&]() -> Decimals {
       if (utils::is_price(value_.type))

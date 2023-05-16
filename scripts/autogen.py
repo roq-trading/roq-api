@@ -81,13 +81,17 @@ def is_array(type_):
     return "std::span<" in type_
 
 
+def remove_const(type_):
+    return type_[:-6] if type_[-6:] == " const" else type_
+
+
 def sub_type(type_):
     """find sub-type"""
     if type_ is not None:
         if "Mask<" in type_:
-            return type_[5:-1]
+            return remove_const(type_[5:-1])
         if "std::span<" in type_:
-            return type_[10:-1]
+            return remove_const(type_[10:-1])
     return type_
 
 

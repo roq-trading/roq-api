@@ -50,7 +50,7 @@
     },
     {
       "name": "fills",
-      "type": "std::span<Fill>",
+      "type": "std::span<Fill const>",
       "comment": "List of fills"
     },
     {

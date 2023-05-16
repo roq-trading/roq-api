@@ -22,9 +22,9 @@ namespace roq {
 
 //! Update relating to parameters
 struct ROQ_PUBLIC ParametersUpdate final {
-  std::span<Parameter> parameters;  //!< List of parameters
-  UpdateType update_type = {};      //!< Update type
-  std::string_view user;            //!< User name (optional, only relevant for drop-copy)
+  std::span<Parameter const> parameters;  //!< List of parameters
+  UpdateType update_type = {};            //!< Update type
+  std::string_view user;                  //!< User name (optional, only relevant for drop-copy)
 };
 
 template <>

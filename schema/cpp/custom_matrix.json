@@ -22,17 +22,17 @@
     },
     {
       "name": "rows",
-      "type": "std::span<MatrixKey>",
+      "type": "std::span<MatrixKey const>",
       "comment": "row labels"
     },
     {
       "name": "columns",
-      "type": "std::span<MatrixKey>",
+      "type": "std::span<MatrixKey const>",
       "comment": "column labels"
     },
     {
       "name": "data",
-      "type": "std::span<double>",
+      "type": "std::span<double const>",
       "comment": "matrix"
     },
     {

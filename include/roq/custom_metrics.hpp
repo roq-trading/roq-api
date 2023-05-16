@@ -22,12 +22,12 @@ namespace roq {
 
 //! Custom metrics (publish)
 struct ROQ_PUBLIC CustomMetrics final {
-  std::string_view label;               //!< Label
-  std::string_view account;             //!< Account name
-  std::string_view exchange;            //!< Exchange
-  std::string_view symbol;              //!< Symbol
-  std::span<Measurement> measurements;  //!< List of measurements
-  UpdateType update_type = {};          //!< Update type
+  std::string_view label;                     //!< Label
+  std::string_view account;                   //!< Account name
+  std::string_view exchange;                  //!< Exchange
+  std::string_view symbol;                    //!< Symbol
+  std::span<Measurement const> measurements;  //!< List of measurements
+  UpdateType update_type = {};                //!< Update type
 };
 
 template <>

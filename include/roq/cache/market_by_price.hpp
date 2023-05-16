@@ -55,7 +55,7 @@ struct ROQ_PUBLIC MarketByPrice {
   //   storage is managed externally and must be passed as arguments
   //   default is to throw an exception if internal storage exceeds provided storage
   //   setting allow_truncate to true will not throw and return arrays may then be truncated
-  virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> extract(
+  virtual std::pair<std::span<MBPUpdate const>, std::span<MBPUpdate const>> extract(
       std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks, bool allow_truncate = false) const = 0;
 
   // extract vectors of MBPUpdate's

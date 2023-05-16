@@ -16,8 +16,7 @@ namespace json {
 struct Measurement final {
   explicit Measurement(roq::Measurement const &value) : value_{value} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
+  auto format_to(auto &context) const {
     using namespace fmt::literals;
     return fmt::format_to(
         context.out(),

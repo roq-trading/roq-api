@@ -12,7 +12,7 @@ namespace debug {
 namespace hex {
 
 struct Message final {
-  explicit Message(std::span<const std::byte> const &buffer) : buffer_{buffer} {}
+  explicit Message(std::span<std::byte const> const &buffer) : buffer_{buffer} {}
   explicit Message(std::string_view const &buffer)
       : buffer_{reinterpret_cast<std::byte const *>(std::data(buffer)), std::size(buffer)} {}
 

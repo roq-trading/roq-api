@@ -122,7 +122,7 @@ struct ROQ_PUBLIC MarketByOrder {
 
   // simple update
   //   used when applying sequential updates, e.g. when caching
-  inline void operator()(std::span<MBOUpdate> const &orders) { update_helper(orders); }
+  inline void operator()(std::span<MBOUpdate const> const &orders) { update_helper(orders); }
 
   // create normalized update (used when origin is an external "noisy" source)
   template <typename Callback>
@@ -153,7 +153,7 @@ struct ROQ_PUBLIC MarketByOrder {
   virtual MarketByOrderUpdate create_snapshot_helper(std::vector<MBOUpdate> &) const = 0;
 
   // note! used when applying sequential updates
-  virtual void update_helper(std::span<MBOUpdate> const &) = 0;
+  virtual void update_helper(std::span<MBOUpdate const> const &) = 0;
 };
 
 }  // namespace cache

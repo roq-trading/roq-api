@@ -209,7 +209,7 @@ auto encode(B &builder, roq::Trade const &value) {
 
 namespace detail {
 template <typename U,  typename B, typename T>
-auto encode_double_vector(B &builder, std::span<T> const& value) {
+auto encode_double_vector(B &builder, std::span<T const> const& value) {
   using result_type = U;
   std::vector<result_type> result;
   auto size = std::size(value);
@@ -224,7 +224,7 @@ auto encode_double_vector(B &builder, std::span<T> const& value) {
 
 namespace detail {
 template <typename U,  typename B, typename T>
-auto encode_string_vector(B &builder, std::span<T> const& value) {
+auto encode_string_vector(B &builder, std::span<T const> const& value) {
   using result_type = U;
   std::vector<flatbuffers::Offset<result_type>> result;
   auto size = std::size(value);
@@ -238,7 +238,7 @@ auto encode_string_vector(B &builder, std::span<T> const& value) {
 }
 
 template <typename B, typename T>
-auto encode(B &builder, std::span<T> const& value) {
+auto encode(B &builder, std::span<T const> const& value) {
   constexpr bool is_string_like = requires(T const& t) {
     t.operator std::string_view();
   };
@@ -395,13 +395,14 @@ auto encode(B &builder, roq::TopOfBook const &value) {
 
 template <typename B>
 auto encode(B &builder, roq::MarketByPriceUpdate const &value) {
+  std::span<roq::MBPUpdate const> bids{value.bids}, asks{value.asks};  // XXX const
   return CreateMarketByPriceUpdate(
       builder,
       value.stream_id,
       encode(builder, value.exchange),
       encode(builder, value.symbol),
-      encode(builder, value.bids),
-      encode(builder, value.asks),
+      encode(builder, bids),  // FIXME
+      encode(builder, asks),  // FIXME
       encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc),
       value.exchange_sequence,

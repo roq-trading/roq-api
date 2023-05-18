@@ -529,7 +529,8 @@ auto encode(B &builder, roq::OrderAck const &value) {
       encode(builder, value.routing_id),
       value.version,
       encode(builder, value.side),
-      encode(builder, value.round_trip_latency));
+      encode(builder, value.round_trip_latency),
+      value.traded_quantity);
 }
 
 template <typename B>

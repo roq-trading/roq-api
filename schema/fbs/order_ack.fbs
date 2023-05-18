@@ -24,4 +24,5 @@ table OrderAck {
   // from here: not aligned with C++ schema
   side:Side;
   round_trip_latency:int64;
+  traded_quantity:double = nan;
 }

@@ -16,6 +16,7 @@
 #include "roq/error.hpp"
 #include "roq/event.hpp"
 #include "roq/name.hpp"
+#include "roq/numbers.hpp"
 #include "roq/origin.hpp"
 #include "roq/request_status.hpp"
 #include "roq/request_type.hpp"
@@ -42,6 +43,7 @@ struct ROQ_PUBLIC OrderAck final {
   std::string_view external_order_id;                //!< External order identifier
   std::string_view routing_id;                       //!< Routing identifier
   uint32_t version = {};                             //!< Version number (strictly increasing, optional)
+  double traded_quantity = NaN;                      //!< Quantity (total traded)
   std::chrono::nanoseconds round_trip_latency = {};  //!< Round-trip latency between gateway and exchange
 };
 
@@ -82,6 +84,7 @@ struct fmt::formatter<roq::OrderAck> {
         R"(external_order_id="{}", )"
         R"(routing_id="{}", )"
         R"(version={}, )"
+        R"(traded_quantity={}, )"
         R"(round_trip_latency={})"
         R"(}})"_cf,
         value.stream_id,
@@ -100,6 +103,7 @@ struct fmt::formatter<roq::OrderAck> {
         value.external_order_id,
         value.routing_id,
         value.version,
+        value.traded_quantity,
         value.round_trip_latency);
   }
 };

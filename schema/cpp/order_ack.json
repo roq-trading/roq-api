@@ -74,6 +74,11 @@
       "type": "uint32_t"
     },
     {
+      "name": "traded_quantity",
+      "type": "double",
+      "comment": "Quantity (total traded)"
+    },
+    {
       "name": "round_trip_latency",
       "type": "std::chrono::nanoseconds",
       "comment": "Round-trip latency between gateway and exchange"

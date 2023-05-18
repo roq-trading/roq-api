@@ -4974,7 +4974,8 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ROUTING_ID = 30,
     VT_VERSION = 32,
     VT_SIDE = 34,
-    VT_ROUND_TRIP_LATENCY = 36
+    VT_ROUND_TRIP_LATENCY = 36,
+    VT_TRADED_QUANTITY = 38
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -5027,6 +5028,9 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int64_t round_trip_latency() const {
     return GetField<int64_t>(VT_ROUND_TRIP_LATENCY, 0);
   }
+  double traded_quantity() const {
+    return GetField<double>(VT_TRADED_QUANTITY, std::numeric_limits<double>::quiet_NaN());
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -5054,6 +5058,7 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
            VerifyField<uint8_t>(verifier, VT_SIDE, 1) &&
            VerifyField<int64_t>(verifier, VT_ROUND_TRIP_LATENCY, 8) &&
+           VerifyField<double>(verifier, VT_TRADED_QUANTITY, 8) &&
            verifier.EndTable();
   }
 };
@@ -5113,6 +5118,9 @@ struct OrderAckBuilder {
   void add_round_trip_latency(int64_t round_trip_latency) {
     fbb_.AddElement<int64_t>(OrderAck::VT_ROUND_TRIP_LATENCY, round_trip_latency, 0);
   }
+  void add_traded_quantity(double traded_quantity) {
+    fbb_.AddElement<double>(OrderAck::VT_TRADED_QUANTITY, traded_quantity, std::numeric_limits<double>::quiet_NaN());
+  }
   explicit OrderAckBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5142,8 +5150,10 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAck(
     ::flatbuffers::Offset<::flatbuffers::String> routing_id = 0,
     uint32_t version = 0,
     roq::fbs::Side side = roq::fbs::Side::Undefined,
-    int64_t round_trip_latency = 0) {
+    int64_t round_trip_latency = 0,
+    double traded_quantity = std::numeric_limits<double>::quiet_NaN()) {
   OrderAckBuilder builder_(_fbb);
+  builder_.add_traded_quantity(traded_quantity);
   builder_.add_round_trip_latency(round_trip_latency);
   builder_.add_version(version);
   builder_.add_routing_id(routing_id);
@@ -5187,7 +5197,8 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     const char *routing_id = nullptr,
     uint32_t version = 0,
     roq::fbs::Side side = roq::fbs::Side::Undefined,
-    int64_t round_trip_latency = 0) {
+    int64_t round_trip_latency = 0,
+    double traded_quantity = std::numeric_limits<double>::quiet_NaN()) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -5214,7 +5225,8 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
       routing_id__,
       version,
       side,
-      round_trip_latency);
+      round_trip_latency,
+      traded_quantity);
 }
 
 struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `OrderAck.traded_quantity` (#359)
+
 ### Removed
 
 * `oms::TradeUpdate` was unnecessary (`TradeUpdate` is sufficient for the gateways)

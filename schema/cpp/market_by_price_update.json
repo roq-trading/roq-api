@@ -17,12 +17,12 @@
     },
     {
       "name": "bids",
-      "type": "std::span<MBPUpdate>",
+      "type": "std::span<MBPUpdate const>",
       "comment": "List of bids"
     },
     {
       "name": "asks",
-      "type": "std::span<MBPUpdate>",
+      "type": "std::span<MBPUpdate const>",
       "comment": "List of asks"
     },
     {

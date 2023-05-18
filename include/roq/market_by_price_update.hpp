@@ -28,8 +28,8 @@ struct ROQ_PUBLIC MarketByPriceUpdate final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
-  std::span<MBPUpdate> bids;                        //!< List of bids
-  std::span<MBPUpdate> asks;                        //!< List of asks
+  std::span<MBPUpdate const> bids;                  //!< List of bids
+  std::span<MBPUpdate const> asks;                  //!< List of asks
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   int64_t exchange_sequence = {};                   //!< Exchange message sequence number

@@ -395,14 +395,13 @@ auto encode(B &builder, roq::TopOfBook const &value) {
 
 template <typename B>
 auto encode(B &builder, roq::MarketByPriceUpdate const &value) {
-  std::span<roq::MBPUpdate const> bids{value.bids}, asks{value.asks};  // XXX const
   return CreateMarketByPriceUpdate(
       builder,
       value.stream_id,
       encode(builder, value.exchange),
       encode(builder, value.symbol),
-      encode(builder, bids),  // FIXME
-      encode(builder, asks),  // FIXME
+      encode(builder, value.bids),
+      encode(builder, value.asks),
       encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc),
       value.exchange_sequence,

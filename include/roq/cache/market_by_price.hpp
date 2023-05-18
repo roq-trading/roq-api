@@ -66,7 +66,7 @@ struct ROQ_PUBLIC MarketByPrice {
   //   storage is managed externally and must be passed as argument
   //   the entire array will be returned if fill_zero is true
   //   otherwise the array will be the maximum of size(bids) and size(asks)
-  virtual std::span<Layer> extract(std::span<Layer> const &, bool fill_zero = false) const = 0;
+  virtual std::span<Layer const> extract(std::span<Layer> const &, bool fill_zero = false) const = 0;
 
   // extract a vector of Layer's
   //   note! max_depth == 0 means full snapshot
@@ -95,7 +95,7 @@ struct ROQ_PUBLIC MarketByPrice {
 
   // simple update
   //   used when applying sequential updates, e.g. when caching
-  inline void operator()(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) {
+  inline void operator()(std::span<MBPUpdate const> const &bids, std::span<MBPUpdate const> const &asks) {
     update_helper(bids, asks);
   }
 
@@ -125,7 +125,7 @@ struct ROQ_PUBLIC MarketByPrice {
   }
 
   // generate depth update from full update
-  virtual std::pair<std::span<MBPUpdate>, std::span<MBPUpdate>> create_depth_update(
+  virtual std::pair<std::span<MBPUpdate const>, std::span<MBPUpdate const>> create_depth_update(
       MarketByPriceUpdate const &,
       size_t depth,
       std::span<MBPUpdate> const &bids,
@@ -144,7 +144,7 @@ struct ROQ_PUBLIC MarketByPrice {
       std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) const = 0;
 
   // note! used when applying sequential updates
-  virtual void update_helper(std::span<MBPUpdate> const &bids, std::span<MBPUpdate> const &asks) = 0;
+  virtual void update_helper(std::span<MBPUpdate const> const &bids, std::span<MBPUpdate const> const &asks) = 0;
 };
 
 }  // namespace cache

@@ -67,7 +67,7 @@ struct CustomMetrics final {
         .account = context.account,
         .exchange = context.exchange,
         .symbol = context.symbol,
-        .measurements = {const_cast<Measurement *>(std::data(measurements)), std::size(measurements)},  // XXX const
+        .measurements = measurements,
         .update_type = UpdateType::SNAPSHOT,
         .sending_time_utc = sending_time_utc,
         .user = user,

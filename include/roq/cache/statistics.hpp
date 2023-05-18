@@ -96,8 +96,8 @@ struct Statistics final {
         .stream_id = stream_id,
         .exchange = context.exchange,
         .symbol = context.symbol,
-        .statistics = {const_cast<roq::Statistics *>(std::data(statistics)), std::size(statistics)},  // XXX
-        .update_type = UpdateType::SNAPSHOT,                                                          // note!
+        .statistics = statistics,
+        .update_type = UpdateType::SNAPSHOT,  // note!
         .exchange_time_utc = exchange_time_utc,
         .exchange_sequence = {},
         .sending_time_utc = {},

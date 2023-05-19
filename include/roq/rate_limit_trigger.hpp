@@ -19,6 +19,7 @@
 #include "roq/name.hpp"
 #include "roq/origin.hpp"
 #include "roq/rate_limit_type.hpp"
+#include "roq/string_types.hpp"
 #include "roq/trace.hpp"
 
 namespace roq {

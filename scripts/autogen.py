@@ -106,7 +106,6 @@ def is_pod_or_std(type_):
 
 
 _string_like_types = {
-    "std::string_view",
     "UUID",
     "String",
     "Source",
@@ -133,12 +132,26 @@ _string_like_types = {
 }
 
 
+def is_string_like_internal(type_):
+    """test if is string-like"""
+    if type_ is None:
+        return False
+    tmp = type_.split(" ")[0]
+    if type_ is not None:
+        for name in _string_like_types:
+            if name == tmp:
+                return True
+    return False
+
+
 def is_string_like(type_):
     """test if is string-like"""
     if type_ is None:
         return False
     tmp = type_.split(" ")[0]
     if type_ is not None:
+        if tmp == "std::string_view":
+            return True
         for name in _string_like_types:
             if name == tmp:
                 return True
@@ -293,8 +306,15 @@ def _std_include_helper(variable):
 
 def _roq_include_helper(namespaces, variable):
     """sometimes we need a custom include"""
-    if variable["is_mask"] or variable["is_array"]:
+    if is_string_like_internal(variable["type"]):
+        return namespaces + ("string_types",)
+    if variable["is_mask"]:
         return namespaces + (snake_case(sub_type(variable["type"])),)
+    if variable["is_array"]:
+        sub_type_ = sub_type(variable["type"])
+        if is_string_like_internal(sub_type_):
+            return namespaces + ("string_types",)
+        return namespaces + (snake_case(sub_type_),)
     if "::" not in variable["type"]:
         return namespaces + (snake_case(sub_type(variable["type"])),)
     assert False
@@ -322,7 +342,7 @@ def new_spec(path, namespaces, name, comment, spec, type_):
         for variable in variables
         if (
             (variable["is_array"] or variable["is_mask"])
-            and not is_string_like(sub_type(variable["type"]))
+            and not variable["type"] == "std::string_view"
             and not is_scalar(sub_type(variable["type"]))
         )
         or variable["is_enum"]

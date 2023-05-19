@@ -14,6 +14,7 @@
 
 #include "roq/event.hpp"
 #include "roq/name.hpp"
+#include "roq/string_types.hpp"
 #include "roq/trace.hpp"
 #include "roq/update_type.hpp"
 

@@ -8,6 +8,7 @@
 #include <magic_enum.hpp>
 
 #include <initializer_list>
+#include <limits>
 #include <type_traits>
 #include <utility>
 
@@ -32,26 +33,32 @@ struct Mask final {
     using reference = T const;
     using iterator_category = std::forward_iterator_tag;
 
-    iterator(Mask<T> value) : value_(value) {}
+    using underlying_type = std::underlying_type<T>::type;
+
+    iterator(Mask<T> value) : value_{value.get()} {}
+
     bool operator==(sentinel const &) const {
-      for (; index_ < magic_enum::enum_count<T>(); ++index_) {
-        // special case for "undefined"
-        if constexpr (static_cast<value_type>(magic_enum::enum_value<T>(0)) == value_type{}) {
-          if (index_ == 0)
-            continue;
-        }
-        if (value_.has(magic_enum::enum_value<T>(index_)))
+      for (; bit_ < std::numeric_limits<underlying_type>::digits; ++bit_) {
+        auto mask = static_cast<underlying_type>(size_t{1} << bit_);
+        if (value_ < mask)
+          break;
+        if (value_ & mask)
           return false;
       }
       return true;
     }
-    reference operator*() const { return magic_enum::enum_value<T>(index_++); }
+
+    reference operator*() const {
+      auto mask = static_cast<underlying_type>(size_t{1} << bit_++);
+      return static_cast<value_type>(mask);
+    }
+
     iterator &operator++() { return *this; }
     void operator++(int) { ++(*this); }
 
    private:
-    Mask<T> value_;
-    mutable size_t index_ = 0;
+    underlying_type value_;
+    mutable size_t bit_ = 0;  // skip undefined
   };
 
   constexpr Mask() = default;
@@ -184,13 +191,6 @@ struct fmt::formatter<roq::Mask<T>> {
   auto format(roq::Mask<T> const &value, Context &context) const {
     using namespace std::literals;
     using namespace fmt::literals;
-    // special case for "undefined"
-    using value_type = typename roq::Mask<T>::value_type;
-    if constexpr (static_cast<value_type>(magic_enum::enum_value<T>(0)) == value_type{}) {
-      if (value.get() == value_type{})
-        return fmt::format_to(context.out(), "{}"_cf, magic_enum::enum_name(magic_enum::enum_value<T>(0)));
-    }
-    // normal case
     using iterator = typename roq::Mask<T>::iterator;
     using sentinel = typename roq::Mask<T>::sentinel;
     return fmt::format_to(context.out(), "{}"_cf, fmt::join(iterator{value}, sentinel{}, "|"sv));

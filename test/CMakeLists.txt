@@ -16,8 +16,10 @@ set(SOURCES
     rate_limiter.cpp
     request_status.cpp
     safe_cast.cpp
+    side.cpp
     span.cpp
     string.cpp
+    support_type.cpp
     traits.cpp
     update.cpp
     utils.cpp
@@ -29,6 +31,6 @@ add_executable("${TARGET_NAME}" ${SOURCES})
 add_dependencies(${TARGET_NAME} ${PROJECT_NAME}-include-cpp)
 add_dependencies(${TARGET_NAME} ${PROJECT_NAME}-include-fbs)
 
-target_link_libraries("${TARGET_NAME}" PRIVATE absl::hash Catch2::Catch2 fmt::fmt-header-only)
+target_link_libraries("${TARGET_NAME}" PRIVATE absl::hash Catch2::Catch2 fmt::fmt)
 
 add_test(NAME "${TARGET_NAME}" COMMAND "${TARGET_NAME}")

@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* The `Mask<E>` template had to be changed to work with magic_enum 0.9.0
+
 ### Added
 
 * `OrderAck.traded_quantity` (#359)

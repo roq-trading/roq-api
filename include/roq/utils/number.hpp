@@ -13,10 +13,12 @@ namespace roq {
 namespace utils {
 
 struct Number final {
-  Number() = default;
-  Number(double value, Decimals decimals) : value{value}, decimals{decimals} {}
+  using value_type = double;
 
-  double const value = NaN;
+  Number() = default;
+  Number(value_type value, Decimals decimals) : value{value}, decimals{decimals} {}
+
+  value_type const value = NaN;
   Decimals const decimals = {};
 };
 

@@ -36,7 +36,7 @@ struct fmt::formatter<std::chrono::year_month_day> {
         R"({{)"
         R"(year="{}", )"
         R"(month={}, )"
-        R"(day={} )"
+        R"(day={})"
         R"(}})"_cf,
         static_cast<int>(value.year()),
         static_cast<unsigned>(value.month()),
@@ -59,7 +59,7 @@ struct fmt::formatter<std::chrono::hh_mm_ss<std::chrono::milliseconds>> {
         R"(hours="{}", )"
         R"(minutes={}, )"
         R"(seconds={} )"
-        R"(milliseconds={} )"
+        R"(milliseconds={})"
         R"(}})"_cf,
         value.hours().count(),
         value.minutes().count(),

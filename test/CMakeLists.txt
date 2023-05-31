@@ -12,6 +12,7 @@ set(SOURCES
     json.cpp
     mask.cpp
     math.cpp
+    message.cpp
     metrics.cpp
     rate_limiter.cpp
     request_status.cpp

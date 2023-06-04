@@ -5266,7 +5266,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_UPDATE_TYPE = 64,
     VT_EXECUTION_INSTRUCTIONS = 66,
     VT_USER = 68,
-    VT_SENDING_TIME_UTC = 70
+    VT_SENDING_TIME_UTC = 70,
+    VT_CLIENT_ORDER_ID = 72
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -5370,6 +5371,9 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int64_t sending_time_utc() const {
     return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
   }
+  const ::flatbuffers::String *client_order_id() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_CLIENT_ORDER_ID);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -5414,6 +5418,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyOffset(verifier, VT_USER) &&
            verifier.VerifyString(user()) &&
            VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
+           VerifyOffset(verifier, VT_CLIENT_ORDER_ID) &&
+           verifier.VerifyString(client_order_id()) &&
            verifier.EndTable();
   }
 };
@@ -5524,6 +5530,9 @@ struct OrderUpdateBuilder {
   void add_sending_time_utc(int64_t sending_time_utc) {
     fbb_.AddElement<int64_t>(OrderUpdate::VT_SENDING_TIME_UTC, sending_time_utc, 0);
   }
+  void add_client_order_id(::flatbuffers::Offset<::flatbuffers::String> client_order_id) {
+    fbb_.AddOffset(OrderUpdate::VT_CLIENT_ORDER_ID, client_order_id);
+  }
   explicit OrderUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5570,7 +5579,8 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     uint32_t execution_instructions = 0,
     ::flatbuffers::Offset<::flatbuffers::String> user = 0,
-    int64_t sending_time_utc = 0) {
+    int64_t sending_time_utc = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> client_order_id = 0) {
   OrderUpdateBuilder builder_(_fbb);
   builder_.add_sending_time_utc(sending_time_utc);
   builder_.add_last_traded_price(last_traded_price);
@@ -5584,6 +5594,7 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
   builder_.add_max_show_quantity(max_show_quantity);
+  builder_.add_client_order_id(client_order_id);
   builder_.add_user(user);
   builder_.add_execution_instructions(execution_instructions);
   builder_.add_max_accepted_version(max_accepted_version);
@@ -5649,7 +5660,8 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     uint32_t execution_instructions = 0,
     const char *user = nullptr,
-    int64_t sending_time_utc = 0) {
+    int64_t sending_time_utc = 0,
+    const char *client_order_id = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -5658,6 +5670,7 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
   auto external_order_id__ = external_order_id ? _fbb.CreateString(external_order_id) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
   auto user__ = user ? _fbb.CreateString(user) : 0;
+  auto client_order_id__ = client_order_id ? _fbb.CreateString(client_order_id) : 0;
   return roq::fbs::CreateOrderUpdate(
       _fbb,
       stream_id,
@@ -5693,7 +5706,8 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       update_type,
       execution_instructions,
       user__,
-      sending_time_utc);
+      sending_time_utc,
+      client_order_id__);
 }
 
 struct ParametersUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

@@ -66,6 +66,10 @@
       "type": "std::string_view"
     },
     {
+      "name": "client_order_id",
+      "type": "std::string_view"
+    },
+    {
       "name": "status",
       "type": "OrderStatus",
       "comment": "Order status"

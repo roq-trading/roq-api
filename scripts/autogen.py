@@ -218,6 +218,7 @@ def _find_default_comment(name):
     """some variable names are repeated many times"""
     return dict(
         account="Account name",
+        client_order_id="Client order identifier",
         commission_currency="Currency",
         conditional_on_version="Auto-reject if this version has positively failed (optional)",
         create_time_utc="Created timestamp (UTC)",
@@ -235,8 +236,8 @@ def _find_default_comment(name):
         order_template="Order template",
         order_type="Order type",
         position_effect="Position effect",
-        request_template="Request template (gateway configured)",
         request_id="Request identifier",
+        request_template="Request template (gateway configured)",
         routing_id="Routing identifier",
         sending_time_utc="Exchange sending timestamp (UTC)",
         settlement_currency="Currency",

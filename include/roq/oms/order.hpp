@@ -25,6 +25,7 @@ struct ROQ_PUBLIC Order final {
   std::chrono::nanoseconds update_time_utc = {};
   Account external_account;
   ExternalOrderId external_order_id;
+  ClOrdId client_order_id;
   OrderStatus status = {};
   double quantity = NaN;
   double price = NaN;
@@ -74,6 +75,7 @@ struct fmt::formatter<roq::oms::Order> {
         R"(update_time_utc={}, )"
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
+        R"(client_order_id="{}", )"
         R"(status={}, )"
         R"(quantity={}, )"
         R"(price={}, )"
@@ -107,6 +109,7 @@ struct fmt::formatter<roq::oms::Order> {
         value.update_time_utc,
         value.external_account,
         value.external_order_id,
+        value.client_order_id,
         value.status,
         value.quantity,
         value.price,

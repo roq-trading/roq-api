@@ -28,6 +28,7 @@ struct ROQ_PUBLIC Order final {
     update_time_utc = {};
     external_account.clear();
     external_order_id.clear();
+    client_order_id.clear();
     status = {};
     quantity = NaN;
     price = NaN;
@@ -58,6 +59,7 @@ struct ROQ_PUBLIC Order final {
     dirty |= utils::update_if_not_empty(update_time_utc, order_update.update_time_utc);
     dirty |= utils::update_if_not_empty(external_account, order_update.external_account);
     dirty |= utils::update_if_not_empty(external_order_id, order_update.external_order_id);
+    dirty |= utils::update_if_not_empty(client_order_id, order_update.client_order_id);
     dirty |= utils::update(status, order_update.status);
     dirty |= utils::update(quantity, order_update.quantity);
     dirty |= utils::update(price, order_update.price);
@@ -108,6 +110,7 @@ struct ROQ_PUBLIC Order final {
         .update_time_utc = update_time_utc,
         .external_account = external_account,
         .external_order_id = external_order_id,
+        .client_order_id = client_order_id,
         .status = status,
         .quantity = quantity,
         .price = price,
@@ -140,6 +143,7 @@ struct ROQ_PUBLIC Order final {
   std::chrono::nanoseconds update_time_utc = {};
   ExternalAccount external_account;
   ExternalOrderId external_order_id;
+  ClOrdId client_order_id;
   OrderStatus status = {};
   double quantity = NaN;
   double price = NaN;

@@ -570,7 +570,8 @@ auto encode(B &builder, roq::OrderUpdate const &value) {
       encode(builder, value.update_type),
       value.execution_instructions.get(),
       encode(builder, value.user),
-      encode(builder, value.sending_time_utc));
+      encode(builder, value.sending_time_utc),
+      encode(builder, value.client_order_id));
 }
 
 template <typename B>

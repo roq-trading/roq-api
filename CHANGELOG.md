@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `OrderUpdate.client_order_id` (#366)
 * `OrderAck.traded_quantity` (#359)
 
 ### Removed

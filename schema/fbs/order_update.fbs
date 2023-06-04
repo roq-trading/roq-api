@@ -40,4 +40,6 @@ table OrderUpdate {
   execution_instructions:uint32;
   user:string;
   sending_time_utc:int64;
+  // from here: not aligned with C++ schema
+  client_order_id:string;
 }

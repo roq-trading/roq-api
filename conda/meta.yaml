@@ -31,9 +31,6 @@ requirements:
     - catch2  # [linux]
     - roq-oss-catch2  # [osx]
     - roq-oss-magic_enum
-  run:
-    - libgcc-ng >=13  # [linux]
-    - libstdcxx-ng >=13  # [linux]
 
 about:
   home: https://roq-trading.com

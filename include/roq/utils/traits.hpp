@@ -10,6 +10,19 @@
 namespace roq {
 namespace utils {
 
+// always_false
+// references:
+//   https://stackoverflow.com/a/53945549
+
+template <typename...>
+constexpr std::false_type always_false{};
+
+// is_any
+// references:
+//   https://stackoverflow.com/a/39550575
+template <class T, class... Ts>
+struct is_any : std::disjunction<std::is_same<T, Ts>...> {};
+
 // is_char + is_char_v
 
 template <typename T>

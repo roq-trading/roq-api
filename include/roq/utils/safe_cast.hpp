@@ -14,13 +14,6 @@
 namespace roq {
 namespace utils {
 
-namespace detail {
-// references:
-//   https://stackoverflow.com/a/53945549
-template <typename...>
-constexpr std::false_type always_false{};
-}  // namespace detail
-
 template <typename T>
 struct safe_cast final {
   using value_type = typename std::remove_reference<T>::type;
@@ -53,7 +46,7 @@ struct safe_cast final {
           throw OverflowError{"overflow: value={}"sv, value_};
         return static_cast<result_type>(value_);
       } else {
-        static_assert(detail::always_false<result_type>, "not implemented for unsigned");
+        static_assert(always_false<result_type>, "not implemented for unsigned");
       }
     } else if constexpr (is_duration<value_type>::value) {
       return std::chrono::duration_cast<result_type>(value_);
@@ -61,7 +54,7 @@ struct safe_cast final {
       // ... to string
       return std::string{value_};
     } else {
-      static_assert(detail::always_false<result_type>, "not implemented for this type");
+      static_assert(always_false<result_type>, "not implemented for this type");
     }
   }
 

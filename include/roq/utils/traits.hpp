@@ -103,7 +103,7 @@ using has_random_access_iterator = std::
     is_base_of<std::random_access_iterator_tag, typename std::iterator_traits<typename T::iterator>::iterator_category>;
 
 // is_duration
-// refrences:
+// references:
 //   https://stackoverflow.com/a/41851068
 
 template <typename T>
@@ -114,6 +114,16 @@ struct is_duration<std::chrono::duration<Rep, Period>> : std::true_type {};
 
 template <typename T>
 inline constexpr bool is_duration_v = is_duration<T>::value;
+
+// is_specialization
+// references:
+//   https://stackoverflow.com/a/28796458
+
+template <typename Test, template <typename...> class Ref>
+struct is_specialization : std::false_type {};
+
+template <template <typename...> class Ref, typename... Args>
+struct is_specialization<Ref<Args...>, Ref> : std::true_type {};
 
 }  // namespace utils
 }  // namespace roq

@@ -14,6 +14,7 @@ namespace json {
 
 struct Number final {
   explicit Number(double value) : number_{value, {}} {}
+  explicit Number(utils::Number const &number) : number_{number} {}
   Number(double value, Decimals decimals) : number_{value, decimals} {}
 
   auto format_to(auto &context) const {

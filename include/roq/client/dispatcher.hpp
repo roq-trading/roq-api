@@ -38,14 +38,17 @@ struct ROQ_PUBLIC Dispatcher {
   //! Send a request to cancel all orders
   virtual void send(CancelAllOrders const &, uint8_t source) = 0;
 
-  //! Broadcast custom metrics
+  //! Send a request to update custom metrics
   virtual void send(CustomMetrics const &, uint8_t source) = 0;
 
-  //! Broadcast custom matrix
+  //! Send a request to update custom matrix
   virtual void send(CustomMatrix const &, uint8_t source) = 0;
 
-  //! Send portfolio update (position manager, only)  !!! EXPERIMENTAL !!!
+  //! Send a request to update a portfolio (position manager, only)  !!! EXPERIMENTAL !!!
   virtual void send(PortfolioUpdate const &, uint8_t source) = 0;
+
+  //! Broadcast request to cancel all orders (returns number of *failed* requests)
+  virtual uint8_t broadcast(CancelAllOrders const &) = 0;
 
   //! Useful to communicate between threads
   virtual void enqueue(CustomMessage const &) = 0;

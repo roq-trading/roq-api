@@ -1,0 +1,25 @@
+{
+  "name": "RiskLimit",
+  "type": "struct",
+  "comment": "Risk limit for {exchange, symbol}",
+  "values": [
+    {
+      "name": "exchange",
+      "type": "Exchange"
+    },
+    {
+      "name": "symbol",
+      "type": "Symbol"
+    },
+    {
+      "name": "buy_limit",
+      "type": "double",
+      "comment": "Buy limit"
+    },
+    {
+      "name": "sell_limit",
+      "type": "double",
+      "comment": "Sell limit"
+    }
+  ]
+}

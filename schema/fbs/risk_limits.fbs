@@ -1,0 +1,9 @@
+namespace roq.fbs;
+
+table RiskLimits {
+  label:string;
+  account:string;
+  user:string;
+  limits:[RiskLimit];
+  seqno:uint64;
+}

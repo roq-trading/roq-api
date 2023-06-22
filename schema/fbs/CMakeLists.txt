@@ -50,6 +50,9 @@ set(SOURCES
     reference_data.fbs
     request_status.fbs
     request_type.fbs
+    risk_limit.fbs
+    risk_limits.fbs
+    risk_limits_update.fbs
     security_type.fbs
     side.fbs
     statistics.fbs

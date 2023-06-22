@@ -1,0 +1,8 @@
+namespace roq.fbs;
+
+table RiskLimit{
+  exchange:string;
+  symbol:string;
+  buy_limit:double = nan;
+  sell_limit:double = nan;
+}

@@ -1,0 +1,9 @@
+namespace roq.fbs;
+
+table RiskLimitsUpdate {
+  label:string;
+  account:string;
+  user:string;
+  limits:[RiskLimit];
+  update_type:UpdateType;
+}

@@ -47,8 +47,8 @@ set(SOURCES
     parameter.json
     parameters_update.json
     portfolio_update.json
-    position.json
     position_effect.json
+    position.json
     position_update.json
     priority.json
     protocol.json
@@ -57,6 +57,9 @@ set(SOURCES
     reference_data.json
     request_status.json
     request_type.json
+    risk_limit.json
+    risk_limits.json
+    risk_limits_update.json
     security_type.json
     side.json
     start.json

@@ -1,0 +1,32 @@
+{
+  "name": "RiskLimitsUpdate",
+  "type": "message",
+  "comment": "Risk limits (publish)",
+  "values": [
+    {
+      "name": "label",
+      "type": "std::string_view",
+      "comment": "Label"
+    },
+    {
+      "name": "account",
+      "type": "std::string_view",
+      "comment": "Account name (optional)"
+    },
+    {
+      "name": "user",
+      "type": "std::string_view",
+      "comment": "User name (optional)"
+    },
+    {
+      "name": "limits",
+      "type": "std::span<RiskLimit const>",
+      "comment": "Risk limits per {exchange, symbol}"
+    },
+    {
+      "name": "update_type",
+      "type": "UpdateType",
+      "comment": "Update type"
+    }
+  ]
+}

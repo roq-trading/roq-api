@@ -37,6 +37,9 @@ struct ParameterBuilder;
 struct Position;
 struct PositionBuilder;
 
+struct RiskLimit;
+struct RiskLimitBuilder;
+
 struct Statistics;
 struct StatisticsBuilder;
 
@@ -114,6 +117,12 @@ struct RateLimitTriggerBuilder;
 
 struct ReferenceData;
 struct ReferenceDataBuilder;
+
+struct RiskLimits;
+struct RiskLimitsBuilder;
+
+struct RiskLimitsUpdate;
+struct RiskLimitsUpdateBuilder;
 
 struct StatisticsUpdate;
 struct StatisticsUpdateBuilder;
@@ -1547,11 +1556,13 @@ enum class Message : uint8_t {
   PortfolioUpdate = 32,
   CustomMatrix = 33,
   CustomMatrixUpdate = 34,
+  RiskLimits = 35,
+  RiskLimitsUpdate = 36,
   MIN = NONE,
-  MAX = CustomMatrixUpdate
+  MAX = RiskLimitsUpdate
 };
 
-inline const Message (&EnumValuesMessage())[35] {
+inline const Message (&EnumValuesMessage())[37] {
   static const Message values[] = {
     Message::NONE,
     Message::Handshake,
@@ -1587,13 +1598,15 @@ inline const Message (&EnumValuesMessage())[35] {
     Message::ParametersUpdate,
     Message::PortfolioUpdate,
     Message::CustomMatrix,
-    Message::CustomMatrixUpdate
+    Message::CustomMatrixUpdate,
+    Message::RiskLimits,
+    Message::RiskLimitsUpdate
   };
   return values;
 }
 
 inline const char * const *EnumNamesMessage() {
-  static const char * const names[36] = {
+  static const char * const names[38] = {
     "NONE",
     "Handshake",
     "HandshakeAck",
@@ -1629,13 +1642,15 @@ inline const char * const *EnumNamesMessage() {
     "PortfolioUpdate",
     "CustomMatrix",
     "CustomMatrixUpdate",
+    "RiskLimits",
+    "RiskLimitsUpdate",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMessage(Message e) {
-  if (::flatbuffers::IsOutRange(e, Message::NONE, Message::CustomMatrixUpdate)) return "";
+  if (::flatbuffers::IsOutRange(e, Message::NONE, Message::RiskLimitsUpdate)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMessage()[index];
 }
@@ -1778,6 +1793,14 @@ template<> struct MessageTraits<roq::fbs::CustomMatrix> {
 
 template<> struct MessageTraits<roq::fbs::CustomMatrixUpdate> {
   static const Message enum_value = Message::CustomMatrixUpdate;
+};
+
+template<> struct MessageTraits<roq::fbs::RiskLimits> {
+  static const Message enum_value = Message::RiskLimits;
+};
+
+template<> struct MessageTraits<roq::fbs::RiskLimitsUpdate> {
+  static const Message enum_value = Message::RiskLimitsUpdate;
 };
 
 bool VerifyMessage(::flatbuffers::Verifier &verifier, const void *obj, Message type);
@@ -2468,6 +2491,101 @@ inline ::flatbuffers::Offset<Position> CreatePositionDirect(
       symbol__,
       long_quantity,
       short_quantity);
+}
+
+struct RiskLimit FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RiskLimitBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EXCHANGE = 4,
+    VT_SYMBOL = 6,
+    VT_BUY_LIMIT = 8,
+    VT_SELL_LIMIT = 10
+  };
+  const ::flatbuffers::String *exchange() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_EXCHANGE);
+  }
+  const ::flatbuffers::String *symbol() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_SYMBOL);
+  }
+  double buy_limit() const {
+    return GetField<double>(VT_BUY_LIMIT, std::numeric_limits<double>::quiet_NaN());
+  }
+  double sell_limit() const {
+    return GetField<double>(VT_SELL_LIMIT, std::numeric_limits<double>::quiet_NaN());
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_EXCHANGE) &&
+           verifier.VerifyString(exchange()) &&
+           VerifyOffset(verifier, VT_SYMBOL) &&
+           verifier.VerifyString(symbol()) &&
+           VerifyField<double>(verifier, VT_BUY_LIMIT, 8) &&
+           VerifyField<double>(verifier, VT_SELL_LIMIT, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct RiskLimitBuilder {
+  typedef RiskLimit Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_exchange(::flatbuffers::Offset<::flatbuffers::String> exchange) {
+    fbb_.AddOffset(RiskLimit::VT_EXCHANGE, exchange);
+  }
+  void add_symbol(::flatbuffers::Offset<::flatbuffers::String> symbol) {
+    fbb_.AddOffset(RiskLimit::VT_SYMBOL, symbol);
+  }
+  void add_buy_limit(double buy_limit) {
+    fbb_.AddElement<double>(RiskLimit::VT_BUY_LIMIT, buy_limit, std::numeric_limits<double>::quiet_NaN());
+  }
+  void add_sell_limit(double sell_limit) {
+    fbb_.AddElement<double>(RiskLimit::VT_SELL_LIMIT, sell_limit, std::numeric_limits<double>::quiet_NaN());
+  }
+  explicit RiskLimitBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RiskLimit> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RiskLimit>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RiskLimit> CreateRiskLimit(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> exchange = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> symbol = 0,
+    double buy_limit = std::numeric_limits<double>::quiet_NaN(),
+    double sell_limit = std::numeric_limits<double>::quiet_NaN()) {
+  RiskLimitBuilder builder_(_fbb);
+  builder_.add_sell_limit(sell_limit);
+  builder_.add_buy_limit(buy_limit);
+  builder_.add_symbol(symbol);
+  builder_.add_exchange(exchange);
+  return builder_.Finish();
+}
+
+struct RiskLimit::Traits {
+  using type = RiskLimit;
+  static auto constexpr Create = CreateRiskLimit;
+};
+
+inline ::flatbuffers::Offset<RiskLimit> CreateRiskLimitDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *exchange = nullptr,
+    const char *symbol = nullptr,
+    double buy_limit = std::numeric_limits<double>::quiet_NaN(),
+    double sell_limit = std::numeric_limits<double>::quiet_NaN()) {
+  auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
+  auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
+  return roq::fbs::CreateRiskLimit(
+      _fbb,
+      exchange__,
+      symbol__,
+      buy_limit,
+      sell_limit);
 }
 
 struct Statistics FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -6585,6 +6703,230 @@ inline ::flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
       min_notional);
 }
 
+struct RiskLimits FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RiskLimitsBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LABEL = 4,
+    VT_ACCOUNT = 6,
+    VT_USER = 8,
+    VT_LIMITS = 10,
+    VT_SEQNO = 12
+  };
+  const ::flatbuffers::String *label() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_LABEL);
+  }
+  const ::flatbuffers::String *account() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
+  }
+  const ::flatbuffers::String *user() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_USER);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *limits() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *>(VT_LIMITS);
+  }
+  uint64_t seqno() const {
+    return GetField<uint64_t>(VT_SEQNO, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_LABEL) &&
+           verifier.VerifyString(label()) &&
+           VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyString(user()) &&
+           VerifyOffset(verifier, VT_LIMITS) &&
+           verifier.VerifyVector(limits()) &&
+           verifier.VerifyVectorOfTables(limits()) &&
+           VerifyField<uint64_t>(verifier, VT_SEQNO, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct RiskLimitsBuilder {
+  typedef RiskLimits Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_label(::flatbuffers::Offset<::flatbuffers::String> label) {
+    fbb_.AddOffset(RiskLimits::VT_LABEL, label);
+  }
+  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
+    fbb_.AddOffset(RiskLimits::VT_ACCOUNT, account);
+  }
+  void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
+    fbb_.AddOffset(RiskLimits::VT_USER, user);
+  }
+  void add_limits(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>>> limits) {
+    fbb_.AddOffset(RiskLimits::VT_LIMITS, limits);
+  }
+  void add_seqno(uint64_t seqno) {
+    fbb_.AddElement<uint64_t>(RiskLimits::VT_SEQNO, seqno, 0);
+  }
+  explicit RiskLimitsBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RiskLimits> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RiskLimits>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RiskLimits> CreateRiskLimits(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> label = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> user = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>>> limits = 0,
+    uint64_t seqno = 0) {
+  RiskLimitsBuilder builder_(_fbb);
+  builder_.add_seqno(seqno);
+  builder_.add_limits(limits);
+  builder_.add_user(user);
+  builder_.add_account(account);
+  builder_.add_label(label);
+  return builder_.Finish();
+}
+
+struct RiskLimits::Traits {
+  using type = RiskLimits;
+  static auto constexpr Create = CreateRiskLimits;
+};
+
+inline ::flatbuffers::Offset<RiskLimits> CreateRiskLimitsDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *label = nullptr,
+    const char *account = nullptr,
+    const char *user = nullptr,
+    const std::vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *limits = nullptr,
+    uint64_t seqno = 0) {
+  auto label__ = label ? _fbb.CreateString(label) : 0;
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto user__ = user ? _fbb.CreateString(user) : 0;
+  auto limits__ = limits ? _fbb.CreateVector<::flatbuffers::Offset<roq::fbs::RiskLimit>>(*limits) : 0;
+  return roq::fbs::CreateRiskLimits(
+      _fbb,
+      label__,
+      account__,
+      user__,
+      limits__,
+      seqno);
+}
+
+struct RiskLimitsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RiskLimitsUpdateBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LABEL = 4,
+    VT_ACCOUNT = 6,
+    VT_USER = 8,
+    VT_LIMITS = 10,
+    VT_UPDATE_TYPE = 12
+  };
+  const ::flatbuffers::String *label() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_LABEL);
+  }
+  const ::flatbuffers::String *account() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
+  }
+  const ::flatbuffers::String *user() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_USER);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *limits() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *>(VT_LIMITS);
+  }
+  roq::fbs::UpdateType update_type() const {
+    return static_cast<roq::fbs::UpdateType>(GetField<uint8_t>(VT_UPDATE_TYPE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_LABEL) &&
+           verifier.VerifyString(label()) &&
+           VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyString(user()) &&
+           VerifyOffset(verifier, VT_LIMITS) &&
+           verifier.VerifyVector(limits()) &&
+           verifier.VerifyVectorOfTables(limits()) &&
+           VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct RiskLimitsUpdateBuilder {
+  typedef RiskLimitsUpdate Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_label(::flatbuffers::Offset<::flatbuffers::String> label) {
+    fbb_.AddOffset(RiskLimitsUpdate::VT_LABEL, label);
+  }
+  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
+    fbb_.AddOffset(RiskLimitsUpdate::VT_ACCOUNT, account);
+  }
+  void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
+    fbb_.AddOffset(RiskLimitsUpdate::VT_USER, user);
+  }
+  void add_limits(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>>> limits) {
+    fbb_.AddOffset(RiskLimitsUpdate::VT_LIMITS, limits);
+  }
+  void add_update_type(roq::fbs::UpdateType update_type) {
+    fbb_.AddElement<uint8_t>(RiskLimitsUpdate::VT_UPDATE_TYPE, static_cast<uint8_t>(update_type), 0);
+  }
+  explicit RiskLimitsUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RiskLimitsUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RiskLimitsUpdate>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RiskLimitsUpdate> CreateRiskLimitsUpdate(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> label = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> user = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>>> limits = 0,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+  RiskLimitsUpdateBuilder builder_(_fbb);
+  builder_.add_limits(limits);
+  builder_.add_user(user);
+  builder_.add_account(account);
+  builder_.add_label(label);
+  builder_.add_update_type(update_type);
+  return builder_.Finish();
+}
+
+struct RiskLimitsUpdate::Traits {
+  using type = RiskLimitsUpdate;
+  static auto constexpr Create = CreateRiskLimitsUpdate;
+};
+
+inline ::flatbuffers::Offset<RiskLimitsUpdate> CreateRiskLimitsUpdateDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *label = nullptr,
+    const char *account = nullptr,
+    const char *user = nullptr,
+    const std::vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *limits = nullptr,
+    roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
+  auto label__ = label ? _fbb.CreateString(label) : 0;
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto user__ = user ? _fbb.CreateString(user) : 0;
+  auto limits__ = limits ? _fbb.CreateVector<::flatbuffers::Offset<roq::fbs::RiskLimit>>(*limits) : 0;
+  return roq::fbs::CreateRiskLimitsUpdate(
+      _fbb,
+      label__,
+      account__,
+      user__,
+      limits__,
+      update_type);
+}
+
 struct StatisticsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef StatisticsUpdateBuilder Builder;
   struct Traits;
@@ -8068,6 +8410,12 @@ struct Event FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const roq::fbs::CustomMatrixUpdate *message_as_CustomMatrixUpdate() const {
     return message_type() == roq::fbs::Message::CustomMatrixUpdate ? static_cast<const roq::fbs::CustomMatrixUpdate *>(message()) : nullptr;
   }
+  const roq::fbs::RiskLimits *message_as_RiskLimits() const {
+    return message_type() == roq::fbs::Message::RiskLimits ? static_cast<const roq::fbs::RiskLimits *>(message()) : nullptr;
+  }
+  const roq::fbs::RiskLimitsUpdate *message_as_RiskLimitsUpdate() const {
+    return message_type() == roq::fbs::Message::RiskLimitsUpdate ? static_cast<const roq::fbs::RiskLimitsUpdate *>(message()) : nullptr;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_SOURCE_INFO) &&
@@ -8213,6 +8561,14 @@ template<> inline const roq::fbs::CustomMatrix *Event::message_as<roq::fbs::Cust
 
 template<> inline const roq::fbs::CustomMatrixUpdate *Event::message_as<roq::fbs::CustomMatrixUpdate>() const {
   return message_as_CustomMatrixUpdate();
+}
+
+template<> inline const roq::fbs::RiskLimits *Event::message_as<roq::fbs::RiskLimits>() const {
+  return message_as_RiskLimits();
+}
+
+template<> inline const roq::fbs::RiskLimitsUpdate *Event::message_as<roq::fbs::RiskLimitsUpdate>() const {
+  return message_as_RiskLimitsUpdate();
 }
 
 struct EventBuilder {
@@ -8395,6 +8751,14 @@ inline bool VerifyMessage(::flatbuffers::Verifier &verifier, const void *obj, Me
     }
     case Message::CustomMatrixUpdate: {
       auto ptr = reinterpret_cast<const roq::fbs::CustomMatrixUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message::RiskLimits: {
+      auto ptr = reinterpret_cast<const roq::fbs::RiskLimits *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message::RiskLimitsUpdate: {
+      auto ptr = reinterpret_cast<const roq::fbs::RiskLimitsUpdate *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `RiskLimits` and `RiskLimitsUpdate` (EXPERIMENTAL)
 * `client::Dispatcher.broadcast(CancelAllOrders)`
 
 ## 0.9.5 &ndash; 2023-06-12

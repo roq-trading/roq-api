@@ -53,6 +53,10 @@ struct ROQ_PUBLIC EventLogMultiplexer {
 
     // position manager
     virtual void operator()(Event<PortfolioUpdate> const &) = 0;
+
+    // risk management
+    virtual void operator()(Event<RiskLimits> const &) = 0;
+    virtual void operator()(Event<RiskLimitsUpdate> const &) = 0;
   };
 
   virtual ~EventLogMultiplexer() {}

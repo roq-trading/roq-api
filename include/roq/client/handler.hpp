@@ -75,6 +75,9 @@ struct ROQ_PUBLIC Handler {
   // position manager (service)
   virtual void operator()(Event<PortfolioUpdate> const &) {}
 
+  // risk managemenet
+  virtual void operator()(Event<RiskLimitsUpdate> const &) {}
+
   // metrics
   virtual void operator()(metrics::Writer &) const {}
 };

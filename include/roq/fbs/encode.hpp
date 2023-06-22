@@ -58,6 +58,7 @@ template<> struct maps_to<roq::Statistics> final { using type = fbs::Statistics;
 template<> struct maps_to<roq::Measurement> final { using type = fbs::Measurement; };
 template<> struct maps_to<roq::Parameter> final { using type = fbs::Parameter; };
 template<> struct maps_to<roq::Position> final { using type = fbs::Position; };
+template<> struct maps_to<roq::RiskLimit> final { using type = fbs::RiskLimit; };
 // structs
 template <> struct maps_to<roq::DownloadBegin> { static constexpr auto value = Message::DownloadBegin; };
 template <> struct maps_to<roq::DownloadEnd> { static constexpr auto value = Message::DownloadEnd; };
@@ -88,6 +89,8 @@ template <> struct maps_to<roq::CustomMatrix> { static constexpr auto value = Me
 template <> struct maps_to<roq::CustomMatrixUpdate> { static constexpr auto value = Message::CustomMatrixUpdate; };
 template <> struct maps_to<roq::ParametersUpdate> { static constexpr auto value = Message::ParametersUpdate; };
 template <> struct maps_to<roq::PortfolioUpdate> { static constexpr auto value = Message::PortfolioUpdate; };
+template <> struct maps_to<roq::RiskLimits> { static constexpr auto value = Message::RiskLimits; };
+template <> struct maps_to<roq::RiskLimitsUpdate> { static constexpr auto value = Message::RiskLimitsUpdate; };
 }
 
 // std::chrono::duration
@@ -176,6 +179,16 @@ auto encode(B &builder, roq::Position const &value) {
       encode(builder, static_cast<std::string_view>(value.symbol)),
       value.long_quantity,
       value.short_quantity);
+}
+
+template <typename B>
+auto encode(B &builder, roq::RiskLimit const &value) {
+  return CreateRiskLimit(
+      builder,
+      encode(builder, static_cast<std::string_view>(value.exchange)),
+      encode(builder, static_cast<std::string_view>(value.symbol)),
+      value.buy_limit,
+      value.sell_limit);
 }
 
 template <typename B>
@@ -702,6 +715,28 @@ auto encode(B &builder, roq::PortfolioUpdate const &value) {
       encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc),
       encode(builder, value.user));
+}
+
+template <typename B>
+auto encode(B &builder, roq::RiskLimits const &value) {
+  return CreateRiskLimits(
+      builder,
+      encode(builder, value.label),
+      encode(builder, value.account),
+      encode(builder, value.user),
+      encode(builder, value.limits),
+      value.seqno);
+}
+
+template <typename B>
+auto encode(B &builder, roq::RiskLimitsUpdate const &value) {
+  return CreateRiskLimitsUpdate(
+      builder,
+      encode(builder, value.label),
+      encode(builder, value.account),
+      encode(builder, value.user),
+      encode(builder, value.limits),
+      encode(builder, value.update_type));
 }
 
 // events

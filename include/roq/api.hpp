@@ -51,6 +51,7 @@
 #include "roq/measurement.hpp"
 #include "roq/parameter.hpp"
 #include "roq/position.hpp"
+#include "roq/risk_limit.hpp"
 #include "roq/statistics.hpp"
 #include "roq/trade.hpp"
 
@@ -94,6 +95,8 @@
 #include "roq/position_update.hpp"
 #include "roq/rate_limit_trigger.hpp"
 #include "roq/reference_data.hpp"
+#include "roq/risk_limits.hpp"
+#include "roq/risk_limits_update.hpp"
 #include "roq/statistics_update.hpp"
 #include "roq/stream_status.hpp"
 #include "roq/top_of_book.hpp"

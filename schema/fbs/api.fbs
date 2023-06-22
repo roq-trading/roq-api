@@ -39,6 +39,7 @@ include "mbp_update.fbs";
 include "measurement.fbs";
 include "parameter.fbs";
 include "position.fbs";
+include "risk_limit.fbs";
 include "statistics.fbs";
 include "trade.fbs";
 
@@ -68,6 +69,8 @@ include "portfolio_update.fbs";
 include "position_update.fbs";
 include "rate_limit_trigger.fbs";
 include "reference_data.fbs";
+include "risk_limits.fbs";
+include "risk_limits_update.fbs";
 include "statistics_update.fbs";
 include "stream_status.fbs";
 include "top_of_book.fbs";
@@ -150,6 +153,8 @@ union Message {
   PortfolioUpdate,
   CustomMatrix,
   CustomMatrixUpdate,
+  RiskLimits,
+  RiskLimitsUpdate,
 }
 
 table SourceInfo {

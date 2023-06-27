@@ -42,21 +42,21 @@ struct ROQ_PUBLIC Exception : public roq::Exception {
 //! Rejected
 struct ROQ_PUBLIC Rejected : public Exception {
   template <typename... Args>
-  Rejected(Origin origin, Error error, format_str<Args...> const &fmt, Args &&...args)
+  Rejected(Origin origin, Error error, format_str<Args...> const &fmt = format_str<Args...>{"rejected"}, Args &&...args)
       : Exception{origin, RequestStatus::REJECTED, error, fmt, std::forward<Args>(args)...} {}
 };
 
 //! NotSupported
 struct ROQ_PUBLIC NotSupported : public Rejected {
   template <typename... Args>
-  explicit NotSupported(format_str<Args...> const &fmt, Args &&...args)
+  explicit NotSupported(format_str<Args...> const &fmt = format_str<Args...>{"not supported"}, Args &&...args)
       : Rejected{Origin::GATEWAY, Error::NOT_SUPPORTED, fmt, std::forward<Args>(args)...} {}
 };
 
 //! NotReady
 struct ROQ_PUBLIC NotReady : public Rejected {
   template <typename... Args>
-  explicit NotReady(format_str<Args...> const &fmt, Args &&...args)
+  explicit NotReady(format_str<Args...> const &fmt = format_str<Args...>{"not ready"}, Args &&...args)
       : Rejected{Origin::GATEWAY, Error::GATEWAY_NOT_READY, fmt, std::forward<Args>(args)...} {}
 };
 

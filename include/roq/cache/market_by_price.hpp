@@ -88,6 +88,10 @@ struct ROQ_PUBLIC MarketByPrice {
   //   returns Layer with bid_quantity/ask_quantity <= quantity depending on available liquidity
   virtual Layer compute_vwap(double total_quantity) const = 0;
 
+  // impact price (complexity depends on the number of required levels)
+  //   returns Layer with bid_quantity/ask_quantity <= quantity depending on available liquidity
+  virtual Layer compute_impact_price(double total_quantity) const = 0;
+
   // update methods:
 
   // generic update interface using operator()

@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* Add impact price to MbP (#372)
 * `RiskLimits` and `RiskLimitsUpdate` (EXPERIMENTAL)
 * `client::Dispatcher.broadcast(CancelAllOrders)`
 

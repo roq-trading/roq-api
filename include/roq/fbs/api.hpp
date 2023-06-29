@@ -5093,7 +5093,8 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_VERSION = 32,
     VT_SIDE = 34,
     VT_ROUND_TRIP_LATENCY = 36,
-    VT_TRADED_QUANTITY = 38
+    VT_TRADED_QUANTITY = 38,
+    VT_RISK_CHANGE = 40
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -5149,6 +5150,9 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   double traded_quantity() const {
     return GetField<double>(VT_TRADED_QUANTITY, std::numeric_limits<double>::quiet_NaN());
   }
+  double risk_change() const {
+    return GetField<double>(VT_RISK_CHANGE, std::numeric_limits<double>::quiet_NaN());
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -5177,6 +5181,7 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_SIDE, 1) &&
            VerifyField<int64_t>(verifier, VT_ROUND_TRIP_LATENCY, 8) &&
            VerifyField<double>(verifier, VT_TRADED_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_RISK_CHANGE, 8) &&
            verifier.EndTable();
   }
 };
@@ -5239,6 +5244,9 @@ struct OrderAckBuilder {
   void add_traded_quantity(double traded_quantity) {
     fbb_.AddElement<double>(OrderAck::VT_TRADED_QUANTITY, traded_quantity, std::numeric_limits<double>::quiet_NaN());
   }
+  void add_risk_change(double risk_change) {
+    fbb_.AddElement<double>(OrderAck::VT_RISK_CHANGE, risk_change, std::numeric_limits<double>::quiet_NaN());
+  }
   explicit OrderAckBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5269,8 +5277,10 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAck(
     uint32_t version = 0,
     roq::fbs::Side side = roq::fbs::Side::Undefined,
     int64_t round_trip_latency = 0,
-    double traded_quantity = std::numeric_limits<double>::quiet_NaN()) {
+    double traded_quantity = std::numeric_limits<double>::quiet_NaN(),
+    double risk_change = std::numeric_limits<double>::quiet_NaN()) {
   OrderAckBuilder builder_(_fbb);
+  builder_.add_risk_change(risk_change);
   builder_.add_traded_quantity(traded_quantity);
   builder_.add_round_trip_latency(round_trip_latency);
   builder_.add_version(version);
@@ -5316,7 +5326,8 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     uint32_t version = 0,
     roq::fbs::Side side = roq::fbs::Side::Undefined,
     int64_t round_trip_latency = 0,
-    double traded_quantity = std::numeric_limits<double>::quiet_NaN()) {
+    double traded_quantity = std::numeric_limits<double>::quiet_NaN(),
+    double risk_change = std::numeric_limits<double>::quiet_NaN()) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -5344,7 +5355,8 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
       version,
       side,
       round_trip_latency,
-      traded_quantity);
+      traded_quantity,
+      risk_change);
 }
 
 struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -5385,7 +5397,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_EXECUTION_INSTRUCTIONS = 66,
     VT_USER = 68,
     VT_SENDING_TIME_UTC = 70,
-    VT_CLIENT_ORDER_ID = 72
+    VT_CLIENT_ORDER_ID = 72,
+    VT_RISK_CHANGE = 74
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -5492,6 +5505,9 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const ::flatbuffers::String *client_order_id() const {
     return GetPointer<const ::flatbuffers::String *>(VT_CLIENT_ORDER_ID);
   }
+  double risk_change() const {
+    return GetField<double>(VT_RISK_CHANGE, std::numeric_limits<double>::quiet_NaN());
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -5538,6 +5554,7 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            VerifyOffset(verifier, VT_CLIENT_ORDER_ID) &&
            verifier.VerifyString(client_order_id()) &&
+           VerifyField<double>(verifier, VT_RISK_CHANGE, 8) &&
            verifier.EndTable();
   }
 };
@@ -5651,6 +5668,9 @@ struct OrderUpdateBuilder {
   void add_client_order_id(::flatbuffers::Offset<::flatbuffers::String> client_order_id) {
     fbb_.AddOffset(OrderUpdate::VT_CLIENT_ORDER_ID, client_order_id);
   }
+  void add_risk_change(double risk_change) {
+    fbb_.AddElement<double>(OrderUpdate::VT_RISK_CHANGE, risk_change, std::numeric_limits<double>::quiet_NaN());
+  }
   explicit OrderUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5698,8 +5718,10 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     uint32_t execution_instructions = 0,
     ::flatbuffers::Offset<::flatbuffers::String> user = 0,
     int64_t sending_time_utc = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> client_order_id = 0) {
+    ::flatbuffers::Offset<::flatbuffers::String> client_order_id = 0,
+    double risk_change = std::numeric_limits<double>::quiet_NaN()) {
   OrderUpdateBuilder builder_(_fbb);
+  builder_.add_risk_change(risk_change);
   builder_.add_sending_time_utc(sending_time_utc);
   builder_.add_last_traded_price(last_traded_price);
   builder_.add_last_traded_quantity(last_traded_quantity);
@@ -5779,7 +5801,8 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     uint32_t execution_instructions = 0,
     const char *user = nullptr,
     int64_t sending_time_utc = 0,
-    const char *client_order_id = nullptr) {
+    const char *client_order_id = nullptr,
+    double risk_change = std::numeric_limits<double>::quiet_NaN()) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -5825,7 +5848,8 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       execution_instructions,
       user__,
       sending_time_utc,
-      client_order_id__);
+      client_order_id__,
+      risk_change);
 }
 
 struct ParametersUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

@@ -51,6 +51,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   double quantity = NaN;                              //!< Quantity (total, indicative)
   double price = NaN;                                 //!< Price
   double stop_price = NaN;                            //!< Stop price (depends on order_type and time_in_force)
+  double risk_change = NaN;                           //!< Risk change (cumulative >= remaining quantity)
   double remaining_quantity = NaN;                    //!< Quantity (remaining)
   double traded_quantity = NaN;                       //!< Quantity (total traded)
   double average_traded_price = NaN;                  //!< Average price (total traded)
@@ -107,6 +108,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(quantity={}, )"
         R"(price={}, )"
         R"(stop_price={}, )"
+        R"(risk_change={}, )"
         R"(remaining_quantity={}, )"
         R"(traded_quantity={}, )"
         R"(average_traded_price={}, )"
@@ -141,6 +143,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.quantity,
         value.price,
         value.stop_price,
+        value.risk_change,
         value.remaining_quantity,
         value.traded_quantity,
         value.average_traded_price,

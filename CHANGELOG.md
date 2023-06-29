@@ -6,7 +6,8 @@ All notable changes will be documented in this file.
 
 ### Added
 
-* Add impact price to MbP (#372)
+* `OrderAck.risk_change` and `OrderUpdate.risk_change` (EXPERIMENTAL)
+* `cache::MarketByPrice::impact_price()` (#372)
 * `RiskLimits` and `RiskLimitsUpdate` (EXPERIMENTAL)
 * `client::Dispatcher.broadcast(CancelAllOrders)`
 

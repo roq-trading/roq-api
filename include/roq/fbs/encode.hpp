@@ -543,7 +543,8 @@ auto encode(B &builder, roq::OrderAck const &value) {
       value.version,
       encode(builder, value.side),
       encode(builder, value.round_trip_latency),
-      value.traded_quantity);
+      value.traded_quantity,
+      value.risk_change);
 }
 
 template <typename B>
@@ -584,7 +585,8 @@ auto encode(B &builder, roq::OrderUpdate const &value) {
       value.execution_instructions.get(),
       encode(builder, value.user),
       encode(builder, value.sending_time_utc),
-      encode(builder, value.client_order_id));
+      encode(builder, value.client_order_id),
+      value.risk_change);
 }
 
 template <typename B>

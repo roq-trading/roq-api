@@ -43,6 +43,7 @@ struct ROQ_PUBLIC OrderAck final {
   std::string_view external_order_id;                //!< External order identifier
   std::string_view routing_id;                       //!< Routing identifier
   uint32_t version = {};                             //!< Version number (strictly increasing, optional)
+  double risk_change = NaN;                          //!< Risk change (cumulative >= remaining quantity)
   double traded_quantity = NaN;                      //!< Quantity (total traded)
   std::chrono::nanoseconds round_trip_latency = {};  //!< Round-trip latency between gateway and exchange
 };
@@ -84,6 +85,7 @@ struct fmt::formatter<roq::OrderAck> {
         R"(external_order_id="{}", )"
         R"(routing_id="{}", )"
         R"(version={}, )"
+        R"(risk_change={}, )"
         R"(traded_quantity={}, )"
         R"(round_trip_latency={})"
         R"(}})"_cf,
@@ -103,6 +105,7 @@ struct fmt::formatter<roq::OrderAck> {
         value.external_order_id,
         value.routing_id,
         value.version,
+        value.risk_change,
         value.traded_quantity,
         value.round_trip_latency);
   }

@@ -90,6 +90,11 @@
       "comment": "Stop price (depends on order_type and time_in_force)"
     },
     {
+      "name": "risk_change",
+      "type": "double",
+      "comment": "Risk change (cumulative >= remaining quantity)"
+    },
+    {
       "name": "remaining_quantity",
       "type": "double",
       "comment": "Quantity (remaining)"

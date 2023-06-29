@@ -25,4 +25,5 @@ table OrderAck {
   side:Side;
   round_trip_latency:int64;
   traded_quantity:double = nan;
+  risk_change:double = nan;
 }

@@ -74,6 +74,11 @@
       "type": "uint32_t"
     },
     {
+      "name": "risk_change",
+      "type": "double",
+      "comment": "Risk change (cumulative >= remaining quantity)"
+    },
+    {
       "name": "traded_quantity",
       "type": "double",
       "comment": "Quantity (total traded)"

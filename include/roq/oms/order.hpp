@@ -30,7 +30,7 @@ struct ROQ_PUBLIC Order final {
   double quantity = NaN;
   double price = NaN;
   double stop_price = NaN;
-  double risk = NaN;
+  double risk_exposure = NaN;
   double remaining_quantity = NaN;
   double traded_quantity = NaN;
   double average_traded_price = NaN;
@@ -81,7 +81,7 @@ struct fmt::formatter<roq::oms::Order> {
         R"(quantity={}, )"
         R"(price={}, )"
         R"(stop_price={}, )"
-        R"(risk={}, )"
+        R"(risk_exposure={}, )"
         R"(remaining_quantity={}, )"
         R"(traded_quantity={}, )"
         R"(average_traded_price={}, )"
@@ -116,7 +116,7 @@ struct fmt::formatter<roq::oms::Order> {
         value.quantity,
         value.price,
         value.stop_price,
-        value.risk,
+        value.risk_exposure,
         value.remaining_quantity,
         value.traded_quantity,
         value.average_traded_price,

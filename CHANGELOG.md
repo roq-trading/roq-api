@@ -6,7 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
-* `OrderAck.risk_change` and `OrderUpdate.risk_change` (EXPERIMENTAL)
+* Risk exposure and change added to `OrderAck` and `OrderUpdate` (EXPERIMENTAL)
 * `cache::MarketByPrice::impact_price()` (#372)
 * `RiskLimits` and `RiskLimitsUpdate` (EXPERIMENTAL)
 * `client::Dispatcher.broadcast(CancelAllOrders)`

@@ -58,17 +58,17 @@ struct basic_format_str final {
   template <typename T>
   // cppcheck-suppress noExplicitConstructor
   consteval basic_format_str(T const &str, source_location const &loc = source_location::current())  // NOLINT
-      : str_{static_cast<std::string_view>(str)}, file_name_{extract_basename(loc.file_name())}, line_{loc.line()} {
+      : str{static_cast<std::string_view>(str)}, file_name{extract_basename(loc.file_name())}, line{loc.line()} {
     if constexpr (sizeof...(Args) > 0) {
       using checker =
           fmt::detail::format_string_checker<char, fmt::detail::error_handler, fmt::remove_cvref_t<Args>...>;
-      fmt::detail::parse_format_string<true>(str_, checker{str_, {}});
+      fmt::detail::parse_format_string<true>((*this).str, checker{(*this).str, {}});
     }
   }
 
-  fmt::string_view const str_;
-  file_name_type const file_name_;
-  std::uint32_t const line_;
+  fmt::string_view const str;
+  file_name_type const file_name;
+  std::uint32_t const line;
 
  private:
   static consteval std::string_view extract_basename(char const *path) {

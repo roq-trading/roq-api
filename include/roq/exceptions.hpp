@@ -37,10 +37,10 @@ namespace roq {
 struct ROQ_PUBLIC Exception : public std::exception {
   template <typename... Args>
   explicit Exception(format_str<Args...> const &fmt, Args &&...args)
-      : file_name_{fmt.file_name_}, line_{static_cast<decltype(line_)>(fmt.line_)},
+      : file_name_{fmt.file_name}, line_{static_cast<decltype(line_)>(fmt.line)},
         what_{
-            fmt.str_.size() == 0 ? std::string{}
-                                 : fmt::vformat(fmt.str_, fmt::make_format_args(std::forward<Args>(args)...))} {}
+            fmt.str.size() == 0 ? std::string{}
+                                : fmt::vformat(fmt.str, fmt::make_format_args(std::forward<Args>(args)...))} {}
 
   char const *what() const noexcept override { return what_.c_str(); }
 

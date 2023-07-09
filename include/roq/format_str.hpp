@@ -50,8 +50,20 @@ struct static_string final {
   std::size_t const length_;
   std::array<char, N> const buffer_;
 };
+
+// note! like fmt::detail::check_format_string, but constexpr
+template <typename... Args>
+constexpr std::string_view check_format_string(std::string_view const &str) {
+  if constexpr (sizeof...(Args) > 0) {
+    auto s = fmt::basic_string_view<char>(str);
+    using checker = fmt::detail::format_string_checker<char, fmt::remove_cvref_t<Args>...>;
+    fmt::detail::parse_format_string<true>(s, checker(s));
+  }
+  return str;
+}
 }  // namespace detail
 
+#if FMT_VERSION < 100000
 template <typename... Args>
 struct basic_format_str final {
   using file_name_type = detail::static_string<32>;
@@ -65,6 +77,16 @@ struct basic_format_str final {
       fmt::detail::parse_format_string<true>((*this).str, checker{(*this).str, {}});
     }
   }
+#else
+template <typename... Args>
+struct basic_format_str final {
+  using file_name_type = detail::static_string<32>;
+  template <typename T>
+  // cppcheck-suppress noExplicitConstructor
+  consteval basic_format_str(T const &str, source_location const loc = source_location::current())  // NOLINT
+      : str{detail::check_format_string<Args...>(str)}, file_name{extract_basename(loc.file_name())}, line{loc.line()} {
+  }
+#endif
 
   fmt::string_view const str;
   file_name_type const file_name;

@@ -2,6 +2,7 @@
 
 #include <catch2/catch_all.hpp>
 
+#include "roq/market_by_order_update.hpp"
 #include "roq/market_by_price_update.hpp"
 #include "roq/side.hpp"
 
@@ -9,10 +10,15 @@ using namespace roq;
 
 using namespace std::literals;
 
-TEST_CASE("format_Side", "[format]") {
+TEST_CASE("format_side", "[format]") {
   CHECK(fmt::format("{}"sv, Side{Side::UNDEFINED}) == "UNDEFINED"sv);
   CHECK(fmt::format("{}"sv, Side{Side::BUY}) == "BUY"sv);
   CHECK(fmt::format("{}"sv, Side{Side::SELL}) == "SELL"sv);
+}
+
+TEST_CASE("format_string", "[format]") {
+  MBOOrderId order_id = "1234"sv;
+  CHECK(fmt::format("{}"sv, order_id) == "1234"sv);
 }
 
 TEST_CASE("format_market_by_price", "[format]") {

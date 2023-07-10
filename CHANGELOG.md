@@ -4,6 +4,11 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Using std::source_location (clang16)
+* Using fmt10
+
 ### Added
 
 * Risk exposure and change added to `OrderAck` and `OrderUpdate` (EXPERIMENTAL)

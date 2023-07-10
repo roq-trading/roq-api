@@ -6,16 +6,8 @@
 #include <fmt/format.h>
 
 #include <array>
-#include <string_view>
-
-#if defined(__APPLE__)
-#include "roq/source_location.hpp"
-#else
 #include <source_location>
-namespace roq {
-using source_location = std::source_location;
-}
-#endif
+#include <string_view>
 
 // note!
 // this class captures the source location + does compile-time format string checking (c++20, only)
@@ -68,7 +60,7 @@ struct basic_format_str final {
   using file_name_type = detail::static_string<32>;
   template <typename T>
   // cppcheck-suppress noExplicitConstructor
-  consteval basic_format_str(T const &str, source_location const loc = source_location::current())  // NOLINT
+  consteval basic_format_str(T const &str, std::source_location const loc = std::source_location::current())  // NOLINT
       : str{detail::check_format_string<Args...>(str)}, file_name{extract_basename(loc.file_name())}, line{loc.line()} {
   }
 

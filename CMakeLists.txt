@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 # version (using git tag)
 
@@ -52,22 +52,21 @@ find_program(FLATBUFFERS_COMPILER flatc REQUIRED)
 
 # includes
 
-include_directories("${CMAKE_SOURCE_DIR}/include" "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}"
-)# auto-generated
+include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR})
 
 # common
 
-set(SCHEMA_DIR "${CMAKE_SOURCE_DIR}/schema")
+set(SCHEMA_DIR ${CMAKE_SOURCE_DIR}/schema)
 
-set(AUTOGEN_PY "${CMAKE_SOURCE_DIR}/scripts/autogen.py")
+set(AUTOGEN_PY ${CMAKE_SOURCE_DIR}/scripts/autogen.py)
 
 # sub-projects
 
-add_subdirectory("${CMAKE_SOURCE_DIR}/schema/cpp")
-add_subdirectory("${CMAKE_SOURCE_DIR}/schema/fbs")
+add_subdirectory(${CMAKE_SOURCE_DIR}/schema/cpp)
+add_subdirectory(${CMAKE_SOURCE_DIR}/schema/fbs)
 
-add_subdirectory("${CMAKE_SOURCE_DIR}/include/roq")
-add_subdirectory("${CMAKE_SOURCE_DIR}/include/roq/fbs")
+add_subdirectory(${CMAKE_SOURCE_DIR}/include/roq)
+add_subdirectory(${CMAKE_SOURCE_DIR}/include/roq/fbs)
 
 # project
 
@@ -89,8 +88,8 @@ endif()
 # install (public headers)
 
 install(
-  DIRECTORY "${CMAKE_SOURCE_DIR}/include/roq/"
-  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/roq"
+  DIRECTORY ${CMAKE_SOURCE_DIR}/include/roq/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/roq
   FILES_MATCHING
   PATTERN "*.h*"
   PATTERN "CMakeFiles" EXCLUDE)
@@ -103,7 +102,7 @@ endif()
 
 if(BUILD_TESTING)
   find_package(Catch2 REQUIRED)
-  add_subdirectory("${CMAKE_SOURCE_DIR}/test")
+  add_subdirectory(${CMAKE_SOURCE_DIR}/test)
 endif(BUILD_TESTING)
 
 # doxygen
@@ -112,7 +111,7 @@ option(BUILD_DOCS "Enable doxygen" OFF)
 
 if(BUILD_DOCS)
   find_package(Doxygen)
-  add_subdirectory("${CMAKE_SOURCE_DIR}/doxygen")
+  add_subdirectory(${CMAKE_SOURCE_DIR}/doxygen)
   add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-doxygen)
   add_dependencies(${PROJECT_NAME}-doxygen ${PROJECT_NAME}-include-cpp)
 endif(BUILD_DOCS)
@@ -121,17 +120,17 @@ endif(BUILD_DOCS)
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}-config)
 
-install(FILES "${CMAKE_SOURCE_DIR}/CHANGELOG.md"
-        DESTINATION "${CMAKE_INSTALL_DATADIR}/doc/${PROJECT_NAME}")
+install(FILES ${CMAKE_SOURCE_DIR}/CHANGELOG.md
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/doc/${PROJECT_NAME})
 
-set(CMAKE_LIB_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+set(CMAKE_LIB_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 
 export(
   TARGETS ${PROJECT_NAME}
   NAMESPACE ${PROJECT_NAME}::
-  FILE "${CMAKE_LIB_DIR}/${PROJECT_NAME}-config.cmake")
+  FILE ${CMAKE_LIB_DIR}/${PROJECT_NAME}-config.cmake)
 
 install(
   EXPORT ${PROJECT_NAME}-config
   NAMESPACE ${PROJECT_NAME}::
-  DESTINATION "${CMAKE_LIB_DIR}")
+  DESTINATION ${CMAKE_LIB_DIR})

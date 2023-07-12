@@ -1,4 +1,4 @@
-set(TARGET_NAME "${PROJECT_NAME}-test")
+set(TARGET_NAME ${PROJECT_NAME}-test)
 
 set(SOURCES
     alignment.cpp
@@ -27,11 +27,11 @@ set(SOURCES
     uuid.cpp
     main.cpp)
 
-add_executable("${TARGET_NAME}" ${SOURCES})
+add_executable(${TARGET_NAME} ${SOURCES})
 
 add_dependencies(${TARGET_NAME} ${PROJECT_NAME}-include-cpp)
 add_dependencies(${TARGET_NAME} ${PROJECT_NAME}-include-fbs)
 
-target_link_libraries("${TARGET_NAME}" PRIVATE absl::hash Catch2::Catch2 fmt::fmt)
+target_link_libraries(${TARGET_NAME} PRIVATE absl::hash Catch2::Catch2 fmt::fmt)
 
-add_test(NAME "${TARGET_NAME}" COMMAND "${TARGET_NAME}")
+add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})

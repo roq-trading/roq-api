@@ -1,6 +1,6 @@
-set(TARGET_NAME "${PROJECT_NAME}-schema-fbs")
+set(TARGET_NAME ${PROJECT_NAME}-schema-fbs)
 
-set(TARGET_DIR "${CMAKE_INSTALL_DATADIR}/roq/schema/fbs")
+set(TARGET_DIR ${CMAKE_INSTALL_DATADIR}/roq/schema/fbs)
 
 set(SOURCES
     api.fbs
@@ -73,4 +73,4 @@ set(SOURCES
 
 # install
 
-install(FILES ${SOURCES} DESTINATION "${TARGET_DIR}")
+install(FILES ${SOURCES} DESTINATION ${TARGET_DIR})

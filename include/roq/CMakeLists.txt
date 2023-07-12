@@ -1,6 +1,6 @@
-set(TARGET_NAME "${PROJECT_NAME}-include-cpp")
+set(TARGET_NAME ${PROJECT_NAME}-include-cpp)
 
-set(TARGET_DIR "${CMAKE_INSTALL_INCLUDEDIR}/roq")
+set(TARGET_DIR ${CMAKE_INSTALL_INCLUDEDIR}/roq)
 
 set(SOURCES
     batch_begin.json
@@ -86,32 +86,32 @@ set(SOURCES
 
 # configure
 
-set(API_HPP "${CMAKE_BINARY_DIR}/${TARGET_DIR}/api.hpp")
+set(API_HPP ${CMAKE_BINARY_DIR}/${TARGET_DIR}/api.hpp)
 
-configure_file("api.hpp.in" "${API_HPP}" @ONLY)
+configure_file("api.hpp.in" ${API_HPP} @ONLY)
 
 # auto-generate
 
 unset(AUTOGEN_HEADERS)
 
 foreach(path ${SOURCES})
-  set(source "${SCHEMA_DIR}/cpp/${path}")
+  set(source ${SCHEMA_DIR}/cpp/${path})
   get_filename_component(name ${path} NAME_WE)
-  set(target "${CMAKE_BINARY_DIR}/${TARGET_DIR}/${name}.hpp")
+  set(target ${CMAKE_BINARY_DIR}/${TARGET_DIR}/${name}.hpp)
   add_custom_command(
-    OUTPUT "${target}"
-    COMMAND ${PYTHON_EXECUTABLE} "${AUTOGEN_PY}" --namespace "roq" --file-type "hpp" "${source}" >
-            "${target}"
-    COMMAND ${CLANG_FORMAT} -i "${target}"
+    OUTPUT ${target}
+    COMMAND ${PYTHON_EXECUTABLE} ${AUTOGEN_PY} --namespace "roq" --file-type "hpp" ${source} >
+            ${target}
+    COMMAND ${CLANG_FORMAT} -i ${target}
     VERBATIM
-    DEPENDS "${PYTHON_EXECUTABLE}" "${AUTOGEN_PY}" "${source}")
-  list(APPEND AUTOGEN_HEADERS "${target}")
+    DEPENDS ${PYTHON_EXECUTABLE} ${AUTOGEN_PY} ${source})
+  list(APPEND AUTOGEN_HEADERS ${target})
 endforeach()
 
 # target
 
-add_custom_target("${TARGET_NAME}" ALL DEPENDS ${AUTOGEN_HEADERS} "${GITIGNORE}")
+add_custom_target(${TARGET_NAME} ALL DEPENDS ${AUTOGEN_HEADERS} ${GITIGNORE})
 
 # install
 
-install(FILES ${AUTOGEN_HEADERS} "${API_HPP}" DESTINATION "${TARGET_DIR}")
+install(FILES ${AUTOGEN_HEADERS} ${API_HPP} DESTINATION ${TARGET_DIR})

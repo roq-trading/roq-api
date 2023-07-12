@@ -1,6 +1,6 @@
-set(TARGET_NAME "${PROJECT_NAME}-schema-cpp")
+set(TARGET_NAME ${PROJECT_NAME}-schema-cpp)
 
-set(TARGET_DIR "${CMAKE_INSTALL_DATADIR}/roq/schema/cpp")
+set(TARGET_DIR ${CMAKE_INSTALL_DATADIR}/roq/schema/cpp)
 
 set(SOURCES
     batch_begin.json
@@ -83,4 +83,4 @@ set(SOURCES
 
 # install
 
-install(FILES ${SOURCES} DESTINATION "${TARGET_DIR}")
+install(FILES ${SOURCES} DESTINATION ${TARGET_DIR})

@@ -47,6 +47,9 @@ struct ROQ_PUBLIC Dispatcher {
   //! Send a request to update a portfolio (position manager, only)  !!! EXPERIMENTAL !!!
   virtual void send(PortfolioUpdate const &, uint8_t source) = 0;
 
+  //! Send a request to update risk limits (risk manager, only)  !!! EXPERIMENTAL !!!
+  virtual void send(RiskLimits const &, uint8_t source) = 0;
+
   //! Broadcast request to cancel all orders (returns number of *failed* requests)
   virtual uint8_t broadcast(CancelAllOrders const &) = 0;
 

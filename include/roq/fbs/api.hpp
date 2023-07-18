@@ -139,6 +139,9 @@ struct TradeSummaryBuilder;
 struct TradeUpdate;
 struct TradeUpdateBuilder;
 
+struct Ready;
+struct ReadyBuilder;
+
 struct Handshake;
 struct HandshakeBuilder;
 
@@ -1558,11 +1561,12 @@ enum class Message : uint8_t {
   CustomMatrixUpdate = 34,
   RiskLimits = 35,
   RiskLimitsUpdate = 36,
+  Ready = 37,
   MIN = NONE,
-  MAX = RiskLimitsUpdate
+  MAX = Ready
 };
 
-inline const Message (&EnumValuesMessage())[37] {
+inline const Message (&EnumValuesMessage())[38] {
   static const Message values[] = {
     Message::NONE,
     Message::Handshake,
@@ -1600,13 +1604,14 @@ inline const Message (&EnumValuesMessage())[37] {
     Message::CustomMatrix,
     Message::CustomMatrixUpdate,
     Message::RiskLimits,
-    Message::RiskLimitsUpdate
+    Message::RiskLimitsUpdate,
+    Message::Ready
   };
   return values;
 }
 
 inline const char * const *EnumNamesMessage() {
-  static const char * const names[38] = {
+  static const char * const names[39] = {
     "NONE",
     "Handshake",
     "HandshakeAck",
@@ -1644,13 +1649,14 @@ inline const char * const *EnumNamesMessage() {
     "CustomMatrixUpdate",
     "RiskLimits",
     "RiskLimitsUpdate",
+    "Ready",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMessage(Message e) {
-  if (::flatbuffers::IsOutRange(e, Message::NONE, Message::RiskLimitsUpdate)) return "";
+  if (::flatbuffers::IsOutRange(e, Message::NONE, Message::Ready)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMessage()[index];
 }
@@ -1801,6 +1807,10 @@ template<> struct MessageTraits<roq::fbs::RiskLimits> {
 
 template<> struct MessageTraits<roq::fbs::RiskLimitsUpdate> {
   static const Message enum_value = Message::RiskLimitsUpdate;
+};
+
+template<> struct MessageTraits<roq::fbs::Ready> {
+  static const Message enum_value = Message::Ready;
 };
 
 bool VerifyMessage(::flatbuffers::Verifier &verifier, const void *obj, Message type);
@@ -2499,14 +2509,22 @@ struct RiskLimit FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_EXCHANGE = 4,
     VT_SYMBOL = 6,
-    VT_BUY_LIMIT = 8,
-    VT_SELL_LIMIT = 10
+    VT_LONG_QUANTITY = 8,
+    VT_SHORT_QUANTITY = 10,
+    VT_BUY_LIMIT = 12,
+    VT_SELL_LIMIT = 14
   };
   const ::flatbuffers::String *exchange() const {
     return GetPointer<const ::flatbuffers::String *>(VT_EXCHANGE);
   }
   const ::flatbuffers::String *symbol() const {
     return GetPointer<const ::flatbuffers::String *>(VT_SYMBOL);
+  }
+  double long_quantity() const {
+    return GetField<double>(VT_LONG_QUANTITY, 0.0);
+  }
+  double short_quantity() const {
+    return GetField<double>(VT_SHORT_QUANTITY, 0.0);
   }
   double buy_limit() const {
     return GetField<double>(VT_BUY_LIMIT, std::numeric_limits<double>::quiet_NaN());
@@ -2520,6 +2538,8 @@ struct RiskLimit FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyString(exchange()) &&
            VerifyOffset(verifier, VT_SYMBOL) &&
            verifier.VerifyString(symbol()) &&
+           VerifyField<double>(verifier, VT_LONG_QUANTITY, 8) &&
+           VerifyField<double>(verifier, VT_SHORT_QUANTITY, 8) &&
            VerifyField<double>(verifier, VT_BUY_LIMIT, 8) &&
            VerifyField<double>(verifier, VT_SELL_LIMIT, 8) &&
            verifier.EndTable();
@@ -2535,6 +2555,12 @@ struct RiskLimitBuilder {
   }
   void add_symbol(::flatbuffers::Offset<::flatbuffers::String> symbol) {
     fbb_.AddOffset(RiskLimit::VT_SYMBOL, symbol);
+  }
+  void add_long_quantity(double long_quantity) {
+    fbb_.AddElement<double>(RiskLimit::VT_LONG_QUANTITY, long_quantity, 0.0);
+  }
+  void add_short_quantity(double short_quantity) {
+    fbb_.AddElement<double>(RiskLimit::VT_SHORT_QUANTITY, short_quantity, 0.0);
   }
   void add_buy_limit(double buy_limit) {
     fbb_.AddElement<double>(RiskLimit::VT_BUY_LIMIT, buy_limit, std::numeric_limits<double>::quiet_NaN());
@@ -2557,11 +2583,15 @@ inline ::flatbuffers::Offset<RiskLimit> CreateRiskLimit(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::String> exchange = 0,
     ::flatbuffers::Offset<::flatbuffers::String> symbol = 0,
+    double long_quantity = 0.0,
+    double short_quantity = 0.0,
     double buy_limit = std::numeric_limits<double>::quiet_NaN(),
     double sell_limit = std::numeric_limits<double>::quiet_NaN()) {
   RiskLimitBuilder builder_(_fbb);
   builder_.add_sell_limit(sell_limit);
   builder_.add_buy_limit(buy_limit);
+  builder_.add_short_quantity(short_quantity);
+  builder_.add_long_quantity(long_quantity);
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
   return builder_.Finish();
@@ -2576,6 +2606,8 @@ inline ::flatbuffers::Offset<RiskLimit> CreateRiskLimitDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *exchange = nullptr,
     const char *symbol = nullptr,
+    double long_quantity = 0.0,
+    double short_quantity = 0.0,
     double buy_limit = std::numeric_limits<double>::quiet_NaN(),
     double sell_limit = std::numeric_limits<double>::quiet_NaN()) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
@@ -2584,6 +2616,8 @@ inline ::flatbuffers::Offset<RiskLimit> CreateRiskLimitDirect(
       _fbb,
       exchange__,
       symbol__,
+      long_quantity,
+      short_quantity,
       buy_limit,
       sell_limit);
 }
@@ -7848,6 +7882,41 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
       sending_time_utc);
 }
 
+struct Ready FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ReadyBuilder Builder;
+  struct Traits;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ReadyBuilder {
+  typedef Ready Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit ReadyBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<Ready> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<Ready>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<Ready> CreateReady(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  ReadyBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct Ready::Traits {
+  using type = Ready;
+  static auto constexpr Create = CreateReady;
+};
+
 struct Handshake FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef HandshakeBuilder Builder;
   struct Traits;
@@ -8464,6 +8533,9 @@ struct Event FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const roq::fbs::RiskLimitsUpdate *message_as_RiskLimitsUpdate() const {
     return message_type() == roq::fbs::Message::RiskLimitsUpdate ? static_cast<const roq::fbs::RiskLimitsUpdate *>(message()) : nullptr;
   }
+  const roq::fbs::Ready *message_as_Ready() const {
+    return message_type() == roq::fbs::Message::Ready ? static_cast<const roq::fbs::Ready *>(message()) : nullptr;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_SOURCE_INFO) &&
@@ -8617,6 +8689,10 @@ template<> inline const roq::fbs::RiskLimits *Event::message_as<roq::fbs::RiskLi
 
 template<> inline const roq::fbs::RiskLimitsUpdate *Event::message_as<roq::fbs::RiskLimitsUpdate>() const {
   return message_as_RiskLimitsUpdate();
+}
+
+template<> inline const roq::fbs::Ready *Event::message_as<roq::fbs::Ready>() const {
+  return message_as_Ready();
 }
 
 struct EventBuilder {
@@ -8807,6 +8883,10 @@ inline bool VerifyMessage(::flatbuffers::Verifier &verifier, const void *obj, Me
     }
     case Message::RiskLimitsUpdate: {
       auto ptr = reinterpret_cast<const roq::fbs::RiskLimitsUpdate *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message::Ready: {
+      auto ptr = reinterpret_cast<const roq::fbs::Ready *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

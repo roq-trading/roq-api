@@ -3,6 +3,8 @@ namespace roq.fbs;
 table RiskLimit{
   exchange:string;
   symbol:string;
+  long_quantity:double = 0.0;
+  short_quantity:double = 0.0;
   buy_limit:double = nan;
   sell_limit:double = nan;
 }

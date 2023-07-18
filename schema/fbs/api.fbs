@@ -76,6 +76,7 @@ include "stream_status.fbs";
 include "top_of_book.fbs";
 include "trade_summary.fbs";
 include "trade_update.fbs";
+include "ready.fbs";
 
 // ----------------------------------------------------------------------------
 
@@ -155,6 +156,7 @@ union Message {
   CustomMatrixUpdate,
   RiskLimits,
   RiskLimitsUpdate,
+  Ready,
 }
 
 table SourceInfo {

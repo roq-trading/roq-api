@@ -62,6 +62,7 @@ template<> struct maps_to<roq::RiskLimit> final { using type = fbs::RiskLimit; }
 // structs
 template <> struct maps_to<roq::DownloadBegin> { static constexpr auto value = Message::DownloadBegin; };
 template <> struct maps_to<roq::DownloadEnd> { static constexpr auto value = Message::DownloadEnd; };
+template <> struct maps_to<roq::Ready> { static constexpr auto value = Message::DownloadEnd; };
 template <> struct maps_to<roq::GatewaySettings> { static constexpr auto value = Message::GatewaySettings; };
 template <> struct maps_to<roq::StreamStatus> { static constexpr auto value = Message::StreamStatus; };
 template <> struct maps_to<roq::ExternalLatency> { static constexpr auto value = Message::ExternalLatency; };
@@ -187,6 +188,8 @@ auto encode(B &builder, roq::RiskLimit const &value) {
       builder,
       encode(builder, static_cast<std::string_view>(value.exchange)),
       encode(builder, static_cast<std::string_view>(value.symbol)),
+      value.long_quantity,
+      value.short_quantity,
       value.buy_limit,
       value.sell_limit);
 }
@@ -288,6 +291,11 @@ auto encode(B &builder, roq::DownloadBegin const &value) {
 template <typename B>
 auto encode(B &builder, roq::DownloadEnd const &value) {
   return CreateDownloadEnd(builder, encode(builder, value.account), value.max_order_id);
+}
+
+template <typename B>
+auto encode(B &builder, roq::Ready const &value) {
+  return CreateReady(builder);
 }
 
 template <typename B>

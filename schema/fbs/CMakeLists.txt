@@ -47,6 +47,7 @@ set(SOURCES
     protocol.fbs
     rate_limit_trigger.fbs
     rate_limit_type.fbs
+    ready.fbs
     reference_data.fbs
     request_status.fbs
     request_type.fbs

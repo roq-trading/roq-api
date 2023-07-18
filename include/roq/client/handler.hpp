@@ -32,6 +32,7 @@ struct ROQ_PUBLIC Handler {
   virtual void operator()(Event<BatchEnd> const &) {}
   virtual void operator()(Event<DownloadBegin> const &) {}
   virtual void operator()(Event<DownloadEnd> const &) {}
+  virtual void operator()(Event<Ready> const &) {}
 
   // config
   virtual void operator()(Event<GatewaySettings> const &) {}

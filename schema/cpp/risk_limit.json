@@ -12,14 +12,26 @@
       "type": "Symbol"
     },
     {
+      "name": "long_quantity",
+      "type": "double",
+      "default": " = 0.0",
+      "comment": "Current position (long)"
+    },
+    {
+      "name": "short_quantity",
+      "type": "double",
+      "default": " = 0.0",
+      "comment": "Current position (short)"
+    },
+    {
       "name": "buy_limit",
       "type": "double",
-      "comment": "Buy limit"
+      "comment": "Limit (buy)"
     },
     {
       "name": "sell_limit",
       "type": "double",
-      "comment": "Sell limit"
+      "comment": "Limit (sell)"
     }
   ]
 }

@@ -54,6 +54,7 @@ set(SOURCES
     protocol.json
     rate_limit_trigger.json
     rate_limit_type.json
+    ready.json
     reference_data.json
     request_status.json
     request_type.json

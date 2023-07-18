@@ -16,10 +16,12 @@ namespace roq {
 
 //! Risk limit for {exchange, symbol}
 struct ROQ_PUBLIC RiskLimit final {
-  Exchange exchange;        //!< Exchange
-  Symbol symbol;            //!< Symbol
-  double buy_limit = NaN;   //!< Buy limit
-  double sell_limit = NaN;  //!< Sell limit
+  Exchange exchange;            //!< Exchange
+  Symbol symbol;                //!< Symbol
+  double long_quantity = 0.0;   //!< Current position (long)
+  double short_quantity = 0.0;  //!< Current position (short)
+  double buy_limit = NaN;       //!< Limit (buy)
+  double sell_limit = NaN;      //!< Limit (sell)
 };
 
 }  // namespace roq
@@ -39,11 +41,15 @@ struct fmt::formatter<roq::RiskLimit> {
         R"({{)"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
+        R"(long_quantity={}, )"
+        R"(short_quantity={}, )"
         R"(buy_limit={}, )"
         R"(sell_limit={})"
         R"(}})"_cf,
         value.exchange,
         value.symbol,
+        value.long_quantity,
+        value.short_quantity,
         value.buy_limit,
         value.sell_limit);
   }

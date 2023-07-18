@@ -94,6 +94,7 @@
 #include "roq/portfolio_update.hpp"
 #include "roq/position_update.hpp"
 #include "roq/rate_limit_trigger.hpp"
+#include "roq/ready.hpp"
 #include "roq/reference_data.hpp"
 #include "roq/risk_limits.hpp"
 #include "roq/risk_limits_update.hpp"

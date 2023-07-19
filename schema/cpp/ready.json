@@ -2,6 +2,5 @@
   "name": "Ready",
   "type": "message",
   "comment": "Marks the end of the initial download phase",
-  "values": [
-  ]
+  "values": []
 }

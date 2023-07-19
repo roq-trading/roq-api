@@ -115,6 +115,15 @@ auto encode(B &builder, T const &value) {
   return encode(builder, static_cast<std::string_view>(value));
 }
 
+// UUID
+
+template <typename B>
+auto encode(B &builder, roq::UUID const &value) {
+  auto [high,low] = static_cast<std::pair<uint64_t,uint64_t>>(value);
+  return CreateUUID(
+      builder,high,low);
+}
+
 // enums
 
 template <typename B, typename T, typename std::enable_if<std::is_enum<T>::value>::type* = nullptr>
@@ -737,6 +746,7 @@ auto encode(B &builder, roq::RiskLimits const &value) {
       encode(builder, value.account),
       encode(builder, value.user),
       encode(builder, value.limits),
+      encode(builder, value.session_id),
       value.seqno);
 }
 

@@ -16,6 +16,7 @@
 #include "roq/name.hpp"
 #include "roq/risk_limit.hpp"
 #include "roq/trace.hpp"
+#include "roq/uuid.hpp"
 
 namespace roq {
 
@@ -25,6 +26,7 @@ struct ROQ_PUBLIC RiskLimits final {
   std::string_view account;           //!< Account name (optional)
   std::string_view user;              //!< User name (optional)
   std::span<RiskLimit const> limits;  //!< Risk limits per {exchange, symbol}
+  UUID session_id;                    //!< Reference (UUID)
   uint64_t seqno = {};                //!< Reference (sequencing)
 };
 
@@ -53,12 +55,14 @@ struct fmt::formatter<roq::RiskLimits> {
         R"(account="{}", )"
         R"(user="{}", )"
         R"(limits=[{}], )"
+        R"(session_id="{}", )"
         R"(seqno={})"
         R"(}})"_cf,
         value.label,
         value.account,
         value.user,
         fmt::join(value.limits, ", "sv),
+        value.session_id,
         value.seqno);
   }
 };

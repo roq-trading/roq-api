@@ -1,0 +1,6 @@
+namespace roq.fbs;
+
+table UUID {
+  high:uint64;
+  low:uint64;
+}

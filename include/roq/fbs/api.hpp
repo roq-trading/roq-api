@@ -118,6 +118,9 @@ struct RateLimitTriggerBuilder;
 struct ReferenceData;
 struct ReferenceDataBuilder;
 
+struct UUID;
+struct UUIDBuilder;
+
 struct RiskLimits;
 struct RiskLimitsBuilder;
 
@@ -6785,6 +6788,63 @@ inline ::flatbuffers::Offset<ReferenceData> CreateReferenceDataDirect(
       min_notional);
 }
 
+struct UUID FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef UUIDBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_HIGH = 4,
+    VT_LOW = 6
+  };
+  uint64_t high() const {
+    return GetField<uint64_t>(VT_HIGH, 0);
+  }
+  uint64_t low() const {
+    return GetField<uint64_t>(VT_LOW, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint64_t>(verifier, VT_HIGH, 8) &&
+           VerifyField<uint64_t>(verifier, VT_LOW, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct UUIDBuilder {
+  typedef UUID Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_high(uint64_t high) {
+    fbb_.AddElement<uint64_t>(UUID::VT_HIGH, high, 0);
+  }
+  void add_low(uint64_t low) {
+    fbb_.AddElement<uint64_t>(UUID::VT_LOW, low, 0);
+  }
+  explicit UUIDBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<UUID> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<UUID>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<UUID> CreateUUID(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    uint64_t high = 0,
+    uint64_t low = 0) {
+  UUIDBuilder builder_(_fbb);
+  builder_.add_low(low);
+  builder_.add_high(high);
+  return builder_.Finish();
+}
+
+struct UUID::Traits {
+  using type = UUID;
+  static auto constexpr Create = CreateUUID;
+};
+
 struct RiskLimits FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef RiskLimitsBuilder Builder;
   struct Traits;
@@ -6793,7 +6853,8 @@ struct RiskLimits FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ACCOUNT = 6,
     VT_USER = 8,
     VT_LIMITS = 10,
-    VT_SEQNO = 12
+    VT_SESSION_ID = 12,
+    VT_SEQNO = 14
   };
   const ::flatbuffers::String *label() const {
     return GetPointer<const ::flatbuffers::String *>(VT_LABEL);
@@ -6806,6 +6867,9 @@ struct RiskLimits FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
   const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *limits() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *>(VT_LIMITS);
+  }
+  const roq::fbs::UUID *session_id() const {
+    return GetPointer<const roq::fbs::UUID *>(VT_SESSION_ID);
   }
   uint64_t seqno() const {
     return GetField<uint64_t>(VT_SEQNO, 0);
@@ -6821,6 +6885,8 @@ struct RiskLimits FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyOffset(verifier, VT_LIMITS) &&
            verifier.VerifyVector(limits()) &&
            verifier.VerifyVectorOfTables(limits()) &&
+           VerifyOffset(verifier, VT_SESSION_ID) &&
+           verifier.VerifyTable(session_id()) &&
            VerifyField<uint64_t>(verifier, VT_SEQNO, 8) &&
            verifier.EndTable();
   }
@@ -6842,6 +6908,9 @@ struct RiskLimitsBuilder {
   void add_limits(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>>> limits) {
     fbb_.AddOffset(RiskLimits::VT_LIMITS, limits);
   }
+  void add_session_id(::flatbuffers::Offset<roq::fbs::UUID> session_id) {
+    fbb_.AddOffset(RiskLimits::VT_SESSION_ID, session_id);
+  }
   void add_seqno(uint64_t seqno) {
     fbb_.AddElement<uint64_t>(RiskLimits::VT_SEQNO, seqno, 0);
   }
@@ -6862,9 +6931,11 @@ inline ::flatbuffers::Offset<RiskLimits> CreateRiskLimits(
     ::flatbuffers::Offset<::flatbuffers::String> account = 0,
     ::flatbuffers::Offset<::flatbuffers::String> user = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>>> limits = 0,
+    ::flatbuffers::Offset<roq::fbs::UUID> session_id = 0,
     uint64_t seqno = 0) {
   RiskLimitsBuilder builder_(_fbb);
   builder_.add_seqno(seqno);
+  builder_.add_session_id(session_id);
   builder_.add_limits(limits);
   builder_.add_user(user);
   builder_.add_account(account);
@@ -6883,6 +6954,7 @@ inline ::flatbuffers::Offset<RiskLimits> CreateRiskLimitsDirect(
     const char *account = nullptr,
     const char *user = nullptr,
     const std::vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *limits = nullptr,
+    ::flatbuffers::Offset<roq::fbs::UUID> session_id = 0,
     uint64_t seqno = 0) {
   auto label__ = label ? _fbb.CreateString(label) : 0;
   auto account__ = account ? _fbb.CreateString(account) : 0;
@@ -6894,6 +6966,7 @@ inline ::flatbuffers::Offset<RiskLimits> CreateRiskLimitsDirect(
       account__,
       user__,
       limits__,
+      session_id,
       seqno);
 }
 

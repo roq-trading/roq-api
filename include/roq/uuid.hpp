@@ -37,6 +37,11 @@ struct UUID final {
     std::memcpy(&uuid_[0], &high, sizeof(high));
     std::memcpy(&uuid_[sizeof(high)], &low, sizeof(low));
   }
+  UUID(uint64_t high, uint64_t low) {
+    static_assert(sizeof(uuid_t) == (sizeof(high) + sizeof(low)));
+    std::memcpy(&uuid_[0], &high, sizeof(high));
+    std::memcpy(&uuid_[sizeof(high)], &low, sizeof(low));
+  }
 
   UUID(const UUID &) = default;
   UUID(UUID &&) = default;
@@ -45,6 +50,7 @@ struct UUID final {
 
   constexpr size_t size() const { return std::size(uuid_); }
 
+  constexpr value_type *data() { return std::data(uuid_); }
   constexpr value_type const *data() const { return std::data(uuid_); }
 
   constexpr value_type &operator[](std::size_t index) { return uuid_[index]; }
@@ -58,6 +64,14 @@ struct UUID final {
     std::memcpy(&high, &uuid_[0], sizeof(high));
     std::memcpy(&low, &uuid_[sizeof(high)], sizeof(low));
     return absl::MakeUint128(absl::big_endian::ToHost(high), absl::big_endian::ToHost(low));
+  }
+
+  operator std::pair<uint64_t, uint64_t>() const {
+    uint64_t high, low;
+    static_assert(sizeof(uuid_) == (sizeof(high) + sizeof(low)));
+    std::memcpy(&high, &uuid_[0], sizeof(high));
+    std::memcpy(&low, &uuid_[sizeof(high)], sizeof(low));
+    return {high, low};
   }
 
   constexpr bool empty() const {

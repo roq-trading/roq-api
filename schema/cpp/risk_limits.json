@@ -24,6 +24,11 @@
       "comment": "Risk limits per {exchange, symbol}"
     },
     {
+      "name": "session_id",
+      "type": "UUID",
+      "comment": "Reference (UUID)"
+    },
+    {
       "name": "seqno",
       "type": "uint64_t",
       "comment": "Reference (sequencing)"

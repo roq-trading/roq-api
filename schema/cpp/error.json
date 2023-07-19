@@ -117,6 +117,10 @@
     {
       "name": "InsufficientFunds",
       "comment": "Insufficient funds for order action"
+    },
+    {
+      "name": "RiskLimitReached",
+      "comment": "Risk limit reached"
     }
   ]
 }

@@ -35,5 +35,6 @@ enum Error:uint8 {
   TooLateToModifyOrCancel,
   ConditionalRequestHasFailed,
   UnknownOrderId,
-  InsufficientFunds
+  InsufficientFunds,
+  RiskLimitReached
 }

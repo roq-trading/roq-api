@@ -11,6 +11,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `Error.RISK_LIMIT_REACHED`
 * New `Ready` event to indicate the completion of the intial download phase
 * Risk exposure and change added to `OrderAck` and `OrderUpdate` (EXPERIMENTAL)
 * `cache::MarketByPrice::impact_price()` (#372)

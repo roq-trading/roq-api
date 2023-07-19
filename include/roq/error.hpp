@@ -50,6 +50,7 @@ enum class Error : uint8_t {
   CONDITIONAL_REQUEST_HAS_FAILED,  //!< Happens when gateway detects chain failure
   UNKNOWN_ORDER_ID,
   INSUFFICIENT_FUNDS,  //!< Insufficient funds for order action
+  RISK_LIMIT_REACHED,  //!< Risk limit reached
 };
 
 }  // namespace roq

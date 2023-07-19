@@ -437,11 +437,12 @@ enum class Error : uint8_t {
   ConditionalRequestHasFailed = 32,
   UnknownOrderId = 33,
   InsufficientFunds = 34,
+  RiskLimitReached = 35,
   MIN = Undefined,
-  MAX = InsufficientFunds
+  MAX = RiskLimitReached
 };
 
-inline const Error (&EnumValuesError())[35] {
+inline const Error (&EnumValuesError())[36] {
   static const Error values[] = {
     Error::Undefined,
     Error::Unknown,
@@ -477,13 +478,14 @@ inline const Error (&EnumValuesError())[35] {
     Error::TooLateToModifyOrCancel,
     Error::ConditionalRequestHasFailed,
     Error::UnknownOrderId,
-    Error::InsufficientFunds
+    Error::InsufficientFunds,
+    Error::RiskLimitReached
   };
   return values;
 }
 
 inline const char * const *EnumNamesError() {
-  static const char * const names[36] = {
+  static const char * const names[37] = {
     "Undefined",
     "Unknown",
     "NotSupported",
@@ -519,13 +521,14 @@ inline const char * const *EnumNamesError() {
     "ConditionalRequestHasFailed",
     "UnknownOrderId",
     "InsufficientFunds",
+    "RiskLimitReached",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameError(Error e) {
-  if (::flatbuffers::IsOutRange(e, Error::Undefined, Error::InsufficientFunds)) return "";
+  if (::flatbuffers::IsOutRange(e, Error::Undefined, Error::RiskLimitReached)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesError()[index];
 }

@@ -4,9 +4,11 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.9.6 &ndash; 2023-07-22
+
 ### Changed
 
-* Using std::source_location (clang16)
+* Using `std::source_location` (clang16)
 * Using fmt10
 
 ### Added

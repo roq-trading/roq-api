@@ -3,7 +3,7 @@ package:
   version: {{ GIT_DESCRIBE_TAG }}
 
 source:
-  path: ..
+  git_url: ..
 
 build:
   skip: true  # [not unix]

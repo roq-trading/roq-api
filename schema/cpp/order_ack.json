@@ -92,6 +92,11 @@
       "name": "round_trip_latency",
       "type": "std::chrono::nanoseconds",
       "comment": "Round-trip latency between gateway and exchange"
+    },
+    {
+      "name": "user",
+      "type": "std::string_view",
+      "comment": "User name (optional, only relevant for drop-copy)"
     }
   ]
 }

@@ -44,6 +44,7 @@ struct ROQ_PUBLIC Order final {
   Decimals price_decimals = {};
   Decimals quantity_decimals = {};
   UpdateType update_type = {};
+  User user;
 };
 
 }  // namespace oms

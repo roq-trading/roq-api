@@ -5135,7 +5135,8 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ROUND_TRIP_LATENCY = 36,
     VT_TRADED_QUANTITY = 38,
     VT_RISK_EXPOSURE = 40,
-    VT_RISK_EXPOSURE_CHANGE = 42
+    VT_RISK_EXPOSURE_CHANGE = 42,
+    VT_USER = 44
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -5197,6 +5198,9 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   double risk_exposure_change() const {
     return GetField<double>(VT_RISK_EXPOSURE_CHANGE, std::numeric_limits<double>::quiet_NaN());
   }
+  const ::flatbuffers::String *user() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_USER);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -5227,6 +5231,8 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<double>(verifier, VT_TRADED_QUANTITY, 8) &&
            VerifyField<double>(verifier, VT_RISK_EXPOSURE, 8) &&
            VerifyField<double>(verifier, VT_RISK_EXPOSURE_CHANGE, 8) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyString(user()) &&
            verifier.EndTable();
   }
 };
@@ -5295,6 +5301,9 @@ struct OrderAckBuilder {
   void add_risk_exposure_change(double risk_exposure_change) {
     fbb_.AddElement<double>(OrderAck::VT_RISK_EXPOSURE_CHANGE, risk_exposure_change, std::numeric_limits<double>::quiet_NaN());
   }
+  void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
+    fbb_.AddOffset(OrderAck::VT_USER, user);
+  }
   explicit OrderAckBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5327,12 +5336,14 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAck(
     int64_t round_trip_latency = 0,
     double traded_quantity = std::numeric_limits<double>::quiet_NaN(),
     double risk_exposure = std::numeric_limits<double>::quiet_NaN(),
-    double risk_exposure_change = std::numeric_limits<double>::quiet_NaN()) {
+    double risk_exposure_change = std::numeric_limits<double>::quiet_NaN(),
+    ::flatbuffers::Offset<::flatbuffers::String> user = 0) {
   OrderAckBuilder builder_(_fbb);
   builder_.add_risk_exposure_change(risk_exposure_change);
   builder_.add_risk_exposure(risk_exposure);
   builder_.add_traded_quantity(traded_quantity);
   builder_.add_round_trip_latency(round_trip_latency);
+  builder_.add_user(user);
   builder_.add_version(version);
   builder_.add_routing_id(routing_id);
   builder_.add_external_order_id(external_order_id);
@@ -5378,7 +5389,8 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     int64_t round_trip_latency = 0,
     double traded_quantity = std::numeric_limits<double>::quiet_NaN(),
     double risk_exposure = std::numeric_limits<double>::quiet_NaN(),
-    double risk_exposure_change = std::numeric_limits<double>::quiet_NaN()) {
+    double risk_exposure_change = std::numeric_limits<double>::quiet_NaN(),
+    const char *user = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -5387,6 +5399,7 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
   auto external_account__ = external_account ? _fbb.CreateString(external_account) : 0;
   auto external_order_id__ = external_order_id ? _fbb.CreateString(external_order_id) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
+  auto user__ = user ? _fbb.CreateString(user) : 0;
   return roq::fbs::CreateOrderAck(
       _fbb,
       stream_id,
@@ -5408,7 +5421,8 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
       round_trip_latency,
       traded_quantity,
       risk_exposure,
-      risk_exposure_change);
+      risk_exposure_change,
+      user__);
 }
 
 struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

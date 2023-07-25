@@ -47,6 +47,7 @@ struct ROQ_PUBLIC OrderAck final {
   double risk_exposure_change = NaN;                 //!< Risk exposure change
   double traded_quantity = NaN;                      //!< Quantity (total traded)
   std::chrono::nanoseconds round_trip_latency = {};  //!< Round-trip latency between gateway and exchange
+  std::string_view user;                             //!< User name (optional, only relevant for drop-copy)
 };
 
 template <>
@@ -89,7 +90,8 @@ struct fmt::formatter<roq::OrderAck> {
         R"(risk_exposure={}, )"
         R"(risk_exposure_change={}, )"
         R"(traded_quantity={}, )"
-        R"(round_trip_latency={})"
+        R"(round_trip_latency={}, )"
+        R"(user="{}")"
         R"(}})"_cf,
         value.stream_id,
         value.account,
@@ -110,7 +112,8 @@ struct fmt::formatter<roq::OrderAck> {
         value.risk_exposure,
         value.risk_exposure_change,
         value.traded_quantity,
-        value.round_trip_latency);
+        value.round_trip_latency,
+        value.user);
   }
 };
 

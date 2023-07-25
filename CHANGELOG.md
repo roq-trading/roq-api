@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `OrderAck.user` to support drop-copy and risk management
+
 ## 0.9.6 &ndash; 2023-07-22
 
 ### Changed

@@ -27,4 +27,5 @@ table OrderAck {
   traded_quantity:double = nan;
   risk_exposure:double = nan;
   risk_exposure_change:double = nan;
+  user:string;
 }

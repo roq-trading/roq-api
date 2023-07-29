@@ -24,10 +24,12 @@ namespace roq {
 
 //! Portfolio update  !!! EXPERIMENTAL !!!
 struct ROQ_PUBLIC PortfolioUpdate final {
+  std::string_view account;                         //!< Account name
+  std::string_view user;                            //!< User (optional)
+  uint32_t strategy = {};                           //!< Strategy (optional)
   std::span<Position const> positions;              //!< Position updates
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
-  std::string_view user;                            //!< User
 };
 
 template <>
@@ -51,15 +53,19 @@ struct fmt::formatter<roq::PortfolioUpdate> {
     return fmt::format_to(
         context.out(),
         R"({{)"
+        R"(account="{}", )"
+        R"(user="{}", )"
+        R"(strategy={}, )"
         R"(positions=[{}], )"
         R"(update_type={}, )"
-        R"(exchange_time_utc={}, )"
-        R"(user="{}")"
+        R"(exchange_time_utc={})"
         R"(}})"_cf,
+        value.account,
+        value.user,
+        value.strategy,
         fmt::join(value.positions, ", "sv),
         value.update_type,
-        value.exchange_time_utc,
-        value.user);
+        value.exchange_time_utc);
   }
 };
 

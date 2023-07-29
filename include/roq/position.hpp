@@ -11,7 +11,6 @@
 
 #include "roq/event.hpp"
 #include "roq/name.hpp"
-#include "roq/numbers.hpp"
 #include "roq/string_types.hpp"
 #include "roq/trace.hpp"
 
@@ -19,11 +18,10 @@ namespace roq {
 
 //! Position  !!! EXPERIMENTAL !!!
 struct ROQ_PUBLIC Position final {
-  Account account;              //!< Account name
   Exchange exchange;            //!< Exchange
   Symbol symbol;                //!< Symbol
-  double long_quantity = NaN;   //!< Quantity (long)
-  double short_quantity = NaN;  //!< Quantity (short)
+  double long_position = 0.0;   //!< Position (long)
+  double short_position = 0.0;  //!< Position (short)
 };
 
 template <>
@@ -47,17 +45,15 @@ struct fmt::formatter<roq::Position> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(long_quantity={}, )"
-        R"(short_quantity={})"
+        R"(long_position={}, )"
+        R"(short_position={})"
         R"(}})"_cf,
-        value.account,
         value.exchange,
         value.symbol,
-        value.long_quantity,
-        value.short_quantity);
+        value.long_position,
+        value.short_position);
   }
 };
 

@@ -4,10 +4,6 @@
   "comment": "Position  !!! EXPERIMENTAL !!!",
   "values": [
     {
-      "name": "account",
-      "type": "Account"
-    },
-    {
       "name": "exchange",
       "type": "Exchange"
     },
@@ -16,14 +12,16 @@
       "type": "Symbol"
     },
     {
-      "name": "long_quantity",
+      "name": "long_position",
       "type": "double",
-      "comment": "Quantity (long)"
+      "default": " = 0.0",
+      "comment": "Position (long)"
     },
     {
-      "name": "short_quantity",
+      "name": "short_position",
       "type": "double",
-      "comment": "Quantity (short)"
+      "default": " = 0.0",
+      "comment": "Position (short)"
     }
   ]
 }

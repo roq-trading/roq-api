@@ -3,9 +3,9 @@ include "uuid.fbs";
 namespace roq.fbs;
 
 table RiskLimits {
-  label:string;
   account:string;
   user:string;
+  strategy:uint32;
   limits:[RiskLimit];
   session_id:UUID;
   seqno:uint64;

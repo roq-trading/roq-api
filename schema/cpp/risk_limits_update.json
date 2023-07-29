@@ -1,13 +1,8 @@
 {
   "name": "RiskLimitsUpdate",
   "type": "message",
-  "comment": "Risk limits (publish)",
+  "comment": "Risk limits (publish) !!! EXPERIMENTAL !!!",
   "values": [
-    {
-      "name": "label",
-      "type": "std::string_view",
-      "comment": "Label"
-    },
     {
       "name": "account",
       "type": "std::string_view",
@@ -17,6 +12,11 @@
       "name": "user",
       "type": "std::string_view",
       "comment": "User name (optional)"
+    },
+    {
+      "name": "strategy",
+      "type": "uint32_t",
+      "comment": "Strategy (optional)"
     },
     {
       "name": "limits",

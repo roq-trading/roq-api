@@ -184,11 +184,10 @@ template <typename B>
 auto encode(B &builder, roq::Position const &value) {
   return CreatePosition(
       builder,
-      encode(builder, static_cast<std::string_view>(value.account)),
       encode(builder, static_cast<std::string_view>(value.exchange)),
       encode(builder, static_cast<std::string_view>(value.symbol)),
-      value.long_quantity,
-      value.short_quantity);
+      value.long_position,
+      value.short_position);
 }
 
 template <typename B>
@@ -197,10 +196,13 @@ auto encode(B &builder, roq::RiskLimit const &value) {
       builder,
       encode(builder, static_cast<std::string_view>(value.exchange)),
       encode(builder, static_cast<std::string_view>(value.symbol)),
-      value.long_quantity,
-      value.short_quantity,
-      value.buy_limit,
-      value.sell_limit);
+      value.long_position,
+      value.short_position,
+      value.long_position_limit,
+      value.short_position_limit,
+      value.long_risk_exposure_limit,
+      value.short_risk_exposure_limit,
+      value.allow_netting);
 }
 
 template <typename B>
@@ -733,19 +735,21 @@ template <typename B>
 auto encode(B &builder, roq::PortfolioUpdate const &value) {
   return CreatePortfolioUpdate(
       builder,
+      encode(builder, value.account),
+      encode(builder, value.user),
+      value.strategy,
       encode(builder, value.positions),
       encode(builder, value.update_type),
-      encode(builder, value.exchange_time_utc),
-      encode(builder, value.user));
+      encode(builder, value.exchange_time_utc));
 }
 
 template <typename B>
 auto encode(B &builder, roq::RiskLimits const &value) {
   return CreateRiskLimits(
       builder,
-      encode(builder, value.label),
       encode(builder, value.account),
       encode(builder, value.user),
+      value.strategy,
       encode(builder, value.limits),
       encode(builder, value.session_id),
       value.seqno);
@@ -755,9 +759,9 @@ template <typename B>
 auto encode(B &builder, roq::RiskLimitsUpdate const &value) {
   return CreateRiskLimitsUpdate(
       builder,
-      encode(builder, value.label),
       encode(builder, value.account),
       encode(builder, value.user),
+      value.strategy,
       encode(builder, value.limits),
       encode(builder, value.update_type));
 }

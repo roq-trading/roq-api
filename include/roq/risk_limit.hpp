@@ -16,12 +16,15 @@ namespace roq {
 
 //! Risk limit for {exchange, symbol}
 struct ROQ_PUBLIC RiskLimit final {
-  Exchange exchange;            //!< Exchange
-  Symbol symbol;                //!< Symbol
-  double long_quantity = 0.0;   //!< Current position (long)
-  double short_quantity = 0.0;  //!< Current position (short)
-  double buy_limit = NaN;       //!< Limit (buy)
-  double sell_limit = NaN;      //!< Limit (sell)
+  Exchange exchange;                       //!< Exchange
+  Symbol symbol;                           //!< Symbol
+  double long_position = 0.0;              //!< Position (long)
+  double short_position = 0.0;             //!< Position (short)
+  double long_position_limit = NaN;        //!< Position limit (long)
+  double short_position_limit = NaN;       //!< Position limit (short)
+  double long_risk_exposure_limit = NaN;   //!< Risk exposure limit (long)
+  double short_risk_exposure_limit = NaN;  //!< Risk exposure limit (short)
+  bool allow_netting = false;              //!< Allow netting?
 };
 
 }  // namespace roq
@@ -41,16 +44,22 @@ struct fmt::formatter<roq::RiskLimit> {
         R"({{)"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(long_quantity={}, )"
-        R"(short_quantity={}, )"
-        R"(buy_limit={}, )"
-        R"(sell_limit={})"
+        R"(long_position={}, )"
+        R"(short_position={}, )"
+        R"(long_position_limit={}, )"
+        R"(short_position_limit={}, )"
+        R"(long_risk_exposure_limit={}, )"
+        R"(short_risk_exposure_limit={}, )"
+        R"(allow_netting={})"
         R"(}})"_cf,
         value.exchange,
         value.symbol,
-        value.long_quantity,
-        value.short_quantity,
-        value.buy_limit,
-        value.sell_limit);
+        value.long_position,
+        value.short_position,
+        value.long_position_limit,
+        value.short_position_limit,
+        value.long_risk_exposure_limit,
+        value.short_risk_exposure_limit,
+        value.allow_netting);
   }
 };

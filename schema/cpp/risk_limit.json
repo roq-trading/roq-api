@@ -12,26 +12,41 @@
       "type": "Symbol"
     },
     {
-      "name": "long_quantity",
+      "name": "long_position",
       "type": "double",
       "default": " = 0.0",
-      "comment": "Current position (long)"
+      "comment": "Position (long)"
     },
     {
-      "name": "short_quantity",
+      "name": "short_position",
       "type": "double",
       "default": " = 0.0",
-      "comment": "Current position (short)"
+      "comment": "Position (short)"
     },
     {
-      "name": "buy_limit",
+      "name": "long_position_limit",
       "type": "double",
-      "comment": "Limit (buy)"
+      "comment": "Position limit (long)"
     },
     {
-      "name": "sell_limit",
+      "name": "short_position_limit",
       "type": "double",
-      "comment": "Limit (sell)"
+      "comment": "Position limit (short)"
+    },
+    {
+      "name": "long_risk_exposure_limit",
+      "type": "double",
+      "comment": "Risk exposure limit (long)"
+    },
+    {
+      "name": "short_risk_exposure_limit",
+      "type": "double",
+      "comment": "Risk exposure limit (short)"
+    },
+    {
+      "name": "allow_netting",
+      "type": "bool",
+      "comment": "Allow netting?"
     }
   ]
 }

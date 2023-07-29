@@ -20,11 +20,11 @@
 
 namespace roq {
 
-//! Risk limits (publish)
+//! Risk limits (publish) !!! EXPERIMENTAL !!!
 struct ROQ_PUBLIC RiskLimitsUpdate final {
-  std::string_view label;             //!< Label
   std::string_view account;           //!< Account name (optional)
   std::string_view user;              //!< User name (optional)
+  uint32_t strategy = {};             //!< Strategy (optional)
   std::span<RiskLimit const> limits;  //!< Risk limits per {exchange, symbol}
   UpdateType update_type = {};        //!< Update type
 };
@@ -50,15 +50,15 @@ struct fmt::formatter<roq::RiskLimitsUpdate> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(label="{}", )"
         R"(account="{}", )"
         R"(user="{}", )"
+        R"(strategy={}, )"
         R"(limits=[{}], )"
         R"(update_type={})"
         R"(}})"_cf,
-        value.label,
         value.account,
         value.user,
+        value.strategy,
         fmt::join(value.limits, ", "sv),
         value.update_type);
   }

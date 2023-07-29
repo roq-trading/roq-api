@@ -4,6 +4,20 @@
   "comment": "Portfolio update  !!! EXPERIMENTAL !!!",
   "values": [
     {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "user",
+      "type": "std::string_view",
+      "comment": "User (optional)"
+    },
+    {
+      "name": "strategy",
+      "type": "uint32_t",
+      "comment": "Strategy (optional)"
+    },
+    {
       "name": "positions",
       "type": "std::span<Position const>",
       "comment": "Position updates"
@@ -16,11 +30,6 @@
     {
       "name": "exchange_time_utc",
       "type": "std::chrono::nanoseconds"
-    },
-    {
-      "name": "user",
-      "type": "std::string_view",
-      "comment": "User"
     }
   ]
 }

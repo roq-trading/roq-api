@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `CreateOrder.strategy_id`, `OrderAck.strategy_id`, `OrderUpdate.strategy_id`, `TradeUpdate.strategy_id` (#375)
 * `OrderAck.user` to support drop-copy and risk management
 
 ## 0.9.6 &ndash; 2023-07-22

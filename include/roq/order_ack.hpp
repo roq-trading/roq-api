@@ -48,6 +48,7 @@ struct ROQ_PUBLIC OrderAck final {
   double traded_quantity = NaN;                      //!< Quantity (total traded)
   std::chrono::nanoseconds round_trip_latency = {};  //!< Round-trip latency between gateway and exchange
   std::string_view user;                             //!< User name (optional, only relevant for drop-copy)
+  uint32_t strategy_id = {};                         //!< Strategy identifier (optional)
 };
 
 template <>
@@ -91,7 +92,8 @@ struct fmt::formatter<roq::OrderAck> {
         R"(risk_exposure_change={}, )"
         R"(traded_quantity={}, )"
         R"(round_trip_latency={}, )"
-        R"(user="{}")"
+        R"(user="{}", )"
+        R"(strategy_id={})"
         R"(}})"_cf,
         value.stream_id,
         value.account,
@@ -113,7 +115,8 @@ struct fmt::formatter<roq::OrderAck> {
         value.risk_exposure_change,
         value.traded_quantity,
         value.round_trip_latency,
-        value.user);
+        value.user,
+        value.strategy_id);
   }
 };
 

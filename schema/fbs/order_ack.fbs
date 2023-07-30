@@ -28,4 +28,5 @@ table OrderAck {
   risk_exposure:double = nan;
   risk_exposure_change:double = nan;
   user:string;
+  strategy_id:uint32;
 }

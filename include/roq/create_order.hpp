@@ -41,6 +41,7 @@ struct ROQ_PUBLIC CreateOrder final {
   double price = NaN;                                 //!< Limit price (depends on order_type)
   double stop_price = NaN;                            //!< Stop price (depends on order_type and time_in_force)
   std::string_view routing_id;                        //!< Routing identifier
+  uint32_t strategy_id = {};                          //!< Strategy identifier (optional)
 };
 
 template <>
@@ -78,7 +79,8 @@ struct fmt::formatter<roq::CreateOrder> {
         R"(quantity={}, )"
         R"(price={}, )"
         R"(stop_price={}, )"
-        R"(routing_id="{}")"
+        R"(routing_id="{}", )"
+        R"(strategy_id={})"
         R"(}})"_cf,
         value.account,
         value.order_id,
@@ -94,7 +96,8 @@ struct fmt::formatter<roq::CreateOrder> {
         value.quantity,
         value.price,
         value.stop_price,
-        value.routing_id);
+        value.routing_id,
+        value.strategy_id);
   }
 };
 

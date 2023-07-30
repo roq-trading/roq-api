@@ -66,6 +66,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   UpdateType update_type = {};                        //!< Update type
   std::chrono::nanoseconds sending_time_utc = {};     //!< Exchange sending timestamp (UTC)
   std::string_view user;                              //!< User name (optional, only relevant for drop-copy)
+  uint32_t strategy_id = {};                          //!< Strategy identifier (optional)
 };
 
 template <>
@@ -123,7 +124,8 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(max_accepted_version={}, )"
         R"(update_type={}, )"
         R"(sending_time_utc={}, )"
-        R"(user="{}")"
+        R"(user="{}", )"
+        R"(strategy_id={})"
         R"(}})"_cf,
         value.stream_id,
         value.account,
@@ -159,7 +161,8 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.max_accepted_version,
         value.update_type,
         value.sending_time_utc,
-        value.user);
+        value.user,
+        value.strategy_id);
   }
 };
 

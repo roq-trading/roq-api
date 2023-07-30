@@ -67,6 +67,10 @@
     {
       "name": "routing_id",
       "type": "std::string_view"
+    },
+    {
+      "name": "strategy_id",
+      "type": "uint32_t"
     }
   ]
 }

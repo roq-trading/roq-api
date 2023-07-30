@@ -21,4 +21,5 @@ table TradeUpdate {
   update_type:UpdateType;
   user:string;
   sending_time_utc:int64;
+  strategy_id:uint32;
 }

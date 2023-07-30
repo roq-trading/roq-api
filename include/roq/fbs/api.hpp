@@ -3045,7 +3045,8 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_PRICE = 28,
     VT_STOP_PRICE = 30,
     VT_ROUTING_ID = 32,
-    VT_EXECUTION_INSTRUCTIONS = 34
+    VT_EXECUTION_INSTRUCTIONS = 34,
+    VT_STRATEGY_ID = 36
   };
   const ::flatbuffers::String *account() const {
     return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
@@ -3095,6 +3096,9 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   uint32_t execution_instructions() const {
     return GetField<uint32_t>(VT_EXECUTION_INSTRUCTIONS, 0);
   }
+  uint32_t strategy_id() const {
+    return GetField<uint32_t>(VT_STRATEGY_ID, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_ACCOUNT) &&
@@ -3118,6 +3122,7 @@ struct CreateOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyOffset(verifier, VT_ROUTING_ID) &&
            verifier.VerifyString(routing_id()) &&
            VerifyField<uint32_t>(verifier, VT_EXECUTION_INSTRUCTIONS, 4) &&
+           VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
            verifier.EndTable();
   }
 };
@@ -3174,6 +3179,9 @@ struct CreateOrderBuilder {
   void add_execution_instructions(uint32_t execution_instructions) {
     fbb_.AddElement<uint32_t>(CreateOrder::VT_EXECUTION_INSTRUCTIONS, execution_instructions, 0);
   }
+  void add_strategy_id(uint32_t strategy_id) {
+    fbb_.AddElement<uint32_t>(CreateOrder::VT_STRATEGY_ID, strategy_id, 0);
+  }
   explicit CreateOrderBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3202,12 +3210,14 @@ inline ::flatbuffers::Offset<CreateOrder> CreateCreateOrder(
     double price = std::numeric_limits<double>::quiet_NaN(),
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
     ::flatbuffers::Offset<::flatbuffers::String> routing_id = 0,
-    uint32_t execution_instructions = 0) {
+    uint32_t execution_instructions = 0,
+    uint32_t strategy_id = 0) {
   CreateOrderBuilder builder_(_fbb);
   builder_.add_stop_price(stop_price);
   builder_.add_price(price);
   builder_.add_quantity(quantity);
   builder_.add_max_show_quantity(max_show_quantity);
+  builder_.add_strategy_id(strategy_id);
   builder_.add_execution_instructions(execution_instructions);
   builder_.add_routing_id(routing_id);
   builder_.add_request_template(request_template);
@@ -3245,7 +3255,8 @@ inline ::flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
     double price = std::numeric_limits<double>::quiet_NaN(),
     double stop_price = std::numeric_limits<double>::quiet_NaN(),
     const char *routing_id = nullptr,
-    uint32_t execution_instructions = 0) {
+    uint32_t execution_instructions = 0,
+    uint32_t strategy_id = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -3268,7 +3279,8 @@ inline ::flatbuffers::Offset<CreateOrder> CreateCreateOrderDirect(
       price,
       stop_price,
       routing_id__,
-      execution_instructions);
+      execution_instructions,
+      strategy_id);
 }
 
 struct CustomMatrix FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -5158,7 +5170,8 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_TRADED_QUANTITY = 38,
     VT_RISK_EXPOSURE = 40,
     VT_RISK_EXPOSURE_CHANGE = 42,
-    VT_USER = 44
+    VT_USER = 44,
+    VT_STRATEGY_ID = 46
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -5223,6 +5236,9 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const ::flatbuffers::String *user() const {
     return GetPointer<const ::flatbuffers::String *>(VT_USER);
   }
+  uint32_t strategy_id() const {
+    return GetField<uint32_t>(VT_STRATEGY_ID, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -5255,6 +5271,7 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<double>(verifier, VT_RISK_EXPOSURE_CHANGE, 8) &&
            VerifyOffset(verifier, VT_USER) &&
            verifier.VerifyString(user()) &&
+           VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
            verifier.EndTable();
   }
 };
@@ -5326,6 +5343,9 @@ struct OrderAckBuilder {
   void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
     fbb_.AddOffset(OrderAck::VT_USER, user);
   }
+  void add_strategy_id(uint32_t strategy_id) {
+    fbb_.AddElement<uint32_t>(OrderAck::VT_STRATEGY_ID, strategy_id, 0);
+  }
   explicit OrderAckBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5359,12 +5379,14 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAck(
     double traded_quantity = std::numeric_limits<double>::quiet_NaN(),
     double risk_exposure = std::numeric_limits<double>::quiet_NaN(),
     double risk_exposure_change = std::numeric_limits<double>::quiet_NaN(),
-    ::flatbuffers::Offset<::flatbuffers::String> user = 0) {
+    ::flatbuffers::Offset<::flatbuffers::String> user = 0,
+    uint32_t strategy_id = 0) {
   OrderAckBuilder builder_(_fbb);
   builder_.add_risk_exposure_change(risk_exposure_change);
   builder_.add_risk_exposure(risk_exposure);
   builder_.add_traded_quantity(traded_quantity);
   builder_.add_round_trip_latency(round_trip_latency);
+  builder_.add_strategy_id(strategy_id);
   builder_.add_user(user);
   builder_.add_version(version);
   builder_.add_routing_id(routing_id);
@@ -5412,7 +5434,8 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     double traded_quantity = std::numeric_limits<double>::quiet_NaN(),
     double risk_exposure = std::numeric_limits<double>::quiet_NaN(),
     double risk_exposure_change = std::numeric_limits<double>::quiet_NaN(),
-    const char *user = nullptr) {
+    const char *user = nullptr,
+    uint32_t strategy_id = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -5444,7 +5467,8 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
       traded_quantity,
       risk_exposure,
       risk_exposure_change,
-      user__);
+      user__,
+      strategy_id);
 }
 
 struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -5487,7 +5511,8 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_SENDING_TIME_UTC = 70,
     VT_CLIENT_ORDER_ID = 72,
     VT_RISK_EXPOSURE = 74,
-    VT_RISK_EXPOSURE_CHANGE = 76
+    VT_RISK_EXPOSURE_CHANGE = 76,
+    VT_STRATEGY_ID = 78
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -5600,6 +5625,9 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   double risk_exposure_change() const {
     return GetField<double>(VT_RISK_EXPOSURE_CHANGE, std::numeric_limits<double>::quiet_NaN());
   }
+  uint32_t strategy_id() const {
+    return GetField<uint32_t>(VT_STRATEGY_ID, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -5648,6 +5676,7 @@ struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyString(client_order_id()) &&
            VerifyField<double>(verifier, VT_RISK_EXPOSURE, 8) &&
            VerifyField<double>(verifier, VT_RISK_EXPOSURE_CHANGE, 8) &&
+           VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
            verifier.EndTable();
   }
 };
@@ -5767,6 +5796,9 @@ struct OrderUpdateBuilder {
   void add_risk_exposure_change(double risk_exposure_change) {
     fbb_.AddElement<double>(OrderUpdate::VT_RISK_EXPOSURE_CHANGE, risk_exposure_change, std::numeric_limits<double>::quiet_NaN());
   }
+  void add_strategy_id(uint32_t strategy_id) {
+    fbb_.AddElement<uint32_t>(OrderUpdate::VT_STRATEGY_ID, strategy_id, 0);
+  }
   explicit OrderUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5816,7 +5848,8 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
     int64_t sending_time_utc = 0,
     ::flatbuffers::Offset<::flatbuffers::String> client_order_id = 0,
     double risk_exposure = std::numeric_limits<double>::quiet_NaN(),
-    double risk_exposure_change = std::numeric_limits<double>::quiet_NaN()) {
+    double risk_exposure_change = std::numeric_limits<double>::quiet_NaN(),
+    uint32_t strategy_id = 0) {
   OrderUpdateBuilder builder_(_fbb);
   builder_.add_risk_exposure_change(risk_exposure_change);
   builder_.add_risk_exposure(risk_exposure);
@@ -5832,6 +5865,7 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdate(
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
   builder_.add_max_show_quantity(max_show_quantity);
+  builder_.add_strategy_id(strategy_id);
   builder_.add_client_order_id(client_order_id);
   builder_.add_user(user);
   builder_.add_execution_instructions(execution_instructions);
@@ -5901,7 +5935,8 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
     int64_t sending_time_utc = 0,
     const char *client_order_id = nullptr,
     double risk_exposure = std::numeric_limits<double>::quiet_NaN(),
-    double risk_exposure_change = std::numeric_limits<double>::quiet_NaN()) {
+    double risk_exposure_change = std::numeric_limits<double>::quiet_NaN(),
+    uint32_t strategy_id = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -5949,7 +5984,8 @@ inline ::flatbuffers::Offset<OrderUpdate> CreateOrderUpdateDirect(
       sending_time_utc,
       client_order_id__,
       risk_exposure,
-      risk_exposure_change);
+      risk_exposure_change,
+      strategy_id);
 }
 
 struct ParametersUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -6040,21 +6076,21 @@ struct PortfolioUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PortfolioUpdateBuilder Builder;
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ACCOUNT = 4,
-    VT_USER = 6,
-    VT_STRATEGY = 8,
+    VT_USER = 4,
+    VT_STRATEGY_ID = 6,
+    VT_ACCOUNT = 8,
     VT_POSITIONS = 10,
     VT_UPDATE_TYPE = 12,
     VT_EXCHANGE_TIME_UTC = 14
   };
-  const ::flatbuffers::String *account() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
-  }
   const ::flatbuffers::String *user() const {
     return GetPointer<const ::flatbuffers::String *>(VT_USER);
   }
-  uint32_t strategy() const {
-    return GetField<uint32_t>(VT_STRATEGY, 0);
+  uint32_t strategy_id() const {
+    return GetField<uint32_t>(VT_STRATEGY_ID, 0);
+  }
+  const ::flatbuffers::String *account() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
   }
   const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>> *positions() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>> *>(VT_POSITIONS);
@@ -6067,11 +6103,11 @@ struct PortfolioUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) &&
            VerifyOffset(verifier, VT_USER) &&
            verifier.VerifyString(user()) &&
-           VerifyField<uint32_t>(verifier, VT_STRATEGY, 4) &&
+           VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
+           VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) &&
            VerifyOffset(verifier, VT_POSITIONS) &&
            verifier.VerifyVector(positions()) &&
            verifier.VerifyVectorOfTables(positions()) &&
@@ -6085,14 +6121,14 @@ struct PortfolioUpdateBuilder {
   typedef PortfolioUpdate Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
-    fbb_.AddOffset(PortfolioUpdate::VT_ACCOUNT, account);
-  }
   void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
     fbb_.AddOffset(PortfolioUpdate::VT_USER, user);
   }
-  void add_strategy(uint32_t strategy) {
-    fbb_.AddElement<uint32_t>(PortfolioUpdate::VT_STRATEGY, strategy, 0);
+  void add_strategy_id(uint32_t strategy_id) {
+    fbb_.AddElement<uint32_t>(PortfolioUpdate::VT_STRATEGY_ID, strategy_id, 0);
+  }
+  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
+    fbb_.AddOffset(PortfolioUpdate::VT_ACCOUNT, account);
   }
   void add_positions(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>>> positions) {
     fbb_.AddOffset(PortfolioUpdate::VT_POSITIONS, positions);
@@ -6116,18 +6152,18 @@ struct PortfolioUpdateBuilder {
 
 inline ::flatbuffers::Offset<PortfolioUpdate> CreatePortfolioUpdate(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
     ::flatbuffers::Offset<::flatbuffers::String> user = 0,
-    uint32_t strategy = 0,
+    uint32_t strategy_id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Position>>> positions = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0) {
   PortfolioUpdateBuilder builder_(_fbb);
   builder_.add_exchange_time_utc(exchange_time_utc);
   builder_.add_positions(positions);
-  builder_.add_strategy(strategy);
-  builder_.add_user(user);
   builder_.add_account(account);
+  builder_.add_strategy_id(strategy_id);
+  builder_.add_user(user);
   builder_.add_update_type(update_type);
   return builder_.Finish();
 }
@@ -6139,20 +6175,20 @@ struct PortfolioUpdate::Traits {
 
 inline ::flatbuffers::Offset<PortfolioUpdate> CreatePortfolioUpdateDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    const char *account = nullptr,
     const char *user = nullptr,
-    uint32_t strategy = 0,
+    uint32_t strategy_id = 0,
+    const char *account = nullptr,
     const std::vector<::flatbuffers::Offset<roq::fbs::Position>> *positions = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0) {
-  auto account__ = account ? _fbb.CreateString(account) : 0;
   auto user__ = user ? _fbb.CreateString(user) : 0;
+  auto account__ = account ? _fbb.CreateString(account) : 0;
   auto positions__ = positions ? _fbb.CreateVector<::flatbuffers::Offset<roq::fbs::Position>>(*positions) : 0;
   return roq::fbs::CreatePortfolioUpdate(
       _fbb,
-      account__,
       user__,
-      strategy,
+      strategy_id,
+      account__,
       positions__,
       update_type,
       exchange_time_utc);
@@ -6914,21 +6950,21 @@ struct RiskLimits FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef RiskLimitsBuilder Builder;
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ACCOUNT = 4,
-    VT_USER = 6,
-    VT_STRATEGY = 8,
+    VT_USER = 4,
+    VT_STRATEGY_ID = 6,
+    VT_ACCOUNT = 8,
     VT_LIMITS = 10,
     VT_SESSION_ID = 12,
     VT_SEQNO = 14
   };
-  const ::flatbuffers::String *account() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
-  }
   const ::flatbuffers::String *user() const {
     return GetPointer<const ::flatbuffers::String *>(VT_USER);
   }
-  uint32_t strategy() const {
-    return GetField<uint32_t>(VT_STRATEGY, 0);
+  uint32_t strategy_id() const {
+    return GetField<uint32_t>(VT_STRATEGY_ID, 0);
+  }
+  const ::flatbuffers::String *account() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
   }
   const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *limits() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *>(VT_LIMITS);
@@ -6941,11 +6977,11 @@ struct RiskLimits FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) &&
            VerifyOffset(verifier, VT_USER) &&
            verifier.VerifyString(user()) &&
-           VerifyField<uint32_t>(verifier, VT_STRATEGY, 4) &&
+           VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
+           VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) &&
            VerifyOffset(verifier, VT_LIMITS) &&
            verifier.VerifyVector(limits()) &&
            verifier.VerifyVectorOfTables(limits()) &&
@@ -6960,14 +6996,14 @@ struct RiskLimitsBuilder {
   typedef RiskLimits Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
-    fbb_.AddOffset(RiskLimits::VT_ACCOUNT, account);
-  }
   void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
     fbb_.AddOffset(RiskLimits::VT_USER, user);
   }
-  void add_strategy(uint32_t strategy) {
-    fbb_.AddElement<uint32_t>(RiskLimits::VT_STRATEGY, strategy, 0);
+  void add_strategy_id(uint32_t strategy_id) {
+    fbb_.AddElement<uint32_t>(RiskLimits::VT_STRATEGY_ID, strategy_id, 0);
+  }
+  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
+    fbb_.AddOffset(RiskLimits::VT_ACCOUNT, account);
   }
   void add_limits(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>>> limits) {
     fbb_.AddOffset(RiskLimits::VT_LIMITS, limits);
@@ -6991,9 +7027,9 @@ struct RiskLimitsBuilder {
 
 inline ::flatbuffers::Offset<RiskLimits> CreateRiskLimits(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
     ::flatbuffers::Offset<::flatbuffers::String> user = 0,
-    uint32_t strategy = 0,
+    uint32_t strategy_id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>>> limits = 0,
     ::flatbuffers::Offset<roq::fbs::UUID> session_id = 0,
     uint64_t seqno = 0) {
@@ -7001,9 +7037,9 @@ inline ::flatbuffers::Offset<RiskLimits> CreateRiskLimits(
   builder_.add_seqno(seqno);
   builder_.add_session_id(session_id);
   builder_.add_limits(limits);
-  builder_.add_strategy(strategy);
-  builder_.add_user(user);
   builder_.add_account(account);
+  builder_.add_strategy_id(strategy_id);
+  builder_.add_user(user);
   return builder_.Finish();
 }
 
@@ -7014,20 +7050,20 @@ struct RiskLimits::Traits {
 
 inline ::flatbuffers::Offset<RiskLimits> CreateRiskLimitsDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    const char *account = nullptr,
     const char *user = nullptr,
-    uint32_t strategy = 0,
+    uint32_t strategy_id = 0,
+    const char *account = nullptr,
     const std::vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *limits = nullptr,
     ::flatbuffers::Offset<roq::fbs::UUID> session_id = 0,
     uint64_t seqno = 0) {
-  auto account__ = account ? _fbb.CreateString(account) : 0;
   auto user__ = user ? _fbb.CreateString(user) : 0;
+  auto account__ = account ? _fbb.CreateString(account) : 0;
   auto limits__ = limits ? _fbb.CreateVector<::flatbuffers::Offset<roq::fbs::RiskLimit>>(*limits) : 0;
   return roq::fbs::CreateRiskLimits(
       _fbb,
-      account__,
       user__,
-      strategy,
+      strategy_id,
+      account__,
       limits__,
       session_id,
       seqno);
@@ -7037,20 +7073,20 @@ struct RiskLimitsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef RiskLimitsUpdateBuilder Builder;
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ACCOUNT = 4,
-    VT_USER = 6,
-    VT_STRATEGY = 8,
+    VT_USER = 4,
+    VT_STRATEGY_ID = 6,
+    VT_ACCOUNT = 8,
     VT_LIMITS = 10,
     VT_UPDATE_TYPE = 12
   };
-  const ::flatbuffers::String *account() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
-  }
   const ::flatbuffers::String *user() const {
     return GetPointer<const ::flatbuffers::String *>(VT_USER);
   }
-  uint32_t strategy() const {
-    return GetField<uint32_t>(VT_STRATEGY, 0);
+  uint32_t strategy_id() const {
+    return GetField<uint32_t>(VT_STRATEGY_ID, 0);
+  }
+  const ::flatbuffers::String *account() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
   }
   const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *limits() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *>(VT_LIMITS);
@@ -7060,11 +7096,11 @@ struct RiskLimitsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_ACCOUNT) &&
-           verifier.VerifyString(account()) &&
            VerifyOffset(verifier, VT_USER) &&
            verifier.VerifyString(user()) &&
-           VerifyField<uint32_t>(verifier, VT_STRATEGY, 4) &&
+           VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
+           VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) &&
            VerifyOffset(verifier, VT_LIMITS) &&
            verifier.VerifyVector(limits()) &&
            verifier.VerifyVectorOfTables(limits()) &&
@@ -7077,14 +7113,14 @@ struct RiskLimitsUpdateBuilder {
   typedef RiskLimitsUpdate Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
-    fbb_.AddOffset(RiskLimitsUpdate::VT_ACCOUNT, account);
-  }
   void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
     fbb_.AddOffset(RiskLimitsUpdate::VT_USER, user);
   }
-  void add_strategy(uint32_t strategy) {
-    fbb_.AddElement<uint32_t>(RiskLimitsUpdate::VT_STRATEGY, strategy, 0);
+  void add_strategy_id(uint32_t strategy_id) {
+    fbb_.AddElement<uint32_t>(RiskLimitsUpdate::VT_STRATEGY_ID, strategy_id, 0);
+  }
+  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
+    fbb_.AddOffset(RiskLimitsUpdate::VT_ACCOUNT, account);
   }
   void add_limits(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>>> limits) {
     fbb_.AddOffset(RiskLimitsUpdate::VT_LIMITS, limits);
@@ -7105,16 +7141,16 @@ struct RiskLimitsUpdateBuilder {
 
 inline ::flatbuffers::Offset<RiskLimitsUpdate> CreateRiskLimitsUpdate(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
     ::flatbuffers::Offset<::flatbuffers::String> user = 0,
-    uint32_t strategy = 0,
+    uint32_t strategy_id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::RiskLimit>>> limits = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
   RiskLimitsUpdateBuilder builder_(_fbb);
   builder_.add_limits(limits);
-  builder_.add_strategy(strategy);
-  builder_.add_user(user);
   builder_.add_account(account);
+  builder_.add_strategy_id(strategy_id);
+  builder_.add_user(user);
   builder_.add_update_type(update_type);
   return builder_.Finish();
 }
@@ -7126,19 +7162,19 @@ struct RiskLimitsUpdate::Traits {
 
 inline ::flatbuffers::Offset<RiskLimitsUpdate> CreateRiskLimitsUpdateDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    const char *account = nullptr,
     const char *user = nullptr,
-    uint32_t strategy = 0,
+    uint32_t strategy_id = 0,
+    const char *account = nullptr,
     const std::vector<::flatbuffers::Offset<roq::fbs::RiskLimit>> *limits = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined) {
-  auto account__ = account ? _fbb.CreateString(account) : 0;
   auto user__ = user ? _fbb.CreateString(user) : 0;
+  auto account__ = account ? _fbb.CreateString(account) : 0;
   auto limits__ = limits ? _fbb.CreateVector<::flatbuffers::Offset<roq::fbs::RiskLimit>>(*limits) : 0;
   return roq::fbs::CreateRiskLimitsUpdate(
       _fbb,
-      account__,
       user__,
-      strategy,
+      strategy_id,
+      account__,
       limits__,
       update_type);
 }
@@ -7783,7 +7819,8 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ROUTING_ID = 28,
     VT_UPDATE_TYPE = 30,
     VT_USER = 32,
-    VT_SENDING_TIME_UTC = 34
+    VT_SENDING_TIME_UTC = 34,
+    VT_STRATEGY_ID = 36
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -7833,6 +7870,9 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int64_t sending_time_utc() const {
     return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
   }
+  uint32_t strategy_id() const {
+    return GetField<uint32_t>(VT_STRATEGY_ID, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -7860,6 +7900,7 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyOffset(verifier, VT_USER) &&
            verifier.VerifyString(user()) &&
            VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
+           VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
            verifier.EndTable();
   }
 };
@@ -7916,6 +7957,9 @@ struct TradeUpdateBuilder {
   void add_sending_time_utc(int64_t sending_time_utc) {
     fbb_.AddElement<int64_t>(TradeUpdate::VT_SENDING_TIME_UTC, sending_time_utc, 0);
   }
+  void add_strategy_id(uint32_t strategy_id) {
+    fbb_.AddElement<uint32_t>(TradeUpdate::VT_STRATEGY_ID, strategy_id, 0);
+  }
   explicit TradeUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -7944,11 +7988,13 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdate(
     ::flatbuffers::Offset<::flatbuffers::String> routing_id = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     ::flatbuffers::Offset<::flatbuffers::String> user = 0,
-    int64_t sending_time_utc = 0) {
+    int64_t sending_time_utc = 0,
+    uint32_t strategy_id = 0) {
   TradeUpdateBuilder builder_(_fbb);
   builder_.add_sending_time_utc(sending_time_utc);
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
+  builder_.add_strategy_id(strategy_id);
   builder_.add_user(user);
   builder_.add_routing_id(routing_id);
   builder_.add_fills(fills);
@@ -7987,7 +8033,8 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
     const char *routing_id = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     const char *user = nullptr,
-    int64_t sending_time_utc = 0) {
+    int64_t sending_time_utc = 0,
+    uint32_t strategy_id = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -8013,7 +8060,8 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
       routing_id__,
       update_type,
       user__,
-      sending_time_utc);
+      sending_time_utc,
+      strategy_id);
 }
 
 struct Ready FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

@@ -22,9 +22,9 @@ namespace roq {
 
 //! Risk limits (receive) !!! EXPERIMENTAL !!!
 struct ROQ_PUBLIC RiskLimits final {
-  std::string_view account;           //!< Account name (optional)
   std::string_view user;              //!< User name (optional)
-  uint32_t strategy = {};             //!< Strategy (optional)
+  uint32_t strategy_id = {};          //!< Strategy identifier (optional)
+  std::string_view account;           //!< Account name (optional)
   std::span<RiskLimit const> limits;  //!< Risk limits per {exchange, symbol}
   UUID session_id;                    //!< Reference (UUID)
   uint64_t seqno = {};                //!< Reference (sequencing)
@@ -51,16 +51,16 @@ struct fmt::formatter<roq::RiskLimits> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(account="{}", )"
         R"(user="{}", )"
-        R"(strategy={}, )"
+        R"(strategy_id={}, )"
+        R"(account="{}", )"
         R"(limits=[{}], )"
         R"(session_id="{}", )"
         R"(seqno={})"
         R"(}})"_cf,
-        value.account,
         value.user,
-        value.strategy,
+        value.strategy_id,
+        value.account,
         fmt::join(value.limits, ", "sv),
         value.session_id,
         value.seqno);

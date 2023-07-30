@@ -4,19 +4,18 @@
   "comment": "Risk limits (receive) !!! EXPERIMENTAL !!!",
   "values": [
     {
-      "name": "account",
-      "type": "std::string_view",
-      "comment": "Account name (optional)"
-    },
-    {
       "name": "user",
       "type": "std::string_view",
       "comment": "User name (optional)"
     },
     {
-      "name": "strategy",
-      "type": "uint32_t",
-      "comment": "Strategy (optional)"
+      "name": "strategy_id",
+      "type": "uint32_t"
+    },
+    {
+      "name": "account",
+      "type": "std::string_view",
+      "comment": "Account name (optional)"
     },
     {
       "name": "limits",

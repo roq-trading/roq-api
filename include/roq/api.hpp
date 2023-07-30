@@ -123,6 +123,11 @@ static constexpr auto const SOURCE_SELF = uint8_t{255};
 
 static constexpr auto const STREAM_ID_NONE = uint16_t{0};
 
+// strategy id's (restricted values and upper limit)
+
+static constexpr auto const STRATEGY_ID = uint32_t{0};
+static constexpr auto const MAX_STRATEGY_ID = (uint32_t{1} << 24) - 1;
+
 // order id's (restricted values and upper limit)
 
 static constexpr auto const ORDER_ID_NONE = uint32_t{0};
@@ -147,7 +152,7 @@ static_assert(sizeof(decltype(RateLimitTrigger::accounts)::value_type) == sizeof
 
 static_assert(sizeof(decltype(Measurement::name)) == sizeof(MeasurementKey));
 
-// check that array items can be cache aligned
+// prefer some array items to be cache aligned
 
 static_assert(sizeof(Layer) == 32);
 static_assert(sizeof(MBPUpdate) == 32);
@@ -157,7 +162,7 @@ static_assert(sizeof(Fill) == 64);
 static_assert(sizeof(Statistics) == 32);
 static_assert(sizeof(Measurement) == 16);
 
-// we don't care so much (low frequency) -- just keep a handle on the size
+// just keep a handle on the size for some other array items
 
 static_assert(sizeof(Parameter) == 176);
 static_assert(sizeof(Position) == 96);

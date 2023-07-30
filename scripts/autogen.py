@@ -242,6 +242,7 @@ def _find_default_comment(name):
         sending_time_utc="Exchange sending timestamp (UTC)",
         settlement_currency="Currency",
         snapshot="Full update (possibly old) if true and otherwise an incremental update",
+        strategy_id="Strategy identifier (optional)",
         stream_id="Stream identifier",
         strike_currency="Currency",
         symbol="Symbol",

@@ -3,9 +3,9 @@ include "position.fbs";
 namespace roq.fbs;
 
 table PortfolioUpdate {
-  account:string;
   user:string;
-  strategy:uint32;
+  strategy_id:uint32;
+  account:string;
   positions:[Position];
   update_type:UpdateType;
   exchange_time_utc:int64;

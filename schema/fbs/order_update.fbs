@@ -44,4 +44,5 @@ table OrderUpdate {
   client_order_id:string;
   risk_exposure:double = nan;
   risk_exposure_change:double = nan;
+  strategy_id:uint32;
 }

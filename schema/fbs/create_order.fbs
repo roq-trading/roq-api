@@ -23,4 +23,5 @@ table CreateOrder {
   stop_price:double = nan;
   routing_id:string;
   execution_instructions:uint32;
+  strategy_id:uint32;
 }

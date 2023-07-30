@@ -70,6 +70,10 @@
       "name": "user",
       "type": "std::string_view",
       "comment": "User name (optional, only relevant for drop-copy)"
+    },
+    {
+      "name": "strategy_id",
+      "type": "uint32_t"
     }
   ]
 }

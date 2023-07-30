@@ -45,6 +45,7 @@ struct ROQ_PUBLIC Order final {
   Decimals quantity_decimals = {};
   UpdateType update_type = {};
   User user;
+  uint32_t strategy_id = {};
 };
 
 }  // namespace oms
@@ -95,7 +96,9 @@ struct fmt::formatter<roq::oms::Order> {
         R"(max_accepted_version={}, )"
         R"(price_decimals={}, )"
         R"(quantity_decimals={}, )"
-        R"(update_type={})"
+        R"(update_type={}, )"
+        R"(user="{}", )"
+        R"(strategy_id={})"
         R"(}})"_cf,
         value.user_id,
         value.account,
@@ -130,6 +133,8 @@ struct fmt::formatter<roq::oms::Order> {
         value.max_accepted_version,
         value.price_decimals,
         value.quantity_decimals,
-        value.update_type);
+        value.update_type,
+        value.user,
+        value.strategy_id);
   }
 };

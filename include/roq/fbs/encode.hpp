@@ -507,7 +507,8 @@ auto encode(B &builder, roq::CreateOrder const &value) {
       value.price,
       value.stop_price,
       encode(builder, value.routing_id),
-      value.execution_instructions.get());
+      value.execution_instructions.get(),
+      value.strategy_id);
 }
 
 template <typename B>
@@ -565,7 +566,8 @@ auto encode(B &builder, roq::OrderAck const &value) {
       value.traded_quantity,
       value.risk_exposure,
       value.risk_exposure_change,
-      encode(builder, value.user));
+      encode(builder, value.user),
+      value.strategy_id);
 }
 
 template <typename B>
@@ -608,7 +610,8 @@ auto encode(B &builder, roq::OrderUpdate const &value) {
       encode(builder, value.sending_time_utc),
       encode(builder, value.client_order_id),
       value.risk_exposure,
-      value.risk_exposure_change);
+      value.risk_exposure_change,
+      value.strategy_id);
 }
 
 template <typename B>
@@ -630,7 +633,8 @@ auto encode(B &builder, roq::TradeUpdate const &value) {
       encode(builder, value.routing_id),
       encode(builder, value.update_type),
       encode(builder, value.user),
-      encode(builder, value.sending_time_utc));
+      encode(builder, value.sending_time_utc),
+      value.strategy_id);
 }
 
 template <typename B>
@@ -735,9 +739,9 @@ template <typename B>
 auto encode(B &builder, roq::PortfolioUpdate const &value) {
   return CreatePortfolioUpdate(
       builder,
-      encode(builder, value.account),
       encode(builder, value.user),
-      value.strategy,
+      value.strategy_id,
+      encode(builder, value.account),
       encode(builder, value.positions),
       encode(builder, value.update_type),
       encode(builder, value.exchange_time_utc));
@@ -747,9 +751,9 @@ template <typename B>
 auto encode(B &builder, roq::RiskLimits const &value) {
   return CreateRiskLimits(
       builder,
-      encode(builder, value.account),
       encode(builder, value.user),
-      value.strategy,
+      value.strategy_id,
+      encode(builder, value.account),
       encode(builder, value.limits),
       encode(builder, value.session_id),
       value.seqno);
@@ -759,9 +763,9 @@ template <typename B>
 auto encode(B &builder, roq::RiskLimitsUpdate const &value) {
   return CreateRiskLimitsUpdate(
       builder,
-      encode(builder, value.account),
       encode(builder, value.user),
-      value.strategy,
+      value.strategy_id,
+      encode(builder, value.account),
       encode(builder, value.limits),
       encode(builder, value.update_type));
 }

@@ -36,7 +36,7 @@ struct ROQ_PUBLIC CreateOrder final {
   }
 
   Account account;
-  uint32_t order_id = {};
+  uint64_t order_id = {};
   Exchange exchange;
   Symbol symbol;
   Side side = {};

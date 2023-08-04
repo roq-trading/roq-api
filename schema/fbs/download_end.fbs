@@ -2,5 +2,7 @@ namespace roq.fbs;
 
 table DownloadEnd {
   account:string;
-  max_order_id:uint32;
+  zzz_max_order_id:uint32;
+  // !!! from here: not aligned with C++ schema !!!
+  max_order_id:uint64;
 }

@@ -8,7 +8,7 @@ namespace roq.fbs;
 table OrderAck {
   stream_id:uint16;
   account:string;
-  order_id:uint32;
+  zzz_order_id:uint32;
   exchange:string;
   symbol:string;
   type:RequestType;
@@ -21,7 +21,7 @@ table OrderAck {
   external_order_id:string;
   routing_id:string;
   version:uint32;
-  // from here: not aligned with C++ schema
+  // !!! from here: not aligned with C++ schema !!!
   side:Side;
   round_trip_latency:int64;
   traded_quantity:double = nan;
@@ -29,4 +29,5 @@ table OrderAck {
   risk_exposure_change:double = nan;
   user:string;
   strategy_id:uint32;
+  order_id:uint64;
 }

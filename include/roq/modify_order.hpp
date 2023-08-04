@@ -21,7 +21,7 @@ namespace roq {
 //! Fields required to modify an existing order
 struct ROQ_PUBLIC ModifyOrder final {
   std::string_view account;              //!< Account name
-  uint32_t order_id = {};                //!< Order identifier
+  uint64_t order_id = {};                //!< Order identifier
   std::string_view request_template;     //!< Request template (gateway configured)
   double quantity = NaN;                 //!< New (total) quantity
   double price = NaN;                    //!< New limit price

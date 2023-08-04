@@ -30,7 +30,7 @@ struct ROQ_PUBLIC ModifyOrder final {
   }
 
   Account account;
-  uint32_t order_id = {};
+  uint64_t order_id = {};
   RequestTemplate request_template;
   double quantity = NaN;
   double price = NaN;

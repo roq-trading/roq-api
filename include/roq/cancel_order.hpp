@@ -20,7 +20,7 @@ namespace roq {
 //! Fields required to cancel an existing order
 struct ROQ_PUBLIC CancelOrder final {
   std::string_view account;              //!< Account name
-  uint32_t order_id = {};                //!< Order identifier
+  uint64_t order_id = {};                //!< Order identifier
   std::string_view request_template;     //!< Request template (gateway configured)
   std::string_view routing_id;           //!< Routing identifier
   uint32_t version = {};                 //!< Version number (strictly increasing, optional)

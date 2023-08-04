@@ -2,11 +2,13 @@ namespace roq.fbs;
 
 table ModifyOrder {
   account:string;
-  order_id:uint32;
+  zzz_order_id:uint32;
   quantity:double = nan;
   price:double = nan;
   routing_id:string;
   version:uint32;
   conditional_on_version:uint32;
   request_template:string;
+  // !!! from here: not aligned with C++ schema !!!
+  order_id:uint64;
 }

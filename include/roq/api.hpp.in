@@ -130,8 +130,8 @@ static constexpr auto const MAX_STRATEGY_ID = (uint32_t{1} << 24) - 1;
 
 // order id's (restricted values and upper limit)
 
-static constexpr auto const ORDER_ID_NONE = uint32_t{0};
-static constexpr auto const MAX_ORDER_ID = (uint32_t{1} << 24) - 1;
+static constexpr auto const ORDER_ID_NONE = uint64_t{0};
+static constexpr auto const MAX_ORDER_ID = (uint64_t{1} << 24) - 1;
 
 // request versions (upper limit)
 

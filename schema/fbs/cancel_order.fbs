@@ -2,9 +2,11 @@ namespace roq.fbs;
 
 table CancelOrder {
   account:string;
-  order_id:uint32;
+  zzz_order_id:uint32;
   routing_id:string;
   version:uint32;
   conditional_on_version:uint32;
   request_template:string;
+  // !!! from here: not aligned with C++ schema !!!
+  order_id:uint64;
 }

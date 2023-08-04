@@ -163,8 +163,8 @@ struct Market final {
   struct Account final {
     Funds funds;
     Position position;
-    // XXX TODO absl::node_hash_map<uint32_t, Trade> trades;
-    absl::node_hash_map<uint32_t, Order> orders;
+    // XXX TODO absl::node_hash_map<uint64_t, Trade> trades;
+    absl::node_hash_map<uint64_t, Order> orders;
     // XXX TODO CustomMetrics custom_metrics;
   };
 

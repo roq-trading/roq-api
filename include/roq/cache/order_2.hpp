@@ -115,7 +115,7 @@ struct ROQ_PUBLIC Order2 final {
 
   uint16_t stream_id = {};
   Account account;
-  uint32_t const order_id = {};
+  uint64_t const order_id = {};
   Exchange exchange;
   Symbol symbol;
   Side side = {};

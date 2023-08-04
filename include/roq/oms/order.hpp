@@ -12,7 +12,7 @@ struct ROQ_PUBLIC Order final {
   uint8_t user_id = {};
   uint16_t stream_id = {};
   Account account;
-  uint32_t order_id = {};
+  uint64_t order_id = {};
   Exchange exchange;
   Symbol symbol;
   Side side = {};

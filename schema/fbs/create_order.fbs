@@ -8,7 +8,7 @@ namespace roq.fbs;
 
 table CreateOrder {
   account:string;
-  order_id:uint32;
+  zzz_order_id:uint32;
   exchange:string;
   symbol:string;
   side:Side;
@@ -24,4 +24,6 @@ table CreateOrder {
   routing_id:string;
   execution_instructions:uint32;
   strategy_id:uint32;
+  // !!! from here: not aligned with C++ schema !!!
+  order_id:uint64;
 }

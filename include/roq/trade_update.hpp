@@ -28,7 +28,7 @@ namespace roq {
 struct ROQ_PUBLIC TradeUpdate final {
   uint16_t stream_id = {};                         //!< Stream identifier
   std::string_view account;                        //!< Account name
-  uint32_t order_id = {};                          //!< Order identifier
+  uint64_t order_id = {};                          //!< Order identifier
   std::string_view exchange;                       //!< Exchange
   std::string_view symbol;                         //!< Symbol
   Side side = {};                                  //!< Side

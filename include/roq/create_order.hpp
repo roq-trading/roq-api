@@ -27,7 +27,7 @@ namespace roq {
 //! Fields required to create an order
 struct ROQ_PUBLIC CreateOrder final {
   std::string_view account;                           //!< Account name
-  uint32_t order_id = {};                             //!< Order identifier
+  uint64_t order_id = {};                             //!< Order identifier
   std::string_view exchange;                          //!< Exchange
   std::string_view symbol;                            //!< Symbol
   Side side = {};                                     //!< Order side

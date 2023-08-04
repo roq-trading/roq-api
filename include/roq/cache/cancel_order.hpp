@@ -27,7 +27,7 @@ struct ROQ_PUBLIC CancelOrder final {
   }
 
   Account account;
-  uint32_t order_id = {};
+  uint64_t order_id = {};
   RequestTemplate request_template;
   RoutingId routing_id;
   uint32_t version = {};

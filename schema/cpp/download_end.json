@@ -9,7 +9,7 @@
     },
     {
       "name": "max_order_id",
-      "type": "uint32_t",
+      "type": "uint64_t",
       "comment": "Highest previous order identifier (as seen by gateway)"
     }
   ]

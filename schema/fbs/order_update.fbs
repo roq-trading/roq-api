@@ -8,7 +8,7 @@ namespace roq.fbs;
 table OrderUpdate {
   stream_id:uint16;
   account:string;
-  order_id:uint32;
+  zzz_order_id:uint32;
   exchange:string;
   symbol:string;
   side:Side;
@@ -40,9 +40,10 @@ table OrderUpdate {
   execution_instructions:uint32;
   user:string;
   sending_time_utc:int64;
-  // from here: not aligned with C++ schema
+  // !!! from here: not aligned with C++ schema !!!
   client_order_id:string;
   risk_exposure:double = nan;
   risk_exposure_change:double = nan;
   strategy_id:uint32;
+  order_id:uint64;
 }

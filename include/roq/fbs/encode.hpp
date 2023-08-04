@@ -301,7 +301,8 @@ auto encode(B &builder, roq::DownloadBegin const &value) {
 
 template <typename B>
 auto encode(B &builder, roq::DownloadEnd const &value) {
-  return CreateDownloadEnd(builder, encode(builder, value.account), value.max_order_id);
+  return CreateDownloadEnd(builder, encode(builder, value.account), {}, // deprecated
+                                                                        value.max_order_id);
 }
 
 template <typename B>
@@ -493,7 +494,7 @@ auto encode(B &builder, roq::CreateOrder const &value) {
   return CreateCreateOrder(
       builder,
       encode(builder, value.account),
-      value.order_id,
+      {}, // deprecated
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.side),
@@ -508,7 +509,8 @@ auto encode(B &builder, roq::CreateOrder const &value) {
       value.stop_price,
       encode(builder, value.routing_id),
       value.execution_instructions.get(),
-      value.strategy_id);
+      value.strategy_id,
+      value.order_id);
 }
 
 template <typename B>
@@ -516,13 +518,14 @@ auto encode(B &builder, roq::ModifyOrder const &value) {
   return CreateModifyOrder(
       builder,
       encode(builder, value.account),
-      value.order_id,
+      {}, // deprecated
       value.quantity,
       value.price,
       encode(builder, value.routing_id),
       value.version,
       value.conditional_on_version,
-      encode(builder, value.request_template));
+      encode(builder, value.request_template),
+      value.order_id);
 }
 
 template <typename B>
@@ -530,11 +533,12 @@ auto encode(B &builder, roq::CancelOrder const &value) {
   return CreateCancelOrder(
       builder,
       encode(builder, value.account),
-      value.order_id,
+      {}, // deprecated
       encode(builder, value.routing_id),
       value.version,
       value.conditional_on_version,
-      encode(builder, value.request_template));
+      encode(builder, value.request_template),
+      value.order_id);
 }
 
 template <typename B>
@@ -548,7 +552,7 @@ auto encode(B &builder, roq::OrderAck const &value) {
       builder,
       value.stream_id,
       encode(builder, value.account),
-      value.order_id,
+      {}, // deprecated
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.type),
@@ -567,7 +571,8 @@ auto encode(B &builder, roq::OrderAck const &value) {
       value.risk_exposure,
       value.risk_exposure_change,
       encode(builder, value.user),
-      value.strategy_id);
+      value.strategy_id,
+      value.order_id);
 }
 
 template <typename B>
@@ -576,7 +581,7 @@ auto encode(B &builder, roq::OrderUpdate const &value) {
       builder,
       value.stream_id,
       encode(builder, value.account),
-      value.order_id,
+      {}, // deprecated
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.side),
@@ -611,7 +616,8 @@ auto encode(B &builder, roq::OrderUpdate const &value) {
       encode(builder, value.client_order_id),
       value.risk_exposure,
       value.risk_exposure_change,
-      value.strategy_id);
+      value.strategy_id,
+      value.order_id);
 }
 
 template <typename B>
@@ -620,7 +626,7 @@ auto encode(B &builder, roq::TradeUpdate const &value) {
       builder,
       value.stream_id,
       encode(builder, value.account),
-      value.order_id,
+      {}, // deprecated
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.side),
@@ -634,7 +640,8 @@ auto encode(B &builder, roq::TradeUpdate const &value) {
       encode(builder, value.update_type),
       encode(builder, value.user),
       encode(builder, value.sending_time_utc),
-      value.strategy_id);
+      value.strategy_id,
+      value.order_id);
 }
 
 template <typename B>

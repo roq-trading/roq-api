@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `order_id` must be `uint64_t` (#377)
+
 ### Added
 
 * `CreateOrder.strategy_id`, `OrderAck.strategy_id`, `OrderUpdate.strategy_id`, `TradeUpdate.strategy_id` (#375)

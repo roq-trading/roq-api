@@ -114,36 +114,62 @@
 
 namespace roq {
 
-// user id's (restricted values)
+// user id (8 bits)
 
-static constexpr auto const SOURCE_NONE = uint8_t{0};
-static constexpr auto const SOURCE_SELF = uint8_t{255};
+static constexpr auto const SOURCE_MIN = uint8_t{0};
+static constexpr auto const SOURCE_MAX = uint8_t{255};
 
-// stream id's
+static constexpr auto const SOURCE_NONE = SOURCE_MIN;
+static constexpr auto const SOURCE_SELF = SOURCE_MAX;
 
-static constexpr auto const STREAM_ID_NONE = uint16_t{0};
+// stream id (16 bits)
 
-// strategy id's (restricted values and upper limit)
+static constexpr auto const STREAM_ID_MIN = uint16_t{0};
+static constexpr auto const STREAM_ID_MAX = uint16_t{65535};
 
-static constexpr auto const STRATEGY_ID = uint32_t{0};
-static constexpr auto const MAX_STRATEGY_ID = (uint32_t{1} << 24) - 1;
+static constexpr auto const STREAM_ID_NONE = STREAM_ID_MIN;
 
-// order id's (restricted values and upper limit)
+// order id (48 bits)
 
-static constexpr auto const ORDER_ID_NONE = uint64_t{0};
-static constexpr auto const MAX_ORDER_ID = (uint64_t{1} << 24) - 1;
+static constexpr auto const ORDER_ID_MIN = uint64_t{0};
+static constexpr auto const ORDER_ID_MAX = (uint64_t{1} << 48) - 1;
 
-// request versions (upper limit)
+static constexpr auto const ORDER_ID_NONE = ORDER_ID_MIN;
 
-static constexpr auto const MAX_REQUEST_VERSION = (uint32_t{1} << 24) - 1;
+// request version (24 bits)
 
-// account id's (restricted values)
+static constexpr auto const REQUEST_VERSION_MIN = uint32_t{0};
+static constexpr auto const REQUEST_VERSION_MAX = (uint32_t{1} << 24) - 1;
 
-static constexpr auto const ACCOUNT_NONE = uint8_t{0};
+static constexpr auto const REQUEST_VERSION_NONE = REQUEST_VERSION_MIN;
 
-// symbol id's (restricted values)
+// strategy id (24 bits)
 
-static constexpr auto const SYMBOL_ID_NONE = uint32_t{0};
+static constexpr auto const STRATEGY_ID_MIN = uint32_t{0};
+static constexpr auto const STRATEGY_ID_MAX = (uint32_t{1} << 24) - 1;
+
+static constexpr auto const STRATEGY_ID_NONE = STRATEGY_ID_MIN;
+
+// account id (8 bits)
+
+static constexpr auto const ACCOUNT_MIN = uint8_t{0};
+static constexpr auto const ACCOUNT_MAX = uint8_t{255};
+
+static constexpr auto const ACCOUNT_NONE = ACCOUNT_MIN;
+
+// symbol id (24 bits)
+
+static constexpr auto const SYMBOL_ID_MIN = uint32_t{0};
+static constexpr auto const sYMBOL_ID_MAX = (uint64_t{1} << 24) - 1;
+
+static constexpr auto const SYMBOL_ID_NONE = SYMBOL_ID_MIN;
+
+// instance id (4 bits)
+
+static constexpr auto const INSTANCE_MIN = uint8_t{0};
+static constexpr auto const INSTANCE_MAX = (uint8_t{1} << 4) - 1;
+
+static constexpr auto const INSTANCE_NONE = INSTANCE_MIN;
 
 // validate auto-generated code
 

@@ -1,11 +1,15 @@
 {
   "name": "CancelAllOrders",
   "type": "message",
-  "comment": "Fields required to cancel all orders",
+  "comment": "Cancel all orders (best effort)",
   "values": [
     {
       "name": "account",
       "type": "std::string_view"
+    },
+    {
+      "name": "strategy_id",
+      "type": "uint32_t"
     }
   ]
 }

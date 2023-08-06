@@ -543,7 +543,8 @@ auto encode(B &builder, roq::CancelOrder const &value) {
 
 template <typename B>
 auto encode(B &builder, roq::CancelAllOrders const &value) {
-  return CreateCancelAllOrders(builder, encode(builder, value.account));
+  return CreateCancelAllOrders(builder, encode(builder, value.account),
+      value.strategy_id);
 }
 
 template <typename B>

@@ -17,9 +17,10 @@
 
 namespace roq {
 
-//! Fields required to cancel all orders
+//! Cancel all orders (best effort)
 struct ROQ_PUBLIC CancelAllOrders final {
-  std::string_view account;  //!< Account name
+  std::string_view account;   //!< Account name
+  uint32_t strategy_id = {};  //!< Strategy identifier (optional)
 };
 
 template <>
@@ -43,9 +44,11 @@ struct fmt::formatter<roq::CancelAllOrders> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(account="{}")"
+        R"(account="{}", )"
+        R"(strategy_id={})"
         R"(}})"_cf,
-        value.account);
+        value.account,
+        value.strategy_id);
   }
 };
 

@@ -18,6 +18,7 @@ enum class OrderCancelPolicy : uint8_t {
   UNDEFINED = 0,
   MANAGED_ORDERS,
   BY_ACCOUNT,
+  BY_STRATEGY,
 };
 
 }  // namespace roq

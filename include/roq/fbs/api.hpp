@@ -2852,15 +2852,20 @@ struct CancelAllOrders FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef CancelAllOrdersBuilder Builder;
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ACCOUNT = 4
+    VT_ACCOUNT = 4,
+    VT_STRATEGY_ID = 6
   };
   const ::flatbuffers::String *account() const {
     return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
+  }
+  uint32_t strategy_id() const {
+    return GetField<uint32_t>(VT_STRATEGY_ID, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_ACCOUNT) &&
            verifier.VerifyString(account()) &&
+           VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
            verifier.EndTable();
   }
 };
@@ -2871,6 +2876,9 @@ struct CancelAllOrdersBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
     fbb_.AddOffset(CancelAllOrders::VT_ACCOUNT, account);
+  }
+  void add_strategy_id(uint32_t strategy_id) {
+    fbb_.AddElement<uint32_t>(CancelAllOrders::VT_STRATEGY_ID, strategy_id, 0);
   }
   explicit CancelAllOrdersBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2885,8 +2893,10 @@ struct CancelAllOrdersBuilder {
 
 inline ::flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrders(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::String> account = 0) {
+    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
+    uint32_t strategy_id = 0) {
   CancelAllOrdersBuilder builder_(_fbb);
+  builder_.add_strategy_id(strategy_id);
   builder_.add_account(account);
   return builder_.Finish();
 }
@@ -2898,11 +2908,13 @@ struct CancelAllOrders::Traits {
 
 inline ::flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrdersDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    const char *account = nullptr) {
+    const char *account = nullptr,
+    uint32_t strategy_id = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   return roq::fbs::CreateCancelAllOrders(
       _fbb,
-      account__);
+      account__,
+      strategy_id);
 }
 
 struct CancelOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

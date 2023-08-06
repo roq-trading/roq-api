@@ -8,6 +8,9 @@
     },
     {
       "name": "ByAccount"
+    },
+    {
+      "name": "ByStrategy"
     }
   ]
 }

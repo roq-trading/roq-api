@@ -27,7 +27,7 @@ constexpr auto create_what(format_str<Args...> const &fmt, Args &&...args) -> st
   if constexpr (sizeof...(args) == 0) {
     return {std::data(fmt.str), std::size(fmt.str)};
   } else {
-    return fmt::vformat(fmt.str, fmt::make_format_args(std::forward<Args>(args)...));
+    return fmt::vformat(fmt.str, fmt::make_format_args(args...));
   }
 }
 }  // namespace detail

@@ -10,6 +10,31 @@ using namespace roq;
 
 using namespace std::literals;
 
+namespace {
+template <typename... Args>
+constexpr auto test_format(std::string_view const &format_str, Args &&...args) -> std::string {
+  return fmt::vformat(format_str, fmt::make_format_args(std::forward<Args>(args)...));
+}
+auto foo(auto value) {
+  return value + 1;
+}
+char const *bar() {
+  return "hello";
+}
+}  // namespace
+
+TEST_CASE("format_10_1", "[format]") {
+  /*
+  test_format("{}", 123);
+  test_format("{}", foo(123));
+  try {
+    throw std::runtime_error{"test"};
+  } catch (std::exception &e) {
+    test_format("{}", e.what());
+  }
+  */
+}
+
 TEST_CASE("format_side", "[format]") {
   CHECK(fmt::format("{}"sv, Side{Side::UNDEFINED}) == "UNDEFINED"sv);
   CHECK(fmt::format("{}"sv, Side{Side::BUY}) == "BUY"sv);

@@ -19,6 +19,19 @@
 
 namespace roq {
 
+namespace detail {
+template <typename... Args>
+constexpr auto create_what(format_str<Args...> const &fmt, Args &&...args) -> std::string {
+  if (std::size(fmt.str) == 0)
+    return {};
+  if constexpr (sizeof...(args) == 0) {
+    return {std::data(fmt.str), std::size(fmt.str)};
+  } else {
+    return fmt::vformat(fmt.str, fmt::make_format_args(std::forward<Args>(args)...));
+  }
+}
+}  // namespace detail
+
 // This class hierarchy is *similar to* that of std::exception,
 // but not trying to be a mirror!
 // The reason is that a mirrored exception hierarchy would require multiple
@@ -37,19 +50,33 @@ namespace roq {
 struct ROQ_PUBLIC Exception : public std::exception {
   template <typename... Args>
   explicit Exception(format_str<Args...> const &fmt, Args &&...args)
-      : file_name_{fmt.file_name}, line_{static_cast<decltype(line_)>(fmt.line)},
-        what_{
-            fmt.str.size() == 0 ? std::string{}
-                                : fmt::vformat(fmt.str, fmt::make_format_args(std::forward<Args>(args)...))} {}
+      : file_name_{fmt.file_name}, line_{fmt.line}, what_{detail::create_what(fmt, std::forward<Args>(args)...)} {}
 
   char const *what() const noexcept override { return what_.c_str(); }
 
   virtual std::string_view const file() const noexcept { return file_name_; }
   virtual int line() const noexcept { return line_; }
 
+  template <typename Context>
+  auto format_to(Context &context) const {
+    using namespace fmt::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(type="{}", )"
+        R"(what="{}", )"
+        R"(file="{}", )"
+        R"(line={})"
+        R"(}})"_cf,
+        typeid(*this).name(),
+        what_,
+        file_name_,
+        line_);
+  }
+
  private:
   detail::static_string<32> const file_name_;
-  int const line_;
+  uint32_t const line_;
   std::string const what_;
 };
 
@@ -207,19 +234,7 @@ struct fmt::formatter<roq::Exception> {
   }
   template <typename Context>
   auto format(roq::Exception const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(type="{}", )"
-        R"(what="{}", )"
-        R"(file="{}", )"
-        R"(line={})"
-        R"(}})"_cf,
-        typeid(value).name(),
-        value.what(),
-        value.file(),
-        value.line());
+    return value.format_to(context);
   }
 };
 

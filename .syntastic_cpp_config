@@ -2,4 +2,4 @@
 -Iinclude
 -Isrc
 -Ithird_party/googletest/googletest/include
--I../opt/conda/include
+-I../opt/conda/envs/dev/include

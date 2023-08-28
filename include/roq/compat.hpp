@@ -16,6 +16,8 @@
 #endif
 
 #if defined(__APPLE__)
+// https://stackoverflow.com/a/73090806
+#define FMT_USE_NONTYPE_TEMPLATE_ARGS 1
 #if defined(__arm64__)
 #define ROQ_CACHELINE_SIZE 128
 #define ROQ_PAGE_SIZE 16384

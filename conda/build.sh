@@ -28,10 +28,10 @@ CPPFLAGS="$CPPFLAGS -O3"
 
 CXXFLAGS+=" $CPPFLAGS"  # CMake doesn't used CPPFLAGS
 
-ROQ_BUILD_TYPE=${ROQ_BUILD_TYPE:-Release}                                                                                                     
-                                                                                                                                                                             
-echo "ROQ_BUILD_TYPE=$ROQ_BUILD_TYPE"                                                                                      
-                                                                                                                           
+ROQ_BUILD_TYPE=${ROQ_BUILD_TYPE:-Release}
+
+echo "ROQ_BUILD_TYPE=$ROQ_BUILD_TYPE"
+
 CMAKE_ARGS="${CMAKE_ARGS/-DCMAKE_BUILD_TYPE=Release/-DCMAKE_BUILD_TYPE=${ROQ_BUILD_TYPE}}"
 
 echo -e "\033[1;34m--- ENV ---\033[0m"

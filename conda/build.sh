@@ -28,6 +28,12 @@ CPPFLAGS="$CPPFLAGS -O3"
 
 CXXFLAGS+=" $CPPFLAGS"  # CMake doesn't used CPPFLAGS
 
+ROQ_BUILD_TYPE=${ROQ_BUILD_TYPE:-Release}                                                                                                     
+                                                                                                                                                                             
+echo "ROQ_BUILD_TYPE=$ROQ_BUILD_TYPE"                                                                                      
+                                                                                                                           
+CMAKE_ARGS="${CMAKE_ARGS/-DCMAKE_BUILD_TYPE=Release/-DCMAKE_BUILD_TYPE=${ROQ_BUILD_TYPE}}"
+
 echo -e "\033[1;34m--- ENV ---\033[0m"
 
 env | sort
@@ -37,7 +43,7 @@ echo -e "\033[1;34m--- CMAKE ---\033[0m"
 cmake \
   ${CMAKE_ARGS} \
   -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX \
-  -DCMAKE_BUILD_TYPE=${ROQ_BUILD_TYPE:-Release} \
+  -DCMAKE_BUILD_TYPE=$ROQ_BUILD_TYPE \
   -DBUILD_TESTING=ON \
   -DBUILD_DOCS=OFF \
   .

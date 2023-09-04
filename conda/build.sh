@@ -37,7 +37,7 @@ echo -e "\033[1;34m--- CMAKE ---\033[0m"
 cmake \
   ${CMAKE_ARGS} \
   -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX \
-  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_BUILD_TYPE=${ROQ_BUILD_TYPE:-Release} \
   -DBUILD_TESTING=ON \
   -DBUILD_DOCS=OFF \
   .

@@ -66,6 +66,10 @@
       "type": "std::string_view"
     },
     {
+      "name": "client_order_id",
+      "type": "std::string_view"
+    },
+    {
       "name": "routing_id",
       "type": "std::string_view"
     },

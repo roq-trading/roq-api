@@ -239,6 +239,7 @@ def _find_default_comment(name):
         request_id="Request identifier",
         request_template="Request template (gateway configured)",
         routing_id="Routing identifier",
+        routing_id_2="Routing identifier #2",
         sending_time_utc="Exchange sending timestamp (UTC)",
         settlement_currency="Currency",
         snapshot="Full update (possibly old) if true and otherwise an incremental update",

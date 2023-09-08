@@ -37,6 +37,7 @@ struct ROQ_PUBLIC TradeUpdate final {
   std::chrono::nanoseconds update_time_utc = {};   //!< Updated timestamp (UTC)
   std::string_view external_account;               //!< External account name
   std::string_view external_order_id;              //!< External order identifier
+  std::string_view client_order_id;                //!< Client order identifier
   std::span<Fill const> fills;                     //!< List of fills
   std::string_view routing_id;                     //!< Routing identifier
   UpdateType update_type = {};                     //!< Update type
@@ -77,6 +78,7 @@ struct fmt::formatter<roq::TradeUpdate> {
         R"(update_time_utc={}, )"
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
+        R"(client_order_id="{}", )"
         R"(fills=[{}], )"
         R"(routing_id="{}", )"
         R"(update_type={}, )"
@@ -95,6 +97,7 @@ struct fmt::formatter<roq::TradeUpdate> {
         value.update_time_utc,
         value.external_account,
         value.external_order_id,
+        value.client_order_id,
         fmt::join(value.fills, ", "sv),
         value.routing_id,
         value.update_type,

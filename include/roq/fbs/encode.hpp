@@ -19,85 +19,293 @@ namespace fbs {
 // mappings
 
 namespace detail {
-template <typename T> struct maps_to;
+template <typename T>
+struct maps_to;
 // enums
-template<> struct maps_to<roq::BufferCapacity> final { using type = fbs::BufferCapacity; };
-template<> struct maps_to<roq::ConnectionStatus> final { using type = fbs::ConnectionStatus; };
-template<> struct maps_to<roq::Decimals> final { using type = fbs::Decimals; };
-template<> struct maps_to<roq::Encoding> final { using type = fbs::Encoding; };
-template<> struct maps_to<roq::Error> final { using type = fbs::Error; };
-template<> struct maps_to<roq::Liquidity> final { using type = fbs::Liquidity; };
-template<> struct maps_to<roq::ExecutionInstruction> final { using type = fbs::ExecutionInstruction; };
-template<> struct maps_to<roq::OptionType> final { using type = fbs::OptionType; };
-template<> struct maps_to<roq::OrderStatus> final { using type = fbs::OrderStatus; };
-template<> struct maps_to<roq::OrderType> final { using type = fbs::OrderType; };
-template<> struct maps_to<roq::Origin> final { using type = fbs::Origin; };
-template<> struct maps_to<roq::PositionEffect> final { using type = fbs::PositionEffect; };
-template<> struct maps_to<roq::Priority> final { using type = fbs::Priority; };
-template<> struct maps_to<roq::Protocol> final { using type = fbs::Protocol; };
-template<> struct maps_to<roq::RateLimitType> final { using type = fbs::RateLimitType; };
-template<> struct maps_to<roq::RequestIdType> final { using type = fbs::RequestIdType; };
-template<> struct maps_to<roq::RequestStatus> final { using type = fbs::RequestStatus; };
-template<> struct maps_to<roq::RequestType> final { using type = fbs::RequestType; };
-template<> struct maps_to<roq::SecurityType> final { using type = fbs::SecurityType; };
-template<> struct maps_to<roq::Side> final { using type = fbs::Side; };
-template<> struct maps_to<roq::StatisticsType> final { using type = fbs::StatisticsType; };
-template<> struct maps_to<roq::SupportType> final { using type = fbs::SupportType; };
-template<> struct maps_to<roq::TimeInForce> final { using type = fbs::TimeInForce; };
-template<> struct maps_to<roq::TradingStatus> final { using type = fbs::TradingStatus; };
-template<> struct maps_to<roq::Transport> final { using type = fbs::Transport; };
-template<> struct maps_to<roq::UpdateAction> final { using type = fbs::UpdateAction; };
-template<> struct maps_to<roq::UpdateReason> final { using type = fbs::UpdateReason; };
-template<> struct maps_to<roq::UpdateType> final { using type = fbs::UpdateType; };
+template <>
+struct maps_to<roq::BufferCapacity> final {
+  using type = fbs::BufferCapacity;
+};
+template <>
+struct maps_to<roq::ConnectionStatus> final {
+  using type = fbs::ConnectionStatus;
+};
+template <>
+struct maps_to<roq::Decimals> final {
+  using type = fbs::Decimals;
+};
+template <>
+struct maps_to<roq::Encoding> final {
+  using type = fbs::Encoding;
+};
+template <>
+struct maps_to<roq::Error> final {
+  using type = fbs::Error;
+};
+template <>
+struct maps_to<roq::Liquidity> final {
+  using type = fbs::Liquidity;
+};
+template <>
+struct maps_to<roq::ExecutionInstruction> final {
+  using type = fbs::ExecutionInstruction;
+};
+template <>
+struct maps_to<roq::OptionType> final {
+  using type = fbs::OptionType;
+};
+template <>
+struct maps_to<roq::OrderStatus> final {
+  using type = fbs::OrderStatus;
+};
+template <>
+struct maps_to<roq::OrderType> final {
+  using type = fbs::OrderType;
+};
+template <>
+struct maps_to<roq::Origin> final {
+  using type = fbs::Origin;
+};
+template <>
+struct maps_to<roq::PositionEffect> final {
+  using type = fbs::PositionEffect;
+};
+template <>
+struct maps_to<roq::Priority> final {
+  using type = fbs::Priority;
+};
+template <>
+struct maps_to<roq::Protocol> final {
+  using type = fbs::Protocol;
+};
+template <>
+struct maps_to<roq::RateLimitType> final {
+  using type = fbs::RateLimitType;
+};
+template <>
+struct maps_to<roq::RequestIdType> final {
+  using type = fbs::RequestIdType;
+};
+template <>
+struct maps_to<roq::RequestStatus> final {
+  using type = fbs::RequestStatus;
+};
+template <>
+struct maps_to<roq::RequestType> final {
+  using type = fbs::RequestType;
+};
+template <>
+struct maps_to<roq::SecurityType> final {
+  using type = fbs::SecurityType;
+};
+template <>
+struct maps_to<roq::Side> final {
+  using type = fbs::Side;
+};
+template <>
+struct maps_to<roq::StatisticsType> final {
+  using type = fbs::StatisticsType;
+};
+template <>
+struct maps_to<roq::SupportType> final {
+  using type = fbs::SupportType;
+};
+template <>
+struct maps_to<roq::TimeInForce> final {
+  using type = fbs::TimeInForce;
+};
+template <>
+struct maps_to<roq::TradingStatus> final {
+  using type = fbs::TradingStatus;
+};
+template <>
+struct maps_to<roq::Transport> final {
+  using type = fbs::Transport;
+};
+template <>
+struct maps_to<roq::UpdateAction> final {
+  using type = fbs::UpdateAction;
+};
+template <>
+struct maps_to<roq::UpdateReason> final {
+  using type = fbs::UpdateReason;
+};
+template <>
+struct maps_to<roq::UpdateType> final {
+  using type = fbs::UpdateType;
+};
 // helper
-template<> struct maps_to<roq::MBPUpdate> final { using type = fbs::MBPUpdate; };
-template<> struct maps_to<roq::MBOUpdate> final { using type = fbs::MBOUpdate; };
-template<> struct maps_to<roq::Trade> final { using type = fbs::Trade; };
-template<> struct maps_to<roq::Fill> final { using type = fbs::Fill; };
-template<> struct maps_to<roq::Statistics> final { using type = fbs::Statistics; };
-template<> struct maps_to<roq::Measurement> final { using type = fbs::Measurement; };
-template<> struct maps_to<roq::Parameter> final { using type = fbs::Parameter; };
-template<> struct maps_to<roq::Position> final { using type = fbs::Position; };
-template<> struct maps_to<roq::RiskLimit> final { using type = fbs::RiskLimit; };
+template <>
+struct maps_to<roq::MBPUpdate> final {
+  using type = fbs::MBPUpdate;
+};
+template <>
+struct maps_to<roq::MBOUpdate> final {
+  using type = fbs::MBOUpdate;
+};
+template <>
+struct maps_to<roq::Trade> final {
+  using type = fbs::Trade;
+};
+template <>
+struct maps_to<roq::Fill> final {
+  using type = fbs::Fill;
+};
+template <>
+struct maps_to<roq::Statistics> final {
+  using type = fbs::Statistics;
+};
+template <>
+struct maps_to<roq::Measurement> final {
+  using type = fbs::Measurement;
+};
+template <>
+struct maps_to<roq::Parameter> final {
+  using type = fbs::Parameter;
+};
+template <>
+struct maps_to<roq::Position> final {
+  using type = fbs::Position;
+};
+template <>
+struct maps_to<roq::RiskLimit> final {
+  using type = fbs::RiskLimit;
+};
 // structs
-template <> struct maps_to<roq::DownloadBegin> { static constexpr auto value = Message::DownloadBegin; };
-template <> struct maps_to<roq::DownloadEnd> { static constexpr auto value = Message::DownloadEnd; };
-template <> struct maps_to<roq::Ready> { static constexpr auto value = Message::DownloadEnd; };
-template <> struct maps_to<roq::GatewaySettings> { static constexpr auto value = Message::GatewaySettings; };
-template <> struct maps_to<roq::StreamStatus> { static constexpr auto value = Message::StreamStatus; };
-template <> struct maps_to<roq::ExternalLatency> { static constexpr auto value = Message::ExternalLatency; };
-template <> struct maps_to<roq::RateLimitTrigger> { static constexpr auto value = Message::RateLimitTrigger; };
-template <> struct maps_to<roq::GatewayStatus> { static constexpr auto value = Message::GatewayStatus; };
-template <> struct maps_to<roq::ReferenceData> { static constexpr auto value = Message::ReferenceData; };
-template <> struct maps_to<roq::MarketStatus> { static constexpr auto value = Message::MarketStatus; };
-template <> struct maps_to<roq::TopOfBook> { static constexpr auto value = Message::TopOfBook; };
-template <> struct maps_to<roq::MarketByPriceUpdate> { static constexpr auto value = Message::MarketByPriceUpdate; };
-template <> struct maps_to<roq::MarketByOrderUpdate> { static constexpr auto value = Message::MarketByOrderUpdate; };
-template <> struct maps_to<roq::TradeSummary> { static constexpr auto value = Message::TradeSummary; };
-template <> struct maps_to<roq::StatisticsUpdate> { static constexpr auto value = Message::StatisticsUpdate; };
-template <> struct maps_to<roq::CreateOrder> { static constexpr auto value = Message::CreateOrder; };
-template <> struct maps_to<roq::ModifyOrder> { static constexpr auto value = Message::ModifyOrder; };
-template <> struct maps_to<roq::CancelOrder> { static constexpr auto value = Message::CancelOrder; };
-template <> struct maps_to<roq::CancelAllOrders> { static constexpr auto value = Message::CancelAllOrders; };
-template <> struct maps_to<roq::OrderAck> { static constexpr auto value = Message::OrderAck; };
-template <> struct maps_to<roq::OrderUpdate> { static constexpr auto value = Message::OrderUpdate; };
-template <> struct maps_to<roq::TradeUpdate> { static constexpr auto value = Message::TradeUpdate; };
-template <> struct maps_to<roq::PositionUpdate> { static constexpr auto value = Message::PositionUpdate; };
-template <> struct maps_to<roq::FundsUpdate> { static constexpr auto value = Message::FundsUpdate; };
-template <> struct maps_to<roq::CustomMetrics> { static constexpr auto value = Message::CustomMetrics; };
-template <> struct maps_to<roq::CustomMetricsUpdate> { static constexpr auto value = Message::CustomMetricsUpdate; };
-template <> struct maps_to<roq::CustomMatrix> { static constexpr auto value = Message::CustomMatrix; };
-template <> struct maps_to<roq::CustomMatrixUpdate> { static constexpr auto value = Message::CustomMatrixUpdate; };
-template <> struct maps_to<roq::ParametersUpdate> { static constexpr auto value = Message::ParametersUpdate; };
-template <> struct maps_to<roq::PortfolioUpdate> { static constexpr auto value = Message::PortfolioUpdate; };
-template <> struct maps_to<roq::RiskLimits> { static constexpr auto value = Message::RiskLimits; };
-template <> struct maps_to<roq::RiskLimitsUpdate> { static constexpr auto value = Message::RiskLimitsUpdate; };
-}
+template <>
+struct maps_to<roq::DownloadBegin> {
+  static constexpr auto value = Message::DownloadBegin;
+};
+template <>
+struct maps_to<roq::DownloadEnd> {
+  static constexpr auto value = Message::DownloadEnd;
+};
+template <>
+struct maps_to<roq::Ready> {
+  static constexpr auto value = Message::DownloadEnd;
+};
+template <>
+struct maps_to<roq::GatewaySettings> {
+  static constexpr auto value = Message::GatewaySettings;
+};
+template <>
+struct maps_to<roq::StreamStatus> {
+  static constexpr auto value = Message::StreamStatus;
+};
+template <>
+struct maps_to<roq::ExternalLatency> {
+  static constexpr auto value = Message::ExternalLatency;
+};
+template <>
+struct maps_to<roq::RateLimitTrigger> {
+  static constexpr auto value = Message::RateLimitTrigger;
+};
+template <>
+struct maps_to<roq::GatewayStatus> {
+  static constexpr auto value = Message::GatewayStatus;
+};
+template <>
+struct maps_to<roq::ReferenceData> {
+  static constexpr auto value = Message::ReferenceData;
+};
+template <>
+struct maps_to<roq::MarketStatus> {
+  static constexpr auto value = Message::MarketStatus;
+};
+template <>
+struct maps_to<roq::TopOfBook> {
+  static constexpr auto value = Message::TopOfBook;
+};
+template <>
+struct maps_to<roq::MarketByPriceUpdate> {
+  static constexpr auto value = Message::MarketByPriceUpdate;
+};
+template <>
+struct maps_to<roq::MarketByOrderUpdate> {
+  static constexpr auto value = Message::MarketByOrderUpdate;
+};
+template <>
+struct maps_to<roq::TradeSummary> {
+  static constexpr auto value = Message::TradeSummary;
+};
+template <>
+struct maps_to<roq::StatisticsUpdate> {
+  static constexpr auto value = Message::StatisticsUpdate;
+};
+template <>
+struct maps_to<roq::CreateOrder> {
+  static constexpr auto value = Message::CreateOrder;
+};
+template <>
+struct maps_to<roq::ModifyOrder> {
+  static constexpr auto value = Message::ModifyOrder;
+};
+template <>
+struct maps_to<roq::CancelOrder> {
+  static constexpr auto value = Message::CancelOrder;
+};
+template <>
+struct maps_to<roq::CancelAllOrders> {
+  static constexpr auto value = Message::CancelAllOrders;
+};
+template <>
+struct maps_to<roq::OrderAck> {
+  static constexpr auto value = Message::OrderAck;
+};
+template <>
+struct maps_to<roq::OrderUpdate> {
+  static constexpr auto value = Message::OrderUpdate;
+};
+template <>
+struct maps_to<roq::TradeUpdate> {
+  static constexpr auto value = Message::TradeUpdate;
+};
+template <>
+struct maps_to<roq::PositionUpdate> {
+  static constexpr auto value = Message::PositionUpdate;
+};
+template <>
+struct maps_to<roq::FundsUpdate> {
+  static constexpr auto value = Message::FundsUpdate;
+};
+template <>
+struct maps_to<roq::CustomMetrics> {
+  static constexpr auto value = Message::CustomMetrics;
+};
+template <>
+struct maps_to<roq::CustomMetricsUpdate> {
+  static constexpr auto value = Message::CustomMetricsUpdate;
+};
+template <>
+struct maps_to<roq::CustomMatrix> {
+  static constexpr auto value = Message::CustomMatrix;
+};
+template <>
+struct maps_to<roq::CustomMatrixUpdate> {
+  static constexpr auto value = Message::CustomMatrixUpdate;
+};
+template <>
+struct maps_to<roq::ParametersUpdate> {
+  static constexpr auto value = Message::ParametersUpdate;
+};
+template <>
+struct maps_to<roq::PortfolioUpdate> {
+  static constexpr auto value = Message::PortfolioUpdate;
+};
+template <>
+struct maps_to<roq::RiskLimits> {
+  static constexpr auto value = Message::RiskLimits;
+};
+template <>
+struct maps_to<roq::RiskLimitsUpdate> {
+  static constexpr auto value = Message::RiskLimitsUpdate;
+};
+}  // namespace detail
 
 // std::chrono::duration
 
-template <typename B, typename T, typename std::enable_if<utils::is_duration<T>::value>::type* = nullptr>
-auto encode([[maybe_unused]]B &, T value) {
+template <typename B, typename T, typename std::enable_if<utils::is_duration<T>::value>::type * = nullptr>
+auto encode([[maybe_unused]] B &, T value) {
   return value.count();
 }
 
@@ -110,7 +318,11 @@ auto encode(B &builder, std::string_view const &value) {
 
 // String<N>
 
-template <typename B, typename T, std::size_t N, typename std::enable_if<std::is_base_of<roq::String<N>, T>::value>::type* = nullptr>
+template <
+    typename B,
+    typename T,
+    std::size_t N,
+    typename std::enable_if<std::is_base_of<roq::String<N>, T>::value>::type * = nullptr>
 auto encode(B &builder, T const &value) {
   return encode(builder, static_cast<std::string_view>(value));
 }
@@ -119,15 +331,14 @@ auto encode(B &builder, T const &value) {
 
 template <typename B>
 auto encode(B &builder, roq::UUID const &value) {
-  auto [high,low] = static_cast<std::pair<uint64_t,uint64_t>>(value);
-  return CreateUUID(
-      builder,high,low);
+  auto [high, low] = static_cast<std::pair<uint64_t, uint64_t>>(value);
+  return CreateUUID(builder, high, low);
 }
 
 // enums
 
-template <typename B, typename T, typename std::enable_if<std::is_enum<T>::value>::type* = nullptr>
-auto encode([[maybe_unused]]B &, T value) {
+template <typename B, typename T, typename std::enable_if<std::is_enum<T>::value>::type * = nullptr>
+auto encode([[maybe_unused]] B &, T value) {
   using result_type = typename detail::maps_to<T>::type;
   using value_type = std::underlying_type_t<T>;
   return static_cast<result_type>(static_cast<value_type>(value));
@@ -153,7 +364,13 @@ auto encode(B &builder, roq::Layer const &value) {
 template <typename B>
 auto encode(B &builder, roq::MBPUpdate const &value) {
   return CreateMBPUpdate(
-      builder, value.price, value.quantity, value.implied_quantity, value.price_level, value.number_of_orders, encode(builder, value.update_action));
+      builder,
+      value.price,
+      value.quantity,
+      value.implied_quantity,
+      value.price_level,
+      value.number_of_orders,
+      encode(builder, value.update_action));
 }
 
 template <typename B>
@@ -164,7 +381,7 @@ auto encode(B &builder, roq::MBOUpdate const &value) {
       value.quantity,
       value.priority,
       encode(builder, static_cast<std::string_view>(value.order_id)),
-      encode(builder,value.side),
+      encode(builder, value.side),
       encode(builder, value.action),
       encode(builder, value.reason));
 }
@@ -235,23 +452,23 @@ auto encode(B &builder, roq::Trade const &value) {
 // std::span
 
 namespace detail {
-template <typename U,  typename B, typename T>
-auto encode_double_vector(B &builder, std::span<T const> const& value) {
+template <typename U, typename B, typename T>
+auto encode_double_vector(B &builder, std::span<T const> const &value) {
   using result_type = U;
   std::vector<result_type> result;
   auto size = std::size(value);
   if (size) {
     result.reserve(size);
     for (auto const &item : value)
-      result.emplace_back( item);
+      result.emplace_back(item);
   }
   return builder.CreateVector(result);
 }
-}
+}  // namespace detail
 
 namespace detail {
-template <typename U,  typename B, typename T>
-auto encode_string_vector(B &builder, std::span<T const> const& value) {
+template <typename U, typename B, typename T>
+auto encode_string_vector(B &builder, std::span<T const> const &value) {
   using result_type = U;
   std::vector<flatbuffers::Offset<result_type>> result;
   auto size = std::size(value);
@@ -262,13 +479,11 @@ auto encode_string_vector(B &builder, std::span<T const> const& value) {
   }
   return builder.CreateVector(result);
 }
-}
+}  // namespace detail
 
 template <typename B, typename T>
-auto encode(B &builder, std::span<T const> const& value) {
-  constexpr bool is_string_like = requires(T const& t) {
-    t.operator std::string_view();
-  };
+auto encode(B &builder, std::span<T const> const &value) {
+  constexpr bool is_string_like = requires(T const &t) { t.operator std::string_view(); };
   if constexpr (std::is_floating_point<T>::value) {
     using result_type = double;
     return detail::encode_double_vector<result_type>(builder, value);
@@ -301,8 +516,11 @@ auto encode(B &builder, roq::DownloadBegin const &value) {
 
 template <typename B>
 auto encode(B &builder, roq::DownloadEnd const &value) {
-  return CreateDownloadEnd(builder, encode(builder, value.account), {}, // deprecated
-                                                                        value.max_order_id);
+  return CreateDownloadEnd(
+      builder,
+      encode(builder, value.account),
+      {},  // deprecated
+      value.max_order_id);
 }
 
 template <typename B>
@@ -494,7 +712,7 @@ auto encode(B &builder, roq::CreateOrder const &value) {
   return CreateCreateOrder(
       builder,
       encode(builder, value.account),
-      {}, // deprecated
+      {},  // deprecated
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.side),
@@ -518,7 +736,7 @@ auto encode(B &builder, roq::ModifyOrder const &value) {
   return CreateModifyOrder(
       builder,
       encode(builder, value.account),
-      {}, // deprecated
+      {},  // deprecated
       value.quantity,
       value.price,
       encode(builder, value.routing_id),
@@ -533,7 +751,7 @@ auto encode(B &builder, roq::CancelOrder const &value) {
   return CreateCancelOrder(
       builder,
       encode(builder, value.account),
-      {}, // deprecated
+      {},  // deprecated
       encode(builder, value.routing_id),
       value.version,
       value.conditional_on_version,
@@ -543,8 +761,7 @@ auto encode(B &builder, roq::CancelOrder const &value) {
 
 template <typename B>
 auto encode(B &builder, roq::CancelAllOrders const &value) {
-  return CreateCancelAllOrders(builder, encode(builder, value.account),
-      value.strategy_id);
+  return CreateCancelAllOrders(builder, encode(builder, value.account), value.strategy_id);
 }
 
 template <typename B>
@@ -553,7 +770,7 @@ auto encode(B &builder, roq::OrderAck const &value) {
       builder,
       value.stream_id,
       encode(builder, value.account),
-      {}, // deprecated
+      {},  // deprecated
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.type),
@@ -573,7 +790,8 @@ auto encode(B &builder, roq::OrderAck const &value) {
       value.risk_exposure_change,
       encode(builder, value.user),
       value.strategy_id,
-      value.order_id);
+      value.order_id,
+      encode(builder, value.client_order_id));
 }
 
 template <typename B>
@@ -582,7 +800,7 @@ auto encode(B &builder, roq::OrderUpdate const &value) {
       builder,
       value.stream_id,
       encode(builder, value.account),
-      {}, // deprecated
+      {},  // deprecated
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.side),
@@ -627,7 +845,7 @@ auto encode(B &builder, roq::TradeUpdate const &value) {
       builder,
       value.stream_id,
       encode(builder, value.account),
-      {}, // deprecated
+      {},  // deprecated
       encode(builder, value.exchange),
       encode(builder, value.symbol),
       encode(builder, value.side),
@@ -642,7 +860,8 @@ auto encode(B &builder, roq::TradeUpdate const &value) {
       encode(builder, value.user),
       encode(builder, value.sending_time_utc),
       value.strategy_id,
-      value.order_id);
+      value.order_id,
+      encode(builder, value.client_order_id));
 }
 
 template <typename B>
@@ -737,10 +956,7 @@ auto encode(B &builder, roq::CustomMatrixUpdate const &value) {
 template <typename B>
 auto encode(B &builder, roq::ParametersUpdate const &value) {
   return CreateParametersUpdate(
-      builder,
-      encode(builder, value.parameters),
-      encode(builder, value.update_type),
-      encode(builder, value.user));
+      builder, encode(builder, value.parameters), encode(builder, value.update_type), encode(builder, value.user));
 }
 
 template <typename B>

@@ -24,4 +24,5 @@ table TradeUpdate {
   strategy_id:uint32;
   // !!! from here: not aligned with C++ schema !!!
   order_id:uint64;
+  client_order_id:string;
 }

@@ -30,4 +30,5 @@ table OrderAck {
   user:string;
   strategy_id:uint32;
   order_id:uint64;
+  client_order_id:string;
 }

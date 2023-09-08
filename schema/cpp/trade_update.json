@@ -49,6 +49,10 @@
       "type": "std::string_view"
     },
     {
+      "name": "client_order_id",
+      "type": "std::string_view"
+    },
+    {
       "name": "fills",
       "type": "std::span<Fill const>",
       "comment": "List of fills"

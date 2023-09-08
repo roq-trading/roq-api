@@ -41,6 +41,7 @@ struct ROQ_PUBLIC OrderAck final {
   std::string_view request_id;                       //!< Request identifier
   std::string_view external_account;                 //!< External account name
   std::string_view external_order_id;                //!< External order identifier
+  std::string_view client_order_id;                  //!< Client order identifier
   std::string_view routing_id;                       //!< Routing identifier
   uint32_t version = {};                             //!< Version number (strictly increasing, optional)
   double risk_exposure = NaN;                        //!< Risk exposure
@@ -86,6 +87,7 @@ struct fmt::formatter<roq::OrderAck> {
         R"(request_id="{}", )"
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
+        R"(client_order_id="{}", )"
         R"(routing_id="{}", )"
         R"(version={}, )"
         R"(risk_exposure={}, )"
@@ -109,6 +111,7 @@ struct fmt::formatter<roq::OrderAck> {
         value.request_id,
         value.external_account,
         value.external_order_id,
+        value.client_order_id,
         value.routing_id,
         value.version,
         value.risk_exposure,

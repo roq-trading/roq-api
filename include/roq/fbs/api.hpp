@@ -5232,7 +5232,8 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_RISK_EXPOSURE_CHANGE = 42,
     VT_USER = 44,
     VT_STRATEGY_ID = 46,
-    VT_ORDER_ID = 48
+    VT_ORDER_ID = 48,
+    VT_CLIENT_ORDER_ID = 50
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -5303,6 +5304,9 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   uint64_t order_id() const {
     return GetField<uint64_t>(VT_ORDER_ID, 0);
   }
+  const ::flatbuffers::String *client_order_id() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_CLIENT_ORDER_ID);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -5337,6 +5341,8 @@ struct OrderAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyString(user()) &&
            VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
            VerifyField<uint64_t>(verifier, VT_ORDER_ID, 8) &&
+           VerifyOffset(verifier, VT_CLIENT_ORDER_ID) &&
+           verifier.VerifyString(client_order_id()) &&
            verifier.EndTable();
   }
 };
@@ -5414,6 +5420,9 @@ struct OrderAckBuilder {
   void add_order_id(uint64_t order_id) {
     fbb_.AddElement<uint64_t>(OrderAck::VT_ORDER_ID, order_id, 0);
   }
+  void add_client_order_id(::flatbuffers::Offset<::flatbuffers::String> client_order_id) {
+    fbb_.AddOffset(OrderAck::VT_CLIENT_ORDER_ID, client_order_id);
+  }
   explicit OrderAckBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -5449,13 +5458,15 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAck(
     double risk_exposure_change = std::numeric_limits<double>::quiet_NaN(),
     ::flatbuffers::Offset<::flatbuffers::String> user = 0,
     uint32_t strategy_id = 0,
-    uint64_t order_id = 0) {
+    uint64_t order_id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> client_order_id = 0) {
   OrderAckBuilder builder_(_fbb);
   builder_.add_order_id(order_id);
   builder_.add_risk_exposure_change(risk_exposure_change);
   builder_.add_risk_exposure(risk_exposure);
   builder_.add_traded_quantity(traded_quantity);
   builder_.add_round_trip_latency(round_trip_latency);
+  builder_.add_client_order_id(client_order_id);
   builder_.add_strategy_id(strategy_id);
   builder_.add_user(user);
   builder_.add_version(version);
@@ -5506,7 +5517,8 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
     double risk_exposure_change = std::numeric_limits<double>::quiet_NaN(),
     const char *user = nullptr,
     uint32_t strategy_id = 0,
-    uint64_t order_id = 0) {
+    uint64_t order_id = 0,
+    const char *client_order_id = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -5516,6 +5528,7 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
   auto external_order_id__ = external_order_id ? _fbb.CreateString(external_order_id) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
   auto user__ = user ? _fbb.CreateString(user) : 0;
+  auto client_order_id__ = client_order_id ? _fbb.CreateString(client_order_id) : 0;
   return roq::fbs::CreateOrderAck(
       _fbb,
       stream_id,
@@ -5540,7 +5553,8 @@ inline ::flatbuffers::Offset<OrderAck> CreateOrderAckDirect(
       risk_exposure_change,
       user__,
       strategy_id,
-      order_id);
+      order_id,
+      client_order_id__);
 }
 
 struct OrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -7905,7 +7919,8 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_USER = 32,
     VT_SENDING_TIME_UTC = 34,
     VT_STRATEGY_ID = 36,
-    VT_ORDER_ID = 38
+    VT_ORDER_ID = 38,
+    VT_CLIENT_ORDER_ID = 40
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -7961,6 +7976,9 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   uint64_t order_id() const {
     return GetField<uint64_t>(VT_ORDER_ID, 0);
   }
+  const ::flatbuffers::String *client_order_id() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_CLIENT_ORDER_ID);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -7990,6 +8008,8 @@ struct TradeUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
            VerifyField<uint64_t>(verifier, VT_ORDER_ID, 8) &&
+           VerifyOffset(verifier, VT_CLIENT_ORDER_ID) &&
+           verifier.VerifyString(client_order_id()) &&
            verifier.EndTable();
   }
 };
@@ -8052,6 +8072,9 @@ struct TradeUpdateBuilder {
   void add_order_id(uint64_t order_id) {
     fbb_.AddElement<uint64_t>(TradeUpdate::VT_ORDER_ID, order_id, 0);
   }
+  void add_client_order_id(::flatbuffers::Offset<::flatbuffers::String> client_order_id) {
+    fbb_.AddOffset(TradeUpdate::VT_CLIENT_ORDER_ID, client_order_id);
+  }
   explicit TradeUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -8082,12 +8105,14 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdate(
     ::flatbuffers::Offset<::flatbuffers::String> user = 0,
     int64_t sending_time_utc = 0,
     uint32_t strategy_id = 0,
-    uint64_t order_id = 0) {
+    uint64_t order_id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> client_order_id = 0) {
   TradeUpdateBuilder builder_(_fbb);
   builder_.add_order_id(order_id);
   builder_.add_sending_time_utc(sending_time_utc);
   builder_.add_update_time_utc(update_time_utc);
   builder_.add_create_time_utc(create_time_utc);
+  builder_.add_client_order_id(client_order_id);
   builder_.add_strategy_id(strategy_id);
   builder_.add_user(user);
   builder_.add_routing_id(routing_id);
@@ -8129,7 +8154,8 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
     const char *user = nullptr,
     int64_t sending_time_utc = 0,
     uint32_t strategy_id = 0,
-    uint64_t order_id = 0) {
+    uint64_t order_id = 0,
+    const char *client_order_id = nullptr) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -8138,6 +8164,7 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
   auto fills__ = fills ? _fbb.CreateVector<::flatbuffers::Offset<roq::fbs::Fill>>(*fills) : 0;
   auto routing_id__ = routing_id ? _fbb.CreateString(routing_id) : 0;
   auto user__ = user ? _fbb.CreateString(user) : 0;
+  auto client_order_id__ = client_order_id ? _fbb.CreateString(client_order_id) : 0;
   return roq::fbs::CreateTradeUpdate(
       _fbb,
       stream_id,
@@ -8157,7 +8184,8 @@ inline ::flatbuffers::Offset<TradeUpdate> CreateTradeUpdateDirect(
       user__,
       sending_time_utc,
       strategy_id,
-      order_id);
+      order_id,
+      client_order_id__);
 }
 
 struct Ready FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

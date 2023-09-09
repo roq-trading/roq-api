@@ -14,6 +14,7 @@ set(SOURCES
     math.cpp
     message.cpp
     metrics.cpp
+    patterns.cpp
     rate_limiter.cpp
     request_status.cpp
     safe_cast.cpp

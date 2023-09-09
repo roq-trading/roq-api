@@ -3,6 +3,7 @@
 #pragma once
 
 namespace roq {
+namespace utils {
 
 // overloaded
 // source: https://en.cppreference.com/w/cpp/utility/variant/visit
@@ -23,4 +24,5 @@ auto partial(Function func, Arguments... args) {
   return [=](auto... rest) { return func(args..., rest...); };
 }
 
+}  // namespace utils
 }  // namespace roq

@@ -41,87 +41,87 @@ static constexpr auto const MAX_LENGTH_PARAMETER_KEY = size_t{32};
 static constexpr auto const MAX_LENGTH_PARAMETER_VALUE = size_t{32};
 }  // namespace detail
 
-struct Source final : public String<detail::MAX_LENGTH_USER> {
+struct ROQ_PUBLIC Source final : public String<detail::MAX_LENGTH_USER> {
   using String<detail::MAX_LENGTH_USER>::String;
 };
 
-struct User final : public String<detail::MAX_LENGTH_USER> {
+struct ROQ_PUBLIC User final : public String<detail::MAX_LENGTH_USER> {
   using String<detail::MAX_LENGTH_USER>::String;
 };
 
-struct Account final : public String<detail::MAX_LENGTH_ACCOUNT> {
+struct ROQ_PUBLIC Account final : public String<detail::MAX_LENGTH_ACCOUNT> {
   using String<detail::MAX_LENGTH_ACCOUNT>::String;
 };
 
-struct Exchange final : public String<detail::MAX_LENGTH_EXCHANGE> {
+struct ROQ_PUBLIC Exchange final : public String<detail::MAX_LENGTH_EXCHANGE> {
   using String<detail::MAX_LENGTH_EXCHANGE>::String;
 };
 
-struct Symbol final : public String<detail::MAX_LENGTH_SYMBOL> {
+struct ROQ_PUBLIC Symbol final : public String<detail::MAX_LENGTH_SYMBOL> {
   using String<detail::MAX_LENGTH_SYMBOL>::String;
 };
 
-struct Currency final : public String<detail::MAX_LENGTH_CURRENCY> {
+struct ROQ_PUBLIC Currency final : public String<detail::MAX_LENGTH_CURRENCY> {
   using String<detail::MAX_LENGTH_CURRENCY>::String;
 };
 
-struct MBOOrderId final : public String<detail::MAX_LENGTH_MBO_ORDER_ID> {
+struct ROQ_PUBLIC MBOOrderId final : public String<detail::MAX_LENGTH_MBO_ORDER_ID> {
   using String<detail::MAX_LENGTH_MBO_ORDER_ID>::String;
 };
 
-struct RequestTemplate final : public String<detail::MAX_LENGTH_REQUEST_TEMPLATE> {
+struct ROQ_PUBLIC RequestTemplate final : public String<detail::MAX_LENGTH_REQUEST_TEMPLATE> {
   using String<detail::MAX_LENGTH_REQUEST_TEMPLATE>::String;
 };
 
-struct ExternalAccount final : public String<detail::MAX_LENGTH_EXTERNAL_ACCOUNT> {
+struct ROQ_PUBLIC ExternalAccount final : public String<detail::MAX_LENGTH_EXTERNAL_ACCOUNT> {
   using String<detail::MAX_LENGTH_EXTERNAL_ACCOUNT>::String;
 };
 
-struct ExternalOrderId final : public String<detail::MAX_LENGTH_EXTERNAL_ORDER_ID> {
+struct ROQ_PUBLIC ExternalOrderId final : public String<detail::MAX_LENGTH_EXTERNAL_ORDER_ID> {
   using String<detail::MAX_LENGTH_EXTERNAL_ORDER_ID>::String;
 };
 
-struct ExternalTradeId final : public String<detail::MAX_LENGTH_EXTERNAL_TRADE_ID> {
+struct ROQ_PUBLIC ExternalTradeId final : public String<detail::MAX_LENGTH_EXTERNAL_TRADE_ID> {
   using String<detail::MAX_LENGTH_EXTERNAL_TRADE_ID>::String;
 };
 
-struct RoutingId final : public String<detail::MAX_LENGTH_ROUTING_ID> {
+struct ROQ_PUBLIC RoutingId final : public String<detail::MAX_LENGTH_ROUTING_ID> {
   using String<detail::MAX_LENGTH_ROUTING_ID>::String;
 };
 
-struct ClOrdId final : public String<detail::MAX_LENGTH_CL_ORD_ID> {
+struct ROQ_PUBLIC ClOrdId final : public String<detail::MAX_LENGTH_CL_ORD_ID> {
   using String<detail::MAX_LENGTH_CL_ORD_ID>::String;
 };
 
-struct RequestId final : public String<detail::MAX_LENGTH_REQUEST_ID> {
+struct ROQ_PUBLIC RequestId final : public String<detail::MAX_LENGTH_REQUEST_ID> {
   using String<detail::MAX_LENGTH_REQUEST_ID>::String;
 };
 
-struct Label final : public String<detail::MAX_LENGTH_LABEL> {
+struct ROQ_PUBLIC Label final : public String<detail::MAX_LENGTH_LABEL> {
   using String<detail::MAX_LENGTH_LABEL>::String;
 };
 
-struct MeasurementKey final : public String<detail::MAX_LENGTH_MEASUREMENT_KEY> {
+struct ROQ_PUBLIC MeasurementKey final : public String<detail::MAX_LENGTH_MEASUREMENT_KEY> {
   using String<detail::MAX_LENGTH_MEASUREMENT_KEY>::String;
 };
 
-struct MatrixKey final : public String<detail::MAX_LENGTH_MATRIX_KEY> {
+struct ROQ_PUBLIC MatrixKey final : public String<detail::MAX_LENGTH_MATRIX_KEY> {
   using String<detail::MAX_LENGTH_MATRIX_KEY>::String;
 };
 
-struct Description final : public String<detail::MAX_LENGTH_DESCRIPTION> {
+struct ROQ_PUBLIC Description final : public String<detail::MAX_LENGTH_DESCRIPTION> {
   using String<detail::MAX_LENGTH_DESCRIPTION>::String;
 };
 
-struct TimeZone final : public String<detail::MAX_LENGTH_TIME_ZONE> {
+struct ROQ_PUBLIC TimeZone final : public String<detail::MAX_LENGTH_TIME_ZONE> {
   using String<detail::MAX_LENGTH_TIME_ZONE>::String;
 };
 
-struct ParameterKey final : public String<detail::MAX_LENGTH_PARAMETER_KEY> {
+struct ROQ_PUBLIC ParameterKey final : public String<detail::MAX_LENGTH_PARAMETER_KEY> {
   using String<detail::MAX_LENGTH_PARAMETER_KEY>::String;
 };
 
-struct ParameterValue final : public String<detail::MAX_LENGTH_PARAMETER_VALUE> {
+struct ROQ_PUBLIC ParameterValue final : public String<detail::MAX_LENGTH_PARAMETER_VALUE> {
   using String<detail::MAX_LENGTH_PARAMETER_VALUE>::String;
 };
 

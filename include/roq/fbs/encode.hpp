@@ -524,7 +524,7 @@ auto encode(B &builder, roq::DownloadEnd const &value) {
 }
 
 template <typename B>
-auto encode(B &builder, roq::Ready const &value) {
+auto encode(B &builder, roq::Ready const &) {
   return CreateReady(builder);
 }
 

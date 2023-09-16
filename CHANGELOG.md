@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.9.7 &ndash; 2023-09-16
+
 ### Changed
 
 * `order_id` must be `uint64_t` (#377)

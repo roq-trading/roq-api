@@ -43,7 +43,7 @@ include(GNUInstallDirs)
 # dependencies
 
 find_package(FlatBuffers REQUIRED)
-find_package(PythonInterp REQUIRED)
+find_package (Python REQUIRED COMPONENTS Interpreter Development)
 
 find_package(absl REQUIRED)
 find_package(fmt REQUIRED)

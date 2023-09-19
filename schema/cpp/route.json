@@ -1,0 +1,16 @@
+{
+  "name": "Route",
+  "type": "message",
+  "comment": "Route",
+  "values": [
+    {
+      "name": "strategy_id",
+      "type": "uint32_t"
+    },
+    {
+      "name": "status",
+      "type": "RouteRequestStatus",
+      "comment": "Response to the request"
+    }
+  ]
+}

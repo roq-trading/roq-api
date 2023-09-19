@@ -3,6 +3,7 @@ set(TARGET_NAME ${PROJECT_NAME}-schema-cpp)
 set(TARGET_DIR ${CMAKE_INSTALL_DATADIR}/roq/schema/cpp)
 
 set(SOURCES
+    add_routes.json
     batch_begin.json
     batch_end.json
     buffer_capacity.json
@@ -56,11 +57,15 @@ set(SOURCES
     rate_limit_type.json
     ready.json
     reference_data.json
+    remove_routes.json
     request_status.json
     request_type.json
     risk_limit.json
     risk_limits.json
     risk_limits_update.json
+    route_ack.json
+    route.json
+    route_request_status.json
     security_type.json
     side.json
     start.json

@@ -160,6 +160,18 @@ def is_string_like(type_):
 
 _scalar_types = {
     "double",
+    "int8_t",
+    "uint8_t",
+    "int16_t",
+    "uint16_t",
+    "int32_t",
+    "uint32_t",
+    "int64_t",
+    "uint64_t",
+    "std::int32_t",
+    "std::uint32_t",
+    "std::int64_t",
+    "std::uint64_t",
 }
 
 

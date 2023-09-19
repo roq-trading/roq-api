@@ -1,0 +1,17 @@
+{
+  "name": "RouteAck",
+  "type": "message",
+  "comment": "Response to route request",
+  "values": [
+    {
+      "name": "routes",
+      "type": "std::span<Route>",
+      "comment": "Response per strategy_id"
+    },
+    {
+      "name": "user",
+      "type": "std::string_view",
+      "comment": "User name (optional, only relevant for drop-copy)"
+    }
+  ]
+}

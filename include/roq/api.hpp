@@ -31,6 +31,7 @@
 #include "roq/request_id_type.hpp"
 #include "roq/request_status.hpp"
 #include "roq/request_type.hpp"
+#include "roq/route_request_status.hpp"
 #include "roq/security_type.hpp"
 #include "roq/side.hpp"
 #include "roq/statistics_type.hpp"
@@ -52,6 +53,7 @@
 #include "roq/parameter.hpp"
 #include "roq/position.hpp"
 #include "roq/risk_limit.hpp"
+#include "roq/route.hpp"
 #include "roq/statistics.hpp"
 #include "roq/trade.hpp"
 
@@ -69,6 +71,7 @@
 
 // messages (autogen)
 
+#include "roq/add_routes.hpp"
 #include "roq/batch_begin.hpp"
 #include "roq/batch_end.hpp"
 #include "roq/cancel_all_orders.hpp"
@@ -96,8 +99,10 @@
 #include "roq/rate_limit_trigger.hpp"
 #include "roq/ready.hpp"
 #include "roq/reference_data.hpp"
+#include "roq/remove_routes.hpp"
 #include "roq/risk_limits.hpp"
 #include "roq/risk_limits_update.hpp"
+#include "roq/route_ack.hpp"
 #include "roq/statistics_update.hpp"
 #include "roq/stream_status.hpp"
 #include "roq/top_of_book.hpp"
@@ -187,6 +192,7 @@ static_assert(sizeof(Trade) == 192);
 static_assert(sizeof(Fill) == 64);
 static_assert(sizeof(Statistics) == 32);
 static_assert(sizeof(Measurement) == 16);
+static_assert(sizeof(Route) == 8);
 
 // just keep a handle on the size for some other array items
 

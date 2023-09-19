@@ -1,0 +1,19 @@
+{
+  "name": "RouteRequestStatus",
+  "type": "enum",
+  "comment": "Route request status",
+  "values": [
+    {
+      "name": "Created",
+      "comment": "Created"
+    },
+    {
+      "name": "Removed",
+      "comment": "Removed"
+    },
+    {
+      "name": "Rejected",
+      "comment": "Rejected"
+    }
+  ]
+}

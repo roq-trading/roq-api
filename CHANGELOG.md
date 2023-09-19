@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* EXPERIMENTAL: messages for managing dynamic routes
+
 ## 0.9.7 &ndash; 2023-09-18
 
 ### Added

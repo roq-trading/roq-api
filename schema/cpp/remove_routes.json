@@ -1,0 +1,12 @@
+{
+  "name": "RemoveRoutes",
+  "type": "message",
+  "comment": "Remove route(s)",
+  "values": [
+    {
+      "name": "strategy_ids",
+      "type": "std::span<uint32_t>",
+      "comment": "List of strategy_id's to remove"
+    }
+  ]
+}

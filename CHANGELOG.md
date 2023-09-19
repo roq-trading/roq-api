@@ -6,6 +6,10 @@ All notable changes will be documented in this file.
 
 ## 0.9.7 &ndash; 2023-09-18
 
+### Added
+
+* `oms::OrderUpdate::routing_id` to support FIX
+
 ### Changed
 
 * `order_id` must be `uint64_t` (#377)

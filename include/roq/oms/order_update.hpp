@@ -32,6 +32,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   double last_traded_quantity = NaN;
   double last_traded_price = NaN;
   Liquidity last_liquidity = {};
+  std::string_view routing_id;
   UpdateType update_type = {};
   std::chrono::nanoseconds sending_time_utc = {};
 };
@@ -75,6 +76,7 @@ struct fmt::formatter<roq::oms::OrderUpdate> {
         R"(last_traded_quantity={}, )"
         R"(last_traded_price={}, )"
         R"(last_liquidity={}, )"
+        R"(routing_id="{}", )"
         R"(update_type={}, )"
         R"(sending_time_utc={})"
         R"(}})"_cf,
@@ -102,6 +104,7 @@ struct fmt::formatter<roq::oms::OrderUpdate> {
         value.last_traded_quantity,
         value.last_traded_price,
         value.last_liquidity,
+        value.routing_id,
         value.update_type,
         value.sending_time_utc);
   }

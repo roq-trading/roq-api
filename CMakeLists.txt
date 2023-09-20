@@ -53,6 +53,14 @@ find_package(magic_enum REQUIRED)
 find_program(CLANG_FORMAT clang-format REQUIRED)
 find_program(FLATBUFFERS_COMPILER flatc REQUIRED)
 
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  include(CTest)
+endif()
+
+if(BUILD_TESTING)
+  find_package(Catch2 REQUIRED)
+endif()
+
 # includes
 
 include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR})
@@ -88,6 +96,10 @@ if(APPLE)
   add_compile_definitions(FMT_USE_NONTYPE_TEMPLATE_ARGS=1)
 endif()
 
+# sub-projects
+
+add_subdirectory(${CMAKE_SOURCE_DIR}/src/roq)
+
 # install (public headers)
 
 install(
@@ -96,17 +108,6 @@ install(
   FILES_MATCHING
   PATTERN "*.h*"
   PATTERN "CMakeFiles" EXCLUDE)
-
-# test
-
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  include(CTest)
-endif()
-
-if(BUILD_TESTING)
-  find_package(Catch2 REQUIRED)
-  add_subdirectory(${CMAKE_SOURCE_DIR}/test)
-endif()
 
 # doxygen
 

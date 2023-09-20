@@ -40,6 +40,10 @@ env | sort
 
 echo -e "\033[1;34m--- CMAKE ---\033[0m"
 
+# https://stackoverflow.com/a/38121972
+# export PYTHON_INCLUDE_DIRS=$(python -c "import sysconfig; print(sysconfig.get_path('include'))")
+# export PYTHON_LIBRARY=$(python -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))")
+
 cmake \
   ${CMAKE_ARGS} \
   -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX \

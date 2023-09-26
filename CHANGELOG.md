@@ -8,6 +8,10 @@ All notable changes will be documented in this file.
 
 * EXPERIMENTAL: messages for managing dynamic routes
 
+### Changed
+
+* `oms::OrderUpdate` now includes the max request/response/accepted versions
+
 ## 0.9.7 &ndash; 2023-09-18
 
 ### Added

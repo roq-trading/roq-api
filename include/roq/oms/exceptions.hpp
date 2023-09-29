@@ -34,9 +34,9 @@ struct ROQ_PUBLIC Exception : public roq::Exception {
   mutable std::string what_;  // lazy
 
  public:
-  const Origin origin;
-  const RequestStatus status;
-  const Error error;
+  Origin const origin;
+  RequestStatus const status;
+  Error const error;
 };
 
 //! Rejected

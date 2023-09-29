@@ -237,7 +237,7 @@ inline constexpr std::strong_ordering compare_requests(RequestStatus lhs, Reques
   if (lhs == rhs)
     return std::strong_ordering::equal;
   // UNDEFINED < FORWARDED < DISCONNECTED < ERROR < TIMEOUT < ACCEPTED < REJECTED < FAILED
-  const constexpr std::array<int, magic_enum::enum_count<RequestStatus>()> priority{{
+  constexpr std::array<int, magic_enum::enum_count<RequestStatus>()> const priority{{
       0,  // UNDEFINED
       1,  // FORWARDED
       5,  // ACCEPTED

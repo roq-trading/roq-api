@@ -80,7 +80,7 @@ struct DateTime_iso8601 final {
   }
 
  private:
-  const T value_;
+  T const value_;
 };
 
 template <typename T>
@@ -164,7 +164,7 @@ struct DateTime_rfc2616 final {
   }
 
  private:
-  const T value_;
+  T const value_;
 };
 }  // namespace utils
 }  // namespace roq

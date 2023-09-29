@@ -57,7 +57,7 @@ constexpr int sign_helper(T value) {
 }
 
 constexpr std::strong_ordering to_strong_ordering(int sign) {
-  const std::array<std::strong_ordering, 3> lookup{{
+  std::array<std::strong_ordering, 3> const lookup{{
       std::strong_ordering::less,
       std::strong_ordering::equal,
       std::strong_ordering::greater,

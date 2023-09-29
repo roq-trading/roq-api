@@ -31,7 +31,7 @@ struct Date_iso8601 final {
   }
 
  private:
-  const T value_;
+  T const value_;
 };
 
 }  // namespace utils

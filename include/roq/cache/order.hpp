@@ -120,7 +120,7 @@ struct ROQ_PUBLIC Order final {
         .price = price,
         .stop_price = stop_price,
         .risk_exposure = risk_exposure,
-        .risk_exposure_change = 0.0,
+        .risk_exposure_change = NaN,
         .remaining_quantity = remaining_quantity,
         .traded_quantity = traded_quantity,
         .average_traded_price = average_traded_price,

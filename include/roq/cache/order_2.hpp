@@ -20,14 +20,16 @@ struct ROQ_PUBLIC Order2 final {
         order_type{order_update.order_type}, time_in_force{order_update.time_in_force},
         execution_instructions{order_update.execution_instructions}, create_time_utc{order_update.create_time_utc},
         update_time_utc{order_update.update_time_utc}, external_account{order_update.external_account},
-        external_order_id{order_update.external_order_id}, status{order_update.status}, quantity{order_update.quantity},
-        price{order_update.price}, stop_price{order_update.stop_price},
+        external_order_id{order_update.external_order_id}, client_order_id{order_update.client_order_id},
+        status{order_update.status}, quantity{order_update.quantity}, price{order_update.price},
+        stop_price{order_update.stop_price}, risk_exposure{order_update.risk_exposure},
         remaining_quantity{order_update.remaining_quantity}, traded_quantity{order_update.traded_quantity},
         average_traded_price{order_update.average_traded_price},
         last_traded_quantity{order_update.last_traded_quantity}, last_traded_price{order_update.last_traded_price},
         last_liquidity{order_update.last_liquidity}, routing_id{order_update.routing_id},
         max_request_version{order_update.max_request_version}, max_response_version{order_update.max_response_version},
-        max_accepted_version{order_update.max_accepted_version}, user{order_update.user} {}
+        max_accepted_version{order_update.max_accepted_version}, user{order_update.user},
+        strategy_id{order_update.strategy_id} {}
 
   Order2(Order2 const &) = delete;
   Order2(Order2 &&) = default;
@@ -45,10 +47,12 @@ struct ROQ_PUBLIC Order2 final {
     dirty |= utils::update_if_not_empty(update_time_utc, order_update.update_time_utc);
     dirty |= utils::update_if_not_empty(external_account, order_update.external_account);
     dirty |= utils::update_if_not_empty(external_order_id, order_update.external_order_id);
+    dirty |= utils::update_if_not_empty(client_order_id, order_update.client_order_id);
     dirty |= utils::update(status, order_update.status);
     dirty |= utils::update(quantity, order_update.quantity);
     dirty |= utils::update(price, order_update.price);
     dirty |= utils::update(stop_price, order_update.stop_price);
+    dirty |= utils::update(risk_exposure, order_update.risk_exposure);
     dirty |= utils::update(remaining_quantity, order_update.remaining_quantity);
     dirty |= utils::update(traded_quantity, order_update.traded_quantity);
     dirty |= utils::update(average_traded_price, order_update.average_traded_price);
@@ -60,6 +64,7 @@ struct ROQ_PUBLIC Order2 final {
     dirty |= utils::update(max_response_version, order_update.max_response_version);
     dirty |= utils::update(max_accepted_version, order_update.max_accepted_version);
     dirty |= utils::update_if_not_empty(user, order_update.user);
+    dirty |= utils::update(strategy_id, order_update.strategy_id);
     // some update types will always be published
     switch (order_update.update_type) {
       using enum UpdateType;
@@ -94,10 +99,13 @@ struct ROQ_PUBLIC Order2 final {
         .update_time_utc = update_time_utc,
         .external_account = external_account,
         .external_order_id = external_order_id,
+        .client_order_id = client_order_id,
         .status = status,
         .quantity = quantity,
         .price = price,
         .stop_price = stop_price,
+        .risk_exposure = risk_exposure,
+        .risk_exposure_change = 0.0,
         .remaining_quantity = remaining_quantity,
         .traded_quantity = traded_quantity,
         .average_traded_price = average_traded_price,
@@ -109,7 +117,9 @@ struct ROQ_PUBLIC Order2 final {
         .max_response_version = max_response_version,
         .max_accepted_version = max_accepted_version,
         .update_type = UpdateType::SNAPSHOT,  // note!
+        .sending_time_utc = {},
         .user = user,
+        .strategy_id = strategy_id,
     };
   }
 
@@ -128,10 +138,12 @@ struct ROQ_PUBLIC Order2 final {
   std::chrono::nanoseconds update_time_utc = {};
   ExternalAccount external_account;
   ExternalOrderId external_order_id;
+  ClOrdId client_order_id;
   OrderStatus status = {};
   double quantity = NaN;
   double price = NaN;
   double stop_price = NaN;
+  double risk_exposure = NaN;
   double remaining_quantity = NaN;
   double traded_quantity = NaN;
   double average_traded_price = NaN;
@@ -143,6 +155,7 @@ struct ROQ_PUBLIC Order2 final {
   uint32_t max_response_version = {};
   uint32_t max_accepted_version = {};
   User user;
+  uint32_t strategy_id = {};
 };
 
 }  // namespace cache

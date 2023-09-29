@@ -33,6 +33,7 @@ struct ROQ_PUBLIC Order final {
     quantity = NaN;
     price = NaN;
     stop_price = NaN;
+    risk_exposure = NaN;
     remaining_quantity = NaN;
     traded_quantity = NaN;
     average_traded_price = NaN;
@@ -65,6 +66,7 @@ struct ROQ_PUBLIC Order final {
     dirty |= utils::update(quantity, order_update.quantity);
     dirty |= utils::update(price, order_update.price);
     dirty |= utils::update(stop_price, order_update.stop_price);
+    dirty |= utils::update(risk_exposure, order_update.risk_exposure);
     dirty |= utils::update(remaining_quantity, order_update.remaining_quantity);
     dirty |= utils::update(traded_quantity, order_update.traded_quantity);
     dirty |= utils::update(average_traded_price, order_update.average_traded_price);
@@ -117,6 +119,8 @@ struct ROQ_PUBLIC Order final {
         .quantity = quantity,
         .price = price,
         .stop_price = stop_price,
+        .risk_exposure = risk_exposure,
+        .risk_exposure_change = 0.0,
         .remaining_quantity = remaining_quantity,
         .traded_quantity = traded_quantity,
         .average_traded_price = average_traded_price,
@@ -128,6 +132,7 @@ struct ROQ_PUBLIC Order final {
         .max_response_version = max_response_version,
         .max_accepted_version = max_accepted_version,
         .update_type = UpdateType::SNAPSHOT,  // note!
+        .sending_time_utc = {},
         .user = user,
         .strategy_id = strategy_id,
     };
@@ -151,6 +156,7 @@ struct ROQ_PUBLIC Order final {
   double quantity = NaN;
   double price = NaN;
   double stop_price = NaN;
+  double risk_exposure = NaN;
   double remaining_quantity = NaN;
   double traded_quantity = NaN;
   double average_traded_price = NaN;

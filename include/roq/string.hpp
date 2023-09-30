@@ -38,6 +38,12 @@ struct ROQ_PACKED String {
 
   constexpr String() = default;
 
+  constexpr String(String &&) = default;
+  constexpr String(String const &) = default;
+
+  constexpr String &operator=(String &&) = default;
+  constexpr String &operator=(String const &) = default;
+
   // cppcheck-suppress noExplicitConstructor
   constexpr String(std::string_view const &text) {  // NOLINT (allow implicit)
     copy(text);

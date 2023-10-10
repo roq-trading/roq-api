@@ -8,6 +8,7 @@
 #include "roq/decimals.hpp"
 
 #include "roq/utils/common.hpp"
+#include "roq/utils/compare.hpp"
 
 namespace roq {
 namespace utils {
@@ -17,6 +18,8 @@ struct Number final {
 
   Number() = default;
   Number(value_type value, Decimals decimals) : value{value}, decimals{decimals} {}
+
+  bool empty() const { return std::isnan(value); }
 
   value_type const value = NaN;
   Decimals const decimals = {};

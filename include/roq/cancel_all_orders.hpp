@@ -23,8 +23,8 @@ struct ROQ_PUBLIC CancelAllOrders final {
   std::string_view account;   //!< Account name
   std::string_view exchange;  //!< Exchange
   std::string_view symbol;    //!< Symbol
-  Side side = {};             //!< Side
   uint32_t strategy_id = {};  //!< Strategy identifier (optional)
+  Side side = {};             //!< Side
 };
 
 template <>
@@ -51,14 +51,14 @@ struct fmt::formatter<roq::CancelAllOrders> {
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(side={}, )"
-        R"(strategy_id={})"
+        R"(strategy_id={}, )"
+        R"(side={})"
         R"(}})"_cf,
         value.account,
         value.exchange,
         value.symbol,
-        value.side,
-        value.strategy_id);
+        value.strategy_id,
+        value.side);
   }
 };
 

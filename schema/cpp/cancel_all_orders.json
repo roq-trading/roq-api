@@ -16,13 +16,13 @@
       "type": "std::string_view"
     },
     {
+      "name": "strategy_id",
+      "type": "uint32_t"
+    },
+    {
       "name": "side",
       "type": "Side",
       "comment": "Side"
-    },
-    {
-      "name": "strategy_id",
-      "type": "uint32_t"
     }
   ]
 }

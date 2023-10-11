@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changes
+
+* `CancelAllOrders` improvements (#414)
+
 ### Added
 
 * EXPERIMENTAL: messages for managing dynamic routes

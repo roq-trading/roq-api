@@ -1,6 +1,12 @@
+include "side.fbs";
+
 namespace roq.fbs;
 
 table CancelAllOrders {
   account:string;
   strategy_id:uint32;
+  // !!! from here: not aligned with C++ schema !!!
+  exchange:string;
+  symbol:string;
+  side:Side;
 }

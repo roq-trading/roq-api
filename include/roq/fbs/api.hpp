@@ -2853,7 +2853,10 @@ struct CancelAllOrders FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ACCOUNT = 4,
-    VT_STRATEGY_ID = 6
+    VT_STRATEGY_ID = 6,
+    VT_EXCHANGE = 8,
+    VT_SYMBOL = 10,
+    VT_SIDE = 12
   };
   const ::flatbuffers::String *account() const {
     return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
@@ -2861,11 +2864,25 @@ struct CancelAllOrders FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   uint32_t strategy_id() const {
     return GetField<uint32_t>(VT_STRATEGY_ID, 0);
   }
+  const ::flatbuffers::String *exchange() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_EXCHANGE);
+  }
+  const ::flatbuffers::String *symbol() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_SYMBOL);
+  }
+  roq::fbs::Side side() const {
+    return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0));
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_ACCOUNT) &&
            verifier.VerifyString(account()) &&
            VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
+           VerifyOffset(verifier, VT_EXCHANGE) &&
+           verifier.VerifyString(exchange()) &&
+           VerifyOffset(verifier, VT_SYMBOL) &&
+           verifier.VerifyString(symbol()) &&
+           VerifyField<uint8_t>(verifier, VT_SIDE, 1) &&
            verifier.EndTable();
   }
 };
@@ -2879,6 +2896,15 @@ struct CancelAllOrdersBuilder {
   }
   void add_strategy_id(uint32_t strategy_id) {
     fbb_.AddElement<uint32_t>(CancelAllOrders::VT_STRATEGY_ID, strategy_id, 0);
+  }
+  void add_exchange(::flatbuffers::Offset<::flatbuffers::String> exchange) {
+    fbb_.AddOffset(CancelAllOrders::VT_EXCHANGE, exchange);
+  }
+  void add_symbol(::flatbuffers::Offset<::flatbuffers::String> symbol) {
+    fbb_.AddOffset(CancelAllOrders::VT_SYMBOL, symbol);
+  }
+  void add_side(roq::fbs::Side side) {
+    fbb_.AddElement<uint8_t>(CancelAllOrders::VT_SIDE, static_cast<uint8_t>(side), 0);
   }
   explicit CancelAllOrdersBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2894,10 +2920,16 @@ struct CancelAllOrdersBuilder {
 inline ::flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrders(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::String> account = 0,
-    uint32_t strategy_id = 0) {
+    uint32_t strategy_id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> exchange = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> symbol = 0,
+    roq::fbs::Side side = roq::fbs::Side::Undefined) {
   CancelAllOrdersBuilder builder_(_fbb);
+  builder_.add_symbol(symbol);
+  builder_.add_exchange(exchange);
   builder_.add_strategy_id(strategy_id);
   builder_.add_account(account);
+  builder_.add_side(side);
   return builder_.Finish();
 }
 
@@ -2909,12 +2941,20 @@ struct CancelAllOrders::Traits {
 inline ::flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrdersDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *account = nullptr,
-    uint32_t strategy_id = 0) {
+    uint32_t strategy_id = 0,
+    const char *exchange = nullptr,
+    const char *symbol = nullptr,
+    roq::fbs::Side side = roq::fbs::Side::Undefined) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
+  auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
   return roq::fbs::CreateCancelAllOrders(
       _fbb,
       account__,
-      strategy_id);
+      strategy_id,
+      exchange__,
+      symbol__,
+      side);
 }
 
 struct CancelOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

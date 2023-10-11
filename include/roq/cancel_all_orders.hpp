@@ -13,6 +13,7 @@
 
 #include "roq/event.hpp"
 #include "roq/name.hpp"
+#include "roq/side.hpp"
 #include "roq/trace.hpp"
 
 namespace roq {
@@ -20,6 +21,9 @@ namespace roq {
 //! Cancel all orders (best effort)
 struct ROQ_PUBLIC CancelAllOrders final {
   std::string_view account;   //!< Account name
+  std::string_view exchange;  //!< Exchange
+  std::string_view symbol;    //!< Symbol
+  Side side = {};             //!< Side
   uint32_t strategy_id = {};  //!< Strategy identifier (optional)
 };
 
@@ -45,9 +49,15 @@ struct fmt::formatter<roq::CancelAllOrders> {
         context.out(),
         R"({{)"
         R"(account="{}", )"
+        R"(exchange="{}", )"
+        R"(symbol="{}", )"
+        R"(side={}, )"
         R"(strategy_id={})"
         R"(}})"_cf,
         value.account,
+        value.exchange,
+        value.symbol,
+        value.side,
         value.strategy_id);
   }
 };

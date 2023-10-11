@@ -24,6 +24,9 @@ template <typename T> struct maps_to;
 template <> struct maps_to<roq::BufferCapacity> final {
   using type = fbs::BufferCapacity;
 };
+template <> struct maps_to<roq::CancelAllOrdersFilter> final {
+  using type = fbs::CancelAllOrdersFilter;
+};
 template <> struct maps_to<roq::ConnectionStatus> final {
   using type = fbs::ConnectionStatus;
 };
@@ -427,7 +430,8 @@ auto encode(B &builder, roq::GatewaySettings const &value) {
       value.mbp_allow_price_inversion, value.mbp_allow_remove_non_existing,
       value.oms_download_has_state, value.oms_download_has_routing_id,
       value.mbp_tick_size_multiplier, value.mbp_min_trade_vol_multiplier,
-      encode(builder, value.oms_request_id_type), value.mbp_checksum);
+      encode(builder, value.oms_request_id_type), value.mbp_checksum,
+      value.oms_cancel_all_orders.get());
 }
 
 template <typename B> auto encode(B &builder, roq::StreamStatus const &value) {

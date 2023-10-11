@@ -3,6 +3,7 @@
 // - enums
 
 include "buffer_capacity.fbs";
+include "cancel_all_orders_filter.fbs";
 include "category.fbs";
 include "connection_status.fbs";
 include "decimals.fbs";

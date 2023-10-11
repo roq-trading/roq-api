@@ -1,0 +1,32 @@
+{
+  "name": "CancelAllOrdersFilter",
+  "type": "enum_bit_64",
+  "comment": "Enumeration of filter types for cancel all orders",
+  "values": [
+    {
+      "name": "Account",
+      "position": 0,
+      "comment": "By account"
+    },
+    {
+      "name": "Exchange",
+      "position": 1,
+      "comment": "By exchange"
+    },
+    {
+      "name": "Symbol",
+      "position": 2,
+      "comment": "By symbol"
+    },
+    {
+      "name": "Strategy",
+      "position": 3,
+      "comment": "By strategy"
+    },
+    {
+      "name": "Side",
+      "position": 4,
+      "comment": "By side"
+    }
+  ]
+}

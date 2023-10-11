@@ -6,6 +6,7 @@ set(SOURCES
     api.fbs
     buffer_capacity.fbs
     cancel_all_orders.fbs
+    cancel_all_orders_filter.fbs
     cancel_order.fbs
     category.fbs
     connection_status.fbs

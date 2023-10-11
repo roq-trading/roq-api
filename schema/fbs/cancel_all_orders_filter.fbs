@@ -1,0 +1,10 @@
+namespace roq.fbs;
+
+enum CancelAllOrdersFilter:uint32 {
+  Undefined = 0,
+  Account = 1,
+  Exchange = 2,
+  Symbol = 4,
+  Strategy = 8,
+  Side = 16,
+}

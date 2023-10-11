@@ -4,9 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
-### Changes
+### Changed
 
-* `CancelAllOrders` improvements (#414)
+* `GatewaySettings.oms_cancel_all_orders` has been added (#414)
+* `CancelAllOrders` now includes some filters (#414)
 
 ### Added
 

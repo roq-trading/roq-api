@@ -12,4 +12,5 @@ table GatewaySettings {
   mbp_min_trade_vol_multiplier:double = nan;
   oms_request_id_type:RequestIdType;
   mbp_checksum:bool; // note! order not aligned with c++
+  oms_cancel_all_orders:uint64;
 }

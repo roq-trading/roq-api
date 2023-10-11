@@ -52,6 +52,11 @@
       "name": "oms_request_id_type",
       "type": "RequestIdType",
       "comment": "OMS request identifier type"
+    },
+    {
+      "name": "oms_cancel_all_orders",
+      "type": "Mask<CancelAllOrdersFilter>",
+      "comment": "Supported filter types when using CancelAllOrders"
     }
   ]
 }

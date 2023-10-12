@@ -1,7 +1,7 @@
 {
-  "name": "CancelAllOrdersFilter",
+  "name": "Filter",
   "type": "enum_bit_64",
-  "comment": "Enumeration of filter types for cancel all orders",
+  "comment": "Enumeration of filter fields",
   "values": [
     {
       "name": "Account",

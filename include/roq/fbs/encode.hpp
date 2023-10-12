@@ -24,9 +24,6 @@ template <typename T> struct maps_to;
 template <> struct maps_to<roq::BufferCapacity> final {
   using type = fbs::BufferCapacity;
 };
-template <> struct maps_to<roq::CancelAllOrdersFilter> final {
-  using type = fbs::CancelAllOrdersFilter;
-};
 template <> struct maps_to<roq::ConnectionStatus> final {
   using type = fbs::ConnectionStatus;
 };
@@ -38,6 +35,9 @@ template <> struct maps_to<roq::Encoding> final {
 };
 template <> struct maps_to<roq::Error> final {
   using type = fbs::Error;
+};
+template <> struct maps_to<roq::Filter> final {
+  using type = fbs::Filter;
 };
 template <> struct maps_to<roq::Liquidity> final {
   using type = fbs::Liquidity;

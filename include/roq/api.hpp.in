@@ -11,13 +11,13 @@
 // enums
 
 #include "roq/buffer_capacity.hpp"
-#include "roq/cancel_all_orders_filter.hpp"
 #include "roq/category.hpp"
 #include "roq/connection_status.hpp"
 #include "roq/decimals.hpp"
 #include "roq/encoding.hpp"
 #include "roq/error.hpp"
 #include "roq/execution_instruction.hpp"
+#include "roq/filter.hpp"
 #include "roq/liquidity.hpp"
 #include "roq/option_type.hpp"
 #include "roq/order_cancel_policy.hpp"

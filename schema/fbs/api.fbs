@@ -3,13 +3,13 @@
 // - enums
 
 include "buffer_capacity.fbs";
-include "cancel_all_orders_filter.fbs";
 include "category.fbs";
 include "connection_status.fbs";
 include "decimals.fbs";
 include "encoding.fbs";
 include "error.fbs";
 include "execution_instruction.fbs";
+include "filter.fbs";
 include "liquidity.fbs";
 include "option_type.fbs";
 include "order_status.fbs";

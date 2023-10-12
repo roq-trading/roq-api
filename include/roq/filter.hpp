@@ -13,8 +13,8 @@
 
 namespace roq {
 
-//! Enumeration of filter types for cancel all orders
-enum class CancelAllOrdersFilter : uint64_t {
+//! Enumeration of filter fields
+enum class Filter : uint64_t {
   UNDEFINED = 0x0,
   ACCOUNT = 0x1,   //!< By account
   EXCHANGE = 0x2,  //!< By exchange
@@ -26,18 +26,18 @@ enum class CancelAllOrdersFilter : uint64_t {
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::CancelAllOrdersFilter> {
+struct fmt::formatter<roq::Filter> {
   template <typename Context>
   constexpr auto parse(Context &context) {
     return std::begin(context);
   }
   template <typename Context>
-  auto format(roq::CancelAllOrdersFilter const &value, Context &context) const {
+  auto format(roq::Filter const &value, Context &context) const {
     using namespace std::literals;
     using namespace fmt::literals;
     auto name{[&]() {
       switch (value) {
-        using enum roq::CancelAllOrdersFilter;
+        using enum roq::Filter;
         case UNDEFINED:
           return "UNDEFINED"sv;
         case ACCOUNT:

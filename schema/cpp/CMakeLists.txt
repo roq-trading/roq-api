@@ -8,7 +8,6 @@ set(SOURCES
     batch_end.json
     buffer_capacity.json
     cancel_all_orders.json
-    cancel_all_orders_filter.json
     cancel_order.json
     category.json
     connected.json
@@ -25,6 +24,7 @@ set(SOURCES
     error.json
     execution_instruction.json
     fill.json
+    filter.json
     funds_update.json
     gateway_settings.json
     gateway_status.json

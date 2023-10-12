@@ -205,59 +205,6 @@ inline const char *EnumNameBufferCapacity(BufferCapacity e) {
   return EnumNamesBufferCapacity()[index];
 }
 
-enum class CancelAllOrdersFilter : uint32_t {
-  Undefined = 0,
-  Account = 1,
-  Exchange = 2,
-  Symbol = 4,
-  Strategy = 8,
-  Side = 16,
-  MIN = Undefined,
-  MAX = Side
-};
-
-inline const CancelAllOrdersFilter (&EnumValuesCancelAllOrdersFilter())[6] {
-  static const CancelAllOrdersFilter values[] = {
-    CancelAllOrdersFilter::Undefined,
-    CancelAllOrdersFilter::Account,
-    CancelAllOrdersFilter::Exchange,
-    CancelAllOrdersFilter::Symbol,
-    CancelAllOrdersFilter::Strategy,
-    CancelAllOrdersFilter::Side
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesCancelAllOrdersFilter() {
-  static const char * const names[18] = {
-    "Undefined",
-    "Account",
-    "Exchange",
-    "",
-    "Symbol",
-    "",
-    "",
-    "",
-    "Strategy",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "Side",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameCancelAllOrdersFilter(CancelAllOrdersFilter e) {
-  if (::flatbuffers::IsOutRange(e, CancelAllOrdersFilter::Undefined, CancelAllOrdersFilter::Side)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesCancelAllOrdersFilter()[index];
-}
-
 enum class Category : uint8_t {
   Undefined = 0,
   Public = 1,
@@ -627,6 +574,59 @@ inline const char *EnumNameExecutionInstruction(ExecutionInstruction e) {
   if (::flatbuffers::IsOutRange(e, ExecutionInstruction::Undefined, ExecutionInstruction::DoNotReduce)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesExecutionInstruction()[index];
+}
+
+enum class Filter : uint32_t {
+  Undefined = 0,
+  Account = 1,
+  Exchange = 2,
+  Symbol = 4,
+  Strategy = 8,
+  Side = 16,
+  MIN = Undefined,
+  MAX = Side
+};
+
+inline const Filter (&EnumValuesFilter())[6] {
+  static const Filter values[] = {
+    Filter::Undefined,
+    Filter::Account,
+    Filter::Exchange,
+    Filter::Symbol,
+    Filter::Strategy,
+    Filter::Side
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesFilter() {
+  static const char * const names[18] = {
+    "Undefined",
+    "Account",
+    "Exchange",
+    "",
+    "Symbol",
+    "",
+    "",
+    "",
+    "Strategy",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Side",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameFilter(Filter e) {
+  if (::flatbuffers::IsOutRange(e, Filter::Undefined, Filter::Side)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesFilter()[index];
 }
 
 enum class Liquidity : uint8_t {

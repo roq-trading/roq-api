@@ -55,8 +55,8 @@
     },
     {
       "name": "oms_cancel_all_orders",
-      "type": "Mask<CancelAllOrdersFilter>",
-      "comment": "Supported filter types when using CancelAllOrders"
+      "type": "Mask<Filter>",
+      "comment": "Supported filters for CancelAllOrders"
     }
   ]
 }

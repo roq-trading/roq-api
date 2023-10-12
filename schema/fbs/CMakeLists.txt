@@ -6,7 +6,6 @@ set(SOURCES
     api.fbs
     buffer_capacity.fbs
     cancel_all_orders.fbs
-    cancel_all_orders_filter.fbs
     cancel_order.fbs
     category.fbs
     connection_status.fbs
@@ -21,6 +20,7 @@ set(SOURCES
     error.fbs
     execution_instruction.fbs
     fill.fbs
+    filter.fbs
     funds_update.fbs
     gateway_settings.fbs
     gateway_status.fbs

@@ -426,23 +426,35 @@ inline constexpr Mask<Filter> create_filter(T &value) {
   Mask<Filter> result;
   constexpr bool has_account = requires(T const &t) { t.account; };
   if constexpr (has_account) {
-    result |= Filter::ACCOUNT;
+    if (!std::empty(value.account))
+      result |= Filter::ACCOUNT;
   }
   constexpr bool has_exchange = requires(T const &t) { t.exchange; };
   if constexpr (has_exchange) {
-    result |= Filter::EXCHANGE;
+    if (!std::empty(value.exchange))
+      result |= Filter::EXCHANGE;
+  }
+  // note! FIX naming convention
+  constexpr bool has_security_exchange = requires(T const &t) { t.security_exchange; };
+  if constexpr (has_security_exchange) {
+    if (!std::empty(value.security_exchange))
+      result |= Filter::EXCHANGE;
   }
   constexpr bool has_symbol = requires(T const &t) { t.symbol; };
   if constexpr (has_symbol) {
-    result |= Filter::SYMBOL;
+    if (!std::empty(value.symbol))
+      result |= Filter::SYMBOL;
   }
   constexpr bool has_strategy_id = requires(T const &t) { t.strategy_id; };
   if constexpr (has_strategy_id) {
-    result |= Filter::STRATEGY_ID;
+    if (value.strategy_id)
+      result |= Filter::STRATEGY_ID;
   }
   constexpr bool has_side = requires(T const &t) { t.side; };
   if constexpr (has_side) {
-    result |= Filter::SIDE;
+    using value_type = std::remove_cvref<decltype(value.side)>::type;
+    if (value.side != value_type{})
+      result |= Filter::SIDE;
   }
   return result;
 }

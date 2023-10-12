@@ -76,6 +76,7 @@
 #include "roq/batch_begin.hpp"
 #include "roq/batch_end.hpp"
 #include "roq/cancel_all_orders.hpp"
+#include "roq/cancel_all_orders_ack.hpp"
 #include "roq/cancel_order.hpp"
 #include "roq/create_order.hpp"
 #include "roq/custom_matrix.hpp"

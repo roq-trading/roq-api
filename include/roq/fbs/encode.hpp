@@ -194,6 +194,9 @@ template <> struct maps_to<roq::CancelOrder> {
 template <> struct maps_to<roq::CancelAllOrders> {
   static constexpr auto value = Message::CancelAllOrders;
 };
+template <> struct maps_to<roq::CancelAllOrdersAck> {
+  static constexpr auto value = Message::CancelAllOrdersAck;
+};
 template <> struct maps_to<roq::OrderAck> {
   static constexpr auto value = Message::OrderAck;
 };
@@ -575,7 +578,19 @@ auto encode(B &builder, roq::CancelAllOrders const &value) {
   return CreateCancelAllOrders(
       builder, encode(builder, value.account), value.strategy_id,
       encode(builder, value.exchange), encode(builder, value.symbol),
-      encode(builder, value.side));
+      encode(builder, value.side), value.order_id);
+}
+
+template <typename B>
+auto encode(B &builder, roq::CancelAllOrdersAck const &value) {
+  return CreateCancelAllOrdersAck(
+      builder, value.stream_id, encode(builder, value.account), value.order_id,
+      encode(builder, value.origin), encode(builder, value.status),
+      encode(builder, value.error), encode(builder, value.text),
+      encode(builder, value.request_id),
+      encode(builder, value.external_account),
+      encode(builder, value.round_trip_latency), encode(builder, value.user),
+      value.strategy_id);
 }
 
 template <typename B> auto encode(B &builder, roq::OrderAck const &value) {

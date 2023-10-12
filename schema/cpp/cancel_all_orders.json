@@ -8,6 +8,10 @@
       "type": "std::string_view"
     },
     {
+      "name": "order_id",
+      "type": "uint64_t"
+    },
+    {
       "name": "exchange",
       "type": "std::string_view"
     },

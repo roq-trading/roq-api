@@ -21,6 +21,7 @@ namespace roq {
 //! Cancel all orders (best effort)
 struct ROQ_PUBLIC CancelAllOrders final {
   std::string_view account;   //!< Account name
+  uint64_t order_id = {};     //!< Order identifier
   std::string_view exchange;  //!< Exchange
   std::string_view symbol;    //!< Symbol
   uint32_t strategy_id = {};  //!< Strategy identifier (optional)
@@ -49,12 +50,14 @@ struct fmt::formatter<roq::CancelAllOrders> {
         context.out(),
         R"({{)"
         R"(account="{}", )"
+        R"(order_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(strategy_id={}, )"
         R"(side={})"
         R"(}})"_cf,
         value.account,
+        value.order_id,
         value.exchange,
         value.symbol,
         value.strategy_id,

@@ -37,6 +37,7 @@ struct ROQ_PUBLIC EventLogReader {
     virtual void operator()(Event<CancelAllOrders> const &) = 0;
 
     // order management
+    virtual void operator()(Event<CancelAllOrdersAck> const &) = 0;
     virtual void operator()(Event<OrderAck> const &) = 0;
     virtual void operator()(Event<OrderUpdate> const &) = 0;
     virtual void operator()(Event<TradeUpdate> const &) = 0;

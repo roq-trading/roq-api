@@ -121,6 +121,10 @@
     {
       "name": "RiskLimitReached",
       "comment": "Risk limit reached"
+    },
+    {
+      "name": "InvalidFilter",
+      "comment": "Invalid filter"
     }
   ]
 }

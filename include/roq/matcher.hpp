@@ -32,6 +32,7 @@ struct ROQ_PUBLIC Matcher {
     virtual void operator()(Event<StatisticsUpdate> const &) = 0;
 
     // order management
+    virtual void operator()(Event<CancelAllOrdersAck> const &) = 0;
     virtual void operator()(Event<OrderAck> const &) = 0;
     virtual void operator()(Event<OrderUpdate> const &) = 0;
     virtual void operator()(Event<TradeUpdate> const &) = 0;

@@ -51,6 +51,7 @@ enum class Error : uint8_t {
   UNKNOWN_ORDER_ID,
   INSUFFICIENT_FUNDS,  //!< Insufficient funds for order action
   RISK_LIMIT_REACHED,  //!< Risk limit reached
+  INVALID_FILTER,      //!< Invalid filter
 };
 
 }  // namespace roq

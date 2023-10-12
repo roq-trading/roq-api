@@ -36,6 +36,7 @@ struct Collector {
   virtual void operator()(Event<StatisticsUpdate> const &) {}
 
   // order management
+  virtual void operator()(Event<CancelAllOrdersAck> const &) {}
   virtual void operator()(Event<OrderAck> const &) {}
   virtual void operator()(Event<OrderUpdate> const &) {}
   virtual void operator()(Event<TradeUpdate> const &) {}

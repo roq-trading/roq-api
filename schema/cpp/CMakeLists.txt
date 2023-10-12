@@ -8,6 +8,7 @@ set(SOURCES
     batch_end.json
     buffer_capacity.json
     cancel_all_orders.json
+    cancel_all_orders_ack.json
     cancel_order.json
     category.json
     connected.json

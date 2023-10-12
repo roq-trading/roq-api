@@ -9,4 +9,5 @@ table CancelAllOrders {
   exchange:string;
   symbol:string;
   side:Side;
+  order_id:uint64;
 }

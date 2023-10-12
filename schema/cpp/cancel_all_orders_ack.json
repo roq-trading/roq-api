@@ -1,0 +1,61 @@
+{
+  "name": "CancelAllOrdersAck",
+  "type": "message",
+  "comment": "Acknowledgement that a cancel all orders request has been seen by gateway/exchange",
+  "values": [
+    {
+      "name": "stream_id",
+      "type": "uint16_t"
+    },
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "order_id",
+      "type": "uint64_t"
+    },
+    {
+      "name": "origin",
+      "type": "Origin",
+      "comment": "Origin of ack"
+    },
+    {
+      "name": "status",
+      "type": "RequestStatus",
+      "comment": "Request status"
+    },
+    {
+      "name": "error",
+      "type": "Error",
+      "comment": "Error code"
+    },
+    {
+      "name": "text",
+      "type": "std::string_view",
+      "comment": "Descriptive text"
+    },
+    {
+      "name": "request_id",
+      "type": "std::string_view"
+    },
+    {
+      "name": "external_account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "round_trip_latency",
+      "type": "std::chrono::nanoseconds",
+      "comment": "Round-trip latency between gateway and exchange"
+    },
+    {
+      "name": "user",
+      "type": "std::string_view",
+      "comment": "User name (optional, only relevant for drop-copy)"
+    },
+    {
+      "name": "strategy_id",
+      "type": "uint32_t"
+    }
+  ]
+}

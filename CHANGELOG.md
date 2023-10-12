@@ -11,6 +11,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `CancelAllOrdersAck` (#414)
 * EXPERIMENTAL: messages for managing dynamic routes
 
 ### Changed

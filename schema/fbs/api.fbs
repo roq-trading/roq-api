@@ -47,6 +47,7 @@ include "trade.fbs";
 // - messages
 
 include "cancel_all_orders.fbs";
+include "cancel_all_orders_ack.fbs";
 include "cancel_order.fbs";
 include "create_order.fbs";
 include "custom_matrix.fbs";
@@ -158,6 +159,8 @@ union Message {
   RiskLimits,
   RiskLimitsUpdate,
   Ready,
+  // --- now just append ---
+  CancelAllOrdersAck
 }
 
 table SourceInfo {

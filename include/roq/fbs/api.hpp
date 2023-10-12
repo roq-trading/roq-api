@@ -49,6 +49,9 @@ struct TradeBuilder;
 struct CancelAllOrders;
 struct CancelAllOrdersBuilder;
 
+struct CancelAllOrdersAck;
+struct CancelAllOrdersAckBuilder;
+
 struct CancelOrder;
 struct CancelOrderBuilder;
 
@@ -1621,11 +1624,12 @@ enum class Message : uint8_t {
   RiskLimits = 35,
   RiskLimitsUpdate = 36,
   Ready = 37,
+  CancelAllOrdersAck = 38,
   MIN = NONE,
-  MAX = Ready
+  MAX = CancelAllOrdersAck
 };
 
-inline const Message (&EnumValuesMessage())[38] {
+inline const Message (&EnumValuesMessage())[39] {
   static const Message values[] = {
     Message::NONE,
     Message::Handshake,
@@ -1664,13 +1668,14 @@ inline const Message (&EnumValuesMessage())[38] {
     Message::CustomMatrixUpdate,
     Message::RiskLimits,
     Message::RiskLimitsUpdate,
-    Message::Ready
+    Message::Ready,
+    Message::CancelAllOrdersAck
   };
   return values;
 }
 
 inline const char * const *EnumNamesMessage() {
-  static const char * const names[39] = {
+  static const char * const names[40] = {
     "NONE",
     "Handshake",
     "HandshakeAck",
@@ -1709,13 +1714,14 @@ inline const char * const *EnumNamesMessage() {
     "RiskLimits",
     "RiskLimitsUpdate",
     "Ready",
+    "CancelAllOrdersAck",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMessage(Message e) {
-  if (::flatbuffers::IsOutRange(e, Message::NONE, Message::Ready)) return "";
+  if (::flatbuffers::IsOutRange(e, Message::NONE, Message::CancelAllOrdersAck)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMessage()[index];
 }
@@ -1870,6 +1876,10 @@ template<> struct MessageTraits<roq::fbs::RiskLimitsUpdate> {
 
 template<> struct MessageTraits<roq::fbs::Ready> {
   static const Message enum_value = Message::Ready;
+};
+
+template<> struct MessageTraits<roq::fbs::CancelAllOrdersAck> {
+  static const Message enum_value = Message::CancelAllOrdersAck;
 };
 
 bool VerifyMessage(::flatbuffers::Verifier &verifier, const void *obj, Message type);
@@ -2909,7 +2919,8 @@ struct CancelAllOrders FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_STRATEGY_ID = 6,
     VT_EXCHANGE = 8,
     VT_SYMBOL = 10,
-    VT_SIDE = 12
+    VT_SIDE = 12,
+    VT_ORDER_ID = 14
   };
   const ::flatbuffers::String *account() const {
     return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
@@ -2926,6 +2937,9 @@ struct CancelAllOrders FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   roq::fbs::Side side() const {
     return static_cast<roq::fbs::Side>(GetField<uint8_t>(VT_SIDE, 0));
   }
+  uint64_t order_id() const {
+    return GetField<uint64_t>(VT_ORDER_ID, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_ACCOUNT) &&
@@ -2936,6 +2950,7 @@ struct CancelAllOrders FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyOffset(verifier, VT_SYMBOL) &&
            verifier.VerifyString(symbol()) &&
            VerifyField<uint8_t>(verifier, VT_SIDE, 1) &&
+           VerifyField<uint64_t>(verifier, VT_ORDER_ID, 8) &&
            verifier.EndTable();
   }
 };
@@ -2959,6 +2974,9 @@ struct CancelAllOrdersBuilder {
   void add_side(roq::fbs::Side side) {
     fbb_.AddElement<uint8_t>(CancelAllOrders::VT_SIDE, static_cast<uint8_t>(side), 0);
   }
+  void add_order_id(uint64_t order_id) {
+    fbb_.AddElement<uint64_t>(CancelAllOrders::VT_ORDER_ID, order_id, 0);
+  }
   explicit CancelAllOrdersBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2976,8 +2994,10 @@ inline ::flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrders(
     uint32_t strategy_id = 0,
     ::flatbuffers::Offset<::flatbuffers::String> exchange = 0,
     ::flatbuffers::Offset<::flatbuffers::String> symbol = 0,
-    roq::fbs::Side side = roq::fbs::Side::Undefined) {
+    roq::fbs::Side side = roq::fbs::Side::Undefined,
+    uint64_t order_id = 0) {
   CancelAllOrdersBuilder builder_(_fbb);
+  builder_.add_order_id(order_id);
   builder_.add_symbol(symbol);
   builder_.add_exchange(exchange);
   builder_.add_strategy_id(strategy_id);
@@ -2997,7 +3017,8 @@ inline ::flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrdersDirect(
     uint32_t strategy_id = 0,
     const char *exchange = nullptr,
     const char *symbol = nullptr,
-    roq::fbs::Side side = roq::fbs::Side::Undefined) {
+    roq::fbs::Side side = roq::fbs::Side::Undefined,
+    uint64_t order_id = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -3007,7 +3028,205 @@ inline ::flatbuffers::Offset<CancelAllOrders> CreateCancelAllOrdersDirect(
       strategy_id,
       exchange__,
       symbol__,
-      side);
+      side,
+      order_id);
+}
+
+struct CancelAllOrdersAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CancelAllOrdersAckBuilder Builder;
+  struct Traits;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_STREAM_ID = 4,
+    VT_ACCOUNT = 6,
+    VT_ORDER_ID = 8,
+    VT_ORIGIN = 10,
+    VT_STATUS = 12,
+    VT_ERROR = 14,
+    VT_TEXT = 16,
+    VT_REQUEST_ID = 18,
+    VT_EXTERNAL_ACCOUNT = 20,
+    VT_ROUND_TRIP_LATENCY = 22,
+    VT_USER = 24,
+    VT_STRATEGY_ID = 26
+  };
+  uint16_t stream_id() const {
+    return GetField<uint16_t>(VT_STREAM_ID, 0);
+  }
+  const ::flatbuffers::String *account() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ACCOUNT);
+  }
+  uint64_t order_id() const {
+    return GetField<uint64_t>(VT_ORDER_ID, 0);
+  }
+  roq::fbs::Origin origin() const {
+    return static_cast<roq::fbs::Origin>(GetField<uint8_t>(VT_ORIGIN, 0));
+  }
+  roq::fbs::RequestStatus status() const {
+    return static_cast<roq::fbs::RequestStatus>(GetField<uint8_t>(VT_STATUS, 0));
+  }
+  roq::fbs::Error error() const {
+    return static_cast<roq::fbs::Error>(GetField<uint8_t>(VT_ERROR, 0));
+  }
+  const ::flatbuffers::String *text() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_TEXT);
+  }
+  const ::flatbuffers::String *request_id() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_REQUEST_ID);
+  }
+  const ::flatbuffers::String *external_account() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_EXTERNAL_ACCOUNT);
+  }
+  int64_t round_trip_latency() const {
+    return GetField<int64_t>(VT_ROUND_TRIP_LATENCY, 0);
+  }
+  const ::flatbuffers::String *user() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_USER);
+  }
+  uint32_t strategy_id() const {
+    return GetField<uint32_t>(VT_STRATEGY_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
+           VerifyOffset(verifier, VT_ACCOUNT) &&
+           verifier.VerifyString(account()) &&
+           VerifyField<uint64_t>(verifier, VT_ORDER_ID, 8) &&
+           VerifyField<uint8_t>(verifier, VT_ORIGIN, 1) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           VerifyField<uint8_t>(verifier, VT_ERROR, 1) &&
+           VerifyOffset(verifier, VT_TEXT) &&
+           verifier.VerifyString(text()) &&
+           VerifyOffset(verifier, VT_REQUEST_ID) &&
+           verifier.VerifyString(request_id()) &&
+           VerifyOffset(verifier, VT_EXTERNAL_ACCOUNT) &&
+           verifier.VerifyString(external_account()) &&
+           VerifyField<int64_t>(verifier, VT_ROUND_TRIP_LATENCY, 8) &&
+           VerifyOffset(verifier, VT_USER) &&
+           verifier.VerifyString(user()) &&
+           VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct CancelAllOrdersAckBuilder {
+  typedef CancelAllOrdersAck Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_stream_id(uint16_t stream_id) {
+    fbb_.AddElement<uint16_t>(CancelAllOrdersAck::VT_STREAM_ID, stream_id, 0);
+  }
+  void add_account(::flatbuffers::Offset<::flatbuffers::String> account) {
+    fbb_.AddOffset(CancelAllOrdersAck::VT_ACCOUNT, account);
+  }
+  void add_order_id(uint64_t order_id) {
+    fbb_.AddElement<uint64_t>(CancelAllOrdersAck::VT_ORDER_ID, order_id, 0);
+  }
+  void add_origin(roq::fbs::Origin origin) {
+    fbb_.AddElement<uint8_t>(CancelAllOrdersAck::VT_ORIGIN, static_cast<uint8_t>(origin), 0);
+  }
+  void add_status(roq::fbs::RequestStatus status) {
+    fbb_.AddElement<uint8_t>(CancelAllOrdersAck::VT_STATUS, static_cast<uint8_t>(status), 0);
+  }
+  void add_error(roq::fbs::Error error) {
+    fbb_.AddElement<uint8_t>(CancelAllOrdersAck::VT_ERROR, static_cast<uint8_t>(error), 0);
+  }
+  void add_text(::flatbuffers::Offset<::flatbuffers::String> text) {
+    fbb_.AddOffset(CancelAllOrdersAck::VT_TEXT, text);
+  }
+  void add_request_id(::flatbuffers::Offset<::flatbuffers::String> request_id) {
+    fbb_.AddOffset(CancelAllOrdersAck::VT_REQUEST_ID, request_id);
+  }
+  void add_external_account(::flatbuffers::Offset<::flatbuffers::String> external_account) {
+    fbb_.AddOffset(CancelAllOrdersAck::VT_EXTERNAL_ACCOUNT, external_account);
+  }
+  void add_round_trip_latency(int64_t round_trip_latency) {
+    fbb_.AddElement<int64_t>(CancelAllOrdersAck::VT_ROUND_TRIP_LATENCY, round_trip_latency, 0);
+  }
+  void add_user(::flatbuffers::Offset<::flatbuffers::String> user) {
+    fbb_.AddOffset(CancelAllOrdersAck::VT_USER, user);
+  }
+  void add_strategy_id(uint32_t strategy_id) {
+    fbb_.AddElement<uint32_t>(CancelAllOrdersAck::VT_STRATEGY_ID, strategy_id, 0);
+  }
+  explicit CancelAllOrdersAckBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CancelAllOrdersAck> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CancelAllOrdersAck>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CancelAllOrdersAck> CreateCancelAllOrdersAck(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t stream_id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> account = 0,
+    uint64_t order_id = 0,
+    roq::fbs::Origin origin = roq::fbs::Origin::Undefined,
+    roq::fbs::RequestStatus status = roq::fbs::RequestStatus::Undefined,
+    roq::fbs::Error error = roq::fbs::Error::Undefined,
+    ::flatbuffers::Offset<::flatbuffers::String> text = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> request_id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> external_account = 0,
+    int64_t round_trip_latency = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> user = 0,
+    uint32_t strategy_id = 0) {
+  CancelAllOrdersAckBuilder builder_(_fbb);
+  builder_.add_round_trip_latency(round_trip_latency);
+  builder_.add_order_id(order_id);
+  builder_.add_strategy_id(strategy_id);
+  builder_.add_user(user);
+  builder_.add_external_account(external_account);
+  builder_.add_request_id(request_id);
+  builder_.add_text(text);
+  builder_.add_account(account);
+  builder_.add_stream_id(stream_id);
+  builder_.add_error(error);
+  builder_.add_status(status);
+  builder_.add_origin(origin);
+  return builder_.Finish();
+}
+
+struct CancelAllOrdersAck::Traits {
+  using type = CancelAllOrdersAck;
+  static auto constexpr Create = CreateCancelAllOrdersAck;
+};
+
+inline ::flatbuffers::Offset<CancelAllOrdersAck> CreateCancelAllOrdersAckDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t stream_id = 0,
+    const char *account = nullptr,
+    uint64_t order_id = 0,
+    roq::fbs::Origin origin = roq::fbs::Origin::Undefined,
+    roq::fbs::RequestStatus status = roq::fbs::RequestStatus::Undefined,
+    roq::fbs::Error error = roq::fbs::Error::Undefined,
+    const char *text = nullptr,
+    const char *request_id = nullptr,
+    const char *external_account = nullptr,
+    int64_t round_trip_latency = 0,
+    const char *user = nullptr,
+    uint32_t strategy_id = 0) {
+  auto account__ = account ? _fbb.CreateString(account) : 0;
+  auto text__ = text ? _fbb.CreateString(text) : 0;
+  auto request_id__ = request_id ? _fbb.CreateString(request_id) : 0;
+  auto external_account__ = external_account ? _fbb.CreateString(external_account) : 0;
+  auto user__ = user ? _fbb.CreateString(user) : 0;
+  return roq::fbs::CreateCancelAllOrdersAck(
+      _fbb,
+      stream_id,
+      account__,
+      order_id,
+      origin,
+      status,
+      error,
+      text__,
+      request_id__,
+      external_account__,
+      round_trip_latency,
+      user__,
+      strategy_id);
 }
 
 struct CancelOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -8945,6 +9164,9 @@ struct Event FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const roq::fbs::Ready *message_as_Ready() const {
     return message_type() == roq::fbs::Message::Ready ? static_cast<const roq::fbs::Ready *>(message()) : nullptr;
   }
+  const roq::fbs::CancelAllOrdersAck *message_as_CancelAllOrdersAck() const {
+    return message_type() == roq::fbs::Message::CancelAllOrdersAck ? static_cast<const roq::fbs::CancelAllOrdersAck *>(message()) : nullptr;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_SOURCE_INFO) &&
@@ -9102,6 +9324,10 @@ template<> inline const roq::fbs::RiskLimitsUpdate *Event::message_as<roq::fbs::
 
 template<> inline const roq::fbs::Ready *Event::message_as<roq::fbs::Ready>() const {
   return message_as_Ready();
+}
+
+template<> inline const roq::fbs::CancelAllOrdersAck *Event::message_as<roq::fbs::CancelAllOrdersAck>() const {
+  return message_as_CancelAllOrdersAck();
 }
 
 struct EventBuilder {
@@ -9296,6 +9522,10 @@ inline bool VerifyMessage(::flatbuffers::Verifier &verifier, const void *obj, Me
     }
     case Message::Ready: {
       auto ptr = reinterpret_cast<const roq::fbs::Ready *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Message::CancelAllOrdersAck: {
+      auto ptr = reinterpret_cast<const roq::fbs::CancelAllOrdersAck *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

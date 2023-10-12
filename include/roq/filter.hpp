@@ -16,11 +16,11 @@ namespace roq {
 //! Enumeration of filter fields
 enum class Filter : uint64_t {
   UNDEFINED = 0x0,
-  ACCOUNT = 0x1,   //!< By account
-  EXCHANGE = 0x2,  //!< By exchange
-  SYMBOL = 0x4,    //!< By symbol
-  STRATEGY = 0x8,  //!< By strategy
-  SIDE = 0x10,     //!< By side
+  ACCOUNT = 0x1,      //!< By account
+  EXCHANGE = 0x2,     //!< By exchange
+  SYMBOL = 0x4,       //!< By symbol
+  STRATEGY_ID = 0x8,  //!< By strategy_id
+  SIDE = 0x10,        //!< By side
 };
 
 }  // namespace roq
@@ -46,8 +46,8 @@ struct fmt::formatter<roq::Filter> {
           return "EXCHANGE"sv;
         case SYMBOL:
           return "SYMBOL"sv;
-        case STRATEGY:
-          return "STRATEGY"sv;
+        case STRATEGY_ID:
+          return "STRATEGY_ID"sv;
         case SIDE:
           return "SIDE"sv;
         default:

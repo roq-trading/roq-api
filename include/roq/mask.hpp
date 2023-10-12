@@ -88,6 +88,8 @@ struct Mask final {
 
   constexpr value_type get() const { return value_; }
 
+  constexpr bool is_same(T flag) const { return value_ == static_cast<value_type>(flag); }
+
   constexpr bool has(T flag) const { return value_ & static_cast<value_type>(flag); }
 
   constexpr bool has_any(T flag) const { return (value_ & static_cast<value_type>(flag)) != value_type{}; }

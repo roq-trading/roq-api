@@ -5,6 +5,6 @@ enum Filter:uint32 {
   Account = 1,
   Exchange = 2,
   Symbol = 4,
-  Strategy = 8,
+  StrategyId = 8,
   Side = 16,
 }

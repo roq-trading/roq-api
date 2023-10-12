@@ -5,7 +5,9 @@
 #include <limits>
 
 #include "roq/decimals.hpp"
+#include "roq/filter.hpp"
 #include "roq/layer.hpp"
+#include "roq/mask.hpp"
 #include "roq/numbers.hpp"
 #include "roq/order_status.hpp"
 #include "roq/request_status.hpp"
@@ -417,6 +419,32 @@ inline constexpr bool is_quantity(StatisticsType type) {
       return true;
   }
   return false;
+}
+
+template <typename T>
+inline constexpr Mask<Filter> create_filter(T &value) {
+  Mask<Filter> result;
+  constexpr bool has_account = requires(T const &t) { t.account; };
+  if constexpr (has_account) {
+    result |= Filter::ACCOUNT;
+  }
+  constexpr bool has_exchange = requires(T const &t) { t.exchange; };
+  if constexpr (has_exchange) {
+    result |= Filter::EXCHANGE;
+  }
+  constexpr bool has_symbol = requires(T const &t) { t.symbol; };
+  if constexpr (has_symbol) {
+    result |= Filter::SYMBOL;
+  }
+  constexpr bool has_strategy_id = requires(T const &t) { t.strategy_id; };
+  if constexpr (has_strategy_id) {
+    result |= Filter::STRATEGY_ID;
+  }
+  constexpr bool has_side = requires(T const &t) { t.side; };
+  if constexpr (has_side) {
+    result |= Filter::SIDE;
+  }
+  return result;
 }
 
 }  // namespace utils

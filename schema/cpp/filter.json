@@ -19,9 +19,9 @@
       "comment": "By symbol"
     },
     {
-      "name": "Strategy",
+      "name": "StrategyId",
       "position": 3,
-      "comment": "By strategy"
+      "comment": "By strategy_id"
     },
     {
       "name": "Side",

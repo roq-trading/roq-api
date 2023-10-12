@@ -581,7 +581,7 @@ enum class Filter : uint32_t {
   Account = 1,
   Exchange = 2,
   Symbol = 4,
-  Strategy = 8,
+  StrategyId = 8,
   Side = 16,
   MIN = Undefined,
   MAX = Side
@@ -593,7 +593,7 @@ inline const Filter (&EnumValuesFilter())[6] {
     Filter::Account,
     Filter::Exchange,
     Filter::Symbol,
-    Filter::Strategy,
+    Filter::StrategyId,
     Filter::Side
   };
   return values;
@@ -609,7 +609,7 @@ inline const char * const *EnumNamesFilter() {
     "",
     "",
     "",
-    "Strategy",
+    "StrategyId",
     "",
     "",
     "",

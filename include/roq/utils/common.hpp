@@ -459,5 +459,19 @@ inline constexpr Mask<Filter> create_filter(T &value) {
   return result;
 }
 
+namespace {
+template <typename T>
+constexpr bool is_missing(T const &value) {
+  constexpr bool has_empty = requires(T const &t) { t.empty(); };
+  if constexpr (has_empty) {
+    return std::empty(value);
+  } else if constexpr (std::is_same<T, double>::value) {
+    return std::isnan(value);
+  } else {
+    return value == T{};
+  }
+}
+}  // namespace
+
 }  // namespace utils
 }  // namespace roq

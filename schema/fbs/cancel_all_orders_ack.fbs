@@ -15,4 +15,5 @@ table CancelAllOrdersAck {
   round_trip_latency:int64;
   user:string;
   strategy_id:uint32;
+  number_of_affected_orders:uint32;
 }

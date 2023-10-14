@@ -33,6 +33,7 @@ struct ROQ_PUBLIC CancelAllOrdersAck final {
   std::string_view text;                             //!< Descriptive text
   std::string_view request_id;                       //!< Request identifier
   std::string_view external_account;                 //!< External account name
+  uint32_t number_of_affected_orders = {};           //!< Number of affected orders (optional, indicative)
   std::chrono::nanoseconds round_trip_latency = {};  //!< Round-trip latency between gateway and exchange
   std::string_view user;                             //!< User name (optional, only relevant for drop-copy)
   uint32_t strategy_id = {};                         //!< Strategy identifier (optional)
@@ -68,6 +69,7 @@ struct fmt::formatter<roq::CancelAllOrdersAck> {
         R"(text="{}", )"
         R"(request_id="{}", )"
         R"(external_account="{}", )"
+        R"(number_of_affected_orders={}, )"
         R"(round_trip_latency={}, )"
         R"(user="{}", )"
         R"(strategy_id={})"
@@ -81,6 +83,7 @@ struct fmt::formatter<roq::CancelAllOrdersAck> {
         value.text,
         value.request_id,
         value.external_account,
+        value.number_of_affected_orders,
         value.round_trip_latency,
         value.user,
         value.strategy_id);

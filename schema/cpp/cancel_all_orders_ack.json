@@ -44,6 +44,11 @@
       "type": "std::string_view"
     },
     {
+      "name": "number_of_affected_orders",
+      "type": "uint32_t",
+      "comment": "Number of affected orders (optional, indicative)"
+    },
+    {
       "name": "round_trip_latency",
       "type": "std::chrono::nanoseconds",
       "comment": "Round-trip latency between gateway and exchange"

@@ -3050,7 +3050,8 @@ struct CancelAllOrdersAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
     VT_EXTERNAL_ACCOUNT = 20,
     VT_ROUND_TRIP_LATENCY = 22,
     VT_USER = 24,
-    VT_STRATEGY_ID = 26
+    VT_STRATEGY_ID = 26,
+    VT_NUMBER_OF_AFFECTED_ORDERS = 28
   };
   uint16_t stream_id() const {
     return GetField<uint16_t>(VT_STREAM_ID, 0);
@@ -3088,6 +3089,9 @@ struct CancelAllOrdersAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
   uint32_t strategy_id() const {
     return GetField<uint32_t>(VT_STRATEGY_ID, 0);
   }
+  uint32_t number_of_affected_orders() const {
+    return GetField<uint32_t>(VT_NUMBER_OF_AFFECTED_ORDERS, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_STREAM_ID, 2) &&
@@ -3107,6 +3111,7 @@ struct CancelAllOrdersAck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
            VerifyOffset(verifier, VT_USER) &&
            verifier.VerifyString(user()) &&
            VerifyField<uint32_t>(verifier, VT_STRATEGY_ID, 4) &&
+           VerifyField<uint32_t>(verifier, VT_NUMBER_OF_AFFECTED_ORDERS, 4) &&
            verifier.EndTable();
   }
 };
@@ -3151,6 +3156,9 @@ struct CancelAllOrdersAckBuilder {
   void add_strategy_id(uint32_t strategy_id) {
     fbb_.AddElement<uint32_t>(CancelAllOrdersAck::VT_STRATEGY_ID, strategy_id, 0);
   }
+  void add_number_of_affected_orders(uint32_t number_of_affected_orders) {
+    fbb_.AddElement<uint32_t>(CancelAllOrdersAck::VT_NUMBER_OF_AFFECTED_ORDERS, number_of_affected_orders, 0);
+  }
   explicit CancelAllOrdersAckBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -3175,10 +3183,12 @@ inline ::flatbuffers::Offset<CancelAllOrdersAck> CreateCancelAllOrdersAck(
     ::flatbuffers::Offset<::flatbuffers::String> external_account = 0,
     int64_t round_trip_latency = 0,
     ::flatbuffers::Offset<::flatbuffers::String> user = 0,
-    uint32_t strategy_id = 0) {
+    uint32_t strategy_id = 0,
+    uint32_t number_of_affected_orders = 0) {
   CancelAllOrdersAckBuilder builder_(_fbb);
   builder_.add_round_trip_latency(round_trip_latency);
   builder_.add_order_id(order_id);
+  builder_.add_number_of_affected_orders(number_of_affected_orders);
   builder_.add_strategy_id(strategy_id);
   builder_.add_user(user);
   builder_.add_external_account(external_account);
@@ -3210,7 +3220,8 @@ inline ::flatbuffers::Offset<CancelAllOrdersAck> CreateCancelAllOrdersAckDirect(
     const char *external_account = nullptr,
     int64_t round_trip_latency = 0,
     const char *user = nullptr,
-    uint32_t strategy_id = 0) {
+    uint32_t strategy_id = 0,
+    uint32_t number_of_affected_orders = 0) {
   auto account__ = account ? _fbb.CreateString(account) : 0;
   auto text__ = text ? _fbb.CreateString(text) : 0;
   auto request_id__ = request_id ? _fbb.CreateString(request_id) : 0;
@@ -3229,7 +3240,8 @@ inline ::flatbuffers::Offset<CancelAllOrdersAck> CreateCancelAllOrdersAckDirect(
       external_account__,
       round_trip_latency,
       user__,
-      strategy_id);
+      strategy_id,
+      number_of_affected_orders);
 }
 
 struct CancelOrder FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

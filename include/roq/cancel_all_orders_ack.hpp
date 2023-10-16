@@ -18,6 +18,7 @@
 #include "roq/name.hpp"
 #include "roq/origin.hpp"
 #include "roq/request_status.hpp"
+#include "roq/side.hpp"
 #include "roq/trace.hpp"
 
 namespace roq {
@@ -27,6 +28,9 @@ struct ROQ_PUBLIC CancelAllOrdersAck final {
   uint16_t stream_id = {};                           //!< Stream identifier
   std::string_view account;                          //!< Account name
   uint64_t order_id = {};                            //!< Order identifier
+  std::string_view exchange;                         //!< Exchange
+  std::string_view symbol;                           //!< Symbol
+  Side side = {};                                    //!< Side
   Origin origin = {};                                //!< Origin of ack
   RequestStatus status = {};                         //!< Request status
   Error error = {};                                  //!< Error code
@@ -63,6 +67,9 @@ struct fmt::formatter<roq::CancelAllOrdersAck> {
         R"(stream_id={}, )"
         R"(account="{}", )"
         R"(order_id={}, )"
+        R"(exchange="{}", )"
+        R"(symbol="{}", )"
+        R"(side={}, )"
         R"(origin={}, )"
         R"(status={}, )"
         R"(error={}, )"
@@ -77,6 +84,9 @@ struct fmt::formatter<roq::CancelAllOrdersAck> {
         value.stream_id,
         value.account,
         value.order_id,
+        value.exchange,
+        value.symbol,
+        value.side,
         value.origin,
         value.status,
         value.error,

@@ -16,4 +16,7 @@ table CancelAllOrdersAck {
   user:string;
   strategy_id:uint32;
   number_of_affected_orders:uint32;
+  exchange:string;
+  symbol:string;
+  side:Side;
 }

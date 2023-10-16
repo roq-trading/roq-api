@@ -16,6 +16,19 @@
       "type": "uint64_t"
     },
     {
+      "name": "exchange",
+      "type": "std::string_view"
+    },
+    {
+      "name": "symbol",
+      "type": "std::string_view"
+    },
+    {
+      "name": "side",
+      "type": "Side",
+      "comment": "Side"
+    },
+    {
       "name": "origin",
       "type": "Origin",
       "comment": "Origin of ack"

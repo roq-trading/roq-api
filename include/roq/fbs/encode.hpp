@@ -591,7 +591,10 @@ auto encode(B &builder, roq::CancelAllOrdersAck const &value) {
       encode(builder, value.external_account),
       encode(builder, value.round_trip_latency), encode(builder, value.user),
       value.strategy_id,
-      value.number_of_affected_orders);
+      value.number_of_affected_orders,
+      encode(builder, value.exchange),
+      encode(builder, value.symbol),
+      encode(builder, value.side));
 }
 
 template <typename B> auto encode(B &builder, roq::OrderAck const &value) {

@@ -4,6 +4,10 @@
   "comment": "Represents a single fill (match) when an order is being partially or fully filled",
   "values": [
     {
+      "name": "exchange_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
       "name": "external_trade_id",
       "type": "ExternalTradeId"
     },

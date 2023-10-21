@@ -191,13 +191,13 @@ static_assert(sizeof(Layer) == 32);
 static_assert(sizeof(MBPUpdate) == 32);
 static_assert(sizeof(MBOUpdate) == 64);
 static_assert(sizeof(Trade) == 192);
-static_assert(sizeof(Fill) == 64);
 static_assert(sizeof(Statistics) == 32);
 static_assert(sizeof(Measurement) == 16);
 static_assert(sizeof(Route) == 8);
 
 // just keep a handle on the size for some other array items
 
+static_assert(sizeof(Fill) == 72);
 static_assert(sizeof(Parameter) == 176);
 static_assert(sizeof(Position) == 96);
 static_assert(sizeof(RiskLimit) == 136);

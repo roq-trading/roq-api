@@ -6,8 +6,11 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/chrono.h>
 #include <fmt/compile.h>
 #include <fmt/format.h>
+
+#include <chrono>
 
 #include "roq/liquidity.hpp"
 #include "roq/numbers.hpp"
@@ -17,10 +20,11 @@ namespace roq {
 
 //! Represents a single fill (match) when an order is being partially or fully filled
 struct ROQ_PUBLIC Fill final {
-  ExternalTradeId external_trade_id;  //!< External trade identifier
-  double quantity = NaN;              //!< Quantity
-  double price = NaN;                 //!< Price
-  Liquidity liquidity = {};           //!< Liquidity indicator
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  ExternalTradeId external_trade_id;                //!< External trade identifier
+  double quantity = NaN;                            //!< Quantity
+  double price = NaN;                               //!< Price
+  Liquidity liquidity = {};                         //!< Liquidity indicator
 };
 
 }  // namespace roq
@@ -38,11 +42,13 @@ struct fmt::formatter<roq::Fill> {
     return fmt::format_to(
         context.out(),
         R"({{)"
+        R"(exchange_time_utc={}, )"
         R"(external_trade_id="{}", )"
         R"(quantity={}, )"
         R"(price={}, )"
         R"(liquidity={})"
         R"(}})"_cf,
+        value.exchange_time_utc,
         value.external_trade_id,
         value.quantity,
         value.price,

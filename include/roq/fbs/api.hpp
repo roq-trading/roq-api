@@ -1895,7 +1895,8 @@ struct Fill FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_EXTERNAL_TRADE_ID = 4,
     VT_QUANTITY = 6,
     VT_PRICE = 8,
-    VT_LIQUIDITY = 10
+    VT_LIQUIDITY = 10,
+    VT_EXCHANGE_TIME_UTC = 12
   };
   const ::flatbuffers::String *external_trade_id() const {
     return GetPointer<const ::flatbuffers::String *>(VT_EXTERNAL_TRADE_ID);
@@ -1909,6 +1910,9 @@ struct Fill FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   roq::fbs::Liquidity liquidity() const {
     return static_cast<roq::fbs::Liquidity>(GetField<uint8_t>(VT_LIQUIDITY, 0));
   }
+  int64_t exchange_time_utc() const {
+    return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_EXTERNAL_TRADE_ID) &&
@@ -1916,6 +1920,7 @@ struct Fill FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<double>(verifier, VT_QUANTITY, 8) &&
            VerifyField<double>(verifier, VT_PRICE, 8) &&
            VerifyField<uint8_t>(verifier, VT_LIQUIDITY, 1) &&
+           VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
            verifier.EndTable();
   }
 };
@@ -1936,6 +1941,9 @@ struct FillBuilder {
   void add_liquidity(roq::fbs::Liquidity liquidity) {
     fbb_.AddElement<uint8_t>(Fill::VT_LIQUIDITY, static_cast<uint8_t>(liquidity), 0);
   }
+  void add_exchange_time_utc(int64_t exchange_time_utc) {
+    fbb_.AddElement<int64_t>(Fill::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
+  }
   explicit FillBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -1952,8 +1960,10 @@ inline ::flatbuffers::Offset<Fill> CreateFill(
     ::flatbuffers::Offset<::flatbuffers::String> external_trade_id = 0,
     double quantity = 0.0,
     double price = 0.0,
-    roq::fbs::Liquidity liquidity = roq::fbs::Liquidity::Undefined) {
+    roq::fbs::Liquidity liquidity = roq::fbs::Liquidity::Undefined,
+    int64_t exchange_time_utc = 0) {
   FillBuilder builder_(_fbb);
+  builder_.add_exchange_time_utc(exchange_time_utc);
   builder_.add_price(price);
   builder_.add_quantity(quantity);
   builder_.add_external_trade_id(external_trade_id);
@@ -1971,14 +1981,16 @@ inline ::flatbuffers::Offset<Fill> CreateFillDirect(
     const char *external_trade_id = nullptr,
     double quantity = 0.0,
     double price = 0.0,
-    roq::fbs::Liquidity liquidity = roq::fbs::Liquidity::Undefined) {
+    roq::fbs::Liquidity liquidity = roq::fbs::Liquidity::Undefined,
+    int64_t exchange_time_utc = 0) {
   auto external_trade_id__ = external_trade_id ? _fbb.CreateString(external_trade_id) : 0;
   return roq::fbs::CreateFill(
       _fbb,
       external_trade_id__,
       quantity,
       price,
-      liquidity);
+      liquidity,
+      exchange_time_utc);
 }
 
 struct Layer FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

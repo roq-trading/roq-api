@@ -11,6 +11,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* `Fill.exchange_time_utc`
 * `CancelAllOrdersAck` (#414)
 * EXPERIMENTAL: messages for managing dynamic routes
 

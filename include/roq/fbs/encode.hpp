@@ -285,7 +285,8 @@ template <typename B> auto encode(B &builder, roq::Fill const &value) {
   return CreateFill(
       builder,
       encode(builder, static_cast<std::string_view>(value.external_trade_id)),
-      value.quantity, value.price, encode(builder, value.liquidity));
+      value.quantity, value.price, encode(builder, value.liquidity),
+         encode(builder, value.exchange_time_utc));
 }
 
 template <typename B> auto encode(B &builder, roq::Layer const &value) {

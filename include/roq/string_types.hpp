@@ -24,7 +24,7 @@ static constexpr auto const MAX_LENGTH_REQUEST_TEMPLATE = size_t{16};
 static constexpr auto const MAX_LENGTH_EXTERNAL_ACCOUNT = size_t{64};
 static constexpr auto const MAX_LENGTH_EXTERNAL_ORDER_ID = size_t{64};
 static constexpr auto const MAX_LENGTH_EXTERNAL_TRADE_ID = size_t{40};
-static constexpr auto const MAX_LENGTH_ROUTING_ID = size_t{16};
+static constexpr auto const MAX_LENGTH_ROUTING_ID = size_t{64};
 
 static constexpr auto const MAX_LENGTH_CL_ORD_ID = size_t{36};
 static constexpr auto const MAX_LENGTH_REQUEST_ID = size_t{36};

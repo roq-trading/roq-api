@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `RoutingId` now 64 bytes
 * `GatewaySettings.oms_cancel_all_orders` has been added (#414)
 * `CancelAllOrders` now includes some filters (#414)
 

@@ -139,3 +139,16 @@ TEST_CASE("absl_hash_simple_4", "[string]") {
     CHECK(!(raw[i] != heterogeneous[i]));
   }
 }
+
+TEST_CASE("string_signed_unsigned_issue", "[string]") {
+  constexpr auto text =
+      "01234567890123456789012345678901234567890123456789012345678901234567890123456789"
+      "01234567890123456789012345678901234567890123456789012345678901234567890123456789"sv;
+  String<192> s = text;
+  CHECK(s.size() == 192);
+  CHECK(s.length() == 160);
+  auto sv = static_cast<std::string_view>(s);
+  CHECK(std::empty(sv) == false);
+  CHECK(std::size(sv) == 160);
+  CHECK(sv == text);
+}

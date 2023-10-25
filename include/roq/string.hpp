@@ -101,7 +101,7 @@ struct ROQ_PACKED String {
   constexpr std::size_t size() const { return N; }
 
   constexpr std::size_t length() const {
-    auto tmp = buffer_[N - 1];
+    auto tmp = static_cast<size_t>(static_cast<unsigned char>(buffer_[N - 1]));
     if (buffer_[N - 2])
       return N - (tmp ? 0 : 1);
     return tmp;
@@ -143,14 +143,14 @@ struct ROQ_PACKED String {
 
   constexpr void set_length(size_t len) {
     if (len < N) {
-      value_type last;
+      size_t last;
       if (len < (N - 1)) {
-        buffer_[N - 2] = '\0';
+        buffer_[N - 2] = {};
         last = len;
       } else {
-        last = '\0';
+        last = {};
       }
-      buffer_[N - 1] = last;
+      buffer_[N - 1] = static_cast<value_type>(last);
     }
   }
 

@@ -9,7 +9,7 @@ table MarketByOrderUpdate {
   orders:[MBOUpdate];
   update_type:UpdateType;
   exchange_time_utc:int64;
-  exchange_sequence:int64;
+  exchange_sequence:uint64;
   price_decimals:Decimals;
   quantity_decimals:Decimals;
   max_depth:uint16;

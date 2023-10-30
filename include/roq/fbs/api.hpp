@@ -4987,8 +4987,8 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
   int64_t exchange_time_utc() const {
     return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0);
   }
-  int64_t exchange_sequence() const {
-    return GetField<int64_t>(VT_EXCHANGE_SEQUENCE, 0);
+  uint64_t exchange_sequence() const {
+    return GetField<uint64_t>(VT_EXCHANGE_SEQUENCE, 0);
   }
   roq::fbs::Decimals price_decimals() const {
     return static_cast<roq::fbs::Decimals>(GetField<uint8_t>(VT_PRICE_DECIMALS, 0));
@@ -5017,7 +5017,7 @@ struct MarketByOrderUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
            verifier.VerifyVectorOfTables(orders()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
+           VerifyField<uint64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
            VerifyField<uint8_t>(verifier, VT_PRICE_DECIMALS, 1) &&
            VerifyField<uint8_t>(verifier, VT_QUANTITY_DECIMALS, 1) &&
            VerifyField<uint16_t>(verifier, VT_MAX_DEPTH, 2) &&
@@ -5049,8 +5049,8 @@ struct MarketByOrderUpdateBuilder {
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(MarketByOrderUpdate::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
-  void add_exchange_sequence(int64_t exchange_sequence) {
-    fbb_.AddElement<int64_t>(MarketByOrderUpdate::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
+  void add_exchange_sequence(uint64_t exchange_sequence) {
+    fbb_.AddElement<uint64_t>(MarketByOrderUpdate::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
   }
   void add_price_decimals(roq::fbs::Decimals price_decimals) {
     fbb_.AddElement<uint8_t>(MarketByOrderUpdate::VT_PRICE_DECIMALS, static_cast<uint8_t>(price_decimals), 0);
@@ -5086,7 +5086,7 @@ inline ::flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdate(
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::MBOUpdate>>> orders = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0,
+    uint64_t exchange_sequence = 0,
     roq::fbs::Decimals price_decimals = roq::fbs::Decimals::Undefined,
     roq::fbs::Decimals quantity_decimals = roq::fbs::Decimals::Undefined,
     uint16_t max_depth = 0,
@@ -5121,7 +5121,7 @@ inline ::flatbuffers::Offset<MarketByOrderUpdate> CreateMarketByOrderUpdateDirec
     const std::vector<::flatbuffers::Offset<roq::fbs::MBOUpdate>> *orders = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0,
+    uint64_t exchange_sequence = 0,
     roq::fbs::Decimals price_decimals = roq::fbs::Decimals::Undefined,
     roq::fbs::Decimals quantity_decimals = roq::fbs::Decimals::Undefined,
     uint16_t max_depth = 0,
@@ -5184,8 +5184,8 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
   int64_t exchange_time_utc() const {
     return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0);
   }
-  int64_t exchange_sequence() const {
-    return GetField<int64_t>(VT_EXCHANGE_SEQUENCE, 0);
+  uint64_t exchange_sequence() const {
+    return GetField<uint64_t>(VT_EXCHANGE_SEQUENCE, 0);
   }
   roq::fbs::Decimals price_decimals() const {
     return static_cast<roq::fbs::Decimals>(GetField<uint8_t>(VT_PRICE_DECIMALS, 0));
@@ -5214,7 +5214,7 @@ struct MarketByPriceUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
            verifier.VerifyVectorOfTables(asks()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
+           VerifyField<uint64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
            VerifyField<uint8_t>(verifier, VT_PRICE_DECIMALS, 1) &&
            VerifyField<uint8_t>(verifier, VT_QUANTITY_DECIMALS, 1) &&
            VerifyField<uint16_t>(verifier, VT_MAX_DEPTH, 2) &&
@@ -5248,8 +5248,8 @@ struct MarketByPriceUpdateBuilder {
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(MarketByPriceUpdate::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
-  void add_exchange_sequence(int64_t exchange_sequence) {
-    fbb_.AddElement<int64_t>(MarketByPriceUpdate::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
+  void add_exchange_sequence(uint64_t exchange_sequence) {
+    fbb_.AddElement<uint64_t>(MarketByPriceUpdate::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
   }
   void add_price_decimals(roq::fbs::Decimals price_decimals) {
     fbb_.AddElement<uint8_t>(MarketByPriceUpdate::VT_PRICE_DECIMALS, static_cast<uint8_t>(price_decimals), 0);
@@ -5283,7 +5283,7 @@ inline ::flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdate(
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::MBPUpdate>>> asks = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0,
+    uint64_t exchange_sequence = 0,
     roq::fbs::Decimals price_decimals = roq::fbs::Decimals::Undefined,
     roq::fbs::Decimals quantity_decimals = roq::fbs::Decimals::Undefined,
     uint16_t max_depth = 0,
@@ -5318,7 +5318,7 @@ inline ::flatbuffers::Offset<MarketByPriceUpdate> CreateMarketByPriceUpdateDirec
     const std::vector<::flatbuffers::Offset<roq::fbs::MBPUpdate>> *asks = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0,
+    uint64_t exchange_sequence = 0,
     roq::fbs::Decimals price_decimals = roq::fbs::Decimals::Undefined,
     roq::fbs::Decimals quantity_decimals = roq::fbs::Decimals::Undefined,
     uint16_t max_depth = 0,
@@ -7697,8 +7697,8 @@ struct StatisticsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int64_t exchange_time_utc() const {
     return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0);
   }
-  int64_t exchange_sequence() const {
-    return GetField<int64_t>(VT_EXCHANGE_SEQUENCE, 0);
+  uint64_t exchange_sequence() const {
+    return GetField<uint64_t>(VT_EXCHANGE_SEQUENCE, 0);
   }
   int64_t sending_time_utc() const {
     return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
@@ -7715,7 +7715,7 @@ struct StatisticsUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyVectorOfTables(statistics()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
+           VerifyField<uint64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
            VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            verifier.EndTable();
   }
@@ -7743,8 +7743,8 @@ struct StatisticsUpdateBuilder {
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(StatisticsUpdate::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
-  void add_exchange_sequence(int64_t exchange_sequence) {
-    fbb_.AddElement<int64_t>(StatisticsUpdate::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
+  void add_exchange_sequence(uint64_t exchange_sequence) {
+    fbb_.AddElement<uint64_t>(StatisticsUpdate::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
   }
   void add_sending_time_utc(int64_t sending_time_utc) {
     fbb_.AddElement<int64_t>(StatisticsUpdate::VT_SENDING_TIME_UTC, sending_time_utc, 0);
@@ -7768,7 +7768,7 @@ inline ::flatbuffers::Offset<StatisticsUpdate> CreateStatisticsUpdate(
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Statistics>>> statistics = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0,
+    uint64_t exchange_sequence = 0,
     int64_t sending_time_utc = 0) {
   StatisticsUpdateBuilder builder_(_fbb);
   builder_.add_sending_time_utc(sending_time_utc);
@@ -7795,7 +7795,7 @@ inline ::flatbuffers::Offset<StatisticsUpdate> CreateStatisticsUpdateDirect(
     const std::vector<::flatbuffers::Offset<roq::fbs::Statistics>> *statistics = nullptr,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0,
+    uint64_t exchange_sequence = 0,
     int64_t sending_time_utc = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -8040,8 +8040,8 @@ struct TopOfBook FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int64_t exchange_time_utc() const {
     return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0);
   }
-  int64_t exchange_sequence() const {
-    return GetField<int64_t>(VT_EXCHANGE_SEQUENCE, 0);
+  uint64_t exchange_sequence() const {
+    return GetField<uint64_t>(VT_EXCHANGE_SEQUENCE, 0);
   }
   int64_t sending_time_utc() const {
     return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
@@ -8057,7 +8057,7 @@ struct TopOfBook FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyTable(layer()) &&
            VerifyField<uint8_t>(verifier, VT_UPDATE_TYPE, 1) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
+           VerifyField<uint64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
            VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            verifier.EndTable();
   }
@@ -8085,8 +8085,8 @@ struct TopOfBookBuilder {
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(TopOfBook::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
-  void add_exchange_sequence(int64_t exchange_sequence) {
-    fbb_.AddElement<int64_t>(TopOfBook::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
+  void add_exchange_sequence(uint64_t exchange_sequence) {
+    fbb_.AddElement<uint64_t>(TopOfBook::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
   }
   void add_sending_time_utc(int64_t sending_time_utc) {
     fbb_.AddElement<int64_t>(TopOfBook::VT_SENDING_TIME_UTC, sending_time_utc, 0);
@@ -8110,7 +8110,7 @@ inline ::flatbuffers::Offset<TopOfBook> CreateTopOfBook(
     ::flatbuffers::Offset<roq::fbs::Layer> layer = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0,
+    uint64_t exchange_sequence = 0,
     int64_t sending_time_utc = 0) {
   TopOfBookBuilder builder_(_fbb);
   builder_.add_sending_time_utc(sending_time_utc);
@@ -8137,7 +8137,7 @@ inline ::flatbuffers::Offset<TopOfBook> CreateTopOfBookDirect(
     ::flatbuffers::Offset<roq::fbs::Layer> layer = 0,
     roq::fbs::UpdateType update_type = roq::fbs::UpdateType::Undefined,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0,
+    uint64_t exchange_sequence = 0,
     int64_t sending_time_utc = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;
@@ -8180,8 +8180,8 @@ struct TradeSummary FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int64_t exchange_time_utc() const {
     return GetField<int64_t>(VT_EXCHANGE_TIME_UTC, 0);
   }
-  int64_t exchange_sequence() const {
-    return GetField<int64_t>(VT_EXCHANGE_SEQUENCE, 0);
+  uint64_t exchange_sequence() const {
+    return GetField<uint64_t>(VT_EXCHANGE_SEQUENCE, 0);
   }
   int64_t sending_time_utc() const {
     return GetField<int64_t>(VT_SENDING_TIME_UTC, 0);
@@ -8197,7 +8197,7 @@ struct TradeSummary FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyVector(trades()) &&
            verifier.VerifyVectorOfTables(trades()) &&
            VerifyField<int64_t>(verifier, VT_EXCHANGE_TIME_UTC, 8) &&
-           VerifyField<int64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
+           VerifyField<uint64_t>(verifier, VT_EXCHANGE_SEQUENCE, 8) &&
            VerifyField<int64_t>(verifier, VT_SENDING_TIME_UTC, 8) &&
            verifier.EndTable();
   }
@@ -8222,8 +8222,8 @@ struct TradeSummaryBuilder {
   void add_exchange_time_utc(int64_t exchange_time_utc) {
     fbb_.AddElement<int64_t>(TradeSummary::VT_EXCHANGE_TIME_UTC, exchange_time_utc, 0);
   }
-  void add_exchange_sequence(int64_t exchange_sequence) {
-    fbb_.AddElement<int64_t>(TradeSummary::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
+  void add_exchange_sequence(uint64_t exchange_sequence) {
+    fbb_.AddElement<uint64_t>(TradeSummary::VT_EXCHANGE_SEQUENCE, exchange_sequence, 0);
   }
   void add_sending_time_utc(int64_t sending_time_utc) {
     fbb_.AddElement<int64_t>(TradeSummary::VT_SENDING_TIME_UTC, sending_time_utc, 0);
@@ -8246,7 +8246,7 @@ inline ::flatbuffers::Offset<TradeSummary> CreateTradeSummary(
     ::flatbuffers::Offset<::flatbuffers::String> symbol = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<roq::fbs::Trade>>> trades = 0,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0,
+    uint64_t exchange_sequence = 0,
     int64_t sending_time_utc = 0) {
   TradeSummaryBuilder builder_(_fbb);
   builder_.add_sending_time_utc(sending_time_utc);
@@ -8271,7 +8271,7 @@ inline ::flatbuffers::Offset<TradeSummary> CreateTradeSummaryDirect(
     const char *symbol = nullptr,
     const std::vector<::flatbuffers::Offset<roq::fbs::Trade>> *trades = nullptr,
     int64_t exchange_time_utc = 0,
-    int64_t exchange_sequence = 0,
+    uint64_t exchange_sequence = 0,
     int64_t sending_time_utc = 0) {
   auto exchange__ = exchange ? _fbb.CreateString(exchange) : 0;
   auto symbol__ = symbol ? _fbb.CreateString(symbol) : 0;

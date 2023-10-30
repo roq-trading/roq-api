@@ -30,7 +30,7 @@ struct ROQ_PUBLIC StatisticsUpdate final {
   std::span<Statistics const> statistics;           //!< List of statistics
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
-  int64_t exchange_sequence = {};                   //!< Exchange message sequence number
+  uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
 };
 

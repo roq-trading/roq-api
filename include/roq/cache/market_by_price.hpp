@@ -32,7 +32,7 @@ struct ROQ_PUBLIC MarketByPrice {
   // last update
   virtual uint16_t stream_id() const = 0;
   virtual std::chrono::nanoseconds exchange_time_utc() const = 0;
-  virtual int64_t exchange_sequence() const = 0;
+  virtual uint64_t exchange_sequence() const = 0;
 
   // checksum (useful for validating correct application of incremental updates)
   virtual uint32_t checksum() const = 0;

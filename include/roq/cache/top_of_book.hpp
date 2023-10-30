@@ -63,7 +63,7 @@ struct TopOfBook final {
 
   Layer layer = {};
   std::chrono::nanoseconds exchange_time_utc = {};
-  int64_t exchange_sequence = {};
+  uint64_t exchange_sequence = {};
   std::chrono::nanoseconds sending_time_utc = {};
 };
 

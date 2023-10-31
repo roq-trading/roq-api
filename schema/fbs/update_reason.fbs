@@ -1,9 +1,0 @@
-namespace roq.fbs;
-
-enum UpdateReason:uint8 {
-  Undefined,
-  Created,
-  Modified,
-  Canceled,
-  Filled
-}

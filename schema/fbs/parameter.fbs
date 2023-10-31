@@ -1,9 +1,0 @@
-namespace roq.fbs;
-
-table Parameter {
-  label:string;
-  account:string;
-  exchange:string;
-  symbol:string;
-  value:string;
-}

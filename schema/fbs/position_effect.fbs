@@ -1,7 +1,0 @@
-namespace roq.fbs;
-
-enum PositionEffect:uint8 {
-  Undefined,
-  Open,
-  Close
-}

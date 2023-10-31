@@ -1,5 +1,0 @@
-namespace roq.fbs;
-
-table DownloadBegin {
-  account:string;
-}

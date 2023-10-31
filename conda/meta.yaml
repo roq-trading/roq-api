@@ -23,7 +23,6 @@ requirements:
     - clangdev
     - cmake
     - doxygen
-    - flatbuffers
     - make
   host:
     - abseil-cpp

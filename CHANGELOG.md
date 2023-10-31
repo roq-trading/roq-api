@@ -21,6 +21,10 @@ All notable changes will be documented in this file.
 
 * `oms::OrderUpdate` now includes the max request/response/accepted versions
 
+### Removed
+
+* The FlatBuffers schema and auto-generated is no longer needed (replaced by the roq-codec library)
+
 ## 0.9.7 &ndash; 2023-09-18
 
 ### Added

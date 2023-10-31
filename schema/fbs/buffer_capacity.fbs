@@ -1,9 +1,0 @@
-namespace roq.fbs;
-
-enum BufferCapacity:uint8 {
-  Undefined,
-  Empty,
-  LowWaterMark,
-  HighWaterMark,
-  Full
-}

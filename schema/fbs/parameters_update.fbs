@@ -1,9 +1,0 @@
-include "parameter.fbs";
-
-namespace roq.fbs;
-
-table ParametersUpdate {
-  parameters:[Parameter];
-  update_type:UpdateType;
-  user:string;
-}

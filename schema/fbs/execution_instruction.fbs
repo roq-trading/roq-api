@@ -1,9 +1,0 @@
-namespace roq.fbs;
-
-enum ExecutionInstruction:uint8 {
-  Undefined = 0,
-  ParticipateDoNotInitiate = 1,
-  CancelIfNotBest = 2,
-  DoNotIncrease = 4,
-  DoNotReduce = 8
-}

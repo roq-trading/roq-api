@@ -1,7 +1,0 @@
-namespace roq.fbs;
-
-enum Transport:uint8 {
-  Undefined,
-  TCP,
-  UDP
-}

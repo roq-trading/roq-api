@@ -1,9 +1,0 @@
-namespace roq.fbs;
-
-enum Origin:uint8 {
-  Undefined,
-  Client,
-  Gateway,
-  Broker,
-  Exchange
-}

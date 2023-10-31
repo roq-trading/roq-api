@@ -1,8 +1,0 @@
-namespace roq.fbs;
-
-enum RequestType:uint8 {
-  Undefined,
-  CreateOrder,
-  ModifyOrder,
-  CancelOrder
-}

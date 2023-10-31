@@ -1,9 +1,0 @@
-namespace roq.fbs;
-
-table RiskLimitsUpdate {
-  user:string;
-  strategy_id:uint32;
-  account:string;
-  limits:[RiskLimit];
-  update_type:UpdateType;
-}

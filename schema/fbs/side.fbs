@@ -1,7 +1,0 @@
-namespace roq.fbs;
-
-enum Side:uint8 {
-  Undefined,
-  Buy,
-  Sell
-}

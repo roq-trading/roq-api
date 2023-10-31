@@ -1,6 +1,0 @@
-namespace roq.fbs;
-
-table Measurement {
-  name:string;
-  value:double = nan;
-}

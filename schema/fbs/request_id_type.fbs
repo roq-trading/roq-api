@@ -1,9 +1,0 @@
-namespace roq.fbs;
-
-enum RequestIdType:uint8 {
-  Undefined,
-  Base64,
-  Base32,
-  Simple,
-  UUID,
-}

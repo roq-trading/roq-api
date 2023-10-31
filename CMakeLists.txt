@@ -18,7 +18,6 @@ project(roq-api VERSION ${GIT_REPO_VERSION})
 
 # dependencies
 
-find_package(FlatBuffers REQUIRED)
 # find_package(Python 3 REQUIRED COMPONENTS Development)
 find_package(PythonInterp REQUIRED)
 
@@ -27,7 +26,6 @@ find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
 
 find_program(CLANG_FORMAT clang-format REQUIRED)
-find_program(FLATBUFFERS_COMPILER flatc REQUIRED)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   include(CTest)
@@ -50,20 +48,20 @@ set(AUTOGEN_PY ${CMAKE_SOURCE_DIR}/scripts/autogen.py)
 # sub-projects
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/schema/cpp)
-add_subdirectory(${CMAKE_SOURCE_DIR}/schema/fbs)
+# add_subdirectory(${CMAKE_SOURCE_DIR}/schema/fbs)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/include/roq)
-add_subdirectory(${CMAKE_SOURCE_DIR}/include/roq/fbs)
+# add_subdirectory(${CMAKE_SOURCE_DIR}/include/roq/fbs)
 
 # project
 
 add_library(${PROJECT_NAME} INTERFACE)
 
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-cpp)
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-fbs)
+# add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-fbs)
 
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-cpp)
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-fbs)
+# add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-fbs)
 
 # https://stackoverflow.com/a/73090806
 

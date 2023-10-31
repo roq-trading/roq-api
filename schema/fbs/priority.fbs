@@ -1,7 +1,0 @@
-namespace roq.fbs;
-
-enum Priority:uint32 {
-  Undefined,
-  Primary,
-  Secondary,
-}

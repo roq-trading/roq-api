@@ -1,9 +1,0 @@
-namespace roq.fbs;
-
-enum UpdateAction:uint8 {
-  Undefined,
-  New,
-  Change,
-  Delete,
-  Trade
-}

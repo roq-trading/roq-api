@@ -70,6 +70,21 @@
       "type": "std::string_view"
     },
     {
+      "name": "quantity",
+      "type": "double",
+      "comment": "Quantity (total, indicative)"
+    },
+    {
+      "name": "price",
+      "type": "double",
+      "comment": "Price"
+    },
+    {
+      "name": "stop_price",
+      "type": "double",
+      "comment": "Stop price (depends on order_type and time_in_force)"
+    },
+    {
       "name": "routing_id",
       "type": "std::string_view"
     },

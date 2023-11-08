@@ -27,8 +27,8 @@ struct Position final {
     auto dirty = false;
     dirty |= utils::update(stream_id, position_update.stream_id);
     dirty |= utils::update_if_not_empty(external_account, position_update.external_account);
-    dirty |= utils::update_if_not_empty(long_quantity, position_update.long_quantity);
-    dirty |= utils::update_if_not_empty(short_quantity, position_update.short_quantity);
+    dirty |= utils::update(long_quantity, position_update.long_quantity);
+    dirty |= utils::update(short_quantity, position_update.short_quantity);
     dirty |= utils::update_if_not_empty(exchange_time_utc, position_update.exchange_time_utc);
     return dirty;
   }

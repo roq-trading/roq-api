@@ -4,22 +4,23 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Fixed
+
+* The position cache would treat zero as a missing value and therefore not update (#419)
+
 ### Changed
 
 * `exchange_sequence` is now `uint64_t` (was `int64_t`)
 * `RoutingId` now 64 bytes
 * `GatewaySettings.oms_cancel_all_orders` has been added (#414)
 * `CancelAllOrders` now includes some filters (#414)
+* `oms::OrderUpdate` now includes the max request/response/accepted versions
 
 ### Added
 
 * `Fill.exchange_time_utc`
 * `CancelAllOrdersAck` (#414)
 * EXPERIMENTAL: messages for managing dynamic routes
-
-### Changed
-
-* `oms::OrderUpdate` now includes the max request/response/accepted versions
 
 ### Removed
 

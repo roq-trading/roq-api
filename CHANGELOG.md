@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 0.9.8 &ndash; 2023-11-20
+
 ### Fixed
 
 * The position cache would treat zero as a missing value and therefore not update (#419)

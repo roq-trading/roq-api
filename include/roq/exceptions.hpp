@@ -74,7 +74,7 @@ struct ROQ_PUBLIC Exception : public std::exception {
         line_);
   }
 
- private:
+ protected:
   detail::static_string<32> const file_name_;
   uint32_t const line_;
   std::string const what_;
@@ -93,6 +93,29 @@ struct ROQ_PUBLIC SystemError : public RuntimeError {
   template <typename... Args>
   SystemError(std::error_code ec, format_str<Args...> const &fmt, Args &&...args)
       : RuntimeError{fmt, std::forward<Args>(args)...}, ec_{ec} {}
+
+  template <typename Context>
+  auto format_to(Context &context) const {
+    using namespace fmt::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"(type="{}", )"
+        R"(what="{}", )"
+        R"(file="{}", )"
+        R"(line={}, )"
+        R"(error_code={{)"
+        R"(message="{}", )"
+        R"(value={})"
+        R"(}})"
+        R"(}})"_cf,
+        typeid(*this).name(),
+        what_,
+        file_name_,
+        line_,
+        ec_.message(),
+        ec_.value());
+  }
 
  private:
   std::error_code const ec_;
@@ -259,8 +282,7 @@ struct fmt::formatter<roq::SystemError> {
   }
   template <typename Context>
   auto format(roq::SystemError const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+    return value.format_to(context);
   }
 };
 

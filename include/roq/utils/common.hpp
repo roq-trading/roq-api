@@ -15,6 +15,8 @@
 #include "roq/statistics_type.hpp"
 #include "roq/update_type.hpp"
 
+#include "roq/utils/traits.hpp"
+
 namespace roq {
 namespace utils {
 
@@ -329,10 +331,15 @@ inline constexpr int8_t decimal_digits(Decimals decimals) {
   return -1;
 }
 
-inline constexpr Decimals to_decimals(int8_t decimal_digits) {
-  if (decimal_digits < 0 || decimal_digits > 15)
-    return {};
-  return Decimals{static_cast<std::underlying_type<Decimals>::type>(decimal_digits + 1)};
+template <typename T>
+inline constexpr Decimals to_decimals(T decimal_digits) {
+  if constexpr (is_integer<T>::value) {
+    if (decimal_digits < 0 || decimal_digits > 15)
+      return {};
+    return Decimals{static_cast<std::underlying_type<Decimals>::type>(decimal_digits + 1)};
+  } else {
+    static_assert(always_false<T>, "not supported for this type");
+  }
 }
 
 inline constexpr bool has_more_precision(Decimals lhs, Decimals rhs) {

@@ -41,6 +41,9 @@ TEST_CASE("json_ReferenceData", "[json]") {
       .settlement_date = std::chrono::days{19168},
       .expiry_datetime = {},
       .expiry_datetime_utc = {},
+      .exchange_time_utc = {},
+      .exchange_sequence = {},
+      .sending_time_utc = {},
       .discard = false,
   };
   auto value = fmt::format("{}"sv, json::ReferenceData{context, reference_data});
@@ -69,6 +72,7 @@ TEST_CASE("json_ReferenceData", "[json]") {
                   R"("settlement_date":"2022-06-25",)"
                   R"("expiry_datetime":null,)"
                   R"("expiry_datetime_utc":null,)"
+                  R"("exchange_time_utc":null,)"
                   R"("discard":false)"
                   R"(})"sv;
   CHECK(value == expected);

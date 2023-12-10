@@ -7,6 +7,7 @@
 
 #include "roq/market_status.hpp"
 
+#include "roq/json/datetime.hpp"
 #include "roq/json/string.hpp"
 
 namespace roq {
@@ -23,12 +24,14 @@ struct MarketStatus final {
         R"("stream_id":{},)"
         R"("exchange":{},)"
         R"("symbol":{},)"
-        R"("trading_status":{})"
+        R"("trading_status":{},)"
+        R"("exchange_time_utc":{})"
         R"(}})"_cf,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
-        String{value_.trading_status});
+        String{value_.trading_status},
+        DateTime{value_.exchange_time_utc});
   }
 
  private:

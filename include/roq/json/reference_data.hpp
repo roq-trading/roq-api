@@ -48,6 +48,7 @@ struct ReferenceData final {
         R"("settlement_date":{},)"
         R"("expiry_datetime":{},)"
         R"("expiry_datetime_utc":{},)"
+        R"("exchange_time_utc":{},)"
         R"("discard":{})"
         R"(}})"_cf,
         value_.stream_id,
@@ -74,6 +75,7 @@ struct ReferenceData final {
         Date{value_.settlement_date},
         DateTime{value_.expiry_datetime},  // XXX wrong: using UTC
         DateTime{value_.expiry_datetime_utc},
+        DateTime{value_.exchange_time_utc},
         value_.discard);
   }
 

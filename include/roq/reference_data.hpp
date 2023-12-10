@@ -24,31 +24,34 @@ namespace roq {
 
 //! Update relating to the reference data for a symbol
 struct ROQ_PUBLIC ReferenceData final {
-  uint16_t stream_id = {};                        //!< Stream identifier
-  std::string_view exchange;                      //!< Exchange
-  std::string_view symbol;                        //!< Symbol
-  std::string_view description;                   //!< Description
-  SecurityType security_type = {};                //!< Security type
-  std::string_view base_currency;                 //!< Base currency
-  std::string_view quote_currency;                //!< Quote currency
-  std::string_view margin_currency;               //!< Margin currency
-  std::string_view commission_currency;           //!< Commission currency
-  double tick_size = NaN;                         //!< Minimum price increment
-  double multiplier = NaN;                        //!< Multiplier (notional)
-  double min_notional = NaN;                      //!< Minimum notional (price * quantity)
-  double min_trade_vol = NaN;                     //!< Minimum trade volume
-  double max_trade_vol = NaN;                     //!< Maximum trade volume
-  double trade_vol_step_size = NaN;               //!< Trade volume step size
-  OptionType option_type = {};                    //!< Option type
-  std::string_view strike_currency;               //!< Strike currency
-  double strike_price = NaN;                      //!< Strike price
-  std::string_view underlying;                    //!< Underlying instrument
-  std::string_view time_zone;                     //!< Time-zone
-  std::chrono::days issue_date = {};              //!< Issue date
-  std::chrono::days settlement_date = {};         //!< Settlement date
-  std::chrono::seconds expiry_datetime = {};      //!< Expiry datetime
-  std::chrono::seconds expiry_datetime_utc = {};  //!< Expiry datetime
-  bool discard = false;                           //!< Discard market data updates?
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view exchange;                        //!< Exchange
+  std::string_view symbol;                          //!< Symbol
+  std::string_view description;                     //!< Description
+  SecurityType security_type = {};                  //!< Security type
+  std::string_view base_currency;                   //!< Base currency
+  std::string_view quote_currency;                  //!< Quote currency
+  std::string_view margin_currency;                 //!< Margin currency
+  std::string_view commission_currency;             //!< Commission currency
+  double tick_size = NaN;                           //!< Minimum price increment
+  double multiplier = NaN;                          //!< Multiplier (notional)
+  double min_notional = NaN;                        //!< Minimum notional (price * quantity)
+  double min_trade_vol = NaN;                       //!< Minimum trade volume
+  double max_trade_vol = NaN;                       //!< Maximum trade volume
+  double trade_vol_step_size = NaN;                 //!< Trade volume step size
+  OptionType option_type = {};                      //!< Option type
+  std::string_view strike_currency;                 //!< Strike currency
+  double strike_price = NaN;                        //!< Strike price
+  std::string_view underlying;                      //!< Underlying instrument
+  std::string_view time_zone;                       //!< Time-zone
+  std::chrono::days issue_date = {};                //!< Issue date
+  std::chrono::days settlement_date = {};           //!< Settlement date
+  std::chrono::seconds expiry_datetime = {};        //!< Expiry datetime
+  std::chrono::seconds expiry_datetime_utc = {};    //!< Expiry datetime
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
+  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
+  bool discard = false;                             //!< Discard market data updates?
 };
 
 template <>
@@ -96,6 +99,9 @@ struct fmt::formatter<roq::ReferenceData> {
         R"(settlement_date={}, )"
         R"(expiry_datetime={}, )"
         R"(expiry_datetime_utc={}, )"
+        R"(exchange_time_utc={}, )"
+        R"(exchange_sequence={}, )"
+        R"(sending_time_utc={}, )"
         R"(discard={})"
         R"(}})"_cf,
         value.stream_id,
@@ -122,6 +128,9 @@ struct fmt::formatter<roq::ReferenceData> {
         value.settlement_date,
         value.expiry_datetime,
         value.expiry_datetime_utc,
+        value.exchange_time_utc,
+        value.exchange_sequence,
+        value.sending_time_utc,
         value.discard);
   }
 };

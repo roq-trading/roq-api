@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* Adding exchange time, exchange sequence and sending time to ReferenceData and MarketStatus
+
 ## 0.9.8 &ndash; 2023-11-20
 
 ### Fixed

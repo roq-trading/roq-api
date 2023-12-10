@@ -40,6 +40,7 @@ struct ReferenceData final {
     settlement_date = {};
     expiry_datetime = {};
     expiry_datetime_utc = {};
+    exchange_time_utc = {};
     discard = {};
   }
 
@@ -67,6 +68,7 @@ struct ReferenceData final {
     dirty |= utils::update_if_not_empty(settlement_date, reference_data.settlement_date);
     dirty |= utils::update_if_not_empty(expiry_datetime, reference_data.expiry_datetime);
     dirty |= utils::update_if_not_empty(expiry_datetime_utc, reference_data.expiry_datetime_utc);
+    dirty |= utils::update_if_not_empty(exchange_time_utc, reference_data.exchange_time_utc);
     dirty |= utils::update(discard, reference_data.discard);
     return dirty;
   }
@@ -100,6 +102,9 @@ struct ReferenceData final {
         .settlement_date = settlement_date,
         .expiry_datetime = expiry_datetime,
         .expiry_datetime_utc = expiry_datetime_utc,
+        .exchange_time_utc = exchange_time_utc,
+        .exchange_sequence = {},
+        .sending_time_utc = {},
         .discard = discard,
     };
   }
@@ -127,6 +132,7 @@ struct ReferenceData final {
   std::chrono::days settlement_date = {};
   std::chrono::seconds expiry_datetime = {};
   std::chrono::seconds expiry_datetime_utc = {};
+  std::chrono::nanoseconds exchange_time_utc = {};
   bool discard = {};
 };
 

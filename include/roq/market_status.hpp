@@ -6,9 +6,11 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/chrono.h>
 #include <fmt/compile.h>
 #include <fmt/format.h>
 
+#include <chrono>
 #include <string_view>
 
 #include "roq/event.hpp"
@@ -20,10 +22,13 @@ namespace roq {
 
 //! Update relating to current trading status of a symbol
 struct ROQ_PUBLIC MarketStatus final {
-  uint16_t stream_id = {};            //!< Stream identifier
-  std::string_view exchange;          //!< Exchange
-  std::string_view symbol;            //!< Symbol
-  TradingStatus trading_status = {};  //!< Trading status
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view exchange;                        //!< Exchange
+  std::string_view symbol;                          //!< Symbol
+  TradingStatus trading_status = {};                //!< Trading status
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
+  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
 };
 
 template <>
@@ -50,12 +55,18 @@ struct fmt::formatter<roq::MarketStatus> {
         R"(stream_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(trading_status={})"
+        R"(trading_status={}, )"
+        R"(exchange_time_utc={}, )"
+        R"(exchange_sequence={}, )"
+        R"(sending_time_utc={})"
         R"(}})"_cf,
         value.stream_id,
         value.exchange,
         value.symbol,
-        value.trading_status);
+        value.trading_status,
+        value.exchange_time_utc,
+        value.exchange_sequence,
+        value.sending_time_utc);
   }
 };
 

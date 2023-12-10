@@ -121,6 +121,18 @@
       "comment": "Expiry datetime"
     },
     {
+      "name": "exchange_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
+      "name": "exchange_sequence",
+      "type": "uint64_t"
+    },
+    {
+      "name": "sending_time_utc",
+      "type": "std::chrono::nanoseconds"
+    },
+    {
       "name": "discard",
       "type": "bool",
       "comment": "Discard market data updates?"

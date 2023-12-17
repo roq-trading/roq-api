@@ -8,6 +8,10 @@ All notable changes will be documented in this file.
 
 * Adding exchange time, exchange sequence and sending time to ReferenceData and MarketStatus
 
+### Changed
+
+* Added `MarginMode` to `FundsUpdate` and `PositionUpdate` (#430)
+
 ## 0.9.8 &ndash; 2023-11-20
 
 ### Fixed

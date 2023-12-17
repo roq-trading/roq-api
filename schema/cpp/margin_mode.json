@@ -1,0 +1,16 @@
+{
+  "name": "MarginMode",
+  "type": "enum",
+  "comment": "Enumeration of margin modes",
+  "values": [
+    {
+      "name": "Isolated"
+    },
+    {
+      "name": "Cross"
+    },
+    {
+      "name": "Portfolio"
+    }
+  ]
+}

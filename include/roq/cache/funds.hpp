@@ -17,43 +17,82 @@ struct Funds final {
 
   void clear() {
     stream_id = {};
-    balance = NaN;
-    hold = NaN;
     external_account.clear();
-    exchange_time_utc = {};
+    for (auto &margin_mode : magic_enum::enum_values<MarginMode>()) {
+      auto index = to_index(margin_mode);
+      new (&items_[index]) Item{
+          .balance = NaN,
+          .hold = NaN,
+          .exchange_time_utc = {},
+      };
+    }
   }
 
   [[nodiscard]] bool operator()(FundsUpdate const &funds_update) {
     auto dirty = false;
     dirty |= utils::update(stream_id, funds_update.stream_id);
-    dirty |= utils::update_if_not_empty(balance, funds_update.balance);
-    dirty |= utils::update_if_not_empty(hold, funds_update.hold);
     dirty |= utils::update_if_not_empty(external_account, funds_update.external_account);
-    dirty |= utils::update_if_not_empty(exchange_time_utc, funds_update.exchange_time_utc);
+    auto index = to_index(funds_update.margin_mode);
+    auto &item = items_[index];
+    dirty |= utils::update_if_not_empty(item.balance, funds_update.balance);
+    dirty |= utils::update_if_not_empty(item.hold, funds_update.hold);
+    dirty |= utils::update_if_not_empty(item.exchange_time_utc, funds_update.exchange_time_utc);
     return dirty;
   }
 
-  template <typename Context>
-  [[nodiscard]] FundsUpdate convert(Context const &context) const {
-    return {
-        .stream_id = stream_id,
-        .account = context.account,
-        .currency = context.symbol,
-        .balance = balance,
-        .hold = hold,
-        .external_account = external_account,
-        .update_type = UpdateType::SNAPSHOT,
-        .exchange_time_utc = exchange_time_utc,
-        .sending_time_utc = {},
-    };
+  template <typename Context, typename Callback>
+  bool dispatch(Context const &context, Callback callback) const {
+    auto result = false;
+    for (auto &margin_mode : magic_enum::enum_values<MarginMode>()) {
+      auto index = to_index(margin_mode);
+      auto &item = items_[index];
+      if (std::isnan(item.balance) && std::isnan(item.hold))
+        continue;
+      result = true;
+      auto funds_update = FundsUpdate{
+          .stream_id = stream_id,
+          .account = context.account,
+          .margin_mode = margin_mode,
+          .currency = context.symbol,
+          .balance = item.balance,
+          .hold = item.hold,
+          .external_account = external_account,
+          .update_type = UpdateType::SNAPSHOT,
+          .exchange_time_utc = item.exchange_time_utc,
+          .sending_time_utc = {},
+      };
+      callback(funds_update);
+    }
+    return result;
+  }
+
+  size_t size() const {
+    auto result = size_t{};
+    for (auto &margin_mode : magic_enum::enum_values<MarginMode>()) {
+      auto index = to_index(margin_mode);
+      auto &item = items_[index];
+      if (!(std::isnan(item.balance) && std::isnan(item.hold)))
+        ++result;
+    }
+    return result;
   }
 
   uint16_t stream_id = {};
 
-  double balance = NaN;
-  double hold = NaN;
   ExternalAccount external_account;
-  std::chrono::nanoseconds exchange_time_utc = {};
+
+ private:
+  struct Item final {
+    double balance = NaN;
+    double hold = NaN;
+    std::chrono::nanoseconds exchange_time_utc = {};
+  };
+
+  std::array<Item, magic_enum::enum_count<MarginMode>()> items_;
+
+  static size_t to_index(MarginMode margin_mode) {
+    return static_cast<std::underlying_type<std::decay<decltype(margin_mode)>::type>::type>(margin_mode);
+  }
 };
 
 }  // namespace cache

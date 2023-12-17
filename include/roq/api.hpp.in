@@ -19,6 +19,7 @@
 #include "roq/execution_instruction.hpp"
 #include "roq/filter.hpp"
 #include "roq/liquidity.hpp"
+#include "roq/margin_mode.hpp"
 #include "roq/option_type.hpp"
 #include "roq/order_cancel_policy.hpp"
 #include "roq/order_management.hpp"

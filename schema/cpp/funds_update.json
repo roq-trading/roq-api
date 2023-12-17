@@ -12,6 +12,10 @@
       "type": "std::string_view"
     },
     {
+      "name": "margin_mode",
+      "type": "MarginMode"
+    },
+    {
       "name": "currency",
       "type": "std::string_view"
     },

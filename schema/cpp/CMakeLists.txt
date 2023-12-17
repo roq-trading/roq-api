@@ -7,8 +7,8 @@ set(SOURCES
     batch_begin.json
     batch_end.json
     buffer_capacity.json
-    cancel_all_orders.json
     cancel_all_orders_ack.json
+    cancel_all_orders.json
     cancel_order.json
     category.json
     connected.json
@@ -31,6 +31,7 @@ set(SOURCES
     gateway_status.json
     layer.json
     liquidity.json
+    margin_mode.json
     market_by_order_update.json
     market_by_price_update.json
     market_status.json

@@ -14,6 +14,7 @@
 #include <string_view>
 
 #include "roq/event.hpp"
+#include "roq/margin_mode.hpp"
 #include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/trace.hpp"
@@ -25,6 +26,7 @@ namespace roq {
 struct ROQ_PUBLIC PositionUpdate final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view account;                         //!< Account name
+  MarginMode margin_mode = {};                      //!< Margin mode
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
   std::string_view external_account;                //!< External account name
@@ -58,6 +60,7 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"({{)"
         R"(stream_id={}, )"
         R"(account="{}", )"
+        R"(margin_mode={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(external_account="{}", )"
@@ -69,6 +72,7 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"(}})"_cf,
         value.stream_id,
         value.account,
+        value.margin_mode,
         value.exchange,
         value.symbol,
         value.external_account,

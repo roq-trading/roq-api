@@ -26,9 +26,9 @@ namespace roq {
 struct ROQ_PUBLIC PositionUpdate final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view account;                         //!< Account name
-  MarginMode margin_mode = {};                      //!< Margin mode
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
+  MarginMode margin_mode = {};                      //!< Margin mode
   std::string_view external_account;                //!< External account name
   double long_quantity = NaN;                       //!< Current long position
   double short_quantity = NaN;                      //!< Current short position
@@ -60,9 +60,9 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"({{)"
         R"(stream_id={}, )"
         R"(account="{}", )"
-        R"(margin_mode={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
+        R"(margin_mode={}, )"
         R"(external_account="{}", )"
         R"(long_quantity={}, )"
         R"(short_quantity={}, )"
@@ -72,9 +72,9 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"(}})"_cf,
         value.stream_id,
         value.account,
-        value.margin_mode,
         value.exchange,
         value.symbol,
+        value.margin_mode,
         value.external_account,
         value.long_quantity,
         value.short_quantity,

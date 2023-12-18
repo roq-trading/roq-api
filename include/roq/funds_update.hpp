@@ -26,8 +26,8 @@ namespace roq {
 struct ROQ_PUBLIC FundsUpdate final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view account;                         //!< Account name
-  MarginMode margin_mode = {};                      //!< Margin mode
   std::string_view currency;                        //!< Currency
+  MarginMode margin_mode = {};                      //!< Margin mode
   double balance = NaN;                             //!< Current funds
   double hold = NaN;                                //!< Funds on hold
   std::string_view external_account;                //!< External account name
@@ -59,8 +59,8 @@ struct fmt::formatter<roq::FundsUpdate> {
         R"({{)"
         R"(stream_id={}, )"
         R"(account="{}", )"
-        R"(margin_mode={}, )"
         R"(currency="{}", )"
+        R"(margin_mode={}, )"
         R"(balance={}, )"
         R"(hold={}, )"
         R"(external_account="{}", )"
@@ -70,8 +70,8 @@ struct fmt::formatter<roq::FundsUpdate> {
         R"(}})"_cf,
         value.stream_id,
         value.account,
-        value.margin_mode,
         value.currency,
+        value.margin_mode,
         value.balance,
         value.hold,
         value.external_account,

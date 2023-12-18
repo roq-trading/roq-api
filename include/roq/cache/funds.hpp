@@ -52,8 +52,8 @@ struct Funds final {
       auto funds_update = FundsUpdate{
           .stream_id = stream_id,
           .account = context.account,
-          .margin_mode = margin_mode,
           .currency = context.symbol,
+          .margin_mode = margin_mode,
           .balance = item.balance,
           .hold = item.hold,
           .external_account = external_account,

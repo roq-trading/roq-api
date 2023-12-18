@@ -52,9 +52,9 @@ struct Position final {
       auto position_update = PositionUpdate{
           .stream_id = stream_id,
           .account = context.account,
-          .margin_mode = margin_mode,
           .exchange = context.exchange,
           .symbol = context.symbol,
+          .margin_mode = margin_mode,
           .external_account = external_account,
           .long_quantity = item.long_quantity,
           .short_quantity = item.short_quantity,

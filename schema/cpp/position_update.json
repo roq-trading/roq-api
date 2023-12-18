@@ -12,16 +12,16 @@
       "type": "std::string_view"
     },
     {
-      "name": "margin_mode",
-      "type": "MarginMode"
-    },
-    {
       "name": "exchange",
       "type": "std::string_view"
     },
     {
       "name": "symbol",
       "type": "std::string_view"
+    },
+    {
+      "name": "margin_mode",
+      "type": "MarginMode"
     },
     {
       "name": "external_account",

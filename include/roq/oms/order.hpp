@@ -4,6 +4,8 @@
 
 #include "roq/api.hpp"
 
+#include "roq/precision.hpp"
+
 namespace roq {
 namespace oms {
 
@@ -41,8 +43,8 @@ struct ROQ_PUBLIC Order final {
   uint32_t max_request_version = {};
   uint32_t max_response_version = {};
   uint32_t max_accepted_version = {};
-  Decimals price_decimals = {};
-  Decimals quantity_decimals = {};
+  Precision quantity_precision;
+  Precision price_precision;
   UpdateType update_type = {};
   User user;
   uint32_t strategy_id = {};
@@ -94,8 +96,8 @@ struct fmt::formatter<roq::oms::Order> {
         R"(max_request_version={}, )"
         R"(max_response_version={}, )"
         R"(max_accepted_version={}, )"
-        R"(price_decimals={}, )"
-        R"(quantity_decimals={}, )"
+        R"(quantity_precision={}, )"
+        R"(price_precision={}, )"
         R"(update_type={}, )"
         R"(user="{}", )"
         R"(strategy_id={})"
@@ -131,8 +133,8 @@ struct fmt::formatter<roq::oms::Order> {
         value.max_request_version,
         value.max_response_version,
         value.max_accepted_version,
-        value.price_decimals,
-        value.quantity_decimals,
+        value.quantity_precision,
+        value.price_precision,
         value.update_type,
         value.user,
         value.strategy_id);

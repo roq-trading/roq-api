@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* OMS validate quantity and price against reference data (#432)
 * Added `MarginMode` to `FundsUpdate` and `PositionUpdate` (#430)
 
 ## 0.9.8 &ndash; 2023-11-20

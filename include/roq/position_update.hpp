@@ -30,8 +30,8 @@ struct ROQ_PUBLIC PositionUpdate final {
   std::string_view symbol;                          //!< Symbol
   MarginMode margin_mode = {};                      //!< Margin mode
   std::string_view external_account;                //!< External account name
-  double long_quantity = NaN;                       //!< Current long position
-  double short_quantity = NaN;                      //!< Current short position
+  double long_quantity = NaN;                       //!< Current long position (absolute)
+  double short_quantity = NaN;                      //!< Current short position (absolute)
   UpdateType update_type = {};                      //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)

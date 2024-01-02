@@ -30,12 +30,12 @@
     {
       "name": "long_quantity",
       "type": "double",
-      "comment": "Current long position"
+      "comment": "Current long position (absolute)"
     },
     {
       "name": "short_quantity",
       "type": "double",
-      "comment": "Current short position"
+      "comment": "Current short position (absolute)"
     },
     {
       "name": "update_type",

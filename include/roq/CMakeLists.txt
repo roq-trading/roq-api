@@ -52,6 +52,7 @@ set(SOURCES
     origin.json
     parameter.json
     parameters_update.json
+    portfolio.json
     portfolio_update.json
     position_effect.json
     position.json

@@ -45,7 +45,7 @@ struct ROQ_PUBLIC Dispatcher {
   virtual void send(CustomMatrix const &, uint8_t source) = 0;
 
   //! Send a request to update a portfolio (position manager, only)  !!! EXPERIMENTAL !!!
-  virtual void send(PortfolioUpdate const &, uint8_t source) = 0;
+  virtual void send(Portfolio const &, uint8_t source) = 0;
 
   //! Send a request to update risk limits (risk manager, only)  !!! EXPERIMENTAL !!!
   virtual void send(RiskLimits const &, uint8_t source) = 0;

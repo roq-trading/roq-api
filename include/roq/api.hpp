@@ -97,6 +97,7 @@
 #include "roq/order_ack.hpp"
 #include "roq/order_update.hpp"
 #include "roq/parameters_update.hpp"
+#include "roq/portfolio.hpp"
 #include "roq/portfolio_update.hpp"
 #include "roq/position_update.hpp"
 #include "roq/rate_limit_trigger.hpp"

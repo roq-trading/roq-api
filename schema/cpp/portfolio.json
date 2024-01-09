@@ -1,7 +1,7 @@
 {
   "name": "Portfolio",
   "type": "message",
-  "comment": "Portfolio !!! EXPERIMENTAL !!!",
+  "comment": "Portfolio",
   "values": [
     {
       "name": "user",

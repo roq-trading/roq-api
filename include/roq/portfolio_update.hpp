@@ -22,7 +22,7 @@
 
 namespace roq {
 
-//! Portfolio update  !!! EXPERIMENTAL !!!
+//! Portfolio update
 struct ROQ_PUBLIC PortfolioUpdate final {
   std::string_view user;                            //!< User (optional)
   uint32_t strategy_id = {};                        //!< Strategy identifier (optional)

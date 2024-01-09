@@ -16,7 +16,7 @@
 
 namespace roq {
 
-//! Position  !!! EXPERIMENTAL !!!
+//! Position
 struct ROQ_PUBLIC Position final {
   Exchange exchange;            //!< Exchange
   Symbol symbol;                //!< Symbol

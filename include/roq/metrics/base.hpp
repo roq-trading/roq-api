@@ -4,7 +4,6 @@
 
 #include "roq/compat.hpp"
 
-#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <cstdint>

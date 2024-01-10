@@ -6,7 +6,6 @@
 
 #include <absl/base/internal/endian.h>
 
-#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include <algorithm>

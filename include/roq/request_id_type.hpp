@@ -8,7 +8,6 @@
 
 #include <magic_enum.hpp>
 
-#include <fmt/compile.h>
 #include <fmt/format.h>
 
 namespace roq {

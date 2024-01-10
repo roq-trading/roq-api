@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include <fmt/compile.h>
 #include <fmt/format.h>
 
 #include "roq/market_status.hpp"

@@ -36,21 +36,16 @@ inline constexpr std::string_view get_name<ExternalLatency>() {
 
 template <>
 struct fmt::formatter<roq::ExternalLatency> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::ExternalLatency const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::ExternalLatency const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(stream_id={}, )"
         R"(account="{}", )"
         R"(latency={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.stream_id,
         value.account,
         value.latency);
@@ -59,19 +54,15 @@ struct fmt::formatter<roq::ExternalLatency> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::ExternalLatency>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::ExternalLatency> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::ExternalLatency> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(external_latency={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -79,20 +70,15 @@ struct fmt::formatter<roq::Event<roq::ExternalLatency>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::ExternalLatency>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::ExternalLatency> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::ExternalLatency> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(external_latency={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

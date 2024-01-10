@@ -25,13 +25,9 @@ struct ROQ_PUBLIC Response final {
 
 template <>
 struct fmt::formatter<roq::oms::Response> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::oms::Response const &value, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::oms::Response const &value, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -44,7 +40,7 @@ struct fmt::formatter<roq::oms::Response> {
         R"(request_id="{}", )"
         R"(quantity={}, )"
         R"(price={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.type,
         value.origin,
         value.status,

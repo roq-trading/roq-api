@@ -153,273 +153,189 @@ static_assert(sizeof(ParameterValue) == detail::MAX_LENGTH_PARAMETER_VALUE);
 
 template <>
 struct fmt::formatter<roq::Source> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Source const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Source const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::User> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::User const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::User const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::Account> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Account const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Account const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::Exchange> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Exchange const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Exchange const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::Symbol> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Symbol const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Symbol const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::Currency> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Currency const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Currency const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::MBOOrderId> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::MBOOrderId const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::MBOOrderId const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::RequestTemplate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::RequestTemplate const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::RequestTemplate const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::ExternalAccount> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::ExternalAccount const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::ExternalAccount const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::ExternalOrderId> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::ExternalOrderId const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::ExternalOrderId const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::ExternalTradeId> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::ExternalTradeId const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::ExternalTradeId const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::RoutingId> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::RoutingId const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::RoutingId const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::ClOrdId> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::ClOrdId const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::ClOrdId const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::RequestId> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::RequestId const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::RequestId const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::Label> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Label const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Label const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::MeasurementKey> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::MeasurementKey const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::MeasurementKey const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::MatrixKey> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::MatrixKey const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::MatrixKey const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::Description> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Description const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Description const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::TimeZone> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::TimeZone const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::TimeZone const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::ParameterKey> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::ParameterKey const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::ParameterKey const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::ParameterValue> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::ParameterValue const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<std::string_view>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::ParameterValue const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }
 };

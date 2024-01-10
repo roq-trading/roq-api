@@ -48,16 +48,12 @@ struct ROQ_PUBLIC Config {
 
 template <>
 struct fmt::formatter<roq::client::Settings> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::client::Settings const &value, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::client::Settings const &value, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
-        "{{order_cancel_policy={}, order_management={}}}"_cf,
+        "{{order_cancel_policy={}, order_management={}}}"sv,
         value.order_cancel_policy,
         value.order_management);
   }

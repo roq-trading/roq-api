@@ -23,37 +23,29 @@ struct ROQ_PUBLIC CustomMessage final {
 
 template <>
 struct fmt::formatter<roq::client::CustomMessage> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::client::CustomMessage const &value, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::client::CustomMessage const &value, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(length={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         std::size(value.message));
   }
 };
 
 template <>
 struct fmt::formatter<roq::Event<roq::client::CustomMessage>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::client::CustomMessage> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::client::CustomMessage> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(message_info={}, )"
         R"(custom_message={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.message_info,
         event.value);
   }

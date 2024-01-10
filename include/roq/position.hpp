@@ -34,14 +34,9 @@ inline constexpr std::string_view get_name<Position>() {
 
 template <>
 struct fmt::formatter<roq::Position> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Position const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Position const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -49,7 +44,7 @@ struct fmt::formatter<roq::Position> {
         R"(symbol="{}", )"
         R"(long_position={}, )"
         R"(short_position={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.exchange,
         value.symbol,
         value.long_position,
@@ -59,19 +54,15 @@ struct fmt::formatter<roq::Position> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::Position>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::Position> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::Position> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(position={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -79,20 +70,15 @@ struct fmt::formatter<roq::Event<roq::Position>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::Position>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::Position> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::Position> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(position={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

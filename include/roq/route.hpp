@@ -32,20 +32,15 @@ inline constexpr std::string_view get_name<Route>() {
 
 template <>
 struct fmt::formatter<roq::Route> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Route const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Route const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(strategy_id={}, )"
         R"(status={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.strategy_id,
         value.status);
   }
@@ -53,19 +48,15 @@ struct fmt::formatter<roq::Route> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::Route>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::Route> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::Route> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(route={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -73,20 +64,15 @@ struct fmt::formatter<roq::Event<roq::Route>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::Route>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::Route> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::Route> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(route={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

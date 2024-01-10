@@ -20,18 +20,17 @@ struct Message final {
 
   Message(std::byte const *data, size_t length) : Message{{data, length}} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
-    using namespace fmt::literals;
+  auto format_to(auto &context) const {
+    using namespace std::literals;
     for (auto b : buffer_) {
       if (b == std::byte{0x1}) {
-        fmt::format_to(context.out(), "|"_cf);
+        fmt::format_to(context.out(), "|"sv);
       } else {
         char c = static_cast<char>(b);
         if (::isprint(c))
-          fmt::format_to(context.out(), "{}"_cf, c);
+          fmt::format_to(context.out(), "{}"sv, c);
         else
-          fmt::format_to(context.out(), "."_cf);
+          fmt::format_to(context.out(), "."sv);
       }
     }
     return context.out();
@@ -47,12 +46,6 @@ struct Message final {
 
 template <>
 struct fmt::formatter<roq::debug::fix::Message> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::debug::fix::Message const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::debug::fix::Message const &value, format_context &context) const { return value.format_to(context); }
 };

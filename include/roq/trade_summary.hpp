@@ -42,14 +42,9 @@ inline constexpr std::string_view get_name<TradeSummary>() {
 
 template <>
 struct fmt::formatter<roq::TradeSummary> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::TradeSummary const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::TradeSummary const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -60,7 +55,7 @@ struct fmt::formatter<roq::TradeSummary> {
         R"(exchange_time_utc={}, )"
         R"(exchange_sequence={}, )"
         R"(sending_time_utc={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -73,19 +68,15 @@ struct fmt::formatter<roq::TradeSummary> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::TradeSummary>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::TradeSummary> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::TradeSummary> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(trade_summary={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -93,20 +84,15 @@ struct fmt::formatter<roq::Event<roq::TradeSummary>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::TradeSummary>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::TradeSummary> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::TradeSummary> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(trade_summary={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

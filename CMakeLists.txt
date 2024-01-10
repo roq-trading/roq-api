@@ -63,13 +63,6 @@ add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-cpp)
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-cpp)
 # add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-fbs)
 
-# https://stackoverflow.com/a/73090806
-
-if(APPLE)
-  target_compile_definitions(${PROJECT_NAME} INTERFACE FMT_USE_NONTYPE_TEMPLATE_ARGS=1)
-  add_compile_definitions(FMT_USE_NONTYPE_TEMPLATE_ARGS=1)
-endif()
-
 # sub-projects
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/roq)

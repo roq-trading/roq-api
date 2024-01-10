@@ -46,14 +46,9 @@ inline constexpr std::string_view get_name<FundsUpdate>() {
 
 template <>
 struct fmt::formatter<roq::FundsUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::FundsUpdate const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::FundsUpdate const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -67,7 +62,7 @@ struct fmt::formatter<roq::FundsUpdate> {
         R"(update_type={}, )"
         R"(exchange_time_utc={}, )"
         R"(sending_time_utc={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.stream_id,
         value.account,
         value.currency,
@@ -83,19 +78,15 @@ struct fmt::formatter<roq::FundsUpdate> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::FundsUpdate>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::FundsUpdate> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::FundsUpdate> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(funds_update={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -103,20 +94,15 @@ struct fmt::formatter<roq::Event<roq::FundsUpdate>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::FundsUpdate>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::FundsUpdate> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::FundsUpdate> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(funds_update={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

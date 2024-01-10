@@ -15,10 +15,10 @@ struct DateTime final {
   explicit DateTime(T value) : value_{value} {}
 
   auto format_to(auto &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     if (value_.count())
-      return fmt::format_to(context.out(), R"("{}")"_cf, utils::DateTime_iso8601{value_});
-    return fmt::format_to(context.out(), "null"_cf);
+      return fmt::format_to(context.out(), R"("{}")"sv, utils::DateTime_iso8601{value_});
+    return fmt::format_to(context.out(), "null"sv);
   }
 
  private:
@@ -30,12 +30,6 @@ struct DateTime final {
 
 template <typename T>
 struct fmt::formatter<roq::json::DateTime<T>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::DateTime<T> const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::DateTime<T> const &value, format_context &context) const { return value.format_to(context); }
 };

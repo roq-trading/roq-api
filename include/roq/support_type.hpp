@@ -38,14 +38,9 @@ enum class SupportType : uint64_t {
 
 template <>
 struct fmt::formatter<roq::SupportType> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::SupportType const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::SupportType const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     auto name{[&]() {
       switch (value) {
         using enum roq::SupportType;
@@ -88,6 +83,6 @@ struct fmt::formatter<roq::SupportType> {
       }
       return "<UNKNOWN>"sv;
     }()};
-    return fmt::format_to(context.out(), "{}"_cf, name);
+    return fmt::format_to(context.out(), "{}"sv, name);
   }
 };

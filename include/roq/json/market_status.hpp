@@ -17,7 +17,7 @@ struct MarketStatus final {
   explicit MarketStatus(roq::MarketStatus const &value) : value_{value} {}
 
   auto format_to(auto &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -26,7 +26,7 @@ struct MarketStatus final {
         R"("symbol":{},)"
         R"("trading_status":{},)"
         R"("exchange_time_utc":{})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
@@ -43,12 +43,6 @@ struct MarketStatus final {
 
 template <>
 struct fmt::formatter<roq::json::MarketStatus> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::MarketStatus const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::MarketStatus const &value, format_context &context) const { return value.format_to(context); }
 };

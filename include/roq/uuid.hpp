@@ -124,13 +124,9 @@ static_assert(sizeof(UUID) == 16);
 
 template <>
 struct fmt::formatter<roq::UUID> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::UUID const &value, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::UUID const &value, format_context &context) const {
+    using namespace std::literals;
     auto data = std::data(value);
     return fmt::format_to(
         context.out(),
@@ -138,7 +134,7 @@ struct fmt::formatter<roq::UUID> {
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
-        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"_cf,
+        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"sv,
         data[0],
         data[1],
         data[2],

@@ -26,18 +26,16 @@ enum class {{ name }} : uint8_t {
 
 template <>
 struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
+  constexpr auto parse(format_parse_context &context) {
     return std::begin(context);
   }
-  template <typename Context>
   auto format(
       {{ namespaces | join('::') }}::{{ name }} const& value,
-      Context& context) const {
-    using namespace fmt::literals;
+      format_context& context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
-        "{}"_cf,
+        "{}"sv,
         magic_enum::enum_name(value));
   }
 };

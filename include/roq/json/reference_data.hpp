@@ -20,7 +20,7 @@ struct ReferenceData final {
   ReferenceData(Context const &context, roq::ReferenceData const &value) : context_{context}, value_{value} {}
 
   auto format_to(auto &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -50,7 +50,7 @@ struct ReferenceData final {
         R"("expiry_datetime_utc":{},)"
         R"("exchange_time_utc":{},)"
         R"("discard":{})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
@@ -89,12 +89,6 @@ struct ReferenceData final {
 
 template <>
 struct fmt::formatter<roq::json::ReferenceData> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::ReferenceData const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::ReferenceData const &value, format_context &context) const { return value.format_to(context); }
 };

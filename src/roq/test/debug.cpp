@@ -21,12 +21,14 @@ std::array<std::byte, sizeof...(Ts)> make_bytes(Ts &&...args) noexcept {
 TEST_CASE("hex_escaped", "[debug]") {
   {
     std::array<std::byte, 0> buffer;
-    auto s = fmt::format("{}"_cf, debug::hex::Message{buffer});
+    debug::hex::Message message{buffer};
+    auto s = fmt::format("{}"sv, message);
     CHECK(s == ""sv);
   }
   {
     auto buffer = make_bytes(0x0, 0x1, 0xfe, 0xff);
-    auto s = fmt::format("{}"_cf, debug::hex::Message{buffer});
+    debug::hex::Message message{buffer};
+    auto s = fmt::format("{}"sv, message);
     CHECK(s == R"(\x00\x01\xfe\xff)"sv);
   }
 }

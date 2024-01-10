@@ -28,33 +28,24 @@ inline constexpr std::string_view get_name<BatchBegin>() {
 
 template <>
 struct fmt::formatter<roq::BatchBegin> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::BatchBegin const &, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::BatchBegin const &, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), R"({{}})"_cf);
+    return fmt::format_to(context.out(), R"({{}})"sv);
   }
 };
 
 template <>
 struct fmt::formatter<roq::Event<roq::BatchBegin>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::BatchBegin> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::BatchBegin> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(batch_begin={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -62,20 +53,15 @@ struct fmt::formatter<roq::Event<roq::BatchBegin>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::BatchBegin>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::BatchBegin> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::BatchBegin> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(batch_begin={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

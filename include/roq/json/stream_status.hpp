@@ -16,7 +16,7 @@ struct StreamStatus final {
   explicit StreamStatus(roq::StreamStatus const &value) : value_{value} {}
 
   auto format_to(auto &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -32,7 +32,7 @@ struct StreamStatus final {
         R"("authority":{},)"
         R"("path":{},)"
         R"("proxy":{})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value_.stream_id,
         String{value_.account},
         String{value_.supports},
@@ -56,12 +56,6 @@ struct StreamStatus final {
 
 template <>
 struct fmt::formatter<roq::json::StreamStatus> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::StreamStatus const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::StreamStatus const &value, format_context &context) const { return value.format_to(context); }
 };

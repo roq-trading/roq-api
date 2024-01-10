@@ -19,12 +19,12 @@ struct Date_iso8601 final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     std::chrono::sys_days days{std::chrono::duration_cast<std::chrono::days>(value_)};
     std::chrono::year_month_day ymd{days};
     return fmt::format_to(
         context.out(),
-        "{:04}-{:02}-{:02}"_cf,
+        "{:04}-{:02}-{:02}"sv,
         static_cast<int>(ymd.year()),
         static_cast<unsigned>(ymd.month()),
         static_cast<unsigned>(ymd.day()));
@@ -39,12 +39,8 @@ struct Date_iso8601 final {
 
 template <typename T>
 struct fmt::formatter<roq::utils::Date_iso8601<T>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::utils::Date_iso8601<T> const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::utils::Date_iso8601<T> const &value, format_context &context) const {
     return value.format_to(context);
   }
 };

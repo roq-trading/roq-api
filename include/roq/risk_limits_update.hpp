@@ -39,14 +39,9 @@ inline constexpr std::string_view get_name<RiskLimitsUpdate>() {
 
 template <>
 struct fmt::formatter<roq::RiskLimitsUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::RiskLimitsUpdate const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::RiskLimitsUpdate const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -55,7 +50,7 @@ struct fmt::formatter<roq::RiskLimitsUpdate> {
         R"(account="{}", )"
         R"(limits=[{}], )"
         R"(update_type={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.user,
         value.strategy_id,
         value.account,
@@ -66,19 +61,15 @@ struct fmt::formatter<roq::RiskLimitsUpdate> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::RiskLimitsUpdate>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::RiskLimitsUpdate> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::RiskLimitsUpdate> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(risk_limits_update={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -86,20 +77,15 @@ struct fmt::formatter<roq::Event<roq::RiskLimitsUpdate>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::RiskLimitsUpdate>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::RiskLimitsUpdate> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::RiskLimitsUpdate> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(risk_limits_update={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

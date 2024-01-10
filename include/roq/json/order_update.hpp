@@ -20,7 +20,7 @@ struct OrderUpdate final {
   OrderUpdate(Context const &context, roq::OrderUpdate const &value) : context_{context}, value_{value} {}
 
   auto format_to(auto &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -54,7 +54,7 @@ struct OrderUpdate final {
         R"("max_response_version":{},)"
         R"("max_accepted_version":{},)"
         R"("update_type":{})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value_.stream_id,
         String{value_.account},
         value_.order_id,
@@ -98,12 +98,6 @@ struct OrderUpdate final {
 
 template <>
 struct fmt::formatter<roq::json::OrderUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::OrderUpdate const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::OrderUpdate const &value, format_context &context) const { return value.format_to(context); }
 };

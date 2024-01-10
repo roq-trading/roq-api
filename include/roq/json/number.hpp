@@ -18,12 +18,12 @@ struct Number final {
   Number(double value, Decimals decimals) : number_{value, decimals} {}
 
   auto format_to(auto &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     if (!std::isnan(number_.value)) {
       // note! we quote numbers to preserve all decimals
-      return fmt::format_to(context.out(), R"("{}")"_cf, number_);
+      return fmt::format_to(context.out(), R"("{}")"sv, number_);
     }
-    return fmt::format_to(context.out(), "null"_cf);
+    return fmt::format_to(context.out(), "null"sv);
   }
 
  private:
@@ -35,12 +35,6 @@ struct Number final {
 
 template <>
 struct fmt::formatter<roq::json::Number> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::Number const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::Number const &value, format_context &context) const { return value.format_to(context); }
 };

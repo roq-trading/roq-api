@@ -27,14 +27,9 @@ enum class Filter : uint64_t {
 
 template <>
 struct fmt::formatter<roq::Filter> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Filter const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Filter const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     auto name{[&]() {
       switch (value) {
         using enum roq::Filter;
@@ -55,6 +50,6 @@ struct fmt::formatter<roq::Filter> {
       }
       return "<UNKNOWN>"sv;
     }()};
-    return fmt::format_to(context.out(), "{}"_cf, name);
+    return fmt::format_to(context.out(), "{}"sv, name);
   }
 };

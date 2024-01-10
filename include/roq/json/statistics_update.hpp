@@ -37,7 +37,6 @@ struct StatisticsUpdate final {
  protected:
   auto helper(auto &context, std::span<roq::Statistics const> const &statistics, auto update_type) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     // FIXME this workaround shouldn't be necessary...
     std::span tmp{const_cast<roq::Statistics *>(std::data(statistics)), std::size(statistics)};
     return fmt::format_to(
@@ -49,7 +48,7 @@ struct StatisticsUpdate final {
         R"("statistics":[{}],)"
         R"("update_type":{},)"
         R"("exchange_time_utc":{})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
@@ -75,12 +74,8 @@ struct StatisticsUpdate final {
 
 template <>
 struct fmt::formatter<roq::json::StatisticsUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::StatisticsUpdate const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::StatisticsUpdate const &value, format_context &context) const {
     return value.format_to(context);
   }
 };

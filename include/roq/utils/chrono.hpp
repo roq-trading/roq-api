@@ -24,20 +24,16 @@ inline std::pair<std::chrono::year_month_day, std::chrono::hh_mm_ss<T>> split(U 
 
 template <>
 struct fmt::formatter<std::chrono::year_month_day> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(std::chrono::year_month_day const &value, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(std::chrono::year_month_day const &value, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(year={}, )"
         R"(month={}, )"
         R"(day={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         static_cast<int>(value.year()),
         static_cast<unsigned>(value.month()),
         static_cast<unsigned>(value.day()));
@@ -46,13 +42,9 @@ struct fmt::formatter<std::chrono::year_month_day> {
 
 template <>
 struct fmt::formatter<std::chrono::hh_mm_ss<std::chrono::milliseconds>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(std::chrono::hh_mm_ss<std::chrono::milliseconds> const &value, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(std::chrono::hh_mm_ss<std::chrono::milliseconds> const &value, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -60,7 +52,7 @@ struct fmt::formatter<std::chrono::hh_mm_ss<std::chrono::milliseconds>> {
         R"(minutes={}, )"
         R"(seconds={} )"
         R"(milliseconds={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.hours().count(),
         value.minutes().count(),
         value.seconds().count(),

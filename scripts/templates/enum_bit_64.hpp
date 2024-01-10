@@ -25,16 +25,13 @@ enum class {{ name }} : uint64_t {
 
 template <>
 struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
+  constexpr auto parse(format_parse_context &context) {
     return std::begin(context);
   }
-  template <typename Context>
   auto format(
       {{ namespaces | join('::') }}::{{ name }} const& value,
-      Context& context) const {
+      format_context& context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     auto name{[&]() {
       switch (value) {
         using enum {{ namespaces | join('::') }}::{{ name }};
@@ -51,7 +48,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
     }()};
     return fmt::format_to(
         context.out(),
-        "{}"_cf,
+        "{}"sv,
         name);
   }
 };

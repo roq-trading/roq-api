@@ -19,7 +19,7 @@ struct GatewayStatus final {
   explicit GatewayStatus(roq::GatewayStatus const &value) : value_{value} {}
 
   auto format_to(auto &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -27,7 +27,7 @@ struct GatewayStatus final {
         R"("supported":{},)"
         R"("available":{},)"
         R"("unavailable":{})"
-        R"(}})"_cf,
+        R"(}})"sv,
         String{value_.account},
         String{value_.supported},
         String{value_.available},
@@ -43,12 +43,6 @@ struct GatewayStatus final {
 
 template <>
 struct fmt::formatter<roq::json::GatewayStatus> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::GatewayStatus const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::GatewayStatus const &value, format_context &context) const { return value.format_to(context); }
 };

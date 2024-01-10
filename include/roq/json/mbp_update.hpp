@@ -18,7 +18,7 @@ struct MBPUpdate final {
   MBPUpdate(Context const &context, roq::MBPUpdate const &value) : context_{context}, value_{value} {}
 
   auto format_to(auto &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -28,7 +28,7 @@ struct MBPUpdate final {
         R"("number_of_orders":{},)"
         R"("update_action":{},)"
         R"("price_level":{})"
-        R"(}})"_cf,
+        R"(}})"sv,
         Number{value_.price, context_.price_decimals},
         Number{value_.quantity, context_.quantity_decimals},
         Number{value_.implied_quantity},
@@ -47,12 +47,6 @@ struct MBPUpdate final {
 
 template <>
 struct fmt::formatter<roq::json::MBPUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::MBPUpdate const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::MBPUpdate const &value, format_context &context) const { return value.format_to(context); }
 };

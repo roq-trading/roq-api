@@ -29,14 +29,9 @@ struct ROQ_PUBLIC Trade final {
 
 template <>
 struct fmt::formatter<roq::Trade> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trade const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trade const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -46,7 +41,7 @@ struct fmt::formatter<roq::Trade> {
         R"(trade_id="{}", )"
         R"(taker_order_id="{}", )"
         R"(maker_order_id="{}")"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.side,
         value.price,
         value.quantity,

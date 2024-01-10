@@ -1,24 +1,21 @@
 template <>
 struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
+  constexpr auto parse(format_parse_context &context) {
     return std::begin(context);
   }
-  template <typename Context>
   auto format(
 {%- if variables | length == 0 %}
       {{ namespaces | join('::') }}::{{ name }} const&,
 {%- else %}
       {{ namespaces | join('::') }}::{{ name }} const& value,
 {%- endif %}
-      Context& context) const {
+      format_context& context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
 {%- if variables | length == 0 %}
 {%- raw %}
-        R"({{}})"_cf);
+        R"({{}})"sv);
 {%- endraw %}
 {%- else %}
 {%- raw %}
@@ -28,7 +25,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
         R"({{ variable.name }}={{ variable.format_string }}{{ ', ' if not loop.last }})"
 {%- endfor %}
 {%- raw %}
-        R"(}})"_cf,
+        R"(}})"sv,
 {%- endraw %}
 {%- for variable in variables %}
         {{ variable.format_value }}{{ ',' if not loop.last else ');' }}

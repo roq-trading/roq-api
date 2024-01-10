@@ -37,14 +37,9 @@ struct ROQ_PUBLIC MessageInfo final {
 
 template <>
 struct fmt::formatter<roq::MessageInfo> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::MessageInfo const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::MessageInfo const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -60,7 +55,7 @@ struct fmt::formatter<roq::MessageInfo> {
         R"(origin_create_time_utc={}, )"
         R"(is_last={}, )"
         R"(opaque={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.source,
         value.source_name,
         value.source_session_id,

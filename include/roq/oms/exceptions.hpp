@@ -19,13 +19,13 @@ struct ROQ_PUBLIC Exception : public roq::Exception {
       : roq::Exception{fmt, std::forward<Args>(args)...}, origin{origin}, status{status}, error{error} {}
 
   char const *what() const noexcept override {
-    using namespace fmt::literals;
+    using namespace std::literals;
     if (std::empty(what_))  // lazy
       what_ = fmt::format(
           R"(OMS: )"
           R"({{)"
           R"(error={})"
-          R"(}})"_cf,
+          R"(}})"sv,
           error);
     return what_.c_str();
   }
@@ -65,18 +65,14 @@ struct ROQ_PUBLIC NotReady : public Rejected {
 
 template <>
 struct fmt::formatter<roq::oms::Exception> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::oms::Exception const &value, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::oms::Exception const &value, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(error={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.error);
   }
 };

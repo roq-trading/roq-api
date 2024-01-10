@@ -24,20 +24,15 @@ struct ROQ_PUBLIC Measurement final {
 
 template <>
 struct fmt::formatter<roq::Measurement> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Measurement const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Measurement const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(name="{}", )"
         R"(value={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.name,
         value.value);
   }

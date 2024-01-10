@@ -58,13 +58,9 @@ enum class Error : uint8_t {
 
 template <>
 struct fmt::formatter<roq::Error> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Error const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, magic_enum::enum_name(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Error const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }
 };

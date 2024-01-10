@@ -32,7 +32,6 @@ struct MarketByPriceUpdate final {
 
   auto format_to(auto &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     auto bids = cache_ ? bids_ : value_.bids;
     auto asks = cache_ ? asks_ : value_.asks;
     auto update_type = cache_ ? UpdateType::SNAPSHOT : value_.update_type;
@@ -47,7 +46,7 @@ struct MarketByPriceUpdate final {
         R"("update_type":{},)"
         R"("exchange_time_utc":{},)"
         R"("exchange_sequence":{})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value_.stream_id,
         String{value_.exchange},
         String{value_.symbol},
@@ -83,12 +82,8 @@ struct MarketByPriceUpdate final {
 
 template <>
 struct fmt::formatter<roq::json::MarketByPriceUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::MarketByPriceUpdate const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::MarketByPriceUpdate const &value, format_context &context) const {
     return value.format_to(context);
   }
 };

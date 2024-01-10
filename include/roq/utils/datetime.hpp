@@ -19,7 +19,7 @@ struct DateTime_iso8601 final {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     std::chrono::sys_days days{std::chrono::duration_cast<std::chrono::days>(value_)};
     std::chrono::year_month_day ymd{days};
     auto tmp = std::chrono::time_point_cast<T>(days);
@@ -30,7 +30,7 @@ struct DateTime_iso8601 final {
         std::is_same_v<std::decay_t<T>, std::chrono::days> || std::is_same_v<std::decay_t<T>, std::chrono::seconds>) {
       return fmt::format_to(
           context.out(),
-          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"_cf,
+          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z"sv,
           static_cast<int>(ymd.year()),
           static_cast<unsigned>(ymd.month()),
           static_cast<unsigned>(ymd.day()),
@@ -41,7 +41,7 @@ struct DateTime_iso8601 final {
       auto remain = value_.count() % 1000u;
       return fmt::format_to(
           context.out(),
-          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:03}Z"_cf,
+          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:03}Z"sv,
           static_cast<int>(ymd.year()),
           static_cast<unsigned>(ymd.month()),
           static_cast<unsigned>(ymd.day()),
@@ -53,7 +53,7 @@ struct DateTime_iso8601 final {
       auto remain = value_.count() % 1000000u;
       return fmt::format_to(
           context.out(),
-          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:06}Z"_cf,
+          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:06}Z"sv,
           static_cast<int>(ymd.year()),
           static_cast<unsigned>(ymd.month()),
           static_cast<unsigned>(ymd.day()),
@@ -65,7 +65,7 @@ struct DateTime_iso8601 final {
       auto remain = value_.count() % 1000000000u;
       return fmt::format_to(
           context.out(),
-          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:09}Z"_cf,
+          "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:09}Z"sv,
           static_cast<int>(ymd.year()),
           static_cast<unsigned>(ymd.month()),
           static_cast<unsigned>(ymd.day()),
@@ -90,7 +90,6 @@ struct DateTime_rfc2616 final {
   template <typename Context>
   auto format_to(Context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     std::chrono::sys_days days{std::chrono::duration_cast<std::chrono::days>(value_)};
     std::chrono::year_month_day ymd{days};
     auto weekday = [&]() -> std::string_view {
@@ -153,7 +152,7 @@ struct DateTime_rfc2616 final {
     std::chrono::hh_mm_ss hms{tmp3};
     return fmt::format_to(
         context.out(),
-        "{}, {:02} {} {:04} {:02}:{:02}:{:02} GMT"_cf,
+        "{}, {:02} {} {:04} {:02}:{:02}:{:02} GMT"sv,
         weekday,
         static_cast<unsigned>(ymd.day()),
         month,
@@ -171,24 +170,16 @@ struct DateTime_rfc2616 final {
 
 template <typename T>
 struct fmt::formatter<roq::utils::DateTime_iso8601<T>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::utils::DateTime_iso8601<T> const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::utils::DateTime_iso8601<T> const &value, format_context &context) const {
     return value.format_to(context);
   }
 };
 
 template <typename T>
 struct fmt::formatter<roq::utils::DateTime_rfc2616<T>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::utils::DateTime_rfc2616<T> const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::utils::DateTime_rfc2616<T> const &value, format_context &context) const {
     return value.format_to(context);
   }
 };

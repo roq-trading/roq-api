@@ -47,14 +47,9 @@ inline constexpr std::string_view get_name<RateLimitTrigger>() {
 
 template <>
 struct fmt::formatter<roq::RateLimitTrigger> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::RateLimitTrigger const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::RateLimitTrigger const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -67,7 +62,7 @@ struct fmt::formatter<roq::RateLimitTrigger> {
         R"(triggered_by="{}", )"
         R"(buffer_capacity={}, )"
         R"(remaining_requests={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.name,
         value.origin,
         value.type,
@@ -82,19 +77,15 @@ struct fmt::formatter<roq::RateLimitTrigger> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::RateLimitTrigger>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::RateLimitTrigger> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::RateLimitTrigger> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(rate_limit_trigger={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -102,20 +93,15 @@ struct fmt::formatter<roq::Event<roq::RateLimitTrigger>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::RateLimitTrigger>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::RateLimitTrigger> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::RateLimitTrigger> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(rate_limit_trigger={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

@@ -36,15 +36,13 @@ inline constexpr std::string_view get_name<{{ name }}>() {
 
 template <>
 struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}> > {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
+  constexpr auto parse(format_parse_context &context) {
     return std::begin(context);
   }
-  template <typename Context>
   auto format(
       {{ namespaces | join('::') }}::Event<{{ namespaces | join('::') }}::{{ name }}> const& event,
-      Context& context) const {
-    using namespace fmt::literals;
+      format_context& context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
 {%- raw %}
@@ -53,7 +51,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
         R"({{ filename }}={}, )"
         R"(message_info={})"
 {%- raw %}
-        R"(}})"_cf,
+        R"(}})"sv,
 {%- endraw %}
         event.value,
         event.message_info);
@@ -62,16 +60,13 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Event<{{ namespaces | join(
 
 template <>
 struct fmt::formatter<{{ namespaces | join('::') }}::Trace<{{ namespaces | join('::') }}::{{ name }}> > {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
+  constexpr auto parse(format_parse_context &context) {
     return std::begin(context);
   }
-  template <typename Context>
   auto format(
       {{ namespaces | join('::') }}::Trace<{{ namespaces | join('::') }}::{{ name }}> const& event,
-      Context& context) const {
+      format_context& context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
 {%- raw %}
@@ -80,7 +75,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::Trace<{{ namespaces | join(
         R"({{ filename }}={}, )"
         R"(trace_info={})"
 {%- raw %}
-        R"(}})"_cf,
+        R"(}})"sv,
 {%- endraw %}
         event.value,
         event.trace_info);

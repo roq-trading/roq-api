@@ -50,14 +50,9 @@ inline constexpr std::string_view get_name<MarketByPriceUpdate>() {
 
 template <>
 struct fmt::formatter<roq::MarketByPriceUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::MarketByPriceUpdate const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::MarketByPriceUpdate const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -74,7 +69,7 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
         R"(quantity_decimals={}, )"
         R"(max_depth={}, )"
         R"(checksum={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.stream_id,
         value.exchange,
         value.symbol,
@@ -93,19 +88,15 @@ struct fmt::formatter<roq::MarketByPriceUpdate> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::MarketByPriceUpdate>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::MarketByPriceUpdate> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::MarketByPriceUpdate> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(market_by_price_update={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -113,20 +104,15 @@ struct fmt::formatter<roq::Event<roq::MarketByPriceUpdate>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::MarketByPriceUpdate>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::MarketByPriceUpdate> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::MarketByPriceUpdate> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(market_by_price_update={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

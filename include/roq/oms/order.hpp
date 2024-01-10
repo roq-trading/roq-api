@@ -55,13 +55,9 @@ struct ROQ_PUBLIC Order final {
 
 template <>
 struct fmt::formatter<roq::oms::Order> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::oms::Order const &value, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::oms::Order const &value, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -101,7 +97,7 @@ struct fmt::formatter<roq::oms::Order> {
         R"(update_type={}, )"
         R"(user="{}", )"
         R"(strategy_id={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.user_id,
         value.account,
         value.order_id,

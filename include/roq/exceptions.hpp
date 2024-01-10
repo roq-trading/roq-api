@@ -59,7 +59,7 @@ struct ROQ_PUBLIC Exception : public std::exception {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -67,7 +67,7 @@ struct ROQ_PUBLIC Exception : public std::exception {
         R"(what="{}", )"
         R"(file="{}", )"
         R"(line={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         typeid(*this).name(),
         what_,
         file_name_,
@@ -96,7 +96,7 @@ struct ROQ_PUBLIC SystemError : public RuntimeError {
 
   template <typename Context>
   auto format_to(Context &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -108,7 +108,7 @@ struct ROQ_PUBLIC SystemError : public RuntimeError {
         R"(message="{}", )"
         R"(value={})"
         R"(}})"
-        R"(}})"_cf,
+        R"(}})"sv,
         typeid(*this).name(),
         what_,
         file_name_,
@@ -251,271 +251,183 @@ struct ROQ_PUBLIC OrderNotLive : public SessionError {
 
 template <>
 struct fmt::formatter<roq::Exception> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Exception const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Exception const &value, format_context &context) const { return value.format_to(context); }
 };
 
 template <>
 struct fmt::formatter<roq::RuntimeError> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::RuntimeError const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::RuntimeError const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::SystemError> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::SystemError const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::SystemError const &value, format_context &context) const { return value.format_to(context); }
 };
 
 template <>
 struct fmt::formatter<roq::RangeError> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::RangeError const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::RangeError const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::OverflowError> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::OverflowError const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::OverflowError const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::LogicError> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::LogicError const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::LogicError const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::InvalidArgument> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::InvalidArgument const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::InvalidArgument const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::OutOfRange> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::OutOfRange const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::OutOfRange const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::LengthError> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::LengthError const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::LengthError const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::Fatal> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Fatal const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Fatal const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::FileDoesNotExist> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::FileDoesNotExist const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::FileDoesNotExist const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::NotReady> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::NotReady const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::NotReady const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::BadState> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::BadState const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::BadState const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::NetworkError> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::NetworkError const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::NetworkError const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::TransportError> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::TransportError const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::TransportError const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::NotConnected> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::NotConnected const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::NotConnected const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::ConnectionRefused> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::ConnectionRefused const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::ConnectionRefused const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::TimedOut> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::TimedOut const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::TimedOut const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::SessionError> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::SessionError const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::SessionError const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::PermissionDenied> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::PermissionDenied const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::PermissionDenied const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };
 
 template <>
 struct fmt::formatter<roq::OrderNotLive> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::OrderNotLive const &value, Context &context) const {
-    using namespace fmt::literals;
-    return fmt::format_to(context.out(), "{}"_cf, static_cast<roq::Exception const &>(value));
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::OrderNotLive const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<roq::Exception const &>(value));
   }
 };

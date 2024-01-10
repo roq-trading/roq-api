@@ -20,7 +20,6 @@ struct CustomMetricsUpdate final {
 
   auto format_to(auto &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -31,7 +30,7 @@ struct CustomMetricsUpdate final {
         R"("symbol":{},)"
         R"("measurements":[{}],)"
         R"("update_type":{})"
-        R"(}})"_cf,
+        R"(}})"sv,
         String{value_.user},
         String{value_.label},
         String{value_.account},
@@ -50,12 +49,8 @@ struct CustomMetricsUpdate final {
 
 template <>
 struct fmt::formatter<roq::json::CustomMetricsUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::CustomMetricsUpdate const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::CustomMetricsUpdate const &value, format_context &context) const {
     return value.format_to(context);
   }
 };

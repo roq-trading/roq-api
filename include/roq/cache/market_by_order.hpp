@@ -161,14 +161,9 @@ struct ROQ_PUBLIC MarketByOrder {
 
 template <>
 struct fmt::formatter<roq::cache::MarketByOrder::OrderUpdate> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::cache::MarketByOrder::OrderUpdate const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::cache::MarketByOrder::OrderUpdate const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -181,7 +176,7 @@ struct fmt::formatter<roq::cache::MarketByOrder::OrderUpdate> {
         R"(queue_position_quantity={},)"
         R"(queue_position={},)"
         R"(iceberg={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.side,
         value.remaining_quantity,
         value.last_modified_quantity,

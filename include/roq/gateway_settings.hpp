@@ -45,14 +45,9 @@ inline constexpr std::string_view get_name<GatewaySettings>() {
 
 template <>
 struct fmt::formatter<roq::GatewaySettings> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::GatewaySettings const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::GatewaySettings const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -67,7 +62,7 @@ struct fmt::formatter<roq::GatewaySettings> {
         R"(oms_download_has_routing_id={}, )"
         R"(oms_request_id_type={}, )"
         R"(oms_cancel_all_orders={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.supports,
         value.mbp_max_depth,
         value.mbp_tick_size_multiplier,
@@ -84,19 +79,15 @@ struct fmt::formatter<roq::GatewaySettings> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::GatewaySettings>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::GatewaySettings> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::GatewaySettings> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(gateway_settings={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -104,20 +95,15 @@ struct fmt::formatter<roq::Event<roq::GatewaySettings>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::GatewaySettings>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::GatewaySettings> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::GatewaySettings> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(gateway_settings={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

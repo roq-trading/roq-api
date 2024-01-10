@@ -53,14 +53,9 @@ inline constexpr std::string_view get_name<CancelAllOrdersAck>() {
 
 template <>
 struct fmt::formatter<roq::CancelAllOrdersAck> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::CancelAllOrdersAck const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::CancelAllOrdersAck const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
@@ -80,7 +75,7 @@ struct fmt::formatter<roq::CancelAllOrdersAck> {
         R"(round_trip_latency={}, )"
         R"(user="{}", )"
         R"(strategy_id={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.stream_id,
         value.account,
         value.order_id,
@@ -102,19 +97,15 @@ struct fmt::formatter<roq::CancelAllOrdersAck> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::CancelAllOrdersAck>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::CancelAllOrdersAck> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::CancelAllOrdersAck> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(cancel_all_orders_ack={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -122,20 +113,15 @@ struct fmt::formatter<roq::Event<roq::CancelAllOrdersAck>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::CancelAllOrdersAck>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::CancelAllOrdersAck> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::CancelAllOrdersAck> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(cancel_all_orders_ack={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

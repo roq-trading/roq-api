@@ -18,11 +18,10 @@ struct Message final {
 
   Message(std::byte const *data, size_t length) : Message{{data, length}} {}
 
-  template <typename Context>
-  auto format_to(Context &context) const {
-    using namespace fmt::literals;
+  auto format_to(auto &context) const {
+    using namespace std::literals;
     for (auto b : buffer_)
-      fmt::format_to(context.out(), R"(\x{:02x})"_cf, static_cast<uint8_t>(b));
+      fmt::format_to(context.out(), R"(\x{:02x})"sv, static_cast<uint8_t>(b));
     return context.out();
   }
 
@@ -36,12 +35,6 @@ struct Message final {
 
 template <>
 struct fmt::formatter<roq::debug::hex::Message> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::debug::hex::Message const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::debug::hex::Message const &value, format_context &context) const { return value.format_to(context); }
 };

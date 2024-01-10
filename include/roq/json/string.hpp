@@ -13,15 +13,15 @@ struct String final {
   explicit String(T const &value) : value_{value} {}
 
   auto format_to(auto &context) const {
-    using namespace fmt::literals;
+    using namespace std::literals;
     if constexpr (std::is_enum<T>::value) {
       if (value_ != T{})
-        return fmt::format_to(context.out(), R"("{}")"_cf, value_);
+        return fmt::format_to(context.out(), R"("{}")"sv, value_);
     } else {
       if (!std::empty(value_))
-        return fmt::format_to(context.out(), R"("{}")"_cf, value_);
+        return fmt::format_to(context.out(), R"("{}")"sv, value_);
     }
-    return fmt::format_to(context.out(), "null"_cf);
+    return fmt::format_to(context.out(), "null"sv);
   }
 
  private:
@@ -33,12 +33,6 @@ struct String final {
 
 template <typename T>
 struct fmt::formatter<roq::json::String<T>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::json::String<T> const &value, Context &context) const {
-    return value.format_to(context);
-  }
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::json::String<T> const &value, format_context &context) const { return value.format_to(context); }
 };

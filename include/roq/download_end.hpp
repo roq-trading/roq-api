@@ -33,20 +33,15 @@ inline constexpr std::string_view get_name<DownloadEnd>() {
 
 template <>
 struct fmt::formatter<roq::DownloadEnd> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::DownloadEnd const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::DownloadEnd const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(account="{}", )"
         R"(max_order_id={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         value.account,
         value.max_order_id);
   }
@@ -54,19 +49,15 @@ struct fmt::formatter<roq::DownloadEnd> {
 
 template <>
 struct fmt::formatter<roq::Event<roq::DownloadEnd>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Event<roq::DownloadEnd> const &event, Context &context) const {
-    using namespace fmt::literals;
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<roq::DownloadEnd> const &event, format_context &context) const {
+    using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(download_end={}, )"
         R"(message_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.message_info);
   }
@@ -74,20 +65,15 @@ struct fmt::formatter<roq::Event<roq::DownloadEnd>> {
 
 template <>
 struct fmt::formatter<roq::Trace<roq::DownloadEnd>> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::Trace<roq::DownloadEnd> const &event, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<roq::DownloadEnd> const &event, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
         R"(download_end={}, )"
         R"(trace_info={})"
-        R"(}})"_cf,
+        R"(}})"sv,
         event.value,
         event.trace_info);
   }

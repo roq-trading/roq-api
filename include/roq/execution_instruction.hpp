@@ -27,14 +27,9 @@ enum class ExecutionInstruction : uint32_t {
 
 template <>
 struct fmt::formatter<roq::ExecutionInstruction> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(roq::ExecutionInstruction const &value, Context &context) const {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::ExecutionInstruction const &value, format_context &context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     auto name{[&]() {
       switch (value) {
         using enum roq::ExecutionInstruction;
@@ -53,6 +48,6 @@ struct fmt::formatter<roq::ExecutionInstruction> {
       }
       return "<UNKNOWN>"sv;
     }()};
-    return fmt::format_to(context.out(), "{}"_cf, name);
+    return fmt::format_to(context.out(), "{}"sv, name);
   }
 };

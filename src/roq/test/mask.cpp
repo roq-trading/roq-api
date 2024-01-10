@@ -31,12 +31,8 @@ static_assert(Mask<E>{E::A, E::B, E::C} == Mask<E>{}.set(E::A).set(E::B).set(E::
 
 template <>
 struct fmt::formatter<E> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(E const &value, Context &context) const {
+  constexpr auto parse(fmt::format_parse_context &context) { return std::begin(context); }
+  auto format(E const &value, format_context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }
@@ -74,12 +70,8 @@ enum class E2 : int {
 
 template <>
 struct fmt::formatter<E2> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
-    return std::begin(context);
-  }
-  template <typename Context>
-  auto format(const E2 &value, Context &context) const {
+  constexpr auto parse(fmt::format_parse_context &context) { return std::begin(context); }
+  auto format(const E2 &value, format_context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }

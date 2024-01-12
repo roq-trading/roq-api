@@ -5,7 +5,6 @@
 #include "roq/debug/hex/message.hpp"
 
 using namespace std::literals;
-using namespace fmt::literals;
 
 using namespace roq;
 

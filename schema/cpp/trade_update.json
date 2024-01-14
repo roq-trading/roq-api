@@ -33,6 +33,10 @@
       "type": "PositionEffect"
     },
     {
+      "name": "margin_mode",
+      "type": "MarginMode"
+    },
+    {
       "name": "create_time_utc",
       "type": "std::chrono::nanoseconds"
     },

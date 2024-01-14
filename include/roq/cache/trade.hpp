@@ -23,6 +23,7 @@ struct ROQ_PUBLIC Trade final {
     dirty |= utils::update(stream_id, trade_update.stream_id);
     dirty |= utils::update(side, trade_update.side);
     dirty |= utils::update(position_effect, trade_update.position_effect);
+    dirty |= utils::update(margin_mode, trade_update.margin_mode);
     dirty |= utils::update(create_time_utc, trade_update.create_time_utc);
     dirty |= utils::update(update_time_utc, trade_update.update_time_utc);
     dirty |= utils::update(external_account, trade_update.external_account);
@@ -69,6 +70,7 @@ struct ROQ_PUBLIC Trade final {
         .symbol = context.symbol,
         .side = side,
         .position_effect = position_effect,
+        .margin_mode = margin_mode,
         .create_time_utc = create_time_utc,
         .update_time_utc = update_time_utc,
         .external_account = external_account,
@@ -84,6 +86,7 @@ struct ROQ_PUBLIC Trade final {
   uint64_t const order_id = {};
   Side side = {};
   PositionEffect position_effect = {};
+  MarginMode margin_mode = {};
   std::chrono::nanoseconds create_time_utc = {};
   std::chrono::nanoseconds update_time_utc = {};
   ExternalAccount external_account;

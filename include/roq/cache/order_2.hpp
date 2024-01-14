@@ -16,13 +16,13 @@ struct ROQ_PUBLIC Order2 final {
   explicit Order2(OrderUpdate const &order_update)
       : stream_id{order_update.stream_id}, account{order_update.account}, order_id{order_update.order_id},
         exchange{order_update.exchange}, symbol{order_update.symbol}, side{order_update.side},
-        position_effect{order_update.position_effect}, max_show_quantity{order_update.max_show_quantity},
-        order_type{order_update.order_type}, time_in_force{order_update.time_in_force},
-        execution_instructions{order_update.execution_instructions}, create_time_utc{order_update.create_time_utc},
-        update_time_utc{order_update.update_time_utc}, external_account{order_update.external_account},
-        external_order_id{order_update.external_order_id}, client_order_id{order_update.client_order_id},
-        status{order_update.status}, quantity{order_update.quantity}, price{order_update.price},
-        stop_price{order_update.stop_price}, risk_exposure{order_update.risk_exposure},
+        position_effect{order_update.position_effect}, margin_mode{order_update.margin_mode},
+        max_show_quantity{order_update.max_show_quantity}, order_type{order_update.order_type},
+        time_in_force{order_update.time_in_force}, execution_instructions{order_update.execution_instructions},
+        create_time_utc{order_update.create_time_utc}, update_time_utc{order_update.update_time_utc},
+        external_account{order_update.external_account}, external_order_id{order_update.external_order_id},
+        client_order_id{order_update.client_order_id}, status{order_update.status}, quantity{order_update.quantity},
+        price{order_update.price}, stop_price{order_update.stop_price}, risk_exposure{order_update.risk_exposure},
         remaining_quantity{order_update.remaining_quantity}, traded_quantity{order_update.traded_quantity},
         average_traded_price{order_update.average_traded_price},
         last_traded_quantity{order_update.last_traded_quantity}, last_traded_price{order_update.last_traded_price},
@@ -39,6 +39,7 @@ struct ROQ_PUBLIC Order2 final {
     dirty |= utils::update(stream_id, order_update.stream_id);
     dirty |= utils::update_if_not_empty(side, order_update.side);
     dirty |= utils::update_if_not_empty(position_effect, order_update.position_effect);
+    dirty |= utils::update_if_not_empty(margin_mode, order_update.margin_mode);
     dirty |= utils::update_if_not_empty(max_show_quantity, order_update.max_show_quantity);
     dirty |= utils::update_if_not_empty(order_type, order_update.order_type);
     dirty |= utils::update_if_not_empty(time_in_force, order_update.time_in_force);
@@ -91,6 +92,7 @@ struct ROQ_PUBLIC Order2 final {
         .symbol = symbol,
         .side = side,
         .position_effect = position_effect,
+        .margin_mode = margin_mode,
         .max_show_quantity = max_show_quantity,
         .order_type = order_type,
         .time_in_force = time_in_force,
@@ -130,6 +132,7 @@ struct ROQ_PUBLIC Order2 final {
   Symbol symbol;
   Side side = {};
   PositionEffect position_effect = {};
+  MarginMode margin_mode = {};
   double max_show_quantity = NaN;
   OrderType order_type = {};
   TimeInForce time_in_force = {};

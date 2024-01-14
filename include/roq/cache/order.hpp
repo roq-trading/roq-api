@@ -20,6 +20,7 @@ struct ROQ_PUBLIC Order final {
     stream_id = {};
     side = {};
     position_effect = {};
+    margin_mode = {};
     max_show_quantity = NaN;
     order_type = {};
     time_in_force = {};
@@ -53,6 +54,7 @@ struct ROQ_PUBLIC Order final {
     dirty |= utils::update(stream_id, order_update.stream_id);
     dirty |= utils::update_if_not_empty(side, order_update.side);
     dirty |= utils::update_if_not_empty(position_effect, order_update.position_effect);
+    dirty |= utils::update_if_not_empty(margin_mode, order_update.margin_mode);
     dirty |= utils::update_if_not_empty(max_show_quantity, order_update.max_show_quantity);
     dirty |= utils::update_if_not_empty(order_type, order_update.order_type);
     dirty |= utils::update_if_not_empty(time_in_force, order_update.time_in_force);
@@ -106,6 +108,7 @@ struct ROQ_PUBLIC Order final {
         .symbol = context.symbol,
         .side = side,
         .position_effect = position_effect,
+        .margin_mode = margin_mode,
         .max_show_quantity = max_show_quantity,
         .order_type = order_type,
         .time_in_force = time_in_force,
@@ -143,6 +146,7 @@ struct ROQ_PUBLIC Order final {
   uint64_t const order_id = {};
   Side side = {};
   PositionEffect position_effect = {};
+  MarginMode margin_mode = {};
   double max_show_quantity = NaN;
   OrderType order_type = {};
   TimeInForce time_in_force = {};

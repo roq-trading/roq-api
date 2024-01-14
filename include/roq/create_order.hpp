@@ -12,6 +12,7 @@
 
 #include "roq/event.hpp"
 #include "roq/execution_instruction.hpp"
+#include "roq/margin_mode.hpp"
 #include "roq/mask.hpp"
 #include "roq/name.hpp"
 #include "roq/numbers.hpp"
@@ -31,6 +32,7 @@ struct ROQ_PUBLIC CreateOrder final {
   std::string_view symbol;                            //!< Symbol
   Side side = {};                                     //!< Order side
   PositionEffect position_effect = {};                //!< Position effect
+  MarginMode margin_mode = {};                        //!< Margin mode
   double max_show_quantity = NaN;                     //!< Quantity visible to market (requires exchange support)
   OrderType order_type = {};                          //!< Order type
   TimeInForce time_in_force = {};                     //!< Time in force
@@ -65,6 +67,7 @@ struct fmt::formatter<roq::CreateOrder> {
         R"(symbol="{}", )"
         R"(side={}, )"
         R"(position_effect={}, )"
+        R"(margin_mode={}, )"
         R"(max_show_quantity={}, )"
         R"(order_type={}, )"
         R"(time_in_force={}, )"
@@ -82,6 +85,7 @@ struct fmt::formatter<roq::CreateOrder> {
         value.symbol,
         value.side,
         value.position_effect,
+        value.margin_mode,
         value.max_show_quantity,
         value.order_type,
         value.time_in_force,

@@ -33,6 +33,10 @@
       "type": "PositionEffect"
     },
     {
+      "name": "margin_mode",
+      "type": "MarginMode"
+    },
+    {
       "name": "max_show_quantity",
       "type": "double",
       "comment": "Quantity visible to market (requires exchange support)"

@@ -15,6 +15,7 @@
 
 #include "roq/event.hpp"
 #include "roq/fill.hpp"
+#include "roq/margin_mode.hpp"
 #include "roq/name.hpp"
 #include "roq/position_effect.hpp"
 #include "roq/side.hpp"
@@ -32,6 +33,7 @@ struct ROQ_PUBLIC TradeUpdate final {
   std::string_view symbol;                         //!< Symbol
   Side side = {};                                  //!< Side
   PositionEffect position_effect = {};             //!< Position effect
+  MarginMode margin_mode = {};                     //!< Margin mode
   std::chrono::nanoseconds create_time_utc = {};   //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};   //!< Updated timestamp (UTC)
   std::string_view external_account;               //!< External account name
@@ -68,6 +70,7 @@ struct fmt::formatter<roq::TradeUpdate> {
         R"(symbol="{}", )"
         R"(side={}, )"
         R"(position_effect={}, )"
+        R"(margin_mode={}, )"
         R"(create_time_utc={}, )"
         R"(update_time_utc={}, )"
         R"(external_account="{}", )"
@@ -87,6 +90,7 @@ struct fmt::formatter<roq::TradeUpdate> {
         value.symbol,
         value.side,
         value.position_effect,
+        value.margin_mode,
         value.create_time_utc,
         value.update_time_utc,
         value.external_account,

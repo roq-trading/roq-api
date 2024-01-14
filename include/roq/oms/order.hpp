@@ -19,6 +19,7 @@ struct ROQ_PUBLIC Order final {
   Symbol symbol;
   Side side = {};
   PositionEffect position_effect = {};
+  MarginMode margin_mode = {};
   double max_show_quantity = NaN;
   OrderType order_type = {};
   TimeInForce time_in_force = {};
@@ -68,6 +69,7 @@ struct fmt::formatter<roq::oms::Order> {
         R"(symbol="{}", )"
         R"(side={}, )"
         R"(position_effect={}, )"
+        R"(margin_mode={}, )"
         R"(max_show_quantity={}, )"
         R"(order_type={}, )"
         R"(time_in_force={}, )"
@@ -105,6 +107,7 @@ struct fmt::formatter<roq::oms::Order> {
         value.symbol,
         value.side,
         value.position_effect,
+        value.margin_mode,
         value.max_show_quantity,
         value.order_type,
         value.time_in_force,

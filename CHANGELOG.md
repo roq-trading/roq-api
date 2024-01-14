@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Adding `MarginMode` to `CreateOrder`, `OrderUpdate`, `TradeUpdate`
 * OMS validate quantity and price against reference data (#432)
 * Added `MarginMode` to `FundsUpdate` and `PositionUpdate` (#430)
 

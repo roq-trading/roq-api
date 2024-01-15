@@ -17,6 +17,7 @@ enum class MarginMode : uint8_t {
   UNDEFINED = 0,
   ISOLATED,
   CROSS,
+  PORTFOLIO,
 };
 
 }  // namespace roq

@@ -29,6 +29,14 @@
       "comment": "Side"
     },
     {
+      "name": "position_effect",
+      "type": "PositionEffect"
+    },
+    {
+      "name": "margin_mode",
+      "type": "MarginMode"
+    },
+    {
       "name": "type",
       "type": "RequestType",
       "comment": "Request type"

@@ -14,9 +14,11 @@
 
 #include "roq/error.hpp"
 #include "roq/event.hpp"
+#include "roq/margin_mode.hpp"
 #include "roq/name.hpp"
 #include "roq/numbers.hpp"
 #include "roq/origin.hpp"
+#include "roq/position_effect.hpp"
 #include "roq/request_status.hpp"
 #include "roq/request_type.hpp"
 #include "roq/side.hpp"
@@ -32,6 +34,8 @@ struct ROQ_PUBLIC OrderAck final {
   std::string_view exchange;                         //!< Exchange
   std::string_view symbol;                           //!< Symbol
   Side side = {};                                    //!< Side
+  PositionEffect position_effect = {};               //!< Position effect
+  MarginMode margin_mode = {};                       //!< Margin mode
   RequestType type = {};                             //!< Request type
   Origin origin = {};                                //!< Origin of ack
   RequestStatus status = {};                         //!< Request status
@@ -76,6 +80,8 @@ struct fmt::formatter<roq::OrderAck> {
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(side={}, )"
+        R"(position_effect={}, )"
+        R"(margin_mode={}, )"
         R"(type={}, )"
         R"(origin={}, )"
         R"(status={}, )"
@@ -103,6 +109,8 @@ struct fmt::formatter<roq::OrderAck> {
         value.exchange,
         value.symbol,
         value.side,
+        value.position_effect,
+        value.margin_mode,
         value.type,
         value.origin,
         value.status,

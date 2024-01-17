@@ -38,7 +38,7 @@ struct OrderUpdate final {
         R"("update_time_utc":{},)"
         R"("external_account":{},)"
         R"("external_order_id":{},)"
-        R"("status":{},)"
+        R"("order_status":{},)"
         R"("quantity":{},)"
         R"("price":{},)"
         R"("stop_price":{},)"
@@ -69,7 +69,7 @@ struct OrderUpdate final {
         DateTime{value_.update_time_utc},
         String{value_.external_account},
         String{value_.external_order_id},
-        String{value_.status},
+        String{value_.order_status},
         Number{value_.quantity, context_.quantity_decimals},
         Number{value_.price, context_.price_decimals},
         Number{value_.stop_price, context_.price_decimals},

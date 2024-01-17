@@ -37,7 +37,7 @@
       "type": "MarginMode"
     },
     {
-      "name": "type",
+      "name": "request_type",
       "type": "RequestType",
       "comment": "Request type"
     },
@@ -47,7 +47,7 @@
       "comment": "Origin of ack"
     },
     {
-      "name": "status",
+      "name": "request_status",
       "type": "RequestStatus",
       "comment": "Request status"
     },

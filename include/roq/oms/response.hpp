@@ -9,9 +9,9 @@ namespace oms {
 
 //! Response (all fields are optional)
 struct ROQ_PUBLIC Response final {
-  RequestType type = {};
+  RequestType request_type = {};
   Origin origin = {};
-  RequestStatus status = {};
+  RequestStatus request_status = {};
   Error error = {};
   std::string_view text;
   uint32_t version = {};
@@ -31,9 +31,9 @@ struct fmt::formatter<roq::oms::Response> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(type={}, )"
+        R"(request_type={}, )"
         R"(origin={}, )"
-        R"(status={}, )"
+        R"(request_status={}, )"
         R"(error={}, )"
         R"(text="{}", )"
         R"(version={}, )"
@@ -41,9 +41,9 @@ struct fmt::formatter<roq::oms::Response> {
         R"(quantity={}, )"
         R"(price={})"
         R"(}})"sv,
-        value.type,
+        value.request_type,
         value.origin,
-        value.status,
+        value.request_status,
         value.error,
         value.text,
         value.version,

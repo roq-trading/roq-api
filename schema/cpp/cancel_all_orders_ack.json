@@ -34,7 +34,7 @@
       "comment": "Origin of ack"
     },
     {
-      "name": "status",
+      "name": "request_status",
       "type": "RequestStatus",
       "comment": "Request status"
     },

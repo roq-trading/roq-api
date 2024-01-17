@@ -31,7 +31,7 @@ struct ROQ_PUBLIC CancelAllOrdersAck final {
   std::string_view symbol;                           //!< Symbol
   Side side = {};                                    //!< Side
   Origin origin = {};                                //!< Origin of ack
-  RequestStatus status = {};                         //!< Request status
+  RequestStatus request_status = {};                 //!< Request status
   Error error = {};                                  //!< Error code
   std::string_view text;                             //!< Descriptive text
   std::string_view request_id;                       //!< Request identifier
@@ -65,7 +65,7 @@ struct fmt::formatter<roq::CancelAllOrdersAck> {
         R"(symbol="{}", )"
         R"(side={}, )"
         R"(origin={}, )"
-        R"(status={}, )"
+        R"(request_status={}, )"
         R"(error={}, )"
         R"(text="{}", )"
         R"(request_id="{}", )"
@@ -82,7 +82,7 @@ struct fmt::formatter<roq::CancelAllOrdersAck> {
         value.symbol,
         value.side,
         value.origin,
-        value.status,
+        value.request_status,
         value.error,
         value.text,
         value.request_id,

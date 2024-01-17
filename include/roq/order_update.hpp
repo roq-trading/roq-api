@@ -48,7 +48,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   std::string_view external_account;                  //!< External account name
   std::string_view external_order_id;                 //!< External order identifier
   std::string_view client_order_id;                   //!< Client order identifier
-  OrderStatus status = {};                            //!< Order status
+  OrderStatus order_status = {};                      //!< Order status
   double quantity = NaN;                              //!< Quantity (total, indicative)
   double price = NaN;                                 //!< Price
   double stop_price = NaN;                            //!< Stop price (depends on order_type and time_in_force)
@@ -103,7 +103,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(client_order_id="{}", )"
-        R"(status={}, )"
+        R"(order_status={}, )"
         R"(quantity={}, )"
         R"(price={}, )"
         R"(stop_price={}, )"
@@ -141,7 +141,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.external_account,
         value.external_order_id,
         value.client_order_id,
-        value.status,
+        value.order_status,
         value.quantity,
         value.price,
         value.stop_price,

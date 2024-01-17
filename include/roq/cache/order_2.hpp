@@ -21,10 +21,10 @@ struct ROQ_PUBLIC Order2 final {
         time_in_force{order_update.time_in_force}, execution_instructions{order_update.execution_instructions},
         create_time_utc{order_update.create_time_utc}, update_time_utc{order_update.update_time_utc},
         external_account{order_update.external_account}, external_order_id{order_update.external_order_id},
-        client_order_id{order_update.client_order_id}, status{order_update.status}, quantity{order_update.quantity},
-        price{order_update.price}, stop_price{order_update.stop_price}, risk_exposure{order_update.risk_exposure},
-        remaining_quantity{order_update.remaining_quantity}, traded_quantity{order_update.traded_quantity},
-        average_traded_price{order_update.average_traded_price},
+        client_order_id{order_update.client_order_id}, order_status{order_update.order_status},
+        quantity{order_update.quantity}, price{order_update.price}, stop_price{order_update.stop_price},
+        risk_exposure{order_update.risk_exposure}, remaining_quantity{order_update.remaining_quantity},
+        traded_quantity{order_update.traded_quantity}, average_traded_price{order_update.average_traded_price},
         last_traded_quantity{order_update.last_traded_quantity}, last_traded_price{order_update.last_traded_price},
         last_liquidity{order_update.last_liquidity}, routing_id{order_update.routing_id},
         max_request_version{order_update.max_request_version}, max_response_version{order_update.max_response_version},
@@ -49,7 +49,7 @@ struct ROQ_PUBLIC Order2 final {
     dirty |= utils::update_if_not_empty(external_account, order_update.external_account);
     dirty |= utils::update_if_not_empty(external_order_id, order_update.external_order_id);
     dirty |= utils::update_if_not_empty(client_order_id, order_update.client_order_id);
-    dirty |= utils::update(status, order_update.status);
+    dirty |= utils::update(order_status, order_update.order_status);
     dirty |= utils::update(quantity, order_update.quantity);
     dirty |= utils::update(price, order_update.price);
     dirty |= utils::update(stop_price, order_update.stop_price);
@@ -102,7 +102,7 @@ struct ROQ_PUBLIC Order2 final {
         .external_account = external_account,
         .external_order_id = external_order_id,
         .client_order_id = client_order_id,
-        .status = status,
+        .order_status = order_status,
         .quantity = quantity,
         .price = price,
         .stop_price = stop_price,
@@ -142,7 +142,7 @@ struct ROQ_PUBLIC Order2 final {
   ExternalAccount external_account;
   ExternalOrderId external_order_id;
   ClOrdId client_order_id;
-  OrderStatus status = {};
+  OrderStatus order_status = {};
   double quantity = NaN;
   double price = NaN;
   double stop_price = NaN;

@@ -36,9 +36,9 @@ struct ROQ_PUBLIC OrderAck final {
   Side side = {};                                    //!< Side
   PositionEffect position_effect = {};               //!< Position effect
   MarginMode margin_mode = {};                       //!< Margin mode
-  RequestType type = {};                             //!< Request type
+  RequestType request_type = {};                     //!< Request type
   Origin origin = {};                                //!< Origin of ack
-  RequestStatus status = {};                         //!< Request status
+  RequestStatus request_status = {};                 //!< Request status
   Error error = {};                                  //!< Error code
   std::string_view text;                             //!< Descriptive text
   std::string_view request_id;                       //!< Request identifier
@@ -82,9 +82,9 @@ struct fmt::formatter<roq::OrderAck> {
         R"(side={}, )"
         R"(position_effect={}, )"
         R"(margin_mode={}, )"
-        R"(type={}, )"
+        R"(request_type={}, )"
         R"(origin={}, )"
-        R"(status={}, )"
+        R"(request_status={}, )"
         R"(error={}, )"
         R"(text="{}", )"
         R"(request_id="{}", )"
@@ -111,9 +111,9 @@ struct fmt::formatter<roq::OrderAck> {
         value.side,
         value.position_effect,
         value.margin_mode,
-        value.type,
+        value.request_type,
         value.origin,
-        value.status,
+        value.request_status,
         value.error,
         value.text,
         value.request_id,

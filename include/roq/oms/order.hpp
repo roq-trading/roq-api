@@ -29,7 +29,7 @@ struct ROQ_PUBLIC Order final {
   Account external_account;
   ExternalOrderId external_order_id;
   ClOrdId client_order_id;
-  OrderStatus status = {};
+  OrderStatus order_status = {};
   double quantity = NaN;
   double price = NaN;
   double stop_price = NaN;
@@ -79,7 +79,7 @@ struct fmt::formatter<roq::oms::Order> {
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(client_order_id="{}", )"
-        R"(status={}, )"
+        R"(order_status={}, )"
         R"(quantity={}, )"
         R"(price={}, )"
         R"(stop_price={}, )"
@@ -117,7 +117,7 @@ struct fmt::formatter<roq::oms::Order> {
         value.external_account,
         value.external_order_id,
         value.client_order_id,
-        value.status,
+        value.order_status,
         value.quantity,
         value.price,
         value.stop_price,

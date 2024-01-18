@@ -53,7 +53,7 @@ struct ROQ_PUBLIC OrderAck final {
   double risk_exposure = NaN;                        //!< Risk exposure
   double risk_exposure_change = NaN;                 //!< Risk exposure change
   double traded_quantity = NaN;                      //!< Quantity (total traded)
-  std::chrono::nanoseconds round_trip_latency = {};  //!< Round-trip latency between gateway and exchange
+  std::chrono::nanoseconds round_trip_latency = {};  //!< Round-trip latency (interpretation depends on origin)
   std::string_view user;                             //!< User name (optional, only relevant for drop-copy)
   uint32_t strategy_id = {};                         //!< Strategy identifier (optional)
 };

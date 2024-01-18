@@ -118,7 +118,7 @@
     {
       "name": "round_trip_latency",
       "type": "std::chrono::nanoseconds",
-      "comment": "Round-trip latency between gateway and exchange"
+      "comment": "Round-trip latency (interpretation depends on origin)"
     },
     {
       "name": "user",

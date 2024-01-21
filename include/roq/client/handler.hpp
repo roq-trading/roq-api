@@ -3,7 +3,8 @@
 #pragma once
 
 #include "roq/api.hpp"
-#include "roq/metrics.hpp"
+
+#include "roq/metrics/writer.hpp"
 
 #include "roq/client/api.hpp"
 

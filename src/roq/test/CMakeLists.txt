@@ -13,7 +13,6 @@ set(SOURCES
     mask.cpp
     math.cpp
     message.cpp
-    metrics.cpp
     patterns.cpp
     rate_limiter.cpp
     request_status.cpp

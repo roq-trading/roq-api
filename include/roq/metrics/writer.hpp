@@ -7,6 +7,8 @@
 #include <cstdint>
 #include <string_view>
 
+#include "roq/metrics/type.hpp"
+
 namespace roq {
 namespace metrics {
 
@@ -34,10 +36,14 @@ struct ROQ_PUBLIC Writer {
   virtual Writer &finish() = 0;
 
   //! Dispatch helper
-  template <typename T>
-  Writer &write(T const &collector, std::string_view const &name) {
-    collector.write(*this, name);
+  template <typename T, typename... Args>
+  Writer &write(T const &collector, std::string_view const &name, Args &&...args) {
+    collector.write(*this, name, std::forward<Args>(args)...);
     return *this;
+  }
+  template <typename T, typename... Args>
+  Writer &write(T const &collector, Type type, Args &&...args) {
+    return write(collector, get_metrics_name(type), std::forward<Args>(args)...);
   }
 };
 

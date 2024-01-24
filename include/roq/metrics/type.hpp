@@ -9,23 +9,24 @@
 namespace roq {
 namespace metrics {
 
+//! Enumeration of metrics keys
 enum class Type {
-  COUNTER,
-  INTER_PROCESS_LATENCY,
-  LATENCY,
-  PROFILE,
-  CLIENTS,
-  EVENTS,
-  EXCEPTIONS,
-  HEARTBEAT_LATENCY,
-  PROCESS,
-  ROUND_TRIP_LATENCY,
-  UPDATED,
-  EVENT_LOG,
-  MARKET_DATA_LATENCY,
-  REQUEST_LATENCY,
-  JOURNAL_LATENCY,
-  END_TO_END_LATENCY,
+  COUNTER,                //!< Gateway specific
+  INTER_PROCESS_LATENCY,  //!< IPC latency between components
+  LATENCY,                //!< Exchange latency (transport or protocol level)
+  PROFILE,                //!< Function profiling
+  CLIENTS,                //!< Connection events
+  EVENTS,                 //!< Event profiling
+  EXCEPTIONS,             //!< Request rejects
+  HEARTBEAT_LATENCY,      //!< Heartbeat latency between components
+  PROCESS,                //!< Process information
+  ROUND_TRIP_LATENCY,     //!< Internal round-trip latency (tick-to-trade)
+  UPDATED,                //!< Counts number of state changes for connections
+  EVENT_LOG,              //!< Counts event-log activity
+  MARKET_DATA_LATENCY,    //!< Market data latency
+  REQUEST_LATENCY,        //!< Request round-trip latency
+  JOURNAL_LATENCY,        //!< Journal round-trip latency
+  END_TO_END_LATENCY,     //!< Latency between origin and exit (used by fix-bridge)
 };
 
 inline static std::string_view get_metrics_name(Type type) {

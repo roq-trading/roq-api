@@ -159,7 +159,7 @@ wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaf
 bash Mambaforge-MacOSX-x86_64.sh -b -u -p ~/conda
 
 ~/conda/bin/mamba install -y \
-   'clang_osx-64>=16'
+   'clang_osx-64>=16,<17'
 ```
 
 #### macOS / Arm64
@@ -170,7 +170,7 @@ wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaf
 bash Mambaforge-MacOSX-arm64.sh -b -u -p ~/conda
 
 ~/conda/bin/mamba install -y \
-   'clang_osx-arm64>=16'
+   'clang_osx-arm64>=16,<17'
 ```
 
 ### Install Dependencies

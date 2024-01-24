@@ -23,7 +23,6 @@ enum class Type {
   UPDATED,
   EVENT_LOG,
   MARKET_DATA_LATENCY,
-  QUEUE_LATENCY,
   REQUEST_LATENCY,
   JOURNAL_LATENCY,
   END_TO_END_LATENCY,
@@ -59,8 +58,6 @@ inline static std::string_view get_metrics_name(Type type) {
       return "roq_event_log"sv;
     case MARKET_DATA_LATENCY:
       return "roq_market_data_latency"sv;
-    case QUEUE_LATENCY:
-      return "roq_queue_latency"sv;
     case REQUEST_LATENCY:
       return "roq_request_latency"sv;
     case JOURNAL_LATENCY:

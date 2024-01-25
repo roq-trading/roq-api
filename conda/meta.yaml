@@ -11,7 +11,9 @@ build:
   script_env:
     - ROQ_BUILD_NUMBER
     - ROQ_BUILD_TYPE
-    - CPPFLAGS=-D_LIBCPP_DISABLE_AVAILABILITY  # [osx]
+    - CFLAGS=-O3
+    - CPPFLAGS=-O3  # [linux]
+    - CPPFLAGS=-O3 -D_LIBCPP_DISABLE_AVAILABILITY  # [osx]
   run_exports:
     strong:
       - {{ pin_subpackage('roq-api', max_pin='x.x.x') }}
@@ -27,8 +29,8 @@ requirements:
     - make
   host:
     - abseil-cpp
-    - fmt
     - catch2  # [linux]
+    - fmt
     - roq-oss-catch2  # [osx]
     - roq-oss-magic_enum
 

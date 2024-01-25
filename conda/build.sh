@@ -23,10 +23,7 @@ case "$ARCH" in
     ;;
 esac
 
-CFLAGS="$CFLAGS -O3"
-CPPFLAGS="$CPPFLAGS -O3"
-
-CXXFLAGS+=" $CPPFLAGS"  # CMake doesn't used CPPFLAGS
+CXXFLAGS+=" $CPPFLAGS"  # CMake doesn't use CPPFLAGS
 
 ROQ_BUILD_TYPE=${ROQ_BUILD_TYPE:-Release}
 

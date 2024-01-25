@@ -137,7 +137,7 @@ wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaf
 bash Mambaforge-Linux-x86_64.sh -b -u -p ~/conda
 
 ~/conda/bin/mamba install -y \
-    'gxx_linux-64>=12'
+    'gxx_linux-64>=13'
 ```
 
 #### Linux / AArch64
@@ -148,7 +148,7 @@ wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaf
 bash Mambaforge-Linux-aarch64.sh -b -u -p ~/conda
 
 ~/conda/bin/mamba install -y \
-    'gxx_linux-aarch64>=12'
+    'gxx_linux-aarch64>=13'
 ```
 
 #### macOS / x86\_64

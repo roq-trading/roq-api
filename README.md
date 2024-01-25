@@ -194,8 +194,8 @@ mamba install -y --channel https://roq-trading.com/conda/stable \
 
 ## Building
 
-> Please read this if you're using macOS:
-> https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
+> If you build for macOS, please consult the
+> [knowledge base](https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk).
 
 ```bash
 git submodule update --init --recursive

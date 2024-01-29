@@ -59,6 +59,7 @@ set(SOURCES
     position_update.json
     priority.json
     protocol.json
+    quality_of_service.json
     rate_limit_trigger.json
     rate_limit_type.json
     ready.json
@@ -73,6 +74,7 @@ set(SOURCES
     route_ack.json
     route.json
     route_request_status.json
+    routing.json
     security_type.json
     side.json
     start.json

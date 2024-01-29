@@ -1,0 +1,22 @@
+{
+  "name": "Routing",
+  "type": "message",
+  "comment": "Routing",
+  "values": [
+    {
+      "name": "source",
+      "type": "uint8_t",
+      "comment": "source"
+    },
+    {
+      "name": "is_last",
+      "type": "bool",
+      "comment": "is last?"
+    },
+    {
+      "name": "quality_of_service",
+      "type": "QualityOfService",
+      "comment": "quality of service"
+    }
+  ]
+}

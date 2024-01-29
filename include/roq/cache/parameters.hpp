@@ -43,9 +43,10 @@ struct Parameters final {
     buffer.clear();
     for (auto &[label, tmp] : parameters_)
       for (auto &[key_2, value] : tmp) {
-        auto &[account, exchange, symbol] = key_2;
-        Parameter parameter{
-            .label = label,        // note! copy
+        auto &[strategy_id, account, exchange, symbol] = key_2;
+        auto parameter = Parameter{
+            .label = label,  // note! copy
+            .strategy_id = strategy_id,
             .account = account,    // note! copy
             .exchange = exchange,  // note! copy
             .symbol = symbol,      // note! copy
@@ -66,8 +67,8 @@ struct Parameters final {
     for (auto &[label, tmp] : parameters_)
       for (auto &[key_2, value] : tmp) {
         result = true;
-        auto &[account, exchange, symbol] = key_2;
-        callback(label, account, exchange, symbol, value);
+        auto &[strategy_id, account, exchange, symbol] = key_2;
+        callback(label, strategy_id, account, exchange, symbol, value);
       }
     return result;
   }
@@ -89,8 +90,8 @@ struct Parameters final {
     if (iter != std::end(parameters_))
       for (auto &[key_2, value] : (*iter).second) {
         result = true;
-        auto &[account, exchange, symbol] = key_2;
-        callback(account, exchange, symbol, value);
+        auto &[strategy_id, account, exchange, symbol] = key_2;
+        callback(strategy_id, account, exchange, symbol, value);
       }
     return result;
   }
@@ -98,8 +99,8 @@ struct Parameters final {
  protected:
   bool update_incremental(auto const &parameters_update) {
     auto result = false;
-    for (auto &[label, account, exchange, symbol, value] : parameters_update.parameters) {
-      SecondaryKey key_2{account, exchange, symbol};
+    for (auto &[label, strategy_id, account, exchange, symbol, value] : parameters_update.parameters) {
+      SecondaryKey key_2{strategy_id, account, exchange, symbol};
       result |= utils::update(parameters_[label][key_2], value);
     }
     return result;
@@ -107,14 +108,14 @@ struct Parameters final {
 
   void update_snapshot(auto const &parameters_update) {
     parameters_.clear();
-    for (auto &[label, account, exchange, symbol, value] : parameters_update.parameters) {
-      SecondaryKey key_2{account, exchange, symbol};
+    for (auto &[label, strategy_id, account, exchange, symbol, value] : parameters_update.parameters) {
+      SecondaryKey key_2{strategy_id, account, exchange, symbol};
       parameters_[label][key_2] = value;
     }
   }
 
  private:
-  using SecondaryKey = std::tuple<std::string, std::string, std::string>;
+  using SecondaryKey = std::tuple<uint32_t, std::string, std::string, std::string>;
   absl::node_hash_map<std::string, absl::node_hash_map<SecondaryKey, std::string>> parameters_;
 };
 

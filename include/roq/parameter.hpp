@@ -14,11 +14,12 @@ namespace roq {
 
 //! Represents a single parameter
 struct ROQ_PUBLIC Parameter final {
-  ParameterKey label;    //!< Label
-  Account account;       //!< Account name
-  Exchange exchange;     //!< Exchange
-  Symbol symbol;         //!< Symbol
-  ParameterValue value;  //!< Value
+  ParameterKey label;         //!< Label
+  uint32_t strategy_id = {};  //!< Strategy identifier (optional)
+  Account account;            //!< Account name
+  Exchange exchange;          //!< Exchange
+  Symbol symbol;              //!< Symbol
+  ParameterValue value;       //!< Value
 };
 
 }  // namespace roq
@@ -32,12 +33,14 @@ struct fmt::formatter<roq::Parameter> {
         context.out(),
         R"({{)"
         R"(label="{}", )"
+        R"(strategy_id={}, )"
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(value="{}")"
         R"(}})"sv,
         value.label,
+        value.strategy_id,
         value.account,
         value.exchange,
         value.symbol,

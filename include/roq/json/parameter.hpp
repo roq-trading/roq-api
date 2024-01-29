@@ -20,12 +20,14 @@ struct Parameter final {
         context.out(),
         R"({{)"
         R"("label":{},)"
+        R"("strategy_id":{},)"
         R"("account":{},)"
         R"("exchange":{},)"
         R"("symbol":{},)"
         R"("value":{})"
         R"(}})"sv,
         String{value_.label},
+        value_.strategy_id,
         String{value_.account},
         String{value_.exchange},
         String{value_.symbol},

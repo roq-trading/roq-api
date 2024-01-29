@@ -9,6 +9,10 @@
       "comment": "Label"
     },
     {
+      "name": "strategy_id",
+      "type": "uint32_t"
+    },
+    {
       "name": "account",
       "type": "Account"
     },

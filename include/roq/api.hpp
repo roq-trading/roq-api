@@ -200,7 +200,7 @@ static_assert(sizeof(Route) == 8);
 // just keep a handle on the size for some other array items
 
 static_assert(sizeof(Fill) == 72);
-static_assert(sizeof(Parameter) == 176);
+static_assert(sizeof(Parameter) == 180);
 static_assert(sizeof(Position) == 96);
 static_assert(sizeof(RiskLimit) == 136);
 

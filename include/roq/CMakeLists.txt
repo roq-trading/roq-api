@@ -112,11 +112,11 @@ foreach(path ${SOURCES})
   set(target ${CMAKE_BINARY_DIR}/${TARGET_DIR}/${name}.hpp)
   add_custom_command(
     OUTPUT ${target}
-    COMMAND ${PYTHON_EXECUTABLE} ${AUTOGEN_PY} --namespace "roq" --file-type "hpp" ${source} >
+    COMMAND ${Python3_EXECUTABLE} ${AUTOGEN_PY} --namespace "roq" --file-type "hpp" ${source} >
             ${target}
     COMMAND ${CLANG_FORMAT} -i ${target}
     VERBATIM
-    DEPENDS ${PYTHON_EXECUTABLE} ${AUTOGEN_PY} ${source})
+    DEPENDS ${Python3_EXECUTABLE} ${AUTOGEN_PY} ${source})
   list(APPEND AUTOGEN_HEADERS ${target})
 endforeach()
 

@@ -1,4 +1,4 @@
--std=c++20
+-std=c++23
 -Iinclude
 -Isrc
 -Ithird_party/googletest/googletest/include

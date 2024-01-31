@@ -22,7 +22,7 @@ include(GNUInstallDirs)
 
 # dependencies
 
-find_package(Python 3 REQUIRED COMPONENTS Development)
+find_package(Python3 COMPONENTS Interpreter)
 
 find_package(absl REQUIRED)
 find_package(fmt REQUIRED)

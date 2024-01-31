@@ -51,20 +51,14 @@ set(AUTOGEN_PY ${CMAKE_SOURCE_DIR}/scripts/autogen.py)
 # sub-projects
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/schema/cpp)
-# add_subdirectory(${CMAKE_SOURCE_DIR}/schema/fbs)
-
 add_subdirectory(${CMAKE_SOURCE_DIR}/include/roq)
-# add_subdirectory(${CMAKE_SOURCE_DIR}/include/roq/fbs)
 
 # project
 
 add_library(${PROJECT_NAME} INTERFACE)
 
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-cpp)
-# add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-fbs)
-
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-cpp)
-# add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-fbs)
 
 # sub-projects
 

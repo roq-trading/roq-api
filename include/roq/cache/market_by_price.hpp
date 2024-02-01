@@ -116,7 +116,7 @@ struct ROQ_PUBLIC MarketByPrice {
     callback(std::as_const(market_by_price_update_2));
   }
 
-  // apply a simple update
+  // apply a simple update (warning! do not use this function to process batch updates)
   //   note! quantity == 0 means remove
   //   note! should only be used for testing
   inline void operator()(Side side, MBPUpdate const &mbp_update) { update_helper(side, mbp_update); }

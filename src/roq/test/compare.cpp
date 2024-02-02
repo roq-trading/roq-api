@@ -15,8 +15,8 @@ constexpr bool safe_equal(double lhs, double rhs) {
 }
 }  // namespace
 
-static_assert(!detail::isnan(0.0));
-static_assert(detail::isnan(std::numeric_limits<double>::quiet_NaN()));
+static_assert(!std::isnan(0.0));
+static_assert(std::isnan(std::numeric_limits<double>::quiet_NaN()));
 
 static_assert(safe_equal(detail::fabs(0.0), 0.0));
 static_assert(safe_equal(detail::fabs(-0.0), 0.0));

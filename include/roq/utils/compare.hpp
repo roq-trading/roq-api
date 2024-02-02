@@ -19,17 +19,6 @@ namespace roq {
 namespace utils {
 
 namespace detail {
-// std::isnan is *not* constexpr before c++23
-// references:
-//   https://codereview.stackexchange.com/a/272103
-template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
-constexpr bool isnan(T x) {
-  auto const i = std::bit_cast<uint64_t>(x);
-  auto constexpr ones_mask = 0x7ff0000000000000;
-  auto constexpr zero_mask = 0x000fffffffffffff;
-  return (i & ones_mask) == ones_mask && (i & zero_mask) != 0;
-}
-
 // std::fabs is *not* constexpr before c++23
 // references:
 //   https://stackoverflow.com/a/29457433
@@ -40,13 +29,6 @@ constexpr T fabs(T x) {
 #else
   return std::fabs(x);
 #endif
-}
-
-// std::signbit is *not* constexpr (until C++23)
-template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
-constexpr bool signbit(T x) {
-  return std::signbit(x);
-  // return x < 0.0;
 }
 
 // references:
@@ -224,7 +206,7 @@ constexpr bool is_zero(T const &value) {
 
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, bool> = 0>
 constexpr bool is_negative(T const &value) {
-  return detail::signbit(value);
+  return std::signbit(value);
 }
 
 }  // namespace utils

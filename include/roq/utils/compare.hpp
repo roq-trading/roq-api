@@ -49,8 +49,8 @@ constexpr std::strong_ordering to_strong_ordering(int sign) {
 
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
 constexpr std::strong_ordering compare(T lhs, T rhs) {
-  auto lhs_nan = isnan<T>(lhs);
-  auto rhs_nan = isnan<T>(rhs);
+  auto lhs_nan = std::isnan(lhs);
+  auto rhs_nan = std::isnan(rhs);
   if (!lhs_nan) {
     if (!rhs_nan) {
       // references:

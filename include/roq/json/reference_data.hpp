@@ -9,7 +9,7 @@
 #include "roq/json/context.hpp"
 #include "roq/json/date.hpp"
 #include "roq/json/datetime.hpp"
-#include "roq/json/number.hpp"
+#include "roq/json/decimal.hpp"
 #include "roq/json/string.hpp"
 
 namespace roq {
@@ -59,15 +59,15 @@ struct ReferenceData final {
         String{value_.quote_currency},
         String{value_.margin_currency},
         String{value_.commission_currency},
-        Number{value_.tick_size, context_.price_decimals},
-        Number{value_.multiplier},
-        Number{value_.min_notional, context_.quantity_decimals},
-        Number{value_.min_trade_vol, context_.quantity_decimals},
-        Number{value_.max_trade_vol, context_.quantity_decimals},
-        Number{value_.trade_vol_step_size, context_.quantity_decimals},
+        Decimal{value_.tick_size, context_.price_decimals},
+        Decimal{value_.multiplier},
+        Decimal{value_.min_notional, context_.quantity_decimals},
+        Decimal{value_.min_trade_vol, context_.quantity_decimals},
+        Decimal{value_.max_trade_vol, context_.quantity_decimals},
+        Decimal{value_.trade_vol_step_size, context_.quantity_decimals},
         String{value_.option_type},
         String{value_.strike_currency},
-        Number{value_.strike_price},
+        Decimal{value_.strike_price},
         String{value_.underlying},
         String{value_.time_zone},
         Date{value_.issue_date},

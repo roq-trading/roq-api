@@ -1,19 +1,36 @@
 /* Copyright (c) 2017-2024, Hans Erik Thrane */
 
+/* !!! THIS FILE HAS BEEN AUTO-GENERATED !!! */
+
 #pragma once
+
+#include "roq/compat.hpp"
+
+#include <magic_enum.hpp>
 
 #include <fmt/format.h>
 
-#include <limits>
-
-#include "roq/decimals.hpp"
-
 namespace roq {
 
-//! Numerical precision
-struct ROQ_PUBLIC Precision final {
-  double increment = std::numeric_limits<double>::quiet_NaN();
-  Decimals decimals = {};
+//! Enumeration of decimal precision (digits)
+enum class Precision : uint8_t {
+  UNDEFINED = 0,
+  _0,
+  _1,
+  _2,
+  _3,
+  _4,
+  _5,
+  _6,
+  _7,
+  _8,
+  _9,
+  _10,
+  _11,
+  _12,
+  _13,
+  _14,
+  _15,
 };
 
 }  // namespace roq
@@ -23,13 +40,6 @@ struct fmt::formatter<roq::Precision> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::Precision const &value, format_context &context) const {
     using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(increment={}, )"
-        R"(decimals={})"
-        R"(}})"sv,
-        value.increment,
-        value.decimals);
+    return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }
 };

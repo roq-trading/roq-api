@@ -9,7 +9,7 @@
 #include "roq/json/context.hpp"
 #include "roq/json/date.hpp"
 #include "roq/json/datetime.hpp"
-#include "roq/json/number.hpp"
+#include "roq/json/decimal.hpp"
 #include "roq/json/string.hpp"
 
 namespace roq {
@@ -61,7 +61,7 @@ struct OrderUpdate final {
         String{value_.symbol},
         String{value_.side},
         String{value_.position_effect},
-        Number{value_.max_show_quantity, context_.quantity_decimals},
+        Decimal{value_.max_show_quantity, context_.quantity_decimals},
         String{value_.order_type},
         String{value_.time_in_force},
         String{value_.execution_instructions},
@@ -70,14 +70,14 @@ struct OrderUpdate final {
         String{value_.external_account},
         String{value_.external_order_id},
         String{value_.order_status},
-        Number{value_.quantity, context_.quantity_decimals},
-        Number{value_.price, context_.price_decimals},
-        Number{value_.stop_price, context_.price_decimals},
-        Number{value_.remaining_quantity, context_.quantity_decimals},
-        Number{value_.traded_quantity, context_.quantity_decimals},
-        Number{value_.average_traded_price, context_.price_decimals},  // XXX rounded ???
-        Number{value_.last_traded_quantity, context_.quantity_decimals},
-        Number{value_.last_traded_price, context_.price_decimals},
+        Decimal{value_.quantity, context_.quantity_decimals},
+        Decimal{value_.price, context_.price_decimals},
+        Decimal{value_.stop_price, context_.price_decimals},
+        Decimal{value_.remaining_quantity, context_.quantity_decimals},
+        Decimal{value_.traded_quantity, context_.quantity_decimals},
+        Decimal{value_.average_traded_price, context_.price_decimals},  // XXX rounded ???
+        Decimal{value_.last_traded_quantity, context_.quantity_decimals},
+        Decimal{value_.last_traded_price, context_.price_decimals},
         String{value_.last_liquidity},
         String{value_.routing_id},
         value_.max_request_version,

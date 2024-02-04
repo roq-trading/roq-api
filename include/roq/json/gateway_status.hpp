@@ -8,7 +8,7 @@
 
 #include "roq/json/date.hpp"
 #include "roq/json/datetime.hpp"
-#include "roq/json/number.hpp"
+#include "roq/json/decimal.hpp"
 #include "roq/json/string.hpp"
 
 namespace roq {

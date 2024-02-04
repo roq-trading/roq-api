@@ -7,7 +7,7 @@
 #include "roq/trade.hpp"
 
 #include "roq/json/context.hpp"
-#include "roq/json/number.hpp"
+#include "roq/json/decimal.hpp"
 #include "roq/json/string.hpp"
 
 namespace roq {
@@ -27,8 +27,8 @@ struct Trade final {
         R"("trade_id":{})"
         R"(}})"sv,
         String{value_.side},
-        Number{value_.price, context_.price_decimals},
-        Number{value_.quantity, context_.quantity_decimals},
+        Decimal{value_.price, context_.price_decimals},
+        Decimal{value_.quantity, context_.quantity_decimals},
         String{value_.trade_id});
   }
 

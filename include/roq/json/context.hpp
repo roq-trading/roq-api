@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "roq/decimals.hpp"
+#include "roq/precision.hpp"
 
 namespace roq {
 namespace json {
 
 struct Context final {
-  Decimals price_decimals;
-  Decimals quantity_decimals;
+  Precision price_decimals;
+  Precision quantity_decimals;
 };
 
 }  // namespace json

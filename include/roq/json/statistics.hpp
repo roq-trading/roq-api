@@ -10,7 +10,7 @@
 
 #include "roq/json/context.hpp"
 #include "roq/json/datetime.hpp"
-#include "roq/json/number.hpp"
+#include "roq/json/decimal.hpp"
 #include "roq/json/string.hpp"
 
 namespace roq {
@@ -21,7 +21,7 @@ struct Statistics final {
 
   auto format_to(auto &context) const {
     using namespace std::literals;
-    auto decimals = [&]() -> Decimals {
+    auto precision = [&]() -> Precision {
       if (utils::is_price(value_.type))
         return context_.price_decimals;
       if (utils::is_quantity(value_.type))
@@ -37,7 +37,7 @@ struct Statistics final {
         R"("end_time_utc":{})"
         R"(}})"sv,
         String{value_.type},
-        Number{value_.value, decimals},
+        Decimal{value_.value, precision},
         DateTime{value_.begin_time_utc},
         DateTime{value_.end_time_utc});
   }

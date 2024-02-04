@@ -55,6 +55,7 @@ set(SOURCES
     position_effect.json
     position.json
     position_update.json
+    precision.json
     priority.json
     protocol.json
     quality_of_service.json

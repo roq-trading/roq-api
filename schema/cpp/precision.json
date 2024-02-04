@@ -1,7 +1,7 @@
 {
-  "name": "Decimals",
+  "name": "Precision",
   "type": "enum",
-  "comment": "Enumeration of decimal digits",
+  "comment": "Enumeration of decimal precision (digits)",
   "values": [
     {
       "name": "0"

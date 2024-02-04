@@ -18,7 +18,6 @@ set(SOURCES
     custom_matrix_update.json
     custom_metrics.json
     custom_metrics_update.json
-    decimals.json
     disconnected.json
     download_begin.json
     download_end.json
@@ -57,6 +56,7 @@ set(SOURCES
     position_effect.json
     position.json
     position_update.json
+    precision.json
     priority.json
     protocol.json
     quality_of_service.json

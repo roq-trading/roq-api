@@ -4,7 +4,7 @@
 
 #include "roq/api.hpp"
 
-#include "roq/precision.hpp"
+#include "roq/precision_2.hpp"
 
 namespace roq {
 namespace oms {
@@ -44,8 +44,8 @@ struct ROQ_PUBLIC Order final {
   uint32_t max_request_version = {};
   uint32_t max_response_version = {};
   uint32_t max_accepted_version = {};
-  Precision quantity_precision;
-  Precision price_precision;
+  Precision2 quantity_precision;
+  Precision2 price_precision;
   UpdateType update_type = {};
   User user;
   uint32_t strategy_id = {};

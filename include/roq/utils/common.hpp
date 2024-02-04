@@ -4,12 +4,12 @@
 
 #include <limits>
 
-#include "roq/decimals.hpp"
 #include "roq/filter.hpp"
 #include "roq/layer.hpp"
 #include "roq/mask.hpp"
 #include "roq/numbers.hpp"
 #include "roq/order_status.hpp"
+#include "roq/precision.hpp"
 #include "roq/request_status.hpp"
 #include "roq/side.hpp"
 #include "roq/statistics_type.hpp"
@@ -290,9 +290,9 @@ inline constexpr int sign(Side side) {
 }
 
 //! Number of decimal digits
-inline constexpr int8_t decimal_digits(Decimals decimals) {
-  switch (decimals) {
-    using enum Decimals;
+inline constexpr int8_t decimal_digits(Precision precision) {
+  switch (precision) {
+    using enum Precision;
     case UNDEFINED:
       break;
     case _0:
@@ -332,18 +332,18 @@ inline constexpr int8_t decimal_digits(Decimals decimals) {
 }
 
 template <typename T>
-inline constexpr Decimals to_decimals(T decimal_digits) {
+inline constexpr Precision to_decimals(T decimal_digits) {
   if constexpr (is_integer<T>::value) {
     if (decimal_digits < 0 || decimal_digits > 15)
       return {};
-    return Decimals{static_cast<std::underlying_type<Decimals>::type>(decimal_digits + 1)};
+    return Precision{static_cast<std::underlying_type<Precision>::type>(decimal_digits + 1)};
   } else {
     static_assert(always_false<T>, "not supported for this type");
   }
 }
 
-inline constexpr bool has_more_precision(Decimals lhs, Decimals rhs) {
-  return lhs != Decimals::UNDEFINED ? lhs > rhs : false;
+inline constexpr bool has_more_precision(Precision lhs, Precision rhs) {
+  return lhs != Precision::UNDEFINED ? lhs > rhs : false;
 }
 
 inline constexpr bool is_price(StatisticsType type) {

@@ -44,12 +44,12 @@
     },
     {
       "name": "price_decimals",
-      "type": "Decimals",
+      "type": "Precision",
       "comment": "Decimal digits required to represent prices (dynamic)"
     },
     {
       "name": "quantity_decimals",
-      "type": "Decimals",
+      "type": "Precision",
       "comment": "Decimal digits required to represent quantities (dynamic)"
     },
     {

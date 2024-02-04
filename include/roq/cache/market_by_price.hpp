@@ -26,8 +26,8 @@ struct ROQ_PUBLIC MarketByPrice {
   virtual double quantity_increment() const = 0;
 
   // precision (required to show all significant decimal places)
-  virtual Decimals price_decimals() const = 0;
-  virtual Decimals quantity_decimals() const = 0;
+  virtual Precision price_decimals() const = 0;
+  virtual Precision quantity_decimals() const = 0;
 
   // last update
   virtual uint16_t stream_id() const = 0;

@@ -115,14 +115,14 @@ TEST_CASE("format_market_by_price", "[format]") {
       .update_type = UpdateType::SNAPSHOT,
       .exchange_time_utc = {},
       .exchange_sequence = 123,
-      .price_decimals = Decimals::_0,
-      .quantity_decimals = Decimals::_1,
+      .price_decimals = Precision::_0,
+      .quantity_decimals = Precision::_1,
       .max_depth = 10,
       .checksum = 123,
   };
   auto result = fmt::format("{}"sv, market_by_price);
   CHECK(std::size(result) > size_t{0});
-  // note! Decimals are shown with the '_' prefix due to magic_enum
+  // note! Precision are shown with the '_' prefix due to magic_enum
   auto expected =
       R"({)"
       R"(stream_id=0, )"

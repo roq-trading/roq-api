@@ -7,7 +7,7 @@
 #include "roq/layer.hpp"
 
 #include "roq/json/context.hpp"
-#include "roq/json/number.hpp"
+#include "roq/json/decimal.hpp"
 
 namespace roq {
 namespace json {
@@ -25,10 +25,10 @@ struct Layer final {
         R"("ask_price":{},)"
         R"("ask_quantity":{})"
         R"(}})"sv,
-        Number{value_.bid_price, context_.price_decimals},
-        Number{value_.bid_quantity, context_.quantity_decimals},
-        Number{value_.ask_price, context_.price_decimals},
-        Number{value_.ask_quantity, context_.quantity_decimals});
+        Decimal{value_.bid_price, context_.price_decimals},
+        Decimal{value_.bid_quantity, context_.quantity_decimals},
+        Decimal{value_.ask_price, context_.price_decimals},
+        Decimal{value_.ask_quantity, context_.quantity_decimals});
   }
 
  private:

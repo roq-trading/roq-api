@@ -13,8 +13,8 @@ using namespace std::chrono_literals;
 
 TEST_CASE("json_ReferenceData", "[json]") {
   json::Context context{
-      .price_decimals = Decimals::_1,
-      .quantity_decimals = Decimals::_0,
+      .price_decimals = Precision::_1,
+      .quantity_decimals = Precision::_0,
   };
   ReferenceData reference_data{
       .stream_id = 1,
@@ -80,8 +80,8 @@ TEST_CASE("json_ReferenceData", "[json]") {
 
 TEST_CASE("json_TopOfBook", "[json]") {
   json::Context context{
-      .price_decimals = Decimals::_2,
-      .quantity_decimals = Decimals::_0,
+      .price_decimals = Precision::_2,
+      .quantity_decimals = Precision::_0,
   };
   TopOfBook top_of_book{
       .stream_id = 1,
@@ -118,8 +118,8 @@ TEST_CASE("json_TopOfBook", "[json]") {
 
 TEST_CASE("json_MarketByPriceUpdate", "[json]") {
   json::Context context{
-      .price_decimals = Decimals::_0,
-      .quantity_decimals = Decimals::_0,
+      .price_decimals = Precision::_0,
+      .quantity_decimals = Precision::_0,
   };
   roq::MBPUpdate bids[] = {
       {

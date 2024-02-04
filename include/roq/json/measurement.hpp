@@ -6,7 +6,7 @@
 
 #include "roq/measurement.hpp"
 
-#include "roq/json/number.hpp"
+#include "roq/json/decimal.hpp"
 #include "roq/json/string.hpp"
 
 namespace roq {
@@ -24,7 +24,7 @@ struct Measurement final {
         R"("value":{})"
         R"(}})"sv,
         String{value_.name},
-        Number{value_.value});
+        Decimal{value_.value});
   }
 
  private:

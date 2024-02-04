@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Promote Decimal to API (from utils::Number) and rename Precision (from Decimals) (#439)
+
 ## 0.9.9 &ndash; 2024-01-28
 
 ### Added

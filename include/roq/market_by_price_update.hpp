@@ -13,10 +13,10 @@
 #include <span>
 #include <string_view>
 
-#include "roq/decimals.hpp"
 #include "roq/event.hpp"
 #include "roq/mbp_update.hpp"
 #include "roq/name.hpp"
+#include "roq/precision.hpp"
 #include "roq/trace.hpp"
 #include "roq/update_type.hpp"
 
@@ -33,8 +33,8 @@ struct ROQ_PUBLIC MarketByPriceUpdate final {
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
-  Decimals price_decimals = {};                     //!< Decimal digits required to represent prices (dynamic)
-  Decimals quantity_decimals = {};                  //!< Decimal digits required to represent quantities (dynamic)
+  Precision price_decimals = {};                    //!< Decimal digits required to represent prices (dynamic)
+  Precision quantity_decimals = {};                 //!< Decimal digits required to represent quantities (dynamic)
   uint16_t max_depth = {};                          //!< Maximum depth (zero means unlimited)
   uint32_t checksum = {};                           //!< Checksum (internal)
 };

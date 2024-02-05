@@ -2,7 +2,6 @@ set(TARGET_NAME ${PROJECT_NAME}-test)
 
 set(SOURCES
     alignment.cpp
-    chrono.cpp
     compare.cpp
     compat.cpp
     datetime.cpp
@@ -11,12 +10,8 @@ set(SOURCES
     format.cpp
     json.cpp
     mask.cpp
-    math.cpp
-    message.cpp
-    patterns.cpp
     rate_limiter.cpp
     request_status.cpp
-    safe_cast.cpp
     side.cpp
     span.cpp
     string.cpp

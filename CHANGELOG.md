@@ -7,6 +7,7 @@ All notable changes will be documented in this file.
 ### Changed
 
 * Promote Decimal to API (from utils::Number) and rename Precision (from Decimals) (#439)
+* Moved several header files to the roq-utils library (from the utils namespace here)
 
 ## 0.9.9 &ndash; 2024-01-28
 

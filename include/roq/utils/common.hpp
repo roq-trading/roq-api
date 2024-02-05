@@ -332,7 +332,7 @@ inline constexpr int8_t decimal_digits(Precision precision) {
 }
 
 template <typename T>
-inline constexpr Precision to_decimals(T decimal_digits) {
+inline constexpr Precision to_precision(T decimal_digits) {
   if constexpr (is_integer<T>::value) {
     if (decimal_digits < 0 || decimal_digits > 15)
       return {};

@@ -12,21 +12,22 @@ namespace metrics {
 //! Enumeration of metrics keys
 enum class Type {
   COUNTER,                //!< Gateway specific
-  INTER_PROCESS_LATENCY,  //!< IPC latency between components
+  INTER_PROCESS_LATENCY,  //!< IPC latency between components (one-way)
   LATENCY,                //!< Exchange latency (transport or protocol level)
   PROFILE,                //!< Function profiling
   CLIENTS,                //!< Connection events
   EVENTS,                 //!< Event profiling
-  EXCEPTIONS,             //!< Request rejects
+  EXCEPTIONS,             //!< Rejected order requests (counter)
   HEARTBEAT_LATENCY,      //!< Heartbeat latency between components
   PROCESS,                //!< Process information
-  ROUND_TRIP_LATENCY,     //!< Internal round-trip latency (tick-to-trade)
-  UPDATED,                //!< Counts number of state changes for connections
-  EVENT_LOG,              //!< Counts event-log activity
-  MARKET_DATA_LATENCY,    //!< Market data latency
-  REQUEST_LATENCY,        //!< Request round-trip latency
-  JOURNAL_LATENCY,        //!< Journal round-trip latency
-  END_TO_END_LATENCY,     //!< Latency between origin and exit (used by fix-bridge)
+  ROUND_TRIP_LATENCY,     //!< Tick-to-trade latency (round-trip, internal)
+  UPDATED,                //!< State changes for connections (counter)
+  EVENT_LOG,              //!< Event-log activity (counter)
+  MARKET_DATA_LATENCY,    //!< Market data latency (one-way)
+  REQUEST_LATENCY,        //!< Request latency (round-trip)
+  JOURNAL_LATENCY,        //!< Journal latency (round-trip)
+  END_TO_END_LATENCY,     //!< Latency between entry (origin) and exit (used by fix-bridge)
+  RATE_LIMITER,           //!< Rate limiter (gauge)
 };
 
 inline static std::string_view get_metrics_name(Type type) {
@@ -65,6 +66,8 @@ inline static std::string_view get_metrics_name(Type type) {
       return "roq_journal_latency"sv;
     case END_TO_END_LATENCY:
       return "roq_end_to_end_latency"sv;
+    case RATE_LIMITER:
+      return "roq_rate_limiter"sv;
   }
   std::abort();
 }

@@ -121,7 +121,7 @@ TEST_CASE("format_market_by_price", "[format]") {
       .checksum = 123,
   };
   auto result = fmt::format("{}"sv, market_by_price);
-  CHECK(std::size(result) > size_t{0});
+  CHECK(std::size(result) > 0uz);
   // note! Precision are shown with the '_' prefix due to magic_enum
   auto expected =
       R"({)"

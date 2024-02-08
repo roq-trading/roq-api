@@ -8,7 +8,10 @@
 
 namespace roq {
 
-// note! interface uses native byte order, internal representation using network byte order
+// note!
+//   interface using native byte order
+//   network byte order for internal representation
+
 struct UUID final {
   using value_type = __uint128_t;
 

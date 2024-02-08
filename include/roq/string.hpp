@@ -4,8 +4,6 @@
 
 #include "roq/compat.hpp"
 
-#include <absl/hash/hash.h>
-
 #include <fmt/format.h>
 
 #include <algorithm>

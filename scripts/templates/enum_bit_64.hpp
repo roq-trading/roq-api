@@ -2,11 +2,7 @@
 
 #pragma once
 
-#include "roq/compat.hpp"
-
-
 {% include 'fmt_includes' %}
-
 
 {% include 'std_includes' %}
 #include <cassert>

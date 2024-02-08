@@ -4,6 +4,8 @@
 
 #include <string_view>
 
+#include <absl/hash/hash.h>
+
 #include "roq/string.hpp"
 
 using namespace roq;

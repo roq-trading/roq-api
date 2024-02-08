@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "roq/compat.hpp"
-
 #include <magic_enum.hpp>
 
 #include <fmt/format.h>

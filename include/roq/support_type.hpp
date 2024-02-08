@@ -4,10 +4,7 @@
 
 #pragma once
 
-#include "roq/compat.hpp"
-
 #include <fmt/format.h>
-
 #include <cassert>
 
 namespace roq {

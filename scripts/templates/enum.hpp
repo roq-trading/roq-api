@@ -2,13 +2,9 @@
 
 #pragma once
 
-#include "roq/compat.hpp"
-
 #include <magic_enum.hpp>
 
-
 {% include 'fmt_includes' %}
-
 
 {% include 'std_includes' %}
 

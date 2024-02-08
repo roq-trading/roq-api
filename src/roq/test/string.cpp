@@ -4,8 +4,6 @@
 
 #include <string_view>
 
-#include <absl/hash/hash.h>
-
 #include "roq/string.hpp"
 
 using namespace roq;
@@ -83,63 +81,6 @@ TEST_CASE("string_push_back", "[string]") {
   CHECK(s.length() == 4);
   CHECK(s == "1234"sv);
   CHECK_THROWS_AS(s.push_back('5'), LengthError);
-}
-
-TEST_CASE("absl_hash_simple_4", "[string]") {
-  std::array<String<4>, 5> raw{{
-      String<4>(),
-      String<4>("1"sv),
-      String<4>("12"sv),
-      String<4>("123"sv),
-      String<4>("1234"sv),
-  }};
-  std::array<size_t, 5> raw_hash{{
-      absl::HashOf(raw[0]),
-      absl::HashOf(raw[1]),
-      absl::HashOf(raw[2]),
-      absl::HashOf(raw[3]),
-      absl::HashOf(raw[4]),
-  }};
-  std::array<std::string_view, 5> heterogeneous{{
-      ""sv,
-      "1"sv,
-      "12"sv,
-      "123"sv,
-      "1234"sv,
-  }};
-  std::array<size_t, 5> heterogeneous_hash{{
-      absl::HashOf(heterogeneous[0]),
-      absl::HashOf(heterogeneous[1]),
-      absl::HashOf(heterogeneous[2]),
-      absl::HashOf(heterogeneous[3]),
-      absl::HashOf(heterogeneous[4]),
-  }};
-  // hash
-  // ... same
-  for (size_t i = 0; i < (std::size(raw_hash) - 1); ++i)
-    for (size_t j = i + 1; j < std::size(raw_hash); ++j)
-      CHECK(raw_hash[i] != raw_hash[j]);
-  // ... heterogenous
-  REQUIRE(std::size(raw_hash) == std::size(heterogeneous_hash));
-  for (size_t i = 0; i < std::size(raw_hash); ++i)
-    CHECK(raw_hash[i] == heterogeneous_hash[i]);
-  // comparison
-  // ... same
-  for (size_t i = 0; i < std::size(raw_hash); ++i) {
-    CHECK(raw[i] == heterogeneous[i]);
-    CHECK(!(raw[i] != heterogeneous[i]));
-  }
-  for (size_t i = 0; i < (std::size(raw_hash) - 1); ++i)
-    for (size_t j = i + 1; j < std::size(raw_hash); ++j) {
-      CHECK(!(raw[i] == raw[j]));
-      CHECK(raw[i] != raw[j]);
-    }
-  // ... heterogenous
-  REQUIRE(std::size(raw) == std::size(heterogeneous));
-  for (size_t i = 0; i < std::size(raw_hash); ++i) {
-    CHECK(raw[i] == heterogeneous[i]);
-    CHECK(!(raw[i] != heterogeneous[i]));
-  }
 }
 
 TEST_CASE("string_signed_unsigned_issue", "[string]") {

@@ -108,7 +108,6 @@ The full list can be found [here](https://roq-trading.com/docs/introduction/gate
 
 ## Library/Package Dependencies
 
-* [Abseil-C++](https://github.com/abseil/abseil-cpp) (Apache 2.0 License)
 * [fmt](https://github.com/fmtlib/fmt) (MIT License)
 * [magic_enum](https://github.com/Neargye/magic_enum) (MIT License)
 * [jinja2](https://github.com/pallets/jinja) (BSD 3-Clause License)

@@ -17,7 +17,6 @@ build:
   run_exports:
     strong:
       - {{ pin_subpackage('roq-api', max_pin='x.x.x') }}
-      - {{ pin_compatible('abseil-cpp', max_pin='x.x') }}
       - {{ pin_compatible('fmt', max_pin='x.x') }}
 
 requirements:

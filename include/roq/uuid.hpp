@@ -15,7 +15,14 @@ namespace roq {
 struct UUID final {
   using value_type = __uint128_t;
 
-  UUID() = default;
+  UUID() {}
+
+  UUID(UUID const &rhs) : value_{rhs.value_} {}
+
+  UUID &operator=(UUID const &rhs) {
+    value_ = rhs.value_;
+    return *this;
+  }
 
   explicit UUID(value_type value) : value_{create(value)} {}
 

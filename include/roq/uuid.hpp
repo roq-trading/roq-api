@@ -2,119 +2,69 @@
 
 #pragma once
 
-#include <absl/numeric/int128.h>
-
-#include <absl/base/internal/endian.h>
-
 #include <fmt/format.h>
 
-#include <algorithm>
-#include <array>
-#include <compare>
-#include <utility>
+#include <bit>
 
 namespace roq {
 
+// note! interface uses native byte order, internal representation using network byte order
 struct UUID final {
-  using value_type = unsigned char;
-  using uuid_t = std::array<value_type, 16>;
+  using value_type = __uint128_t;
 
-  UUID() { std::fill(std::begin(uuid_), std::end(uuid_), 0); }
+  UUID() = default;
 
-  /*
-  // SO 6893700
-  template <typename... T>
-  UUID(T &&... args) : uuid_{{std::forward<T>(args)...}} {}
-  */
+  explicit UUID(value_type value) : value_{create(value)} {}
 
-  explicit UUID(uuid_t &&value) : uuid_(std::move(value)) {}
-  explicit UUID(uuid_t const &value) : uuid_(value) {}
-  explicit UUID(absl::uint128 const value) {
-    auto high = absl::big_endian::FromHost(absl::Uint128High64(value));
-    auto low = absl::big_endian::FromHost(absl::Uint128Low64(value));
-    static_assert(sizeof(uuid_t) == (sizeof(high) + sizeof(low)));
-    std::memcpy(&uuid_[0], &high, sizeof(high));
-    std::memcpy(&uuid_[sizeof(high)], &low, sizeof(low));
-  }
-  UUID(uint64_t high, uint64_t low) {
-    static_assert(sizeof(uuid_t) == (sizeof(high) + sizeof(low)));
-    std::memcpy(&uuid_[0], &high, sizeof(high));
-    std::memcpy(&uuid_[sizeof(high)], &low, sizeof(low));
-  }
+  UUID(uint64_t high, uint64_t low) : value_{create(high, low)} {}
 
-  UUID(const UUID &) = default;
-  UUID(UUID &&) = default;
-
-  UUID &operator=(const UUID &) = default;
-
-  constexpr size_t size() const { return std::size(uuid_); }
-
-  constexpr value_type *data() { return std::data(uuid_); }
-  constexpr value_type const *data() const { return std::data(uuid_); }
-
-  constexpr value_type &operator[](std::size_t index) { return uuid_[index]; }
-  constexpr value_type const &operator[](std::size_t index) const { return uuid_[index]; }
-
-  constexpr operator uuid_t const &() const { return uuid_; }
-
-  operator absl::uint128() const {
-    uint64_t high, low;
-    static_assert(sizeof(uuid_) == (sizeof(high) + sizeof(low)));
-    std::memcpy(&high, &uuid_[0], sizeof(high));
-    std::memcpy(&low, &uuid_[sizeof(high)], sizeof(low));
-    return absl::MakeUint128(absl::big_endian::ToHost(high), absl::big_endian::ToHost(low));
-  }
-
-  operator std::pair<uint64_t, uint64_t>() const {
-    uint64_t high, low;
-    static_assert(sizeof(uuid_) == (sizeof(high) + sizeof(low)));
-    std::memcpy(&high, &uuid_[0], sizeof(high));
-    std::memcpy(&low, &uuid_[sizeof(high)], sizeof(low));
-    return {high, low};
-  }
-
-  constexpr bool empty() const {
-    return std::all_of(std::begin(uuid_), std::end(uuid_), [](auto v) { return v == 0; });
-  }
-
-#if defined(__clang__)
-  // note! clang17 does not yet support spaceship operator for std::array
-  // https://libcxx.llvm.org/Status/Spaceship.html
-  constexpr bool operator==(const UUID &rhs) const {
-    for (size_t i = 0; i < sizeof(uuid_t); ++i) {
-      if (uuid_[i] != rhs.uuid_[i])
-        return false;
-    }
-    return true;
-  }
-  constexpr auto operator<=>(const UUID &rhs) const {
-    for (size_t i = 0; i < sizeof(uuid_t); ++i) {
-      int diff = uuid_[i] - rhs.uuid_[i];
-      if (diff == 0)
-        continue;
-      if (diff < 0)
-        return std::strong_ordering::less;
-      return std::strong_ordering::greater;
-    }
-    return std::strong_ordering::equal;
-  }
-#else
   constexpr auto operator<=>(const UUID &) const = default;
-#endif
 
-  template <typename H>
-  friend H AbslHashValue(H hash, UUID const &rhs) {
-    uint64_t high, low;
-    static_assert(sizeof(rhs.uuid_) == (sizeof(high) + sizeof(low)));
-    std::memcpy(&high, &rhs.uuid_[0], sizeof(high));
-    std::memcpy(&low, &rhs.uuid_[sizeof(high)], sizeof(low));
-    // note! endianness is not important here
-    auto value = absl::MakeUint128(high, low);
-    return H::combine(std::move(hash), value);
+  constexpr operator value_type() const {
+    if constexpr (std::endian::native == std::endian::little) {
+      return std::byteswap(value_);
+    }
+    return value_;
+  }
+
+  constexpr operator std::pair<uint64_t, uint64_t>() const {
+    if constexpr (std::endian::native == std::endian::little) {
+      // note! legacy (testing purposes) -- inconsistent with uint128_t constructor
+      auto high = static_cast<uint64_t>(value_);
+      auto low = static_cast<uint64_t>(value_ >> 64);
+      return {high, low};
+    } else {
+      auto high = static_cast<uint64_t>(value_ >> 64);
+      auto low = static_cast<uint64_t>(value_);
+      return {high, low};
+    }
+  }
+
+  constexpr value_type *data() { return &value_; }
+  constexpr value_type const *data() const { return &value_; }
+
+  constexpr size_t size() const { return sizeof(value_); }
+
+  constexpr bool empty() const { return value_ == value_type{}; }
+
+ protected:
+  static value_type create(value_type value) {
+    if constexpr (std::endian::native == std::endian::little) {
+      return std::byteswap(value);
+    }
+    return value;
+  }
+
+  static value_type create(uint64_t high, uint64_t low) {
+    if constexpr (std::endian::native == std::endian::little) {
+      // note! legacy (testing purposes) -- inconsistent with uint128_t constructor
+      return static_cast<value_type>(low) << 64 | static_cast<value_type>(high);
+    }
+    return static_cast<value_type>(high) << 64 | static_cast<value_type>(low);
   }
 
  private:
-  uuid_t uuid_;
+  value_type value_ = {};
 };
 
 static_assert(sizeof(UUID) == 16);
@@ -126,7 +76,7 @@ struct fmt::formatter<roq::UUID> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::UUID const &value, format_context &context) const {
     using namespace std::literals;
-    auto data = std::data(value);
+    auto data = reinterpret_cast<std::byte const *>(std::data(value));
     return fmt::format_to(
         context.out(),
         "{:02x}{:02x}{:02x}{:02x}-"

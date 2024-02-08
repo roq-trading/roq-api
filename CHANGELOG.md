@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* UUID now using C++23 features
 * Moved several header files to the roq-cache library (from the cache namespace here)
 * Moved several header files to the roq-utils library (from the utils namespace here)
 * Promote Decimal to API (from utils::Number) and rename Precision (from Decimals) (#439)

@@ -27,7 +27,6 @@ requirements:
     - doxygen
     - make
   host:
-    - abseil-cpp
     - catch2
     - fmt
     - roq-oss-magic_enum

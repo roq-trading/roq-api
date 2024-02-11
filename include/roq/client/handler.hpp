@@ -2,11 +2,13 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include "roq/api.hpp"
 
 #include "roq/metrics/writer.hpp"
 
-#include "roq/client/api.hpp"
+#include "roq/client/custom_message.hpp"
 
 namespace roq {
 namespace client {

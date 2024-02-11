@@ -2,12 +2,18 @@
 
 #pragma once
 
+#include "roq/compat.hpp"
+
 #include <fmt/format.h>
 
 #include <string>
 #include <utility>
 
-#include "roq/api.hpp"
+#include "roq/error.hpp"
+#include "roq/origin.hpp"
+#include "roq/request_status.hpp"
+
+#include "roq/exceptions.hpp"
 
 namespace roq {
 namespace oms {

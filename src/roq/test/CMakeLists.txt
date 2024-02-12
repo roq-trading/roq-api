@@ -4,11 +4,8 @@ set(SOURCES
     alignment.cpp
     compare.cpp
     compat.cpp
-    datetime.cpp
-    debug.cpp
     exceptions.cpp
     format.cpp
-    json.cpp
     mask.cpp
     rate_limiter.cpp
     request_status.cpp

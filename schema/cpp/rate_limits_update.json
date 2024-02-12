@@ -1,0 +1,25 @@
+{
+  "name": "RateLimitsUpdate",
+  "type": "message",
+  "comment": "Rate-limits update",
+  "values": [
+    {
+      "name": "stream_id",
+      "type": "uint16_t"
+    },
+    {
+      "name": "account",
+      "type": "std::string_view"
+    },
+    {
+      "name": "origin",
+      "type": "Origin",
+      "comment": "Origin"
+    },
+    {
+      "name": "rate_limits",
+      "type": "std::span<RateLimit const>",
+      "comment": "Rate-limits updates"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "RateLimit",
+  "type": "message",
+  "comment": "Rate-limit",
+  "values": [
+    {
+      "name": "type",
+      "type": "RateLimitType",
+      "comment": "Type"
+    },
+    {
+      "name": "period",
+      "type": "std::chrono::seconds",
+      "comment": "Monitor period"
+    },
+    {
+      "name": "end_time_utc",
+      "type": "std::chrono::seconds",
+      "comment": "End of current period"
+    },
+    {
+      "name": "limit",
+      "type": "uint32_t",
+      "comment": "Limit"
+    },
+    {
+      "name": "count",
+      "type": "uint32_t",
+      "comment": "Count"
+    }
+  ]
+}

@@ -16,6 +16,7 @@ struct ROQ_PUBLIC EventLogReader {
     // stream
     virtual void operator()(Event<StreamStatus> const &) = 0;
     virtual void operator()(Event<ExternalLatency> const &) = 0;
+    virtual void operator()(Event<RateLimitsUpdate> const &) = 0;
     virtual void operator()(Event<RateLimitTrigger> const &) = 0;
 
     // service

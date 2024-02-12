@@ -60,6 +60,8 @@ set(SOURCES
     priority.json
     protocol.json
     quality_of_service.json
+    rate_limit.json
+    rate_limits_update.json
     rate_limit_trigger.json
     rate_limit_type.json
     ready.json

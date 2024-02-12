@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* `RateLimitsUpdate` to support exchange rate-limit updates
+
 ### Changed
 
 * UUID now using C++23 features

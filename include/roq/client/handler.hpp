@@ -43,6 +43,7 @@ struct ROQ_PUBLIC Handler {
   // stream
   virtual void operator()(Event<StreamStatus> const &) {}
   virtual void operator()(Event<ExternalLatency> const &) {}
+  virtual void operator()(Event<RateLimitsUpdate> const &) {}
   virtual void operator()(Event<RateLimitTrigger> const &) {}
 
   // service

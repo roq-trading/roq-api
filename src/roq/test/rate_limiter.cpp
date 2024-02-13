@@ -2,7 +2,7 @@
 
 #include <catch2/catch_all.hpp>
 
-#include "roq/oms/rate_limiter.hpp"
+#include "roq/tools/rate_limiter.hpp"
 
 using namespace std::literals;
 using namespace std::chrono_literals;  // NOLINT
@@ -30,11 +30,11 @@ auto dispatch_message_info(auto &rate_limiter, auto receive_time) {
 }  // namespace
 
 TEST_CASE("rate_limiter_simple", "[rate_limiter]") {
-  struct Handler final : public oms::RateLimiter::Handler {
+  struct Handler final : public tools::RateLimiter::Handler {
     void operator()(RateLimitTrigger const &) override { ++counter; }
     size_t counter = {};
   } handler;
-  oms::RateLimiter::Config config{
+  tools::RateLimiter::Config config{
       .name = "test"s,
       .type = RateLimitType::CREATE_ORDER,
       .aggregate = false,
@@ -44,18 +44,18 @@ TEST_CASE("rate_limiter_simple", "[rate_limiter]") {
       .low_water_mark = {},
       .high_water_mark = {},
   };
-  oms::RateLimiter rate_limiter{handler, config};
+  tools::RateLimiter rate_limiter{handler, config};
   for (size_t i = 0; i < 20; ++i)
     CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == false);
   CHECK(handler.counter == 0);
 }
 
 TEST_CASE("rate_limiter_repeat_offender", "[rate_limiter]") {
-  struct Handler final : public oms::RateLimiter::Handler {
+  struct Handler final : public tools::RateLimiter::Handler {
     void operator()(RateLimitTrigger const &) override { ++counter; }
     size_t counter = {};
   } handler;
-  oms::RateLimiter::Config config{
+  tools::RateLimiter::Config config{
       .name = "test"s,
       .type = RateLimitType::CREATE_ORDER,
       .aggregate = false,
@@ -65,7 +65,7 @@ TEST_CASE("rate_limiter_repeat_offender", "[rate_limiter]") {
       .low_water_mark = {},
       .high_water_mark = {},
   };
-  oms::RateLimiter rate_limiter{handler, config};
+  tools::RateLimiter rate_limiter{handler, config};
   for (size_t i = 0; i < 20; ++i)
     if (i < 10) {
       CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == false);
@@ -76,11 +76,11 @@ TEST_CASE("rate_limiter_repeat_offender", "[rate_limiter]") {
 }
 
 TEST_CASE("rate_limiter_good_citizen", "[rate_limiter]") {
-  struct Handler final : public oms::RateLimiter::Handler {
+  struct Handler final : public tools::RateLimiter::Handler {
     void operator()(RateLimitTrigger const &) override { ++counter; }
     size_t counter = {};
   } handler;
-  oms::RateLimiter::Config config{
+  tools::RateLimiter::Config config{
       .name = "test"s,
       .type = RateLimitType::CREATE_ORDER,
       .aggregate = false,
@@ -90,7 +90,7 @@ TEST_CASE("rate_limiter_good_citizen", "[rate_limiter]") {
       .low_water_mark = {},
       .high_water_mark = {},
   };
-  oms::RateLimiter rate_limiter{handler, config};
+  tools::RateLimiter rate_limiter{handler, config};
   for (size_t i = 0; i < 20; ++i)
     if (i < 10) {
       CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == false);
@@ -102,7 +102,7 @@ TEST_CASE("rate_limiter_good_citizen", "[rate_limiter]") {
 }
 
 TEST_CASE("rate_limiter_watermark_requests", "[rate_limiter]") {
-  struct Handler final : public oms::RateLimiter::Handler {
+  struct Handler final : public tools::RateLimiter::Handler {
     void operator()(RateLimitTrigger const &rate_limit_trigger) override {
       ++counter;
       switch (rate_limit_trigger.buffer_capacity) {
@@ -132,7 +132,7 @@ TEST_CASE("rate_limiter_watermark_requests", "[rate_limiter]") {
     size_t high = {};
     size_t full = {};
   } handler;
-  oms::RateLimiter::Config config{
+  tools::RateLimiter::Config config{
       .name = "test"s,
       .type = RateLimitType::CREATE_ORDER,
       .aggregate = false,
@@ -142,7 +142,7 @@ TEST_CASE("rate_limiter_watermark_requests", "[rate_limiter]") {
       .low_water_mark = 5,
       .high_water_mark = 8,
   };
-  oms::RateLimiter rate_limiter{handler, config};
+  tools::RateLimiter rate_limiter{handler, config};
   for (size_t i = 0; i < 20; ++i)
     if (i < 7) {
       CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == false);
@@ -191,7 +191,7 @@ TEST_CASE("rate_limiter_watermark_requests", "[rate_limiter]") {
 }
 
 TEST_CASE("rate_limiter_watermark_timer", "[rate_limiter]") {
-  struct Handler final : public oms::RateLimiter::Handler {
+  struct Handler final : public tools::RateLimiter::Handler {
     void operator()(RateLimitTrigger const &rate_limit_trigger) override {
       ++counter;
       switch (rate_limit_trigger.buffer_capacity) {
@@ -221,7 +221,7 @@ TEST_CASE("rate_limiter_watermark_timer", "[rate_limiter]") {
     size_t high = {};
     size_t full = {};
   } handler;
-  oms::RateLimiter::Config config{
+  tools::RateLimiter::Config config{
       .name = "test"s,
       .type = RateLimitType::CREATE_ORDER,
       .aggregate = false,
@@ -231,7 +231,7 @@ TEST_CASE("rate_limiter_watermark_timer", "[rate_limiter]") {
       .low_water_mark = 5,
       .high_water_mark = 8,
   };
-  oms::RateLimiter rate_limiter{handler, config};
+  tools::RateLimiter rate_limiter{handler, config};
   for (size_t i = 0; i < 13; ++i)
     if (i < 7) {
       CHECK(dispatch_message_info(rate_limiter, std::chrono::seconds{i}) == false);

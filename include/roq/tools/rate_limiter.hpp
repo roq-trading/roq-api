@@ -15,7 +15,7 @@
 #include "roq/rate_limit_trigger.hpp"
 
 namespace roq {
-namespace oms {
+namespace tools {
 
 struct RateLimiter final {
   struct Handler {
@@ -169,5 +169,5 @@ struct RateLimiter final {
   BufferCapacity capacity_ = {};
 };
 
-}  // namespace oms
+}  // namespace tools
 }  // namespace roq

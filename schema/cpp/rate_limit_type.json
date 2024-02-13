@@ -10,6 +10,10 @@
     {
       "name": "CreateOrder",
       "comment": "Only create order"
+    },
+    {
+      "name": "Request",
+      "comment": "Requests (possibly weighted)"
     }
   ]
 }

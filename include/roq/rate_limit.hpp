@@ -24,7 +24,7 @@ struct ROQ_PUBLIC RateLimit final {
   std::chrono::seconds period = {};        //!< Monitor period
   std::chrono::seconds end_time_utc = {};  //!< End of current period
   uint32_t limit = {};                     //!< Limit
-  uint32_t count = {};                     //!< Count
+  uint32_t value = {};                     //!< Value
 };
 
 template <>
@@ -47,13 +47,13 @@ struct fmt::formatter<roq::RateLimit> {
         R"(period={}, )"
         R"(end_time_utc={}, )"
         R"(limit={}, )"
-        R"(count={})"
+        R"(value={})"
         R"(}})"sv,
         value.type,
         value.period,
         value.end_time_utc,
         value.limit,
-        value.count);
+        value.value);
   }
 };
 

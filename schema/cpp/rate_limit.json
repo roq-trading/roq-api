@@ -24,9 +24,9 @@
       "comment": "Limit"
     },
     {
-      "name": "count",
+      "name": "value",
       "type": "uint32_t",
-      "comment": "Count"
+      "comment": "Value"
     }
   ]
 }

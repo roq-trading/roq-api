@@ -13,7 +13,11 @@
     },
     {
       "name": "Request",
-      "comment": "Requests (possibly weighted)"
+      "comment": "Requests (count)"
+    },
+    {
+      "name": "RequestWeight",
+      "comment": "Requests (weighted)"
     }
   ]
 }

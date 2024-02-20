@@ -32,10 +32,10 @@ struct ROQ_PUBLIC MarketByOrderUpdate final {
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
-  Precision price_decimals = {};                    //!< Decimal digits required to represent prices (dynamic)
-  Precision quantity_decimals = {};                 //!< Decimal digits required to represent quantities (dynamic)
-  uint16_t max_depth = {};                          //!< Maximum depth (zero means unlimited)
-  uint32_t checksum = {};                           //!< Checksum (internal)
+  Precision price_precision = {};     //!< Precision (decimal digits) required to represent prices (dynamic)
+  Precision quantity_precision = {};  //!< Precision (decimal digits) required to represent quantities (dynamic)
+  uint16_t max_depth = {};            //!< Maximum depth (zero means unlimited)
+  uint32_t checksum = {};             //!< Checksum (internal)
 };
 
 template <>
@@ -62,8 +62,8 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         R"(exchange_time_utc={}, )"
         R"(exchange_sequence={}, )"
         R"(sending_time_utc={}, )"
-        R"(price_decimals={}, )"
-        R"(quantity_decimals={}, )"
+        R"(price_precision={}, )"
+        R"(quantity_precision={}, )"
         R"(max_depth={}, )"
         R"(checksum={})"
         R"(}})"sv,
@@ -75,8 +75,8 @@ struct fmt::formatter<roq::MarketByOrderUpdate> {
         value.exchange_time_utc,
         value.exchange_sequence,
         value.sending_time_utc,
-        value.price_decimals,
-        value.quantity_decimals,
+        value.price_precision,
+        value.quantity_precision,
         value.max_depth,
         value.checksum);
   }

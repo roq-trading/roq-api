@@ -115,8 +115,8 @@ TEST_CASE("format_market_by_price", "[format]") {
       .update_type = UpdateType::SNAPSHOT,
       .exchange_time_utc = {},
       .exchange_sequence = 123,
-      .price_decimals = Precision::_0,
-      .quantity_decimals = Precision::_1,
+      .price_precision = Precision::_0,
+      .quantity_precision = Precision::_1,
       .max_depth = 10,
       .checksum = 123,
   };
@@ -146,8 +146,8 @@ TEST_CASE("format_market_by_price", "[format]") {
       R"(exchange_time_utc=0ns, )"
       R"(exchange_sequence=123, )"
       R"(sending_time_utc=0ns, )"
-      R"(price_decimals=_0, )"
-      R"(quantity_decimals=_1, )"
+      R"(price_precision=_0, )"
+      R"(quantity_precision=_1, )"
       R"(max_depth=10, )"
       R"(checksum=123)"
       R"(})"sv;

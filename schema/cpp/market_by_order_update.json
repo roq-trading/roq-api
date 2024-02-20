@@ -38,14 +38,14 @@
       "type": "std::chrono::nanoseconds"
     },
     {
-      "name": "price_decimals",
+      "name": "price_precision",
       "type": "Precision",
-      "comment": "Decimal digits required to represent prices (dynamic)"
+      "comment": "Precision (decimal digits) required to represent prices (dynamic)"
     },
     {
-      "name": "quantity_decimals",
+      "name": "quantity_precision",
       "type": "Precision",
-      "comment": "Decimal digits required to represent quantities (dynamic)"
+      "comment": "Precision (decimal digits) required to represent quantities (dynamic)"
     },
     {
       "name": "max_depth",

@@ -10,6 +10,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Renamed `{price|quantity}_precision` (from `{price_quantity}_decimals`
 * Moved several header files to the roq-server library (from the roq::oms namespace here)
 * UUID now using C++23 features
 * Moved several header files to the roq-cache library (from the roq::cache namespace here)

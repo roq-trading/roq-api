@@ -1,4 +1,4 @@
--std=c++23
+-std=gnu++23
 -Iinclude
 -Isrc
 -I../opt/conda/envs/dev/include

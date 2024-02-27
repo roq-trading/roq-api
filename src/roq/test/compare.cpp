@@ -91,3 +91,14 @@ TEST_CASE("compare_seconds", "[compare]") {
   CHECK(compare(1s, 0s) == std::strong_ordering::greater);
   CHECK(compare(1s, 1s) == std::strong_ordering::equal);
 }
+
+TEST_CASE("issue_20240227", "[compare]") {
+  auto lhs = 0.06000000000000001;
+  auto rhs = 0.05999999999999981;
+  CHECK(utils::is_equal(lhs, rhs));
+  CHECK(utils::is_equal(rhs, lhs));
+  CHECK(!utils::is_greater(lhs, rhs));
+  CHECK(!utils::is_greater(rhs, lhs));
+  CHECK(!utils::is_less(lhs, rhs));
+  CHECK(!utils::is_less(rhs, lhs));
+}

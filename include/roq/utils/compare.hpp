@@ -59,7 +59,7 @@ constexpr std::strong_ordering compare(T lhs, T rhs) {
       auto diff = lhs - rhs;
       if (fabs<T>(diff) < std::numeric_limits<T>::min())  // subnormal?
         return std::strong_ordering::equal;
-      auto err = std::numeric_limits<T>::epsilon() * fabs<T>(lhs + rhs);
+      auto err = std::max(std::numeric_limits<T>::epsilon(), std::numeric_limits<T>::epsilon() * fabs<T>(lhs + rhs));
       if (diff < -err)
         return std::strong_ordering::less;
       if (diff > err)

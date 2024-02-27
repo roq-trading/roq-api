@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Fixed
+
+* `utils::compare<double>` could incorrectly compare values in the [0;1] range (#446)
+
 ### Added
 
 * `RateLimitsUpdate` to support exchange rate-limit updates

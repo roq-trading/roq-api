@@ -70,20 +70,6 @@ struct ROQ_PACKED String {
     return (*this) <=> static_cast<std::string_view>(rhs);
   }
 
-  // note! not sure why this is necessary
-  template <std::size_t M>
-  constexpr auto operator==(String<M> const &rhs) const {
-    return (*this) == static_cast<std::string_view>(rhs);
-  }
-  template <std::size_t M>
-  constexpr auto operator<(String<M> const &rhs) const {
-    return (*this) < static_cast<std::string_view>(rhs);
-  }
-  template <std::size_t M>
-  constexpr auto operator>(String<M> const &rhs) const {
-    return (*this) > static_cast<std::string_view>(rhs);
-  }
-
   constexpr value_type &operator[](size_t index) { return buffer_[index]; }
 
   constexpr value_type operator[](size_t index) const { return buffer_[index]; }

@@ -66,9 +66,17 @@ struct ROQ_PACKED String {
   }
 
   template <std::size_t M>
-  constexpr auto operator<=>(roq::String<M> const &rhs) const {
-    return (*this) <=> static_cast<std::string_view>(rhs);
+  constexpr auto operator<=>(String<M> const &rhs) const {
+    return static_cast<std::string_view>(*this) <=> static_cast<std::string_view>(rhs);
   }
+
+  // note! not sure why this is necessary
+  template <std::size_t M>
+  constexpr auto operator==(String<M> const &rhs) const {
+    return (*this) == static_cast<std::string_view>(rhs);
+  }
+
+  constexpr auto operator<=>(std::string_view const &rhs) const { return static_cast<std::string_view>(*this) <=> rhs; }
 
   constexpr value_type &operator[](size_t index) { return buffer_[index]; }
 
@@ -134,27 +142,6 @@ struct ROQ_PACKED String {
   std::array<value_type, N> buffer_ = {};
 };
 }  // namespace roq
-
-template <std::size_t N>
-inline constexpr auto operator<=>(roq::String<N> const &lhs, std::string_view const &rhs) {
-  return static_cast<std::string_view>(lhs) <=> rhs;
-}
-
-template <std::size_t N>
-inline constexpr auto operator<=>(std::string_view const &lhs, roq::String<N> const &rhs) {
-  // https://stackoverflow.com/a/60087347
-  return 0 <=> (rhs <=> lhs);
-}
-
-template <std::size_t N>
-inline constexpr auto operator<=>(roq::String<N> const &lhs, std::string const &rhs) {
-  return lhs <=> std::string_view{rhs};
-}
-
-template <std::size_t N>
-inline constexpr auto operator<=>(std::string const &lhs, roq::String<N> const &rhs) {
-  return std::string_view{lhs} <=> rhs;
-}
 
 template <size_t N>
 struct fmt::formatter<roq::String<N>> {

@@ -98,6 +98,23 @@ TEST_CASE("string_signed_unsigned_issue", "[string]") {
 
 TEST_CASE("string_spaceship", "[string]") {
   String<8> s = "1234"sv;
+  // String<16>
+  CHECK(s == String<16>{"1234"sv});
+  CHECK(s != String<16>{"2345"sv});
+  CHECK(s < String<16>{"2345"sv});
+  CHECK(s <= String<16>{"2345"sv});
+  CHECK(s > String<16>{"0123"sv});
+  CHECK(s >= String<16>{"0123"sv});
+  CHECK(s != String<16>{});
+  // String<4>
+  CHECK(s == String<4>{"1234"sv});
+  CHECK(s != String<4>{"2345"sv});
+  CHECK(s < String<4>{"2345"sv});
+  CHECK(s <= String<4>{"2345"sv});
+  CHECK(s > String<4>{"0123"sv});
+  CHECK(s >= String<4>{"0123"sv});
+  CHECK(s != String<4>{});
+  // std::string_view
   CHECK(s == "1234"sv);
   CHECK(s != "2345"sv);
   CHECK(s < "2345"sv);

@@ -71,12 +71,11 @@ struct ROQ_PACKED String {
     return H::combine(std::move(hash), static_cast<std::string_view>(rhs));
   }
 
-  /* note! replace with this when all compilers support string_view spaceship
   template <std::size_t M>
   constexpr auto operator<=>(roq::String<M> const &rhs) const {
     return (*this) <=> static_cast<std::string_view>(rhs);
   }
-  */
+
   // note! not sure why this is necessary
   template <std::size_t M>
   constexpr auto operator==(String<M> const &rhs) const {

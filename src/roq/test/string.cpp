@@ -95,3 +95,14 @@ TEST_CASE("string_signed_unsigned_issue", "[string]") {
   CHECK(std::size(sv) == 160);
   CHECK(sv == text);
 }
+
+TEST_CASE("string_spaceship", "[string]") {
+  String<8> s = "1234"sv;
+  CHECK(s == "1234"sv);
+  CHECK(s != "2345"sv);
+  CHECK(s < "2345"sv);
+  CHECK(s <= "2345"sv);
+  CHECK(s > "0123"sv);
+  CHECK(s >= "0123"sv);
+  CHECK(s != std::string_view{});
+}

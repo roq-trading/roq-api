@@ -65,12 +65,6 @@ struct ROQ_PACKED String {
     return *this;
   }
 
-  // abseil hash (heterogeneous lookup)
-  template <typename H>
-  friend H AbslHashValue(H hash, String<N> const &rhs) {
-    return H::combine(std::move(hash), static_cast<std::string_view>(rhs));
-  }
-
   template <std::size_t M>
   constexpr auto operator<=>(roq::String<M> const &rhs) const {
     return (*this) <=> static_cast<std::string_view>(rhs);

@@ -41,19 +41,11 @@ struct ROQ_PACKED String {
   constexpr String &operator=(String &&) = default;
   constexpr String &operator=(String const &) = default;
 
-  // cppcheck-suppress noExplicitConstructor
-  constexpr String(std::string_view const &text) {  // NOLINT (allow implicit)
-    copy(text);
-  }
+  constexpr String(std::string_view const &text) { copy(text); }
 
-  // cppcheck-suppress noExplicitConstructor
-  constexpr String(std::string const &text) {  // NOLINT (allow implicit)
-    copy(text);
-  }
+  constexpr String(std::string const &text) { copy(text); }
 
-  // cppcheck-suppress noExplicitConstructor
-  constexpr String(value_type const *text)  // NOLINT (allow implicit)
-      : String{std::string_view{text}} {}
+  constexpr String(value_type const *text) : String{std::string_view{text}} {}
 
   constexpr String &operator=(std::string_view const &text) {
     copy(text);

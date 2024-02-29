@@ -18,7 +18,6 @@ namespace detail {
 // may truncate to N
 template <std::size_t N>
 struct static_string final {
-  // cppcheck-suppress noExplicitConstructor
   consteval static_string(std::string_view const &sv)
       : length_{std::min(N, std::size(sv))}, buffer_{create(sv, length_)} {}
 
@@ -58,8 +57,7 @@ template <typename... Args>
 struct basic_format_str final {
   using file_name_type = detail::static_string<32>;
   template <typename T>
-  // cppcheck-suppress noExplicitConstructor
-  consteval basic_format_str(T const &str, std::source_location const loc = std::source_location::current())  // NOLINT
+  consteval basic_format_str(T const &str, std::source_location const loc = std::source_location::current())
       : str{detail::check_format_string<Args...>(str)}, file_name{extract_basename(loc.file_name())}, line{loc.line()} {
   }
 

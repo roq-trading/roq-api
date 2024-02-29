@@ -5,7 +5,7 @@
 #include "roq/tools/rate_limiter.hpp"
 
 using namespace std::literals;
-using namespace std::chrono_literals;  // NOLINT
+using namespace std::chrono_literals;
 
 using namespace roq;
 

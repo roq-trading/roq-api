@@ -67,12 +67,9 @@ struct Mask final {
 
   constexpr explicit Mask(T flag) : value_{static_cast<value_type>(flag)} {}
 
-  // cppcheck-suppress noExplicitConstructor
   constexpr Mask(std::initializer_list<T> flags) {
-    for (auto &flag : flags) {
-      // cppcheck-suppress useStlAlgorithm
+    for (auto &flag : flags)
       value_ |= static_cast<value_type>(flag);
-    }
   }
 
   template <typename... Args>
@@ -94,10 +91,8 @@ struct Mask final {
 
   constexpr bool has_any(std::initializer_list<T> flags) const {
     value_type value = {};
-    for (auto &flag : flags) {
-      // cppcheck-suppress useStlAlgorithm
+    for (auto &flag : flags)
       value |= static_cast<value_type>(flag);
-    }
     return value_ & value;
   }
 
@@ -109,10 +104,8 @@ struct Mask final {
 
   constexpr bool has_all(std::initializer_list<T> flags) const {
     value_type value = {};
-    for (auto &flag : flags) {
-      // cppcheck-suppress useStlAlgorithm
+    for (auto &flag : flags)
       value |= static_cast<value_type>(flag);
-    }
     return (value_ & value) == value;
   }
 
@@ -149,10 +142,8 @@ struct Mask final {
   constexpr Mask logical_and(Mask rhs) const { return Mask{value_ & rhs.value_}; }
 
   constexpr Mask &set(std::initializer_list<T> flags) {
-    for (auto &flag : flags) {
-      // cppcheck-suppress useStlAlgorithm
+    for (auto &flag : flags)
       value_ |= static_cast<value_type>(flag);
-    }
     return *this;
   }
 

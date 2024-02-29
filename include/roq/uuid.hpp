@@ -28,7 +28,7 @@ struct UUID final {
 
   UUID(uint64_t high, uint64_t low) : value_{create(high, low)} {}
 
-  constexpr auto operator<=>(const UUID &) const = default;
+  constexpr auto operator<=>(UUID const &) const = default;
 
   constexpr operator value_type() const {
     if constexpr (std::endian::native == std::endian::little) {

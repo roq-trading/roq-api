@@ -98,6 +98,14 @@ TEST_CASE("string_signed_unsigned_issue", "[string]") {
 
 TEST_CASE("string_spaceship", "[string]") {
   String<8> s = "1234"sv;
+  // String<8>
+  CHECK(s == String<8>{"1234"sv});
+  CHECK(s != String<8>{"2345"sv});
+  CHECK(s < String<8>{"2345"sv});
+  CHECK(s <= String<8>{"2345"sv});
+  CHECK(s > String<8>{"0123"sv});
+  CHECK(s >= String<8>{"0123"sv});
+  CHECK(s != String<8>{});
   // String<16>
   CHECK(s == String<16>{"1234"sv});
   CHECK(s != String<16>{"2345"sv});

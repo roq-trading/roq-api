@@ -70,9 +70,8 @@ struct ROQ_PACKED String {
     return static_cast<std::string_view>(*this) <=> static_cast<std::string_view>(rhs);
   }
 
-  // note! not sure why this is necessary
   template <std::size_t M>
-  constexpr auto operator==(String<M> const &rhs) const {
+  constexpr bool operator==(String<M> const &rhs) const {
     return (*this) == static_cast<std::string_view>(rhs);
   }
 

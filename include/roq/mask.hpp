@@ -78,8 +78,6 @@ struct Mask final {
   template <typename... Args>
   constexpr Mask(Mask const &other, Args &&...args) : value_{other.value_ | Mask{std::forward<Args>(args)...}.get()} {}
 
-  constexpr auto operator==(Mask const &rhs) const { return value_ == rhs.value_; }
-
   constexpr auto operator<=>(Mask const &) const = default;
 
   constexpr bool empty() const { return value_ == value_type{}; }

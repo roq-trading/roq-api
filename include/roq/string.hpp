@@ -69,6 +69,8 @@ struct ROQ_PACKED String {
 
   constexpr auto operator<=>(std::string_view const &rhs) const { return static_cast<std::string_view>(*this) <=> rhs; }
 
+  constexpr bool operator==(std::string_view const &rhs) const { return static_cast<std::string_view>(*this) == rhs; }
+
   constexpr value_type &operator[](size_t index) { return buffer_[index]; }
 
   constexpr value_type operator[](size_t index) const { return buffer_[index]; }

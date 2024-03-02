@@ -55,20 +55,20 @@ using namespace roq;
 using namespace roq::utils;
 
 TEST_CASE("compare_int", "[compare]") {
-  CHECK(compare(0, 0) == std::strong_ordering::equal);
-  CHECK(compare(0, 1) == std::strong_ordering::less);
-  CHECK(compare(0, -1) == std::strong_ordering::greater);
+  CHECK(compare(0, 0) == 0);
+  CHECK(compare(0, 1) < 0);
+  CHECK(compare(0, -1) > 0);
 }
 
 TEST_CASE("compare_double", "[compare]") {
-  CHECK(compare(0.0, 0.0) == std::strong_ordering::equal);
-  CHECK(compare(0.0, -0.0) == std::strong_ordering::equal);
-  CHECK(compare(-0.0, 0.0) == std::strong_ordering::equal);
-  CHECK(compare(0.0, 1.0) == std::strong_ordering::less);
-  CHECK(compare(0.0, -1.0) == std::strong_ordering::greater);
-  CHECK(compare(NaN, NaN) == std::strong_ordering::equal);
-  CHECK(compare(0.0, NaN) == std::strong_ordering::greater);
-  CHECK(compare(NaN, 0.0) == std::strong_ordering::less);
+  CHECK(compare(0.0, 0.0) == 0);
+  CHECK(compare(0.0, -0.0) == 0);
+  CHECK(compare(-0.0, 0.0) == 0);
+  CHECK(compare(0.0, 1.0) < 0);
+  CHECK(compare(0.0, -1.0) > 0);
+  CHECK(compare(NaN, NaN) == 0);
+  CHECK(compare(0.0, NaN) > 0);
+  CHECK(compare(NaN, 0.0) < 0);
 }
 
 TEST_CASE("compare_string_case_insensitive", "[compare]") {

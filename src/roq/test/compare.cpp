@@ -73,23 +73,23 @@ TEST_CASE("compare_double", "[compare]") {
 
 TEST_CASE("compare_string_case_insensitive", "[compare]") {
   // same length
-  CHECK(case_insensitive_compare(""sv, ""sv) == std::strong_ordering::equal);
-  CHECK(case_insensitive_compare("abc123"sv, "ABC123"sv) == std::strong_ordering::equal);
-  CHECK(case_insensitive_compare("abc123"sv, "DEF456"sv) == std::strong_ordering::less);
-  CHECK(case_insensitive_compare("def456"sv, "ABC123"sv) == std::strong_ordering::greater);
+  CHECK(case_insensitive_compare(""sv, ""sv) == 0);
+  CHECK(case_insensitive_compare("abc123"sv, "ABC123"sv) == 0);
+  CHECK(case_insensitive_compare("abc123"sv, "DEF456"sv) < 0);
+  CHECK(case_insensitive_compare("def456"sv, "ABC123"sv) > 0);
   // different length
-  CHECK(case_insensitive_compare(""sv, "ABC123"sv) == std::strong_ordering::less);
-  CHECK(case_insensitive_compare("abc123"sv, ""sv) == std::strong_ordering::greater);
-  CHECK(case_insensitive_compare("abc"sv, "ABC123"sv) == std::strong_ordering::less);
-  CHECK(case_insensitive_compare("abc123"sv, "ABC"sv) == std::strong_ordering::greater);
+  CHECK(case_insensitive_compare(""sv, "ABC123"sv) < 0);
+  CHECK(case_insensitive_compare("abc123"sv, ""sv) > 0);
+  CHECK(case_insensitive_compare("abc"sv, "ABC123"sv) < 0);
+  CHECK(case_insensitive_compare("abc123"sv, "ABC"sv) > 0);
 }
 
 TEST_CASE("compare_seconds", "[compare]") {
   using namespace std::chrono_literals;
-  CHECK(compare(std::chrono::seconds{}, 0s) == std::strong_ordering::equal);
-  CHECK(compare(0s, 1s) == std::strong_ordering::less);
-  CHECK(compare(1s, 0s) == std::strong_ordering::greater);
-  CHECK(compare(1s, 1s) == std::strong_ordering::equal);
+  CHECK(compare(std::chrono::seconds{}, 0s) == 0);
+  CHECK(compare(0s, 1s) < 0);
+  CHECK(compare(1s, 0s) > 0);
+  CHECK(compare(1s, 1s) == 0);
 }
 
 TEST_CASE("issue_20240227", "[compare]") {

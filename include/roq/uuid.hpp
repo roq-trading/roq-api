@@ -12,7 +12,7 @@ namespace roq {
 //   interface using native byte order
 //   network byte order for internal representation
 
-struct UUID final {
+struct alignas(16) UUID final {
   using value_type = __uint128_t;
 
   UUID() {}

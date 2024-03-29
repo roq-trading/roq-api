@@ -137,11 +137,8 @@ struct ROQ_PUBLIC MarketByPrice {
   }
 
   // generate depth update from full update
-  virtual std::pair<std::span<MBPUpdate const>, std::span<MBPUpdate const>> create_depth_update(
-      MarketByPriceUpdate const &,
-      size_t depth,
-      std::span<MBPUpdate> const &bids,
-      std::span<MBPUpdate> const &asks) const = 0;
+  virtual void create_depth_update(
+      MarketByPriceUpdate const &, size_t depth, std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) const = 0;
 
  protected:
   virtual void update_helper(roq::ReferenceData const &) = 0;

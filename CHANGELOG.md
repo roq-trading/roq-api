@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Issues with create limited depth updates (#453)
+
 ## 1.0.0 &ndash; 2024-03-16
 
 ### Fixed

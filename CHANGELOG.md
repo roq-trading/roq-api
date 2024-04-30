@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `Fill` to support quote quantity and commission (#458)
+
 ## 1.0.1 &ndash; 2024-04-14
 
 ### Changed

@@ -171,7 +171,7 @@ static constexpr auto const ACCOUNT_NONE = ACCOUNT_MIN;
 // symbol id (24 bits)
 
 static constexpr auto const SYMBOL_ID_MIN = uint32_t{0};
-static constexpr auto const sYMBOL_ID_MAX = (uint64_t{1} << 24) - 1;
+static constexpr auto const SYMBOL_ID_MAX = (uint64_t{1} << 24) - 1;
 
 static constexpr auto const SYMBOL_ID_NONE = SYMBOL_ID_MIN;
 
@@ -201,7 +201,7 @@ static_assert(sizeof(Route) == 8);
 
 // just keep a handle on the size for some other array items
 
-static_assert(sizeof(Fill) == 72);
+static_assert(sizeof(Fill) == 120);
 static_assert(sizeof(Parameter) == 180);
 static_assert(sizeof(Position) == 96);
 static_assert(sizeof(RiskLimit) == 136);

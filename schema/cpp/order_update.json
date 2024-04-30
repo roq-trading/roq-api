@@ -39,7 +39,7 @@
     {
       "name": "max_show_quantity",
       "type": "double",
-      "comment": "Quantity visible to market (requires exchange support)"
+      "comment": "Quantity visible to market (base currency, requires exchange support)"
     },
     {
       "name": "order_type",
@@ -81,7 +81,7 @@
     {
       "name": "quantity",
       "type": "double",
-      "comment": "Quantity (total, indicative)"
+      "comment": "Quantity (base currency, total, indicative)"
     },
     {
       "name": "price",
@@ -106,12 +106,12 @@
     {
       "name": "remaining_quantity",
       "type": "double",
-      "comment": "Quantity (remaining)"
+      "comment": "Quantity (base currency, remaining)"
     },
     {
       "name": "traded_quantity",
       "type": "double",
-      "comment": "Quantity (total traded)"
+      "comment": "Quantity (base currency, total traded)"
     },
     {
       "name": "average_traded_price",
@@ -121,7 +121,7 @@
     {
       "name": "last_traded_quantity",
       "type": "double",
-      "comment": "Traded quantity (last trade)"
+      "comment": "Traded quantity (base currency, last trade)"
     },
     {
       "name": "last_traded_price",

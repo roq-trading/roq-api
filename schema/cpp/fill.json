@@ -14,7 +14,7 @@
     {
       "name": "quantity",
       "type": "double",
-      "comment": "Quantity"
+      "comment": "Quantity (base currency)"
     },
     {
       "name": "price",
@@ -25,6 +25,21 @@
       "name": "liquidity",
       "type": "Liquidity",
       "comment": "Liquidity indicator"
+    },
+    {
+      "name": "quote_quantity",
+      "type": "double",
+      "comment": "Quantity (quote currency, optional)"
+    },
+    {
+      "name": "commission_quantity",
+      "type": "double",
+      "comment": "Quantity (commission currency, optional)"
+    },
+    {
+      "name": "commission_currency",
+      "type": "Currency",
+      "comment": "Commission currency"
     }
   ]
 }

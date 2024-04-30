@@ -33,5 +33,5 @@ TEST_CASE("alignment_trade", "[alignment]") {
 TEST_CASE("alignment_fill", "[alignment]") {
   std::array<Fill, 2> value;
   auto offset = reinterpret_cast<uint8_t *>(&value[1]) - reinterpret_cast<uint8_t *>(&value[0]);
-  CHECK(offset == std::ptrdiff_t{72});
+  CHECK(offset == std::ptrdiff_t{120});
 }

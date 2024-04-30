@@ -31,17 +31,17 @@ namespace roq {
 
 //! Update relating to current status of an order
 struct ROQ_PUBLIC OrderUpdate final {
-  uint16_t stream_id = {};                            //!< Stream identifier
-  std::string_view account;                           //!< Account name
-  uint64_t order_id = {};                             //!< Order identifier
-  std::string_view exchange;                          //!< Exchange
-  std::string_view symbol;                            //!< Symbol
-  Side side = {};                                     //!< Side
-  PositionEffect position_effect = {};                //!< Position effect
-  MarginMode margin_mode = {};                        //!< Margin mode
-  double max_show_quantity = NaN;                     //!< Quantity visible to market (requires exchange support)
-  OrderType order_type = {};                          //!< Order type
-  TimeInForce time_in_force = {};                     //!< Time in force
+  uint16_t stream_id = {};              //!< Stream identifier
+  std::string_view account;             //!< Account name
+  uint64_t order_id = {};               //!< Order identifier
+  std::string_view exchange;            //!< Exchange
+  std::string_view symbol;              //!< Symbol
+  Side side = {};                       //!< Side
+  PositionEffect position_effect = {};  //!< Position effect
+  MarginMode margin_mode = {};          //!< Margin mode
+  double max_show_quantity = NaN;       //!< Quantity visible to market (base currency, requires exchange support)
+  OrderType order_type = {};            //!< Order type
+  TimeInForce time_in_force = {};       //!< Time in force
   Mask<ExecutionInstruction> execution_instructions;  //!< Execution instructions
   std::chrono::nanoseconds create_time_utc = {};      //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};      //!< Updated timestamp (UTC)
@@ -49,15 +49,15 @@ struct ROQ_PUBLIC OrderUpdate final {
   std::string_view external_order_id;                 //!< External order identifier
   std::string_view client_order_id;                   //!< Client order identifier
   OrderStatus order_status = {};                      //!< Order status
-  double quantity = NaN;                              //!< Quantity (total, indicative)
+  double quantity = NaN;                              //!< Quantity (base currency, total, indicative)
   double price = NaN;                                 //!< Price
   double stop_price = NaN;                            //!< Stop price (depends on order_type and time_in_force)
   double risk_exposure = NaN;                         //!< Risk exposure
   double risk_exposure_change = NaN;                  //!< Risk exposure change
-  double remaining_quantity = NaN;                    //!< Quantity (remaining)
-  double traded_quantity = NaN;                       //!< Quantity (total traded)
+  double remaining_quantity = NaN;                    //!< Quantity (base currency, remaining)
+  double traded_quantity = NaN;                       //!< Quantity (base currency, total traded)
   double average_traded_price = NaN;                  //!< Average price (total traded)
-  double last_traded_quantity = NaN;                  //!< Traded quantity (last trade)
+  double last_traded_quantity = NaN;                  //!< Traded quantity (base currency, last trade)
   double last_traded_price = NaN;                     //!< Traded price (last trade)
   Liquidity last_liquidity = {};                      //!< Liquidity indicator (last trade)
   std::string_view routing_id;                        //!< Routing identifier

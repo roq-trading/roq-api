@@ -21,9 +21,12 @@ namespace roq {
 struct ROQ_PUBLIC Fill final {
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   ExternalTradeId external_trade_id;                //!< External trade identifier
-  double quantity = NaN;                            //!< Quantity
+  double quantity = NaN;                            //!< Quantity (base currency)
   double price = NaN;                               //!< Price
   Liquidity liquidity = {};                         //!< Liquidity indicator
+  double quote_quantity = NaN;                      //!< Quantity (quote currency, optional)
+  double commission_quantity = NaN;                 //!< Quantity (commission currency, optional)
+  Currency commission_currency;                     //!< Commission currency
 };
 
 }  // namespace roq
@@ -40,12 +43,18 @@ struct fmt::formatter<roq::Fill> {
         R"(external_trade_id="{}", )"
         R"(quantity={}, )"
         R"(price={}, )"
-        R"(liquidity={})"
+        R"(liquidity={}, )"
+        R"(quote_quantity={}, )"
+        R"(commission_quantity={}, )"
+        R"(commission_currency="{}")"
         R"(}})"sv,
         value.exchange_time_utc,
         value.external_trade_id,
         value.quantity,
         value.price,
-        value.liquidity);
+        value.liquidity,
+        value.quote_quantity,
+        value.commission_quantity,
+        value.commission_currency);
   }
 };

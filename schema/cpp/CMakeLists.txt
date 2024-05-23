@@ -24,6 +24,7 @@ set(SOURCES
     encoding.json
     error.json
     execution_instruction.json
+    external_latency.json
     fill.json
     filter.json
     funds_update.json
@@ -66,6 +67,7 @@ set(SOURCES
     ready.json
     reference_data.json
     remove_routes.json
+    request_id_type.json
     request_status.json
     request_type.json
     risk_limit.json

@@ -1,0 +1,15 @@
+{
+  "name": "Transport",
+  "type": "enum",
+  "comment": "Enumeration of transport types (layer 4)",
+  "values": [
+    {
+      "name": "TCP",
+      "comment": "TCP"
+    },
+    {
+      "name": "UDP",
+      "comment": "UDP"
+    }
+  ]
+}

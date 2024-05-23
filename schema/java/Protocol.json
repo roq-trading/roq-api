@@ -1,0 +1,27 @@
+{
+  "name": "Protocol",
+  "type": "enum",
+  "comment": "Enumeration of protocol types (layer 7)",
+  "values": [
+    {
+      "name": "FIX",
+      "comment": "FIX"
+    },
+    {
+      "name": "WS",
+      "comment": "Web-Socket"
+    },
+    {
+      "name": "HTTP",
+      "comment": "HTTP (REST)"
+    },
+    {
+      "name": "SBE",
+      "comment": "Simple Binary Encoding"
+    },
+    {
+      "name": "ROQ",
+      "comment": "UDP messaging"
+    }
+  ]
+}

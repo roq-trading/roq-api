@@ -1,0 +1,12 @@
+{
+  "name": "Disconnected",
+  "type": "message",
+  "comment": "Disconnected",
+  "values": [
+    {
+      "name": "order_cancel_policy",
+      "type": "OrderCancelPolicy",
+      "comment": "Cancel orders on disconnect?"
+    }
+  ]
+}

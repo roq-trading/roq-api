@@ -49,7 +49,7 @@ set(AUTOGEN_PY ${CMAKE_SOURCE_DIR}/scripts/autogen.py)
 
 # sub-projects
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/schema/cpp)
+add_subdirectory(${CMAKE_SOURCE_DIR}/schema)
 add_subdirectory(${CMAKE_SOURCE_DIR}/include/roq)
 
 # project

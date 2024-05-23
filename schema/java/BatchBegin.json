@@ -1,0 +1,6 @@
+{
+  "name": "BatchBegin",
+  "type": "message",
+  "comment": "Identifies the beginning of a sequence of related messages",
+  "values": []
+}

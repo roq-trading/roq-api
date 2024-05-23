@@ -1,0 +1,6 @@
+{
+  "name": "Connected",
+  "type": "message",
+  "comment": "Connected to gateway",
+  "values": []
+}

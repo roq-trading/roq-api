@@ -1,0 +1,11 @@
+{
+  "name": "DownloadBegin",
+  "type": "message",
+  "comment": "Identifies the beginning of a download sequence",
+  "values": [
+    {
+      "name": "account",
+      "type": "std::string_view"
+    }
+  ]
+}

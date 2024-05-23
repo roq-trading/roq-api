@@ -1,0 +1,13 @@
+{
+  "name": "Side",
+  "type": "enum",
+  "comment": "Enumeration of the side of a trade",
+  "values": [
+    {
+      "name": "Buy"
+    },
+    {
+      "name": "Sell"
+    }
+  ]
+}

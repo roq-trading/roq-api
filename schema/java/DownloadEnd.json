@@ -1,16 +1,1 @@
-{
-  "name": "DownloadEnd",
-  "type": "message",
-  "comment": "Identifies the end of a download sequence",
-  "values": [
-    {
-      "name": "account",
-      "type": "std::string_view"
-    },
-    {
-      "name": "max_order_id",
-      "type": "uint64_t",
-      "comment": "Highest previous order identifier (as seen by gateway)"
-    }
-  ]
-}
+../cpp/download_end.json

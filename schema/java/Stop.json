@@ -1,6 +1,1 @@
-{
-  "name": "Stop",
-  "type": "message",
-  "comment": "Signals a stop event",
-  "values": []
-}
+../cpp/stop.json

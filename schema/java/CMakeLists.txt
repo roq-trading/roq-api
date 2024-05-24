@@ -19,8 +19,14 @@ set(SOURCES
     Filter.json
     GatewaySettings.json
     GatewayStatus.json
+    Layer.json
     Liquidity.json
     MarginMode.json
+    MarketByOrderUpdate.json
+    MarketByPriceUpdate.json
+    MarketStatus.json
+    MBOUpdate.json
+    MBPUpdate.json
     MessageInfo.json
     OptionType.json
     OrderCancelPolicy.json
@@ -45,11 +51,16 @@ set(SOURCES
     SecurityType.json
     Side.json
     Start.json
+    Statistics.json
     StatisticsType.json
+    StatisticsUpdate.json
     Stop.json
     StreamStatus.json
     SupportType.json
     TimeInForce.json
+    TopOfBook.json
+    Trade.json
+    TradeSummary.json
     TradingStatus.json
     Transport.json
     UpdateAction.json

@@ -6,9 +6,13 @@ set(SOURCES
     BatchBegin.json
     BatchEnd.json
     BufferCapacity.json
+    CancelAllOrdersAck.json
+    CancelAllOrders.json
+    CancelOrder.json
     Category.json
     Connected.json
     ConnectionStatus.json
+    CreateOrder.json
     Disconnected.json
     DownloadBegin.json
     DownloadEnd.json
@@ -16,7 +20,9 @@ set(SOURCES
     Error.json
     ExecutionInstruction.json
     ExternalLatency.json
+    Fill.json
     Filter.json
+    FundsUpdate.json
     GatewaySettings.json
     GatewayStatus.json
     Layer.json
@@ -28,13 +34,17 @@ set(SOURCES
     MBOUpdate.json
     MBPUpdate.json
     MessageInfo.json
+    ModifyOrder.json
     OptionType.json
+    OrderAck.json
     OrderCancelPolicy.json
     OrderManagement.json
     OrderStatus.json
     OrderType.json
+    OrderUpdate.json
     Origin.json
     PositionEffect.json
+    PositionUpdate.json
     Precision.json
     Priority.json
     Protocol.json
@@ -61,6 +71,7 @@ set(SOURCES
     TopOfBook.json
     Trade.json
     TradeSummary.json
+    TradeUpdate.json
     TradingStatus.json
     Transport.json
     UpdateAction.json

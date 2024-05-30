@@ -5,34 +5,37 @@
   "values": [
     {
       "name": "label",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Label"
     },
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "rows",
-      "type": "std::span<MatrixKey const>",
+      "type": "MatrixKey",
+      "array": "std/span",
       "comment": "row labels"
     },
     {
       "name": "columns",
-      "type": "std::span<MatrixKey const>",
+      "type": "MatrixKey",
+      "array": "std/span",
       "comment": "column labels"
     },
     {
       "name": "data",
-      "type": "std::span<double const>",
+      "type": "std/double",
+      "array": "std/span",
       "comment": "matrix"
     },
     {
@@ -42,16 +45,16 @@
     },
     {
       "name": "version",
-      "type": "uint32_t",
+      "type": "std/uint32",
       "comment": "Version number (does not have to be sequential)"
     },
     {
       "name": "sending_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "user",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "User name (origin)"
     }
   ]

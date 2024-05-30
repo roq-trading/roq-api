@@ -5,7 +5,8 @@
   "values": [
     {
       "name": "strategy_ids",
-      "type": "std::span<uint32_t>",
+      "type": "std/uint32",
+      "array": "std/span",
       "comment": "List of strategy_id's to remove"
     }
   ]

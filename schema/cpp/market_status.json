@@ -5,15 +5,15 @@
   "values": [
     {
       "name": "stream_id",
-      "type": "uint16_t"
+      "type": "std/uint16"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "trading_status",
@@ -22,15 +22,15 @@
     },
     {
       "name": "exchange_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "exchange_sequence",
-      "type": "uint64_t"
+      "type": "std/uint64"
     },
     {
       "name": "sending_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     }
   ]
 }

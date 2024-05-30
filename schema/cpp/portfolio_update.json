@@ -5,20 +5,21 @@
   "values": [
     {
       "name": "user",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "User (optional)"
     },
     {
       "name": "strategy_id",
-      "type": "uint32_t"
+      "type": "std/uint32"
     },
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "positions",
-      "type": "std::span<Position const>",
+      "type": "Position",
+      "array": "std/span",
       "comment": "Position updates"
     },
     {
@@ -28,7 +29,7 @@
     },
     {
       "name": "exchange_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     }
   ]
 }

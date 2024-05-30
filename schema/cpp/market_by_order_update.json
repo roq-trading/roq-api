@@ -5,19 +5,20 @@
   "values": [
     {
       "name": "stream_id",
-      "type": "uint16_t"
+      "type": "std/uint16"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "orders",
-      "type": "std::span<MBOUpdate const>",
+      "type": "MBOUpdate",
+      "array": "std/span",
       "comment": "List of order updates"
     },
     {
@@ -27,15 +28,15 @@
     },
     {
       "name": "exchange_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "exchange_sequence",
-      "type": "uint64_t"
+      "type": "std/uint64"
     },
     {
       "name": "sending_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "price_precision",
@@ -49,12 +50,12 @@
     },
     {
       "name": "max_depth",
-      "type": "uint16_t",
+      "type": "std/uint16",
       "comment": "Maximum depth (zero means unlimited)"
     },
     {
       "name": "checksum",
-      "type": "uint32_t",
+      "type": "std/uint32",
       "comment": "Checksum (internal)"
     }
   ]

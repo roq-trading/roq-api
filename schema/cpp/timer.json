@@ -5,7 +5,7 @@
   "values": [
     {
       "name": "now",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "Current time (monotonic clock)"
     }
   ]

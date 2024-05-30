@@ -5,37 +5,37 @@
   "values": [
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "order_id",
-      "type": "uint64_t"
+      "type": "std/uint64"
     },
     {
       "name": "request_template",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "quantity",
-      "type": "double",
+      "type": "std/double",
       "comment": "New (total) quantity"
     },
     {
       "name": "price",
-      "type": "double",
+      "type": "std/double",
       "comment": "New limit price"
     },
     {
       "name": "routing_id",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "version",
-      "type": "uint32_t"
+      "type": "std/uint32"
     },
     {
       "name": "conditional_on_version",
-      "type": "uint32_t"
+      "type": "std/uint32"
     }
   ]
 }

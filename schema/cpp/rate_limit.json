@@ -10,22 +10,22 @@
     },
     {
       "name": "period",
-      "type": "std::chrono::seconds",
+      "type": "std/seconds",
       "comment": "Monitor period"
     },
     {
       "name": "end_time_utc",
-      "type": "std::chrono::seconds",
+      "type": "std/seconds",
       "comment": "End of current period"
     },
     {
       "name": "limit",
-      "type": "uint32_t",
+      "type": "std/uint32",
       "comment": "Limit"
     },
     {
       "name": "value",
-      "type": "uint32_t",
+      "type": "std/uint32",
       "comment": "Value"
     }
   ]

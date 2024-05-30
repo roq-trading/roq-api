@@ -5,15 +5,15 @@
   "values": [
     {
       "name": "stream_id",
-      "type": "uint16_t"
+      "type": "std/uint16"
     },
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "currency",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "margin_mode",
@@ -21,17 +21,17 @@
     },
     {
       "name": "balance",
-      "type": "double",
+      "type": "std/double",
       "comment": "Current funds"
     },
     {
       "name": "hold",
-      "type": "double",
+      "type": "std/double",
       "comment": "Funds on hold"
     },
     {
       "name": "external_account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "update_type",
@@ -40,11 +40,11 @@
     },
     {
       "name": "exchange_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "sending_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     }
   ]
 }

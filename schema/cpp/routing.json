@@ -5,12 +5,12 @@
   "values": [
     {
       "name": "source",
-      "type": "uint8_t",
+      "type": "std/uint8",
       "comment": "source"
     },
     {
       "name": "is_last",
-      "type": "bool",
+      "type": "std/bool",
       "comment": "is last?"
     },
     {

@@ -5,19 +5,19 @@
   "values": [
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "order_id",
-      "type": "uint64_t"
+      "type": "std/uint64"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "side",
@@ -34,7 +34,7 @@
     },
     {
       "name": "max_show_quantity",
-      "type": "double",
+      "type": "std/double",
       "comment": "Quantity visible to market (requires exchange support)"
     },
     {
@@ -47,34 +47,35 @@
     },
     {
       "name": "execution_instructions",
-      "type": "Mask<ExecutionInstruction>"
+      "type": "ExecutionInstruction",
+      "array": "Mask"
     },
     {
       "name": "request_template",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "quantity",
-      "type": "double",
+      "type": "std/double",
       "comment": "Order quantity"
     },
     {
       "name": "price",
-      "type": "double",
+      "type": "std/double",
       "comment": "Limit price (depends on order_type)"
     },
     {
       "name": "stop_price",
-      "type": "double",
+      "type": "std/double",
       "comment": "Stop price (depends on order_type and time_in_force)"
     },
     {
       "name": "routing_id",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "strategy_id",
-      "type": "uint32_t"
+      "type": "std/uint32"
     }
   ]
 }

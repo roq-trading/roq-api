@@ -5,23 +5,23 @@
   "values": [
     {
       "name": "stream_id",
-      "type": "uint16_t"
+      "type": "std/uint16"
     },
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "order_id",
-      "type": "uint64_t"
+      "type": "std/uint64"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "side",
@@ -38,32 +38,33 @@
     },
     {
       "name": "create_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "update_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "external_account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "external_order_id",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "client_order_id",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "fills",
-      "type": "std::span<Fill const>",
+      "type": "Fill",
+      "array": "std/span",
       "comment": "List of fills"
     },
     {
       "name": "routing_id",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "update_type",
@@ -72,16 +73,16 @@
     },
     {
       "name": "sending_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "user",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "User name (optional, only relevant for drop-copy)"
     },
     {
       "name": "strategy_id",
-      "type": "uint32_t"
+      "type": "std/uint32"
     }
   ]
 }

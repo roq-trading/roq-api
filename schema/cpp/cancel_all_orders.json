@@ -5,23 +5,23 @@
   "values": [
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "order_id",
-      "type": "uint64_t"
+      "type": "std/uint64"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "strategy_id",
-      "type": "uint32_t"
+      "type": "std/uint32"
     },
     {
       "name": "side",

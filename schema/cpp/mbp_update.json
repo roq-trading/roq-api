@@ -5,24 +5,24 @@
   "values": [
     {
       "name": "price",
-      "type": "double",
+      "type": "std/double",
       "comment": "Price"
     },
     {
       "name": "quantity",
-      "type": "double",
+      "type": "std/double",
       "default": " = {}",
       "comment": "Total quantity available at price (zero means remove price level)"
     },
     {
       "name": "implied_quantity",
-      "type": "double",
+      "type": "std/double",
       "default": " = NaN",
       "comment": "Total implied quantity at price (optional)"
     },
     {
       "name": "number_of_orders",
-      "type": "uint16_t",
+      "type": "std/uint16",
       "default": " = {}",
       "comment": "Number of orders at price (optional)"
     },
@@ -33,7 +33,7 @@
     },
     {
       "name": "price_level",
-      "type": "uint32_t",
+      "type": "std/uint32",
       "default": " = {}",
       "comment": "Price level (0-based indexing)"
     }

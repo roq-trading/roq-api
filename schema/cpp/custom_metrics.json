@@ -5,24 +5,25 @@
   "values": [
     {
       "name": "label",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Label"
     },
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "measurements",
-      "type": "std::span<Measurement const>",
+      "type": "Measurement",
+      "array": "std/span",
       "comment": "List of measurements"
     },
     {

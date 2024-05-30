@@ -5,7 +5,7 @@
   "values": [
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     }
   ]
 }

@@ -5,19 +5,19 @@
   "values": [
     {
       "name": "stream_id",
-      "type": "uint16_t"
+      "type": "std/uint16"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "description",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Description"
     },
     {
@@ -27,52 +27,52 @@
     },
     {
       "name": "base_currency",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Base currency"
     },
     {
       "name": "quote_currency",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Quote currency"
     },
     {
       "name": "margin_currency",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Margin currency"
     },
     {
       "name": "commission_currency",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Commission currency"
     },
     {
       "name": "tick_size",
-      "type": "double",
+      "type": "std/double",
       "comment": "Minimum price increment"
     },
     {
       "name": "multiplier",
-      "type": "double",
+      "type": "std/double",
       "comment": "Multiplier (notional)"
     },
     {
       "name": "min_notional",
-      "type": "double",
+      "type": "std/double",
       "comment": "Minimum notional (price * quantity)"
     },
     {
       "name": "min_trade_vol",
-      "type": "double",
+      "type": "std/double",
       "comment": "Minimum trade volume"
     },
     {
       "name": "max_trade_vol",
-      "type": "double",
+      "type": "std/double",
       "comment": "Maximum trade volume"
     },
     {
       "name": "trade_vol_step_size",
-      "type": "double",
+      "type": "std/double",
       "comment": "Trade volume step size"
     },
     {
@@ -82,59 +82,59 @@
     },
     {
       "name": "strike_currency",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Strike currency"
     },
     {
       "name": "strike_price",
-      "type": "double",
+      "type": "std/double",
       "comment": "Strike price"
     },
     {
       "name": "underlying",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Underlying instrument"
     },
     {
       "name": "time_zone",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Time-zone"
     },
     {
       "name": "issue_date",
-      "type": "std::chrono::days",
+      "type": "std/days",
       "comment": "Issue date"
     },
     {
       "name": "settlement_date",
-      "type": "std::chrono::days",
+      "type": "std/days",
       "comment": "Settlement date"
     },
     {
       "name": "expiry_datetime",
-      "type": "std::chrono::seconds",
+      "type": "std/seconds",
       "comment": "Expiry datetime"
     },
     {
       "name": "expiry_datetime_utc",
-      "type": "std::chrono::seconds",
+      "type": "std/seconds",
       "comment": "Expiry datetime"
     },
     {
       "name": "exchange_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "exchange_sequence",
-      "type": "uint64_t"
+      "type": "std/uint64"
     },
     {
       "name": "sending_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "discard",
-      "type": "bool",
+      "type": "std/bool",
       "comment": "Discard market data updates?"
     }
   ]

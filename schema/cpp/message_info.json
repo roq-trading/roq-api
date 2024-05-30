@@ -5,12 +5,12 @@
   "values": [
     {
       "name": "source",
-      "type": "uint8_t",
+      "type": "std/uint8",
       "comment": "Source identifier (index into the list of connections)"
     },
     {
       "name": "source_name",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Source name"
     },
     {
@@ -20,47 +20,47 @@
     },
     {
       "name": "source_seqno",
-      "type": "uint64_t",
+      "type": "std/uint64",
       "comment": "Sequence number (strictly increasing)"
     },
     {
       "name": "receive_time_utc",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "Client receive time (realtime clock)"
     },
     {
       "name": "receive_time",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "Client receive time (monotonic clock)"
     },
     {
       "name": "source_send_time",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "Source send time (monotonic clock)"
     },
     {
       "name": "source_receive_time",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "Source receive time (monotonic clock)"
     },
     {
       "name": "origin_create_time",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "Origin create time (monotonic clock)"
     },
     {
       "name": "origin_create_time_utc",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "Origin create time (realtime clock)"
     },
     {
       "name": "is_last",
-      "type": "bool",
+      "type": "std/bool",
       "comment": "Is last in batch?"
     },
     {
       "name": "opaque",
-      "type": "uint64_t",
+      "type": "std/uint64",
       "comment": "Opaque value (internal)"
     }
   ]

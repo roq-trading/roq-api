@@ -18,7 +18,7 @@ namespace roq {
 
 //! Add route(s)
 struct ROQ_PUBLIC AddRoutes final {
-  std::span<uint32_t> strategy_ids;  //!< List of strategy_id's to add
+  std::span<uint32_t const> strategy_ids;  //!< List of strategy_id's to add
 };
 
 template <>

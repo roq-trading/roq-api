@@ -10,7 +10,7 @@
     },
     {
       "name": "value",
-      "type": "double",
+      "type": "std/double",
       "default": " = NaN",
       "comment": "Value"
     }

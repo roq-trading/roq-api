@@ -10,7 +10,7 @@
     },
     {
       "name": "strategy_id",
-      "type": "uint32_t"
+      "type": "std/uint32"
     },
     {
       "name": "account",

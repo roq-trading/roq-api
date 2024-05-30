@@ -5,47 +5,48 @@
   "values": [
     {
       "name": "supports",
-      "type": "Mask<SupportType>",
+      "type": "SupportType",
+      "array": "Mask",
       "comment": "Supported update types"
     },
     {
       "name": "mbp_max_depth",
-      "type": "uint16_t",
+      "type": "std/uint16",
       "comment": "MBP max depth"
     },
     {
       "name": "mbp_tick_size_multiplier",
-      "type": "double",
+      "type": "std/double",
       "comment": "MBP multiplier used to manage prices as integer"
     },
     {
       "name": "mbp_min_trade_vol_multiplier",
-      "type": "double",
+      "type": "std/double",
       "comment": "MBP multiplier used to manage quantities as integer"
     },
     {
       "name": "mbp_allow_remove_non_existing",
-      "type": "bool",
+      "type": "std/bool",
       "comment": "MBP allow remove operation on non-existing level?"
     },
     {
       "name": "mbp_allow_price_inversion",
-      "type": "bool",
+      "type": "std/bool",
       "comment": "MBP allow price inversion?"
     },
     {
       "name": "mbp_checksum",
-      "type": "bool",
+      "type": "std/bool",
       "comment": "MBP compute checksum?"
     },
     {
       "name": "oms_download_has_state",
-      "type": "bool",
+      "type": "std/bool",
       "comment": "OMS download includes state information?"
     },
     {
       "name": "oms_download_has_routing_id",
-      "type": "bool",
+      "type": "std/bool",
       "comment": "OMS download includes routing_id?"
     },
     {
@@ -55,7 +56,8 @@
     },
     {
       "name": "oms_cancel_all_orders",
-      "type": "Mask<Filter>",
+      "type": "Filter",
+      "array": "Mask",
       "comment": "Supported filters for CancelAllOrders"
     }
   ]

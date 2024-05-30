@@ -5,19 +5,19 @@
   "values": [
     {
       "name": "stream_id",
-      "type": "uint16_t"
+      "type": "std/uint16"
     },
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "margin_mode",
@@ -25,16 +25,16 @@
     },
     {
       "name": "external_account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "long_quantity",
-      "type": "double",
+      "type": "std/double",
       "comment": "Current long position (absolute)"
     },
     {
       "name": "short_quantity",
-      "type": "double",
+      "type": "std/double",
       "comment": "Current short position (absolute)"
     },
     {
@@ -44,11 +44,11 @@
     },
     {
       "name": "exchange_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     },
     {
       "name": "sending_time_utc",
-      "type": "std::chrono::nanoseconds"
+      "type": "std/nanoseconds"
     }
   ]
 }

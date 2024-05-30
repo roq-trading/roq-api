@@ -5,23 +5,23 @@
   "values": [
     {
       "name": "stream_id",
-      "type": "uint16_t"
+      "type": "std/uint16"
     },
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "order_id",
-      "type": "uint64_t"
+      "type": "std/uint64"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "side",
@@ -45,35 +45,35 @@
     },
     {
       "name": "text",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Descriptive text"
     },
     {
       "name": "request_id",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "external_account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "number_of_affected_orders",
-      "type": "uint32_t",
+      "type": "std/uint32",
       "comment": "Number of affected orders (optional, indicative)"
     },
     {
       "name": "round_trip_latency",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "Round-trip latency between gateway and exchange"
     },
     {
       "name": "user",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "User name (optional, only relevant for drop-copy)"
     },
     {
       "name": "strategy_id",
-      "type": "uint32_t"
+      "type": "std/uint32"
     }
   ]
 }

@@ -10,12 +10,12 @@
     },
     {
       "name": "price",
-      "type": "double",
+      "type": "std/double",
       "comment": "Price"
     },
     {
       "name": "quantity",
-      "type": "double",
+      "type": "std/double",
       "comment": "Quantity"
     },
     {

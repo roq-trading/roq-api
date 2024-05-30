@@ -5,15 +5,15 @@
   "values": [
     {
       "name": "stream_id",
-      "type": "uint16_t"
+      "type": "std/uint16"
     },
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "latency",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "latency measurement (1-way)"
     }
   ]

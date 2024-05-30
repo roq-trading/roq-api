@@ -5,7 +5,7 @@
   "values": [
     {
       "name": "name",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Configuration name"
     },
     {
@@ -20,22 +20,24 @@
     },
     {
       "name": "users",
-      "type": "std::span<User const>",
+      "type": "User",
+      "array": "std/span",
       "comment": "Sorted list of users being affected (empty list means: all)"
     },
     {
       "name": "accounts",
-      "type": "std::span<Account const>",
+      "type": "Account",
+      "array": "std/span",
       "comment": "Sorted list of accounts being affected (empty list means: all)"
     },
     {
       "name": "ban_expires",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "System time when ban expires (zero means: ban is no longer effective)"
     },
     {
       "name": "triggered_by",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Trigger activated by this user"
     },
     {
@@ -45,7 +47,7 @@
     },
     {
       "name": "remaining_requests",
-      "type": "uint32_t",
+      "type": "std/uint32",
       "comment": "The buffer becomes full if this many requests are sent instantly"
     }
   ]

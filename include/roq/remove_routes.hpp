@@ -18,7 +18,7 @@ namespace roq {
 
 //! Remove route(s)
 struct ROQ_PUBLIC RemoveRoutes final {
-  std::span<uint32_t> strategy_ids;  //!< List of strategy_id's to remove
+  std::span<uint32_t const> strategy_ids;  //!< List of strategy_id's to remove
 };
 
 template <>

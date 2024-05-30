@@ -20,8 +20,8 @@ namespace roq {
 
 //! Response to route request
 struct ROQ_PUBLIC RouteAck final {
-  std::span<Route> routes;  //!< Response per strategy_id
-  std::string_view user;    //!< User name (optional, only relevant for drop-copy)
+  std::span<Route const> routes;  //!< Response per strategy_id
+  std::string_view user;          //!< User name (optional, only relevant for drop-copy)
 };
 
 template <>

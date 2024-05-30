@@ -5,11 +5,11 @@
   "values": [
     {
       "name": "stream_id",
-      "type": "uint16_t"
+      "type": "std/uint16"
     },
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "origin",
@@ -18,7 +18,8 @@
     },
     {
       "name": "rate_limits",
-      "type": "std::span<RateLimit const>",
+      "type": "RateLimit",
+      "array": "std/span",
       "comment": "Rate-limits updates"
     }
   ]

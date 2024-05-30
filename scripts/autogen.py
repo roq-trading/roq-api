@@ -10,6 +10,7 @@ import argparse
 import json
 import re
 import os
+import sys
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -26,6 +27,53 @@ def camel_case(word):
     # https://www.w3resource.com/python-exercises/re/python-re-exercise-37.php
     return "".join(x.capitalize() or "_" for x in word.split("_"))
 
+
+# +include, +default
+cpp_types = {
+    "std/string": "std::string",
+    "std/string_view": "std::string_view",
+    "std/nanoseconds": "std::chrono::nanoseconds",
+    "std/milliseconds": "std::chrono::milliseconds",
+    "std/seconds": "std::chrono::seconds",
+    "std/days": "std::chrono::days",
+    "std/year_month_day": "std::chrono::year_month_day",
+    "std/hh_mm_ss": "std::chrono::hh_mm_ss<std::chrono::milliseconds>",
+    "std/bool": "bool",
+    "std/char": "char",
+    "std/int8": "int8_t",
+    "std/uint8": "uint8_t",
+    "std/int16": "int16_t",
+    "std/uint16": "uint16_t",
+    "std/int32": "int32_t",
+    "std/uint32": "uint32_t",
+    "std/int64": "int64_t",
+    "std/uint64": "uint64_t",
+    "std/size_t": "size_t",
+    "std/ssize_t": "ssize_t",
+    "std/float": "float",
+    "std/double": "double",
+    "std/span": "std::span",
+    "std/vector": "std::vector",
+}
+
+def check_raw_type(raw_type, array):
+    if raw_type is None:
+        return
+    if 'std::span<' in raw_type and array != "std/span":
+        sys.exit(1)
+    if 'std::vector<' in raw_type and array != "std/vector":
+        sys.exit(1)
+
+def get_cpp_type(raw_type, array):
+    if raw_type is None:
+        return None
+    cpp_type =  cpp_types.get(raw_type, raw_type)
+    if array is None:
+        return cpp_type
+    cpp_array = cpp_types.get(array, array)
+    if 'std::' in cpp_array:
+        return '{}<{} const>'.format(cpp_array, cpp_type)
+    return '{}<{}>'.format(cpp_array, cpp_type)
 
 defaults = {
     "std::string_view": " = {}",
@@ -48,6 +96,24 @@ defaults = {
     "std::int64_t": " = {}",
     "std::uint64_t": " = {}",
     "double": " = NaN",
+    # new
+    "std/string": "",
+    "std/string_view": " = {}",
+    "std/nanoseconds": " = {}",
+    "std/milliseconds": " = {}",
+    "std/seconds": " = {}",
+    "std/days": " = {}",
+    "std/bool": " = false",
+    "std/char": " = '\\0'",
+    "std/int8": " = {}",
+    "std/uint8": " = {}",
+    "std/int16": " = {}",
+    "std/uint16": " = {}",
+    "std/int32": " = {}",
+    "std/uint32": " = {}",
+    "std/int64": " = {}",
+    "std/uint64": " = {}",
+    "std/double": " = NaN",
 }
 
 default_includes = {
@@ -271,7 +337,10 @@ def _new_spec_helper(item):
     """aggregate the specification as a dict"""
     name_ = item["name"]
     raw_name = item.get("raw", name_)
-    type_ = item.get("type")
+    raw_type = item.get("type")
+    array_2 = item.get("array")
+    check_raw_type(raw_type, array_2)
+    type_ = get_cpp_type(raw_type, array_2)
     comment = item.get("comment") or _find_default_comment(name_)
     name = _safe_enum(snake_case(name_))
     safe_name = _safe(name)

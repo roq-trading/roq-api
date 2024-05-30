@@ -5,18 +5,18 @@
   "values": [
     {
       "name": "price",
-      "type": "double",
+      "type": "std/double",
       "comment": "Price level"
     },
     {
       "name": "quantity",
-      "type": "double",
+      "type": "std/double",
       "default": " = {}",
       "comment": "Order quantity (remaining unless update action is fill)"
     },
     {
       "name": "priority",
-      "type": "uint64_t",
+      "type": "std/uint64",
       "comment": "Queue priority (optional)"
     },
     {

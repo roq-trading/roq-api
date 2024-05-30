@@ -5,21 +5,22 @@
   "values": [
     {
       "name": "user",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "User name (optional)"
     },
     {
       "name": "strategy_id",
-      "type": "uint32_t"
+      "type": "std/uint32"
     },
     {
       "name": "account",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Account name (optional)"
     },
     {
       "name": "limits",
-      "type": "std::span<RiskLimit const>",
+      "type": "RiskLimit",
+      "array": "std/span",
       "comment": "Risk limits per {exchange, symbol}"
     },
     {

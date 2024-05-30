@@ -13,39 +13,39 @@
     },
     {
       "name": "long_position",
-      "type": "double",
+      "type": "std/double",
       "default": " = 0.0",
       "comment": "Position (long)"
     },
     {
       "name": "short_position",
-      "type": "double",
+      "type": "std/double",
       "default": " = 0.0",
       "comment": "Position (short)"
     },
     {
       "name": "long_position_limit",
-      "type": "double",
+      "type": "std/double",
       "comment": "Position limit (long)"
     },
     {
       "name": "short_position_limit",
-      "type": "double",
+      "type": "std/double",
       "comment": "Position limit (short)"
     },
     {
       "name": "long_risk_exposure_limit",
-      "type": "double",
+      "type": "std/double",
       "comment": "Risk exposure limit (long)"
     },
     {
       "name": "short_risk_exposure_limit",
-      "type": "double",
+      "type": "std/double",
       "comment": "Risk exposure limit (short)"
     },
     {
       "name": "allow_netting",
-      "type": "bool",
+      "type": "std/bool",
       "comment": "Allow netting?"
     }
   ]

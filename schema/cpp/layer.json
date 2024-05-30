@@ -5,23 +5,23 @@
   "values": [
     {
       "name": "bid_price",
-      "type": "double",
+      "type": "std/double",
       "comment": "Bid price level"
     },
     {
       "name": "bid_quantity",
-      "type": "double",
+      "type": "std/double",
       "default": " = {}",
       "comment": "Total quantity available at bid"
     },
     {
       "name": "ask_price",
-      "type": "double",
+      "type": "std/double",
       "comment": "Ask price level"
     },
     {
       "name": "ask_quantity",
-      "type": "double",
+      "type": "std/double",
       "default": " = {}",
       "comment": "Total quantity available at ask"
     }

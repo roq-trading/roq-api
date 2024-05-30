@@ -5,7 +5,8 @@
   "values": [
     {
       "name": "parameters",
-      "type": "std::span<Parameter const>",
+      "type": "Parameter",
+      "array": "std/span",
       "comment": "List of parameters"
     },
     {
@@ -15,7 +16,7 @@
     },
     {
       "name": "user",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "User name (optional, only relevant for drop-copy)"
     }
   ]

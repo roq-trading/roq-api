@@ -5,23 +5,23 @@
   "values": [
     {
       "name": "stream_id",
-      "type": "uint16_t"
+      "type": "std/uint16"
     },
     {
       "name": "account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "order_id",
-      "type": "uint64_t"
+      "type": "std/uint64"
     },
     {
       "name": "exchange",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "symbol",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "side",
@@ -58,76 +58,76 @@
     },
     {
       "name": "text",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "Descriptive text"
     },
     {
       "name": "request_id",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "external_account",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "external_order_id",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "client_order_id",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "quantity",
-      "type": "double",
+      "type": "std/double",
       "comment": "Quantity (total, indicative)"
     },
     {
       "name": "price",
-      "type": "double",
+      "type": "std/double",
       "comment": "Price"
     },
     {
       "name": "stop_price",
-      "type": "double",
+      "type": "std/double",
       "comment": "Stop price (depends on order_type and time_in_force)"
     },
     {
       "name": "routing_id",
-      "type": "std::string_view"
+      "type": "std/string_view"
     },
     {
       "name": "version",
-      "type": "uint32_t"
+      "type": "std/uint32"
     },
     {
       "name": "risk_exposure",
-      "type": "double",
+      "type": "std/double",
       "comment": "Risk exposure"
     },
     {
       "name": "risk_exposure_change",
-      "type": "double",
+      "type": "std/double",
       "comment": "Risk exposure change"
     },
     {
       "name": "traded_quantity",
-      "type": "double",
+      "type": "std/double",
       "comment": "Quantity (total traded)"
     },
     {
       "name": "round_trip_latency",
-      "type": "std::chrono::nanoseconds",
+      "type": "std/nanoseconds",
       "comment": "Round-trip latency (interpretation depends on origin)"
     },
     {
       "name": "user",
-      "type": "std::string_view",
+      "type": "std/string_view",
       "comment": "User name (optional, only relevant for drop-copy)"
     },
     {
       "name": "strategy_id",
-      "type": "uint32_t"
+      "type": "std/uint32"
     }
   ]
 }

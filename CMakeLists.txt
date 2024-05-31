@@ -43,24 +43,25 @@ include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/${CMAKE_INST
 
 # common
 
-set(SCHEMA_DIR ${CMAKE_SOURCE_DIR}/schema)
+set(SCHEMA_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/roq/schema)
+set(SCHEMA_LINK_DIR ${CMAKE_SOURCE_DIR}/schema)
 
+set(GET_LINK_PY ${CMAKE_SOURCE_DIR}/scripts/get_link.py)
 set(AUTOGEN_PY ${CMAKE_SOURCE_DIR}/scripts/autogen.py)
 
 # sub-projects
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/schema)
 add_subdirectory(${CMAKE_SOURCE_DIR}/include/roq)
 
 # project
 
 add_library(${PROJECT_NAME} INTERFACE)
 
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-schema-cpp)
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}-include-cpp)
 
 # sub-projects
 
+add_subdirectory(${CMAKE_SOURCE_DIR}/schema/roq)
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/roq)
 
 # install (public headers)

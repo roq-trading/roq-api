@@ -28,33 +28,224 @@ def camel_case(word):
     return "".join(x.capitalize() or "_" for x in word.split("_"))
 
 
-# +include, +default
-cpp_types = {
-    "std/string": "std::string",
-    "std/string_view": "std::string_view",
-    "std/nanoseconds": "std::chrono::nanoseconds",
-    "std/milliseconds": "std::chrono::milliseconds",
-    "std/seconds": "std::chrono::seconds",
-    "std/days": "std::chrono::days",
-    "std/year_month_day": "std::chrono::year_month_day",
-    "std/hh_mm_ss": "std::chrono::hh_mm_ss<std::chrono::milliseconds>",
-    "std/bool": "bool",
-    "std/char": "char",
-    "std/int8": "int8_t",
-    "std/uint8": "uint8_t",
-    "std/int16": "int16_t",
-    "std/uint16": "uint16_t",
-    "std/int32": "int32_t",
-    "std/uint32": "uint32_t",
-    "std/int64": "int64_t",
-    "std/uint64": "uint64_t",
-    "std/size_t": "size_t",
-    "std/ssize_t": "ssize_t",
-    "std/float": "float",
-    "std/double": "double",
-    "std/span": "std::span",
-    "std/vector": "std::vector",
+def strip_namespace(name):
+    pos = name.rfind('/')
+    return name[pos + 1:]
+
+
+def get_namespace(name):
+    pos = name.rfind('/')
+    return name[0: pos].split('/')
+
+
+roq_basic_types = {
+    "roq/UUID",
+    "roq/String",
+    "roq/Source",
+    "roq/User",
+    "roq/Account",
+    "roq/Exchange",
+    "roq/Symbol",
+    "roq/Currency",
+    "roq/OrderTemplate",
+    "roq/ExternalAccount",
+    "roq/ExternalOrderId",
+    "roq/ExternalTradeId",
+    "roq/MBOOrderId",
+    "roq/RoutingId",
+    "roq/ClOrdId",
+    "roq/RequestId",
+    "roq/Label",
+    "roq/MeasurementKey",
+    "roq/MatrixKey",
+    "roq/Description",
+    "roq/TimeZone",
+    "roq/ParameterKey",
+    "roq/ParameterValue",
 }
+
+
+cpp_types = {
+    "std/string_view": {
+        "type": "std::string_view",
+        "includes": [
+            "<string_view>",
+        ],
+    },
+    "std/string": {
+        "type": "std::string",
+        "includes": [
+            "<string>",
+        ],
+    },
+    "std/nanoseconds": {
+        "type": "std::chrono::nanoseconds",
+        "includes": [
+            "<chrono>",
+        ],
+        "default": "{}",
+        "class": ("chrono",),
+    },
+    "std/microseconds": {
+        "type": "std::chrono::microseconds",
+        "includes": [
+            "<chrono>",
+        ],
+        "default": "{}",
+        "class": ("chrono",),
+    },
+    "std/milliseconds": {
+        "type": "std::chrono::milliseconds",
+        "includes": [
+            "<chrono>",
+        ],
+        "default": "{}",
+        "class": ("chrono",),
+    },
+    "std/seconds": {
+        "type": "std::chrono::seconds",
+        "includes": [
+            "<chrono>",
+        ],
+        "default": "{}",
+        "class": ("chrono",),
+    },
+    "std/days": {
+        "type": "std::chrono::days",
+        "includes": [
+            "<chrono>",
+        ],
+        "default": "{}",
+        "class": ("chrono",),
+    },
+    "std/year_month_day": {
+        "type": "std::chrono::year_month_day",
+        "includes": [
+            "<chrono>",
+        ],
+        "default": "{}",
+        "class": ("chrono",),
+    },
+    "std/hh_mm_ss": {
+        "type": "std::chrono::hh_mm_ss<std::chrono::milliseconds>",
+        "includes": [
+            "<chrono>",
+        ],
+        "default": "{}",
+        "class": ("chrono",),
+    },
+    "std/bool": {
+        "type": "bool",
+        "default": "false",
+        "class": ("integral",),
+    },
+    "std/char": {
+        "type": "char",
+        "default": "'\\0'",
+        "class": ("integral",),
+    },
+    "std/int8": {
+        "type": "int8_t",
+        "default": "{}",
+        "class": (
+            "integral",
+            "signed",
+        ),
+    },
+    "std/uint8": {
+        "type": "uint8_t",
+        "default": "{}",
+        "class": (
+            "integral",
+            "unsigned",
+        ),
+    },
+    "std/int16": {
+        "type": "int16_t",
+        "default": "{}",
+        "class": (
+            "integral",
+            "signed",
+        ),
+    },
+    "std/uint16": {
+        "type": "uint16_t",
+        "default": "{}",
+        "class": (
+            "integral",
+            "unsigned",
+        ),
+    },
+    "std/int32": {
+        "type": "int32_t",
+        "default": "{}",
+        "class": (
+            "integral",
+            "signed",
+        ),
+    },
+    "std/uint32": {
+        "type": "uint32_t",
+        "default": "{}",
+        "class": (
+            "integral",
+            "unsigned",
+        ),
+    },
+    "std/int64": {
+        "type": "int64_t",
+        "default": "{}",
+        "class": (
+            "integral",
+            "signed",
+        ),
+    },
+    "std/uint64": {
+        "type": "uint64_t",
+        "default": "{}",
+        "class": (
+            "integral",
+            "unsigned",
+        ),
+    },
+    "std/ssize_t": {
+        "type": "ssize_t",
+        "default": "{}",
+        "class": (
+            "integral",
+            "signed",
+        ),
+    },
+    "std/size_t": {
+        "type": "size_t",
+        "default": "{}",
+        "class": (
+            "integral",
+            "unsigned",
+        ),
+    },
+    "std/float": {
+        "type": "float",
+        "default": "NaN",
+    },
+    "std/double": {
+        "type": "double",
+        "default": "NaN",
+    },
+    "std/span": {
+        "type": "std::span",
+        "includes": [
+            "<span>",
+        ],
+    },
+    "std/vector": {
+        "type": "std::vector",
+        "includes": [
+            "<vector>",
+        ],
+    },
+}
+
 
 def check_raw_type(raw_type, array):
     if raw_type is None:
@@ -64,16 +255,26 @@ def check_raw_type(raw_type, array):
     if 'std::vector<' in raw_type and array != "std/vector":
         sys.exit(1)
 
+
 def get_cpp_type(raw_type, array):
     if raw_type is None:
         return None
-    cpp_type =  cpp_types.get(raw_type, raw_type)
+    spec = cpp_types.get(raw_type)
+    if spec is None:
+        cpp_type = strip_namespace(raw_type)
+    else:
+        cpp_type = spec["type"]
     if array is None:
         return cpp_type
-    cpp_array = cpp_types.get(array, array)
-    if 'std::' in cpp_array:
-        return '{}<{} const>'.format(cpp_array, cpp_type)
-    return '{}<{}>'.format(cpp_array, cpp_type)
+    spec_array = cpp_types.get(array)
+    if spec_array is None:
+        cpp_array = strip_namespace(array)
+    else:
+        cpp_array = spec_array["type"]
+    if "std::span" in cpp_array:
+        return "{}<{} const>".format(cpp_array, cpp_type)
+    return "{}<{}>".format(cpp_array, cpp_type)
+
 
 defaults = {
     "std::string_view": " = {}",
@@ -461,18 +662,20 @@ def new_spec(path, namespaces, name, comment, spec, type_):
     )
 
 
-def process(file_type, path, namespaces, templates):
+def process(link, file_type, path, namespaces, templates):
     """generate the output file based on a template"""
     with open(path) as file:
         doc = json.load(file)
         type_ = doc["type"]
-        name = doc["name"]
+        name_2 = doc["name"]
         comment = doc["comment"]
         values = doc["values"]
 
+        name = strip_namespace(name_2)
+
         env = Environment(loader=FileSystemLoader(templates), trim_blocks=True, lstrip_blocks=True)
         template = env.get_template(".".join((type_, file_type)))
-        spec = new_spec(path, namespaces, name, comment, values, type_)
+        spec = new_spec(link, namespaces, name, comment, values, type_)
         result = template.render(**spec)
         print(result)
 
@@ -480,6 +683,7 @@ def process(file_type, path, namespaces, templates):
 def main():
     """main function"""
     parser = argparse.ArgumentParser()
+    parser.add_argument("--link", type=str, required=True, help="link")
     parser.add_argument("--namespace", type=str, required=True, help="namespace")
     parser.add_argument("--file-type", type=str, required=True, help="output file (h/cpp)")
     parser.add_argument("spec", type=str, help="spec file (.json)")
@@ -490,7 +694,7 @@ def main():
     dirname = os.path.dirname(os.path.realpath(__file__))
     templates = os.path.join(dirname, "templates")
 
-    process(args.file_type, args.spec, namespaces, templates)
+    process(args.link, args.file_type, args.spec, namespaces, templates)
 
 
 if __name__ == "__main__":

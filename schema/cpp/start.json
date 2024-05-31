@@ -1,6 +1,0 @@
-{
-  "name": "Start",
-  "type": "message",
-  "comment": "Signals a start event",
-  "values": []
-}

@@ -1,10 +1,6 @@
-set(TARGET_NAME ${PROJECT_NAME}-include-cpp)
+set(TARGET_NAME ${PROJECT_NAME}-schema-roq)
 
-set(TARGET_DIR ${CMAKE_INSTALL_INCLUDEDIR}/roq)
-
-# schema
-
-# XXX FIXME
+# XXX FIXME share with other subdirectories
 set(SCHEMA_ROQ
     add_routes.json
     batch_begin.json
@@ -100,43 +96,3 @@ set(SCHEMA_ROQ
     update_action.json
     update_reason.json
     update_type.json)
-
-set(SOURCES ${SCHEMA_ROQ})
-
-# configure
-
-set(API_HPP ${CMAKE_BINARY_DIR}/${TARGET_DIR}/api.hpp)
-
-configure_file("api.hpp.in" ${API_HPP} @ONLY)
-
-# auto-generate
-
-unset(AUTOGEN_HEADERS)
-
-foreach(path ${SOURCES})
-  set(link ${SCHEMA_LINK_DIR}/roq/${path})
-  set_property(
-    DIRECTORY
-    APPEND
-    PROPERTY CMAKE_CONFIGURE_DEPENDS ${link})
-  execute_process(COMMAND ${Python3_EXECUTABLE} ${GET_LINK_PY} ${link} OUTPUT_VARIABLE schema)
-  set(source ${SCHEMA_DIR}/${schema}.json)
-  get_filename_component(name ${path} NAME_WE)
-  set(target ${CMAKE_BINARY_DIR}/${TARGET_DIR}/${name}.hpp)
-  add_custom_command(
-    OUTPUT ${target}
-    COMMAND ${Python3_EXECUTABLE} ${AUTOGEN_PY} --link ${link} --namespace "roq" --file-type "hpp"
-            ${source} > ${target}
-    COMMAND ${CLANG_FORMAT} -i ${target}
-    VERBATIM
-    DEPENDS ${Python3_EXECUTABLE} ${GET_LINK_PY} ${AUTOGEN_PY} ${link} ${source})
-  list(APPEND AUTOGEN_HEADERS ${target})
-endforeach()
-
-# target
-
-add_custom_target(${TARGET_NAME} ALL DEPENDS ${AUTOGEN_HEADERS} ${GITIGNORE})
-
-# install
-
-install(FILES ${AUTOGEN_HEADERS} ${API_HPP} DESTINATION ${TARGET_DIR})

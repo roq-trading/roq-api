@@ -26,9 +26,11 @@ requirements:
     - cmake
     - doxygen
     - make
+    - roq-autogen
   host:
     - catch2
     - fmt
+    - roq-schema
     - roq-oss-magic_enum
     - roq-schema
 

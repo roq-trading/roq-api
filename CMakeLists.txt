@@ -28,6 +28,7 @@ find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
 
 find_program(CLANG_FORMAT clang-format REQUIRED)
+find_program(ROQ_AUTOGEN_2 roq-autogen REQUIRED)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   include(CTest)

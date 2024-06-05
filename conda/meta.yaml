@@ -27,12 +27,12 @@ requirements:
     - doxygen
     - make
     - roq-autogen
+    - roq-schema
   host:
     - catch2
     - fmt
     - roq-schema
     - roq-oss-magic_enum
-    - roq-schema
 
 about:
   home: https://roq-trading.com

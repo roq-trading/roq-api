@@ -180,13 +180,12 @@ source ~/conda/bin/activate
 mamba install -y \
     git \
     cmake \
-    abseil-cpp \
     fmt \
-    jinja2 \
     clang-format \
     catch2
 
 mamba install -y --channel https://roq-trading.com/conda/stable \
+    roq-autogen \
     roq-oss-magic_enum
 ```
 

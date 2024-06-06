@@ -20,7 +20,7 @@ namespace roq {
 struct ROQ_PUBLIC MessageInfo final {
   uint8_t source = {};                                   //!< Source identifier (index into the list of connections)
   std::string_view source_name;                          //!< Source name
-  UUID source_session_id;                                //!< Session identifier (UUID)
+  roq::UUID source_session_id = {};                      //!< Session identifier (UUID)
   uint64_t source_seqno = {};                            //!< Sequence number (strictly increasing)
   std::chrono::nanoseconds receive_time_utc = {};        //!< Client receive time (realtime clock)
   std::chrono::nanoseconds receive_time = {};            //!< Client receive time (monotonic clock)
@@ -44,7 +44,7 @@ struct fmt::formatter<roq::MessageInfo> {
         R"({{)"
         R"(source={}, )"
         R"(source_name="{}", )"
-        R"(source_session_id="{}", )"
+        R"(source_session_id={}, )"
         R"(source_seqno={}, )"
         R"(receive_time_utc={}, )"
         R"(receive_time={}, )"

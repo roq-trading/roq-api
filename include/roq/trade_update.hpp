@@ -31,17 +31,17 @@ struct ROQ_PUBLIC TradeUpdate final {
   uint64_t order_id = {};                          //!< Order identifier
   std::string_view exchange;                       //!< Exchange
   std::string_view symbol;                         //!< Symbol
-  Side side = {};                                  //!< Side
-  PositionEffect position_effect = {};             //!< Position effect
-  MarginMode margin_mode = {};                     //!< Margin mode
+  roq::Side side = {};                             //!< Side
+  roq::PositionEffect position_effect = {};        //!< Position effect
+  roq::MarginMode margin_mode = {};                //!< Margin mode
   std::chrono::nanoseconds create_time_utc = {};   //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};   //!< Updated timestamp (UTC)
   std::string_view external_account;               //!< External account name
   std::string_view external_order_id;              //!< External order identifier
   std::string_view client_order_id;                //!< Client order identifier
-  std::span<Fill const> fills;                     //!< List of fills
+  std::span<roq::Fill const> fills;                //!< List of fills
   std::string_view routing_id;                     //!< Routing identifier
-  UpdateType update_type = {};                     //!< Update type
+  roq::UpdateType update_type = {};                //!< Update type
   std::chrono::nanoseconds sending_time_utc = {};  //!< Exchange sending timestamp (UTC)
   std::string_view user;                           //!< User name (optional, only relevant for drop-copy)
   uint32_t strategy_id = {};                       //!< Strategy identifier (optional)

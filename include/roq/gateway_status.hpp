@@ -20,10 +20,11 @@ namespace roq {
 
 //! Update relating to current gateway service status
 struct ROQ_PUBLIC GatewayStatus final {
-  std::string_view account;       //!< Account name
-  Mask<SupportType> supported;    //!< Supported update types
-  Mask<SupportType> available;    //!< Available update types (union of all streams, one or more available)
-  Mask<SupportType> unavailable;  //!< Unavailable update types (union of all streams, one or more unavailable)
+  std::string_view account;               //!< Account name
+  roq::Mask<roq::SupportType> supported;  //!< Supported update types
+  roq::Mask<roq::SupportType> available;  //!< Available update types (union of all streams, one or more available)
+  roq::Mask<roq::SupportType>
+      unavailable;  //!< Unavailable update types (union of all streams, one or more unavailable)
 };
 
 template <>

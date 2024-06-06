@@ -25,18 +25,18 @@ namespace roq {
 
 //! Update relating to current stream status
 struct ROQ_PUBLIC StreamStatus final {
-  uint16_t stream_id = {};                  //!< Stream identifier
-  std::string_view account;                 //!< Account name
-  Mask<SupportType> supports;               //!< Supported update types
-  Transport transport = {};                 //!< Transport type (layer 4)
-  Protocol protocol = {};                   //!< Communication protocol (layer 7)
-  Mask<Encoding> encoding;                  //!< Message encoding
-  Priority priority = {};                   //!< Priority
-  ConnectionStatus connection_status = {};  //!< Connection status (when applicable)
-  std::string_view interface;               //!< Local network interface
-  std::string_view authority;               //!< URL authority (network end-point)
-  std::string_view path;                    //!< URL path
-  std::string_view proxy;                   //!< Network proxy
+  uint16_t stream_id = {};                       //!< Stream identifier
+  std::string_view account;                      //!< Account name
+  roq::Mask<roq::SupportType> supports;          //!< Supported update types
+  roq::Transport transport = {};                 //!< Transport type (layer 4)
+  roq::Protocol protocol = {};                   //!< Communication protocol (layer 7)
+  roq::Mask<roq::Encoding> encoding;             //!< Message encoding
+  roq::Priority priority = {};                   //!< Priority
+  roq::ConnectionStatus connection_status = {};  //!< Connection status (when applicable)
+  std::string_view interface;                    //!< Local network interface
+  std::string_view authority;                    //!< URL authority (network end-point)
+  std::string_view path;                         //!< URL path
+  std::string_view proxy;                        //!< Network proxy
 };
 
 template <>

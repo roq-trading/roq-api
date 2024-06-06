@@ -17,9 +17,9 @@ namespace roq {
 
 //! Routing
 struct ROQ_PUBLIC Routing final {
-  uint8_t source = {};                       //!< source
-  bool is_last = false;                      //!< is last?
-  QualityOfService quality_of_service = {};  //!< quality of service
+  uint8_t source = {};                            //!< source
+  bool is_last = false;                           //!< is last?
+  roq::QualityOfService quality_of_service = {};  //!< quality of service
 };
 
 template <>

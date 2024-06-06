@@ -1,4 +1,4 @@
-{% if 'chrono' in std_includes %}
+{%- if '<chrono>' in std_includes %}
 #include <fmt/chrono.h>
-{% endif %}
+{%- endif %}
 #include <fmt/format.h>

@@ -10,6 +10,7 @@
 #include <fmt/format.h>
 
 #include <chrono>
+#include <limits>
 #include <span>
 #include <string_view>
 
@@ -27,10 +28,10 @@ struct ROQ_PUBLIC CustomMatrixUpdate final {
   std::string_view account;                        //!< Account name
   std::string_view exchange;                       //!< Exchange
   std::string_view symbol;                         //!< Symbol
-  std::span<MatrixKey const> rows;                 //!< row labels
-  std::span<MatrixKey const> columns;              //!< column labels
+  std::span<roq::MatrixKey const> rows;            //!< row labels
+  std::span<roq::MatrixKey const> columns;         //!< column labels
   std::span<double const> data;                    //!< matrix
-  UpdateType update_type = {};                     //!< Update type
+  roq::UpdateType update_type = {};                //!< Update type
   uint32_t version = {};                           //!< Version number (does not have to be sequential)
   std::chrono::nanoseconds sending_time_utc = {};  //!< Exchange sending timestamp (UTC)
   std::string_view user;                           //!< User name (origin)
@@ -56,8 +57,8 @@ struct fmt::formatter<roq::CustomMatrixUpdate> {
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(rows=[{}], )"
-        R"(columns=[{}], )"
+        R"(rows="{}", )"
+        R"(columns="{}", )"
         R"(data=[{}], )"
         R"(update_type={}, )"
         R"(version={}, )"

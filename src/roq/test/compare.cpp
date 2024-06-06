@@ -2,6 +2,8 @@
 
 #include <catch2/catch_all.hpp>
 
+#include "roq/api.hpp"
+
 #include "roq/utils/compare.hpp"
 
 using namespace std::literals;

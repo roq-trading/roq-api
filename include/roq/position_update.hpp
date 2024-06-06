@@ -10,12 +10,12 @@
 #include <fmt/format.h>
 
 #include <chrono>
+#include <limits>
 #include <string_view>
 
 #include "roq/event.hpp"
 #include "roq/margin_mode.hpp"
 #include "roq/name.hpp"
-#include "roq/numbers.hpp"
 #include "roq/trace.hpp"
 #include "roq/update_type.hpp"
 
@@ -23,15 +23,15 @@ namespace roq {
 
 //! Update relating to current position for a symbol/side/account
 struct ROQ_PUBLIC PositionUpdate final {
-  uint16_t stream_id = {};                          //!< Stream identifier
-  std::string_view account;                         //!< Account name
-  std::string_view exchange;                        //!< Exchange
-  std::string_view symbol;                          //!< Symbol
-  MarginMode margin_mode = {};                      //!< Margin mode
-  std::string_view external_account;                //!< External account name
-  double long_quantity = NaN;                       //!< Current long position (absolute)
-  double short_quantity = NaN;                      //!< Current short position (absolute)
-  UpdateType update_type = {};                      //!< Update type
+  uint16_t stream_id = {};                                           //!< Stream identifier
+  std::string_view account;                                          //!< Account name
+  std::string_view exchange;                                         //!< Exchange
+  std::string_view symbol;                                           //!< Symbol
+  roq::MarginMode margin_mode = {};                                  //!< Margin mode
+  std::string_view external_account;                                 //!< External account name
+  double long_quantity = std::numeric_limits<double>::quiet_NaN();   //!< Current long position (absolute)
+  double short_quantity = std::numeric_limits<double>::quiet_NaN();  //!< Current short position (absolute)
+  roq::UpdateType update_type = {};                                  //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
 };

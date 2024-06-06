@@ -114,22 +114,20 @@ configure_file("api.hpp.in" ${API_HPP} @ONLY)
 unset(AUTOGEN_HEADERS)
 
 foreach(path ${SOURCES})
+  get_filename_component(name ${path} NAME_WE)
+  set(target ${CMAKE_BINARY_DIR}/${TARGET_DIR}/${name}.hpp)
   set(link ${SCHEMA_LINK_DIR}/roq/${path})
   set_property(
     DIRECTORY
     APPEND
     PROPERTY CMAKE_CONFIGURE_DEPENDS ${link})
-  execute_process(COMMAND ${Python3_EXECUTABLE} ${GET_LINK_PY} ${link} OUTPUT_VARIABLE schema)
-  set(source ${SCHEMA_DIR}/${schema}.json)
-  get_filename_component(name ${path} NAME_WE)
-  set(target ${CMAKE_BINARY_DIR}/${TARGET_DIR}/${name}.hpp)
   add_custom_command(
     OUTPUT ${target}
-    COMMAND ${Python3_EXECUTABLE} ${AUTOGEN_PY} --link ${link} --namespace "roq" --file-type "hpp"
-            ${source} > ${target}
+    COMMAND ${ROQ_AUTOGEN} --schema_dir ${SCHEMA_DIR} --template_dir ${TEMPLATE_DIR} --input_path
+            ${link} --language "cpp" --template_type "api" --file_type "hpp" > ${target}
     COMMAND ${CLANG_FORMAT} -i ${target}
     VERBATIM
-    DEPENDS ${Python3_EXECUTABLE} ${GET_LINK_PY} ${AUTOGEN_PY} ${link} ${source})
+    DEPENDS ${ROQ_AUTOGEN} ${link})
   list(APPEND AUTOGEN_HEADERS ${target})
 endforeach()
 

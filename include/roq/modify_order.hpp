@@ -8,24 +8,24 @@
 
 #include <fmt/format.h>
 
+#include <limits>
 #include <string_view>
 
 #include "roq/event.hpp"
 #include "roq/name.hpp"
-#include "roq/numbers.hpp"
 #include "roq/trace.hpp"
 
 namespace roq {
 
 //! Fields required to modify an existing order
 struct ROQ_PUBLIC ModifyOrder final {
-  std::string_view account;              //!< Account name
-  uint64_t order_id = {};                //!< Order identifier
-  std::string_view request_template;     //!< Request template (gateway configured)
-  double quantity = NaN;                 //!< New (total) quantity
-  double price = NaN;                    //!< New limit price
-  std::string_view routing_id;           //!< Routing identifier
-  uint32_t version = {};                 //!< Version number (strictly increasing, optional)
+  std::string_view account;                                    //!< Account name
+  uint64_t order_id = {};                                      //!< Order identifier
+  std::string_view request_template;                           //!< Request template (gateway configured)
+  double quantity = std::numeric_limits<double>::quiet_NaN();  //!< New (total) quantity
+  double price = std::numeric_limits<double>::quiet_NaN();     //!< New limit price
+  std::string_view routing_id;                                 //!< Routing identifier
+  uint32_t version = {};                                       //!< Version number (strictly increasing, optional)
   uint32_t conditional_on_version = {};  //!< Auto-reject if this version has positively failed (optional)
 };
 

@@ -8,22 +8,23 @@
 
 #include <fmt/format.h>
 
-#include "roq/numbers.hpp"
+#include <limits>
+
 #include "roq/string_types.hpp"
 
 namespace roq {
 
 //! Risk limit for {exchange, symbol}
 struct ROQ_PUBLIC RiskLimit final {
-  Exchange exchange;                       //!< Exchange
-  Symbol symbol;                           //!< Symbol
-  double long_position = 0.0;              //!< Position (long)
-  double short_position = 0.0;             //!< Position (short)
-  double long_position_limit = NaN;        //!< Position limit (long)
-  double short_position_limit = NaN;       //!< Position limit (short)
-  double long_risk_exposure_limit = NaN;   //!< Risk exposure limit (long)
-  double short_risk_exposure_limit = NaN;  //!< Risk exposure limit (short)
-  bool allow_netting = false;              //!< Allow netting?
+  roq::Exchange exchange;                                                       //!< Exchange
+  roq::Symbol symbol;                                                           //!< Symbol
+  double long_position = 0.0;                                                   //!< Position (long)
+  double short_position = 0.0;                                                  //!< Position (short)
+  double long_position_limit = std::numeric_limits<double>::quiet_NaN();        //!< Position limit (long)
+  double short_position_limit = std::numeric_limits<double>::quiet_NaN();       //!< Position limit (short)
+  double long_risk_exposure_limit = std::numeric_limits<double>::quiet_NaN();   //!< Risk exposure limit (long)
+  double short_risk_exposure_limit = std::numeric_limits<double>::quiet_NaN();  //!< Risk exposure limit (short)
+  bool allow_netting = false;                                                   //!< Allow netting?
 };
 
 }  // namespace roq

@@ -1,3 +1,3 @@
-{% for variable in variables %}
+{%- for variable in variables %}
   {{ variable.type }} {{ variable.name }}{{ variable.default }};{{ '  //!< {}'.format(variable.comment) if variable.comment|length > 0 else '' }}
-{% endfor %}
+{%- endfor %}

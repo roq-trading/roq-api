@@ -8,7 +8,8 @@
 
 #include <fmt/format.h>
 
-#include "roq/numbers.hpp"
+#include <limits>
+
 #include "roq/side.hpp"
 #include "roq/string_types.hpp"
 #include "roq/update_action.hpp"
@@ -18,13 +19,13 @@ namespace roq {
 
 //! Represents an update to be applied to an order book
 struct ROQ_PUBLIC MBOUpdate final {
-  double price = NaN;        //!< Price level
-  double quantity = {};      //!< Order quantity (remaining unless update action is fill)
-  uint64_t priority = {};    //!< Queue priority (optional)
-  MBOOrderId order_id;       //!< Order identifier (optional when deleting)
-  Side side = {};            //!< Order side (optional when updating an existing order)
-  UpdateAction action = {};  //!< Update action
-  UpdateReason reason = {};  //!< Update reason (optional)
+  double price = std::numeric_limits<double>::quiet_NaN();  //!< Price level
+  double quantity = {};                                     //!< Order quantity (remaining unless update action is fill)
+  uint64_t priority = {};                                   //!< Queue priority (optional)
+  roq::MBOOrderId order_id;                                 //!< Order identifier (optional when deleting)
+  roq::Side side = {};                                      //!< Order side (optional when updating an existing order)
+  roq::UpdateAction action = {};                            //!< Update action
+  roq::UpdateReason reason = {};                            //!< Update reason (optional)
 };
 
 }  // namespace roq

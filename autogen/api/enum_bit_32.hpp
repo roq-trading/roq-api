@@ -12,9 +12,9 @@
 //! {{ comment }}
 enum class {{ name }} : uint32_t {
   UNDEFINED = 0x0,
-{% for value in values %}
+{%- for value in values %}
   {{ value.enum_value }} = {{ "{:#x}".format((1).__lshift__(value.position)) }},{{ '  //!< {}'.format(value.comment) if value.comment|length > 0 else '' }}
-{% endfor %}
+{%- endfor %}
 };
 
 {% include 'namespace_end' %}
@@ -33,10 +33,10 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
         using enum {{ namespaces | join('::') }}::{{ name }};
         case UNDEFINED:
           return "UNDEFINED"sv;
-    {% for value in values %}
+    {%- for value in values %}
         case {{ value.enum_value }}:
           return "{{ value.enum_value }}"sv;
-    {% endfor %}
+    {%- endfor %}
         default:
           assert(false);
       }

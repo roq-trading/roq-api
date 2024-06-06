@@ -14,7 +14,7 @@
 #include "roq/event.hpp"
 #include "roq/name.hpp"
 #include "roq/trace.hpp"
-{% include 'roq_includes' %}
+{%- include 'roq_includes' %}
 
 {% include 'namespace_begin' %}
 

@@ -8,6 +8,8 @@
 
 #include <fmt/format.h>
 
+#include <limits>
+
 #include "roq/event.hpp"
 #include "roq/name.hpp"
 #include "roq/string_types.hpp"
@@ -17,8 +19,8 @@ namespace roq {
 
 //! Position
 struct ROQ_PUBLIC Position final {
-  Exchange exchange;            //!< Exchange
-  Symbol symbol;                //!< Symbol
+  roq::Exchange exchange;       //!< Exchange
+  roq::Symbol symbol;           //!< Symbol
   double long_position = 0.0;   //!< Position (long)
   double short_position = 0.0;  //!< Position (short)
 };

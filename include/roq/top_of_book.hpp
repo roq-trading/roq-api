@@ -25,8 +25,8 @@ struct ROQ_PUBLIC TopOfBook final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
-  Layer layer;                                      //!< Top of book
-  UpdateType update_type = {};                      //!< Update type
+  roq::Layer layer = {};                            //!< Top of book
+  roq::UpdateType update_type = {};                 //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)

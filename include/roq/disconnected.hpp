@@ -17,7 +17,7 @@ namespace roq {
 
 //! Disconnected
 struct ROQ_PUBLIC Disconnected final {
-  OrderCancelPolicy order_cancel_policy = {};  //!< Cancel orders on disconnect?
+  roq::OrderCancelPolicy order_cancel_policy = {};  //!< Cancel orders on disconnect?
 };
 
 template <>

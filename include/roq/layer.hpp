@@ -8,16 +8,16 @@
 
 #include <fmt/format.h>
 
-#include "roq/numbers.hpp"
+#include <limits>
 
 namespace roq {
 
 //! Represents aggregate order book bid/ask information at a given depth
 struct ROQ_PUBLIC Layer final {
-  double bid_price = NaN;    //!< Bid price level
-  double bid_quantity = {};  //!< Total quantity available at bid
-  double ask_price = NaN;    //!< Ask price level
-  double ask_quantity = {};  //!< Total quantity available at ask
+  double bid_price = std::numeric_limits<double>::quiet_NaN();  //!< Bid price level
+  double bid_quantity = {};                                     //!< Total quantity available at bid
+  double ask_price = std::numeric_limits<double>::quiet_NaN();  //!< Ask price level
+  double ask_quantity = {};                                     //!< Total quantity available at ask
 };
 
 }  // namespace roq

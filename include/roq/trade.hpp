@@ -8,7 +8,8 @@
 
 #include <fmt/format.h>
 
-#include "roq/numbers.hpp"
+#include <limits>
+
 #include "roq/side.hpp"
 #include "roq/string_types.hpp"
 
@@ -16,12 +17,12 @@ namespace roq {
 
 //! Represents a single trade (a match) as part of trade reporting by the exchange
 struct ROQ_PUBLIC Trade final {
-  Side side = {};                  //!< Side (by convention: side of the taker)
-  double price = NaN;              //!< Price
-  double quantity = NaN;           //!< Quantity
-  ExternalTradeId trade_id;        //!< Trade identifier
-  ExternalOrderId taker_order_id;  //!< External order identifier (taker)
-  ExternalOrderId maker_order_id;  //!< External order identifier (maker)
+  roq::Side side = {};                                         //!< Side (by convention: side of the taker)
+  double price = std::numeric_limits<double>::quiet_NaN();     //!< Price
+  double quantity = std::numeric_limits<double>::quiet_NaN();  //!< Quantity
+  roq::ExternalTradeId trade_id;                               //!< Trade identifier
+  roq::ExternalOrderId taker_order_id;                         //!< External order identifier (taker)
+  roq::ExternalOrderId maker_order_id;                         //!< External order identifier (maker)
 };
 
 }  // namespace roq

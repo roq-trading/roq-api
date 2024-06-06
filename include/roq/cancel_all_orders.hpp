@@ -24,7 +24,7 @@ struct ROQ_PUBLIC CancelAllOrders final {
   std::string_view exchange;  //!< Exchange
   std::string_view symbol;    //!< Symbol
   uint32_t strategy_id = {};  //!< Strategy identifier (optional)
-  Side side = {};             //!< Side
+  roq::Side side = {};        //!< Side
 };
 
 template <>

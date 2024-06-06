@@ -21,10 +21,10 @@ namespace roq {
 
 //! Rate-limits update
 struct ROQ_PUBLIC RateLimitsUpdate final {
-  uint16_t stream_id = {};                 //!< Stream identifier
-  std::string_view account;                //!< Account name
-  Origin origin = {};                      //!< Origin
-  std::span<RateLimit const> rate_limits;  //!< Rate-limits updates
+  uint16_t stream_id = {};                      //!< Stream identifier
+  std::string_view account;                     //!< Account name
+  roq::Origin origin = {};                      //!< Origin
+  std::span<roq::RateLimit const> rate_limits;  //!< Rate-limits updates
 };
 
 template <>

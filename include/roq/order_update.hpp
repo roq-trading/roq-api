@@ -10,6 +10,7 @@
 #include <fmt/format.h>
 
 #include <chrono>
+#include <limits>
 #include <string_view>
 
 #include "roq/event.hpp"
@@ -18,7 +19,6 @@
 #include "roq/margin_mode.hpp"
 #include "roq/mask.hpp"
 #include "roq/name.hpp"
-#include "roq/numbers.hpp"
 #include "roq/order_status.hpp"
 #include "roq/order_type.hpp"
 #include "roq/position_effect.hpp"
@@ -31,43 +31,46 @@ namespace roq {
 
 //! Update relating to current status of an order
 struct ROQ_PUBLIC OrderUpdate final {
-  uint16_t stream_id = {};              //!< Stream identifier
-  std::string_view account;             //!< Account name
-  uint64_t order_id = {};               //!< Order identifier
-  std::string_view exchange;            //!< Exchange
-  std::string_view symbol;              //!< Symbol
-  Side side = {};                       //!< Side
-  PositionEffect position_effect = {};  //!< Position effect
-  MarginMode margin_mode = {};          //!< Margin mode
-  double max_show_quantity = NaN;       //!< Quantity visible to market (base currency, requires exchange support)
-  OrderType order_type = {};            //!< Order type
-  TimeInForce time_in_force = {};       //!< Time in force
-  Mask<ExecutionInstruction> execution_instructions;  //!< Execution instructions
-  std::chrono::nanoseconds create_time_utc = {};      //!< Created timestamp (UTC)
-  std::chrono::nanoseconds update_time_utc = {};      //!< Updated timestamp (UTC)
-  std::string_view external_account;                  //!< External account name
-  std::string_view external_order_id;                 //!< External order identifier
-  std::string_view client_order_id;                   //!< Client order identifier
-  OrderStatus order_status = {};                      //!< Order status
-  double quantity = NaN;                              //!< Quantity (base currency, total, indicative)
-  double price = NaN;                                 //!< Price
-  double stop_price = NaN;                            //!< Stop price (depends on order_type and time_in_force)
-  double risk_exposure = NaN;                         //!< Risk exposure
-  double risk_exposure_change = NaN;                  //!< Risk exposure change
-  double remaining_quantity = NaN;                    //!< Quantity (base currency, remaining)
-  double traded_quantity = NaN;                       //!< Quantity (base currency, total traded)
-  double average_traded_price = NaN;                  //!< Average price (total traded)
-  double last_traded_quantity = NaN;                  //!< Traded quantity (base currency, last trade)
-  double last_traded_price = NaN;                     //!< Traded price (last trade)
-  Liquidity last_liquidity = {};                      //!< Liquidity indicator (last trade)
-  std::string_view routing_id;                        //!< Routing identifier
-  uint32_t max_request_version = {};                  //!< Last request version
-  uint32_t max_response_version = {};                 //!< Last response version
-  uint32_t max_accepted_version = {};                 //!< Last accepted version
-  UpdateType update_type = {};                        //!< Update type
-  std::chrono::nanoseconds sending_time_utc = {};     //!< Exchange sending timestamp (UTC)
-  std::string_view user;                              //!< User name (optional, only relevant for drop-copy)
-  uint32_t strategy_id = {};                          //!< Strategy identifier (optional)
+  uint16_t stream_id = {};                                              //!< Stream identifier
+  std::string_view account;                                             //!< Account name
+  uint64_t order_id = {};                                               //!< Order identifier
+  std::string_view exchange;                                            //!< Exchange
+  std::string_view symbol;                                              //!< Symbol
+  roq::Side side = {};                                                  //!< Side
+  roq::PositionEffect position_effect = {};                             //!< Position effect
+  roq::MarginMode margin_mode = {};                                     //!< Margin mode
+  double max_show_quantity = std::numeric_limits<double>::quiet_NaN();  //!< Quantity visible to market (base currency,
+                                                                        //!< requires exchange support)
+  roq::OrderType order_type = {};                                       //!< Order type
+  roq::TimeInForce time_in_force = {};                                  //!< Time in force
+  roq::Mask<roq::ExecutionInstruction> execution_instructions;          //!< Execution instructions
+  std::chrono::nanoseconds create_time_utc = {};                        //!< Created timestamp (UTC)
+  std::chrono::nanoseconds update_time_utc = {};                        //!< Updated timestamp (UTC)
+  std::string_view external_account;                                    //!< External account name
+  std::string_view external_order_id;                                   //!< External order identifier
+  std::string_view client_order_id;                                     //!< Client order identifier
+  roq::OrderStatus order_status = {};                                   //!< Order status
+  double quantity = std::numeric_limits<double>::quiet_NaN();           //!< Quantity (base currency, total, indicative)
+  double price = std::numeric_limits<double>::quiet_NaN();              //!< Price
+  double stop_price =
+      std::numeric_limits<double>::quiet_NaN();  //!< Stop price (depends on order_type and time_in_force)
+  double risk_exposure = std::numeric_limits<double>::quiet_NaN();         //!< Risk exposure
+  double risk_exposure_change = std::numeric_limits<double>::quiet_NaN();  //!< Risk exposure change
+  double remaining_quantity = std::numeric_limits<double>::quiet_NaN();    //!< Quantity (base currency, remaining)
+  double traded_quantity = std::numeric_limits<double>::quiet_NaN();       //!< Quantity (base currency, total traded)
+  double average_traded_price = std::numeric_limits<double>::quiet_NaN();  //!< Average price (total traded)
+  double last_traded_quantity =
+      std::numeric_limits<double>::quiet_NaN();                         //!< Traded quantity (base currency, last trade)
+  double last_traded_price = std::numeric_limits<double>::quiet_NaN();  //!< Traded price (last trade)
+  roq::Liquidity last_liquidity = {};                                   //!< Liquidity indicator (last trade)
+  std::string_view routing_id;                                          //!< Routing identifier
+  uint32_t max_request_version = {};                                    //!< Last request version
+  uint32_t max_response_version = {};                                   //!< Last response version
+  uint32_t max_accepted_version = {};                                   //!< Last accepted version
+  roq::UpdateType update_type = {};                                     //!< Update type
+  std::chrono::nanoseconds sending_time_utc = {};                       //!< Exchange sending timestamp (UTC)
+  std::string_view user;      //!< User name (optional, only relevant for drop-copy)
+  uint32_t strategy_id = {};  //!< Strategy identifier (optional)
 };
 
 template <>

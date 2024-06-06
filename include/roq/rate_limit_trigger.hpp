@@ -26,13 +26,13 @@ namespace roq {
 //! Rate-limit trigger
 struct ROQ_PUBLIC RateLimitTrigger final {
   std::string_view name;                      //!< Configuration name
-  Origin origin = {};                         //!< Origin
-  RateLimitType type = {};                    //!< Rate-limit type
-  std::span<User const> users;                //!< Sorted list of users being affected (empty list means: all)
-  std::span<Account const> accounts;          //!< Sorted list of accounts being affected (empty list means: all)
+  roq::Origin origin = {};                    //!< Origin
+  roq::RateLimitType type = {};               //!< Rate-limit type
+  std::span<roq::User const> users;           //!< Sorted list of users being affected (empty list means: all)
+  std::span<roq::Account const> accounts;     //!< Sorted list of accounts being affected (empty list means: all)
   std::chrono::nanoseconds ban_expires = {};  //!< System time when ban expires (zero means: ban is no longer effective)
   std::string_view triggered_by;              //!< Trigger activated by this user
-  BufferCapacity buffer_capacity = {};        //!< Buffer capacity (indicator for how full or empty the buffer is)
+  roq::BufferCapacity buffer_capacity = {};   //!< Buffer capacity (indicator for how full or empty the buffer is)
   uint32_t remaining_requests = {};           //!< The buffer becomes full if this many requests are sent instantly
 };
 
@@ -55,8 +55,8 @@ struct fmt::formatter<roq::RateLimitTrigger> {
         R"(name="{}", )"
         R"(origin={}, )"
         R"(type={}, )"
-        R"(users=[{}], )"
-        R"(accounts=[{}], )"
+        R"(users="{}", )"
+        R"(accounts="{}", )"
         R"(ban_expires={}, )"
         R"(triggered_by="{}", )"
         R"(buffer_capacity={}, )"

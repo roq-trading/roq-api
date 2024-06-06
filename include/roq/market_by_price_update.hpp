@@ -27,16 +27,16 @@ struct ROQ_PUBLIC MarketByPriceUpdate final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
-  std::span<MBPUpdate const> bids;                  //!< List of bids
-  std::span<MBPUpdate const> asks;                  //!< List of asks
-  UpdateType update_type = {};                      //!< Update type
+  std::span<roq::MBPUpdate const> bids;             //!< List of bids
+  std::span<roq::MBPUpdate const> asks;             //!< List of asks
+  roq::UpdateType update_type = {};                 //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
-  Precision price_precision = {};     //!< Precision (decimal digits) required to represent prices (dynamic)
-  Precision quantity_precision = {};  //!< Precision (decimal digits) required to represent quantities (dynamic)
-  uint16_t max_depth = {};            //!< Maximum depth (zero means unlimited)
-  uint32_t checksum = {};             //!< Checksum (internal)
+  roq::Precision price_precision = {};     //!< Precision (decimal digits) required to represent prices (dynamic)
+  roq::Precision quantity_precision = {};  //!< Precision (decimal digits) required to represent quantities (dynamic)
+  uint16_t max_depth = {};                 //!< Maximum depth (zero means unlimited)
+  uint32_t checksum = {};                  //!< Checksum (internal)
 };
 
 template <>

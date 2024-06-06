@@ -4,6 +4,8 @@
 
 #include <chrono>
 
+#include "roq/api.hpp"
+
 #include "roq/utils/update.hpp"
 
 using namespace roq;

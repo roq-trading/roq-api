@@ -8,15 +8,16 @@
 
 #include <fmt/format.h>
 
-#include "roq/numbers.hpp"
+#include <limits>
+
 #include "roq/string_types.hpp"
 
 namespace roq {
 
 //! A single measurement point
 struct ROQ_PUBLIC Measurement final {
-  MeasurementKey name;  //!< Key
-  double value = NaN;   //!< Value
+  roq::MeasurementKey name;                                 //!< Key
+  double value = std::numeric_limits<double>::quiet_NaN();  //!< Value
 };
 
 }  // namespace roq

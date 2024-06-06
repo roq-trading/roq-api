@@ -22,13 +22,11 @@ include(GNUInstallDirs)
 
 # dependencies
 
-find_package(Python3 REQUIRED COMPONENTS Interpreter)
-
 find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
 
 find_program(CLANG_FORMAT clang-format REQUIRED)
-find_program(ROQ_AUTOGEN_2 roq-autogen REQUIRED)
+find_program(ROQ_AUTOGEN roq-autogen REQUIRED)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   include(CTest)
@@ -42,13 +40,11 @@ endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR})
 
-# common
+# autogen
 
 set(SCHEMA_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/roq/schema)
+set(TEMPLATE_DIR ${CMAKE_SOURCE_DIR}/autogen)
 set(SCHEMA_LINK_DIR ${CMAKE_SOURCE_DIR}/schema)
-
-set(GET_LINK_PY ${CMAKE_SOURCE_DIR}/scripts/get_link.py)
-set(AUTOGEN_PY ${CMAKE_SOURCE_DIR}/scripts/autogen.py)
 
 # sub-projects
 

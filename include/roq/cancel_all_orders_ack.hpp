@@ -29,10 +29,10 @@ struct ROQ_PUBLIC CancelAllOrdersAck final {
   uint64_t order_id = {};                            //!< Order identifier
   std::string_view exchange;                         //!< Exchange
   std::string_view symbol;                           //!< Symbol
-  Side side = {};                                    //!< Side
-  Origin origin = {};                                //!< Origin of ack
-  RequestStatus request_status = {};                 //!< Request status
-  Error error = {};                                  //!< Error code
+  roq::Side side = {};                               //!< Side
+  roq::Origin origin = {};                           //!< Origin of ack
+  roq::RequestStatus request_status = {};            //!< Request status
+  roq::Error error = {};                             //!< Error code
   std::string_view text;                             //!< Descriptive text
   std::string_view request_id;                       //!< Request identifier
   std::string_view external_account;                 //!< External account name

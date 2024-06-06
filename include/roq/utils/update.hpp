@@ -18,7 +18,8 @@ constexpr bool update(T &result, U const &value) {
   using rhs_type = typename std::decay<U>::type;
   if constexpr (std::is_floating_point<lhs_type>::value && std::is_same<lhs_type, rhs_type>::value) {
     // special case for floating point: also drop NaN
-    if (compare(result, value) == std::strong_ordering::equal || compare(value, NaN) == std::strong_ordering::equal)
+    if (compare(result, value) == std::strong_ordering::equal ||
+        compare(value, std::numeric_limits<double>::quiet_NaN()) == std::strong_ordering::equal)
       return false;
   } else {
     if (compare(result, value) == std::strong_ordering::equal)

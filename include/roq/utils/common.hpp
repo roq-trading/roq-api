@@ -31,7 +31,7 @@ inline constexpr double price_from_side(Layer const &layer, Side side) {
     case SELL:
       return layer.ask_price;
   }
-  return NaN;
+  return std::numeric_limits<double>::quiet_NaN();
 }
 
 //! Test if update type is snapshot-like

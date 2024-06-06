@@ -20,7 +20,7 @@ namespace roq {
 
 //! Rate-limit
 struct ROQ_PUBLIC RateLimit final {
-  RateLimitType type = {};                 //!< Type
+  roq::RateLimitType type = {};            //!< Type
   std::chrono::seconds period = {};        //!< Monitor period
   std::chrono::seconds end_time_utc = {};  //!< End of current period
   uint32_t limit = {};                     //!< Limit

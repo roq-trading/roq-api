@@ -27,8 +27,8 @@ struct ROQ_PUBLIC CustomMetricsUpdate final {
   std::string_view account;                        //!< Account name
   std::string_view exchange;                       //!< Exchange
   std::string_view symbol;                         //!< Symbol
-  std::span<Measurement const> measurements;       //!< List of measurements
-  UpdateType update_type = {};                     //!< Update type
+  std::span<roq::Measurement const> measurements;  //!< List of measurements
+  roq::UpdateType update_type = {};                //!< Update type
   std::chrono::nanoseconds sending_time_utc = {};  //!< Exchange sending timestamp (UTC)
   std::string_view user;                           //!< User name (origin)
 };

@@ -14,12 +14,12 @@ namespace roq {
 
 //! Represents a single parameter
 struct ROQ_PUBLIC Parameter final {
-  ParameterKey label;         //!< Label
+  roq::ParameterKey label;    //!< Label
   uint32_t strategy_id = {};  //!< Strategy identifier (optional)
-  Account account;            //!< Account name
-  Exchange exchange;          //!< Exchange
-  Symbol symbol;              //!< Symbol
-  ParameterValue value;       //!< Value
+  roq::Account account;       //!< Account name
+  roq::Exchange exchange;     //!< Exchange
+  roq::Symbol symbol;         //!< Symbol
+  roq::ParameterValue value;  //!< Value
 };
 
 }  // namespace roq

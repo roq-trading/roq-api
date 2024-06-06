@@ -26,8 +26,8 @@ struct ROQ_PUBLIC PortfolioUpdate final {
   std::string_view user;                            //!< User (optional)
   uint32_t strategy_id = {};                        //!< Strategy identifier (optional)
   std::string_view account;                         //!< Account name
-  std::span<Position const> positions;              //!< Position updates
-  UpdateType update_type = {};                      //!< Update type
+  std::span<roq::Position const> positions;         //!< Position updates
+  roq::UpdateType update_type = {};                 //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
 };
 

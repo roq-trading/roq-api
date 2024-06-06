@@ -17,8 +17,8 @@ namespace roq {
 
 //! Route
 struct ROQ_PUBLIC Route final {
-  uint32_t strategy_id = {};       //!< Strategy identifier (optional)
-  RouteRequestStatus status = {};  //!< Response to the request
+  uint32_t strategy_id = {};            //!< Strategy identifier (optional)
+  roq::RouteRequestStatus status = {};  //!< Response to the request
 };
 
 template <>

@@ -21,11 +21,11 @@ namespace roq {
 
 //! Risk limits (publish) !!! EXPERIMENTAL !!!
 struct ROQ_PUBLIC RiskLimitsUpdate final {
-  std::string_view user;              //!< User name (optional)
-  uint32_t strategy_id = {};          //!< Strategy identifier (optional)
-  std::string_view account;           //!< Account name (optional)
-  std::span<RiskLimit const> limits;  //!< Risk limits per {exchange, symbol}
-  UpdateType update_type = {};        //!< Update type
+  std::string_view user;                   //!< User name (optional)
+  uint32_t strategy_id = {};               //!< Strategy identifier (optional)
+  std::string_view account;                //!< Account name (optional)
+  std::span<roq::RiskLimit const> limits;  //!< Risk limits per {exchange, symbol}
+  roq::UpdateType update_type = {};        //!< Update type
 };
 
 template <>

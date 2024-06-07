@@ -39,8 +39,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   roq::Side side = {};                                                     //!< Side
   roq::PositionEffect position_effect = {};                                //!< Position effect
   roq::MarginMode margin_mode = {};                                        //!< Margin mode
-  double max_show_quantity = std::numeric_limits<double>::quiet_NaN();     //!< Quantity visible to market (base currency,
-                                                                           //!< requires exchange support)
+  double max_show_quantity = std::numeric_limits<double>::quiet_NaN();     //!< Quantity visible to market (base currency, requires exchange support)
   roq::OrderType order_type = {};                                          //!< Order type
   roq::TimeInForce time_in_force = {};                                     //!< Time in force
   roq::Mask<roq::ExecutionInstruction> execution_instructions;             //!< Execution instructions

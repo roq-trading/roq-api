@@ -4,7 +4,6 @@ set(TARGET_DIR ${CMAKE_INSTALL_INCLUDEDIR}/roq)
 
 # schema
 
-# XXX FIXME
 set(SCHEMA_ROQ
     add_routes.json
     batch_begin.json

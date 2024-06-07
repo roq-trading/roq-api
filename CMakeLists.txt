@@ -25,9 +25,6 @@ include(GNUInstallDirs)
 find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
 
-find_program(CLANG_FORMAT clang-format REQUIRED)
-find_program(ROQ_AUTOGEN roq-autogen REQUIRED)
-
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   include(CTest)
 endif()
@@ -36,15 +33,21 @@ if(BUILD_TESTING)
   find_package(Catch2 REQUIRED)
 endif()
 
-# includes
-
-include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR})
-
 # autogen
+
+find_program(ROQ_AUTOGEN roq-autogen REQUIRED)
 
 set(SCHEMA_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/roq/schema)
 set(TEMPLATE_DIR ${CMAKE_SOURCE_DIR}/autogen)
 set(SCHEMA_LINK_DIR ${CMAKE_SOURCE_DIR}/schema)
+
+# clang-format
+
+find_program(CLANG_FORMAT clang-format REQUIRED)
+
+# includes
+
+include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR})
 
 # sub-projects
 

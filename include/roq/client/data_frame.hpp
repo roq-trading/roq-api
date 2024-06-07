@@ -11,16 +11,11 @@ namespace client {
 
 struct DataFrame {
   struct Handler {
-    virtual void add_series(
-        std::span<std::string_view> const &values, std::string_view const &name, bool index, bool category) = 0;
-    virtual void add_series(
-        std::span<uint32_t> const &values, std::string_view const &name, bool index, bool category) = 0;
-    virtual void add_series(
-        std::span<uint64_t> const &values, std::string_view const &name, bool index, bool category) = 0;
-    virtual void add_series(
-        std::span<double> const &values, std::string_view const &name, bool index, bool category) = 0;
-    virtual void add_series(
-        std::span<std::chrono::nanoseconds> const &values, std::string_view const &name, bool index, bool category) = 0;
+    virtual void add_series(std::span<std::string_view> const &values, std::string_view const &name, bool index, bool category) = 0;
+    virtual void add_series(std::span<uint32_t> const &values, std::string_view const &name, bool index, bool category) = 0;
+    virtual void add_series(std::span<uint64_t> const &values, std::string_view const &name, bool index, bool category) = 0;
+    virtual void add_series(std::span<double> const &values, std::string_view const &name, bool index, bool category) = 0;
+    virtual void add_series(std::span<std::chrono::nanoseconds> const &values, std::string_view const &name, bool index, bool category) = 0;
   };
 };
 

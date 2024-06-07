@@ -90,8 +90,7 @@ struct ROQ_PUBLIC SystemError : public RuntimeError {
   std::error_code const &code() const noexcept { return ec_; }
 
   template <typename... Args>
-  SystemError(std::error_code ec, format_str<Args...> const &fmt, Args &&...args)
-      : RuntimeError{fmt, std::forward<Args>(args)...}, ec_{ec} {}
+  SystemError(std::error_code ec, format_str<Args...> const &fmt, Args &&...args) : RuntimeError{fmt, std::forward<Args>(args)...}, ec_{ec} {}
 
   template <typename Context>
   auto format_to(Context &context) const {

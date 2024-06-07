@@ -21,14 +21,11 @@ namespace roq {
 
 struct ROQ_PUBLIC TraceInfo final {
   // note! default initialization is using *current* time
-  TraceInfo()
-      : source_receive_time{clock::get_system()}, origin_create_time{source_receive_time},
-        origin_create_time_utc{clock::get_realtime()} {}
+  TraceInfo() : source_receive_time{clock::get_system()}, origin_create_time{source_receive_time}, origin_create_time_utc{clock::get_realtime()} {}
 
   // note! meant for internal use, only
   TraceInfo(auto source_receive_time, auto origin_create_time, auto origin_create_time_utc)
-      : source_receive_time{source_receive_time}, origin_create_time{origin_create_time},
-        origin_create_time_utc{origin_create_time_utc} {}
+      : source_receive_time{source_receive_time}, origin_create_time{origin_create_time}, origin_create_time_utc{origin_create_time_utc} {}
 
   // note! meant for internal use, only
   TraceInfo(MessageInfo const &message_info)

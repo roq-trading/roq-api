@@ -26,25 +26,23 @@ namespace roq {
 
 //! Fields required to create an order
 struct ROQ_PUBLIC CreateOrder final {
-  std::string_view account;                  //!< Account name
-  uint64_t order_id = {};                    //!< Order identifier
-  std::string_view exchange;                 //!< Exchange
-  std::string_view symbol;                   //!< Symbol
-  roq::Side side = {};                       //!< Order side
-  roq::PositionEffect position_effect = {};  //!< Position effect
-  roq::MarginMode margin_mode = {};          //!< Margin mode
-  double max_show_quantity =
-      std::numeric_limits<double>::quiet_NaN();  //!< Quantity visible to market (requires exchange support)
-  roq::OrderType order_type = {};                //!< Order type
-  roq::TimeInForce time_in_force = {};           //!< Time in force
-  roq::Mask<roq::ExecutionInstruction> execution_instructions;  //!< Execution instructions
-  std::string_view request_template;                            //!< Request template (gateway configured)
-  double quantity = std::numeric_limits<double>::quiet_NaN();   //!< Order quantity
-  double price = std::numeric_limits<double>::quiet_NaN();      //!< Limit price (depends on order_type)
-  double stop_price =
-      std::numeric_limits<double>::quiet_NaN();  //!< Stop price (depends on order_type and time_in_force)
-  std::string_view routing_id;                   //!< Routing identifier
-  uint32_t strategy_id = {};                     //!< Strategy identifier (optional)
+  std::string_view account;                                             //!< Account name
+  uint64_t order_id = {};                                               //!< Order identifier
+  std::string_view exchange;                                            //!< Exchange
+  std::string_view symbol;                                              //!< Symbol
+  roq::Side side = {};                                                  //!< Order side
+  roq::PositionEffect position_effect = {};                             //!< Position effect
+  roq::MarginMode margin_mode = {};                                     //!< Margin mode
+  double max_show_quantity = std::numeric_limits<double>::quiet_NaN();  //!< Quantity visible to market (requires exchange support)
+  roq::OrderType order_type = {};                                       //!< Order type
+  roq::TimeInForce time_in_force = {};                                  //!< Time in force
+  roq::Mask<roq::ExecutionInstruction> execution_instructions;          //!< Execution instructions
+  std::string_view request_template;                                    //!< Request template (gateway configured)
+  double quantity = std::numeric_limits<double>::quiet_NaN();           //!< Order quantity
+  double price = std::numeric_limits<double>::quiet_NaN();              //!< Limit price (depends on order_type)
+  double stop_price = std::numeric_limits<double>::quiet_NaN();         //!< Stop price (depends on order_type and time_in_force)
+  std::string_view routing_id;                                          //!< Routing identifier
+  uint32_t strategy_id = {};                                            //!< Strategy identifier (optional)
 };
 
 template <>

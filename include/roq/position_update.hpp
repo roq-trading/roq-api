@@ -32,8 +32,8 @@ struct ROQ_PUBLIC PositionUpdate final {
   double long_quantity = std::numeric_limits<double>::quiet_NaN();   //!< Current long position (absolute)
   double short_quantity = std::numeric_limits<double>::quiet_NaN();  //!< Current short position (absolute)
   roq::UpdateType update_type = {};                                  //!< Update type
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
-  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
+  std::chrono::nanoseconds exchange_time_utc = {};                   //!< Exchange timestamp, possibly from matching engine (UTC)
+  std::chrono::nanoseconds sending_time_utc = {};                    //!< Exchange sending timestamp (UTC)
 };
 
 template <>

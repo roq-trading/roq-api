@@ -45,10 +45,7 @@ template <typename T, typename = void>
 struct is_integer : std::false_type {};
 
 template <typename T>
-struct is_integer<
-    T,
-    typename std::enable_if<std::is_integral<T>::value && !(is_bool<T>::value | is_char<T>::value)>::type>
-    : std::true_type {};
+struct is_integer<T, typename std::enable_if<std::is_integral<T>::value && !(is_bool<T>::value | is_char<T>::value)>::type> : std::true_type {};
 
 template <typename T>
 inline constexpr bool is_integer_v = is_integer<T>::value;
@@ -99,8 +96,7 @@ using is_iterable = decltype(detail::is_iterable_impl<T>(0));
 //   https://stackoverflow.com/a/24011465
 
 template <typename T>
-using has_random_access_iterator = std::
-    is_base_of<std::random_access_iterator_tag, typename std::iterator_traits<typename T::iterator>::iterator_category>;
+using has_random_access_iterator = std::is_base_of<std::random_access_iterator_tag, typename std::iterator_traits<typename T::iterator>::iterator_category>;
 
 // is_duration
 // references:

@@ -122,8 +122,8 @@ foreach(path ${SOURCES})
     PROPERTY CMAKE_CONFIGURE_DEPENDS ${link})
   add_custom_command(
     OUTPUT ${target}
-    COMMAND ${ROQ_AUTOGEN} --schema_dir ${SCHEMA_DIR} --template_dir ${TEMPLATE_DIR} --input_path
-            ${link} --language "cpp" --template_type "api" --file_type "hpp" > ${target}
+    COMMAND ${ROQ_AUTOGEN} --schema_dir ${SCHEMA_DIR} --template_dir ${TEMPLATE_DIR} --input_path ${link} --language "cpp" --template_type "api" --file_type
+            "hpp" > ${target}
     COMMAND ${CLANG_FORMAT} -i ${target}
     VERBATIM
     DEPENDS ${ROQ_AUTOGEN} ${link})

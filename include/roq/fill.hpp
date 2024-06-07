@@ -19,8 +19,8 @@ namespace roq {
 
 //! Represents a single fill (match) when an order is being partially or fully filled
 struct ROQ_PUBLIC Fill final {
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
-  roq::ExternalTradeId external_trade_id;           //!< External trade identifier
+  std::chrono::nanoseconds exchange_time_utc = {};                        //!< Exchange timestamp, possibly from matching engine (UTC)
+  roq::ExternalTradeId external_trade_id;                                 //!< External trade identifier
   double quantity = std::numeric_limits<double>::quiet_NaN();             //!< Quantity (base currency)
   double price = std::numeric_limits<double>::quiet_NaN();                //!< Price
   roq::Liquidity liquidity = {};                                          //!< Liquidity indicator

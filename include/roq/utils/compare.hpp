@@ -119,8 +119,7 @@ constexpr std::strong_ordering compare(T const &lhs, U const &rhs) {
 // special functions
 
 template <typename T, typename U>
-typename std::enable_if<is_string<T>::value && is_string<U>::value, std::strong_ordering>::
-    type constexpr case_insensitive_compare(T const &lhs, U const &rhs) {
+typename std::enable_if<is_string<T>::value && is_string<U>::value, std::strong_ordering>::type constexpr case_insensitive_compare(T const &lhs, U const &rhs) {
   // cast both to std::string_view to avoid accidential allocation of std::string
   std::string_view lhs_tmp{lhs}, rhs_tmp{rhs};
   auto size1 = std::size(lhs_tmp);

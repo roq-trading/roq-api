@@ -18,8 +18,7 @@ namespace detail {
 // may truncate to N
 template <std::size_t N>
 struct static_string final {
-  consteval static_string(std::string_view const &sv)
-      : length_{std::min(N, std::size(sv))}, buffer_{create(sv, length_)} {}
+  consteval static_string(std::string_view const &sv) : length_{std::min(N, std::size(sv))}, buffer_{create(sv, length_)} {}
 
   static_string(static_string const &) = default;
   static_string(static_string &&) = delete;
@@ -58,8 +57,7 @@ struct basic_format_str final {
   using file_name_type = detail::static_string<32>;
   template <typename T>
   consteval basic_format_str(T const &str, std::source_location const loc = std::source_location::current())
-      : str{detail::check_format_string<Args...>(str)}, file_name{extract_basename(loc.file_name())}, line{loc.line()} {
-  }
+      : str{detail::check_format_string<Args...>(str)}, file_name{extract_basename(loc.file_name())}, line{loc.line()} {}
 
   fmt::string_view const str;
   file_name_type const file_name;

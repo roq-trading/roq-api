@@ -47,10 +47,10 @@ struct ROQ_PUBLIC ReferenceData final {
   std::chrono::days settlement_date = {};                                 //!< Settlement date
   std::chrono::seconds expiry_datetime = {};                              //!< Expiry datetime
   std::chrono::seconds expiry_datetime_utc = {};                          //!< Expiry datetime
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
-  uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
-  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
-  bool discard = false;                             //!< Discard market data updates?
+  std::chrono::nanoseconds exchange_time_utc = {};                        //!< Exchange timestamp, possibly from matching engine (UTC)
+  uint64_t exchange_sequence = {};                                        //!< Exchange message sequence number
+  std::chrono::nanoseconds sending_time_utc = {};                         //!< Exchange sending timestamp (UTC)
+  bool discard = false;                                                   //!< Discard market data updates?
 };
 
 template <>

@@ -68,8 +68,7 @@ struct ROQ_PUBLIC Dispatcher {
   virtual void release_trace_info() = 0;
 
   struct TimeSetter final {
-    explicit TimeSetter(Dispatcher &dispatcher)
-        : dispatcher_{dispatcher}, trace_info_{dispatcher_.create_trace_info()} {}
+    explicit TimeSetter(Dispatcher &dispatcher) : dispatcher_{dispatcher}, trace_info_{dispatcher_.create_trace_info()} {}
 
     ~TimeSetter() {
       try {

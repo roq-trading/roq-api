@@ -23,8 +23,7 @@ struct ROQ_PUBLIC Writer {
   virtual Writer &write_simple(std::string_view const &name, std::string_view const &labels, uint64_t value) = 0;
 
   //! Write histogram buckets
-  virtual Writer &write_bucket(
-      std::string_view const &name, std::string_view const &labels, double quantile, uint64_t value) = 0;
+  virtual Writer &write_bucket(std::string_view const &name, std::string_view const &labels, double quantile, uint64_t value) = 0;
 
   //! Write histogram sum
   virtual Writer &write_sum(std::string_view const &name, std::string_view const &labels, double value) = 0;

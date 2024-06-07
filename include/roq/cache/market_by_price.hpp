@@ -107,19 +107,13 @@ struct ROQ_PUBLIC MarketByPrice {
 
   // simple update
   //   used when applying sequential updates, e.g. when caching
-  inline void operator()(std::span<MBPUpdate const> const &bids, std::span<MBPUpdate const> const &asks) {
-    update_helper(bids, asks);
-  }
+  inline void operator()(std::span<MBPUpdate const> const &bids, std::span<MBPUpdate const> const &asks) { update_helper(bids, asks); }
 
   // create normalized update (used when origin is an external "noisy" source)
   //   deals with sorting, de-duplication, etc.
   //   calls back with the final update
   template <typename Callback>
-  inline void operator()(
-      MarketByPriceUpdate const &market_by_price_update,
-      std::vector<MBPUpdate> &bids,
-      std::vector<MBPUpdate> &asks,
-      Callback callback) {
+  inline void operator()(MarketByPriceUpdate const &market_by_price_update, std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks, Callback callback) {
     auto market_by_price_update_2 = create_update_helper(market_by_price_update, bids, asks);
     callback(std::as_const(market_by_price_update_2));
   }
@@ -137,8 +131,7 @@ struct ROQ_PUBLIC MarketByPrice {
   }
 
   // generate depth update from full update
-  virtual void create_depth_update(
-      MarketByPriceUpdate const &, size_t depth, std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) const = 0;
+  virtual void create_depth_update(MarketByPriceUpdate const &, size_t depth, std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) const = 0;
 
  protected:
   virtual void update_helper(roq::ReferenceData const &) = 0;
@@ -146,11 +139,9 @@ struct ROQ_PUBLIC MarketByPrice {
 
   virtual void update_helper(Side, MBPUpdate const &) = 0;
 
-  virtual MarketByPriceUpdate create_update_helper(
-      MarketByPriceUpdate const &, std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) = 0;
+  virtual MarketByPriceUpdate create_update_helper(MarketByPriceUpdate const &, std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) = 0;
 
-  virtual MarketByPriceUpdate create_snapshot_helper(
-      std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) const = 0;
+  virtual MarketByPriceUpdate create_snapshot_helper(std::vector<MBPUpdate> &bids, std::vector<MBPUpdate> &asks) const = 0;
 
   // note! used when applying sequential updates
   virtual void update_helper(std::span<MBPUpdate const> const &bids, std::span<MBPUpdate const> const &asks) = 0;

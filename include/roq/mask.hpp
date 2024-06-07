@@ -98,9 +98,7 @@ struct Mask final {
 
   constexpr bool has_any(Mask rhs) const { return (value_ & rhs.value_) != value_type{}; }
 
-  constexpr bool has_all(T flag) const {
-    return (value_ & static_cast<value_type>(flag)) == static_cast<value_type>(flag);
-  }
+  constexpr bool has_all(T flag) const { return (value_ & static_cast<value_type>(flag)) == static_cast<value_type>(flag); }
 
   constexpr bool has_all(std::initializer_list<T> flags) const {
     value_type value = {};

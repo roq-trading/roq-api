@@ -105,22 +105,18 @@ struct ROQ_PUBLIC MarketByOrder {
   struct OrderUpdate final {
     // order
     Side side = {};
-    UpdateAction action = {};  // update action (undefined when unknown order requested to be deleted)
-    double remaining_quantity =
-        std::numeric_limits<double>::quiet_NaN();  // remaining quantity after update was applied
-    double last_modified_quantity =
-        std::numeric_limits<double>::quiet_NaN();  // last change to remaining_quantity, could be less than
-                                                   // last_traded_quantity
-    double total_traded_quantity =
-        std::numeric_limits<double>::quiet_NaN();  // life-time traded quantity, potentially tracking iceberg orders
-    double last_traded_quantity = std::numeric_limits<double>::quiet_NaN();  // last traded quantity, could be more than
-                                                                             // previous remaining_quantity
+    UpdateAction action = {};                                                  // update action (undefined when unknown order requested to be deleted)
+    double remaining_quantity = std::numeric_limits<double>::quiet_NaN();      // remaining quantity after update was applied
+    double last_modified_quantity = std::numeric_limits<double>::quiet_NaN();  // last change to remaining_quantity, could be less than
+                                                                               // last_traded_quantity
+    double total_traded_quantity = std::numeric_limits<double>::quiet_NaN();   // life-time traded quantity, potentially tracking iceberg orders
+    double last_traded_quantity = std::numeric_limits<double>::quiet_NaN();    // last traded quantity, could be more than
+                                                                               // previous remaining_quantity
     // price-level (queue)
-    double total_queue_quantity =
-        std::numeric_limits<double>::quiet_NaN();  // sum of remaining_quantity for all orders in queue
+    double total_queue_quantity = std::numeric_limits<double>::quiet_NaN();     // sum of remaining_quantity for all orders in queue
     double queue_position_quantity = std::numeric_limits<double>::quiet_NaN();  // sum of remaining_quantity for orders
                                                                                 // with better priority than this order
-    size_t queue_position = {};  // relative position (index) of this order
+    size_t queue_position = {};                                                 // relative position (index) of this order
     // order
     bool iceberg = false;
   };
@@ -140,8 +136,7 @@ struct ROQ_PUBLIC MarketByOrder {
 
   // create normalized update (used when origin is an external "noisy" source)
   template <typename Callback>
-  inline void operator()(
-      MarketByOrderUpdate const &market_by_order_update, std::vector<MBOUpdate> &orders, Callback callback) {
+  inline void operator()(MarketByOrderUpdate const &market_by_order_update, std::vector<MBOUpdate> &orders, Callback callback) {
     auto market_by_order_update_2 = create_update_helper(market_by_order_update, orders);
     callback(std::as_const(market_by_order_update_2));
   }
@@ -158,9 +153,7 @@ struct ROQ_PUBLIC MarketByOrder {
 
   virtual void update_helper(MarketByOrderUpdate const &, std::span<OrderUpdate> const &) = 0;
 
-  inline void update_helper(MarketByOrderUpdate const &market_by_order_update) {
-    update_helper(market_by_order_update, {});
-  }
+  inline void update_helper(MarketByOrderUpdate const &market_by_order_update) { update_helper(market_by_order_update, {}); }
 
   virtual MarketByOrderUpdate create_update_helper(MarketByOrderUpdate const &, std::vector<MBOUpdate> &) = 0;
 

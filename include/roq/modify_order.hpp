@@ -26,7 +26,7 @@ struct ROQ_PUBLIC ModifyOrder final {
   double price = std::numeric_limits<double>::quiet_NaN();     //!< New limit price
   std::string_view routing_id;                                 //!< Routing identifier
   uint32_t version = {};                                       //!< Version number (strictly increasing, optional)
-  uint32_t conditional_on_version = {};  //!< Auto-reject if this version has positively failed (optional)
+  uint32_t conditional_on_version = {};                        //!< Auto-reject if this version has positively failed (optional)
 };
 
 template <>

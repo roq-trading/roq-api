@@ -31,8 +31,8 @@ struct ROQ_PUBLIC FundsUpdate final {
   double hold = std::numeric_limits<double>::quiet_NaN();     //!< Funds on hold
   std::string_view external_account;                          //!< External account name
   roq::UpdateType update_type = {};                           //!< Update type
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
-  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
+  std::chrono::nanoseconds exchange_time_utc = {};            //!< Exchange timestamp, possibly from matching engine (UTC)
+  std::chrono::nanoseconds sending_time_utc = {};             //!< Exchange sending timestamp (UTC)
 };
 
 template <>

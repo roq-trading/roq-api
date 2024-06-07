@@ -32,10 +32,10 @@ struct ROQ_PUBLIC MarketByOrderUpdate final {
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
-  roq::Precision price_precision = {};     //!< Precision (decimal digits) required to represent prices (dynamic)
-  roq::Precision quantity_precision = {};  //!< Precision (decimal digits) required to represent quantities (dynamic)
-  uint16_t max_depth = {};                 //!< Maximum depth (zero means unlimited)
-  uint32_t checksum = {};                  //!< Checksum (internal)
+  roq::Precision price_precision = {};              //!< Precision (decimal digits) required to represent prices (dynamic)
+  roq::Precision quantity_precision = {};           //!< Precision (decimal digits) required to represent quantities (dynamic)
+  uint16_t max_depth = {};                          //!< Maximum depth (zero means unlimited)
+  uint32_t checksum = {};                           //!< Checksum (internal)
 };
 
 template <>

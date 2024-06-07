@@ -36,8 +36,7 @@ struct RateLimiter final {
   RateLimiter(Handler &handler, Config &config) : handler_{handler}, config_{config} {}
   RateLimiter(Handler &handler, Config &config, std::vector<roq::Account> &&accounts, std::vector<roq::User> &&users)
       : handler_{handler}, config_{config}, accounts_{std::move(accounts)}, users_{std::move(users)} {}
-  RateLimiter(
-      Handler &handler, Config &config, std::vector<roq::Account> const &accounts, std::vector<roq::User> const &users)
+  RateLimiter(Handler &handler, Config &config, std::vector<roq::Account> const &accounts, std::vector<roq::User> const &users)
       : handler_{handler}, config_{config}, accounts_{accounts}, users_{users} {}
 
   RateLimiter(RateLimiter &&) = default;

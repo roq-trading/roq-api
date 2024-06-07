@@ -42,8 +42,7 @@ struct Event final {
 
 //! Create event and dispatch to handler
 template <typename... Args>
-inline void create_event_and_dispatch(
-    auto &handler, MessageInfo const &message_info, auto const &value, Args &&...args) {
+inline void create_event_and_dispatch(auto &handler, MessageInfo const &message_info, auto const &value, Args &&...args) {
   Event const event{message_info, value};
   return event.template dispatch<void>(handler, std::forward<Args>(args)...);
 }

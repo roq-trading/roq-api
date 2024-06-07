@@ -1,3 +1,0 @@
-{% for filename in roq_includes %}
-#include "{{ filename | join('/') }}.hpp"
-{% endfor %}

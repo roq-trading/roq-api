@@ -1,3 +1,0 @@
-{% for filename in std_includes %}
-#include <{{ filename }}>
-{% endfor %}

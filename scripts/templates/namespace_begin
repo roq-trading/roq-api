@@ -1,3 +1,0 @@
-{% for name in namespaces %}
-namespace {{ name }} {
-{% endfor %}

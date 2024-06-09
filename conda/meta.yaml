@@ -31,7 +31,6 @@ requirements:
     - catch2
     - fmt
     - roq-oss-magic_enum
-    - roq-schema
 
 about:
   home: https://roq-trading.com

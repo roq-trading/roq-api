@@ -37,7 +37,6 @@ endif()
 
 find_program(ROQ_AUTOGEN roq-autogen REQUIRED)
 
-set(SCHEMA_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/roq/schema)
 set(TEMPLATE_DIR ${CMAKE_SOURCE_DIR}/autogen)
 set(SCHEMA_LINK_DIR ${CMAKE_SOURCE_DIR}/schema)
 

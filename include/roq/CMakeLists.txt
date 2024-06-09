@@ -110,6 +110,12 @@ configure_file("api.hpp.in" ${API_HPP} @ONLY)
 
 # auto-generate
 
+if(DEFINED ENV{BUILD_PREFIX})
+  set(SCHEMA_DIR $ENV{BUILD_PREFIX}/${CMAKE_INSTALL_DATADIR}/roq/schema)
+else()
+  set(SCHEMA_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/roq/schema)
+endif()
+
 unset(AUTOGEN_HEADERS)
 
 foreach(path ${SOURCES})

@@ -1,5 +1,7 @@
 set(TARGET_NAME ${PROJECT_NAME}-include-cpp)
 
+include(RoqAutogen)
+
 set(TARGET_DIR ${CMAKE_INSTALL_INCLUDEDIR}/roq)
 
 # schema
@@ -110,31 +112,19 @@ configure_file("api.hpp.in" ${API_HPP} @ONLY)
 
 # auto-generate
 
-if(DEFINED ENV{BUILD_PREFIX})
-  set(SCHEMA_DIR $ENV{BUILD_PREFIX}/${CMAKE_INSTALL_DATADIR}/roq/schema)
-else()
-  set(SCHEMA_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/roq/schema)
-endif()
-
-unset(AUTOGEN_HEADERS)
-
-foreach(path ${SOURCES})
-  get_filename_component(name ${path} NAME_WE)
-  set(target ${CMAKE_BINARY_DIR}/${TARGET_DIR}/${name}.hpp)
-  set(link ${SCHEMA_LINK_DIR}/roq/${path})
-  set_property(
-    DIRECTORY
-    APPEND
-    PROPERTY CMAKE_CONFIGURE_DEPENDS ${link})
-  add_custom_command(
-    OUTPUT ${target}
-    COMMAND ${ROQ_AUTOGEN} --schema_dir ${SCHEMA_DIR} --template_dir ${TEMPLATE_DIR} --input_path ${link} --language "cpp" --template_type "api" --file_type
-            "hpp" --strict > ${target}
-    COMMAND ${CLANG_FORMAT} -i ${target}
-    VERBATIM
-    DEPENDS ${ROQ_AUTOGEN} ${link})
-  list(APPEND AUTOGEN_HEADERS ${target})
-endforeach()
+roq_autogen_hpp(
+  OUTPUT
+  AUTOGEN_HEADERS
+  SOURCES
+  ${SOURCES}
+  NAMESPACE
+  "roq"
+  SCHEMA_LINK_DIR
+  ${SCHEMA_LINK_DIR}
+  TEMPLATE_DIR
+  ${TEMPLATE_DIR}
+  TEMPLATE_TYPE
+  "api")
 
 # target
 

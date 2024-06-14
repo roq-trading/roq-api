@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* `cache::MarketByPrice::impact_price` to accept an optional number of orders (#462)
 * `Fill` to support quote quantity and commission (#458)
 
 ## 1.0.1 &ndash; 2024-04-14

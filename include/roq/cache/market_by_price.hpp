@@ -98,7 +98,10 @@ struct ROQ_PUBLIC MarketByPrice {
 
   // impact price (complexity depends on the number of required levels)
   //   returns Layer with bid_quantity/ask_quantity <= quantity depending on available liquidity
-  virtual Layer compute_impact_price(double total_quantity) const = 0;
+  // note!
+  //   number of orders is optional
+  //   when specified, both total quantity and number of orders must be matched
+  virtual Layer compute_impact_price(double total_quantity, uint16_t number_of_orders = 0) const = 0;
 
   // update methods:
 

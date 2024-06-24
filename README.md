@@ -28,7 +28,7 @@ API for algorithmic and high-frequency trading (HFT).
 * Aim to reduce "glue" code and offer standard solutions for data capture,
   monitoring, bridge solutions, etc.
 
-![Design](/doc/images/architecture_reference.svg)
+![Design](/static/images/architecture_reference.svg)
 
 * The **C++ API** allows clients (strategies) to
   * communicate with gateways using a unified interface, or

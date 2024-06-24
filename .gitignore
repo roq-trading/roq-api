@@ -24,3 +24,6 @@ _CPack_Packages/
 
 # debian
 *.deb
+
+# conda
+opt/

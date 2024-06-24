@@ -1,0 +1,9 @@
+catch2
+clangdev
+cmake
+doxygen
+fmt
+jinja2
+make
+roq-autogen
+roq-oss-magic_enum

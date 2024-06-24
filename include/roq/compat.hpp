@@ -28,18 +28,6 @@
 #define ROQ_PAGE_SIZE 4096
 #endif
 
-// note!
-//
-// constexpr std::hardware_{constructive,destructive}_interference_size
-//
-// not supported by gcc:
-//   http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0154r1.html
-//   https://gcc.gnu.org/onlinedocs/libstdc++/manual/status.html#status.iso.2017
-
-// note!
-//
-// linux:
-// $ getconf -a | grep -e PAGE_SIZE -e LEVEL1_DCACHE_LINESIZE
-//
-// macos:
-// $ sysctl -a | grep -e vm.pagesize -e hw.cachelinesize
+// how to find the actual cache-line size
+// linux: getconf -a | grep -e PAGE_SIZE -e LEVEL1_DCACHE_LINESIZE
+// macos: sysctl -a | grep -e vm.pagesize -e hw.cachelinesize

@@ -10,11 +10,11 @@
 #include <fmt/format.h>
 
 #include <chrono>
-#include <limits>
 #include <span>
 #include <string_view>
 
 #include "roq/event.hpp"
+#include "roq/limits.hpp"
 #include "roq/name.hpp"
 #include "roq/string_types.hpp"
 #include "roq/trace.hpp"

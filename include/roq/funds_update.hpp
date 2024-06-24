@@ -10,10 +10,10 @@
 #include <fmt/format.h>
 
 #include <chrono>
-#include <limits>
 #include <string_view>
 
 #include "roq/event.hpp"
+#include "roq/limits.hpp"
 #include "roq/margin_mode.hpp"
 #include "roq/name.hpp"
 #include "roq/trace.hpp"
@@ -23,16 +23,16 @@ namespace roq {
 
 //! Update relating to available funds
 struct ROQ_PUBLIC FundsUpdate final {
-  uint16_t stream_id = {};                                    //!< Stream identifier
-  std::string_view account;                                   //!< Account name
-  std::string_view currency;                                  //!< Currency
-  roq::MarginMode margin_mode = {};                           //!< Margin mode
-  double balance = std::numeric_limits<double>::quiet_NaN();  //!< Current funds
-  double hold = std::numeric_limits<double>::quiet_NaN();     //!< Funds on hold
-  std::string_view external_account;                          //!< External account name
-  roq::UpdateType update_type = {};                           //!< Update type
-  std::chrono::nanoseconds exchange_time_utc = {};            //!< Exchange timestamp, possibly from matching engine (UTC)
-  std::chrono::nanoseconds sending_time_utc = {};             //!< Exchange sending timestamp (UTC)
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view account;                         //!< Account name
+  std::string_view currency;                        //!< Currency
+  roq::MarginMode margin_mode = {};                 //!< Margin mode
+  double balance = roq::NaN;                        //!< Current funds
+  double hold = roq::NaN;                           //!< Funds on hold
+  std::string_view external_account;                //!< External account name
+  roq::UpdateType update_type = {};                 //!< Update type
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
 };
 
 template <>

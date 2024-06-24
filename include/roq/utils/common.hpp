@@ -6,8 +6,8 @@
 
 #include "roq/filter.hpp"
 #include "roq/layer.hpp"
+#include "roq/limits.hpp"
 #include "roq/mask.hpp"
-#include "roq/numbers.hpp"
 #include "roq/order_status.hpp"
 #include "roq/precision.hpp"
 #include "roq/request_status.hpp"
@@ -31,7 +31,7 @@ inline constexpr double price_from_side(Layer const &layer, Side side) {
     case SELL:
       return layer.ask_price;
   }
-  return std::numeric_limits<double>::quiet_NaN();
+  return NaN;
 }
 
 //! Test if update type is snapshot-like

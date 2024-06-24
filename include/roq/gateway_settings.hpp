@@ -8,10 +8,9 @@
 
 #include <fmt/format.h>
 
-#include <limits>
-
 #include "roq/event.hpp"
 #include "roq/filter.hpp"
+#include "roq/limits.hpp"
 #include "roq/mask.hpp"
 #include "roq/name.hpp"
 #include "roq/request_id_type.hpp"
@@ -22,17 +21,17 @@ namespace roq {
 
 //! Gateway settings
 struct ROQ_PUBLIC GatewaySettings final {
-  roq::Mask<roq::SupportType> supports;                                            //!< Supported update types
-  uint16_t mbp_max_depth = {};                                                     //!< MBP max depth
-  double mbp_tick_size_multiplier = std::numeric_limits<double>::quiet_NaN();      //!< MBP multiplier used to manage prices as integer
-  double mbp_min_trade_vol_multiplier = std::numeric_limits<double>::quiet_NaN();  //!< MBP multiplier used to manage quantities as integer
-  bool mbp_allow_remove_non_existing = false;                                      //!< MBP allow remove operation on non-existing level?
-  bool mbp_allow_price_inversion = false;                                          //!< MBP allow price inversion?
-  bool mbp_checksum = false;                                                       //!< MBP compute checksum?
-  bool oms_download_has_state = false;                                             //!< OMS download includes state information?
-  bool oms_download_has_routing_id = false;                                        //!< OMS download includes routing_id?
-  roq::RequestIdType oms_request_id_type = {};                                     //!< OMS request identifier type
-  roq::Mask<roq::Filter> oms_cancel_all_orders;                                    //!< Supported filters for CancelAllOrders
+  roq::Mask<roq::SupportType> supports;            //!< Supported update types
+  uint16_t mbp_max_depth = {};                     //!< MBP max depth
+  double mbp_tick_size_multiplier = roq::NaN;      //!< MBP multiplier used to manage prices as integer
+  double mbp_min_trade_vol_multiplier = roq::NaN;  //!< MBP multiplier used to manage quantities as integer
+  bool mbp_allow_remove_non_existing = false;      //!< MBP allow remove operation on non-existing level?
+  bool mbp_allow_price_inversion = false;          //!< MBP allow price inversion?
+  bool mbp_checksum = false;                       //!< MBP compute checksum?
+  bool oms_download_has_state = false;             //!< OMS download includes state information?
+  bool oms_download_has_routing_id = false;        //!< OMS download includes routing_id?
+  roq::RequestIdType oms_request_id_type = {};     //!< OMS request identifier type
+  roq::Mask<roq::Filter> oms_cancel_all_orders;    //!< Supported filters for CancelAllOrders
 };
 
 template <>

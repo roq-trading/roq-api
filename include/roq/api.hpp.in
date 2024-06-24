@@ -6,7 +6,7 @@
 
 // convenience
 
-#include "roq/numbers.hpp"
+#include "roq/limits.hpp"
 
 // enums
 

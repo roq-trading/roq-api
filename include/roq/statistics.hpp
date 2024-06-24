@@ -10,18 +10,18 @@
 #include <fmt/format.h>
 
 #include <chrono>
-#include <limits>
 
+#include "roq/limits.hpp"
 #include "roq/statistics_type.hpp"
 
 namespace roq {
 
 //! Represents a single statistic
 struct ROQ_PUBLIC Statistics final {
-  roq::StatisticsType type = {};                            //!< Statistics type
-  double value = std::numeric_limits<double>::quiet_NaN();  //!< Value
-  std::chrono::seconds begin_time_utc = {};                 //!< Sample period begin time
-  std::chrono::seconds end_time_utc = {};                   //!< Sample period end time
+  roq::StatisticsType type = {};             //!< Statistics type
+  double value = roq::NaN;                   //!< Value
+  std::chrono::seconds begin_time_utc = {};  //!< Sample period begin time
+  std::chrono::seconds end_time_utc = {};    //!< Sample period end time
 };
 
 }  // namespace roq

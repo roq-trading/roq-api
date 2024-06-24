@@ -6,6 +6,7 @@
 
 #include <limits>
 
+#include "roq/limits.hpp"
 #include "roq/precision.hpp"
 
 namespace roq {
@@ -13,7 +14,7 @@ namespace roq {
 //! Numerical precision
 // XXX TODO rename
 struct ROQ_PUBLIC Precision2 final {
-  double increment = std::numeric_limits<double>::quiet_NaN();
+  double increment = NaN;
   Precision precision = {};
 };
 

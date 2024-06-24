@@ -10,8 +10,8 @@
 #include <fmt/format.h>
 
 #include <chrono>
-#include <limits>
 
+#include "roq/limits.hpp"
 #include "roq/liquidity.hpp"
 #include "roq/string_types.hpp"
 
@@ -19,14 +19,14 @@ namespace roq {
 
 //! Represents a single fill (match) when an order is being partially or fully filled
 struct ROQ_PUBLIC Fill final {
-  std::chrono::nanoseconds exchange_time_utc = {};                        //!< Exchange timestamp, possibly from matching engine (UTC)
-  roq::ExternalTradeId external_trade_id;                                 //!< External trade identifier
-  double quantity = std::numeric_limits<double>::quiet_NaN();             //!< Quantity (base currency)
-  double price = std::numeric_limits<double>::quiet_NaN();                //!< Price
-  roq::Liquidity liquidity = {};                                          //!< Liquidity indicator
-  double quote_quantity = std::numeric_limits<double>::quiet_NaN();       //!< Quantity (quote currency, optional)
-  double commission_quantity = std::numeric_limits<double>::quiet_NaN();  //!< Quantity (commission currency, optional)
-  roq::Currency commission_currency;                                      //!< Commission currency
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  roq::ExternalTradeId external_trade_id;           //!< External trade identifier
+  double quantity = roq::NaN;                       //!< Quantity (base currency)
+  double price = roq::NaN;                          //!< Price
+  roq::Liquidity liquidity = {};                    //!< Liquidity indicator
+  double quote_quantity = roq::NaN;                 //!< Quantity (quote currency, optional)
+  double commission_quantity = roq::NaN;            //!< Quantity (commission currency, optional)
+  roq::Currency commission_currency;                //!< Commission currency
 };
 
 }  // namespace roq

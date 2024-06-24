@@ -19,7 +19,7 @@ struct Decimal final {
 
   bool empty() const { return std::isnan(value); }
 
-  value_type const value = std::numeric_limits<double>::quiet_NaN();
+  value_type const value = NaN;
   Precision const precision = {};
 };
 

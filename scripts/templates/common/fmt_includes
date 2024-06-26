@@ -1,4 +1,0 @@
-{%- if '<chrono>' in std_includes %}
-#include <fmt/chrono.h>
-{%- endif %}
-#include <fmt/format.h>

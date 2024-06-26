@@ -1,3 +1,0 @@
-{%- for item in std_includes %}
-#include {{ item }}
-{%- endfor %}

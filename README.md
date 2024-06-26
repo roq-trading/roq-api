@@ -126,87 +126,34 @@ Optional
 
 The project is primarily designed to be compatible with the conda package manager.
 
-### Download and Install Mambaforge
+> Use `stable` for (the approx. monthly) release build.
+> Use `unstable` for the more regularly updated development builds.
 
-#### Linux / x86\_64
-
-```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
-
-bash Mambaforge-Linux-x86_64.sh -b -u -p ~/conda
-
-~/conda/bin/mamba install -y \
-    'gxx_linux-64>=13'
-```
-
-#### Linux / AArch64
-
-```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-aarch64.sh
-
-bash Mambaforge-Linux-aarch64.sh -b -u -p ~/conda
-
-~/conda/bin/mamba install -y \
-    'gxx_linux-aarch64>=13'
-```
-
-#### macOS / x86\_64
-
-```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-MacOSX-x86_64.sh
-
-bash Mambaforge-MacOSX-x86_64.sh -b -u -p ~/conda
-
-~/conda/bin/mamba install -y \
-   'clang_osx-64>=17'
-```
-
-#### macOS / Arm64
-
-```bash
-wget -N https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-MacOSX-arm64.sh
-
-bash Mambaforge-MacOSX-arm64.sh -b -u -p ~/conda
-
-~/conda/bin/mamba install -y \
-   'clang_osx-arm64>=17'
-```
-
-### Install Dependencies
-
-```bash
-source ~/conda/bin/activate
-
-mamba install -y \
-    git \
-    cmake \
-    fmt \
-    clang-format \
-    catch2
-
-mamba install -y --channel https://roq-trading.com/conda/stable \
-    roq-autogen \
-    roq-oss-magic_enum
-```
-
-
-## Building
-
-> If you build for macOS, please consult the
-> [knowledge base](https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk).
+### Initialize sub-modules
 
 ```bash
 git submodule update --init --recursive
-
-mkdir build && cd build
-
-cmake ..
-
-make -j
-
-make test
 ```
 
+### Create development environment
+
+```bash
+scripts/create_conda_env debug unstable
+```
+
+### Activate environment
+
+```bash
+source opt/conda/bin/activate dev
+```
+
+## Build the project
+
+> Sometimes you may have to delete CMakeCache.txt if CMake has already cached an incorrect configuration.
+
+```bash
+cmake . && make -j4
+```
 
 ### Using
 

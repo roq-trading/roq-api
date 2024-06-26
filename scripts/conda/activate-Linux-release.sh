@@ -1,0 +1,7 @@
+export PREFIX="$CONDA_PREFIX"
+export CFLAGS="$CFLAGS -O3"
+export CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-overloaded-virtual -O3"
+export CXXFLAGS="$CXXFLAGS $CPPFLAGS"
+export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
+export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
+export ROQ_BUILD_TYPE="Release"

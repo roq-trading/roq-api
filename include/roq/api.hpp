@@ -47,6 +47,7 @@
 
 // helpers
 
+#include "roq/bar.hpp"
 #include "roq/fill.hpp"
 #include "roq/layer.hpp"
 #include "roq/mbo_update.hpp"
@@ -111,6 +112,7 @@
 #include "roq/route_ack.hpp"
 #include "roq/statistics_update.hpp"
 #include "roq/stream_status.hpp"
+#include "roq/time_series_update.hpp"
 #include "roq/top_of_book.hpp"
 #include "roq/trade_summary.hpp"
 #include "roq/trade_update.hpp"

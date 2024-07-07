@@ -58,6 +58,9 @@ struct ROQ_PUBLIC Handler {
   virtual void operator()(Event<TradeSummary> const &) {}
   virtual void operator()(Event<StatisticsUpdate> const &) {}
 
+  // market data (derived)
+  virtual void operator()(Event<TimeSeriesUpdate> const &) {}
+
   // order management
   virtual void operator()(Event<CancelAllOrdersAck> const &) {}
   virtual void operator()(Event<OrderAck> const &) {}

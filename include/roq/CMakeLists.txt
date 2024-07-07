@@ -8,6 +8,7 @@ set(TARGET_DIR ${CMAKE_INSTALL_INCLUDEDIR}/roq)
 
 set(SCHEMA_ROQ
     add_routes.json
+    bar.json
     batch_begin.json
     batch_end.json
     buffer_capacity.json
@@ -92,6 +93,7 @@ set(SCHEMA_ROQ
     support_type.json
     time_in_force.json
     timer.json
+    time_series_update.json
     top_of_book.json
     trade.json
     trade_summary.json

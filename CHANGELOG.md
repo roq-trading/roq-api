@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 1.0.2 &ndash; 2024-07-14
+
 ### Changed
 
 * `cache::MarketByPrice::impact_price` to accept an optional number of orders (#462)

@@ -6,7 +6,8 @@
 
 #include "roq/compat.hpp"
 
-#include <fmt/format.h>
+#include <fmt/core.h>
+#include <fmt/ranges.h>
 
 #include <span>
 

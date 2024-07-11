@@ -6,7 +6,7 @@
 
 #include <magic_enum.hpp>
 
-#include <fmt/format.h>
+#include <fmt/core.h>
 
 namespace roq {
 

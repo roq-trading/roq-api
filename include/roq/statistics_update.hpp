@@ -7,7 +7,8 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
-#include <fmt/format.h>
+#include <fmt/core.h>
+#include <fmt/ranges.h>
 
 #include <chrono>
 #include <span>

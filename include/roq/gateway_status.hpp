@@ -6,7 +6,7 @@
 
 #include "roq/compat.hpp"
 
-#include <fmt/format.h>
+#include <fmt/core.h>
 
 #include <string_view>
 

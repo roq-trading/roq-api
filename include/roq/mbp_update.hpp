@@ -6,8 +6,7 @@
 
 #include "roq/compat.hpp"
 
-#include <fmt/format.h>
-#include <fmt/ranges.h>
+#include <fmt/core.h>
 
 #include "roq/limits.hpp"
 #include "roq/update_action.hpp"

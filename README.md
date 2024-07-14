@@ -13,7 +13,7 @@ API for algorithmic and high-frequency trading (HFT).
 * [Documentation](https://roq-trading.com/docs/)
 * [Releases](https://roq-trading.com/docs/releases/)
 * [Gateways](https://roq-trading.com/docs/introduction/gateways/)
-* [Samples](https://github.com/roq-trading/roq-samples/)
+* [Samples](https://github.com/roq-trading/roq-cpp-samples/)
 * [Roadmap](https://roq-trading.com/docs/introduction/roadmap/)
 * [Pricing](https://roq-trading.com/#pricing)
 * [LinkedIn](https://www.linkedin.com/company/35447832/)
@@ -91,7 +91,7 @@ Currently supported Cryptocurrency exchanges include
 The full list can be found [here](https://roq-trading.com/docs/introduction/gateways/).
 
 > Instructions on how to install, configure and use the gateways can either
-> be found in the [samples](https://github.com/roq-trading/roq-samples) or
+> be found in the [samples](https://github.com/roq-trading/roq-cpp-samples) or
 > by consulting the [documentation](https://roq-trading.com/docs/tutorials/gateways/).
 
 
@@ -164,7 +164,7 @@ mamba install -y --channel https://roq-trading.com/conda/stable \
     roq-client
 ```
 
-Samples can be found [here](https://github.com/roq-trading/roq-samples).
+Samples can be found [here](https://github.com/roq-trading/roq-cpp-samples).
 
 
 ## License

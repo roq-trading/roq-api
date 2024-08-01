@@ -9,35 +9,35 @@
 namespace roq {
 
 namespace detail {
-static constexpr auto const MAX_LENGTH_SOURCE = size_t{16};
-static constexpr auto const MAX_LENGTH_USER = size_t{16};
+static constexpr size_t const MAX_LENGTH_SOURCE = 16;
+static constexpr size_t const MAX_LENGTH_USER = 16;
 
-static constexpr auto const MAX_LENGTH_ACCOUNT = size_t{32};
-static constexpr auto const MAX_LENGTH_EXCHANGE = size_t{32};
-static constexpr auto const MAX_LENGTH_SYMBOL = size_t{48};
-static constexpr auto const MAX_LENGTH_CURRENCY = size_t{32};
+static constexpr size_t const MAX_LENGTH_ACCOUNT = 32;
+static constexpr size_t const MAX_LENGTH_EXCHANGE = 32;
+static constexpr size_t const MAX_LENGTH_SYMBOL = 48;
+static constexpr size_t const MAX_LENGTH_CURRENCY = 32;
 
-static constexpr auto const MAX_LENGTH_MBO_ORDER_ID = size_t{36};  // note! UUID
+static constexpr size_t const MAX_LENGTH_MBO_ORDER_ID = 36;  // note! UUID
 
-static constexpr auto const MAX_LENGTH_REQUEST_TEMPLATE = size_t{16};
-static constexpr auto const MAX_LENGTH_EXTERNAL_ACCOUNT = size_t{64};
-static constexpr auto const MAX_LENGTH_EXTERNAL_ORDER_ID = size_t{64};
-static constexpr auto const MAX_LENGTH_EXTERNAL_TRADE_ID = size_t{40};
-static constexpr auto const MAX_LENGTH_ROUTING_ID = size_t{64};
+static constexpr size_t const MAX_LENGTH_REQUEST_TEMPLATE = 16;
+static constexpr size_t const MAX_LENGTH_EXTERNAL_ACCOUNT = 64;
+static constexpr size_t const MAX_LENGTH_EXTERNAL_ORDER_ID = 64;
+static constexpr size_t const MAX_LENGTH_EXTERNAL_TRADE_ID = 40;
+static constexpr size_t const MAX_LENGTH_ROUTING_ID = 64;
 
-static constexpr auto const MAX_LENGTH_CL_ORD_ID = size_t{36};
-static constexpr auto const MAX_LENGTH_REQUEST_ID = size_t{36};
+static constexpr size_t const MAX_LENGTH_CL_ORD_ID = 36;
+static constexpr size_t const MAX_LENGTH_REQUEST_ID = 36;
 
-static constexpr auto const MAX_LENGTH_LABEL = size_t{32};
-static constexpr auto const MAX_LENGTH_MEASUREMENT_KEY = size_t{8};
+static constexpr size_t const MAX_LENGTH_LABEL = 32;
+static constexpr size_t const MAX_LENGTH_MEASUREMENT_KEY = 8;
 
-static constexpr auto const MAX_LENGTH_MATRIX_KEY = size_t{8};
+static constexpr size_t const MAX_LENGTH_MATRIX_KEY = 8;
 
-static constexpr auto const MAX_LENGTH_DESCRIPTION = size_t{128};
-static constexpr auto const MAX_LENGTH_TIME_ZONE = size_t{32};
+static constexpr size_t const MAX_LENGTH_DESCRIPTION = 128;
+static constexpr size_t const MAX_LENGTH_TIME_ZONE = 32;
 
-static constexpr auto const MAX_LENGTH_PARAMETER_KEY = size_t{32};
-static constexpr auto const MAX_LENGTH_PARAMETER_VALUE = size_t{32};
+static constexpr size_t const MAX_LENGTH_PARAMETER_KEY = 32;
+static constexpr size_t const MAX_LENGTH_PARAMETER_VALUE = 32;
 }  // namespace detail
 
 struct ROQ_PUBLIC Source final : public String<detail::MAX_LENGTH_USER> {

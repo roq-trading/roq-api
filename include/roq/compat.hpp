@@ -4,19 +4,18 @@
 
 #if defined(__GNUC__)
 #define ROQ_PUBLIC __attribute__((visibility("default")))
-#define ROQ_HOT [[gnu::hot]]
-#define ROQ_PACKED [[gnu::packed]]
+#define ROQ_HOT __attribute__((hot))
+#define ROQ_PACKED __attribute__((packed))
 #else  // not gnuc
 #if defined(__clang__)
 #error "expected __clang__ to also define __GNUC__"
 #endif
-#define ROQ_PUBLIC
-#define ROQ_HOT
-#define ROQ_PACKED
+#error "unsupported compiler"
 #endif
 
 #if defined(__APPLE__)
 #if defined(__arm64__)
+// XXX TODO clang19: check std::hardware_destructive_interference_size
 #define ROQ_CACHELINE_SIZE 128
 #define ROQ_PAGE_SIZE 16384
 #else  // not __arm64__

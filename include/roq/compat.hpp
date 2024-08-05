@@ -17,15 +17,15 @@
 
 #if defined(__APPLE__)
 #if defined(__arm64__)
-inline constexpr size_t const ROQ_CACHELINE_SIZE = 128;
-inline constexpr size_t const ROQ_PAGE_SIZE = 16384;
+static constexpr size_t const ROQ_CACHELINE_SIZE = 128;
+static constexpr size_t const ROQ_PAGE_SIZE = 16384;
 #else  // not __arm64__
-inline constexpr size_t const ROQ_CACHELINE_SIZE = 64;
-inline constexpr size_t const ROQ_PAGE_SIZE = 4096;
+static constexpr size_t const ROQ_CACHELINE_SIZE = 64;
+static constexpr size_t const ROQ_PAGE_SIZE = 4096;
 #endif
 #else  // not __APPLE__
-inline constexpr size_t const ROQ_CACHELINE_SIZE = 64;
-inline constexpr size_t const ROQ_PAGE_SIZE = 4096;
+static constexpr size_t const ROQ_CACHELINE_SIZE = 64;
+static constexpr size_t const ROQ_PAGE_SIZE = 4096;
 #endif
 
 // how to find the actual cache-line size:

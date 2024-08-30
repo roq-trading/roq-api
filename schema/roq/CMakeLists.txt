@@ -87,6 +87,8 @@ set(SCHEMA_ROQ
     support_type.json
     time_in_force.json
     timer.json
+    time_series_type.json
+    time_series_update.json
     top_of_book.json
     trade.json
     trade_summary.json

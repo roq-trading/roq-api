@@ -18,11 +18,11 @@ namespace roq {
 //! Represents a single bar of a time-series
 struct ROQ_PUBLIC Bar final {
   std::chrono::nanoseconds time_utc = {};  //!< End-period time-stamp (UTC)
-  double open = roq::NaN;                  //!< Opening price
-  double high = roq::NaN;                  //!< Highest price
-  double low = roq::NaN;                   //!< Lowest price
-  double close = roq::NaN;                 //!< Closing price
-  double total_volume = roq::NaN;          //!< Total volume
+  double open = roq::NaN;                  //!< Open
+  double high = roq::NaN;                  //!< High
+  double low = roq::NaN;                   //!< Low
+  double close = roq::NaN;                 //!< Close
+  double volume = roq::NaN;                //!< Volume
 };
 
 }  // namespace roq
@@ -40,13 +40,13 @@ struct fmt::formatter<roq::Bar> {
         R"(high={}, )"
         R"(low={}, )"
         R"(close={}, )"
-        R"(total_volume={})"
+        R"(volume={})"
         R"(}})"sv,
         value.time_utc,
         value.open,
         value.high,
         value.low,
         value.close,
-        value.total_volume);
+        value.volume);
   }
 };

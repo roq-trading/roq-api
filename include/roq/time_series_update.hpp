@@ -6,9 +6,11 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/chrono.h>
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 
+#include <chrono>
 #include <span>
 #include <string_view>
 
@@ -24,14 +26,15 @@ namespace roq {
 
 //! Update relating to time-series
 struct ROQ_PUBLIC TimeSeriesUpdate final {
-  uint16_t stream_id = {};                 //!< Stream identifier
-  std::string_view exchange;               //!< Exchange
-  std::string_view symbol;                 //!< Symbol
-  roq::TimeSeriesType type = {};           //!< Time-series type
-  std::span<roq::Bar const> bars;          //!< List of updated bars
-  roq::UpdateType update_type = {};        //!< Update type
-  roq::Precision price_precision = {};     //!< Precision (decimal digits) required to represent prices (dynamic)
-  roq::Precision quantity_precision = {};  //!< Precision (decimal digits) required to represent quantities (dynamic)
+  uint16_t stream_id = {};               //!< Stream identifier
+  std::string_view exchange;             //!< Exchange
+  std::string_view symbol;               //!< Symbol
+  roq::TimeSeriesType type = {};         //!< Time-series type
+  std::chrono::minutes frequency = {};   //!< Frequency
+  std::span<roq::Bar const> bars;        //!< List of updated bars
+  roq::UpdateType update_type = {};      //!< Update type
+  roq::Precision value_precision = {};   //!< Precision (decimal digits) required to represent values (dynamic)
+  roq::Precision volume_precision = {};  //!< Precision (decimal digits) required to represent volume (dynamic)
 };
 
 template <>
@@ -54,19 +57,21 @@ struct fmt::formatter<roq::TimeSeriesUpdate> {
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(type={}, )"
+        R"(frequency={}, )"
         R"(bars=[{}], )"
         R"(update_type={}, )"
-        R"(price_precision={}, )"
-        R"(quantity_precision={})"
+        R"(value_precision={}, )"
+        R"(volume_precision={})"
         R"(}})"sv,
         value.stream_id,
         value.exchange,
         value.symbol,
         value.type,
+        value.frequency,
         fmt::join(value.bars, ", "sv),
         value.update_type,
-        value.price_precision,
-        value.quantity_precision);
+        value.value_precision,
+        value.volume_precision);
   }
 };
 

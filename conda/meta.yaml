@@ -17,6 +17,7 @@ build:
   run_exports:
     strong:
       - {{ pin_subpackage('roq-api', max_pin='x.x.x') }}
+      - {{ pin_compatible('roq-oss-magic_enum', max_pin='x.x') }}
       - {{ pin_compatible('fmt', max_pin='x.x') }}
 
 requirements:

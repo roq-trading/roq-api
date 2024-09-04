@@ -14,11 +14,6 @@ build:
     - CFLAGS=-O3
     - CPPFLAGS=-O3  # [linux]
     - CPPFLAGS=-O3 -D_LIBCPP_DISABLE_AVAILABILITY  # [osx]
-  run_exports:
-    strong:
-      - {{ pin_subpackage('roq-api', max_pin='x.x.x') }}
-      - {{ pin_compatible('roq-oss-magic_enum', max_pin='x.x') }}
-      - {{ pin_compatible('fmt', max_pin='x.x') }}
 
 requirements:
   build:

@@ -78,6 +78,9 @@ struct ROQ_PUBLIC MarketByOrder {
   //   note! bid/ask quantities may return +infinity when internal accounting overflows
   virtual void extract(std::vector<Layer> &, size_t max_depth = 0) const = 0;
 
+  // extract depth
+  virtual std::span<Layer const> extract_2(std::span<Layer> const &) const = 0;
+
   // computation methods:
 
   // check if price level exists

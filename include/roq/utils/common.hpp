@@ -4,13 +4,17 @@
 
 #include <limits>
 
+#include "roq/cancel_order.hpp"
+#include "roq/create_order.hpp"
 #include "roq/filter.hpp"
 #include "roq/layer.hpp"
 #include "roq/limits.hpp"
 #include "roq/mask.hpp"
+#include "roq/modify_order.hpp"
 #include "roq/order_status.hpp"
 #include "roq/precision.hpp"
 #include "roq/request_status.hpp"
+#include "roq/request_type.hpp"
 #include "roq/side.hpp"
 #include "roq/statistics_type.hpp"
 #include "roq/update_type.hpp"
@@ -479,6 +483,33 @@ constexpr bool is_missing(T const &value) {
   }
 }
 }  // namespace
+
+template <typename T>
+inline uint32_t get_version(T const &value) {
+  using value_type = std::remove_cvref<T>::type;
+  constexpr bool has_version = requires(T const &t) { t.version; };
+  if constexpr (has_version) {
+    return value.version;
+  } else if constexpr (std::is_same<value_type, CreateOrder>::value) {
+    return 1;
+  } else {
+    static_assert(always_false<T>, "not supported for this type");
+  }
+}
+
+template <typename T>
+inline RequestType get_request_type() {
+  using value_type = std::remove_cvref<T>::type;
+  if constexpr (std::is_same<value_type, CreateOrder>::value) {
+    return RequestType::CREATE_ORDER;
+  } else if constexpr (std::is_same<value_type, ModifyOrder>::value) {
+    return RequestType::MODIFY_ORDER;
+  } else if constexpr (std::is_same<value_type, CancelOrder>::value) {
+    return RequestType::CANCEL_ORDER;
+  } else {
+    static_assert(utils::always_false<T>, "not supported for this type");
+  }
+}
 
 }  // namespace utils
 }  // namespace roq

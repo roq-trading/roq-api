@@ -19,6 +19,7 @@ struct ROQ_PUBLIC Generator {
 
     // stream
     virtual void operator()(Event<StreamStatus> const &) = 0;
+    virtual void operator()(Event<ExternalLatency> const &) = 0;
 
     // service
     virtual void operator()(Event<GatewayStatus> const &) = 0;

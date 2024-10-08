@@ -29,6 +29,14 @@ constexpr bool update(T &result, U const &value) {
 }
 
 template <typename T, typename U>
+constexpr bool update_min(T &result, U const &value) {
+  if (!(compare(value, result) == std::strong_ordering::less))
+    return false;
+  result = value;
+  return true;
+}
+
+template <typename T, typename U>
 constexpr bool update_max(T &result, U const &value) {
   if (!(compare(value, result) == std::strong_ordering::greater))
     return false;

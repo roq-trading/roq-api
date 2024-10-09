@@ -11,9 +11,15 @@ namespace client {
 struct Collector {
   virtual ~Collector() {}
 
+  // host
+  virtual void operator()(Event<Timer> const &) {}
+  virtual void operator()(Event<Connected> const &) {}
+  virtual void operator()(Event<Disconnected> const &) {}
+
   // control
   virtual void operator()(Event<DownloadBegin> const &) {}
   virtual void operator()(Event<DownloadEnd> const &) {}
+  virtual void operator()(Event<Ready> const &) {}
 
   // config
   virtual void operator()(Event<GatewaySettings> const &) {}

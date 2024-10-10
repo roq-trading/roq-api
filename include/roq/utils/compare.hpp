@@ -25,7 +25,7 @@ namespace detail {
 template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
 constexpr T fabs(T x) {
 #ifdef __APPLE__
-  return __builtin_fabs(x);
+  return __builtin_fabs(x);  // note! clang19: non-constexpr function 'fabs' cannot be used in a constant expression
 #else
   return std::fabs(x);
 #endif

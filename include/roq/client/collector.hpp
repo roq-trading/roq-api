@@ -59,6 +59,7 @@ struct Collector {
 
   // broadcast
   virtual void operator()(Event<CustomMetricsUpdate> const &) {}
+  virtual void operator()(Event<CustomMatrixUpdate> const &) {}
 };
 
 }  // namespace client

@@ -29,6 +29,7 @@
 #include "roq/precision.hpp"
 #include "roq/priority.hpp"
 #include "roq/protocol.hpp"
+#include "roq/quantity_type.hpp"
 #include "roq/rate_limit_type.hpp"
 #include "roq/request_id_type.hpp"
 #include "roq/request_status.hpp"

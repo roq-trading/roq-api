@@ -10,21 +10,19 @@
 
 namespace roq {
 
-//! Enumeration of security/instrument types
-enum class SecurityType : uint8_t {
+//! Enumeration of the type of quantity
+enum class QuantityType : uint8_t {
   UNDEFINED = 0,
-  SPOT,
-  FUTURES,
-  OPTION,
-  SWAP,  //!< Perpetuals (like a futures contract but without an expiration date)
+  UNITS,
+  CONTRACTS,
 };
 
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::SecurityType> {
+struct fmt::formatter<roq::QuantityType> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::SecurityType const &value, format_context &context) const {
+  auto format(roq::QuantityType const &value, format_context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
   }

@@ -4,6 +4,11 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Add quantity type to order management (#469)
+* Add settlement currency to reference data (#468)
+
 ## 1.0.2 &ndash; 2024-07-14
 
 ### Changed

@@ -59,6 +59,7 @@ set(SCHEMA_ROQ
     priority.json
     protocol.json
     quality_of_service.json
+    quantity_type.json
     rate_limit.json
     rate_limits_update.json
     rate_limit_trigger.json

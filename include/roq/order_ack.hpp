@@ -19,6 +19,7 @@
 #include "roq/name.hpp"
 #include "roq/origin.hpp"
 #include "roq/position_effect.hpp"
+#include "roq/quantity_type.hpp"
 #include "roq/request_status.hpp"
 #include "roq/request_type.hpp"
 #include "roq/side.hpp"
@@ -36,6 +37,7 @@ struct ROQ_PUBLIC OrderAck final {
   roq::Side side = {};                               //!< Side
   roq::PositionEffect position_effect = {};          //!< Position effect
   roq::MarginMode margin_mode = {};                  //!< Margin mode
+  roq::QuantityType quantity_type = {};              //!< Type of quantity (requires ecxhange support)
   roq::RequestType request_type = {};                //!< Request type
   roq::Origin origin = {};                           //!< Origin of ack
   roq::RequestStatus request_status = {};            //!< Request status
@@ -82,6 +84,7 @@ struct fmt::formatter<roq::OrderAck> {
         R"(side={}, )"
         R"(position_effect={}, )"
         R"(margin_mode={}, )"
+        R"(quantity_type={}, )"
         R"(request_type={}, )"
         R"(origin={}, )"
         R"(request_status={}, )"
@@ -111,6 +114,7 @@ struct fmt::formatter<roq::OrderAck> {
         value.side,
         value.position_effect,
         value.margin_mode,
+        value.quantity_type,
         value.request_type,
         value.origin,
         value.request_status,

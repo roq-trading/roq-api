@@ -18,6 +18,7 @@
 #include "roq/name.hpp"
 #include "roq/order_type.hpp"
 #include "roq/position_effect.hpp"
+#include "roq/quantity_type.hpp"
 #include "roq/side.hpp"
 #include "roq/time_in_force.hpp"
 #include "roq/trace.hpp"
@@ -33,6 +34,7 @@ struct ROQ_PUBLIC CreateOrder final {
   roq::Side side = {};                                          //!< Order side
   roq::PositionEffect position_effect = {};                     //!< Position effect
   roq::MarginMode margin_mode = {};                             //!< Margin mode
+  roq::QuantityType quantity_type = {};                         //!< Type of quantity (requires ecxhange support)
   double max_show_quantity = roq::NaN;                          //!< Quantity visible to market (requires exchange support)
   roq::OrderType order_type = {};                               //!< Order type
   roq::TimeInForce time_in_force = {};                          //!< Time in force
@@ -68,6 +70,7 @@ struct fmt::formatter<roq::CreateOrder> {
         R"(side={}, )"
         R"(position_effect={}, )"
         R"(margin_mode={}, )"
+        R"(quantity_type={}, )"
         R"(max_show_quantity={}, )"
         R"(order_type={}, )"
         R"(time_in_force={}, )"
@@ -86,6 +89,7 @@ struct fmt::formatter<roq::CreateOrder> {
         value.side,
         value.position_effect,
         value.margin_mode,
+        value.quantity_type,
         value.max_show_quantity,
         value.order_type,
         value.time_in_force,

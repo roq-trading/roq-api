@@ -17,6 +17,8 @@ static constexpr size_t const MAX_LENGTH_EXCHANGE = 32;
 static constexpr size_t const MAX_LENGTH_SYMBOL = 48;
 static constexpr size_t const MAX_LENGTH_CURRENCY = 32;
 
+static constexpr size_t const MAX_LENGTH_CFI_CODE = 6;
+
 static constexpr size_t const MAX_LENGTH_MBO_ORDER_ID = 36;  // note! UUID
 
 static constexpr size_t const MAX_LENGTH_REQUEST_TEMPLATE = 16;
@@ -62,6 +64,10 @@ struct ROQ_PUBLIC Symbol final : public String<detail::MAX_LENGTH_SYMBOL> {
 
 struct ROQ_PUBLIC Currency final : public String<detail::MAX_LENGTH_CURRENCY> {
   using String<detail::MAX_LENGTH_CURRENCY>::String;
+};
+
+struct ROQ_PUBLIC CFICode final : public String<detail::MAX_LENGTH_CFI_CODE> {
+  using String<detail::MAX_LENGTH_CFI_CODE>::String;
 };
 
 struct ROQ_PUBLIC MBOOrderId final : public String<detail::MAX_LENGTH_MBO_ORDER_ID> {
@@ -132,6 +138,7 @@ static_assert(sizeof(Account) == detail::MAX_LENGTH_ACCOUNT);
 static_assert(sizeof(Exchange) == detail::MAX_LENGTH_EXCHANGE);
 static_assert(sizeof(Symbol) == detail::MAX_LENGTH_SYMBOL);
 static_assert(sizeof(Currency) == detail::MAX_LENGTH_CURRENCY);
+static_assert(sizeof(CFICode) == detail::MAX_LENGTH_CFI_CODE);
 static_assert(sizeof(MBOOrderId) == detail::MAX_LENGTH_MBO_ORDER_ID);
 static_assert(sizeof(RequestTemplate) == detail::MAX_LENGTH_REQUEST_TEMPLATE);
 static_assert(sizeof(ExternalAccount) == detail::MAX_LENGTH_EXTERNAL_ACCOUNT);
@@ -199,6 +206,15 @@ template <>
 struct fmt::formatter<roq::Currency> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::Currency const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::CFICode> {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::CFICode const &value, format_context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }

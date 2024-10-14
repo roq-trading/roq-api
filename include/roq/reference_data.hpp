@@ -28,6 +28,7 @@ struct ROQ_PUBLIC ReferenceData final {
   std::string_view symbol;                          //!< Symbol
   std::string_view description;                     //!< Description
   roq::SecurityType security_type = {};             //!< Security type
+  std::string_view cfi_code;                        //!< CFI code
   std::string_view base_currency;                   //!< Base currency
   std::string_view quote_currency;                  //!< Quote currency
   std::string_view settlement_currency;             //!< Settlement currency
@@ -75,6 +76,7 @@ struct fmt::formatter<roq::ReferenceData> {
         R"(symbol="{}", )"
         R"(description="{}", )"
         R"(security_type={}, )"
+        R"(cfi_code="{}", )"
         R"(base_currency="{}", )"
         R"(quote_currency="{}", )"
         R"(settlement_currency="{}", )"
@@ -105,6 +107,7 @@ struct fmt::formatter<roq::ReferenceData> {
         value.symbol,
         value.description,
         value.security_type,
+        value.cfi_code,
         value.base_currency,
         value.quote_currency,
         value.settlement_currency,

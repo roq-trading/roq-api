@@ -104,7 +104,8 @@ set(SCHEMA_ROQ
     transport.json
     update_action.json
     update_reason.json
-    update_type.json)
+    update_type.json
+    variant_type.json)
 
 set(SOURCES ${SCHEMA_ROQ})
 

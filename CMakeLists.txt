@@ -24,6 +24,7 @@ include(GNUInstallDirs)
 
 find_package(fmt REQUIRED)
 find_package(magic_enum REQUIRED)
+find_package(nameof REQUIRED)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   include(CTest)

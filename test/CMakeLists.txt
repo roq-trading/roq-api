@@ -6,7 +6,6 @@ set(SOURCES
     exceptions.cpp
     format.cpp
     mask.cpp
-    rate_limiter.cpp
     side.cpp
     span.cpp
     string.cpp

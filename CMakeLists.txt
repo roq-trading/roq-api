@@ -39,7 +39,7 @@ endif()
 find_program(ROQ_AUTOGEN roq-autogen REQUIRED)
 
 set(TEMPLATE_DIR ${CMAKE_SOURCE_DIR}/scripts/templates)
-set(SCHEMA_LINK_DIR ${CMAKE_SOURCE_DIR}/schema)
+set(SCHEMA_LINK_DIR ${CMAKE_SOURCE_DIR}/schema/roq)
 
 # clang-format
 

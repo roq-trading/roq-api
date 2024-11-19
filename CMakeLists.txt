@@ -39,7 +39,7 @@ endif()
 find_program(ROQ_AUTOGEN roq-autogen REQUIRED)
 
 set(TEMPLATE_DIR ${CMAKE_SOURCE_DIR}/scripts/templates)
-set(SCHEMA_LINK_DIR ${CMAKE_SOURCE_DIR}/schema/roq)
+set(SCHEMA_LINK_DIR ${CMAKE_SOURCE_DIR}/schema)
 
 # clang-format
 
@@ -51,7 +51,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/${CMAKE_INST
 
 # sub-projects
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/schema)
+add_subdirectory(${CMAKE_SOURCE_DIR}/schema/roq)
 add_subdirectory(${CMAKE_SOURCE_DIR}/include/roq)
 
 if(BUILD_TESTING)

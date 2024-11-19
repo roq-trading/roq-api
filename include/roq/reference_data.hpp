@@ -8,8 +8,10 @@
 
 #include <fmt/chrono.h>
 #include <fmt/core.h>
+#include <fmt/ranges.h>
 
 #include <chrono>
+#include <span>
 #include <string_view>
 
 #include "roq/event.hpp"
@@ -17,42 +19,44 @@
 #include "roq/name.hpp"
 #include "roq/option_type.hpp"
 #include "roq/security_type.hpp"
+#include "roq/tick_size_step.hpp"
 #include "roq/trace.hpp"
 
 namespace roq {
 
 //! Update relating to the reference data for a symbol
 struct ROQ_PUBLIC ReferenceData final {
-  uint16_t stream_id = {};                          //!< Stream identifier
-  std::string_view exchange;                        //!< Exchange
-  std::string_view symbol;                          //!< Symbol
-  std::string_view description;                     //!< Description
-  roq::SecurityType security_type = {};             //!< Security type
-  std::string_view cfi_code;                        //!< CFI code
-  std::string_view base_currency;                   //!< Base currency
-  std::string_view quote_currency;                  //!< Quote currency
-  std::string_view settlement_currency;             //!< Settlement currency
-  std::string_view margin_currency;                 //!< Margin currency
-  std::string_view commission_currency;             //!< Commission currency
-  double tick_size = roq::NaN;                      //!< Minimum price increment
-  double multiplier = roq::NaN;                     //!< Multiplier (notional)
-  double min_notional = roq::NaN;                   //!< Minimum notional (price * quantity)
-  double min_trade_vol = roq::NaN;                  //!< Minimum trade volume
-  double max_trade_vol = roq::NaN;                  //!< Maximum trade volume
-  double trade_vol_step_size = roq::NaN;            //!< Trade volume step size
-  roq::OptionType option_type = {};                 //!< Option type
-  std::string_view strike_currency;                 //!< Strike currency
-  double strike_price = roq::NaN;                   //!< Strike price
-  std::string_view underlying;                      //!< Underlying instrument
-  std::string_view time_zone;                       //!< Time-zone
-  std::chrono::days issue_date = {};                //!< Issue date
-  std::chrono::days settlement_date = {};           //!< Settlement date
-  std::chrono::seconds expiry_datetime = {};        //!< Expiry datetime
-  std::chrono::seconds expiry_datetime_utc = {};    //!< Expiry datetime
-  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
-  uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
-  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
-  bool discard = false;                             //!< Discard market data updates?
+  uint16_t stream_id = {};                             //!< Stream identifier
+  std::string_view exchange;                           //!< Exchange
+  std::string_view symbol;                             //!< Symbol
+  std::string_view description;                        //!< Description
+  roq::SecurityType security_type = {};                //!< Security type
+  std::string_view cfi_code;                           //!< CFI code
+  std::string_view base_currency;                      //!< Base currency
+  std::string_view quote_currency;                     //!< Quote currency
+  std::string_view settlement_currency;                //!< Settlement currency
+  std::string_view margin_currency;                    //!< Margin currency
+  std::string_view commission_currency;                //!< Commission currency
+  double tick_size = roq::NaN;                         //!< Minimum price increment
+  std::span<roq::TickSizeStep const> tick_size_steps;  //!< List of tick size steps
+  double multiplier = roq::NaN;                        //!< Multiplier (notional)
+  double min_notional = roq::NaN;                      //!< Minimum notional (price * quantity)
+  double min_trade_vol = roq::NaN;                     //!< Minimum trade volume
+  double max_trade_vol = roq::NaN;                     //!< Maximum trade volume
+  double trade_vol_step_size = roq::NaN;               //!< Trade volume step size
+  roq::OptionType option_type = {};                    //!< Option type
+  std::string_view strike_currency;                    //!< Strike currency
+  double strike_price = roq::NaN;                      //!< Strike price
+  std::string_view underlying;                         //!< Underlying instrument
+  std::string_view time_zone;                          //!< Time-zone
+  std::chrono::days issue_date = {};                   //!< Issue date
+  std::chrono::days settlement_date = {};              //!< Settlement date
+  std::chrono::seconds expiry_datetime = {};           //!< Expiry datetime
+  std::chrono::seconds expiry_datetime_utc = {};       //!< Expiry datetime
+  std::chrono::nanoseconds exchange_time_utc = {};     //!< Exchange timestamp, possibly from matching engine (UTC)
+  uint64_t exchange_sequence = {};                     //!< Exchange message sequence number
+  std::chrono::nanoseconds sending_time_utc = {};      //!< Exchange sending timestamp (UTC)
+  bool discard = false;                                //!< Discard market data updates?
 };
 
 template <>
@@ -83,6 +87,7 @@ struct fmt::formatter<roq::ReferenceData> {
         R"(margin_currency="{}", )"
         R"(commission_currency="{}", )"
         R"(tick_size={}, )"
+        R"(tick_size_steps=[{}], )"
         R"(multiplier={}, )"
         R"(min_notional={}, )"
         R"(min_trade_vol={}, )"
@@ -114,6 +119,7 @@ struct fmt::formatter<roq::ReferenceData> {
         value.margin_currency,
         value.commission_currency,
         value.tick_size,
+        fmt::join(value.tick_size_steps, ", "sv),
         value.multiplier,
         value.min_notional,
         value.min_trade_vol,

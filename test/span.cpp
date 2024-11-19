@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2024, Hans Erik Thrane */
+/* Copyright (c) 2017-2025, Hans Erik Thrane */
 
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>

@@ -2,7 +2,6 @@ set(TARGET_NAME ${PROJECT_NAME}-test)
 
 set(SOURCES
     alignment.cpp
-    compare.cpp
     compat.cpp
     exceptions.cpp
     format.cpp
@@ -14,8 +13,6 @@ set(SOURCES
     string.cpp
     support_type.cpp
     traits.cpp
-    update.cpp
-    utils.cpp
     main.cpp)
 
 add_executable(${TARGET_NAME} ${SOURCES})

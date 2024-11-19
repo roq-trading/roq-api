@@ -10,46 +10,15 @@
 namespace roq {
 
 namespace detail {
-inline constexpr int8_t decimal_to_digits_helper(Precision precision) {
-  switch (precision) {
-    using enum Precision;
-    case UNDEFINED:
-      break;
-    case _0:
-      return 0;
-    case _1:
-      return 1;
-    case _2:
-      return 2;
-    case _3:
-      return 3;
-    case _4:
-      return 4;
-    case _5:
-      return 5;
-    case _6:
-      return 6;
-    case _7:
-      return 7;
-    case _8:
-      return 8;
-    case _9:
-      return 9;
-    case _10:
-      return 10;
-    case _11:
-      return 11;
-    case _12:
-      return 12;
-    case _13:
-      return 13;
-    case _14:
-      return 14;
-    case _15:
-      return 15;
-  }
+inline constexpr auto precision_to_decimal_digits_helper(Precision precision) {
+  using result_type = int8_t;
+  if (precision >= Precision::_0 && precision <= Precision::_15)
+    return static_cast<result_type>(precision) - static_cast<result_type>(Precision::_0);
   return -1;
 }
+static_assert(precision_to_decimal_digits_helper(Precision::UNDEFINED) == -1);
+static_assert(precision_to_decimal_digits_helper(Precision::_0) == 0);
+static_assert(precision_to_decimal_digits_helper(Precision::_15) == 15);
 }  // namespace detail
 
 struct Decimal final {
@@ -72,7 +41,7 @@ struct fmt::formatter<roq::Decimal> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::Decimal const &value, format_context &context) const {
     using namespace std::literals;
-    auto decimal_digits = roq::detail::decimal_to_digits_helper(value.precision);
+    auto decimal_digits = roq::detail::precision_to_decimal_digits_helper(value.precision);
     if (decimal_digits >= 0)
       return fmt::format_to(context.out(), "{:.{}f}"sv, value.value, decimal_digits);
     return fmt::format_to(context.out(), "{}"sv, value.value);

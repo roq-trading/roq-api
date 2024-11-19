@@ -7,12 +7,10 @@ set(SOURCES
     format.cpp
     mask.cpp
     rate_limiter.cpp
-    request_status.cpp
     side.cpp
     span.cpp
     string.cpp
     support_type.cpp
-    traits.cpp
     main.cpp)
 
 add_executable(${TARGET_NAME} ${SOURCES})

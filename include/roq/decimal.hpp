@@ -9,18 +9,6 @@
 
 namespace roq {
 
-namespace detail {
-inline constexpr auto precision_to_decimal_digits_helper(Precision precision) {
-  using result_type = int8_t;
-  if (precision >= Precision::_0 && precision <= Precision::_15)
-    return static_cast<result_type>(precision) - static_cast<result_type>(Precision::_0);
-  return -1;
-}
-static_assert(precision_to_decimal_digits_helper(Precision::UNDEFINED) == -1);
-static_assert(precision_to_decimal_digits_helper(Precision::_0) == 0);
-static_assert(precision_to_decimal_digits_helper(Precision::_15) == 15);
-}  // namespace detail
-
 struct Decimal final {
   using value_type = double;
 
@@ -40,8 +28,17 @@ template <>
 struct fmt::formatter<roq::Decimal> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::Decimal const &value, format_context &context) const {
+    constexpr auto helper = [](auto precision) {
+      using result_type = int8_t;
+      if (precision >= roq::Precision::_0 && precision <= roq::Precision::_15)
+        return static_cast<result_type>(precision) - static_cast<result_type>(roq::Precision::_0);
+      return -1;
+    };
+    static_assert(helper(roq::Precision::UNDEFINED) == -1);
+    static_assert(helper(roq::Precision::_0) == 0);
+    static_assert(helper(roq::Precision::_15) == 15);
     using namespace std::literals;
-    auto decimal_digits = roq::detail::precision_to_decimal_digits_helper(value.precision);
+    auto decimal_digits = helper(value.precision);
     if (decimal_digits >= 0)
       return fmt::format_to(context.out(), "{:.{}f}"sv, value.value, decimal_digits);
     return fmt::format_to(context.out(), "{}"sv, value.value);

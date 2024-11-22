@@ -30,11 +30,10 @@ API for algorithmic and high-frequency trading (HFT).
 
 ![Design](/static/images/architecture_reference.svg)
 
-* The **C++ API** allows clients (strategies) to
+* The **C++ API** enables clients (e.g. trading strategies) to
   * communicate with gateways using a unified interface, or
   * replay event-logs (exactly, for simulation and back-testing purposes).
 * The **FIX bridge** supports third-party solutions.
-* The **JSON bridge** supports other programming languages.
 * The **adapters** support third-party database solutions, e.g. ClickHouse.
 * The **metrics** interface supports third-party monitoring solutions, e.g. Prometheus,
   Alertmanager and Grafana.

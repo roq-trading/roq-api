@@ -192,8 +192,8 @@ static_assert(sizeof(decltype(RateLimitTrigger::accounts)::value_type) == sizeof
 
 static_assert(sizeof(decltype(Measurement::name)) == sizeof(MeasurementKey));
 
-// prefer some array items to be cache aligned
-
+// check size of certain array items
+// - frequent -- should be (reasonably) cache aligned
 static_assert(sizeof(Layer) == 32);
 static_assert(sizeof(MBPUpdate) == 32);
 static_assert(sizeof(MBOUpdate) == 64);
@@ -201,9 +201,8 @@ static_assert(sizeof(Trade) == 192);
 static_assert(sizeof(Statistics) == 32);
 static_assert(sizeof(Measurement) == 16);
 static_assert(sizeof(Route) == 8);
-
-// just keep a handle on the size for some other array items
-
+static_assert(sizeof(TickSizeStep) == 16);
+// - not frequent -- not so important
 static_assert(sizeof(Fill) == 120);
 static_assert(sizeof(Parameter) == 180);
 static_assert(sizeof(Position) == 96);

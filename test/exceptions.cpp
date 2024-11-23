@@ -4,8 +4,9 @@
 
 #include "roq/exceptions.hpp"
 
-using namespace roq;
 using namespace std::literals;
+
+using namespace roq;
 
 TEST_CASE("exceptions_simple_1", "[exceptions]") {
   auto ok = false;

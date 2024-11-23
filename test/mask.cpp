@@ -8,11 +8,6 @@ using namespace std::literals;
 
 using namespace roq;
 
-// note!
-// something changed with magic_enum 0.9.0
-// formatting doesn't seem to find our custom formatter for these test cases
-// instead it appears to somehow be using a generic formatter added with this new release
-
 namespace {
 enum class E : int {
   A = 1,
@@ -52,16 +47,14 @@ TEST_CASE("mask_simple", "[mask]") {
   CHECK(m2.has_any(E::A) == true);
   CHECK(m2.has_any({E::A, E::B}) == true);
   CHECK(m2.has_any({E::A, E::B, E::C}) == true);
-  SKIP("format broken with magic_enum 0.9.0");
   CHECK(fmt::format("{}"sv, Mask{E::A}) == "A"sv);
   CHECK(fmt::format("{}"sv, Mask{E::B, E::C}) == "B|C"sv);
   CHECK(fmt::format("{}"sv, Mask{E::A, E::B, E::C}) == "A|B|C"sv);
 }
 
-// with "undefined"
 namespace {
 enum class E2 : int {
-  U = 0,
+  U = 0,  // "undefined"
   A = 1,
   B = 2,
   C = 4,
@@ -79,7 +72,7 @@ struct fmt::formatter<E2> {
 
 TEST_CASE("mask_with_undefined", "[mask]") {
   SKIP("format broken with magic_enum 0.9.0");
-  // CHECK(fmt::format("{}"sv, Mask<E2>{}) == "U"sv);
+  CHECK(fmt::format("{}"sv, Mask<E2>{}) == "U"sv);
   CHECK(fmt::format("{}"sv, Mask{E2::U}) == "U"sv);
   CHECK(fmt::format("{}"sv, Mask{E2::A}) == "A"sv);
   CHECK(fmt::format("{}"sv, Mask{E2::A, E2::C}) == "A|C"sv);

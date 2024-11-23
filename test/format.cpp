@@ -2,13 +2,15 @@
 
 #include <catch2/catch_all.hpp>
 
+#include <array>
+
 #include "roq/market_by_order_update.hpp"
 #include "roq/market_by_price_update.hpp"
 #include "roq/side.hpp"
 
-using namespace roq;
-
 using namespace std::literals;
+
+using namespace roq;
 
 TEST_CASE("format_side", "[format]") {
   CHECK(fmt::format("{}"sv, Side{Side::UNDEFINED}) == "UNDEFINED"sv);
@@ -22,7 +24,7 @@ TEST_CASE("format_string", "[format]") {
 }
 
 TEST_CASE("format_market_by_price", "[format]") {
-  roq::MBPUpdate bids[] = {
+  std::array<MBPUpdate, 5> bids{{
       {
           .price = 1.0,
           .quantity = 2.0,
@@ -63,8 +65,8 @@ TEST_CASE("format_market_by_price", "[format]") {
           .update_action = {},
           .price_level = 1,
       },
-  };
-  roq::MBPUpdate asks[] = {
+  }};
+  std::array<MBPUpdate, 5> asks{{
       {
           .price = 1.0,
           .quantity = 2.0,
@@ -105,13 +107,13 @@ TEST_CASE("format_market_by_price", "[format]") {
           .update_action = {},
           .price_level = 1,
       },
-  };
-  roq::MarketByPriceUpdate market_by_price{
+  }};
+  auto market_by_price = MarketByPriceUpdate{
       .stream_id = {},
       .exchange = "deribit"sv,
       .symbol = "BTC-27DEC19"sv,
-      .bids = {bids, std::size(bids)},
-      .asks = {asks, std::size(asks)},
+      .bids = bids,
+      .asks = asks,
       .update_type = UpdateType::SNAPSHOT,
       .exchange_time_utc = {},
       .exchange_sequence = 123,
@@ -122,7 +124,6 @@ TEST_CASE("format_market_by_price", "[format]") {
   };
   auto result = fmt::format("{}"sv, market_by_price);
   CHECK(std::size(result) > 0uz);
-  // note! Precision are shown with the '_' prefix due to magic_enum
   auto expected = R"({)"
                   R"(stream_id=0, )"
                   R"(exchange="deribit", )"

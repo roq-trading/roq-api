@@ -16,6 +16,10 @@ message("Using GIT_REPO_VERSION=${GIT_REPO_VERSION}")
 
 project(roq-api VERSION ${GIT_REPO_VERSION})
 
+# language
+
+enable_language(CXX)
+
 # filesystem
 
 include(GNUInstallDirs)

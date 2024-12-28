@@ -159,7 +159,7 @@ cmake . && make -j4
 You can download the closed source client implementation like this
 
 ```bash
-mamba install -y --channel https://roq-trading.com/conda/stable \
+conda install -y --channel https://roq-trading.com/conda/stable \
     roq-client
 ```
 

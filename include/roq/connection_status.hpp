@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <magic_enum/magic_enum.hpp>
-
 #include <fmt/core.h>
+
+#include <magic_enum/magic_enum_format.hpp>
 
 namespace roq {
 
@@ -22,12 +22,3 @@ enum class ConnectionStatus : uint8_t {
 };
 
 }  // namespace roq
-
-template <>
-struct fmt::formatter<roq::ConnectionStatus> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::ConnectionStatus const &value, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
-  }
-};

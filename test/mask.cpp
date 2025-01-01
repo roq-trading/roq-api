@@ -2,6 +2,10 @@
 
 #include <catch2/catch_all.hpp>
 
+#include <fmt/core.h>
+
+#include <magic_enum/magic_enum_format.hpp>
+
 #include "roq/mask.hpp"
 
 using namespace std::literals;
@@ -23,15 +27,6 @@ static_assert(Mask<E>{E::A} == Mask<E>{}.set(E::A));
 static_assert(Mask<E>{E::A, E::B} == Mask<E>{}.set(E::A).set(E::B));
 static_assert(Mask<E>{E::A, E::B, E::C} == Mask<E>{}.set(E::A).set(E::B).set(E::C));
 }  // namespace
-
-template <>
-struct fmt::formatter<E> {
-  constexpr auto parse(fmt::format_parse_context &context) { return std::begin(context); }
-  auto format(E const &value, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
-  }
-};
 
 // run-time checks
 
@@ -60,15 +55,6 @@ enum class E2 : int {
   C = 4,
 };
 }
-
-template <>
-struct fmt::formatter<E2> {
-  constexpr auto parse(fmt::format_parse_context &context) { return std::begin(context); }
-  auto format(const E2 &value, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(context.out(), "{}"sv, magic_enum::enum_name(value));
-  }
-};
 
 TEST_CASE("mask_with_undefined", "[mask]") {
   SKIP("format broken with magic_enum 0.9.0");

@@ -4,9 +4,7 @@
 
 #pragma once
 
-#include <fmt/core.h>
-
-#include <magic_enum/magic_enum_format.hpp>
+#include <cstdint>
 
 namespace roq {
 

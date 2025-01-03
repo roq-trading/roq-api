@@ -2,6 +2,10 @@
 
 #include <catch2/catch_all.hpp>
 
+#include <fmt/core.h>
+
+#include <magic_enum/magic_enum_format.hpp>
+
 #include "roq/side.hpp"
 
 using namespace std::literals;

@@ -8,6 +8,8 @@
 
 #include <fmt/core.h>
 
+#include <magic_enum/magic_enum_format.hpp>
+
 #include "roq/limits.hpp"
 
 namespace roq {

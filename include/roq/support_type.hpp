@@ -7,6 +7,7 @@
 #include <fmt/core.h>
 
 #include <cassert>
+#include <cstdint>
 
 namespace roq {
 

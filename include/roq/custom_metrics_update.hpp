@@ -10,6 +10,8 @@
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 
+#include <magic_enum/magic_enum_format.hpp>
+
 #include <chrono>
 #include <span>
 #include <string_view>

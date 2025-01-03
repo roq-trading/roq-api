@@ -9,6 +9,8 @@
 #include <fmt/chrono.h>
 #include <fmt/core.h>
 
+#include <magic_enum/magic_enum_format.hpp>
+
 #include <chrono>
 
 #include "roq/event.hpp"

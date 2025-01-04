@@ -10,6 +10,7 @@
 #include <string>
 #include <string_view>
 #include <system_error>
+#include <typeinfo>
 #include <utility>
 
 #include "roq/error.hpp"

@@ -2,7 +2,9 @@
 
 #pragma once
 
-#include <fmt/format.h>
+#include <cstdint>
+
+#include <fmt/core.h>
 
 namespace roq {
 

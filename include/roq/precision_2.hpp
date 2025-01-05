@@ -4,11 +4,9 @@
 
 #include "roq/compat.hpp"
 
-#include <fmt/format.h>
+#include <fmt/core.h>
 
 #include <magic_enum/magic_enum_format.hpp>
-
-#include <limits>
 
 #include "roq/limits.hpp"
 #include "roq/precision.hpp"

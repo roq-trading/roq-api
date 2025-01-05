@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <type_traits>
 #include <utility>
 
 #include "roq/message_info.hpp"

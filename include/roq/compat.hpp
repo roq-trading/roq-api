@@ -16,6 +16,7 @@
 #endif
 
 #if defined(__APPLE__)
+// sysctl -a | grep -e vm.pagesize -e hw.cachelinesize
 #if defined(__arm64__)
 static constexpr size_t const ROQ_CACHELINE_SIZE = 128;
 static constexpr size_t const ROQ_PAGE_SIZE = 16384;
@@ -24,10 +25,7 @@ static constexpr size_t const ROQ_CACHELINE_SIZE = 64;
 static constexpr size_t const ROQ_PAGE_SIZE = 4096;
 #endif
 #else  // not __APPLE__
+// getconf -a | grep -e PAGE_SIZE -e LEVEL1_DCACHE_LINESIZE
 static constexpr size_t const ROQ_CACHELINE_SIZE = 64;
 static constexpr size_t const ROQ_PAGE_SIZE = 4096;
 #endif
-
-// how to find the actual cache-line size:
-//   linux : getconf -a | grep -e PAGE_SIZE -e LEVEL1_DCACHE_LINESIZE
-//   macos : sysctl -a | grep -e vm.pagesize -e hw.cachelinesize

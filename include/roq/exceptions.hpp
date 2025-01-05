@@ -4,7 +4,7 @@
 
 #include "roq/compat.hpp"
 
-#include <fmt/format.h>
+#include <fmt/core.h>
 
 #include <stdexcept>
 #include <string>

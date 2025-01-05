@@ -5,7 +5,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
-#include <fmt/format.h>
+#include <fmt/core.h>
 
 #include <chrono>
 #include <string_view>

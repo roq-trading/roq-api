@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <fmt/format.h>
+#include <fmt/core.h>
 
 #include <array>
 #include <source_location>

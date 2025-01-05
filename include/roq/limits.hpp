@@ -5,5 +5,5 @@
 #include <limits>
 
 namespace roq {
-constexpr auto NaN = std::numeric_limits<double>::quiet_NaN();
+constexpr auto const NaN = std::numeric_limits<double>::quiet_NaN();
 }  // namespace roq

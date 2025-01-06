@@ -11,8 +11,8 @@ namespace roq {
 //! Category (of data)
 enum class Category : uint8_t {
   UNDEFINED = 0,
-  PUBLIC,
-  PRIVATE,
+  PUBLIC,   //!< Public data
+  PRIVATE,  //!< Private data
 };
 
 }  // namespace roq

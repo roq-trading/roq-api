@@ -11,9 +11,9 @@ namespace roq {
 //! Enumeration of request types
 enum class RequestType : uint8_t {
   UNDEFINED = 0,
-  CREATE_ORDER,
-  MODIFY_ORDER,
-  CANCEL_ORDER,
+  CREATE_ORDER,  //!< Create order
+  MODIFY_ORDER,  //!< Modify order
+  CANCEL_ORDER,  //!< Cancel order
 };
 
 }  // namespace roq

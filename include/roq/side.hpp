@@ -11,8 +11,8 @@ namespace roq {
 //! Enumeration of the side of a trade
 enum class Side : uint8_t {
   UNDEFINED = 0,
-  BUY,
-  SELL,
+  BUY,   //!< Buy
+  SELL,  //!< Sell
 };
 
 }  // namespace roq

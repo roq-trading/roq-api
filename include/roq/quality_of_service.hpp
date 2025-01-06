@@ -11,8 +11,8 @@ namespace roq {
 //! Enumeration of quality of service
 enum class QualityOfService : uint8_t {
   UNDEFINED = 0,
-  IMMEDIATE,
-  CRITICAL,
+  IMMEDIATE,  //!< Immediate
+  CRITICAL,   //!< Critical
 };
 
 }  // namespace roq

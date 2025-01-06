@@ -11,8 +11,8 @@ namespace roq {
 //! Enumeration of position effect types
 enum class PositionEffect : uint8_t {
   UNDEFINED = 0,
-  OPEN,
-  CLOSE,
+  OPEN,   //!< Open position
+  CLOSE,  //!< Close position
 };
 
 }  // namespace roq

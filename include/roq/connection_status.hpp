@@ -11,12 +11,12 @@ namespace roq {
 //! Enumeration of exchange connectivity status as seen from a gateway
 enum class ConnectionStatus : uint8_t {
   UNDEFINED = 0,
-  DISCONNECTED,
-  CONNECTING,
-  LOGIN_SENT,
-  DOWNLOADING,
-  READY,
-  LOGGED_OUT,
+  DISCONNECTED,  //!< Disconnected
+  CONNECTING,    //!< Connecting
+  LOGIN_SENT,    //!< Login sent
+  DOWNLOADING,   //!< Downloading
+  READY,         //!< Ready
+  LOGGED_OUT,    //!< Logged out
 };
 
 }  // namespace roq

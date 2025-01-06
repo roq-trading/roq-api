@@ -11,8 +11,8 @@ namespace roq {
 //! Enumeration of order types
 enum class OrderType : uint8_t {
   UNDEFINED = 0,
-  MARKET,
-  LIMIT,
+  MARKET,  //!< Market order
+  LIMIT,   //!< Limit order
 };
 
 }  // namespace roq

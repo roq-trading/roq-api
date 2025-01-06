@@ -11,8 +11,8 @@ namespace roq {
 //! Enumeration of option types
 enum class OptionType : uint8_t {
   UNDEFINED = 0,
-  CALL,
-  PUT,
+  CALL,  //!< Call
+  PUT,   //!< Put
 };
 
 }  // namespace roq

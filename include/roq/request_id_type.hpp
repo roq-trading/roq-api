@@ -11,10 +11,10 @@ namespace roq {
 //! Request identifier
 enum class RequestIdType : uint8_t {
   UNDEFINED = 0,
-  BASE64,
-  BASE32,
-  SIMPLE,
-  UUID,
+  BASE64,  //!< Base64 encoded
+  BASE32,  //!< Base32 encoded
+  SIMPLE,  //!< Simple encoded
+  UUID,    //!< UUID encoded
 };
 
 }  // namespace roq

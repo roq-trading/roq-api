@@ -11,8 +11,8 @@ namespace roq {
 //! Enumeration of the type of quantity
 enum class QuantityType : uint8_t {
   UNDEFINED = 0,
-  UNITS,
-  CONTRACTS,
+  UNITS,      //!< Units
+  CONTRACTS,  //!< Contracts
 };
 
 }  // namespace roq

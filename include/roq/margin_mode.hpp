@@ -11,9 +11,9 @@ namespace roq {
 //! Enumeration of margin modes
 enum class MarginMode : uint8_t {
   UNDEFINED = 0,
-  ISOLATED,
-  CROSS,
-  PORTFOLIO,
+  ISOLATED,   //!< Isolated
+  CROSS,      //!< Cross
+  PORTFOLIO,  //!< Portfolio
 };
 
 }  // namespace roq

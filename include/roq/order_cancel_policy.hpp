@@ -11,9 +11,9 @@ namespace roq {
 //! Enumeration of order cancel policies
 enum class OrderCancelPolicy : uint8_t {
   UNDEFINED = 0,
-  MANAGED_ORDERS,
-  BY_ACCOUNT,
-  BY_STRATEGY,
+  MANAGED_ORDERS,  //!< Cancel managed orders
+  BY_ACCOUNT,      //!< Cancel by account
+  BY_STRATEGY,     //!< Cancel by strategy
 };
 
 }  // namespace roq

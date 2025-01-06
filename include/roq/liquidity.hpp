@@ -11,8 +11,8 @@ namespace roq {
 //! Enumeration of liquidity type
 enum class Liquidity : uint8_t {
   UNDEFINED = 0,
-  MAKER,
-  TAKER,
+  MAKER,  //!< Maker
+  TAKER,  //!< Taker
 };
 
 }  // namespace roq

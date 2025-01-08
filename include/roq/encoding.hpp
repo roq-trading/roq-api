@@ -13,7 +13,7 @@ namespace roq {
 
 //! Enumeration of message encoding types (informational, only)
 enum class Encoding : uint32_t {
-  UNDEFINED = 0x0,
+  UNDEFINED = 0,
   FIX = 0x1,   //!< FIX
   JSON = 0x2,  //!< JSON
   SBE = 0x4,   //!< SBE

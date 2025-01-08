@@ -6,8 +6,8 @@
 
 #include <fmt/core.h>
 
-#include <cassert>
 #include <cstdint>
+#include <cstdlib>
 
 namespace roq {
 
@@ -27,7 +27,7 @@ struct fmt::formatter<roq::ExecutionInstruction> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::ExecutionInstruction const &value, format_context &context) const {
     using namespace std::literals;
-    auto name{[&]() {
+    auto name = [&]() -> std::string_view {
       switch (value) {
         using enum roq::ExecutionInstruction;
         case UNDEFINED:
@@ -40,11 +40,9 @@ struct fmt::formatter<roq::ExecutionInstruction> {
           return "DO_NOT_INCREASE"sv;
         case DO_NOT_REDUCE:
           return "DO_NOT_REDUCE"sv;
-        default:
-          assert(false);
       }
-      return "<UNKNOWN>"sv;
-    }()};
+      std::abort();
+    }();
     return fmt::format_to(context.out(), "{}"sv, name);
   }
 };

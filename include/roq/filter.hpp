@@ -6,14 +6,14 @@
 
 #include <fmt/core.h>
 
-#include <cassert>
 #include <cstdint>
+#include <cstdlib>
 
 namespace roq {
 
 //! Enumeration of filter fields
 enum class Filter : uint64_t {
-  UNDEFINED = 0x0,
+  UNDEFINED = 0,
   ACCOUNT = 0x1,      //!< By account
   EXCHANGE = 0x2,     //!< By exchange
   SYMBOL = 0x4,       //!< By symbol
@@ -28,7 +28,7 @@ struct fmt::formatter<roq::Filter> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::Filter const &value, format_context &context) const {
     using namespace std::literals;
-    auto name{[&]() {
+    auto name = [&]() -> std::string_view {
       switch (value) {
         using enum roq::Filter;
         case UNDEFINED:
@@ -43,11 +43,9 @@ struct fmt::formatter<roq::Filter> {
           return "STRATEGY_ID"sv;
         case SIDE:
           return "SIDE"sv;
-        default:
-          assert(false);
       }
-      return "<UNKNOWN>"sv;
-    }()};
+      std::abort();
+    }();
     return fmt::format_to(context.out(), "{}"sv, name);
   }
 };

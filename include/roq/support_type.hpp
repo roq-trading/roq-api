@@ -6,14 +6,14 @@
 
 #include <fmt/core.h>
 
-#include <cassert>
 #include <cstdint>
+#include <cstdlib>
 
 namespace roq {
 
 //! Enumeration of support types
 enum class SupportType : uint64_t {
-  UNDEFINED = 0x0,
+  UNDEFINED = 0,
   REFERENCE_DATA = 0x1,    //!< Reference data
   MARKET_STATUS = 0x2,     //!< Market status
   TOP_OF_BOOK = 0x4,       //!< Top of book
@@ -39,7 +39,7 @@ struct fmt::formatter<roq::SupportType> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::SupportType const &value, format_context &context) const {
     using namespace std::literals;
-    auto name{[&]() {
+    auto name = [&]() -> std::string_view {
       switch (value) {
         using enum roq::SupportType;
         case UNDEFINED:
@@ -76,11 +76,9 @@ struct fmt::formatter<roq::SupportType> {
           return "POSITION"sv;
         case FUNDS:
           return "FUNDS"sv;
-        default:
-          assert(false);
       }
-      return "<UNKNOWN>"sv;
-    }()};
+      std::abort();
+    }();
     return fmt::format_to(context.out(), "{}"sv, name);
   }
 };

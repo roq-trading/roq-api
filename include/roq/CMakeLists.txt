@@ -41,6 +41,7 @@ set(SCHEMA_ROQ
     market_by_order_update.json
     market_by_price_update.json
     market_status.json
+    mass_quote.json
     mbo_update.json
     mbp_update.json
     measurement.json
@@ -66,6 +67,8 @@ set(SCHEMA_ROQ
     protocol.json
     quality_of_service.json
     quantity_type.json
+    quote.json
+    quote_cancel.json
     rate_limit.json
     rate_limits_update.json
     rate_limit_trigger.json

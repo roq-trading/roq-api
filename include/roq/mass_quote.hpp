@@ -21,7 +21,7 @@
 
 namespace roq {
 
-//! Portfolio
+//! Quotes
 struct ROQ_PUBLIC MassQuote final {
   std::string_view account;            //!< Account name
   uint64_t quote_req_id = {};          //!< Quote Request ID

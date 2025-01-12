@@ -19,23 +19,23 @@
 namespace roq {
 
 //! Cancel quotes
-struct ROQ_PUBLIC QuoteCancel final {
+struct ROQ_PUBLIC CancelQuotes final {
   std::string_view account;    //!< Account name
   uint16_t quote_set_id = {};  //!< Quote Request ID
 };
 
 template <>
-inline constexpr std::string_view get_name<QuoteCancel>() {
+inline constexpr std::string_view get_name<CancelQuotes>() {
   using namespace std::literals;
-  return "quote_cancel"sv;
+  return "cancel_quotes"sv;
 }
 
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::QuoteCancel> {
+struct fmt::formatter<roq::CancelQuotes> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::QuoteCancel const &value, format_context &context) const {
+  auto format(roq::CancelQuotes const &value, format_context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
@@ -49,14 +49,14 @@ struct fmt::formatter<roq::QuoteCancel> {
 };
 
 template <>
-struct fmt::formatter<roq::Event<roq::QuoteCancel>> {
+struct fmt::formatter<roq::Event<roq::CancelQuotes>> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Event<roq::QuoteCancel> const &event, format_context &context) const {
+  auto format(roq::Event<roq::CancelQuotes> const &event, format_context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(quote_cancel={}, )"
+        R"(cancel_quotes={}, )"
         R"(message_info={})"
         R"(}})"sv,
         event.value,
@@ -65,14 +65,14 @@ struct fmt::formatter<roq::Event<roq::QuoteCancel>> {
 };
 
 template <>
-struct fmt::formatter<roq::Trace<roq::QuoteCancel>> {
+struct fmt::formatter<roq::Trace<roq::CancelQuotes>> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Trace<roq::QuoteCancel> const &event, format_context &context) const {
+  auto format(roq::Trace<roq::CancelQuotes> const &event, format_context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(quote_cancel={}, )"
+        R"(cancel_quotes={}, )"
         R"(trace_info={})"
         R"(}})"sv,
         event.value,

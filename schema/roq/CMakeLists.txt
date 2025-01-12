@@ -9,6 +9,7 @@ set(SCHEMA_ROQ
     cancel_all_orders_ack.json
     cancel_all_orders.json
     cancel_order.json
+    cancel_quotes_ack.json
     category.json
     connected.json
     connection_status.json
@@ -35,6 +36,7 @@ set(SCHEMA_ROQ
     market_by_order_update.json
     market_by_price_update.json
     market_status.json
+    mass_quote_ack.json
     mbo_update.json
     mbp_update.json
     measurement.json

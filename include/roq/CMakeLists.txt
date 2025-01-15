@@ -7,6 +7,7 @@ set(TARGET_DIR ${CMAKE_INSTALL_INCLUDEDIR}/roq)
 # schema
 
 set(SCHEMA_ROQ
+    action.json
     add_routes.json
     bar.json
     batch_begin.json
@@ -20,6 +21,7 @@ set(SCHEMA_ROQ
     category.json
     connected.json
     connection_status.json
+    control.json
     create_order.json
     custom_matrix.json
     custom_matrix_update.json
@@ -91,6 +93,7 @@ set(SCHEMA_ROQ
     security_type.json
     side.json
     start.json
+    state.json
     statistics.json
     statistics_type.json
     statistics_update.json

@@ -69,9 +69,11 @@
 
 // control (autogen)
 
+#include "roq/action.hpp"
 #include "roq/connected.hpp"
 #include "roq/disconnected.hpp"
 #include "roq/start.hpp"
+#include "roq/state.hpp"
 #include "roq/stop.hpp"
 #include "roq/timer.hpp"
 
@@ -85,6 +87,7 @@
 #include "roq/cancel_order.hpp"
 #include "roq/cancel_quotes.hpp"
 #include "roq/cancel_quotes_ack.hpp"
+#include "roq/control.hpp"
 #include "roq/create_order.hpp"
 #include "roq/custom_matrix.hpp"
 #include "roq/custom_matrix_update.hpp"

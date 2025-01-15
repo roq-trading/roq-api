@@ -2,6 +2,7 @@ set(TARGET_NAME ${PROJECT_NAME}-schema-roq)
 
 # XXX FIXME share with other subdirectories
 set(SCHEMA_ROQ
+    action.json
     add_routes.json
     batch_begin.json
     batch_end.json
@@ -13,6 +14,7 @@ set(SCHEMA_ROQ
     category.json
     connected.json
     connection_status.json
+    control.json
     create_order.json
     custom_matrix.json
     custom_matrix_update.json
@@ -82,6 +84,7 @@ set(SCHEMA_ROQ
     security_type.json
     side.json
     start.json
+    state.json
     statistics.json
     statistics_type.json
     statistics_update.json

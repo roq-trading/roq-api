@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* Control enabled/disabled state (#484)
 * Support MassQuote (#483)
 
 ## 1.0.4 &ndash; 2024-12-30

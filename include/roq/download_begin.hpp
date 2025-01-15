@@ -44,35 +44,3 @@ struct fmt::formatter<roq::DownloadBegin> {
         value.account);
   }
 };
-
-template <>
-struct fmt::formatter<roq::Event<roq::DownloadBegin>> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Event<roq::DownloadBegin> const &event, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(download_begin={}, )"
-        R"(message_info={})"
-        R"(}})"sv,
-        event.value,
-        event.message_info);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::Trace<roq::DownloadBegin>> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Trace<roq::DownloadBegin> const &event, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(download_begin={}, )"
-        R"(trace_info={})"
-        R"(}})"sv,
-        event.value,
-        event.trace_info);
-  }
-};

@@ -76,35 +76,3 @@ struct fmt::formatter<roq::TimeSeriesUpdate> {
         value.volume_precision);
   }
 };
-
-template <>
-struct fmt::formatter<roq::Event<roq::TimeSeriesUpdate>> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Event<roq::TimeSeriesUpdate> const &event, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(time_series_update={}, )"
-        R"(message_info={})"
-        R"(}})"sv,
-        event.value,
-        event.message_info);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::Trace<roq::TimeSeriesUpdate>> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Trace<roq::TimeSeriesUpdate> const &event, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(time_series_update={}, )"
-        R"(trace_info={})"
-        R"(}})"sv,
-        event.value,
-        event.trace_info);
-  }
-};

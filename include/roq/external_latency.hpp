@@ -52,35 +52,3 @@ struct fmt::formatter<roq::ExternalLatency> {
         value.latency);
   }
 };
-
-template <>
-struct fmt::formatter<roq::Event<roq::ExternalLatency>> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Event<roq::ExternalLatency> const &event, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(external_latency={}, )"
-        R"(message_info={})"
-        R"(}})"sv,
-        event.value,
-        event.message_info);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::Trace<roq::ExternalLatency>> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Trace<roq::ExternalLatency> const &event, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(external_latency={}, )"
-        R"(trace_info={})"
-        R"(}})"sv,
-        event.value,
-        event.trace_info);
-  }
-};

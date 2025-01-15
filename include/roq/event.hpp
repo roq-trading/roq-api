@@ -2,10 +2,13 @@
 
 #pragma once
 
+#include <fmt/core.h>
+
 #include <type_traits>
 #include <utility>
 
 #include "roq/message_info.hpp"
+#include "roq/name.hpp"
 
 namespace roq {
 
@@ -49,3 +52,20 @@ inline void create_event_and_dispatch(auto &handler, MessageInfo const &message_
 }
 
 }  // namespace roq
+
+template <typename T>
+struct fmt::formatter<roq::Event<T>> {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Event<T> const &event, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"({}={}, )"
+        R"(message_info={})"
+        R"(}})"sv,
+        roq::get_name<T>(),
+        event.value,
+        event.message_info);
+  }
+};

@@ -59,35 +59,3 @@ struct fmt::formatter<roq::CancelOrder> {
         value.conditional_on_version);
   }
 };
-
-template <>
-struct fmt::formatter<roq::Event<roq::CancelOrder>> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Event<roq::CancelOrder> const &event, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(cancel_order={}, )"
-        R"(message_info={})"
-        R"(}})"sv,
-        event.value,
-        event.message_info);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::Trace<roq::CancelOrder>> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Trace<roq::CancelOrder> const &event, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(cancel_order={}, )"
-        R"(trace_info={})"
-        R"(}})"sv,
-        event.value,
-        event.trace_info);
-  }
-};

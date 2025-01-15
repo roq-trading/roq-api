@@ -95,35 +95,3 @@ struct fmt::formatter<roq::CancelAllOrdersAck> {
         value.strategy_id);
   }
 };
-
-template <>
-struct fmt::formatter<roq::Event<roq::CancelAllOrdersAck>> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Event<roq::CancelAllOrdersAck> const &event, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(cancel_all_orders_ack={}, )"
-        R"(message_info={})"
-        R"(}})"sv,
-        event.value,
-        event.message_info);
-  }
-};
-
-template <>
-struct fmt::formatter<roq::Trace<roq::CancelAllOrdersAck>> {
-  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Trace<roq::CancelAllOrdersAck> const &event, format_context &context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        R"({{)"
-        R"(cancel_all_orders_ack={}, )"
-        R"(trace_info={})"
-        R"(}})"sv,
-        event.value,
-        event.trace_info);
-  }
-};

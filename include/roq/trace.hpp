@@ -2,8 +2,11 @@
 
 #pragma once
 
+#include <fmt/core.h>
+
 #include <utility>
 
+#include "roq/name.hpp"
 #include "roq/trace_info.hpp"
 
 namespace roq {
@@ -36,3 +39,20 @@ inline void create_trace_and_dispatch(auto &handler, TraceInfo const &trace_info
 }
 
 }  // namespace roq
+
+template <typename T>
+struct fmt::formatter<roq::Trace<T>> {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::Trace<T> const &event, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(
+        context.out(),
+        R"({{)"
+        R"({}={}, )"
+        R"(message_info={})"
+        R"(}})"sv,
+        roq::get_name<T>(),
+        event.value,
+        event.message_info);
+  }
+};

@@ -49,10 +49,10 @@ struct fmt::formatter<roq::Trace<T>> {
         context.out(),
         R"({{)"
         R"({}={}, )"
-        R"(message_info={})"
+        R"(trace_info={})"
         R"(}})"sv,
         roq::get_name<T>(),
         event.value,
-        event.message_info);
+        event.trace_info);
   }
 };

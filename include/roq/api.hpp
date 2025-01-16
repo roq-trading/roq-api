@@ -10,6 +10,7 @@
 
 // enums
 
+#include "roq/action.hpp"
 #include "roq/buffer_capacity.hpp"
 #include "roq/category.hpp"
 #include "roq/connection_status.hpp"
@@ -37,6 +38,7 @@
 #include "roq/route_request_status.hpp"
 #include "roq/security_type.hpp"
 #include "roq/side.hpp"
+#include "roq/state.hpp"
 #include "roq/statistics_type.hpp"
 #include "roq/support_type.hpp"
 #include "roq/time_in_force.hpp"
@@ -69,11 +71,11 @@
 
 // control (autogen)
 
-#include "roq/action.hpp"
 #include "roq/connected.hpp"
+#include "roq/control.hpp"
 #include "roq/disconnected.hpp"
 #include "roq/start.hpp"
-#include "roq/state.hpp"
+#include "roq/status_update.hpp"
 #include "roq/stop.hpp"
 #include "roq/timer.hpp"
 
@@ -87,7 +89,6 @@
 #include "roq/cancel_order.hpp"
 #include "roq/cancel_quotes.hpp"
 #include "roq/cancel_quotes_ack.hpp"
-#include "roq/control.hpp"
 #include "roq/create_order.hpp"
 #include "roq/custom_matrix.hpp"
 #include "roq/custom_matrix_update.hpp"
@@ -120,7 +121,6 @@
 #include "roq/risk_limits_update.hpp"
 #include "roq/route_ack.hpp"
 #include "roq/statistics_update.hpp"
-#include "roq/status_update.hpp"
 #include "roq/stream_status.hpp"
 #include "roq/time_series_update.hpp"
 #include "roq/top_of_book.hpp"

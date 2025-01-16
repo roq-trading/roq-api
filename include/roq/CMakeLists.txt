@@ -97,6 +97,7 @@ set(SCHEMA_ROQ
     statistics.json
     statistics_type.json
     statistics_update.json
+    status_update.json
     stop.json
     stream_status.json
     support_type.json

@@ -12,39 +12,39 @@
 
 #include <string_view>
 
-#include "roq/action.hpp"
 #include "roq/event.hpp"
 #include "roq/name.hpp"
+#include "roq/state.hpp"
 #include "roq/trace.hpp"
 
 namespace roq {
 
-//! Control service state
-struct ROQ_PUBLIC Control final {
-  roq::Action action = {};  //!< Action
-  std::string_view user;    //!< User name (optional)
+//! Status update relating to a service
+struct ROQ_PUBLIC StatusUpdate final {
+  roq::State state = {};
+  std::string_view user;  //!< User name (optional)
 };
 
 template <>
-inline constexpr std::string_view get_name<Control>() {
+inline constexpr std::string_view get_name<StatusUpdate>() {
   using namespace std::literals;
-  return "control"sv;
+  return "status_update"sv;
 }
 
 }  // namespace roq
 
 template <>
-struct fmt::formatter<roq::Control> {
+struct fmt::formatter<roq::StatusUpdate> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
-  auto format(roq::Control const &value, format_context &context) const {
+  auto format(roq::StatusUpdate const &value, format_context &context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(action={}, )"
+        R"(state={}, )"
         R"(user="{}")"
         R"(}})"sv,
-        value.action,
+        value.state,
         value.user);
   }
 };

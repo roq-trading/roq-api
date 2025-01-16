@@ -120,6 +120,7 @@
 #include "roq/risk_limits_update.hpp"
 #include "roq/route_ack.hpp"
 #include "roq/statistics_update.hpp"
+#include "roq/status_update.hpp"
 #include "roq/stream_status.hpp"
 #include "roq/time_series_update.hpp"
 #include "roq/top_of_book.hpp"

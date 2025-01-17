@@ -4,6 +4,7 @@
 
 #include <fmt/core.h>
 
+#include <type_traits>
 #include <utility>
 
 #include "roq/name.hpp"
@@ -11,17 +12,17 @@
 
 namespace roq {
 
-template <typename T, typename = typename std::enable_if<!std::is_const<T>::value>::type>
+template <typename T>
 struct Trace final {
-  using value_type = T;
+  using value_type = std::remove_cvref<T>::type;
 
-  Trace(TraceInfo const &trace_info_, T const &value_) : trace_info{trace_info_}, value{value_} {}
+  Trace(TraceInfo const &trace_info, T const &value) : trace_info{trace_info}, value{value} {}
 
-  Trace(Trace const &) = delete;
   Trace(Trace &&) = delete;
+  Trace(Trace const &) = delete;
 
-  void operator=(Trace const &) = delete;
   void operator=(Trace &&) = delete;
+  void operator=(Trace const &) = delete;
 
   operator TraceInfo const &() const { return trace_info; }
   operator value_type const &() const { return value; }
@@ -30,12 +31,17 @@ struct Trace final {
 
   TraceInfo const &trace_info;
   value_type const &value;
+
+  template <typename... Args>
+  static void create_and_dispatch(auto &handler, TraceInfo const &trace_info, T const &value, Args &&...args) {
+    Trace const event{trace_info, value};
+    handler(event, std::forward<Args>(args)...);
+  }
 };
 
-template <typename... Args>
-inline void create_trace_and_dispatch(auto &handler, TraceInfo const &trace_info, auto const &value, Args &&...args) {
-  Trace const event{trace_info, value};
-  handler(event, std::forward<Args>(args)...);
+template <typename T, typename... Args>
+inline void create_trace_and_dispatch(auto &handler, TraceInfo const &trace_info, T const &value, Args &&...args) {
+  Trace<T>::create_and_dispatch(handler, trace_info, value, std::forward<Args>(args)...);
 }
 
 }  // namespace roq

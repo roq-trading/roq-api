@@ -13,17 +13,17 @@
 namespace roq {
 
 //! Event
-template <typename T, typename = typename std::enable_if<!std::is_const<T>::value>::type>
+template <typename T>
 struct Event final {
-  using value_type = T;
+  using value_type = std::remove_cvref<T>::type;
 
-  Event(MessageInfo const &message_info_, T const &value_) : message_info{message_info_}, value{value_} {}
+  Event(MessageInfo const &message_info, T const &value) : message_info{message_info}, value{value} {}
 
-  Event(Event const &) = delete;
   Event(Event &&) = delete;
+  Event(Event const &) = delete;
 
-  void operator=(Event const &) = delete;
   void operator=(Event &&) = delete;
+  void operator=(Event const &) = delete;
 
   //! Dispatch to handler
   template <typename Result, typename Handler, typename... Args>
@@ -42,13 +42,19 @@ struct Event final {
 
   MessageInfo const &message_info;  //!< MessageInfo
   value_type const &value;          //!< Message
+
+  //! Create event and dispatch to handler
+  template <typename... Args>
+  static void create_and_dispatch(auto &handler, MessageInfo const &message_info, T const &value, Args &&...args) {
+    Event const event{message_info, value};
+    return event.template dispatch<void>(handler, std::forward<Args>(args)...);
+  }
 };
 
 //! Create event and dispatch to handler
-template <typename... Args>
-inline void create_event_and_dispatch(auto &handler, MessageInfo const &message_info, auto const &value, Args &&...args) {
-  Event const event{message_info, value};
-  return event.template dispatch<void>(handler, std::forward<Args>(args)...);
+template <typename T, typename... Args>
+inline void create_event_and_dispatch(auto &handler, MessageInfo const &message_info, T const &value, Args &&...args) {
+  return Event<T>::create_and_dispatch(handler, message_info, value, std::forward<Args>(args)...);
 }
 
 }  // namespace roq

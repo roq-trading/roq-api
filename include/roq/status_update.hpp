@@ -12,6 +12,7 @@
 
 #include <string_view>
 
+#include "roq/connection_status.hpp"
 #include "roq/event.hpp"
 #include "roq/name.hpp"
 #include "roq/state.hpp"
@@ -19,10 +20,11 @@
 
 namespace roq {
 
-//! Status update relating to a service
+//! Service status update
 struct ROQ_PUBLIC StatusUpdate final {
-  roq::State state = {};
-  std::string_view user;  //!< User name (optional)
+  roq::ConnectionStatus connection_status = {};  //!< Service connection status
+  roq::State state = {};                         //!< Service state
+  std::string_view user;                         //!< User name of a connected service (optional, empty means self)
 };
 
 template <>
@@ -41,9 +43,11 @@ struct fmt::formatter<roq::StatusUpdate> {
     return fmt::format_to(
         context.out(),
         R"({{)"
+        R"(connection_status={}, )"
         R"(state={}, )"
         R"(user="{}")"
         R"(}})"sv,
+        value.connection_status,
         value.state,
         value.user);
   }

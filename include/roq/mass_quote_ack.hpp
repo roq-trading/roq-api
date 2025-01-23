@@ -25,7 +25,7 @@ namespace roq {
 struct ROQ_PUBLIC MassQuoteAck final {
   uint16_t stream_id = {};                 //!< Stream identifier
   std::string_view account;                //!< Account name
-  uint64_t quote_req_id = {};              //!< Quote Request ID
+  uint32_t quote_id = {};                  //!< Quote ID
   roq::Origin origin = {};                 //!< Origin of ack
   roq::RequestStatus request_status = {};  //!< Request status
   roq::Error error = {};                   //!< Error code
@@ -52,7 +52,7 @@ struct fmt::formatter<roq::MassQuoteAck> {
         R"({{)"
         R"(stream_id={}, )"
         R"(account="{}", )"
-        R"(quote_req_id={}, )"
+        R"(quote_id={}, )"
         R"(origin={}, )"
         R"(request_status={}, )"
         R"(error={}, )"
@@ -62,7 +62,7 @@ struct fmt::formatter<roq::MassQuoteAck> {
         R"(}})"sv,
         value.stream_id,
         value.account,
-        value.quote_req_id,
+        value.quote_id,
         value.origin,
         value.request_status,
         value.error,

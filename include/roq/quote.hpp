@@ -11,7 +11,9 @@
 #include <magic_enum/magic_enum_format.hpp>
 
 #include "roq/event.hpp"
+#include "roq/execution_instruction.hpp"
 #include "roq/limits.hpp"
+#include "roq/mask.hpp"
 #include "roq/name.hpp"
 #include "roq/string_types.hpp"
 #include "roq/trace.hpp"
@@ -20,14 +22,15 @@ namespace roq {
 
 //! Quote
 struct ROQ_PUBLIC Quote final {
-  roq::Exchange exchange;        //!< Exchange
-  roq::Symbol symbol;            //!< Symbol
-  double bid_price = roq::NaN;   //!< Bid price level
-  double bid_quantity = {};      //!< Total quantity available at bid
-  double ask_price = roq::NaN;   //!< Ask price level
-  double ask_quantity = {};      //!< Total quantity available at ask
-  uint16_t quote_set_id = {};    //!< Quote Set ID (can be used to cancel quotes)
-  uint32_t quote_entry_id = {};  //!< Quote ID (when supported by exchange)
+  uint32_t quote_entry_id = {};                                 //!< Quote Entry ID
+  roq::Exchange exchange;                                       //!< Exchange
+  roq::Symbol symbol;                                           //!< Symbol
+  double bid_price = roq::NaN;                                  //!< Bid price level
+  double bid_quantity = {};                                     //!< Total quantity available at bid
+  double ask_price = roq::NaN;                                  //!< Ask price level
+  double ask_quantity = {};                                     //!< Total quantity available at ask
+  uint16_t quote_set_id = {};                                   //!< Quote Set ID (can be used to group and cancel quotes)
+  roq::Mask<roq::ExecutionInstruction> execution_instructions;  //!< Execution instructions
 };
 
 template <>
@@ -46,6 +49,7 @@ struct fmt::formatter<roq::Quote> {
     return fmt::format_to(
         context.out(),
         R"({{)"
+        R"(quote_entry_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(bid_price={}, )"
@@ -53,8 +57,9 @@ struct fmt::formatter<roq::Quote> {
         R"(ask_price={}, )"
         R"(ask_quantity={}, )"
         R"(quote_set_id={}, )"
-        R"(quote_entry_id={})"
+        R"(execution_instructions={})"
         R"(}})"sv,
+        value.quote_entry_id,
         value.exchange,
         value.symbol,
         value.bid_price,
@@ -62,6 +67,6 @@ struct fmt::formatter<roq::Quote> {
         value.ask_price,
         value.ask_quantity,
         value.quote_set_id,
-        value.quote_entry_id);
+        value.execution_instructions);
   }
 };

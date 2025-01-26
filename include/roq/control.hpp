@@ -21,8 +21,13 @@ namespace roq {
 
 //! Control service state
 struct ROQ_PUBLIC Control final {
-  roq::Action action = {};  //!< Action
-  std::string_view user;    //!< User name (optional)
+  roq::Action action = {};    //!< Action
+  std::string_view user;      //!< User name (optional)
+  uint32_t strategy_id = {};  //!< Strategy ID (optional)
+  uint8_t leg = {};           //!< Leg index (optional)
+  std::string_view account;   //!< Account (optional)
+  std::string_view exchange;  //!< Exchange (optional)
+  std::string_view symbol;    //!< Symbol (optional)
 };
 
 template <>
@@ -42,9 +47,19 @@ struct fmt::formatter<roq::Control> {
         context.out(),
         R"({{)"
         R"(action={}, )"
-        R"(user="{}")"
+        R"(user="{}", )"
+        R"(strategy_id={}, )"
+        R"(leg={}, )"
+        R"(account="{}", )"
+        R"(exchange="{}", )"
+        R"(symbol="{}")"
         R"(}})"sv,
         value.action,
-        value.user);
+        value.user,
+        value.strategy_id,
+        value.leg,
+        value.account,
+        value.exchange,
+        value.symbol);
   }
 };

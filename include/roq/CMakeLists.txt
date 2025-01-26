@@ -40,6 +40,7 @@ set(SCHEMA_ROQ
     gateway_settings.json
     gateway_status.json
     layer.json
+    leg.json
     liquidity.json
     margin_mode.json
     market_by_order_update.json
@@ -91,14 +92,15 @@ set(SCHEMA_ROQ
     route_request_status.json
     routing.json
     security_type.json
+    service_update.json
     side.json
     start.json
     state.json
     statistics.json
     statistics_type.json
     statistics_update.json
-    status_update.json
     stop.json
+    strategy_update.json
     stream_status.json
     support_type.json
     tick_size_step.json

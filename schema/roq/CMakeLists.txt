@@ -82,13 +82,13 @@ set(SCHEMA_ROQ
     route_request_status.json
     routing.json
     security_type.json
+    service_update.json
     side.json
     start.json
     state.json
     statistics.json
     statistics_type.json
     statistics_update.json
-    status_update.json
     stop.json
     stream_status.json
     support_type.json

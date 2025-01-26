@@ -19,15 +19,15 @@
 
 namespace roq {
 
-//! Control service state
+//! Service control
 struct ROQ_PUBLIC Control final {
   roq::Action action = {};    //!< Action
-  std::string_view user;      //!< User name (optional)
-  uint32_t strategy_id = {};  //!< Strategy ID (optional)
-  uint8_t leg = {};           //!< Leg index (optional)
-  std::string_view account;   //!< Account (optional)
-  std::string_view exchange;  //!< Exchange (optional)
-  std::string_view symbol;    //!< Symbol (optional)
+  std::string_view user;      //!< User name (client routing, optional)
+  uint32_t strategy_id = {};  //!< Strategy filter (optional)
+  uint8_t leg = {};           //!< Leg index filter (optional)
+  std::string_view account;   //!< Account filter (optional)
+  std::string_view exchange;  //!< Exchange filter (optional)
+  std::string_view symbol;    //!< Symbol filter (optional)
 };
 
 template <>

@@ -53,6 +53,7 @@
 #include "roq/bar.hpp"
 #include "roq/fill.hpp"
 #include "roq/layer.hpp"
+#include "roq/leg.hpp"
 #include "roq/mbo_update.hpp"
 #include "roq/mbp_update.hpp"
 #include "roq/measurement.hpp"
@@ -74,9 +75,10 @@
 #include "roq/connected.hpp"
 #include "roq/control.hpp"
 #include "roq/disconnected.hpp"
+#include "roq/service_update.hpp"
 #include "roq/start.hpp"
-#include "roq/status_update.hpp"
 #include "roq/stop.hpp"
+#include "roq/strategy_update.hpp"
 #include "roq/timer.hpp"
 
 // messages (autogen)

@@ -17,7 +17,7 @@ namespace roq {
 
 //! Represents current state of a strategy leg
 struct ROQ_PUBLIC Leg final {
-  uint8_t index = {};      //!< Index
+  uint16_t leg_id = {};    //!< Index
   roq::Account account;    //!< Account (optional)
   roq::Exchange exchange;  //!< Exchange (optional)
   roq::Symbol symbol;      //!< Symbol (optional)
@@ -34,13 +34,13 @@ struct fmt::formatter<roq::Leg> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(index={}, )"
+        R"(leg_id={}, )"
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(state={})"
         R"(}})"sv,
-        value.index,
+        value.leg_id,
         value.account,
         value.exchange,
         value.symbol,

@@ -24,7 +24,7 @@ struct ROQ_PUBLIC Control final {
   roq::Action action = {};    //!< Action
   std::string_view user;      //!< User name (client routing, optional)
   uint32_t strategy_id = {};  //!< Strategy filter (optional)
-  uint8_t leg = {};           //!< Leg index filter (optional)
+  uint16_t leg_id = {};       //!< Leg index filter (optional)
   std::string_view account;   //!< Account filter (optional)
   std::string_view exchange;  //!< Exchange filter (optional)
   std::string_view symbol;    //!< Symbol filter (optional)
@@ -49,7 +49,7 @@ struct fmt::formatter<roq::Control> {
         R"(action={}, )"
         R"(user="{}", )"
         R"(strategy_id={}, )"
-        R"(leg={}, )"
+        R"(leg_id={}, )"
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}")"
@@ -57,7 +57,7 @@ struct fmt::formatter<roq::Control> {
         value.action,
         value.user,
         value.strategy_id,
-        value.leg,
+        value.leg_id,
         value.account,
         value.exchange,
         value.symbol);

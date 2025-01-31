@@ -74,7 +74,9 @@
 
 #include "roq/connected.hpp"
 #include "roq/control.hpp"
+#include "roq/control_ack.hpp"
 #include "roq/disconnected.hpp"
+#include "roq/legs_update.hpp"
 #include "roq/service_update.hpp"
 #include "roq/start.hpp"
 #include "roq/stop.hpp"

@@ -21,13 +21,14 @@ namespace roq {
 
 //! Service control
 struct ROQ_PUBLIC Control final {
-  roq::Action action = {};    //!< Action
-  std::string_view user;      //!< User name (client routing, optional)
-  uint32_t strategy_id = {};  //!< Strategy filter (optional)
-  uint16_t leg_id = {};       //!< Leg index filter (optional)
-  std::string_view account;   //!< Account filter (optional)
-  std::string_view exchange;  //!< Exchange filter (optional)
-  std::string_view symbol;    //!< Symbol filter (optional)
+  std::string_view request_id;  //!< Request identifier
+  std::string_view user;        //!< User name (client routing, optional)
+  roq::Action action = {};      //!< Action
+  uint32_t strategy_id = {};    //!< Strategy filter (optional)
+  uint16_t leg_id = {};         //!< Leg index filter (optional)
+  std::string_view account;     //!< Account filter (optional)
+  std::string_view exchange;    //!< Exchange filter (optional)
+  std::string_view symbol;      //!< Symbol filter (optional)
 };
 
 template <>
@@ -46,16 +47,18 @@ struct fmt::formatter<roq::Control> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(action={}, )"
+        R"(request_id="{}", )"
         R"(user="{}", )"
+        R"(action={}, )"
         R"(strategy_id={}, )"
         R"(leg_id={}, )"
         R"(account="{}", )"
         R"(exchange="{}", )"
         R"(symbol="{}")"
         R"(}})"sv,
-        value.action,
+        value.request_id,
         value.user,
+        value.action,
         value.strategy_id,
         value.leg_id,
         value.account,

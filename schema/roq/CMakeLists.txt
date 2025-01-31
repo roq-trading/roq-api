@@ -15,6 +15,7 @@ set(SCHEMA_ROQ
     connected.json
     connection_status.json
     control.json
+    control_ack.json
     create_order.json
     custom_matrix.json
     custom_matrix_update.json
@@ -33,6 +34,8 @@ set(SCHEMA_ROQ
     gateway_settings.json
     gateway_status.json
     layer.json
+    leg.json
+    legs_update.json
     liquidity.json
     margin_mode.json
     market_by_order_update.json

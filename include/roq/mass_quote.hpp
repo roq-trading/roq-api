@@ -25,12 +25,12 @@ namespace roq {
 
 //! Quotes
 struct ROQ_PUBLIC MassQuote final {
-  std::string_view account;                   //!< Account name
-  uint32_t quote_id = {};                     //!< Quote ID
-  std::span<roq::Quote const> quotes;         //!< Quotes
-  bool mmp_reset = false;                     //!< Market Maker Protection reset? (when supported by exchange)
-  std::string_view mmp_group;                 //!< Market Maker Protection group name (when supported by exchange)
-  std::chrono::nanoseconds valid_until = {};  //!< Quote valid until UTC timestamp (when supported by exchange)
+  std::string_view account;                       //!< Account name
+  uint32_t quote_id = {};                         //!< Quote ID
+  std::span<roq::Quote const> quotes;             //!< Quotes
+  bool mmp_reset = false;                         //!< Market Maker Protection reset? (when supported by exchange)
+  std::string_view mmp_group;                     //!< Market Maker Protection group name (when supported by exchange)
+  std::chrono::nanoseconds valid_until_utc = {};  //!< Quote valid until UTC timestamp (when supported by exchange)
 };
 
 template <>
@@ -54,13 +54,13 @@ struct fmt::formatter<roq::MassQuote> {
         R"(quotes=[{}], )"
         R"(mmp_reset={}, )"
         R"(mmp_group="{}", )"
-        R"(valid_until={})"
+        R"(valid_until_utc={})"
         R"(}})"sv,
         value.account,
         value.quote_id,
         fmt::join(value.quotes, ", "sv),
         value.mmp_reset,
         value.mmp_group,
-        value.valid_until);
+        value.valid_until_utc);
   }
 };

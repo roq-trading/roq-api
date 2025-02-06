@@ -35,6 +35,7 @@ struct ROQ_PUBLIC PositionUpdate final {
   double short_quantity = roq::NaN;                 //!< Current short position (absolute)
   roq::UpdateType update_type = {};                 //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
 };
 
@@ -64,6 +65,7 @@ struct fmt::formatter<roq::PositionUpdate> {
         R"(short_quantity={}, )"
         R"(update_type={}, )"
         R"(exchange_time_utc={}, )"
+        R"(exchange_sequence={}, )"
         R"(sending_time_utc={})"
         R"(}})"sv,
         value.stream_id,
@@ -76,6 +78,7 @@ struct fmt::formatter<roq::PositionUpdate> {
         value.short_quantity,
         value.update_type,
         value.exchange_time_utc,
+        value.exchange_sequence,
         value.sending_time_utc);
   }
 };

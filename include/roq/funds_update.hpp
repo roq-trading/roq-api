@@ -34,6 +34,7 @@ struct ROQ_PUBLIC FundsUpdate final {
   std::string_view external_account;                //!< External account name
   roq::UpdateType update_type = {};                 //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
 };
 
@@ -62,6 +63,7 @@ struct fmt::formatter<roq::FundsUpdate> {
         R"(external_account="{}", )"
         R"(update_type={}, )"
         R"(exchange_time_utc={}, )"
+        R"(exchange_sequence={}, )"
         R"(sending_time_utc={})"
         R"(}})"sv,
         value.stream_id,
@@ -73,6 +75,7 @@ struct fmt::formatter<roq::FundsUpdate> {
         value.external_account,
         value.update_type,
         value.exchange_time_utc,
+        value.exchange_sequence,
         value.sending_time_utc);
   }
 };

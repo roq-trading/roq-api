@@ -30,26 +30,28 @@ namespace roq {
 
 //! Update relating to order being partially or fully filled
 struct ROQ_PUBLIC TradeUpdate final {
-  uint16_t stream_id = {};                         //!< Stream identifier
-  std::string_view account;                        //!< Account name
-  uint64_t order_id = {};                          //!< Order identifier
-  std::string_view exchange;                       //!< Exchange
-  std::string_view symbol;                         //!< Symbol
-  roq::Side side = {};                             //!< Side
-  roq::PositionEffect position_effect = {};        //!< Position effect
-  roq::MarginMode margin_mode = {};                //!< Margin mode
-  roq::QuantityType quantity_type = {};            //!< Type of quantity (requires ecxhange support)
-  std::chrono::nanoseconds create_time_utc = {};   //!< Created timestamp (UTC)
-  std::chrono::nanoseconds update_time_utc = {};   //!< Updated timestamp (UTC)
-  std::string_view external_account;               //!< External account name
-  std::string_view external_order_id;              //!< External order identifier
-  std::string_view client_order_id;                //!< Client order identifier
-  std::span<roq::Fill const> fills;                //!< List of fills
-  std::string_view routing_id;                     //!< Routing identifier
-  roq::UpdateType update_type = {};                //!< Update type
-  std::chrono::nanoseconds sending_time_utc = {};  //!< Exchange sending timestamp (UTC)
-  std::string_view user;                           //!< User name (optional, only relevant for drop-copy)
-  uint32_t strategy_id = {};                       //!< Strategy identifier (optional)
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view account;                         //!< Account name
+  uint64_t order_id = {};                           //!< Order identifier
+  std::string_view exchange;                        //!< Exchange
+  std::string_view symbol;                          //!< Symbol
+  roq::Side side = {};                              //!< Side
+  roq::PositionEffect position_effect = {};         //!< Position effect
+  roq::MarginMode margin_mode = {};                 //!< Margin mode
+  roq::QuantityType quantity_type = {};             //!< Type of quantity (requires ecxhange support)
+  std::chrono::nanoseconds create_time_utc = {};    //!< Created timestamp (UTC)
+  std::chrono::nanoseconds update_time_utc = {};    //!< Updated timestamp (UTC)
+  std::string_view external_account;                //!< External account name
+  std::string_view external_order_id;               //!< External order identifier
+  std::string_view client_order_id;                 //!< Client order identifier
+  std::span<roq::Fill const> fills;                 //!< List of fills
+  std::string_view routing_id;                      //!< Routing identifier
+  roq::UpdateType update_type = {};                 //!< Update type
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
+  uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
+  std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
+  std::string_view user;                            //!< User name (optional, only relevant for drop-copy)
+  uint32_t strategy_id = {};                        //!< Strategy identifier (optional)
 };
 
 template <>
@@ -85,6 +87,8 @@ struct fmt::formatter<roq::TradeUpdate> {
         R"(fills=[{}], )"
         R"(routing_id="{}", )"
         R"(update_type={}, )"
+        R"(exchange_time_utc={}, )"
+        R"(exchange_sequence={}, )"
         R"(sending_time_utc={}, )"
         R"(user="{}", )"
         R"(strategy_id={})"
@@ -106,6 +110,8 @@ struct fmt::formatter<roq::TradeUpdate> {
         fmt::join(value.fills, ", "sv),
         value.routing_id,
         value.update_type,
+        value.exchange_time_utc,
+        value.exchange_sequence,
         value.sending_time_utc,
         value.user,
         value.strategy_id);

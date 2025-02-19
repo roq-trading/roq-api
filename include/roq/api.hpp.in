@@ -64,6 +64,7 @@
 #include "roq/risk_limit.hpp"
 #include "roq/route.hpp"
 #include "roq/statistics.hpp"
+#include "roq/tick_size_step.hpp"
 #include "roq/trade.hpp"
 
 // transport

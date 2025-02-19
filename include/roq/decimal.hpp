@@ -10,16 +10,18 @@
 namespace roq {
 
 struct Decimal final {
-  using value_type = double;
-
   Decimal() = default;
 
-  Decimal(value_type value, Precision precision) : value{value}, precision{precision} {}
+  Decimal(double value, Precision precision) : value_{value}, precision_{precision} {}
 
-  bool empty() const { return std::isnan(value); }
+  bool empty() const { return std::isnan(value_); }
 
-  value_type const value = NaN;
-  Precision const precision = {};
+  operator double() const { return value_; }
+  operator Precision() const { return precision_; }
+
+ private:
+  double value_ = NaN;
+  Precision precision_ = {};
 };
 
 }  // namespace roq
@@ -38,9 +40,9 @@ struct fmt::formatter<roq::Decimal> {
     static_assert(helper(roq::Precision::_0) == 0);
     static_assert(helper(roq::Precision::_15) == 15);
     using namespace std::literals;
-    auto decimal_digits = helper(value.precision);
+    auto decimal_digits = helper(static_cast<roq::Precision>(value));
     if (decimal_digits >= 0)
-      return fmt::format_to(context.out(), "{:.{}f}"sv, value.value, decimal_digits);
-    return fmt::format_to(context.out(), "{}"sv, value.value);
+      return fmt::format_to(context.out(), "{:.{}f}"sv, static_cast<double>(value), decimal_digits);
+    return fmt::format_to(context.out(), "{}"sv, static_cast<double>(value));
   }
 };

@@ -10,13 +10,10 @@
 
 #include <magic_enum/magic_enum_format.hpp>
 
-#include "roq/event.hpp"
 #include "roq/execution_instruction.hpp"
 #include "roq/limits.hpp"
 #include "roq/mask.hpp"
-#include "roq/name.hpp"
 #include "roq/string_types.hpp"
-#include "roq/trace.hpp"
 
 namespace roq {
 
@@ -32,12 +29,6 @@ struct ROQ_PUBLIC Quote final {
   uint16_t quote_set_id = {};                                   //!< Quote Set ID (can be used to group and cancel quotes)
   roq::Mask<roq::ExecutionInstruction> execution_instructions;  //!< Execution instructions
 };
-
-template <>
-inline constexpr std::string_view get_name<Quote>() {
-  using namespace std::literals;
-  return "quote"sv;
-}
 
 }  // namespace roq
 

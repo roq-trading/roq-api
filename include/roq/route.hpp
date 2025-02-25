@@ -10,10 +10,7 @@
 
 #include <magic_enum/magic_enum_format.hpp>
 
-#include "roq/event.hpp"
-#include "roq/name.hpp"
 #include "roq/route_request_status.hpp"
-#include "roq/trace.hpp"
 
 namespace roq {
 
@@ -22,12 +19,6 @@ struct ROQ_PUBLIC Route final {
   uint32_t strategy_id = {};            //!< Strategy identifier (optional)
   roq::RouteRequestStatus status = {};  //!< Response to the request
 };
-
-template <>
-inline constexpr std::string_view get_name<Route>() {
-  using namespace std::literals;
-  return "route"sv;
-}
 
 }  // namespace roq
 

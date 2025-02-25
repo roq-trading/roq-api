@@ -10,11 +10,8 @@
 
 #include <magic_enum/magic_enum_format.hpp>
 
-#include "roq/event.hpp"
 #include "roq/limits.hpp"
-#include "roq/name.hpp"
 #include "roq/string_types.hpp"
-#include "roq/trace.hpp"
 
 namespace roq {
 
@@ -25,12 +22,6 @@ struct ROQ_PUBLIC Position final {
   double long_position = 0.0;   //!< Position (long)
   double short_position = 0.0;  //!< Position (short)
 };
-
-template <>
-inline constexpr std::string_view get_name<Position>() {
-  using namespace std::literals;
-  return "position"sv;
-}
 
 }  // namespace roq
 

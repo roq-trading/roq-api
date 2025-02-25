@@ -13,10 +13,7 @@
 
 #include <chrono>
 
-#include "roq/event.hpp"
-#include "roq/name.hpp"
 #include "roq/rate_limit_type.hpp"
-#include "roq/trace.hpp"
 
 namespace roq {
 
@@ -28,12 +25,6 @@ struct ROQ_PUBLIC RateLimit final {
   uint32_t limit = {};                     //!< Limit
   uint32_t value = {};                     //!< Value
 };
-
-template <>
-inline constexpr std::string_view get_name<RateLimit>() {
-  using namespace std::literals;
-  return "rate_limit"sv;
-}
 
 }  // namespace roq
 

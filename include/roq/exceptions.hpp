@@ -21,13 +21,14 @@ namespace roq {
 
 namespace detail {
 template <typename... Args>
-constexpr auto create_what(format_str<Args...> const &fmt, Args &&...args) -> std::string {
-  if (std::size(fmt.str) == 0)
+constexpr auto create_what(fmt::string_view const &str, Args &&...args) -> std::string {
+  if (std::size(str) == 0)
     return {};
   if constexpr (sizeof...(args) == 0) {
-    return {std::data(fmt.str), std::size(fmt.str)};
+    return {std::data(str), std::size(str)};
   } else {
-    return fmt::vformat(fmt.str, fmt::make_format_args(args...));
+    // XXX FIXME TODO fmt::format_string
+    return fmt::vformat(str, fmt::make_format_args(args...));
   }
 }
 }  // namespace detail
@@ -49,8 +50,8 @@ constexpr auto create_what(format_str<Args...> const &fmt, Args &&...args) -> st
 //! Base
 struct ROQ_PUBLIC Exception : public std::exception {
   template <typename... Args>
-  explicit Exception(format_str<Args...> const &fmt, Args &&...args)
-      : file_name_{fmt.file_name}, line_{fmt.line}, what_{detail::create_what(fmt, std::forward<Args>(args)...)} {}
+  explicit Exception(format_str const &str, Args &&...args)
+      : file_name_{str.file_name}, line_{str.line}, what_{detail::create_what(str.str, std::forward<Args>(args)...)} {}
 
   char const *what() const noexcept override { return what_.c_str(); }
 
@@ -91,7 +92,7 @@ struct ROQ_PUBLIC SystemError : public RuntimeError {
   std::error_code const &code() const noexcept { return ec_; }
 
   template <typename... Args>
-  SystemError(std::error_code ec, format_str<Args...> const &fmt, Args &&...args) : RuntimeError{fmt, std::forward<Args>(args)...}, ec_{ec} {}
+  SystemError(std::error_code ec, format_str const &fmt, Args &&...args) : RuntimeError{fmt, std::forward<Args>(args)...}, ec_{ec} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -187,7 +188,7 @@ struct ROQ_PUBLIC BadState : public RuntimeError {
 //! Base class for network errors
 struct ROQ_PUBLIC NetworkError : public RuntimeError {
   template <typename... Args>
-  NetworkError(RequestStatus request_status, Error error, format_str<Args...> const &fmt, Args &&...args)
+  NetworkError(RequestStatus request_status, Error error, format_str const &fmt, Args &&...args)
       : RuntimeError{fmt, std::forward<Args>(args)...}, request_status_{request_status}, error_{error} {}
 
   RequestStatus request_status() const noexcept { return request_status_; }
@@ -208,22 +209,21 @@ struct ROQ_PUBLIC TransportError : public NetworkError {
 //! Not connected
 struct ROQ_PUBLIC NotConnected : public TransportError {
   template <typename... Args>
-  explicit NotConnected(format_str<Args...> const &fmt, Args &&...args)
+  explicit NotConnected(format_str const &fmt, Args &&...args)
       : TransportError{RequestStatus::REJECTED, Error::GATEWAY_NOT_READY, fmt, std::forward<Args>(args)...} {}
 };
 
 //! Connection refused
 struct ROQ_PUBLIC ConnectionRefused : public TransportError {
   template <typename... Args>
-  explicit ConnectionRefused(format_str<Args...> const &fmt, Args &&...args)
+  explicit ConnectionRefused(format_str const &fmt, Args &&...args)
       : TransportError{RequestStatus::REJECTED, Error::GATEWAY_NOT_READY, fmt, std::forward<Args>(args)...} {}
 };
 
 //! Timed out
 struct ROQ_PUBLIC TimedOut : public TransportError {
   template <typename... Args>
-  explicit TimedOut(format_str<Args...> const &fmt, Args &&...args)
-      : TransportError{RequestStatus::TIMEOUT, Error::TIMEOUT, fmt, std::forward<Args>(args)...} {}
+  explicit TimedOut(format_str const &fmt, Args &&...args) : TransportError{RequestStatus::TIMEOUT, Error::TIMEOUT, fmt, std::forward<Args>(args)...} {}
 };
 
 // session errors
@@ -236,14 +236,14 @@ struct ROQ_PUBLIC SessionError : public NetworkError {
 //! Permissions denied (operating system)
 struct ROQ_PUBLIC PermissionDenied : public SessionError {
   template <typename... Args>
-  explicit PermissionDenied(format_str<Args...> const &fmt, Args &&...args)
+  explicit PermissionDenied(format_str const &fmt, Args &&...args)
       : SessionError{RequestStatus::UNDEFINED, Error::UNDEFINED, fmt, std::forward<Args>(args)...} {}
 };
 
 //! Order not live
 struct ROQ_PUBLIC OrderNotLive : public SessionError {
   template <typename... Args>
-  explicit OrderNotLive(format_str<Args...> const &fmt, Args &&...args)
+  explicit OrderNotLive(format_str const &fmt, Args &&...args)
       : SessionError{RequestStatus::REJECTED, Error::TOO_LATE_TO_MODIFY_OR_CANCEL, fmt, std::forward<Args>(args)...} {}
 };
 }  // namespace roq

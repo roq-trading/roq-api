@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Upgrade the `format_str` helper class to work with `fmt 11.1` (#488)
+
 ### Added
 
 * Control enabled/disabled state (#484)

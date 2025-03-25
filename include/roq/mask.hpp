@@ -167,11 +167,6 @@ struct Mask final {
 }  // namespace roq
 
 template <typename T>
-struct std::underlying_type<roq::Mask<T>> {
-  using type = typename roq::Mask<T>::value_type;
-};
-
-template <typename T>
 struct fmt::formatter<roq::Mask<T>> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::Mask<T> const &value, format_context &context) const {

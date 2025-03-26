@@ -4,7 +4,7 @@
 
 #if defined(__APPLE__)
 #if defined(__arm64__)
-// #ifdef __cpp_lib_hardware_interference_size  // note! not supported by clang19
+// #ifdef __cpp_lib_hardware_interference_size  // note! not supported by clang20
 // static_assert(std::hardware_destructive_interference_size == 128);
 // static_assert(std::hardware_constructive_interference_size == 128);
 // #endif

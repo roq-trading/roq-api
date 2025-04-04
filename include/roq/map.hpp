@@ -38,12 +38,13 @@ struct Map final {
   Map(Map const &) = delete;
 
   template <typename R>
-  operator std::optional<R>();
-
-  template <typename R>
-  inline operator R() {
-    return (*this).operator std::optional<R>().value();
+  inline operator R() const {
+    return helper<R>().value();
   }
+
+ protected:
+  template <typename R>
+  std::optional<R> helper() const;
 
  private:
   std::tuple<Args...> const args_;

@@ -42,6 +42,11 @@ struct Map final {
     return helper<R>().value();
   }
 
+  template <typename R>
+  inline R get() const {
+    return helper<R>().value();
+  }
+
  protected:
   template <typename R>
   std::optional<R> helper() const;

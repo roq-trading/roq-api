@@ -49,7 +49,9 @@ struct Map final {
 
  protected:
   template <typename R>
-  std::optional<R> helper() const;
+  std::optional<R> helper() const {
+    static_assert(false, "mapping has not been declared");
+  }
 
  private:
   std::tuple<Args...> const args_;

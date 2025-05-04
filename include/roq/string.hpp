@@ -4,7 +4,7 @@
 
 #include "roq/compat.hpp"
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <algorithm>
 #include <array>

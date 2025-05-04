@@ -7,7 +7,7 @@
 #include "roq/compat.hpp"
 
 #include <fmt/chrono.h>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <fmt/ranges.h>
 
 #include <magic_enum/magic_enum_format.hpp>

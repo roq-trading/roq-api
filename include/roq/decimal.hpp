@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include "roq/limits.hpp"
 #include "roq/precision.hpp"

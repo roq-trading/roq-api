@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <type_traits>
 #include <utility>

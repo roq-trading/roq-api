@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <fmt/ranges.h>
 
 #include <magic_enum/magic_enum_flags.hpp>

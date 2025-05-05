@@ -32,7 +32,7 @@ struct ROQ_PUBLIC Control final {
 };
 
 template <>
-inline constexpr std::string_view get_name<Control>() {
+constexpr std::string_view get_name<Control>() {
   using namespace std::literals;
   return "control"sv;
 }

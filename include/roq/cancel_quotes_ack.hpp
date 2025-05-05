@@ -35,7 +35,7 @@ struct ROQ_PUBLIC CancelQuotesAck final {
 };
 
 template <>
-inline constexpr std::string_view get_name<CancelQuotesAck>() {
+constexpr std::string_view get_name<CancelQuotesAck>() {
   using namespace std::literals;
   return "cancel_quotes_ack"sv;
 }

@@ -43,7 +43,7 @@ struct ROQ_PUBLIC MarketByPriceUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<MarketByPriceUpdate>() {
+constexpr std::string_view get_name<MarketByPriceUpdate>() {
   using namespace std::literals;
   return "market_by_price_update"sv;
 }

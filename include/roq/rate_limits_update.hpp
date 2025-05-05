@@ -31,7 +31,7 @@ struct ROQ_PUBLIC RateLimitsUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<RateLimitsUpdate>() {
+constexpr std::string_view get_name<RateLimitsUpdate>() {
   using namespace std::literals;
   return "rate_limits_update"sv;
 }

@@ -25,7 +25,7 @@ struct ROQ_PUBLIC CancelQuotes final {
 };
 
 template <>
-inline constexpr std::string_view get_name<CancelQuotes>() {
+constexpr std::string_view get_name<CancelQuotes>() {
   using namespace std::literals;
   return "cancel_quotes"sv;
 }

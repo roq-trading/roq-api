@@ -33,7 +33,7 @@ struct ROQ_PUBLIC RiskLimits final {
 };
 
 template <>
-inline constexpr std::string_view get_name<RiskLimits>() {
+constexpr std::string_view get_name<RiskLimits>() {
   using namespace std::literals;
   return "risk_limits"sv;
 }

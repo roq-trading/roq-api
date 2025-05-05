@@ -79,8 +79,9 @@ struct ROQ_PACKED String {
 
   constexpr std::size_t length() const {
     auto tmp = static_cast<size_t>(static_cast<unsigned char>(buffer_[N - 1]));
-    if (buffer_[N - 2])
-      return N - (tmp ? 0 : 1);
+    if (buffer_[N - 2]) {
+      return N - (tmp != 0 ? 0 : 1);
+    }
     return tmp;
   }
 
@@ -100,8 +101,9 @@ struct ROQ_PACKED String {
   constexpr void push_back(value_type value) {
     using namespace std::literals;
     auto len = length();
-    if (N <= len) [[unlikely]]
+    if (N <= len) [[unlikely]] {
       throw LengthError{"String buffer is full"sv};
+    }
     buffer_[len] = value;
     set_length(++len);
   }
@@ -112,8 +114,9 @@ struct ROQ_PACKED String {
   constexpr void copy(std::string_view const &text) {
     using namespace std::literals;
     auto len = std::size(text);
-    if (N < len) [[unlikely]]
+    if (N < len) [[unlikely]] {
       throw LengthError{R"(can't copy: len(text="{}")={} exceeds size={})"sv, text, len, N};
+    }
     std::copy(std::begin(text), std::end(text), std::begin(buffer_));
     set_length(len);
   }

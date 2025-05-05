@@ -77,7 +77,7 @@ struct ROQ_PUBLIC OrderUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<OrderUpdate>() {
+constexpr std::string_view get_name<OrderUpdate>() {
   using namespace std::literals;
   return "order_update"sv;
 }

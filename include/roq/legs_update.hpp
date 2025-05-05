@@ -31,7 +31,7 @@ struct ROQ_PUBLIC LegsUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<LegsUpdate>() {
+constexpr std::string_view get_name<LegsUpdate>() {
   using namespace std::literals;
   return "legs_update"sv;
 }

@@ -142,6 +142,8 @@
 
 namespace roq {
 
+// NOLINTBEGIN(readability-magic-numbers)
+
 // user id (8 bits)
 
 static constexpr uint8_t const SOURCE_MIN = 0;
@@ -221,5 +223,7 @@ static_assert(sizeof(Fill) == 120);
 static_assert(sizeof(Parameter) == 180);
 static_assert(sizeof(Position) == 96);
 static_assert(sizeof(RiskLimit) == 136);
+
+// NOLINTEND(readability-magic-numbers)
 
 }  // namespace roq

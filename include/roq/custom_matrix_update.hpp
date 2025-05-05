@@ -41,7 +41,7 @@ struct ROQ_PUBLIC CustomMatrixUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<CustomMatrixUpdate>() {
+constexpr std::string_view get_name<CustomMatrixUpdate>() {
   using namespace std::literals;
   return "custom_matrix_update"sv;
 }

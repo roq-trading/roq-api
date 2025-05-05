@@ -20,7 +20,7 @@ namespace roq {
 struct ROQ_PUBLIC Start final {};
 
 template <>
-inline constexpr std::string_view get_name<Start>() {
+constexpr std::string_view get_name<Start>() {
   using namespace std::literals;
   return "start"sv;
 }

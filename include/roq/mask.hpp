@@ -20,9 +20,9 @@ namespace roq {
 // - flag (enum value) should not be 0 -- we don't currently check
 // - flag (enum value) should be powers of two, or combinations -- we don't currently check
 
-template <typename T, typename = typename std::enable_if<std::is_enum<T>::value>::type>
+template <typename T, typename = typename std::enable_if_t<std::is_enum_v<T>>>
 struct Mask final {
-  using value_type = typename std::underlying_type<T>::type;
+  using value_type = typename std::underlying_type_t<T>;
 
   struct sentinel final {};
 
@@ -34,17 +34,19 @@ struct Mask final {
     using reference = T const;
     using iterator_category = std::forward_iterator_tag;
 
-    using underlying_type = std::underlying_type<T>::type;
+    using underlying_type = std::underlying_type_t<T>;
 
     iterator(Mask<T> value) : value_{value.get()} {}
 
     bool operator==(sentinel const &) const {
       for (; bit_ < std::numeric_limits<underlying_type>::digits; ++bit_) {
         auto mask = static_cast<underlying_type>(size_t{1} << bit_);
-        if (value_ < mask)
+        if (value_ < mask) {
           break;
-        if (value_ & mask)
+        }
+        if (value_ & mask) {
           return false;
+        }
       }
       return true;
     }
@@ -69,8 +71,9 @@ struct Mask final {
   constexpr explicit Mask(T flag) : value_{static_cast<value_type>(flag)} {}
 
   constexpr Mask(std::initializer_list<T> flags) {
-    for (auto &flag : flags)
+    for (auto &flag : flags) {
       value_ |= static_cast<value_type>(flag);
+    }
   }
 
   template <typename... Args>
@@ -92,8 +95,9 @@ struct Mask final {
 
   constexpr bool has_any(std::initializer_list<T> flags) const {
     value_type value = {};
-    for (auto &flag : flags)
+    for (auto &flag : flags) {
       value |= static_cast<value_type>(flag);
+    }
     return value_ & value;
   }
 
@@ -103,8 +107,9 @@ struct Mask final {
 
   constexpr bool has_all(std::initializer_list<T> flags) const {
     value_type value = {};
-    for (auto &flag : flags)
+    for (auto &flag : flags) {
       value |= static_cast<value_type>(flag);
+    }
     return (value_ & value) == value;
   }
 
@@ -141,8 +146,9 @@ struct Mask final {
   constexpr Mask logical_and(Mask rhs) const { return Mask{value_ & rhs.value_}; }
 
   constexpr Mask &set(std::initializer_list<T> flags) {
-    for (auto &flag : flags)
+    for (auto &flag : flags) {
       value_ |= static_cast<value_type>(flag);
+    }
     return *this;
   }
 

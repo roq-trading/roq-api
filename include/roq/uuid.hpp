@@ -8,6 +8,8 @@
 
 namespace roq {
 
+// NOLINTBEGIN(readability-magic-numbers)
+
 // note!
 //   interface using native byte order
 //   network byte order for internal representation
@@ -15,14 +17,11 @@ namespace roq {
 struct alignas(16) UUID final {
   using value_type = __uint128_t;
 
-  UUID() {}
+  UUID() = default;
 
-  UUID(UUID const &rhs) : value_{rhs.value_} {}
+  UUID(UUID const &) = default;
 
-  UUID &operator=(UUID const &rhs) {
-    value_ = rhs.value_;
-    return *this;
-  }
+  UUID &operator=(UUID const &) = default;
 
   explicit UUID(value_type value) : value_{create(value)} {}
 
@@ -79,6 +78,8 @@ struct alignas(16) UUID final {
 
 static_assert(sizeof(UUID) == 16);
 
+// NOLINTEND(readability-magic-numbers)
+
 }  // namespace roq
 
 template <>
@@ -87,6 +88,7 @@ struct fmt::formatter<roq::UUID> {
   auto format(roq::UUID const &value, format_context &context) const {
     using namespace std::literals;
     auto data = reinterpret_cast<std::byte const *>(std::data(value));
+    // NOLINTBEGIN(readability-magic-numbers)
     return fmt::format_to(
         context.out(),
         "{:02x}{:02x}{:02x}{:02x}-"
@@ -110,5 +112,6 @@ struct fmt::formatter<roq::UUID> {
         data[13],
         data[14],
         data[15]);
+    // NOLINTEND(readability-magic-numbers)
   }
 };

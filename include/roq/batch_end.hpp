@@ -20,7 +20,7 @@ namespace roq {
 struct ROQ_PUBLIC BatchEnd final {};
 
 template <>
-inline constexpr std::string_view get_name<BatchEnd>() {
+constexpr std::string_view get_name<BatchEnd>() {
   using namespace std::literals;
   return "batch_end"sv;
 }

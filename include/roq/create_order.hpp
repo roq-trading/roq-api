@@ -50,7 +50,7 @@ struct ROQ_PUBLIC CreateOrder final {
 };
 
 template <>
-inline constexpr std::string_view get_name<CreateOrder>() {
+constexpr std::string_view get_name<CreateOrder>() {
   using namespace std::literals;
   return "create_order"sv;
 }

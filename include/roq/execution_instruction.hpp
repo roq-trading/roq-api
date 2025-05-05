@@ -12,7 +12,7 @@
 namespace roq {
 
 //! Enumeration of execution types
-enum class ExecutionInstruction : uint32_t {
+enum class ExecutionInstruction : uint32_t {  // NOLINT(performance-enum-size)
   UNDEFINED = 0,
   PARTICIPATE_DO_NOT_INITIATE = 0x1,  //!< Cancel if order would have executed on placement (i.e. not as maker)
   CANCEL_IF_NOT_BEST = 0x2,           //!< Cancel if order can not be placed at best price

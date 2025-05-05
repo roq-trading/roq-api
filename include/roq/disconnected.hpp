@@ -23,7 +23,7 @@ struct ROQ_PUBLIC Disconnected final {
 };
 
 template <>
-inline constexpr std::string_view get_name<Disconnected>() {
+constexpr std::string_view get_name<Disconnected>() {
   using namespace std::literals;
   return "disconnected"sv;
 }

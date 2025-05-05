@@ -30,7 +30,7 @@ struct ROQ_PUBLIC StrategyUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<StrategyUpdate>() {
+constexpr std::string_view get_name<StrategyUpdate>() {
   using namespace std::literals;
   return "strategy_update"sv;
 }

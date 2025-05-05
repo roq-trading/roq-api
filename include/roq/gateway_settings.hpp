@@ -37,7 +37,7 @@ struct ROQ_PUBLIC GatewaySettings final {
 };
 
 template <>
-inline constexpr std::string_view get_name<GatewaySettings>() {
+constexpr std::string_view get_name<GatewaySettings>() {
   using namespace std::literals;
   return "gateway_settings"sv;
 }

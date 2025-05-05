@@ -25,7 +25,7 @@ struct ROQ_PUBLIC AddRoutes final {
 };
 
 template <>
-inline constexpr std::string_view get_name<AddRoutes>() {
+constexpr std::string_view get_name<AddRoutes>() {
   using namespace std::literals;
   return "add_routes"sv;
 }

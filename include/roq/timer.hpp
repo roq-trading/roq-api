@@ -25,7 +25,7 @@ struct ROQ_PUBLIC Timer final {
 };
 
 template <>
-inline constexpr std::string_view get_name<Timer>() {
+constexpr std::string_view get_name<Timer>() {
   using namespace std::literals;
   return "timer"sv;
 }

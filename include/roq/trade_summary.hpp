@@ -35,7 +35,7 @@ struct ROQ_PUBLIC TradeSummary final {
 };
 
 template <>
-inline constexpr std::string_view get_name<TradeSummary>() {
+constexpr std::string_view get_name<TradeSummary>() {
   using namespace std::literals;
   return "trade_summary"sv;
 }

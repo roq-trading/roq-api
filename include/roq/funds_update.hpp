@@ -39,7 +39,7 @@ struct ROQ_PUBLIC FundsUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<FundsUpdate>() {
+constexpr std::string_view get_name<FundsUpdate>() {
   using namespace std::literals;
   return "funds_update"sv;
 }

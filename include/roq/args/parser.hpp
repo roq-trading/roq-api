@@ -16,8 +16,8 @@ struct ROQ_PUBLIC Parser {
   // note! c-style with first element being the program name
   virtual operator std::span<std::string_view const>() const = 0;
 
-  inline auto program_name() const { return static_cast<std::span<std::string_view const>>(*this)[0]; }
-  inline auto params() const { return static_cast<std::span<std::string_view const>>(*this).subspan(1); }
+  auto program_name() const { return static_cast<std::span<std::string_view const>>(*this)[0]; }
+  auto params() const { return static_cast<std::span<std::string_view const>>(*this).subspan(1); }
 };
 
 }  // namespace args

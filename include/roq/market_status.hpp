@@ -33,7 +33,7 @@ struct ROQ_PUBLIC MarketStatus final {
 };
 
 template <>
-inline constexpr std::string_view get_name<MarketStatus>() {
+constexpr std::string_view get_name<MarketStatus>() {
   using namespace std::literals;
   return "market_status"sv;
 }

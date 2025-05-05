@@ -25,7 +25,7 @@ struct ROQ_PUBLIC RemoveRoutes final {
 };
 
 template <>
-inline constexpr std::string_view get_name<RemoveRoutes>() {
+constexpr std::string_view get_name<RemoveRoutes>() {
   using namespace std::literals;
   return "remove_routes"sv;
 }

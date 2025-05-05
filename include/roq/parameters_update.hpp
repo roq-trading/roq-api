@@ -30,7 +30,7 @@ struct ROQ_PUBLIC ParametersUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<ParametersUpdate>() {
+constexpr std::string_view get_name<ParametersUpdate>() {
   using namespace std::literals;
   return "parameters_update"sv;
 }

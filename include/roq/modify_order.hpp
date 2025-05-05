@@ -32,7 +32,7 @@ struct ROQ_PUBLIC ModifyOrder final {
 };
 
 template <>
-inline constexpr std::string_view get_name<ModifyOrder>() {
+constexpr std::string_view get_name<ModifyOrder>() {
   using namespace std::literals;
   return "modify_order"sv;
 }

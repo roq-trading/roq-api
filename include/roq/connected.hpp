@@ -20,7 +20,7 @@ namespace roq {
 struct ROQ_PUBLIC Connected final {};
 
 template <>
-inline constexpr std::string_view get_name<Connected>() {
+constexpr std::string_view get_name<Connected>() {
   using namespace std::literals;
   return "connected"sv;
 }

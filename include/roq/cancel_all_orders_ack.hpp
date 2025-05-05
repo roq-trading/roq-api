@@ -45,7 +45,7 @@ struct ROQ_PUBLIC CancelAllOrdersAck final {
 };
 
 template <>
-inline constexpr std::string_view get_name<CancelAllOrdersAck>() {
+constexpr std::string_view get_name<CancelAllOrdersAck>() {
   using namespace std::literals;
   return "cancel_all_orders_ack"sv;
 }

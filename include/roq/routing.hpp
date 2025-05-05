@@ -25,7 +25,7 @@ struct ROQ_PUBLIC Routing final {
 };
 
 template <>
-inline constexpr std::string_view get_name<Routing>() {
+constexpr std::string_view get_name<Routing>() {
   using namespace std::literals;
   return "routing"sv;
 }

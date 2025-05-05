@@ -27,10 +27,12 @@ struct static_string final {
   static consteval auto create(std::string_view const &str, std::size_t length) {
     static_assert(N > 0);
     std::array<char, N> buffer;
-    for (std::size_t i = 0; i < length; ++i)
+    for (std::size_t i = 0; i < length; ++i) {
       buffer[i] = str[i];
-    for (std::size_t i = length; i < N; ++i)
+    }
+    for (std::size_t i = length; i < N; ++i) {
       buffer[i] = '\0';
+    }
     return buffer;
   }
 
@@ -45,7 +47,8 @@ struct format_str final {
   consteval format_str(T const &str, std::source_location const loc = std::source_location::current())
       : str{str}, file_name{extract_basename(loc.file_name())}, line{loc.line()} {}
 
-  using file_name_type = detail::static_string<32>;  // note! string could be truncated
+  // note! string could be truncated
+  using file_name_type = detail::static_string<32>;  // NOLINT(readability-magic-numbers)
 
   std::string_view const str;
   file_name_type const file_name;
@@ -53,14 +56,17 @@ struct format_str final {
 
  private:
   static consteval std::string_view extract_basename(char const *path) {
-    if (path == nullptr)
+    if (path == nullptr) {
       return {};
+    }
     std::string_view tmp{path};
-    if (std::empty(tmp))
+    if (std::empty(tmp)) {
       return tmp;
+    }
     auto pos = tmp.find_last_of('/');
-    if (pos == tmp.npos || pos == (std::size(tmp) - 1))
+    if (pos == std::string_view::npos || pos == (std::size(tmp) - 1)) {
       return tmp;
+    }
     return tmp.substr(++pos);
   }
 };

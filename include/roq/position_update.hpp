@@ -40,7 +40,7 @@ struct ROQ_PUBLIC PositionUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<PositionUpdate>() {
+constexpr std::string_view get_name<PositionUpdate>() {
   using namespace std::literals;
   return "position_update"sv;
 }

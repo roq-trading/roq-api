@@ -62,7 +62,7 @@ struct ROQ_PUBLIC ReferenceData final {
 };
 
 template <>
-inline constexpr std::string_view get_name<ReferenceData>() {
+constexpr std::string_view get_name<ReferenceData>() {
   using namespace std::literals;
   return "reference_data"sv;
 }

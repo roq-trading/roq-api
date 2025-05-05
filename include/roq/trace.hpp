@@ -14,7 +14,7 @@ namespace roq {
 
 template <typename T>
 struct Trace final {
-  using value_type = std::remove_cvref<T>::type;
+  using value_type = std::remove_cvref_t<T>;
 
   Trace(TraceInfo const &trace_info, T const &value) : trace_info{trace_info}, value{value} {}
 

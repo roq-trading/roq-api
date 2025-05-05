@@ -63,7 +63,7 @@ struct ROQ_PUBLIC OrderAck final {
 };
 
 template <>
-inline constexpr std::string_view get_name<OrderAck>() {
+constexpr std::string_view get_name<OrderAck>() {
   using namespace std::literals;
   return "order_ack"sv;
 }

@@ -35,7 +35,7 @@ struct ROQ_PUBLIC MassQuoteAck final {
 };
 
 template <>
-inline constexpr std::string_view get_name<MassQuoteAck>() {
+constexpr std::string_view get_name<MassQuoteAck>() {
   using namespace std::literals;
   return "mass_quote_ack"sv;
 }

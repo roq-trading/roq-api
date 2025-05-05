@@ -20,8 +20,9 @@ struct MapHelper final {
   template <typename R>
   constexpr bool operator==(R rhs) const {
     auto tmp = (*this).operator std::optional<R>();
-    if (tmp.has_value())
+    if (tmp.has_value()) {
       return tmp.value() == rhs;
+    }
     return false;
   }
 
@@ -32,18 +33,18 @@ struct MapHelper final {
 
 template <typename... Args>
 struct Map final {
-  inline explicit Map(Args &&...args) : args_{std::forward<Args>(args)...} {}
-  inline explicit Map(Args const &...args) : args_{args...} {}
+  explicit Map(Args &&...args) : args_{std::forward<Args>(args)...} {}
+  explicit Map(Args const &...args) : args_{args...} {}
 
   Map(Map const &) = delete;
 
   template <typename R>
-  inline operator R() const {
+  operator R() const {
     return helper<R>().value();
   }
 
   template <typename R>
-  inline R get() const {
+  R get() const {
     return helper<R>().value();
   }
 

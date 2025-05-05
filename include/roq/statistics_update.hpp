@@ -37,7 +37,7 @@ struct ROQ_PUBLIC StatisticsUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<StatisticsUpdate>() {
+constexpr std::string_view get_name<StatisticsUpdate>() {
   using namespace std::literals;
   return "statistics_update"sv;
 }

@@ -1,0 +1,18 @@
+---
+Checks: "bugprone-*,
+         modernize-*,
+         performance-*,
+         readability-*,
+         -bugprone-easily-swappable-parameters,
+         -bugprone-easily-swappable-parameters,
+         -bugprone-macro-parentheses,
+         -clang-diagnostic-unused-command-line-argument,
+         -modernize-concat-nested-namespaces,
+         -modernize-use-nodiscard,
+         -modernize-use-trailing-return-type,
+         -readability-convert-member-functions-to-static,
+         -readability-named-parameter,
+         -readability-qualified-auto,"
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle:     none

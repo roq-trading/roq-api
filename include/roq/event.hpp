@@ -15,7 +15,7 @@ namespace roq {
 //! Event
 template <typename T>
 struct Event final {
-  using value_type = std::remove_cvref<T>::type;
+  using value_type = std::remove_cvref_t<T>;
 
   Event(MessageInfo const &message_info, T const &value) : message_info{message_info}, value{value} {}
 

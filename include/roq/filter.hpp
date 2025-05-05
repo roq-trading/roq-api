@@ -12,7 +12,7 @@
 namespace roq {
 
 //! Enumeration of filter fields
-enum class Filter : uint64_t {
+enum class Filter : uint64_t {  // NOLINT(performance-enum-size)
   UNDEFINED = 0,
   ACCOUNT = 0x1,      //!< By account
   EXCHANGE = 0x2,     //!< By exchange

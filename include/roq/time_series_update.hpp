@@ -40,7 +40,7 @@ struct ROQ_PUBLIC TimeSeriesUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<TimeSeriesUpdate>() {
+constexpr std::string_view get_name<TimeSeriesUpdate>() {
   using namespace std::literals;
   return "time_series_update"sv;
 }

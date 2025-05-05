@@ -24,7 +24,7 @@ struct ROQ_PUBLIC DownloadBegin final {
 };
 
 template <>
-inline constexpr std::string_view get_name<DownloadBegin>() {
+constexpr std::string_view get_name<DownloadBegin>() {
   using namespace std::literals;
   return "download_begin"sv;
 }

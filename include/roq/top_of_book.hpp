@@ -35,7 +35,7 @@ struct ROQ_PUBLIC TopOfBook final {
 };
 
 template <>
-inline constexpr std::string_view get_name<TopOfBook>() {
+constexpr std::string_view get_name<TopOfBook>() {
   using namespace std::literals;
   return "top_of_book"sv;
 }

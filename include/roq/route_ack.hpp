@@ -28,7 +28,7 @@ struct ROQ_PUBLIC RouteAck final {
 };
 
 template <>
-inline constexpr std::string_view get_name<RouteAck>() {
+constexpr std::string_view get_name<RouteAck>() {
   using namespace std::literals;
   return "route_ack"sv;
 }

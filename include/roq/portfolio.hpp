@@ -38,7 +38,7 @@ struct ROQ_PUBLIC Portfolio final {
 };
 
 template <>
-inline constexpr std::string_view get_name<Portfolio>() {
+constexpr std::string_view get_name<Portfolio>() {
   using namespace std::literals;
   return "portfolio"sv;
 }

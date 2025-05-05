@@ -12,7 +12,7 @@
 namespace roq {
 
 //! Enumeration of support types
-enum class SupportType : uint64_t {
+enum class SupportType : uint64_t {  // NOLINT(performance-enum-size)
   UNDEFINED = 0,
   REFERENCE_DATA = 0x1,    //!< Reference data
   MARKET_STATUS = 0x2,     //!< Market status

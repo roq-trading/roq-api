@@ -33,7 +33,7 @@ struct ROQ_PUBLIC CustomMetrics final {
 };
 
 template <>
-inline constexpr std::string_view get_name<CustomMetrics>() {
+constexpr std::string_view get_name<CustomMetrics>() {
   using namespace std::literals;
   return "custom_metrics"sv;
 }

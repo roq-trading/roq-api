@@ -42,7 +42,7 @@ struct ROQ_PUBLIC StreamStatus final {
 };
 
 template <>
-inline constexpr std::string_view get_name<StreamStatus>() {
+constexpr std::string_view get_name<StreamStatus>() {
   using namespace std::literals;
   return "stream_status"sv;
 }

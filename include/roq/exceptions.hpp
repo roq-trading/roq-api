@@ -22,8 +22,9 @@ namespace roq {
 namespace detail {
 template <typename... Args>
 constexpr auto create_what(fmt::string_view const &str, Args &&...args) -> std::string {
-  if (std::size(str) == 0)
+  if (std::size(str) == 0) {
     return {};
+  }
   if constexpr (sizeof...(args) == 0) {
     return {std::data(str), std::size(str)};
   } else {
@@ -56,7 +57,7 @@ struct ROQ_PUBLIC Exception : public std::exception {
   char const *what() const noexcept override { return what_.c_str(); }
 
   virtual std::string_view const file() const noexcept { return file_name_; }
-  virtual int line() const noexcept { return line_; }
+  virtual int line() const noexcept { return static_cast<int>(line_); }
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -89,10 +90,10 @@ struct ROQ_PUBLIC RuntimeError : public Exception {
 //! SystemError
 struct ROQ_PUBLIC SystemError : public RuntimeError {
  public:
-  std::error_code const &code() const noexcept { return ec_; }
+  std::error_code const &code() const noexcept { return error_; }
 
   template <typename... Args>
-  SystemError(std::error_code ec, format_str const &fmt, Args &&...args) : RuntimeError{fmt, std::forward<Args>(args)...}, ec_{ec} {}
+  SystemError(std::error_code error, format_str const &fmt, Args &&...args) : RuntimeError{fmt, std::forward<Args>(args)...}, error_{error} {}
 
   template <typename Context>
   auto format_to(Context &context) const {
@@ -113,12 +114,12 @@ struct ROQ_PUBLIC SystemError : public RuntimeError {
         what_,
         file_name_,
         line_,
-        ec_.message(),
-        ec_.value());
+        error_.message(),
+        error_.value());
   }
 
  private:
-  std::error_code const ec_;
+  std::error_code const error_;
 };
 
 //! RangeError

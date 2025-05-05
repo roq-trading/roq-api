@@ -20,7 +20,7 @@ namespace roq {
 struct ROQ_PUBLIC Stop final {};
 
 template <>
-inline constexpr std::string_view get_name<Stop>() {
+constexpr std::string_view get_name<Stop>() {
   using namespace std::literals;
   return "stop"sv;
 }

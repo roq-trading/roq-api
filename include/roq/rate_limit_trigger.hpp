@@ -40,7 +40,7 @@ struct ROQ_PUBLIC RateLimitTrigger final {
 };
 
 template <>
-inline constexpr std::string_view get_name<RateLimitTrigger>() {
+constexpr std::string_view get_name<RateLimitTrigger>() {
   using namespace std::literals;
   return "rate_limit_trigger"sv;
 }

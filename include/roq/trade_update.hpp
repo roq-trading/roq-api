@@ -55,7 +55,7 @@ struct ROQ_PUBLIC TradeUpdate final {
 };
 
 template <>
-inline constexpr std::string_view get_name<TradeUpdate>() {
+constexpr std::string_view get_name<TradeUpdate>() {
   using namespace std::literals;
   return "trade_update"sv;
 }

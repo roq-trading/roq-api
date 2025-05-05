@@ -28,7 +28,7 @@ struct ROQ_PUBLIC ExternalLatency final {
 };
 
 template <>
-inline constexpr std::string_view get_name<ExternalLatency>() {
+constexpr std::string_view get_name<ExternalLatency>() {
   using namespace std::literals;
   return "external_latency"sv;
 }

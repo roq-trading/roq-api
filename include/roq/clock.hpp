@@ -19,7 +19,7 @@ inline auto get_time_helper() {
     using namespace std::literals;
     throw SystemError{std::error_code{errno, std::system_category()}, "clock_gettime"sv};
   }
-  return std::chrono::nanoseconds{static_cast<int64_t>(time.tv_sec) * INT64_C(1000000000) + static_cast<int64_t>(time.tv_nsec)};
+  return std::chrono::nanoseconds{(static_cast<int64_t>(time.tv_sec) * INT64_C(1000000000)) + static_cast<int64_t>(time.tv_nsec)};
 }
 }  // namespace detail
 

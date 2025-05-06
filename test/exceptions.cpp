@@ -8,71 +8,75 @@ using namespace std::literals;
 
 using namespace roq;
 
+// NOLINTBEGIN(readability-magic-numbers)
+
 TEST_CASE("exceptions_simple_1", "[exceptions]") {
-  auto ok = false;
+  auto success = false;
   try {
     throw NotReady{"something's not right"sv};
   } catch (std::exception &) {
-    ok = true;
+    success = true;
   }
-  CHECK(ok == true);
+  CHECK(success == true);
 }
 
 TEST_CASE("exceptions_simple_2", "[exceptions]") {
-  auto ok = false;
+  auto success = false;
   try {
     throw NotReady{"something's not right"sv};
   } catch (Exception &) {
-    ok = true;
+    success = true;
   }
-  CHECK(ok == true);
+  CHECK(success == true);
 }
 
 TEST_CASE("exceptions_simple_3", "[exceptions]") {
-  auto ok = false;
+  auto success = false;
   try {
     throw NotReady{"something's not right"sv};
   } catch (RuntimeError &) {
-    ok = true;
+    success = true;
   }
-  CHECK(ok == true);
+  CHECK(success == true);
 }
 
 TEST_CASE("exceptions_simple_4", "[exceptions]") {
-  auto ok = false;
+  auto success = false;
   try {
     throw NotReady{"something's not right"sv};
   } catch (NotReady &) {
-    ok = true;
+    success = true;
   }
-  CHECK(ok == true);
+  CHECK(success == true);
 }
 
 TEST_CASE("exceptions_simple_5", "[exceptions]") {
-  auto ok = false;
+  auto success = false;
   try {
     throw RuntimeError{"something's not right"sv};
   } catch (RuntimeError &) {
-    ok = true;
+    success = true;
   }
-  CHECK(ok == true);
+  CHECK(success == true);
 }
 
 TEST_CASE("exceptions_what", "[exceptions]") {
-  auto ok = false;
+  auto success = false;
   try {
     throw NotReady{"{}"sv, 123};
   } catch (NotReady &e) {
-    ok = true;
+    success = true;
     CHECK(e.what() == "123"sv);
   }
-  CHECK(ok == true);
-  ok = false;
+  CHECK(success == true);
+  success = false;
   try {
     throw NotReady{"123"sv};
   } catch (NotReady &e) {
-    ok = true;
+    success = true;
     CHECK(e.what() == "123"sv);
   }
-  CHECK(ok == true);
+  CHECK(success == true);
 }
+
+// NOLINTEND(readability-magic-numbers)

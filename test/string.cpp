@@ -10,50 +10,52 @@ using namespace std::literals;
 
 using namespace roq;
 
+// NOLINTBEGIN(readability-magic-numbers)
+
 static_assert(String<4>{"12"sv} < "2"sv);
 static_assert(String<4>{"12"sv} == "12"sv);
 static_assert(String<4>{"2"sv} > "12"sv);
 
 TEST_CASE("string_empty", "[string]") {
-  String<4> s;
-  CHECK(s.size() == 4);
-  CHECK(s.length() == 0);
-  auto sv = static_cast<std::string_view>(s);
-  CHECK(std::empty(sv) == true);
-  CHECK(std::size(sv) == 0);
+  String<4> string;
+  CHECK(string.size() == 4);
+  CHECK(string.length() == 0);
+  auto view = static_cast<std::string_view>(string);
+  CHECK(std::empty(view) == true);
+  CHECK(std::size(view) == 0);
 }
 
 TEST_CASE("string_partial", "[string]") {
   constexpr auto text = "12"sv;
-  String<4> s = text;
-  CHECK(s.size() == 4);
-  CHECK(s.length() == 2);
-  auto sv = static_cast<std::string_view>(s);
-  CHECK(std::empty(sv) == false);
-  CHECK(std::size(sv) == 2);
-  CHECK(sv == text);
+  String<4> string = text;
+  CHECK(string.size() == 4);
+  CHECK(string.length() == 2);
+  auto view = static_cast<std::string_view>(string);
+  CHECK(std::empty(view) == false);
+  CHECK(std::size(view) == 2);
+  CHECK(view == text);
 }
 
 TEST_CASE("string_almost_full", "[string]") {
   constexpr auto text = "123"sv;
-  String<4> s = text;
-  CHECK(s.size() == 4);
-  CHECK(s.length() == 3);
-  auto sv = static_cast<std::string_view>(s);
-  CHECK(std::empty(sv) == false);
-  CHECK(std::size(sv) == 3);
-  CHECK(sv == text);
+  String<4> string = text;
+  CHECK(string.size() == 4);
+  CHECK(string.length() == 3);
+  auto view = static_cast<std::string_view>(string);
+  CHECK(std::empty(view) == false);
+  CHECK(std::size(view) == 3);
+  CHECK(view == text);
 }
 
 TEST_CASE("string_full", "[string]") {
   constexpr auto text = "1234"sv;
-  String<4> s = text;
-  CHECK(s.size() == 4);
-  CHECK(s.length() == 4);
-  auto sv = static_cast<std::string_view>(s);
-  CHECK(std::empty(sv) == false);
-  CHECK(std::size(sv) == 4);
-  CHECK(sv == text);
+  String<4> string = text;
+  CHECK(string.size() == 4);
+  CHECK(string.length() == 4);
+  auto view = static_cast<std::string_view>(string);
+  CHECK(std::empty(view) == false);
+  CHECK(std::size(view) == 4);
+  CHECK(view == text);
 }
 
 TEST_CASE("string_construct", "[string]") {
@@ -66,69 +68,71 @@ TEST_CASE("string_construct", "[string]") {
 }
 
 TEST_CASE("string_push_back", "[string]") {
-  String<4> s;
-  CHECK(s.length() == 0);
-  CHECK(s == ""sv);
-  s.push_back('1');
-  CHECK(s.length() == 1);
-  CHECK(s == "1"sv);
-  s.push_back('2');
-  CHECK(s.length() == 2);
-  CHECK(s == "12"sv);
-  s.push_back('3');
-  CHECK(s.length() == 3);
-  CHECK(s == "123"sv);
-  s.push_back('4');
-  CHECK(s.length() == 4);
-  CHECK(s == "1234"sv);
-  CHECK_THROWS_AS(s.push_back('5'), LengthError);
+  String<4> string;
+  CHECK(string.length() == 0);
+  CHECK(string == ""sv);
+  string.push_back('1');
+  CHECK(string.length() == 1);
+  CHECK(string == "1"sv);
+  string.push_back('2');
+  CHECK(string.length() == 2);
+  CHECK(string == "12"sv);
+  string.push_back('3');
+  CHECK(string.length() == 3);
+  CHECK(string == "123"sv);
+  string.push_back('4');
+  CHECK(string.length() == 4);
+  CHECK(string == "1234"sv);
+  CHECK_THROWS_AS(string.push_back('5'), LengthError);
 }
 
 TEST_CASE("string_signed_unsigned_issue", "[string]") {
   constexpr auto text =
       "01234567890123456789012345678901234567890123456789012345678901234567890123456789"
       "01234567890123456789012345678901234567890123456789012345678901234567890123456789"sv;
-  String<192> s = text;
-  CHECK(s.size() == 192);
-  CHECK(s.length() == 160);
-  auto sv = static_cast<std::string_view>(s);
-  CHECK(std::empty(sv) == false);
-  CHECK(std::size(sv) == 160);
-  CHECK(sv == text);
+  String<192> string = text;
+  CHECK(string.size() == 192);
+  CHECK(string.length() == 160);
+  auto view = static_cast<std::string_view>(string);
+  CHECK(std::empty(view) == false);
+  CHECK(std::size(view) == 160);
+  CHECK(view == text);
 }
 
 TEST_CASE("string_spaceship", "[string]") {
-  String<8> s = "1234"sv;
+  String<8> string = "1234"sv;
   // String<8>
-  CHECK(s == String<8>{"1234"sv});
-  CHECK(s != String<8>{"2345"sv});
-  CHECK(s < String<8>{"2345"sv});
-  CHECK(s <= String<8>{"2345"sv});
-  CHECK(s > String<8>{"0123"sv});
-  CHECK(s >= String<8>{"0123"sv});
-  CHECK(s != String<8>{});
+  CHECK(string == String<8>{"1234"sv});
+  CHECK(string != String<8>{"2345"sv});
+  CHECK(string < String<8>{"2345"sv});
+  CHECK(string <= String<8>{"2345"sv});
+  CHECK(string > String<8>{"0123"sv});
+  CHECK(string >= String<8>{"0123"sv});
+  CHECK(string != String<8>{});
   // String<16>
-  CHECK(s == String<16>{"1234"sv});
-  CHECK(s != String<16>{"2345"sv});
-  CHECK(s < String<16>{"2345"sv});
-  CHECK(s <= String<16>{"2345"sv});
-  CHECK(s > String<16>{"0123"sv});
-  CHECK(s >= String<16>{"0123"sv});
-  CHECK(s != String<16>{});
+  CHECK(string == String<16>{"1234"sv});
+  CHECK(string != String<16>{"2345"sv});
+  CHECK(string < String<16>{"2345"sv});
+  CHECK(string <= String<16>{"2345"sv});
+  CHECK(string > String<16>{"0123"sv});
+  CHECK(string >= String<16>{"0123"sv});
+  CHECK(string != String<16>{});
   // String<4>
-  CHECK(s == String<4>{"1234"sv});
-  CHECK(s != String<4>{"2345"sv});
-  CHECK(s < String<4>{"2345"sv});
-  CHECK(s <= String<4>{"2345"sv});
-  CHECK(s > String<4>{"0123"sv});
-  CHECK(s >= String<4>{"0123"sv});
-  CHECK(s != String<4>{});
+  CHECK(string == String<4>{"1234"sv});
+  CHECK(string != String<4>{"2345"sv});
+  CHECK(string < String<4>{"2345"sv});
+  CHECK(string <= String<4>{"2345"sv});
+  CHECK(string > String<4>{"0123"sv});
+  CHECK(string >= String<4>{"0123"sv});
+  CHECK(string != String<4>{});
   // std::string_view
-  CHECK(s == "1234"sv);
-  CHECK(s != "2345"sv);
-  CHECK(s < "2345"sv);
-  CHECK(s <= "2345"sv);
-  CHECK(s > "0123"sv);
-  CHECK(s >= "0123"sv);
-  CHECK(s != std::string_view{});
+  CHECK(string == "1234"sv);
+  CHECK(string != "2345"sv);
+  CHECK(string < "2345"sv);
+  CHECK(string <= "2345"sv);
+  CHECK(string > "0123"sv);
+  CHECK(string >= "0123"sv);
+  CHECK(string != std::string_view{});
 }
+
+// NOLINTEND(readability-magic-numbers)

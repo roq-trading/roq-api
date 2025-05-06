@@ -12,6 +12,8 @@ using namespace std::literals;
 
 using namespace roq;
 
+// NOLINTBEGIN(readability-magic-numbers)
+
 TEST_CASE("format_side", "[format]") {
   CHECK(fmt::format("{}"sv, Side{Side::UNDEFINED}) == "UNDEFINED"sv);
   CHECK(fmt::format("{}"sv, Side{Side::BUY}) == "BUY"sv);
@@ -123,7 +125,7 @@ TEST_CASE("format_market_by_price", "[format]") {
       .checksum = 123,
   };
   auto result = fmt::format("{}"sv, market_by_price);
-  CHECK(std::size(result) > 0uz);
+  CHECK(std::size(result) > 0UZ);
   auto expected = R"({)"
                   R"(stream_id=0, )"
                   R"(exchange="deribit", )"
@@ -153,3 +155,5 @@ TEST_CASE("format_market_by_price", "[format]") {
                   R"(})"sv;
   CHECK(result == expected);
 }
+
+// NOLINTEND(readability-magic-numbers)

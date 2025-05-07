@@ -10,9 +10,11 @@ Checks: "bugprone-*,
          -modernize-concat-nested-namespaces,
          -modernize-use-nodiscard,
          -modernize-use-trailing-return-type,
+         -performance-enum-size,
          -readability-convert-member-functions-to-static,
          -readability-named-parameter,
-         -readability-qualified-auto,"
+         -readability-qualified-auto,
+         -readability-redundant-member-init,"
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 FormatStyle:     none

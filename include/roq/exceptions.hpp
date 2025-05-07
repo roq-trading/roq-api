@@ -56,7 +56,7 @@ struct ROQ_PUBLIC Exception : public std::exception {
 
   char const *what() const noexcept override { return what_.c_str(); }
 
-  virtual std::string_view const file() const noexcept { return file_name_; }
+  virtual std::string_view file() const noexcept { return file_name_; }
   virtual int line() const noexcept { return static_cast<int>(line_); }
 
   template <typename Context>

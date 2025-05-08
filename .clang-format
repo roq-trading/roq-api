@@ -17,6 +17,7 @@ DerivePointerAlignment: false
 ExperimentalAutoDetectBinPacking: false
 IncludeBlocks: Preserve
 IndentCaseLabels: true
+InsertBraces: true
 PointerAlignment: Right
 QualifierAlignment: Right
 Standard: c++20  # note! clang20: does not support c++23

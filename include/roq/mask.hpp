@@ -20,7 +20,8 @@ namespace roq {
 // - flag (enum value) should not be 0 -- we don't currently check
 // - flag (enum value) should be powers of two, or combinations -- we don't currently check
 
-template <typename T, typename = typename std::enable_if_t<std::is_enum_v<T>>>
+template <typename T>
+  requires std::is_enum_v<T>
 struct Mask final {
   using value_type = typename std::underlying_type_t<T>;
 

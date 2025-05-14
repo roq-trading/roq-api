@@ -22,7 +22,7 @@ requirements:
   host:
     - catch2
     - fmt
-    - roq-oss-magic_enum
+    - magic_enum
     - roq-oss-nameof
 
 about:

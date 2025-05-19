@@ -180,12 +180,6 @@ struct fmt::formatter<roq::Mask<T>> {
     using namespace std::literals;
     using iterator = typename roq::Mask<T>::iterator;
     using sentinel = typename roq::Mask<T>::sentinel;
-#if (true)
     return fmt::format_to(context.out(), "{}"sv, fmt::join(iterator{value}, sentinel{}, "|"sv));
-#else
-    // XXX FIXME doesn't seem to work with ranges
-    auto helper = [](auto v) -> std::string_view { return magic_enum::enum_flags_name(v); };
-    return fmt::format_to(context.out(), "{}"sv, fmt::join(std::ranges::views::transform(std::ranges::subrange(iterator{value}, sentinel{}), helper), "|"sv));
-#endif
   }
 };

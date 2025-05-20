@@ -23,7 +23,7 @@ CheckOptions:
   - key: 'cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues'
     value: '1;2;3;4;5'
   - key: 'readability-identifier-length.IgnoredVariableNames'
-    value: 'id|_'
+    value: 'id|ok|_'
   - key: 'readability-identifier-length.IgnoredParameterNames'
     value: 'id'
 WarningsAsErrors: ''

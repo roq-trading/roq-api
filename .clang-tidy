@@ -3,7 +3,7 @@ Checks: "bugprone-*,
          modernize-*,
          performance-*,
          readability-*,
-         -bugprone-easily-swappable-parameters,
+         -bugprone-branch-clone,
          -bugprone-easily-swappable-parameters,
          -bugprone-macro-parentheses,
          -clang-analyzer-optin.performance.Padding,
@@ -17,6 +17,15 @@ Checks: "bugprone-*,
          -readability-named-parameter,
          -readability-qualified-auto,
          -readability-redundant-member-init,"
+CheckOptions:
+  - key: 'readability-magic-numbers.IgnoredIntegerValues'
+    value: '1;2;3;4;5'
+  - key: 'cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues'
+    value: '1;2;3;4;5'
+  - key: 'readability-identifier-length.IgnoredVariableNames'
+    value: 'id|_'
+  - key: 'readability-identifier-length.IgnoredParameterNames'
+    value: 'id'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 FormatStyle:     none

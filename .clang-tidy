@@ -32,9 +32,9 @@ CheckOptions:
   - key: 'cppcoreguidelines-avoid-magic-numbers.IgnoreAllFloatingPointValues'
     value: 'true'
   - key: 'readability-identifier-length.IgnoredVariableNames'
-    value: 'id|io|ok|_'
+    value: 'fd|id|io|ok|_'
   - key: 'readability-identifier-length.IgnoredParameterNames'
-    value: 'id'
+    value: 'fd|id'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 FormatStyle:     none

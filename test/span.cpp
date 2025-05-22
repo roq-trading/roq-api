@@ -14,8 +14,6 @@ using namespace std::literals;
 
 using namespace Catch::literals;
 
-// NOLINTBEGIN(readability-magic-numbers)
-
 TEST_CASE("span_simple", "[span]") {
   // initialize empty
   std::vector<double> empty;
@@ -52,5 +50,3 @@ TEST_CASE("span_string_view", "[span]") {
   CHECK(span[0] == "abc"sv);
   CHECK(span[1] == "def"sv);
 }
-
-// NOLINTEND(readability-magic-numbers)

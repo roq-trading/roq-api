@@ -12,8 +12,6 @@ using namespace std::literals;
 
 using namespace roq;
 
-// NOLINTBEGIN(readability-magic-numbers)
-
 TEST_CASE("format_side", "[format]") {
   CHECK(fmt::format("{}"sv, Side{Side::UNDEFINED}) == "UNDEFINED"sv);
   CHECK(fmt::format("{}"sv, Side{Side::BUY}) == "BUY"sv);
@@ -155,5 +153,3 @@ TEST_CASE("format_market_by_price", "[format]") {
                   R"(})"sv;
   CHECK(result == expected);
 }
-
-// NOLINTEND(readability-magic-numbers)

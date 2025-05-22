@@ -2,8 +2,6 @@
 
 #include <new>
 
-// NOLINTBEGIN(readability-magic-numbers)
-
 #if defined(__APPLE__)
 #if defined(__arm64__)
 // #ifdef __cpp_lib_hardware_interference_size  // note! clang20: not supported
@@ -21,5 +19,3 @@ static_assert(std::hardware_destructive_interference_size == 256);  // note! sin
 static_assert(std::hardware_constructive_interference_size == 64);
 #endif
 #endif
-
-// NOLINTEND(readability-magic-numbers)

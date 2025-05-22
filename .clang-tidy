@@ -20,7 +20,7 @@ CheckOptions:
   - key: cppcoreguidelines-avoid-magic-numbers.IgnoreAllFloatingPointValues
     value: 'true'
   - key: readability-identifier-length.IgnoredVariableNames
-    value: fd|id|io|ok|_
+    value: i|j|k|m|n|fd|id|io|ok|_
   - key: readability-identifier-length.IgnoredParameterNames
     value: fd|id
 WarningsAsErrors: ''

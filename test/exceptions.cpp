@@ -8,8 +8,6 @@ using namespace std::literals;
 
 using namespace roq;
 
-// NOLINTBEGIN(readability-magic-numbers)
-
 TEST_CASE("exceptions_simple_1", "[exceptions]") {
   auto success = false;
   try {
@@ -78,5 +76,3 @@ TEST_CASE("exceptions_what", "[exceptions]") {
   }
   CHECK(success == true);
 }
-
-// NOLINTEND(readability-magic-numbers)

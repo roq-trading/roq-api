@@ -18,7 +18,7 @@ TEST_CASE("support_type_format", "[support_type]") {
 
 TEST_CASE("support_type_mask_empty", "[support_type]") {
   auto supports = Mask<SupportType>{};
-  CHECK(fmt::format("{}"sv, supports) == ""sv);
+  CHECK(fmt::format("{}"sv, supports) == ""sv);  // NOLINT(readability-container-size-empty)
 }
 
 TEST_CASE("support_type_mask_lower_bits", "[support_type]") {

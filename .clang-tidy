@@ -5,6 +5,7 @@ Checks: bugprone-*, modernize-*, performance-*, readability-*, -bugprone-branch-
   -modernize-use-nodiscard, -modernize-use-trailing-return-type, -performance-enum-size,
   -performance-move-const-arg, -readability-convert-member-functions-to-static, -readability-enum-initial-value,
   -readability-named-parameter, -readability-qualified-auto, -readability-redundant-member-init,
+  -readability-uppercase-literal-suffix,
 CheckOptions:
   - key: readability-magic-numbers.IgnoredIntegerValues
     value: 1;2;3;4;5

@@ -1,40 +1,27 @@
 ---
-Checks: "bugprone-*,
-         modernize-*,
-         performance-*,
-         readability-*,
-         -bugprone-branch-clone,
-         -bugprone-easily-swappable-parameters,
-         -bugprone-macro-parentheses,
-         -clang-analyzer-optin.performance.Padding,
-         -clang-diagnostic-unused-command-line-argument,
-         -modernize-concat-nested-namespaces,
-         -modernize-use-nodiscard,
-         -modernize-use-trailing-return-type,
-         -performance-enum-size,
-         -performance-move-const-arg,
-         -readability-convert-member-functions-to-static,
-         -readability-enum-initial-value,
-         -readability-named-parameter,
-         -readability-qualified-auto,
-         -readability-redundant-member-init,"
+Checks: bugprone-*, modernize-*, performance-*, readability-*, -bugprone-branch-clone,
+  -bugprone-easily-swappable-parameters, -bugprone-macro-parentheses, -clang-analyzer-optin.performance.Padding,
+  -clang-diagnostic-unused-command-line-argument, -modernize-concat-nested-namespaces,
+  -modernize-use-nodiscard, -modernize-use-trailing-return-type, -performance-enum-size,
+  -performance-move-const-arg, -readability-convert-member-functions-to-static, -readability-enum-initial-value,
+  -readability-named-parameter, -readability-qualified-auto, -readability-redundant-member-init,
 CheckOptions:
-  - key: 'readability-magic-numbers.IgnoredIntegerValues'
-    value: '1;2;3;4;5'
-  - key: 'readability-magic-numbers.IgnorePowersOf2IntegerValues'
+  - key: readability-magic-numbers.IgnoredIntegerValues
+    value: 1;2;3;4;5
+  - key: readability-magic-numbers.IgnorePowersOf2IntegerValues
     value: 'true'
-  - key: 'readability-magic-numbers.IgnoreAllFloatingPointValues'
+  - key: readability-magic-numbers.IgnoreAllFloatingPointValues
     value: 'true'
-  - key: 'cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues'
-    value: '1;2;3;4;5'
-  - key: 'cppcoreguidelines-avoid-magic-numbers.IgnorePowersOf2IntegerValues'
+  - key: cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
+    value: 1;2;3;4;5
+  - key: cppcoreguidelines-avoid-magic-numbers.IgnorePowersOf2IntegerValues
     value: 'true'
-  - key: 'cppcoreguidelines-avoid-magic-numbers.IgnoreAllFloatingPointValues'
+  - key: cppcoreguidelines-avoid-magic-numbers.IgnoreAllFloatingPointValues
     value: 'true'
-  - key: 'readability-identifier-length.IgnoredVariableNames'
-    value: 'fd|id|io|ok|_'
-  - key: 'readability-identifier-length.IgnoredParameterNames'
-    value: 'fd|id'
+  - key: readability-identifier-length.IgnoredVariableNames
+    value: fd|id|io|ok|_
+  - key: readability-identifier-length.IgnoredParameterNames
+    value: fd|id
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
-FormatStyle:     none
+FormatStyle: none

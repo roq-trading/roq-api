@@ -1,5 +1,5 @@
+---
 BasedOnStyle: Google
-
 AlignAfterOpenBracket: AlwaysBreak
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortCaseLabelsOnASingleLine: false
@@ -20,7 +20,4 @@ IndentCaseLabels: true
 InsertBraces: true
 PointerAlignment: Right
 QualifierAlignment: Right
-Standard: c++20  # note! clang20: does not support c++23
-
-# --- undecided ---
-# IncludeBlocks: Regroup
+Standard: c++20  # note! clang20 does not support c++23

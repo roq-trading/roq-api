@@ -1,4 +1,4 @@
 ---
 InheritParentConfig: true
-Checks: -readability-function-cognitive-complexity, -readability-isolate-declaration,
-  -readability-magic-numbers,
+Checks: -clang-analyzer-security.insecureAPI.rand, -readability-function-cognitive-complexity,
+  -readability-isolate-declaration, -readability-magic-numbers,

@@ -1,20 +1,21 @@
 ---
 Checks: bugprone-*, modernize-*, performance-*, readability-*, -bugprone-branch-clone,
-  -bugprone-easily-swappable-parameters, -bugprone-macro-parentheses, -clang-analyzer-optin.performance.Padding,
-  -clang-diagnostic-unused-command-line-argument, -modernize-concat-nested-namespaces,
-  -modernize-use-nodiscard, -modernize-use-trailing-return-type, -performance-enum-size,
-  -performance-move-const-arg, -readability-convert-member-functions-to-static, -readability-enum-initial-value,
-  -readability-named-parameter, -readability-qualified-auto, -readability-redundant-member-init,
-  -readability-uppercase-literal-suffix,
+  -bugprone-easily-swappable-parameters, -bugprone-macro-parentheses, -bugprone-switch-missing-default-case,
+  -clang-analyzer-optin.performance.Padding, -clang-diagnostic-unused-command-line-argument,
+  -modernize-concat-nested-namespaces, -modernize-use-nodiscard, -modernize-use-trailing-return-type,
+  -performance-enum-size, -performance-move-const-arg, -readability-duplicate-include,
+  -readability-convert-member-functions-to-static, -readability-enum-initial-value,
+  -readability-isolate-declaration, -readability-named-parameter, -readability-qualified-auto,
+  -readability-redundant-member-init, -readability-uppercase-literal-suffix,
 CheckOptions:
   - key: readability-magic-numbers.IgnoredIntegerValues
-    value: 1;2;3;4;5
+    value: 1;2;3;4;5;10;100;1000;10000;100000;1000000
   - key: readability-magic-numbers.IgnorePowersOf2IntegerValues
     value: 'true'
   - key: readability-magic-numbers.IgnoreAllFloatingPointValues
     value: 'true'
   - key: cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
-    value: 1;2;3;4;5
+    value: 1;2;3;4;5;10;100;1000;10000;100000;1000000
   - key: cppcoreguidelines-avoid-magic-numbers.IgnorePowersOf2IntegerValues
     value: 'true'
   - key: cppcoreguidelines-avoid-magic-numbers.IgnoreAllFloatingPointValues

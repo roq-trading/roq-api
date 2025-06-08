@@ -29,8 +29,9 @@ struct ROQ_PUBLIC FundsUpdate final {
   std::string_view account;                         //!< Account name
   std::string_view currency;                        //!< Currency
   roq::MarginMode margin_mode = {};                 //!< Margin mode
-  double balance = roq::NaN;                        //!< Current funds
-  double hold = roq::NaN;                           //!< Funds on hold
+  double balance = roq::NaN;                        //!< Total funds
+  double hold = roq::NaN;                           //!< Funds on hold (aka locked)
+  double borrowed = roq::NaN;                       //!< Borrowed funds (margin trading)
   std::string_view external_account;                //!< External account name
   roq::UpdateType update_type = {};                 //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
@@ -60,6 +61,7 @@ struct fmt::formatter<roq::FundsUpdate> {
         R"(margin_mode={}, )"
         R"(balance={}, )"
         R"(hold={}, )"
+        R"(borrowed={}, )"
         R"(external_account="{}", )"
         R"(update_type={}, )"
         R"(exchange_time_utc={}, )"
@@ -72,6 +74,7 @@ struct fmt::formatter<roq::FundsUpdate> {
         value.margin_mode,
         value.balance,
         value.hold,
+        value.borrowed,
         value.external_account,
         value.update_type,
         value.exchange_time_utc,

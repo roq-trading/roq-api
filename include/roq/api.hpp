@@ -219,7 +219,7 @@ static_assert(sizeof(Measurement) == 16);
 static_assert(sizeof(Route) == 8);
 static_assert(sizeof(TickSizeStep) == 16);
 // - not frequent -- not so important
-static_assert(sizeof(Fill) == 120);
+static_assert(sizeof(Fill) == 136);
 static_assert(sizeof(Parameter) == 180);
 static_assert(sizeof(Position) == 96);
 static_assert(sizeof(RiskLimit) == 136);

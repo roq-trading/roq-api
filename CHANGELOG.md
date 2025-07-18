@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Better support for estimating P&L and funds (#514)
+
 ## 1.0.7 &ndash; 2025-07-02
 
 ### Changed

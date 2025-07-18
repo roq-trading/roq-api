@@ -23,12 +23,14 @@ namespace roq {
 struct ROQ_PUBLIC Fill final {
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   roq::ExternalTradeId external_trade_id;           //!< External trade identifier
-  double quantity = roq::NaN;                       //!< Quantity (base currency)
+  double quantity = roq::NaN;                       //!< Quantity
   double price = roq::NaN;                          //!< Price
   roq::Liquidity liquidity = {};                    //!< Liquidity indicator
-  double quote_quantity = roq::NaN;                 //!< Quantity (quote currency, optional)
-  double commission_quantity = roq::NaN;            //!< Quantity (commission currency, optional)
+  double base_amount = roq::NaN;                    //!< Funds (base currency, optional)
+  double quote_amount = roq::NaN;                   //!< Funds (quote currency, optional)
+  double commission_amount = roq::NaN;              //!< Funds (commission currency, optional)
   roq::Currency commission_currency;                //!< Commission currency
+  double profit_loss_amount = roq::NaN;             //!< P&L cost (settlement currency, internal)
 };
 
 }  // namespace roq
@@ -46,17 +48,21 @@ struct fmt::formatter<roq::Fill> {
         R"(quantity={}, )"
         R"(price={}, )"
         R"(liquidity={}, )"
-        R"(quote_quantity={}, )"
-        R"(commission_quantity={}, )"
-        R"(commission_currency="{}")"
+        R"(base_amount={}, )"
+        R"(quote_amount={}, )"
+        R"(commission_amount={}, )"
+        R"(commission_currency="{}", )"
+        R"(profit_loss_amount={})"
         R"(}})"sv,
         value.exchange_time_utc,
         value.external_trade_id,
         value.quantity,
         value.price,
         value.liquidity,
-        value.quote_quantity,
-        value.commission_quantity,
-        value.commission_currency);
+        value.base_amount,
+        value.quote_amount,
+        value.commission_amount,
+        value.commission_currency,
+        value.profit_loss_amount);
   }
 };

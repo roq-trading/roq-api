@@ -30,7 +30,7 @@ struct ROQ_PUBLIC Fill final {
   double quote_amount = roq::NaN;                   //!< Funds (quote currency, optional)
   double commission_amount = roq::NaN;              //!< Funds (commission currency, optional)
   roq::Currency commission_currency;                //!< Commission currency
-  double profit_loss_cost_amount = roq::NaN;        //!< P&L cost (settlement currency, internal)
+  double profit_loss_amount = roq::NaN;             //!< P&L (settlement currency, internal)
 };
 
 }  // namespace roq
@@ -52,7 +52,7 @@ struct fmt::formatter<roq::Fill> {
         R"(quote_amount={}, )"
         R"(commission_amount={}, )"
         R"(commission_currency="{}", )"
-        R"(profit_loss_cost_amount={})"
+        R"(profit_loss_amount={})"
         R"(}})"sv,
         value.exchange_time_utc,
         value.external_trade_id,
@@ -63,6 +63,6 @@ struct fmt::formatter<roq::Fill> {
         value.quote_amount,
         value.commission_amount,
         value.commission_currency,
-        value.profit_loss_cost_amount);
+        value.profit_loss_amount);
   }
 };

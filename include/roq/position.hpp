@@ -17,11 +17,11 @@ namespace roq {
 
 //! Position
 struct ROQ_PUBLIC Position final {
-  roq::Exchange exchange;                //!< Exchange
-  roq::Symbol symbol;                    //!< Symbol
-  double position = 0.0;                 //!< Position (quantity)
-  double profit_loss_cost_amount = 0.0;  //!< P&L cost (internal)
-  roq::Currency profit_loss_currency;    //!< P&L currency
+  roq::Exchange exchange;              //!< Exchange
+  roq::Symbol symbol;                  //!< Symbol
+  double position = 0.0;               //!< Position (quantity)
+  double profit_loss_amount = 0.0;     //!< P&L (internal)
+  roq::Currency profit_loss_currency;  //!< P&L currency
 };
 
 }  // namespace roq
@@ -37,13 +37,13 @@ struct fmt::formatter<roq::Position> {
         R"(exchange="{}", )"
         R"(symbol="{}", )"
         R"(position={}, )"
-        R"(profit_loss_cost_amount={}, )"
+        R"(profit_loss_amount={}, )"
         R"(profit_loss_currency="{}")"
         R"(}})"sv,
         value.exchange,
         value.symbol,
         value.position,
-        value.profit_loss_cost_amount,
+        value.profit_loss_amount,
         value.profit_loss_currency);
   }
 };

@@ -26,10 +26,10 @@ struct ROQ_PUBLIC Fill final {
   double quantity = roq::NaN;                       //!< Quantity
   double price = roq::NaN;                          //!< Price
   roq::Liquidity liquidity = {};                    //!< Liquidity indicator
-  double base_amount = roq::NaN;                    //!< Funds (base currency, optional)
-  double quote_amount = roq::NaN;                   //!< Funds (quote currency, optional)
   double commission_amount = roq::NaN;              //!< Funds (commission currency, optional)
   roq::Currency commission_currency;                //!< Commission currency
+  double base_amount = roq::NaN;                    //!< Funds (base currency, internal)
+  double quote_amount = roq::NaN;                   //!< Funds (quote currency, internal)
   double profit_loss_amount = roq::NaN;             //!< P&L (settlement currency, internal)
 };
 
@@ -48,10 +48,10 @@ struct fmt::formatter<roq::Fill> {
         R"(quantity={}, )"
         R"(price={}, )"
         R"(liquidity={}, )"
-        R"(base_amount={}, )"
-        R"(quote_amount={}, )"
         R"(commission_amount={}, )"
         R"(commission_currency="{}", )"
+        R"(base_amount={}, )"
+        R"(quote_amount={}, )"
         R"(profit_loss_amount={})"
         R"(}})"sv,
         value.exchange_time_utc,
@@ -59,10 +59,10 @@ struct fmt::formatter<roq::Fill> {
         value.quantity,
         value.price,
         value.liquidity,
-        value.base_amount,
-        value.quote_amount,
         value.commission_amount,
         value.commission_currency,
+        value.base_amount,
+        value.quote_amount,
         value.profit_loss_amount);
   }
 };

@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Auto-generate time-series from history of event-logs and live data (#515)
 * Better support for estimating P&L and funds (#514)
 
 ## 1.0.7 &ndash; 2025-07-02

@@ -21,6 +21,7 @@ enum class SupportType : uint64_t {  // NOLINT(performance-enum-size)
   MARKET_BY_ORDER = 0x10,  //!< Market by order
   TRADE_SUMMARY = 0x20,    //!< Trade summary
   STATISTICS = 0x40,       //!< Statistics
+  TIME_SERIES = 0x80,      //!< Time-series
   CREATE_ORDER = 0x10000,  //!< Create order
   MODIFY_ORDER = 0x20000,  //!< Modify order
   CANCEL_ORDER = 0x40000,  //!< Cancel order
@@ -58,6 +59,8 @@ struct fmt::formatter<roq::SupportType> {
           return "TRADE_SUMMARY"sv;
         case STATISTICS:
           return "STATISTICS"sv;
+        case TIME_SERIES:
+          return "TIME_SERIES"sv;
         case CREATE_ORDER:
           return "CREATE_ORDER"sv;
         case MODIFY_ORDER:

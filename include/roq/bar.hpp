@@ -19,12 +19,12 @@ namespace roq {
 
 //! Represents a single bar of a time-series
 struct ROQ_PUBLIC Bar final {
-  std::chrono::nanoseconds time_utc = {};  //!< End-period time-stamp (UTC)
-  double open = roq::NaN;                  //!< Open
-  double high = roq::NaN;                  //!< High
-  double low = roq::NaN;                   //!< Low
-  double close = roq::NaN;                 //!< Close
-  double volume = roq::NaN;                //!< Volume
+  std::chrono::nanoseconds end_time_utc = {};  //!< End-of-period time-stamp (UTC)
+  double open = roq::NaN;                      //!< Open
+  double high = roq::NaN;                      //!< High
+  double low = roq::NaN;                       //!< Low
+  double close = roq::NaN;                     //!< Close
+  double volume = roq::NaN;                    //!< Volume
 };
 
 }  // namespace roq
@@ -37,14 +37,14 @@ struct fmt::formatter<roq::Bar> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(time_utc={}, )"
+        R"(end_time_utc={}, )"
         R"(open={}, )"
         R"(high={}, )"
         R"(low={}, )"
         R"(close={}, )"
         R"(volume={})"
         R"(}})"sv,
-        value.time_utc,
+        value.end_time_utc,
         value.open,
         value.high,
         value.low,

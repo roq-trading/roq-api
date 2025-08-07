@@ -14,7 +14,7 @@ static constexpr size_t const MAX_LENGTH_USER = 16;
 
 static constexpr size_t const MAX_LENGTH_ACCOUNT = 32;
 static constexpr size_t const MAX_LENGTH_EXCHANGE = 32;
-static constexpr size_t const MAX_LENGTH_SYMBOL = 48;
+static constexpr size_t const MAX_LENGTH_SYMBOL = 64;
 static constexpr size_t const MAX_LENGTH_CURRENCY = 32;
 
 static constexpr size_t const MAX_LENGTH_CFI_CODE = 6;

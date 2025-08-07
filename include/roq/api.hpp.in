@@ -220,9 +220,9 @@ static_assert(sizeof(Route) == 8);
 static_assert(sizeof(TickSizeStep) == 16);
 // - not frequent -- not so important
 static_assert(sizeof(Fill) == 136);
-static_assert(sizeof(Parameter) == 180);
-static_assert(sizeof(Position) == 128);
-static_assert(sizeof(RiskLimit) == 136);
+static_assert(sizeof(Parameter) == 196);
+static_assert(sizeof(Position) == 144);
+static_assert(sizeof(RiskLimit) == 152);
 
 // NOLINTEND(readability-magic-numbers)
 

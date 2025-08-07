@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Changed
 
+* Increase max-length of `symbol` to 64 (#516)
 * Auto-generate time-series from history of event-logs and live data (#515)
 * Better support for estimating P&L and funds (#514)
 

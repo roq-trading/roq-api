@@ -98,7 +98,7 @@ set(SCHEMA_ROQ
     tick_size_step.json
     time_in_force.json
     timer.json
-    time_series_type.json
+    time_series_source.json
     time_series_update.json
     top_of_book.json
     trade.json

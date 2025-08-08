@@ -24,7 +24,9 @@ struct ROQ_PUBLIC Bar final {
   double high = roq::NaN;                      //!< High
   double low = roq::NaN;                       //!< Low
   double close = roq::NaN;                     //!< Close
-  double volume = roq::NaN;                    //!< Volume
+  double volume = roq::NaN;                    //!< Volume, e.g. number of contracts or quote currency
+  double turnover = roq::NaN;                  //!< Turnover, e.g. notional amount or base currency
+  uint32_t count = {};                         //!< Count, e.g. number of trades
 };
 
 }  // namespace roq
@@ -42,13 +44,17 @@ struct fmt::formatter<roq::Bar> {
         R"(high={}, )"
         R"(low={}, )"
         R"(close={}, )"
-        R"(volume={})"
+        R"(volume={}, )"
+        R"(turnover={}, )"
+        R"(count={})"
         R"(}})"sv,
         value.end_time_utc,
         value.open,
         value.high,
         value.low,
         value.close,
-        value.volume);
+        value.volume,
+        value.turnover,
+        value.count);
   }
 };

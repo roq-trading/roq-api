@@ -8,10 +8,10 @@
 
 namespace roq {
 
-//! Enumeration of time-series types
-enum class TimeSeriesType : uint8_t {
+//! Enumeration of time-series data sources
+enum class TimeSeriesSource : uint8_t {
   UNDEFINED = 0,
-  TRADES,  //!< Trade summary
+  TRADES,  //!< Trades
 };
 
 }  // namespace roq

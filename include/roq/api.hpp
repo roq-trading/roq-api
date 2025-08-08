@@ -42,6 +42,7 @@
 #include "roq/statistics_type.hpp"
 #include "roq/support_type.hpp"
 #include "roq/time_in_force.hpp"
+#include "roq/time_series_source.hpp"
 #include "roq/trading_status.hpp"
 #include "roq/transport.hpp"
 #include "roq/update_action.hpp"

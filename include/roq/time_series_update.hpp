@@ -20,7 +20,7 @@
 #include "roq/event.hpp"
 #include "roq/name.hpp"
 #include "roq/origin.hpp"
-#include "roq/time_series_type.hpp"
+#include "roq/time_series_source.hpp"
 #include "roq/trace.hpp"
 #include "roq/update_type.hpp"
 
@@ -28,14 +28,15 @@ namespace roq {
 
 //! Update relating to time-series
 struct ROQ_PUBLIC TimeSeriesUpdate final {
-  uint16_t stream_id = {};              //!< Stream identifier
-  std::string_view exchange;            //!< Exchange
-  std::string_view symbol;              //!< Symbol
-  roq::Origin origin = {};              //!< Origin of ack
-  roq::TimeSeriesType type = {};        //!< Time-series type
-  std::chrono::minutes frequency = {};  //!< Frequency
-  std::span<roq::Bar const> bars;       //!< List of updated bars
-  roq::UpdateType update_type = {};     //!< Update type
+  uint16_t stream_id = {};                          //!< Stream identifier
+  std::string_view exchange;                        //!< Exchange
+  std::string_view symbol;                          //!< Symbol
+  roq::TimeSeriesSource source = {};                //!< Underlying data source
+  std::chrono::minutes frequency = {};              //!< Frequency
+  roq::Origin origin = {};                          //!< Origin of time-series
+  std::span<roq::Bar const> bars;                   //!< List of updated bars
+  roq::UpdateType update_type = {};                 //!< Update type
+  std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
 };
 
 template <>
@@ -57,19 +58,21 @@ struct fmt::formatter<roq::TimeSeriesUpdate> {
         R"(stream_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(origin={}, )"
-        R"(type={}, )"
+        R"(source={}, )"
         R"(frequency={}, )"
+        R"(origin={}, )"
         R"(bars=[{}], )"
-        R"(update_type={})"
+        R"(update_type={}, )"
+        R"(exchange_time_utc={})"
         R"(}})"sv,
         value.stream_id,
         value.exchange,
         value.symbol,
-        value.origin,
-        value.type,
+        value.source,
         value.frequency,
+        value.origin,
         fmt::join(value.bars, ", "sv),
-        value.update_type);
+        value.update_type,
+        value.exchange_time_utc);
   }
 };

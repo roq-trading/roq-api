@@ -19,14 +19,16 @@ namespace roq {
 
 //! Represents a single bar of a time-series
 struct ROQ_PUBLIC Bar final {
-  std::chrono::nanoseconds end_time_utc = {};  //!< End-of-period time-stamp (UTC)
-  double open = roq::NaN;                      //!< Open
-  double high = roq::NaN;                      //!< High
-  double low = roq::NaN;                       //!< Low
-  double close = roq::NaN;                     //!< Close
-  double volume = roq::NaN;                    //!< Volume, e.g. number of contracts or quote currency
-  double turnover = roq::NaN;                  //!< Turnover, e.g. notional amount or base currency
-  uint32_t count = {};                         //!< Count, e.g. number of trades
+  std::chrono::nanoseconds begin_time_utc = {};  //!< Begin-of-period time-stamp (UTC)
+  double open_price = roq::NaN;                  //!< Open price
+  double high_price = roq::NaN;                  //!< High price
+  double low_price = roq::NaN;                   //!< Low price
+  double close_price = roq::NaN;                 //!< Close price
+  double quantity = roq::NaN;                    //!< Total quantity (contracts or base currency)
+  double base_amount = roq::NaN;                 //!< Total amount (base currency)
+  double quote_amount = roq::NaN;                //!< Total amount (quote currency)
+  uint32_t number_of_trades = {};                //!< Number of trades (count)
+  double vwap = roq::NaN;                        //!< VWAP
 };
 
 }  // namespace roq
@@ -39,22 +41,26 @@ struct fmt::formatter<roq::Bar> {
     return fmt::format_to(
         context.out(),
         R"({{)"
-        R"(end_time_utc={}, )"
-        R"(open={}, )"
-        R"(high={}, )"
-        R"(low={}, )"
-        R"(close={}, )"
-        R"(volume={}, )"
-        R"(turnover={}, )"
-        R"(count={})"
+        R"(begin_time_utc={}, )"
+        R"(open_price={}, )"
+        R"(high_price={}, )"
+        R"(low_price={}, )"
+        R"(close_price={}, )"
+        R"(quantity={}, )"
+        R"(base_amount={}, )"
+        R"(quote_amount={}, )"
+        R"(number_of_trades={}, )"
+        R"(vwap={})"
         R"(}})"sv,
-        value.end_time_utc,
-        value.open,
-        value.high,
-        value.low,
-        value.close,
-        value.volume,
-        value.turnover,
-        value.count);
+        value.begin_time_utc,
+        value.open_price,
+        value.high_price,
+        value.low_price,
+        value.close_price,
+        value.quantity,
+        value.base_amount,
+        value.quote_amount,
+        value.number_of_trades,
+        value.vwap);
   }
 };

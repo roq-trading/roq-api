@@ -17,10 +17,11 @@
 #include <string_view>
 
 #include "roq/bar.hpp"
+#include "roq/data_source.hpp"
 #include "roq/event.hpp"
+#include "roq/interval.hpp"
 #include "roq/name.hpp"
 #include "roq/origin.hpp"
-#include "roq/time_series_source.hpp"
 #include "roq/trace.hpp"
 #include "roq/update_type.hpp"
 
@@ -31,8 +32,8 @@ struct ROQ_PUBLIC TimeSeriesUpdate final {
   uint16_t stream_id = {};                          //!< Stream identifier
   std::string_view exchange;                        //!< Exchange
   std::string_view symbol;                          //!< Symbol
-  roq::TimeSeriesSource source = {};                //!< Underlying data source
-  std::chrono::minutes frequency = {};              //!< Frequency
+  roq::DataSource data_source = {};                 //!< Data source
+  roq::Interval interval = {};                      //!< Update frequency
   roq::Origin origin = {};                          //!< Origin of time-series
   std::span<roq::Bar const> bars;                   //!< List of updated bars
   roq::UpdateType update_type = {};                 //!< Update type
@@ -58,8 +59,8 @@ struct fmt::formatter<roq::TimeSeriesUpdate> {
         R"(stream_id={}, )"
         R"(exchange="{}", )"
         R"(symbol="{}", )"
-        R"(source={}, )"
-        R"(frequency={}, )"
+        R"(data_source={}, )"
+        R"(interval={}, )"
         R"(origin={}, )"
         R"(bars=[{}], )"
         R"(update_type={}, )"
@@ -68,8 +69,8 @@ struct fmt::formatter<roq::TimeSeriesUpdate> {
         value.stream_id,
         value.exchange,
         value.symbol,
-        value.source,
-        value.frequency,
+        value.data_source,
+        value.interval,
         value.origin,
         fmt::join(value.bars, ", "sv),
         value.update_type,

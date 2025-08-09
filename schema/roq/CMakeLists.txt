@@ -21,6 +21,7 @@ set(SCHEMA_ROQ
     custom_matrix_update.json
     custom_metrics.json
     custom_metrics_update.json
+    data_source.json
     disconnected.json
     download_begin.json
     download_end.json
@@ -33,6 +34,7 @@ set(SCHEMA_ROQ
     funds_update.json
     gateway_settings.json
     gateway_status.json
+    interval.json
     layer.json
     leg.json
     legs_update.json
@@ -98,7 +100,6 @@ set(SCHEMA_ROQ
     tick_size_step.json
     time_in_force.json
     timer.json
-    time_series_source.json
     time_series_update.json
     top_of_book.json
     trade.json

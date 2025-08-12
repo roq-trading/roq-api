@@ -19,17 +19,17 @@ namespace roq {
 
 //! Represents a single bar of a time-series
 struct ROQ_PUBLIC Bar final {
-  std::chrono::nanoseconds begin_time_utc = {};  //!< Begin-of-period time-stamp (UTC)
-  bool confirmed = false;                        //!< Confirmed?
-  double open_price = roq::NaN;                  //!< Open price
-  double high_price = roq::NaN;                  //!< High price
-  double low_price = roq::NaN;                   //!< Low price
-  double close_price = roq::NaN;                 //!< Close price
-  double quantity = roq::NaN;                    //!< Total quantity (contracts or base currency)
-  double base_amount = roq::NaN;                 //!< Total amount (base currency)
-  double quote_amount = roq::NaN;                //!< Total amount (quote currency)
-  uint32_t number_of_trades = {};                //!< Number of trades (count)
-  double vwap = roq::NaN;                        //!< VWAP
+  std::chrono::seconds begin_time_utc = {};  //!< Begin-of-period time-stamp (UTC)
+  bool confirmed = false;                    //!< Confirmed?
+  double open_price = roq::NaN;              //!< Open price
+  double high_price = roq::NaN;              //!< High price
+  double low_price = roq::NaN;               //!< Low price
+  double close_price = roq::NaN;             //!< Close price
+  double quantity = roq::NaN;                //!< Total quantity (contracts or base currency)
+  double base_amount = roq::NaN;             //!< Total amount (base currency)
+  double quote_amount = roq::NaN;            //!< Total amount (quote currency)
+  uint32_t number_of_trades = {};            //!< Number of trades (count)
+  double vwap = roq::NaN;                    //!< VWAP
 };
 
 }  // namespace roq

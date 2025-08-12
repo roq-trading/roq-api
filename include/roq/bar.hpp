@@ -20,6 +20,7 @@ namespace roq {
 //! Represents a single bar of a time-series
 struct ROQ_PUBLIC Bar final {
   std::chrono::nanoseconds begin_time_utc = {};  //!< Begin-of-period time-stamp (UTC)
+  bool confirmed = false;                        //!< Confirmed?
   double open_price = roq::NaN;                  //!< Open price
   double high_price = roq::NaN;                  //!< High price
   double low_price = roq::NaN;                   //!< Low price
@@ -42,6 +43,7 @@ struct fmt::formatter<roq::Bar> {
         context.out(),
         R"({{)"
         R"(begin_time_utc={}, )"
+        R"(confirmed={}, )"
         R"(open_price={}, )"
         R"(high_price={}, )"
         R"(low_price={}, )"
@@ -53,6 +55,7 @@ struct fmt::formatter<roq::Bar> {
         R"(vwap={})"
         R"(}})"sv,
         value.begin_time_utc,
+        value.confirmed,
         value.open_price,
         value.high_price,
         value.low_price,

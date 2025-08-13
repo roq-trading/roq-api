@@ -12,6 +12,7 @@
 
 #include "roq/event.hpp"
 #include "roq/filter.hpp"
+#include "roq/interval.hpp"
 #include "roq/limits.hpp"
 #include "roq/mask.hpp"
 #include "roq/name.hpp"
@@ -34,6 +35,8 @@ struct ROQ_PUBLIC GatewaySettings final {
   bool oms_download_has_routing_id = false;        //!< OMS download includes routing_id?
   roq::RequestIdType oms_request_id_type = {};     //!< OMS request identifier type
   roq::Mask<roq::Filter> oms_cancel_all_orders;    //!< Supported filters for CancelAllOrders
+  roq::Interval ts_interval = {};                  //!< Time-series interval
+  uint16_t ts_max_history = {};                    //!< Time-series max history (bars)
 };
 
 template <>
@@ -62,7 +65,9 @@ struct fmt::formatter<roq::GatewaySettings> {
         R"(oms_download_has_state={}, )"
         R"(oms_download_has_routing_id={}, )"
         R"(oms_request_id_type={}, )"
-        R"(oms_cancel_all_orders={})"
+        R"(oms_cancel_all_orders={}, )"
+        R"(ts_interval={}, )"
+        R"(ts_max_history={})"
         R"(}})"sv,
         value.supports,
         value.mbp_max_depth,
@@ -74,6 +79,8 @@ struct fmt::formatter<roq::GatewaySettings> {
         value.oms_download_has_state,
         value.oms_download_has_routing_id,
         value.oms_request_id_type,
-        value.oms_cancel_all_orders);
+        value.oms_cancel_all_orders,
+        value.ts_interval,
+        value.ts_max_history);
   }
 };

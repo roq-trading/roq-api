@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 1.0.8 &ndash; 2025-08-16
+
 ### Changed
 
 * Increase max-length of `symbol` to 64 (#516)

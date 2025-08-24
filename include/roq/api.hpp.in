@@ -88,6 +88,7 @@
 
 // messages (autogen)
 
+#include "roq/add_market.hpp"
 #include "roq/add_routes.hpp"
 #include "roq/batch_begin.hpp"
 #include "roq/batch_end.hpp"

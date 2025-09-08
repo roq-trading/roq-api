@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Workaround for fmt 11.2 and clang 21.x (#521)
+
 ## 1.0.8 &ndash; 2025-08-16
 
 ### Changed

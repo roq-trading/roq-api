@@ -3,6 +3,7 @@
 #pragma once
 
 #include "roq/compat.hpp"
+#include "roq/compat/fmt.hpp"
 
 #include <fmt/format.h>
 

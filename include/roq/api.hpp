@@ -142,7 +142,7 @@
 
 // version
 
-#define ROQ_VERSION "1.0.8"
+#define ROQ_VERSION "1.0.9"
 
 namespace roq {
 

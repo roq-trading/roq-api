@@ -89,7 +89,7 @@ struct fmt::formatter<roq::UUID> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::UUID const &value, format_context &context) const {
     using namespace std::literals;
-    auto data = reinterpret_cast<std::byte const *>(std::data(value));
+    auto data = reinterpret_cast<char const *>(std::data(value));
     // NOLINTBEGIN(readability-magic-numbers)
     return fmt::format_to(
         context.out(),
@@ -97,7 +97,7 @@ struct fmt::formatter<roq::UUID> {
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
         "{:02x}{:02x}-"
-        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}"sv,
+        "{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}",
         data[0],
         data[1],
         data[2],

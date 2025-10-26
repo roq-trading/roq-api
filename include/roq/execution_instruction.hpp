@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "roq/compat/fmt.hpp"
-
 #include <fmt/format.h>
 
 #include <cstdint>

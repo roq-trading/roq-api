@@ -45,6 +45,7 @@ struct ROQ_PUBLIC CreateOrder final {
   double quantity = roq::NaN;                                   //!< Order quantity
   double price = roq::NaN;                                      //!< Limit price (depends on order_type)
   double stop_price = roq::NaN;                                 //!< Stop price (depends on order_type and time_in_force)
+  double leverage = roq::NaN;                                   //!< Leverage (requires exchange support)
   std::string_view routing_id;                                  //!< Routing identifier
   uint32_t strategy_id = {};                                    //!< Strategy identifier (optional)
 };
@@ -81,6 +82,7 @@ struct fmt::formatter<roq::CreateOrder> {
         R"(quantity={}, )"
         R"(price={}, )"
         R"(stop_price={}, )"
+        R"(leverage={}, )"
         R"(routing_id="{}", )"
         R"(strategy_id={})"
         R"(}})"sv,
@@ -100,6 +102,7 @@ struct fmt::formatter<roq::CreateOrder> {
         value.quantity,
         value.price,
         value.stop_price,
+        value.leverage,
         value.routing_id,
         value.strategy_id);
   }

@@ -52,6 +52,7 @@ struct ROQ_PUBLIC OrderAck final {
   double quantity = roq::NaN;                        //!< Quantity (total, indicative)
   double price = roq::NaN;                           //!< Price
   double stop_price = roq::NaN;                      //!< Stop price (depends on order_type and time_in_force)
+  double leverage = roq::NaN;                        //!< Leverage (requires exchange support)
   std::string_view routing_id;                       //!< Routing identifier
   uint32_t version = {};                             //!< Version number (strictly increasing, optional)
   double risk_exposure = roq::NaN;                   //!< Risk exposure
@@ -99,6 +100,7 @@ struct fmt::formatter<roq::OrderAck> {
         R"(quantity={}, )"
         R"(price={}, )"
         R"(stop_price={}, )"
+        R"(leverage={}, )"
         R"(routing_id="{}", )"
         R"(version={}, )"
         R"(risk_exposure={}, )"
@@ -129,6 +131,7 @@ struct fmt::formatter<roq::OrderAck> {
         value.quantity,
         value.price,
         value.stop_price,
+        value.leverage,
         value.routing_id,
         value.version,
         value.risk_exposure,

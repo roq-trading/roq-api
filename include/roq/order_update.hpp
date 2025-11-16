@@ -56,6 +56,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   double quantity = roq::NaN;                                   //!< Quantity (base currency, total, indicative)
   double price = roq::NaN;                                      //!< Price
   double stop_price = roq::NaN;                                 //!< Stop price (depends on order_type and time_in_force)
+  double leverage = roq::NaN;                                   //!< Leverage (requires exchange support)
   double risk_exposure = roq::NaN;                              //!< Risk exposure
   double risk_exposure_change = roq::NaN;                       //!< Risk exposure change
   double remaining_quantity = roq::NaN;                         //!< Quantity (base currency, remaining)
@@ -114,6 +115,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(quantity={}, )"
         R"(price={}, )"
         R"(stop_price={}, )"
+        R"(leverage={}, )"
         R"(risk_exposure={}, )"
         R"(risk_exposure_change={}, )"
         R"(remaining_quantity={}, )"
@@ -155,6 +157,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.quantity,
         value.price,
         value.stop_price,
+        value.leverage,
         value.risk_exposure,
         value.risk_exposure_change,
         value.remaining_quantity,

@@ -17,6 +17,7 @@
 #include "roq/event.hpp"
 #include "roq/layer.hpp"
 #include "roq/name.hpp"
+#include "roq/precision.hpp"
 #include "roq/trace.hpp"
 #include "roq/update_type.hpp"
 
@@ -32,6 +33,8 @@ struct ROQ_PUBLIC TopOfBook final {
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
   uint64_t exchange_sequence = {};                  //!< Exchange message sequence number
   std::chrono::nanoseconds sending_time_utc = {};   //!< Exchange sending timestamp (UTC)
+  roq::Precision price_precision = {};              //!< Precision (decimal digits) required to represent prices (dynamic)
+  roq::Precision quantity_precision = {};           //!< Precision (decimal digits) required to represent quantities (dynamic)
 };
 
 template <>
@@ -57,7 +60,9 @@ struct fmt::formatter<roq::TopOfBook> {
         R"(update_type={}, )"
         R"(exchange_time_utc={}, )"
         R"(exchange_sequence={}, )"
-        R"(sending_time_utc={})"
+        R"(sending_time_utc={}, )"
+        R"(price_precision={}, )"
+        R"(quantity_precision={})"
         R"(}})"sv,
         value.stream_id,
         value.exchange,
@@ -66,6 +71,8 @@ struct fmt::formatter<roq::TopOfBook> {
         value.update_type,
         value.exchange_time_utc,
         value.exchange_sequence,
-        value.sending_time_utc);
+        value.sending_time_utc,
+        value.price_precision,
+        value.quantity_precision);
   }
 };

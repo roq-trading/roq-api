@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 1.1.1 &ndash; 20251214
+
 ## 1.1.0 &ndash; 2025-11-22
 
 ### Changed

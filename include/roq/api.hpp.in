@@ -130,6 +130,7 @@
 #include "roq/route_ack.hpp"
 #include "roq/statistics_update.hpp"
 #include "roq/stream_status.hpp"
+#include "roq/subscribe.hpp"
 #include "roq/time_series_update.hpp"
 #include "roq/top_of_book.hpp"
 #include "roq/trade_summary.hpp"

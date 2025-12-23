@@ -96,6 +96,7 @@ set(SCHEMA_ROQ
     statistics_update.json
     stop.json
     stream_status.json
+    subscribe.json
     support_type.json
     tick_size_step.json
     time_in_force.json

@@ -35,10 +35,10 @@ struct ROQ_PACKED String {
 
   constexpr String() = default;
 
-  constexpr String(String &&) = default;
+  constexpr String(String &&) noexcept = default;
   constexpr String(String const &) = default;
 
-  constexpr String &operator=(String &&) = default;
+  constexpr String &operator=(String &&) noexcept = default;
   constexpr String &operator=(String const &) = default;
 
   constexpr String(std::string_view const &text) { copy(text); }

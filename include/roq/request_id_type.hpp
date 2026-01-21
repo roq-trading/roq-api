@@ -15,6 +15,7 @@ enum class RequestIdType : uint8_t {
   BASE32,  //!< Base32 encoded
   SIMPLE,  //!< Simple encoded
   UUID,    //!< UUID encoded
+  HEX,     //!< Hex encoded
 };
 
 }  // namespace roq

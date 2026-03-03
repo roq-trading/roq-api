@@ -32,6 +32,7 @@ struct ROQ_PUBLIC FundsUpdate final {
   double balance = roq::NaN;                        //!< Total funds
   double hold = roq::NaN;                           //!< Funds on hold (aka locked)
   double borrowed = roq::NaN;                       //!< Borrowed funds (margin trading)
+  double unrealized_pnl = roq::NaN;                 //!< Unrealized P&L
   std::string_view external_account;                //!< External account name
   roq::UpdateType update_type = {};                 //!< Update type
   std::chrono::nanoseconds exchange_time_utc = {};  //!< Exchange timestamp, possibly from matching engine (UTC)
@@ -62,6 +63,7 @@ struct fmt::formatter<roq::FundsUpdate> {
         R"(balance={}, )"
         R"(hold={}, )"
         R"(borrowed={}, )"
+        R"(unrealized_pnl={}, )"
         R"(external_account="{}", )"
         R"(update_type={}, )"
         R"(exchange_time_utc={}, )"
@@ -75,6 +77,7 @@ struct fmt::formatter<roq::FundsUpdate> {
         value.balance,
         value.hold,
         value.borrowed,
+        value.unrealized_pnl,
         value.external_account,
         value.update_type,
         value.exchange_time_utc,

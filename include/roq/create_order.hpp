@@ -6,10 +6,12 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/chrono.h>
 #include <fmt/format.h>
 
 #include <magic_enum/magic_enum_format.hpp>
 
+#include <chrono>
 #include <string_view>
 
 #include "roq/event.hpp"
@@ -48,6 +50,7 @@ struct ROQ_PUBLIC CreateOrder final {
   double leverage = roq::NaN;                                   //!< Leverage (requires exchange support)
   std::string_view routing_id;                                  //!< Routing identifier
   uint32_t strategy_id = {};                                    //!< Strategy identifier (optional)
+  std::chrono::nanoseconds release_time_utc = {};               //!< Request release time (optional)
 };
 
 template <>
@@ -84,7 +87,8 @@ struct fmt::formatter<roq::CreateOrder> {
         R"(stop_price={}, )"
         R"(leverage={}, )"
         R"(routing_id="{}", )"
-        R"(strategy_id={})"
+        R"(strategy_id={}, )"
+        R"(release_time_utc={})"
         R"(}})"sv,
         value.account,
         value.order_id,
@@ -104,6 +108,7 @@ struct fmt::formatter<roq::CreateOrder> {
         value.stop_price,
         value.leverage,
         value.routing_id,
-        value.strategy_id);
+        value.strategy_id,
+        value.release_time_utc);
   }
 };

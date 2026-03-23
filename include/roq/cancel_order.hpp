@@ -6,10 +6,12 @@
 
 #include "roq/compat.hpp"
 
+#include <fmt/chrono.h>
 #include <fmt/format.h>
 
 #include <magic_enum/magic_enum_format.hpp>
 
+#include <chrono>
 #include <string_view>
 
 #include "roq/event.hpp"
@@ -20,12 +22,13 @@ namespace roq {
 
 //! Fields required to cancel an existing order
 struct ROQ_PUBLIC CancelOrder final {
-  std::string_view account;              //!< Account name
-  uint64_t order_id = {};                //!< Order identifier
-  std::string_view request_template;     //!< Request template (gateway configured)
-  std::string_view routing_id;           //!< Routing identifier
-  uint32_t version = {};                 //!< Version number (strictly increasing, optional)
-  uint32_t conditional_on_version = {};  //!< Auto-reject if this version has positively failed (optional)
+  std::string_view account;                        //!< Account name
+  uint64_t order_id = {};                          //!< Order identifier
+  std::string_view request_template;               //!< Request template (gateway configured)
+  std::string_view routing_id;                     //!< Routing identifier
+  uint32_t version = {};                           //!< Version number (strictly increasing, optional)
+  uint32_t conditional_on_version = {};            //!< Auto-reject if this version has positively failed (optional)
+  std::chrono::nanoseconds release_time_utc = {};  //!< Request release time (optional)
 };
 
 template <>
@@ -49,13 +52,15 @@ struct fmt::formatter<roq::CancelOrder> {
         R"(request_template="{}", )"
         R"(routing_id="{}", )"
         R"(version={}, )"
-        R"(conditional_on_version={})"
+        R"(conditional_on_version={}, )"
+        R"(release_time_utc={})"
         R"(}})"sv,
         value.account,
         value.order_id,
         value.request_template,
         value.routing_id,
         value.version,
-        value.conditional_on_version);
+        value.conditional_on_version,
+        value.release_time_utc);
   }
 };

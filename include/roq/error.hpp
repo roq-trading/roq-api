@@ -49,6 +49,7 @@ enum class Error : uint8_t {
   INVALID_FILTER,                  //!< Invalid filter
   INVALID_MARGIN_MODE,             //!< Invalid margin mode
   INVALID_QUANTITY_TYPE,           //!< Invalid quantity type
+  INVALID_RELEASE_TIME,            //!< Invalid release time
 };
 
 }  // namespace roq

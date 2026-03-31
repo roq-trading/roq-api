@@ -10,6 +10,7 @@ set(SOURCES
     span.cpp
     string.cpp
     support_type.cpp
+    version.cpp
     main.cpp)
 
 add_executable(${TARGET_NAME} ${SOURCES})

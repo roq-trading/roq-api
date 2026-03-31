@@ -12,6 +12,8 @@ struct Version final {
   uint8_t major = {};
   uint8_t minor = {};
   uint16_t revision = {};
+
+  auto operator<=>(Version const &) const = default;
 };
 
 }  // namespace roq

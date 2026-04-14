@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* Add new `RateLimitType` triggers (#579)
+
 ## 1.1.3 &ndash; 2026-03-12
 
 ### Changed

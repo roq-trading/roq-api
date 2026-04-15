@@ -73,19 +73,21 @@ Currently supported traditional exchanges include
 
 Currently supported Cryptocurrency exchanges include
 
+* Aster
 * Binance
+* Bitget
 * BitMEX
-* Bitstamp
+* BTSE
 * Bybit
 * Coinbase PRO
 * Deribit
 * Gate
-* Gemini
-* HitBTC
+* HTX
 * Huobi
 * Kraken
 * KuCoin
 * OKX
+* Phemex
 
 The full list can be found [here](https://roq-trading.com/docs/introduction/gateways/).
 

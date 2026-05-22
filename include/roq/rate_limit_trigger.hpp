@@ -37,6 +37,7 @@ struct ROQ_PUBLIC RateLimitTrigger final {
   std::string_view triggered_by;              //!< Trigger activated by this user
   roq::BufferCapacity buffer_capacity = {};   //!< Buffer capacity (indicator for how full or empty the buffer is)
   uint32_t remaining_requests = {};           //!< The buffer becomes full if this many requests are sent instantly
+  uint32_t request_limit = {};                //!< Request limit
 };
 
 template <>
@@ -63,7 +64,8 @@ struct fmt::formatter<roq::RateLimitTrigger> {
         R"(ban_expires={}, )"
         R"(triggered_by="{}", )"
         R"(buffer_capacity={}, )"
-        R"(remaining_requests={})"
+        R"(remaining_requests={}, )"
+        R"(request_limit={})"
         R"(}})"sv,
         value.name,
         value.origin,
@@ -73,6 +75,7 @@ struct fmt::formatter<roq::RateLimitTrigger> {
         value.ban_expires,
         value.triggered_by,
         value.buffer_capacity,
-        value.remaining_requests);
+        value.remaining_requests,
+        value.request_limit);
   }
 };

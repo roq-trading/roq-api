@@ -6,6 +6,10 @@ All notable changes will be documented in this file.
 
 ## 1.1.5 &ndash; 2026-06-06
 
+### Changed
+
+* Move some metrics and client headers into roq-api (#601)
+
 ### Added
 
 * Adding RateLimitTrigger.request_limit (#589)

@@ -198,17 +198,17 @@ static constexpr uint32_t const SYMBOL_ID_MAX = (uint32_t{1} << 24) - 1;
 
 static constexpr auto const SYMBOL_ID_NONE = SYMBOL_ID_MIN;
 
-// api id (2 bits)
+// api id (3 bits)
 
 static constexpr uint8_t const API_MIN = 0;
-static constexpr uint8_t const API_MAX = (uint8_t{1} << 2) - 1;
+static constexpr uint8_t const API_MAX = (uint8_t{1} << 3) - 1;
 
 static constexpr auto const API_NONE = API_MIN;
 
-// instance id (4 bits)
+// instance id (3 bits)
 
 static constexpr uint8_t const INSTANCE_MIN = 0;
-static constexpr uint8_t const INSTANCE_MAX = (uint8_t{1} << 4) - 1;
+static constexpr uint8_t const INSTANCE_MAX = (uint8_t{1} << 3) - 1;
 
 static constexpr auto const INSTANCE_NONE = INSTANCE_MIN;
 

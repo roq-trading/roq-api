@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* BREAKING CHANGE: ClOrdID now using 3 bits for API and 3 bits for instance number (#607)
+
 ## 1.1.5 &ndash; 2026-06-06
 
 ### Changed

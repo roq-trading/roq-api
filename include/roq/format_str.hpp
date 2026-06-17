@@ -5,6 +5,7 @@
 #include <fmt/format.h>
 
 #include <array>
+#include <cstdint>
 #include <source_location>
 #include <string_view>
 

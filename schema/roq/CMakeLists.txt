@@ -4,11 +4,12 @@ set(TARGET_NAME ${PROJECT_NAME}-schema-roq)
 set(SCHEMA_ROQ
     action.json
     add_routes.json
+    bar.json
     batch_begin.json
     batch_end.json
     buffer_capacity.json
-    cancel_all_orders_ack.json
     cancel_all_orders.json
+    cancel_all_orders_ack.json
     cancel_order.json
     cancel_quotes_ack.json
     category.json
@@ -34,6 +35,8 @@ set(SCHEMA_ROQ
     funds_update.json
     gateway_settings.json
     gateway_status.json
+    handshake.json
+    handshake_ack.json
     interval.json
     layer.json
     leg.json
@@ -61,8 +64,8 @@ set(SCHEMA_ROQ
     parameters_update.json
     portfolio.json
     portfolio_update.json
-    position_effect.json
     position.json
+    position_effect.json
     position_update.json
     precision.json
     priority.json
@@ -70,9 +73,9 @@ set(SCHEMA_ROQ
     quality_of_service.json
     quantity_type.json
     rate_limit.json
-    rate_limits_update.json
     rate_limit_trigger.json
     rate_limit_type.json
+    rate_limits_update.json
     ready.json
     reference_data.json
     remove_routes.json
@@ -82,8 +85,8 @@ set(SCHEMA_ROQ
     risk_limit.json
     risk_limits.json
     risk_limits_update.json
-    route_ack.json
     route.json
+    route_ack.json
     route_request_status.json
     routing.json
     security_type.json

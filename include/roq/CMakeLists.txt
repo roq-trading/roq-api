@@ -14,16 +14,16 @@ set(SCHEMA_ROQ
     batch_begin.json
     batch_end.json
     buffer_capacity.json
-    cancel_all_orders_ack.json
     cancel_all_orders.json
+    cancel_all_orders_ack.json
     cancel_order.json
-    cancel_quotes_ack.json
     cancel_quotes.json
+    cancel_quotes_ack.json
     category.json
     connected.json
     connection_status.json
-    control_ack.json
     control.json
+    control_ack.json
     create_order.json
     custom_matrix.json
     custom_matrix_update.json
@@ -42,6 +42,8 @@ set(SCHEMA_ROQ
     funds_update.json
     gateway_settings.json
     gateway_status.json
+    handshake.json
+    handshake_ack.json
     interval.json
     layer.json
     leg.json
@@ -51,8 +53,8 @@ set(SCHEMA_ROQ
     market_by_order_update.json
     market_by_price_update.json
     market_status.json
-    mass_quote_ack.json
     mass_quote.json
+    mass_quote_ack.json
     mbo_update.json
     mbp_update.json
     measurement.json
@@ -70,8 +72,8 @@ set(SCHEMA_ROQ
     parameters_update.json
     portfolio.json
     portfolio_update.json
-    position_effect.json
     position.json
+    position_effect.json
     position_update.json
     precision.json
     priority.json
@@ -80,9 +82,9 @@ set(SCHEMA_ROQ
     quantity_type.json
     quote.json
     rate_limit.json
-    rate_limits_update.json
     rate_limit_trigger.json
     rate_limit_type.json
+    rate_limits_update.json
     ready.json
     reference_data.json
     remove_routes.json

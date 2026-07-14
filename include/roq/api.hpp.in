@@ -108,6 +108,8 @@
 #include "roq/funds_update.hpp"
 #include "roq/gateway_settings.hpp"
 #include "roq/gateway_status.hpp"
+#include "roq/handshake.hpp"
+#include "roq/handshake_ack.hpp"
 #include "roq/market_by_order_update.hpp"
 #include "roq/market_by_price_update.hpp"
 #include "roq/market_status.hpp"

@@ -24,6 +24,7 @@ namespace roq {
 struct ROQ_PUBLIC HandshakeAck final {
   std::chrono::nanoseconds request_time_utc = {};   //!< Request time UTC
   std::chrono::nanoseconds response_time_utc = {};  //!< Response time UTC
+  uint64_t session_id = {};                         //!< Session ID
   bool success = false;                             //!< Success?
   std::string_view failure_reason;                  //!< Reason for failure
   std::string_view package_name;                    //!< Package name
@@ -56,6 +57,7 @@ struct fmt::formatter<roq::HandshakeAck> {
         R"({{)"
         R"(request_time_utc={}, )"
         R"(response_time_utc={}, )"
+        R"(session_id={}, )"
         R"(success={}, )"
         R"(failure_reason="{}", )"
         R"(package_name="{}", )"
@@ -71,6 +73,7 @@ struct fmt::formatter<roq::HandshakeAck> {
         R"(}})"sv,
         value.request_time_utc,
         value.response_time_utc,
+        value.session_id,
         value.success,
         value.failure_reason,
         value.package_name,

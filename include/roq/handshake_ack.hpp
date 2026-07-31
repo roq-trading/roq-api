@@ -35,6 +35,7 @@ struct ROQ_PUBLIC HandshakeAck final {
   uint64_t process_id = {};                         //!< Process id
   std::string_view service_name;                    //!< Service name
   std::string_view api_name;                        //!< API name
+  uint8_t api = {};                                 //!< API
   uint8_t instance = {};                            //!< Instance id
   bool is_uat = false;                              //!< Is UAT?
 };
@@ -68,6 +69,7 @@ struct fmt::formatter<roq::HandshakeAck> {
         R"(process_id={}, )"
         R"(service_name="{}", )"
         R"(api_name="{}", )"
+        R"(api={}, )"
         R"(instance={}, )"
         R"(is_uat={})"
         R"(}})"sv,
@@ -84,6 +86,7 @@ struct fmt::formatter<roq::HandshakeAck> {
         value.process_id,
         value.service_name,
         value.api_name,
+        value.api,
         value.instance,
         value.is_uat);
   }

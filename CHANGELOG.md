@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Pre-compute the gateway's `external_order_id` (aka `ClOrdID`) (#617)
+
 ## 1.1.6 &ndash; 2026-07-08
 
 ### Changed

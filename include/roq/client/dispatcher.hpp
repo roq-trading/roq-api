@@ -78,6 +78,9 @@ struct ROQ_PUBLIC Dispatcher {
     callback(static_cast<TraceInfo const &>(time_setter));
   }
 
+  //! Pre-compute a gateway's external_order_id
+  virtual std::string_view compute_external_order_id(CreateOrder const &, uint8_t source) = 0;
+
  protected:
   virtual TraceInfo create_trace_info() = 0;
   virtual void release_trace_info() = 0;

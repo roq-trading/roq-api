@@ -24,6 +24,9 @@ namespace roq {
 
 //! Gateway settings
 struct ROQ_PUBLIC GatewaySettings final {
+  uint8_t api = {};                                //!< API
+  uint8_t instance = {};                           //!< Instance id
+  bool is_uat = false;                             //!< Is UAT?
   roq::Mask<roq::SupportType> supports;            //!< Supported update types
   uint16_t mbp_max_depth = {};                     //!< MBP max depth
   double mbp_tick_size_multiplier = roq::NaN;      //!< MBP multiplier used to manage prices as integer
@@ -55,6 +58,9 @@ struct fmt::formatter<roq::GatewaySettings> {
     return fmt::format_to(
         context.out(),
         R"({{)"
+        R"(api={}, )"
+        R"(instance={}, )"
+        R"(is_uat={}, )"
         R"(supports={}, )"
         R"(mbp_max_depth={}, )"
         R"(mbp_tick_size_multiplier={}, )"
@@ -69,6 +75,9 @@ struct fmt::formatter<roq::GatewaySettings> {
         R"(ts_interval={}, )"
         R"(ts_max_history={})"
         R"(}})"sv,
+        value.api,
+        value.instance,
+        value.is_uat,
         value.supports,
         value.mbp_max_depth,
         value.mbp_tick_size_multiplier,

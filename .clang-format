@@ -20,4 +20,4 @@ IndentCaseLabels: true
 InsertBraces: true
 PointerAlignment: Right
 QualifierAlignment: Right
-Standard: c++20  # note! clang20 does not support c++23
+Standard: c++20  # note! clang22 does not support c++23

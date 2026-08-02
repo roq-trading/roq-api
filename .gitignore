@@ -18,6 +18,7 @@ install_manifest.txt
 lib/
 external/
 external-prefix/
+.venv
 
 # cpack
 _CPack_Packages/

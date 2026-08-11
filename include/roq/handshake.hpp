@@ -17,6 +17,7 @@
 #include <string_view>
 
 #include "roq/event.hpp"
+#include "roq/exchange_symbol.hpp"
 #include "roq/name.hpp"
 #include "roq/order_cancel_policy.hpp"
 #include "roq/order_management.hpp"
@@ -38,6 +39,7 @@ struct ROQ_PUBLIC Handshake final {
   std::string_view login;                           //!< Login
   std::string_view password;                        //!< Password
   std::span<roq::Account const> accounts;           //!< Accounts
+  std::span<roq::ExchangeSymbol const> symbols;     //!< Symbols
   roq::OrderCancelPolicy order_cancel_policy = {};  //!< Order cancel policy
   roq::OrderManagement order_management = {};       //!< Order management
 };
@@ -69,6 +71,7 @@ struct fmt::formatter<roq::Handshake> {
         R"(login="{}", )"
         R"(password="{}", )"
         R"(accounts=[{}], )"
+        R"(symbols=[{}], )"
         R"(order_cancel_policy={}, )"
         R"(order_management={})"
         R"(}})"sv,
@@ -83,6 +86,7 @@ struct fmt::formatter<roq::Handshake> {
         value.login,
         value.password,
         fmt::join(value.accounts, ", "sv),
+        fmt::join(value.symbols, ", "sv),
         value.order_cancel_policy,
         value.order_management);
   }

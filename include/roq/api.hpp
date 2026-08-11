@@ -53,6 +53,7 @@
 // helpers
 
 #include "roq/bar.hpp"
+#include "roq/exchange_symbol.hpp"
 #include "roq/fill.hpp"
 #include "roq/layer.hpp"
 #include "roq/leg.hpp"

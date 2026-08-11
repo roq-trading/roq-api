@@ -35,6 +35,7 @@ set(SCHEMA_ROQ
     download_end.json
     encoding.json
     error.json
+    exchange_symbol.json
     execution_instruction.json
     external_latency.json
     fill.json

@@ -10,10 +10,7 @@
 
 #include <magic_enum/magic_enum_format.hpp>
 
-#include "roq/event.hpp"
-#include "roq/name.hpp"
 #include "roq/string_types.hpp"
-#include "roq/trace.hpp"
 
 namespace roq {
 
@@ -22,12 +19,6 @@ struct ROQ_PUBLIC ExchangeSymbol final {
   roq::Exchange exchange;  //!< Exchange
   roq::Symbol symbol;      //!< Symbol
 };
-
-template <>
-constexpr std::string_view get_name<ExchangeSymbol>() {
-  using namespace std::literals;
-  return "exchange_symbol"sv;
-}
 
 }  // namespace roq
 

@@ -50,6 +50,7 @@ enum class Error : uint8_t {
   INVALID_MARGIN_MODE,             //!< Invalid margin mode
   INVALID_QUANTITY_TYPE,           //!< Invalid quantity type
   INVALID_RELEASE_TIME,            //!< Invalid release time
+  SETTLEMENT_IN_PROGRESS,          //!< Platform locked (settlement in progress)
 };
 
 }  // namespace roq

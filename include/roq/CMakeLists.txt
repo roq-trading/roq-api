@@ -53,6 +53,7 @@ set(SCHEMA_ROQ
     margin_mode.json
     market_by_order_update.json
     market_by_price_update.json
+    market_segment_status.json
     market_status.json
     mass_quote.json
     mass_quote_ack.json
@@ -95,8 +96,8 @@ set(SCHEMA_ROQ
     risk_limit.json
     risk_limits.json
     risk_limits_update.json
-    route_ack.json
     route.json
+    route_ack.json
     route_request_status.json
     routing.json
     security_type.json
@@ -114,8 +115,8 @@ set(SCHEMA_ROQ
     support_type.json
     tick_size_step.json
     time_in_force.json
-    timer.json
     time_series_update.json
+    timer.json
     top_of_book.json
     trade.json
     trade_summary.json

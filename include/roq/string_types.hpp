@@ -17,6 +17,8 @@ static constexpr size_t const MAX_LENGTH_EXCHANGE = 32;
 static constexpr size_t const MAX_LENGTH_SYMBOL = 64;
 static constexpr size_t const MAX_LENGTH_CURRENCY = 32;
 
+static constexpr size_t const MAX_LENGTH_MARKET_SEGMENT = 32;
+
 static constexpr size_t const MAX_LENGTH_CFI_CODE = 6;
 
 static constexpr size_t const MAX_LENGTH_MBO_ORDER_ID = 36;  // note! UUID
@@ -64,6 +66,10 @@ struct ROQ_PUBLIC Symbol final : public String<detail::MAX_LENGTH_SYMBOL> {
 
 struct ROQ_PUBLIC Currency final : public String<detail::MAX_LENGTH_CURRENCY> {
   using String<detail::MAX_LENGTH_CURRENCY>::String;
+};
+
+struct ROQ_PUBLIC MarketSegment final : public String<detail::MAX_LENGTH_MARKET_SEGMENT> {
+  using String<detail::MAX_LENGTH_MARKET_SEGMENT>::String;
 };
 
 struct ROQ_PUBLIC CFICode final : public String<detail::MAX_LENGTH_CFI_CODE> {

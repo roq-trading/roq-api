@@ -113,6 +113,7 @@
 #include "roq/handshake_ack.hpp"
 #include "roq/market_by_order_update.hpp"
 #include "roq/market_by_price_update.hpp"
+#include "roq/market_segment_status.hpp"
 #include "roq/market_status.hpp"
 #include "roq/mass_quote.hpp"
 #include "roq/mass_quote_ack.hpp"

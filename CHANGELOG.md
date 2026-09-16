@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Adding `ReferenceData.market_segment` and `MarketSegmentStatus` (#636)
+
 ## 1.1.8 &ndash; 2026-09-04
 
 ## 1.1.7 &ndash; 2026-08-08

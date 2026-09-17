@@ -43,6 +43,7 @@ struct ROQ_PUBLIC CreateOrder final {
   roq::OrderType order_type = {};                               //!< Order type
   roq::TimeInForce time_in_force = {};                          //!< Time in force
   roq::Mask<roq::ExecutionInstruction> execution_instructions;  //!< Execution instructions
+  std::string_view execution_destination;                       //!< Execution destination (requires ecxhange support)
   std::string_view request_template;                            //!< Request template (gateway configured)
   double quantity = roq::NaN;                                   //!< Order quantity
   double price = roq::NaN;                                      //!< Limit price (depends on order_type)
@@ -81,6 +82,7 @@ struct fmt::formatter<roq::CreateOrder> {
         R"(order_type={}, )"
         R"(time_in_force={}, )"
         R"(execution_instructions={}, )"
+        R"(execution_destination="{}", )"
         R"(request_template="{}", )"
         R"(quantity={}, )"
         R"(price={}, )"
@@ -102,6 +104,7 @@ struct fmt::formatter<roq::CreateOrder> {
         value.order_type,
         value.time_in_force,
         value.execution_instructions,
+        value.execution_destination,
         value.request_template,
         value.quantity,
         value.price,

@@ -4,8 +4,9 @@ All notable changes will be documented in this file.
 
 ## Head
 
-### Changed
+### Added
 
+* Adding `CreateOrder.execution_destination` and `OrderUpdate.execution_destination` (#637)
 * Adding `ReferenceData.market_segment` and `MarketSegmentStatus` (#636)
 
 ## 1.1.8 &ndash; 2026-09-04

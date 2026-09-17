@@ -23,6 +23,7 @@ static constexpr size_t const MAX_LENGTH_CFI_CODE = 6;
 
 static constexpr size_t const MAX_LENGTH_MBO_ORDER_ID = 36;  // note! UUID
 
+static constexpr size_t const MAX_LENGTH_EXECUTION_DESTINATION = 16;
 static constexpr size_t const MAX_LENGTH_REQUEST_TEMPLATE = 16;
 static constexpr size_t const MAX_LENGTH_EXTERNAL_ACCOUNT = 64;
 static constexpr size_t const MAX_LENGTH_EXTERNAL_ORDER_ID = 64;
@@ -78,6 +79,10 @@ struct ROQ_PUBLIC CFICode final : public String<detail::MAX_LENGTH_CFI_CODE> {
 
 struct ROQ_PUBLIC MBOOrderId final : public String<detail::MAX_LENGTH_MBO_ORDER_ID> {
   using String<detail::MAX_LENGTH_MBO_ORDER_ID>::String;
+};
+
+struct ROQ_PUBLIC ExecutionDestination final : public String<detail::MAX_LENGTH_EXECUTION_DESTINATION> {
+  using String<detail::MAX_LENGTH_EXECUTION_DESTINATION>::String;
 };
 
 struct ROQ_PUBLIC RequestTemplate final : public String<detail::MAX_LENGTH_REQUEST_TEMPLATE> {
@@ -146,6 +151,7 @@ static_assert(sizeof(Symbol) == detail::MAX_LENGTH_SYMBOL);
 static_assert(sizeof(Currency) == detail::MAX_LENGTH_CURRENCY);
 static_assert(sizeof(CFICode) == detail::MAX_LENGTH_CFI_CODE);
 static_assert(sizeof(MBOOrderId) == detail::MAX_LENGTH_MBO_ORDER_ID);
+static_assert(sizeof(ExecutionDestination) == detail::MAX_LENGTH_EXECUTION_DESTINATION);
 static_assert(sizeof(RequestTemplate) == detail::MAX_LENGTH_REQUEST_TEMPLATE);
 static_assert(sizeof(ExternalAccount) == detail::MAX_LENGTH_EXTERNAL_ACCOUNT);
 static_assert(sizeof(ExternalOrderId) == detail::MAX_LENGTH_EXTERNAL_ORDER_ID);
@@ -230,6 +236,15 @@ template <>
 struct fmt::formatter<roq::MBOOrderId> {
   constexpr auto parse(format_parse_context &context) { return std::begin(context); }
   auto format(roq::MBOOrderId const &value, format_context &context) const {
+    using namespace std::literals;
+    return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
+  }
+};
+
+template <>
+struct fmt::formatter<roq::ExecutionDestination> {
+  constexpr auto parse(format_parse_context &context) { return std::begin(context); }
+  auto format(roq::ExecutionDestination const &value, format_context &context) const {
     using namespace std::literals;
     return fmt::format_to(context.out(), "{}"sv, static_cast<std::string_view>(value));
   }

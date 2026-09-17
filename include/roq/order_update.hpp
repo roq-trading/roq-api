@@ -47,6 +47,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   roq::OrderType order_type = {};                               //!< Order type
   roq::TimeInForce time_in_force = {};                          //!< Time in force
   roq::Mask<roq::ExecutionInstruction> execution_instructions;  //!< Execution instructions
+  std::string_view execution_destination;                       //!< Execution destination (requires ecxhange support)
   std::chrono::nanoseconds create_time_utc = {};                //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};                //!< Updated timestamp (UTC)
   std::string_view external_account;                            //!< External account name
@@ -106,6 +107,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(order_type={}, )"
         R"(time_in_force={}, )"
         R"(execution_instructions={}, )"
+        R"(execution_destination="{}", )"
         R"(create_time_utc={}, )"
         R"(update_time_utc={}, )"
         R"(external_account="{}", )"
@@ -148,6 +150,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.order_type,
         value.time_in_force,
         value.execution_instructions,
+        value.execution_destination,
         value.create_time_utc,
         value.update_time_utc,
         value.external_account,

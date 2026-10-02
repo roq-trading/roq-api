@@ -11,19 +11,24 @@
 #include <magic_enum/magic_enum_format.hpp>
 
 #include "roq/limits.hpp"
+#include "roq/mask.hpp"
 #include "roq/side.hpp"
 #include "roq/string_types.hpp"
+#include "roq/trade_condition.hpp"
+#include "roq/trade_type.hpp"
 
 namespace roq {
 
 //! Represents a single trade (a match) as part of trade reporting by the exchange
 struct ROQ_PUBLIC Trade final {
-  roq::Side side = {};                  //!< Side (by convention: side of the taker)
-  double price = roq::NaN;              //!< Price
-  double quantity = roq::NaN;           //!< Quantity
-  roq::ExternalTradeId trade_id;        //!< Trade identifier
-  roq::ExternalOrderId taker_order_id;  //!< External order identifier (taker)
-  roq::ExternalOrderId maker_order_id;  //!< External order identifier (maker)
+  roq::Mask<roq::TradeCondition> trade_conditions;  //!< Trade conditions (bit-mask)
+  roq::TradeType trade_type = {};                   //!< Trade type
+  roq::Side side = {};                              //!< Side (by convention: side of the taker)
+  double price = roq::NaN;                          //!< Price
+  double quantity = roq::NaN;                       //!< Quantity
+  roq::ExternalTradeId trade_id;                    //!< Trade identifier
+  roq::ExternalOrderId taker_order_id;              //!< External order identifier (taker)
+  roq::ExternalOrderId maker_order_id;              //!< External order identifier (maker)
 };
 
 }  // namespace roq
@@ -36,6 +41,8 @@ struct fmt::formatter<roq::Trade> {
     return fmt::format_to(
         context.out(),
         R"({{)"
+        R"(trade_conditions={}, )"
+        R"(trade_type={}, )"
         R"(side={}, )"
         R"(price={}, )"
         R"(quantity={}, )"
@@ -43,6 +50,8 @@ struct fmt::formatter<roq::Trade> {
         R"(taker_order_id="{}", )"
         R"(maker_order_id="{}")"
         R"(}})"sv,
+        value.trade_conditions,
+        value.trade_type,
         value.side,
         value.price,
         value.quantity,

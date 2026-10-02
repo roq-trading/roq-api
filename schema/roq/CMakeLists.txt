@@ -108,7 +108,9 @@ set(SCHEMA_ROQ
     timer.json
     top_of_book.json
     trade.json
+    trade_condition.json
     trade_summary.json
+    trade_type.json
     trade_update.json
     trading_status.json
     transport.json

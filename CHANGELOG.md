@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* Adding `Trade.trade_conditions` and `Trade.trade_type` (#649)
 * Adding `CreateOrder.execution_destination` and `OrderUpdate.execution_destination` (#637)
 * Adding `ReferenceData.market_segment` and `MarketSegmentStatus` (#636)
 

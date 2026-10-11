@@ -39,9 +39,15 @@ struct Trace final {
   }
 };
 
-template <typename T, typename... Args>
-inline void create_trace_and_dispatch(auto &handler, TraceInfo const &trace_info, T const &value, Args &&...args) {
-  Trace<T>::create_and_dispatch(handler, trace_info, value, std::forward<Args>(args)...);
+template <typename I, typename T, typename... Args>
+inline void create_trace_and_dispatch(auto &handler, I const &info, T const &value, Args &&...args) {
+  using info_type = std::remove_cvref_t<I>;
+  if constexpr (std::is_same_v<info_type, TraceInfo>) {
+    Trace<T>::create_and_dispatch(handler, info, value, std::forward<Args>(args)...);
+  } else {
+    TraceInfo trace_info{info};
+    Trace<T>::create_and_dispatch(handler, trace_info, value, std::forward<Args>(args)...);
+  }
 }
 
 }  // namespace roq

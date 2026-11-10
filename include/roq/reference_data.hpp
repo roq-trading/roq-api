@@ -33,7 +33,7 @@ struct ROQ_PUBLIC ReferenceData final {
   std::string_view symbol;                             //!< Symbol
   std::string_view description;                        //!< Description
   roq::SecurityType security_type = {};                //!< Security type
-  int32_t external_security_id = {};                   //!< Security ID
+  int64_t external_security_id = {};                   //!< Security ID
   std::string_view market_segment;                     //!< Identifies the group of symbols (markets)
   std::string_view cfi_code;                           //!< CFI code
   std::string_view base_currency;                      //!< Base currency

@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* `ReferenceData.external_security_id` must be int64 (#660)
+
 ## 1.1.9 &ndash; 2026-10-18
 
 ### Added

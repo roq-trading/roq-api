@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* Adding `OrderAck.external_trace_id` (#665)
 * Adding `StreamStatus.peer` (#664)
 
 ## 1.2.0 &ndash; 2026-11-14

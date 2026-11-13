@@ -37,9 +37,10 @@ struct ROQ_PUBLIC StreamStatus final {
   roq::ConnectionStatus connection_status = {};  //!< Connection status (when applicable)
   std::string_view reason;                       //!< Reason (last change)
   std::string_view interface;                    //!< Local network interface
+  std::string_view proxy;                        //!< Network proxy
+  std::string_view peer;                         //!< Network peer
   std::string_view authority;                    //!< URL authority (network end-point)
   std::string_view path;                         //!< URL path
-  std::string_view proxy;                        //!< Network proxy
 };
 
 template <>
@@ -68,9 +69,10 @@ struct fmt::formatter<roq::StreamStatus> {
         R"(connection_status={}, )"
         R"(reason="{}", )"
         R"(interface="{}", )"
+        R"(proxy="{}", )"
+        R"(peer="{}", )"
         R"(authority="{}", )"
-        R"(path="{}", )"
-        R"(proxy="{}")"
+        R"(path="{}")"
         R"(}})"sv,
         value.stream_id,
         value.account,
@@ -82,8 +84,9 @@ struct fmt::formatter<roq::StreamStatus> {
         value.connection_status,
         value.reason,
         value.interface,
+        value.proxy,
+        value.peer,
         value.authority,
-        value.path,
-        value.proxy);
+        value.path);
   }
 };

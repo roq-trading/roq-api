@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* Adding `StreamStatus.peer` (#664)
+
 ## 1.2.0 &ndash; 2026-11-14
 
 ### Changed

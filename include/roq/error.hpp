@@ -51,6 +51,7 @@ enum class Error : uint8_t {
   INVALID_QUANTITY_TYPE,           //!< Invalid quantity type
   INVALID_RELEASE_TIME,            //!< Invalid release time
   SETTLEMENT_IN_PROGRESS,          //!< Platform locked (settlement in progress)
+  POST_ONLY_WOULD_MATCH,           //!< Post-only order would match
 };
 
 }  // namespace roq

@@ -50,6 +50,7 @@ struct ROQ_PUBLIC OrderUpdate final {
   std::string_view execution_destination;                       //!< Execution destination (requires ecxhange support)
   std::chrono::nanoseconds create_time_utc = {};                //!< Created timestamp (UTC)
   std::chrono::nanoseconds update_time_utc = {};                //!< Updated timestamp (UTC)
+  std::string_view external_trace_id;                           //!< Exchange or CDN trace
   std::string_view external_account;                            //!< External account name
   std::string_view external_order_id;                           //!< External order identifier
   std::string_view client_order_id;                             //!< Client order identifier
@@ -110,6 +111,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         R"(execution_destination="{}", )"
         R"(create_time_utc={}, )"
         R"(update_time_utc={}, )"
+        R"(external_trace_id="{}", )"
         R"(external_account="{}", )"
         R"(external_order_id="{}", )"
         R"(client_order_id="{}", )"
@@ -153,6 +155,7 @@ struct fmt::formatter<roq::OrderUpdate> {
         value.execution_destination,
         value.create_time_utc,
         value.update_time_utc,
+        value.external_trace_id,
         value.external_account,
         value.external_order_id,
         value.client_order_id,

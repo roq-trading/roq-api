@@ -46,7 +46,7 @@ struct ROQ_PUBLIC OrderAck final {
   roq::Error error = {};                             //!< Error code
   std::string_view text;                             //!< Descriptive text
   std::string_view request_id;                       //!< Request identifier
-  std::string_view external_trace_id;                //!< Request/response trace (from exchange or CDN)
+  std::string_view external_trace_id;                //!< Exchange or CDN trace
   std::string_view external_account;                 //!< External account name
   std::string_view external_order_id;                //!< External order identifier
   std::string_view client_order_id;                  //!< Client order identifier

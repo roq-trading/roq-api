@@ -25,6 +25,7 @@ static constexpr size_t const MAX_LENGTH_MBO_ORDER_ID = 36;  // note! UUID
 
 static constexpr size_t const MAX_LENGTH_EXECUTION_DESTINATION = 16;
 static constexpr size_t const MAX_LENGTH_REQUEST_TEMPLATE = 16;
+static constexpr size_t const MAX_LENGTH_EXTERNAL_TRACE_ID = 40;
 static constexpr size_t const MAX_LENGTH_EXTERNAL_ACCOUNT = 64;
 static constexpr size_t const MAX_LENGTH_EXTERNAL_ORDER_ID = 64;
 static constexpr size_t const MAX_LENGTH_EXTERNAL_TRADE_ID = 40;
@@ -87,6 +88,10 @@ struct ROQ_PUBLIC ExecutionDestination final : public String<detail::MAX_LENGTH_
 
 struct ROQ_PUBLIC RequestTemplate final : public String<detail::MAX_LENGTH_REQUEST_TEMPLATE> {
   using String<detail::MAX_LENGTH_REQUEST_TEMPLATE>::String;
+};
+
+struct ROQ_PUBLIC ExternalTraceId final : public String<detail::MAX_LENGTH_EXTERNAL_TRACE_ID> {
+  using String<detail::MAX_LENGTH_EXTERNAL_TRACE_ID>::String;
 };
 
 struct ROQ_PUBLIC ExternalAccount final : public String<detail::MAX_LENGTH_EXTERNAL_ACCOUNT> {

@@ -6,6 +6,7 @@ All notable changes will be documented in this file.
 
 ### Added
 
+* Adding `Error.REDUCE_ONLY_WOULD_INCREASE`
 * Adding `OrderAck.external_trace_id` and `OrderUpdate.external_trace_id` (#665)
 * Adding `StreamStatus.peer` (#664)
 

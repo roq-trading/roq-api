@@ -52,6 +52,7 @@ enum class Error : uint8_t {
   INVALID_RELEASE_TIME,            //!< Invalid release time
   SETTLEMENT_IN_PROGRESS,          //!< Platform locked (settlement in progress)
   POST_ONLY_WOULD_MATCH,           //!< Post-only order would match
+  REDUCE_ONLY_WOULD_INCREASE,      //!< Reduce-only order would increase
 };
 
 }  // namespace roq

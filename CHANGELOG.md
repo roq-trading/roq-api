@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Changed
+
+* Renamed `ConnectionStatus.AUTHENTICATING` (from `LOGIN_SENT`)
+
 ### Added
 
 * Adding `Error.REDUCE_ONLY_WOULD_INCREASE`
